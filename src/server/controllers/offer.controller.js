@@ -48,16 +48,17 @@ exports.offer_create = function (req, res) {
         console.log(neighborhoods);
     })
     .catch(e => {
+        // console.log("ERROR")
         console.log(e);
     });
 
-    // offer.save(function (err) {
-    //     if (err) {
-    //         res.send(err);
-    //     } else {
-    //         res.send('Offer created successfully')
-    //     }
-    // })
+    offer.save(function (err) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send('Offer created successfully')
+        }
+    })
 };
 
 exports.all_offers = function (req , res) {
