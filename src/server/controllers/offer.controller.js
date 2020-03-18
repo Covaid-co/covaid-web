@@ -27,6 +27,7 @@ exports.offer_create = function (req, res) {
 };
 
 exports.all_offers = function (req , res) {
+    console.log("ALL");
     Offer.find({}).then(function (offers) {
         res.send(offers);
     });
