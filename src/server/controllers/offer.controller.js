@@ -33,14 +33,14 @@ exports.all_offers = function (req , res) {
 };
 
 exports.offer_details = function (req, res) {
-    Offer.findById(req.params.id, function (err, product) {
+    Offer.findById(req.params.id, function (err, offer) {
         if (err) return next(err);
-        res.send(product);
+        res.send(offer);
     })
 };
 
 exports.offer_update = function (req, res) {
-    Offer.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, product) {
+    Offer.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, offer) {
         if (err) return next(err);
         res.send('Offer udpated.');
     });
