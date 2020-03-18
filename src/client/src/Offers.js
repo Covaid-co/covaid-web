@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ListGroup from 'react-bootstrap/ListGroup'
@@ -6,9 +6,21 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 
-export const Offers = () => {
+export default function Offers() {
+    const [offers, setOffers] = useState([]);
+    
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch('/api/offers');
+            response.json().then((data) => {
+                setOffers(data);
+            });
+        }
+        fetchData();
+      }, []);
+
     return (
-        <div class="shadow p-3 mb-5 bg-white rounded">
+        <div className="shadow p-3 mb-5 bg-white rounded">
             <ListGroup variant="flush">
                 <ListGroup.Item>
                     <Row>
@@ -18,24 +30,14 @@ export const Offers = () => {
                 </ListGroup.Item>
             </ListGroup>
             <ListGroup variant="flush">
-                <ListGroup.Item action href = '#' style = {{fontSize: 12}}>
-                    <Row>
-                        <Col>Groceries</Col>
-                        <Col>Crown Heights</Col>
-                    </Row>
-                </ListGroup.Item>
-                <ListGroup.Item action href = '#1' style = {{fontSize: 12}}>
-                    <Row>
-                        <Col>Groceries, Health Products</Col>
-                        <Col>Squirrel Hill</Col>
-                    </Row>
-                </ListGroup.Item>
-                <ListGroup.Item action href = '#2' style = {{fontSize: 12}}>
-                    <Row>
-                        <Col>Groceries</Col>
-                        <Col>Shadyside</Col>
-                    </Row>
-                </ListGroup.Item>
+                {offers.map((offer) => {
+                    return <ListGroup.Item  key={offer._id} action href = {offer._id} style = {{fontSize: 12}}>
+                            <Row>
+                                <Col>{offer.task}</Col>
+                                <Col>{offer.neighborhood_name}</Col>
+                            </Row>
+                        </ListGroup.Item>
+                })}
             </ListGroup>
         </div>
     );
