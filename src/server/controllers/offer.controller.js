@@ -18,11 +18,37 @@ exports.offer_create = function (req, res) {
             user_id: user_id
         }
     );
-
     offer.save(function (err) {
         if (err) {
             return next(err);
         }
         res.send('Offer created successfully')
+    })
+};
+
+exports.all_offers = function (req , res) {
+    Offer.find({}).then(function (offers) {
+        res.send(offers);
+    });
+};
+
+exports.offer_details = function (req, res) {
+    Offer.findById(req.params.id, function (err, product) {
+        if (err) return next(err);
+        res.send(product);
+    })
+};
+
+exports.offer_update = function (req, res) {
+    Offer.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, product) {
+        if (err) return next(err);
+        res.send('Offer udpated.');
+    });
+};
+
+exports.offer_delete = function (req, res) {
+    Offer.findByIdAndRemove(req.params.id, function (err) {
+        if (err) return next(err);
+        res.send('Deleted successfully!');
     })
 };
