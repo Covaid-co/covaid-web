@@ -56,7 +56,7 @@ export default function CreateOffer(props) {
                 if (neighborhoods.length === 1) {
                     setNeighborhoodSelect({ [neighborhoods[0]]: true });
                 }
-                console.log(neighborhoods);
+
                 setNeighborhoods(neighborhoods);
             },
             error => {
