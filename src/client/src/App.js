@@ -26,25 +26,48 @@ class App extends Component {
     this.state = { 
       currentUser: undefined,
       currentUserAvailability: false,
-      checked: true };
-      this.handleChange = this.handleChange.bind(this);
+      checked: false 
+    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.fetchUser()
     // this.setState({data : data});
     // console.log(this.state.currentUser)
   }
 
   handleChange(checked) {
-    this.setState({ checked });
+    let form = {
+      'availability': checked
+    };
+    this.setState({checked : checked});
+
+    fetch_a('/api/users/update_availability/', {
+      method: 'put',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(form)
+    })
+    .then((response) => {
+        if (response.ok) {
+          this.setState({checked : checked});
+          console.log("Update successful")
+        } else {
+          console.log("Update not successful")
+        }
+    })
+    .catch((e) => {
+        console.log("Error")
+    });
+    
   }
 
   fetchUser(){
     fetch_a('/api/users/current')
         .then((response) => response.json())
         .then((responseJson) => {
-          console.log(responseJson)
+          const { user } = responseJson;
+          this.setState({ checked: user.availability });
         })
         .catch((error) => {
           console.error(error);
@@ -56,11 +79,10 @@ class App extends Component {
       <div className="App">
         <Container style = {{padding: '40px 15px'}}>
           <h1 style = {{fontWeight: 300}}>Corona-Aid</h1>
-          <h5 style = {{fontWeight: 200}}>Availability</h5>
+          <h5 style = {{fontWeight: 200}}>Your Availability</h5>
           <label>
             <Switch onChange={this.handleChange} checked={this.state.checked} />
           </label>
-
           <br />
           <br />
 

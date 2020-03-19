@@ -16,8 +16,20 @@ export default function Register() {
         last_name: "",
         email: "",
         password: "",
+        confirmPassword: "",
         phone: ""
     });
+
+    function validateForm() {
+        return (
+          fields.email.length > 0 &&
+          fields.password.length > 0 &&
+          fields.first_name.length > 0 &&
+          fields.last_name.length > 0 &&
+          fields.phone.length > 0 &&
+          fields.password === fields.confirmPassword
+        );
+      }
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -54,6 +66,7 @@ export default function Register() {
                 response.json().then(data => {
                     console.log("Registration successful")
                     Cookie.set("token", data.user.token);
+                    window.location.reload(false);
                 });
             } else {
                 console.log("Registration not successful")
@@ -112,7 +125,16 @@ export default function Register() {
                             />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Form.Group controlId="confirmPassword" bsSize="large">
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                onChange={handleFieldChange}
+                                value={fields.confirmPassword}
+                            />
+                        </Form.Group>
+
+                        <Button variant="primary" disabled={!validateForm()} type="submit">
                             Submit
                         </Button>
                     </Form>

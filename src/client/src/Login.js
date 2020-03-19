@@ -14,6 +14,10 @@ export default function Login() {
         password: "",
     });
 
+    function validateForm() {
+        return fields.email.length > 0 && fields.password.length > 0;
+    }
+
     const handleSubmit = async e => {
         e.preventDefault();
         let form = {
@@ -33,6 +37,7 @@ export default function Login() {
                 response.json().then(data => {
                     console.log("Login successful")
                     Cookie.set("token", data.user.token);
+                    window.location.reload(false);
                 });
             } else {
                 console.log("Login not successful")
@@ -67,7 +72,7 @@ export default function Login() {
                             />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" disabled={!validateForm()} type="submit">
                             Submit
                         </Button>
                     </Form>

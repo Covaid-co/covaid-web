@@ -13,4 +13,6 @@ router.post('/login', auth.optional, user_controller.login);
 //GET current route (required, only authenticated users have access)
 router.get('/current', auth.required, user_controller.current);
 
+router.put('/update_availability', auth.required, user_controller.updateAvailability);
+
 module.exports = router;

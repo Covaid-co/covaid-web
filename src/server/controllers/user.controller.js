@@ -76,3 +76,11 @@ exports.current = function (req, res) {
       return res.json({ user: user.toJSON() });
     });
 };
+
+exports.updateAvailability = function (req, res) {
+  const id = req.token.id;
+  Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
+    if (err) return next(err);
+    res.send('User udpated.');
+  });
+};
