@@ -16,46 +16,17 @@ exports.offer_create = function (req, res) {
             task: req.body.task,
             latitude: req.body.latitude,
             longitude: req.body.longitude,
-            neighborhood_name: req.body.neighborhood_name,
+            neighborhoods: req.body.neighborhoods,
             description: req.body.description,
             user_id: user_id
         }
     );
 
-    const varLatLong = offer.latitude.toString() + ',' + offer.longitude.toString();
-
-    client.geocode({
-        params: {
-        latlng: varLatLong,
-          key: 'AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY'
-        },
-        timeout: 1000 // milliseconds
-    })
-    .then(r => {
-        neighborhoods = [];
-        for (var i = 0; i < r.data.results.length; i++) {
-            results = r.data.results[i]['address_components'];
-            for (var j = 0; j < results.length; j++) {
-                types = results[j].types;
-                if (types.includes('neighborhood')) {
-                    currNeighborhoodName = results[j]['long_name'];
-                    if (neighborhoods.includes(currNeighborhoodName) == false) {
-                        neighborhoods.push(currNeighborhoodName);
-                    }
-                }
-            }
-        }
-        console.log(neighborhoods);
-    })
-    .catch(e => {
-        // console.log("ERROR")
-        console.log(e);
-    });
-
     offer.save(function (err) {
         if (err) {
             res.send(err);
         } else {
+            console.log("yuh");
             res.send('Offer created successfully')
         }
     })
