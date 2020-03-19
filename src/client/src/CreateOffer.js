@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "./libs/hooksLib";
+import fetch_a from './util/fetch_auth';
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -33,11 +34,12 @@ export default function CreateOffer(props) {
         Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
             response => {
                 var neighborhoods = [];
-                for (var i = 0; i < response.results.length; i++) {
+                console.log(response.results);
+                for (var i = 0; i < Math.min(4, response.results.length); i++) {
                     const results = response.results[i]['address_components'];
                     for (var j = 0; j < results.length; j++) {
                         const types = results[j].types;
-                        if (types.includes('neighborhood')) {
+                        if (types.includes('neighborhood') || types.includes('locality')) {
                             const currNeighborhoodName = results[j]['long_name'];
                             if (neighborhoods.includes(currNeighborhoodName) === false) {
                                 neighborhoods.push(currNeighborhoodName);
@@ -131,7 +133,7 @@ export default function CreateOffer(props) {
             'description': fields.description,
         };
         console.log(form);
-        fetch('/api/offers/create', {
+        fetch_a('/api/offers/create', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)

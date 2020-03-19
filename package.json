@@ -10,9 +10,15 @@
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^2.3.1",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
+    "express-jwt": "^5.3.1",
+    "express-session": "^1.17.0",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.5",
-    "nodemon": "^1.19.2"
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   }
 }

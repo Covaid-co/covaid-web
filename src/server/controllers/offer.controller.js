@@ -7,10 +7,9 @@ exports.test = function (req, res) {
 };
 
 exports.offer_create = function (req, res) {
-    // const user = req.currentUser;
-    // Hard-coded for now
-    const user_id = 123
-    console.log(req.body)
+    const user = req.currentUser;
+    // // Hard-coded for now
+    const user_id = user._id;
     let offer = new Offer(
         {
             task: req.body.task,
@@ -33,7 +32,6 @@ exports.offer_create = function (req, res) {
 };
 
 exports.all_offers = function (req , res) {
-    console.log("ALL");
     Offer.find({}).then(function (offers) {
         res.send(offers);
     });
