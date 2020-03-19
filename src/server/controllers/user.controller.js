@@ -75,12 +75,13 @@ exports.current = function (req, res) {
         return res.sendStatus(400);
       }
 
-      return res.json({ user: user.toJSON() });
+      return res.json(user.toJSON());
     });
 };
 
 exports.all_users = function (req, res) {
-  Users.find({}).then(function (users) {
+  Users.find({'offer.latitude': { $exists: true }}).then(function (users) {
+    console.log(users);
     res.send(users);
   });
 }

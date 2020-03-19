@@ -57,7 +57,12 @@ UsersSchema.methods.toJSON = function() {
         email: this.email,
         first_name: this.first_name,
         last_name: this.last_name,
-        availability: this.availability
+        availability: this.availability,
+        offer: {
+            neighborhoods: this.offer.neighborhoods,
+            tasks: this.offer.tasks,
+            details: this.offer.details
+        }
     };
 };
 

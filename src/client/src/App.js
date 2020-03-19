@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css'
 import Offers from './Offers';
-import CreateOffer from './CreateOffer';
+import YourOffer from './YourOffer';
 import Login from './Login';
 import Register from './Register';
 
@@ -44,8 +44,7 @@ class App extends Component {
   fetchUser(){
     fetch_a('/api/users/current')
         .then((response) => response.json())
-        .then((responseJson) => {
-          const { user } = responseJson;
+        .then((user) => {
           this.setState({ checked: user.availability });
         })
         .catch((error) => {
@@ -59,7 +58,7 @@ class App extends Component {
     };
     this.setState({checked : checked});
 
-    fetch_a('/api/users/update_availability/', {
+    fetch_a('/api/users/update/', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(form)
@@ -119,8 +118,8 @@ class App extends Component {
                   <Tab eventKey="offers" title="Offers">
                     <Offers state = {this.state}/>
                   </Tab>
-                  <Tab eventKey="create-offer" title="Create Offer">
-                    <CreateOffer state = {this.state}/>
+                  <Tab eventKey="your-offer" title="Your Offer">
+                    <YourOffer state = {this.state}/>
                   </Tab>
                   <Tab eventKey="faq" title="FAQ">
                     <Users />

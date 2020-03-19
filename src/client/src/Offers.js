@@ -8,23 +8,32 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
 export default function Offers(props) {
-    const [offers, setOffers] = useState([]);
-    const [modalInfo, setModalInfo] = useState({});
+    const [users, setUsers] = useState([]);
+    const [modalInfo, setModalInfo] = useState({
+        'first_name': '',
+        'last_name': '',
+        'email': '',
+        'offer': {
+            'tasks': [''],
+            'details': '',
+            'neighborhoods': ['']
+        }
+    });
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    function setModal(offer) {
-        console.log(offer);
-        setModalInfo(offer);
+    function setModal(user) {
+        setModalInfo(user);
     }
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch('/api/offers');
+            const response = await fetch('/api/users/all');
             response.json().then((data) => {
-                setOffers(data);
+                setUsers(data);
+                console.log(data);
             });
         }
         fetchData();
@@ -44,19 +53,19 @@ export default function Offers(props) {
             <ListGroup variant="flush">
                 <ListGroup.Item>
                     <Row>
-                        <Col>Task</Col>
-                        <Col>Neighborhood</Col>
+                        <Col>Tasks</Col>
+                        <Col>Neighborhoods</Col>
                     </Row>
                 </ListGroup.Item>
             </ListGroup>
             <ListGroup variant="flush">
-                {offers.map((offer) => {
-                    return <ListGroup.Item key={offer._id} action 
+                {users.map((user) => {
+                    return <ListGroup.Item key={user._id} action 
                                             style = {{fontSize: 12}} 
-                                            onClick={() => { handleShow(); setModal({...offer});}}>
+                                            onClick={() => { handleShow(); setModal({...user});}}>
                             <Row>
-                                <Col>{generateTasks(offer.task)}</Col>
-                                <Col>{generateTasks(offer.neighborhoods)}</Col>
+                                <Col>{generateTasks(user.offer.tasks)}</Col>
+                                <Col>{generateTasks(user.offer.neighborhoods)}</Col>
                             </Row>
                         </ListGroup.Item>
                 })}
@@ -66,19 +75,19 @@ export default function Offers(props) {
                 <Modal.Title>Food Offer</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Task: {modalInfo.task}</p>
-                    <p>Name: Bobby Lee</p>
-                    <p>Contact: lijeffrey39@gmail.com</p>
-                    <p>Details: {modalInfo.description}</p>
-                    <p>Neighborhoods: {modalInfo.neighborhoods}</p>
+                    <p>Tasks: {modalInfo.offer.tasks}</p>
+                    <p>Name: {modalInfo.first_name} {modalInfo.last_name}</p>
+                    <p>Contact: {modalInfo.email}</p>
+                    <p>Details: {modalInfo.offer.details}</p>
+                    <p>Neighborhoods: {modalInfo.offer.neighborhoods}</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    {/* <Button variant="primary" href="sms://4846249881">>
+                    <Button variant="primary" href="sms://4846249881">>
                         Contact Now!
-                    </Button> */}
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </div>
