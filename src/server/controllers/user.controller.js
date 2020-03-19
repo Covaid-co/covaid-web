@@ -1,7 +1,9 @@
 const Users = require('../models/user.model');
+const Offers = require('../models/offer.model');
 const passport = require('passport');
 
 exports.register = function (req, res) {
+
     const { body: { user } } = req;
     if(!user.email) {
         return res.status(422).json({
@@ -18,9 +20,9 @@ exports.register = function (req, res) {
         },
         });
     }
-    
+
     const finalUser = new Users(user);
-    
+
     finalUser.setPassword(user.password);
     
     return finalUser.save()
@@ -77,10 +79,17 @@ exports.current = function (req, res) {
     });
 };
 
-exports.updateAvailability = function (req, res) {
+exports.all_users = function (req, res) {
+  Users.find({}).then(function (users) {
+    res.send(users);
+  });
+}
+
+exports.update = function (req, res) {
   const id = req.token.id;
+  console.log(req.body);
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
     if (err) return next(err);
-    res.send('User udpated.');
+    res.send('User updated.');
   });
 };
