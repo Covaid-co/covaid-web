@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Offers from './Offers';
 import CreateOffer from './CreateOffer';
+import Login from './Login';
+import Register from './Register';
 
 import Badge from 'react-bootstrap/Badge';
 import Container from 'react-bootstrap/Container';
@@ -13,7 +15,7 @@ import Col from 'react-bootstrap/Col'
 
 import './App.css';
 
-const About = () => <span>About</span>;
+// const About = () => <span>About</span>;
 
 const Users = () => <span>Users</span>;
 
@@ -29,6 +31,8 @@ class App extends Component {
           <Badge pill variant="success">
             Online
           </Badge>{' '}
+          <br />
+          <br />
 
           <Row className="justify-content-md-center">
 
@@ -44,6 +48,12 @@ class App extends Component {
                 </Tab>
                 <Tab eventKey="faq" title="FAQ">
                   <Users />
+                </Tab>
+                <Tab eventKey="login" title="Login">
+                  <Login />
+                </Tab>
+                <Tab eventKey="register" title="Register">
+                  <Register />
                 </Tab>
               </Tabs>
             </Col>

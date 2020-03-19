@@ -1,39 +1,41 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "./libs/hooksLib";
-import fetch_a from './util/fetch_auth';
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import Cookie from 'js-cookie'
 
-
-export default function CreateOffer() {
+export default function Login() {
     const [fields, handleFieldChange] = useFormFields({
-        task: "",
-        description: "",
+        email: "",
+        password: "",
     });
 
     const handleSubmit = async e => {
         e.preventDefault();
         let form = {
-            'task': fields.task,
-            'latitude': 40.0,
-            'longitude': -80.0,
-            'neighborhood_name': "Eagleville",
-            'description': fields.description,
+            'user': {
+                'email': fields.email,
+                'password': fields.password
+            }
         };
-        fetch_a('/api/offers/create', {
+        console.log(form)
+        fetch('/api/users/login/', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
         })
         .then((response) => {
             if (response.ok) {
-                console.log("Offer successfully created")
+                response.json().then(data => {
+                    console.log("Login successful")
+                    Cookie.set("token", data.user.token);
+                });
             } else {
-                console.log("Offer not successful")
+                console.log("Login not successful")
             }
         })
         .catch((e) => {
@@ -47,28 +49,24 @@ export default function CreateOffer() {
                 <Col md={2}></Col>
                 <Col md={8}>
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="task" bssize="large">
-                            <Form.Label>Task</Form.Label>
+                        <Form.Group controlId="email" bssize="large">
+                            <Form.Label>Email</Form.Label>
                             <Form.Control 
-                                placeholder="Enter your task" 
-                                value={fields.task}
+                                type="email"
+                                value={fields.email}
                                 onChange={handleFieldChange}
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="description" bssize="large">
-                            <Form.Label>Description</Form.Label>
+                        <Form.Group controlId="password" bssize="large">
+                            <Form.Label>Password</Form.Label>
                             <Form.Control 
-                                placeholder="Description" 
-                                value={fields.description}
+                                value={fields.password}
                                 onChange={handleFieldChange}
+                                type="password"
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Check me out" />
-                        </Form.Group>
-                        
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
@@ -77,5 +75,7 @@ export default function CreateOffer() {
                 <Col md={2}></Col>
             </Row>
         </div>
-    );
+    )
+
+
 }

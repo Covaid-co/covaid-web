@@ -7,9 +7,11 @@ router.get('/name', (req, res) => {
 	res.send({'name': 'CoronaAid --- via Express backend'});
 });
 
-const offer_routes = require('./offer.routes.js');
+const offer_routes = require('./api/offer.routes.js');
+const user_routes = require('./api/user.routes.js');
 
 router.use('/offers', offer_routes);
+router.use('/users', user_routes);
 
 module.exports = app => {
 	app.use('/api', router);
