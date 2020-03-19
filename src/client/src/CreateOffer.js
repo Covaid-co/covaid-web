@@ -34,7 +34,7 @@ export default function CreateOffer(props) {
         Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
             response => {
                 var neighborhoods = [];
-                console.log(response.results);
+
                 for (var i = 0; i < Math.min(4, response.results.length); i++) {
                     const results = response.results[i]['address_components'];
                     for (var j = 0; j < results.length; j++) {
