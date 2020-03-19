@@ -13,11 +13,11 @@ let UsersSchema = new Schema({
     hash: {type: String, required: true},
     salt: {type: String, required: true},
     offer: {
-        task: [String],
+        tasks: [String],
         latitude: Number,
         longitude: Number,
         neighborhoods: [String],
-        description: String
+        details: String
     }
 });
 
