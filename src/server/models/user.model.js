@@ -9,6 +9,7 @@ let UsersSchema = new Schema({
     last_name: {type: String, required: true},
     email: {type: String, required: true},
     phone: {type: String, required: false},
+    availability: {type: Boolean, required: true},
     hash: {type: String, required: true},
     salt: {type: String, required: true},
 });
@@ -37,9 +38,19 @@ UsersSchema.methods.generateJWT = function() {
 
 UsersSchema.methods.toAuthJSON = function() {
     return {
-    _id: this._id,
-    email: this.email,
-    token: this.generateJWT(),
+        _id: this._id,
+        email: this.email,
+        token: this.generateJWT(),
+    };
+};
+
+UsersSchema.methods.toJSON = function() {
+    return {
+        _id: this._id,
+        email: this.email,
+        first_name: this.first_name,
+        last_name: this.last_name,
+        availability: this.availability
     };
 };
 

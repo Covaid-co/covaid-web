@@ -27,6 +27,7 @@ export default function Register() {
                 'last_name': fields.last_name,
                 'email': fields.email,
                 'password': fields.password,
+                'availability': true,
             }
         };
 
@@ -38,6 +39,7 @@ export default function Register() {
                     'email': fields.email,
                     'phone': fields.phone,
                     'password': fields.password,
+                    'availability': true,
                 }
             }
         }

@@ -65,7 +65,7 @@ exports.login = function (req, res, next) {
 };
 
 exports.current = function (req, res) {
-    const { payload: { id } } = req;
+  const id = req.token.id;
 
   return Users.findById(id)
     .then((user) => {
@@ -73,6 +73,6 @@ exports.current = function (req, res) {
         return res.sendStatus(400);
       }
 
-      return res.json({ user: user.toAuthJSON() });
+      return res.json({ user: user.toJSON() });
     });
 };

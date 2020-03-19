@@ -6,31 +6,61 @@ import CreateOffer from './CreateOffer';
 import Login from './Login';
 import Register from './Register';
 
-import Badge from 'react-bootstrap/Badge';
 import Container from 'react-bootstrap/Container';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import './App.css';
+import Switch from "react-switch";
 
-// const About = () => <span>About</span>;
+import './App.css';
+import fetch_a from './util/fetch_auth';
 
 const Users = () => <span>Users</span>;
 
-class App extends Component {
-  componentDidMount() {
+class App extends Component { 
 
+  constructor() {
+    super();
+    this.state = { 
+      currentUser: undefined,
+      currentUserAvailability: false,
+      checked: true };
+      this.handleChange = this.handleChange.bind(this);
   }
+
+  componentWillMount() {
+    this.fetchUser()
+    // this.setState({data : data});
+    // console.log(this.state.currentUser)
+  }
+
+  handleChange(checked) {
+    this.setState({ checked });
+  }
+
+  fetchUser(){
+    fetch_a('/api/users/current')
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log(responseJson)
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  }
+
   render() {
     return (
       <div className="App">
         <Container style = {{padding: '40px 15px'}}>
           <h1 style = {{fontWeight: 300}}>Corona-Aid</h1>
-          <Badge pill variant="success">
-            Online
-          </Badge>{' '}
+          <h5 style = {{fontWeight: 200}}>Availability</h5>
+          <label>
+            <Switch onChange={this.handleChange} checked={this.state.checked} />
+          </label>
+
           <br />
           <br />
 
