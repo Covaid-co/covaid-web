@@ -25,11 +25,10 @@ class App extends Component {
     return (
       <div className="App">
         <Container style = {{padding: '40px 15px'}}>
-          <h1 style = {{fontWeight: 300}}>Mutual Aid - Coronavirus</h1>
+          <h1 style = {{fontWeight: 300}}>Corona-Aid</h1>
           <Badge pill variant="success">
             Online
           </Badge>{' '}
-          <p style = {{padding: 10}}>132 Successful Transactions</p>
 
           <Row className="justify-content-md-center">
 
