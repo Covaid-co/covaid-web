@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css'
 import Offers from './Offers';
-import CreateOffer from './CreateOffer';
+import YourOffer from './YourOffer';
 import Login from './Login';
 import Register from './Register';
 
@@ -119,8 +119,8 @@ class App extends Component {
                   <Tab eventKey="offers" title="Offers">
                     <Offers state = {this.state}/>
                   </Tab>
-                  <Tab eventKey="create-offer" title="Create Offer">
-                    <CreateOffer state = {this.state}/>
+                  <Tab eventKey="your-offer" title="Your Offer">
+                    <YourOffer state = {this.state}/>
                   </Tab>
                   <Tab eventKey="faq" title="FAQ">
                     <Users />

@@ -13,12 +13,12 @@ import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 
-export default function CreateOffer(props) {
+export default function YourOffer(props) {
     const [fields, handleFieldChange] = useFormFields({
-        task: "",
-        description: "",
+        details: "",
     });
 
+    const [currentUser, setCurrentUser] = useState({});
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -29,50 +29,70 @@ export default function CreateOffer(props) {
                            'Pet Care', 'Child Care', 'Virtual Meetup'];
 
     useEffect(() => {
-        // Get current lat and long from main and find neighborhoods
-        const { latitude, longitude } = props.state;
-        Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
-            response => {
+        async function fetchData() {
+            const response = await fetch('/api/users/all');
+            response.json().then((user) => {
+                setCurrentUser(user);
+                // Get current lat and long from current location and find neighborhoods
+                const { latitude, longitude } = props.state;
                 var neighborhoods = [];
-                console.log(response.results);
-                for (var i = 0; i < Math.min(4, response.results.length); i++) {
-                    const results = response.results[i]['address_components'];
-                    for (var j = 0; j < results.length; j++) {
-                        const types = results[j].types;
-                        if (types.includes('neighborhood') || types.includes('locality')) {
-                            const currNeighborhoodName = results[j]['long_name'];
-                            if (neighborhoods.includes(currNeighborhoodName) === false) {
-                                neighborhoods.push(currNeighborhoodName);
-                                
-                                // Update select object
-                                setNeighborhoodSelect(prev => ({ 
-                                    ...prev,
-                                    [currNeighborhoodName]: false,
-                                }));
+                Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
+                    response => {
+                        console.log(response.results);
+                        for (var i = 0; i < Math.min(4, response.results.length); i++) {
+                            const results = response.results[i]['address_components'];
+                            for (var j = 0; j < results.length; j++) {
+                                const types = results[j].types;
+                                if (types.includes('neighborhood') || types.includes('locality')) {
+                                    const currNeighborhoodName = results[j]['long_name'];
+                                    if (neighborhoods.includes(currNeighborhoodName) === false) {
+                                        neighborhoods.push(currNeighborhoodName);
+                                        // Update select object
+                                        setNeighborhoodSelect(prev => ({ 
+                                            ...prev,
+                                            [currNeighborhoodName]: false,
+                                        }));
+                                    }
+                                }
                             }
                         }
+                    },
+                    error => {
+                    console.error(error);
+                    }
+                );
+
+                // Update Neighborhoods from current user and found neighbors
+                // Combine with found neighborhoods/overwrite
+                const currentNeighborhoods = user.offer.neighborhoods;
+                for (var i = 0; i < currentNeighborhoods.length; i++) {
+                    const currNeighborhoodName = currentNeighborhoods[i];
+                    setNeighborhoodSelect(prev => ({ 
+                        ...prev,
+                        [currNeighborhoodName]: true,
+                    }));
+                    if (neighborhoods.includes(currNeighborhoodName) === false) {
+                        neighborhoods.push(currNeighborhoodName);
                     }
                 }
-                if (neighborhoods.length === 1) {
-                    setNeighborhoodSelect({ [neighborhoods[0]]: true });
-                }
-                console.log(neighborhoods);
                 setNeighborhoods(neighborhoods);
-            },
-            error => {
-              console.error(error);
-            }
-        );
-        for (var i = 0; i < possibleTasks.length; i++) {
-            // Update task checked object
-            const taskName = possibleTasks[i];
-            setTaskSelect(prev => ({ 
-                ...prev,
-                [taskName]: false,
-            }));
+
+                // Update tasks from current user
+                for (i = 0; i < possibleTasks.length; i++) {
+                    const taskName = possibleTasks[i];
+                    const currentUserTasks = user.offer.tasks
+                    const includedTask = (currentUserTasks.includes(taskName)) ? true : false
+                    setTaskSelect(prev => ({ 
+                        ...prev,
+                        [taskName]: includedTask,
+                    }));
+                }
+                setIsLoading(false);
+            });
         }
-        setIsLoading(false);
-    }, [props.state])
+        fetchData();
+    
+    }, [props.state]);
 
     const checkInputs = () => {
         var foundTrue = false;
@@ -81,7 +101,7 @@ export default function CreateOffer(props) {
                 foundTrue = true;
             }
         }
-        
+
         // Didn't select neighborhood
         if (foundTrue === false) {
             setShowToast(true);
@@ -105,7 +125,7 @@ export default function CreateOffer(props) {
         return true
     }
 
-    const handleSubmit = async e => {
+    const handleUpdate = async e => {
         e.preventDefault();
         if (checkInputs() === false) {
             return;
@@ -126,15 +146,17 @@ export default function CreateOffer(props) {
         }
 
         let form = {
-            'task': taskList,
-            'latitude': props.state.latitude,
-            'longitude': props.state.longitude,
-            'neighborhoods': neighborList,
-            'description': fields.description,
+            'offer': {
+                'tasks': taskList,
+                'latitude': props.state.latitude,
+                'longitude': props.state.longitude,
+                'neighborhoods': neighborList,
+                'details': fields.details,
+            }
         };
         console.log(form);
-        fetch_a('/api/offers/create', {
-            method: 'post',
+        fetch_a('/api/users/update', {
+            method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
         })
@@ -146,7 +168,7 @@ export default function CreateOffer(props) {
             }
         })
         .catch((e) => {
-            console.log("Error")
+            console.log("Error");
         });
     };
 
@@ -188,9 +210,9 @@ export default function CreateOffer(props) {
                     </Col>
                     <Col md={8} >
                         {/* <Row> */}
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleUpdate}>
                         <br></br>
-                            <Form.Group controlId="description" bssize="large">
+                            <Form.Group controlId="tasks" bssize="large">
                                 <Form.Label><h3>Task</h3></Form.Label>
                                 {possibleTasks.map((task) => {
                                     return <Form.Check key={task} 
@@ -201,15 +223,15 @@ export default function CreateOffer(props) {
                                 })}
                             </Form.Group>
                             <br></br>
-                            <Form.Group controlId="description" bssize="large">
-                                <Form.Label><h3>Description</h3></Form.Label>
+                            <Form.Group controlId="details" bssize="large">
+                                <Form.Label><h3>Details</h3></Form.Label>
                                 <Form.Control as="textarea" 
                                               rows="3" 
-                                              value={fields.description} 
+                                              value={fields.details} 
                                               onChange={handleFieldChange}/>
                             </Form.Group>
                             <br></br>
-                            <Form.Group controlId="task" bssize="large">
+                            <Form.Group controlId="neighborhoods" bssize="large">
                                 <Form.Label><h3>Neighborhoods</h3></Form.Label>
                                 {getNeighborhoods.map((neighborhood) => {
                                     return <Form.Check key={neighborhood} 
@@ -221,7 +243,7 @@ export default function CreateOffer(props) {
                             </Form.Group>
                             <br></br>
                             <Button variant="primary" type="submit">
-                                Submit
+                                Update
                             </Button>
                         </Form>
                         {/* </Row> */}
