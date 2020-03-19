@@ -12,6 +12,13 @@ let UsersSchema = new Schema({
     availability: {type: Boolean, required: true},
     hash: {type: String, required: true},
     salt: {type: String, required: true},
+    offer: {
+        tasks: [String],
+        latitude: Number,
+        longitude: Number,
+        neighborhoods: [String],
+        details: String
+    }
 });
 
 UsersSchema.methods.setPassword = function(password) {
