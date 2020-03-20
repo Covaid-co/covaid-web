@@ -4,17 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
-// const GeoSchema = new Schema({
-//     type: {
-//         type: String,
-//         default: "Point"
-//     },
-//     coordinates: {
-//         type: [Number],
-//         index: "2dsphere"
-//     }
-// });
-
 let UsersSchema = new Schema({
     first_name: {type: String, required: true},
     last_name: {type: String, required: true},
@@ -25,8 +14,6 @@ let UsersSchema = new Schema({
     salt: {type: String, required: true},
     offer: {
         tasks: [String],
-        // latitude: Number,
-        // longitude: Number,
         neighborhoods: [String],
         details: String
     },
