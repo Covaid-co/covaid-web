@@ -29,8 +29,19 @@ export default function Offers(props) {
     }
 
     useEffect(() => {
+        var url = "/api/users/all?";
+        const { latitude, longitude } = props.state;
+        let params = {
+            'latitude': latitude,
+            'longitude': longitude
+        }
+        let query = Object.keys(params)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+             .join('&');
+        url += query;
+
         async function fetchData() {
-            const response = await fetch('/api/users/all');
+            const response = await fetch(url);
             response.json().then((data) => {
                 setUsers(data);
                 console.log(data);

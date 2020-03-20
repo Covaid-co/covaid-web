@@ -80,8 +80,14 @@ exports.current = function (req, res) {
 };
 
 exports.all_users = function (req, res) {
-  Users.find({'offer.latitude': { $exists: true }}).then(function (users) {
-    console.log(users);
+  Users.find({'offer.details': { $exists: true },
+             'location': 
+                { $geoWithin: 
+                  { $centerSphere: 
+                    [ [ req.query.longitude, req.query.latitude ], 20 / 3963.2 ] 
+                  } 
+                }
+    }).then(function (users) {
     res.send(users);
   });
 }

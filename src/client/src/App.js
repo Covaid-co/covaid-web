@@ -136,10 +136,6 @@ class App extends Component {
               <Col md={1}></Col>
             </Row>
           </Container>
-          {/* <div>
-            <input type="text" value={latitude} />
-            <input type="text" value={longitude} />
-          </div> */}
         </div>
       );
     }
