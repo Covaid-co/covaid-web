@@ -81,7 +81,7 @@ export default function Offers(props) {
         <div className="shadow p-3 mb-5 bg-white rounded">
             <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
                 {possibleTasks.map((task, i) => {
-                    return <ToggleButton key = {i} value={i}>{task}</ToggleButton>
+                    return <ToggleButton variant="outline-primary" key = {i} value={i}>{task}</ToggleButton>
                 })}
             </ToggleButtonGroup>
             <ListGroup variant="flush">
