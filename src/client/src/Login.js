@@ -40,11 +40,11 @@ export default function Login() {
                     window.location.reload(false);
                 });
             } else {
-                console.log("Login not successful")
+                alert('Incorrect Login!')
             }
         })
         .catch((e) => {
-            console.log("Error")
+            alert('Incorrect Login!')
         });
       };
 

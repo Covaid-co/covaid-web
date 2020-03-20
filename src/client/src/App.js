@@ -37,6 +37,8 @@ class App extends Component {
       longitude: '',
       isLoaded: false,
       isLoggedIn: false,
+      first_name: '',
+      last_name: '',
       currentUser: undefined,
       currentUserAvailability: false,
       checked: false,
@@ -82,6 +84,8 @@ class App extends Component {
         .then((user) => {
           this.setState({ checked: user.availability });
           this.setState({isLoggedIn: true});
+          this.setState({first_name: user.first_name});
+          this.setState({last_name: user.last_name});
         })
         .catch((error) => {
           console.error(error);
@@ -114,10 +118,20 @@ class App extends Component {
   }
 
   getMyLocation() {
+    if (Cookie.get('latitude') && Cookie.get('longitude')) {
+      this.setState({
+        isLoaded: true,
+        latitude: Cookie.get('latitude'),
+        longitude: Cookie.get('longitude'),
+        // 'latitude': 40.4577988,
+        // 'longitude': -79.9235332,
+      })
+    }
     const location = window.navigator && window.navigator.geolocation
-    console.log(location)
     if (location) {
       location.getCurrentPosition((position) => {
+        Cookie.set('latitude', position.coords.latitude);
+        Cookie.set('longitude', position.coords.longitude);
         this.setState({
           isLoaded: true,
           latitude: position.coords.latitude,
@@ -145,7 +159,10 @@ class App extends Component {
     var toggleSwitch;
     if (isLoggedIn) {
       rightNav = <>
-                  <Button onClick={this.logout} variant="outline-danger">
+                  <Nav className="mr-sm-2">
+                    Hello, {this.state.first_name}
+                  </Nav>
+                  <Button className="mr-sm-2" onClick={this.logout} variant="outline-danger">
                     Logout
                   </Button>
                 </>;
@@ -162,12 +179,15 @@ class App extends Component {
       rightNav = <>
                    <Button 
                     onClick={this.handleShowLogin}
-                    variant="outline-success">
+                    variant="outline-success"
+                    className="mr-sm-2">
                     Sign In
                   </Button>
+
                   <Button 
                     onClick={this.handleShowRegistration} 
-                    variant="outline-success">
+                    variant="outline-success"
+                    className="mr-sm-2">
                     Get Started
                   </Button>
                 </>;
@@ -187,7 +207,15 @@ class App extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link href="#link">About Us</Nav.Link>
+                <Nav.Link href="#link">About Us (Under Construction)</Nav.Link>
+                <NavDropdown alignRight title="Any issues?" id="basic-nav-dropdown">
+                  <NavDropdown.Item>
+                    Email: debanik1997@gmail.com
+                  </NavDropdown.Item>
+                  <NavDropdown.Item>
+                    Call/Text: 4846249881
+                  </NavDropdown.Item>
+                </NavDropdown>
               </Nav>
               <Form inline>
                 {rightNav}
@@ -198,8 +226,8 @@ class App extends Component {
 
           <Container style = {{padding: '40px 15px'}}>
             <h1 style = {{fontWeight: 300}}>Need a hand?</h1>
+            <h4 style = {{fontWeight: 300}}>Mutual Aid For COVID-19</h4>
             {toggleSwitch}
-            <br />
             <br />
 
             <Row className="justify-content-md-center">

@@ -52,7 +52,6 @@ export default function Offers(props) {
             response.json().then((data) => {
                 setUsers(data);
                 setDisplayedUsers(data);
-                console.log(data);
             });
         }
         fetchData();

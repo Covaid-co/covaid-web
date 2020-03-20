@@ -68,11 +68,11 @@ export default function Register() {
                     window.location.reload(false);
                 });
             } else {
-                console.log("Registration not successful")
+                alert('Registration unsuccessful')
             }
         })
         .catch((e) => {
-            console.log("Error")
+            alert('Registration unsuccessful')
         });
       };
 
