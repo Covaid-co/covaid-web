@@ -230,7 +230,7 @@ class App extends Component {
                   <Nav className="mr-sm-2" style ={{color: 'white'}}>
                     Hello, {this.state.first_name}
                   </Nav>
-                  <Button className="mr-sm-2" onClick={this.logout} variant="outline-danger">
+                  <Button className="mr-sm-2" onClick={this.logout} variant="danger">
                     Logout
                   </Button>
                 </>;
@@ -243,14 +243,14 @@ class App extends Component {
       rightNav = <>
                    <Button 
                     onClick={this.handleShowLogin}
-                    variant="outline-success"
+                    variant="success"
                     className="mr-sm-2">
                     Sign In
                   </Button>
 
                   <Button 
                     onClick={this.handleShowRegistration} 
-                    variant="outline-success"
+                    variant="success"
                     className="mr-sm-2">
                     Get Started
                   </Button>
@@ -295,8 +295,8 @@ class App extends Component {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div className="BottomHalf"></div>
         <div className="App">
-          <Navbar variant="light" className = 'customNav'>
-            <Navbar.Brand href="#home" style ={{color: 'white', fontWeight: 800}}>Cov-Aid</Navbar.Brand>
+          <Navbar variant="light" expand="lg" className = 'customNav'>
+            <Navbar.Brand href="#home" style ={{color: 'white', fontWeight: 800, marginLeft: 140}}>Cov-Aid</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
@@ -310,7 +310,7 @@ class App extends Component {
                   </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
-              <Form inline>
+              <Form inline style ={{marginRight: 140}}>
                 {rightNav}
               </Form>
             </Navbar.Collapse>

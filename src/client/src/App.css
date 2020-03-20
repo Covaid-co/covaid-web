@@ -69,14 +69,16 @@ html, body {
   color: white !important;
 }
 
-.toggleButton.btn.btn-outline-primary.btn-sm:hover {
+.toggleButton.btn.btn-outline-primary:hover {
   background-color:white !important;
   color: #1652F0 !important;
+  border: 0.5px solid #DADDE1;
   text-decoration: none;
 }
 
-.toggleButton.btn.active.btn-outline-primary.btn-sm {
+.toggleButton.btn.active.btn-outline-primary {
   background-color: #007bff !important;
+  border: 0.5px solid #DADDE1;
   color: white !important;
 }
 

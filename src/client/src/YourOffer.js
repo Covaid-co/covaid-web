@@ -259,9 +259,9 @@ export default function YourOffer(props) {
                                                     onChange = {(evt) => { handleTaskChange(evt, task) }}
                                                     checked = {taskSelect[task]} />
                                 })} */}
-                                <ToggleButtonGroup type="checkbox" value={selectedTasks} onChange={handleChangeTasks}>
+                                <ToggleButtonGroup type="checkbox" className="btn-group flex-wrap" value={selectedTasks} onChange={handleChangeTasks}>
                                     {possibleTasks.map((task, i) => {
-                                        return <ToggleButton className="toggleButton" variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
+                                        return <ToggleButton className="toggleButton" variant="outline-primary" size="md" key = {i} value={i}>{task}</ToggleButton>
                                     })}
                                 </ToggleButtonGroup>
                             </Form.Group>
