@@ -248,10 +248,20 @@ export default function YourOffer(props) {
                     <Col md={10} >
                         {/* <Row> */}
                         <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
-                        <br></br>
+                            <br></br>
+                            <Form.Label style = {{marginBottom: -10}}><h3>Availability</h3></Form.Label>
+                            <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Switch on whether you are available to help.</p>
+                            <Form.Check 
+                                type="switch"
+                                id="custom-switch"
+                                label={availableText}
+                                checked={switchSelected}
+                                onChange={handleChangeSwitch}
+                            />
+                            <br></br>
                             <Form.Group controlId="tasks" bssize="large">
                                 <Form.Label style = {{marginBottom: -10}}><h2>Tasks</h2></Form.Label>
-                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select tasks you are willing to help with</p>
+                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select tasks with which you are willing to help.</p>
                                 {/* {possibleTasks.map((task) => {
                                     return <Form.Check key={task} 
                                                     type = "checkbox" 
@@ -277,7 +287,7 @@ export default function YourOffer(props) {
                             <br></br>
                             <Form.Group controlId="neighborhoods" bssize="large">
                                 <Form.Label style = {{marginBottom: -10}}><h3>Neighborhoods</h3></Form.Label>
-                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select the neighborhoods you can help in </p>
+                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select the primary neighborhoods in which you can help.</p>
                                 {getNeighborhoods.map((neighborhood) => {
                                     return <Form.Check key={neighborhood} 
                                                     type = "checkbox" 
@@ -286,16 +296,6 @@ export default function YourOffer(props) {
                                                     checked = {neighborhoodSelect[neighborhood]} />
                                 })}
                             </Form.Group>
-                            <br></br>
-                            <Form.Label style = {{marginBottom: -10}}><h3>Availability</h3></Form.Label>
-                            <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Switch on whether you are available to help</p>
-                            <Form.Check 
-                                type="switch"
-                                id="custom-switch"
-                                label={availableText}
-                                checked={switchSelected}
-                                onChange={handleChangeSwitch}
-                            />
                             <br></br>
                             <Button variant="primary" type="submit">
                                 Update
