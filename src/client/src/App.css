@@ -31,7 +31,7 @@ html, body {
   height: 100%; 
   width: 100%;
   z-index: -10;
-  top: 60%;
+  bottom: 40%;
   background: #1652F0;
 }
 
@@ -56,6 +56,41 @@ html, body {
 .App-link {
   color: #61dafb;
 }
+
+.customNav {
+  background-color: #1652F0;
+}
+
+.nav-item.nav-link.active {
+  color: #1652F0 !important;
+}
+
+.nav-item.nav-link {
+  color: white !important;
+}
+
+.toggleButton.btn.btn-outline-primary.btn-sm:hover {
+  background-color:white !important;
+  color: #1652F0 !important;
+  text-decoration: none;
+}
+
+.toggleButton.btn.active.btn-outline-primary.btn-sm {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+/* #uncontrolled-tab-example-tab-your-offer {
+  color: white;
+}
+
+#uncontrolled-tab-example-tab-links {
+  color: white;
+}
+
+#uncontrolled-tab-example-tab-offers {
+  color: white;
+} */
 
 @keyframes App-logo-spin {
   from {

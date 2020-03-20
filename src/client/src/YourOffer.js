@@ -8,6 +8,8 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
+import ToggleButton from 'react-bootstrap/ToggleButton'
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
@@ -18,12 +20,15 @@ export default function YourOffer(props) {
         details: "",
     });
 
+    const [availableText, setAvailableText] = useState('');
+    const [switchSelected, setSwitchSelected] = useState(false);
+    const [selectedTasks, setSelectedTasks] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [neighborhoodSelect, setNeighborhoodSelect] = useState({});
-    const [taskSelect, setTaskSelect] = useState({});
+    // const [taskSelect, setTaskSelect] = useState({});
     const [getNeighborhoods, setNeighborhoods] = useState([]);
     const possibleTasks = ['Groceries', 'Medicine/Health Care', 'Transportation',
                            'Pet Care', 'Child Care', 'Virtual Meetup'];
@@ -80,15 +85,28 @@ export default function YourOffer(props) {
                 setNeighborhoods(neighborhoods);
 
                 // Update tasks from current user
+                var tempTasks = [];
                 for (i = 0; i < possibleTasks.length; i++) {
                     const taskName = possibleTasks[i];
-                    const currentUserTasks = user.offer.tasks
-                    const includedTask = (currentUserTasks.includes(taskName)) ? true : false
-                    setTaskSelect(prev => ({ 
-                        ...prev,
-                        [taskName]: includedTask,
-                    }));
+                    const currentUserTasks = user.offer.tasks;
+                    const includedTask = (currentUserTasks.includes(taskName)) ? true : false;
+                    if (includedTask) {
+                        tempTasks.push(i);
+                    }
                 }
+                setSelectedTasks(tempTasks);
+                setSwitchSelected(user.availability);
+                const aText = user.availability ? 'Available' : 'Not Available'
+                setAvailableText(aText);
+                // for (i = 0; i < possibleTasks.length; i++) {
+                //     const taskName = possibleTasks[i];
+                //     const currentUserTasks = user.offer.tasks
+                //     const includedTask = (currentUserTasks.includes(taskName)) ? true : false
+                //     setTaskSelect(prev => ({ 
+                //         ...prev,
+                //         [taskName]: includedTask,
+                //     }));
+                // }
                 setIsLoading(false);
             });
         }
@@ -111,19 +129,13 @@ export default function YourOffer(props) {
             return false;
         }
 
-        foundTrue = false;
-        for (const prop in taskSelect) {
-            if (taskSelect[prop] === true) {
-                foundTrue = true;
-            }
-        }
-
-        // Didn't select task
-        if (foundTrue === false) {
+        // If there are non selected
+        if (selectedTasks.length == 0) {
             setShowToast(true);
             setToastMessage('No Task Selected');
             return false;
         }
+
         return true
     }
 
@@ -134,10 +146,8 @@ export default function YourOffer(props) {
         }
 
         var taskList = [];
-        for (const prop in taskSelect) {
-            if (taskSelect[prop] === true) {
-                taskList.push(prop);
-            }
+        for (var i = 0; i < selectedTasks.length; i++) {
+            taskList.push(possibleTasks[selectedTasks[i]]);
         }
 
         var neighborList = [];
@@ -184,12 +194,34 @@ export default function YourOffer(props) {
         }));
     }
 
-    const handleTaskChange = (evt, task) => {
-        setTaskSelect(prev => ({ 
-            ...prev,
-            [task]: !taskSelect[task],
-        }))
-    }
+    const handleChangeTasks = (val) => {
+        setSelectedTasks(val);
+    };
+
+    const handleChangeSwitch = (evnt) => {
+        let form = {
+          'availability': !switchSelected
+        };
+        setSwitchSelected(!switchSelected);
+        const aText = !switchSelected ? 'Available' : 'Not Available'
+        setAvailableText(aText);
+
+        fetch_a('/api/users/update/', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(form)
+        })
+        .then((response) => {
+            if (response.ok) {
+              console.log("Update successful");
+            } else {
+              console.log("Update not successful");
+            }
+        })
+        .catch((e) => {
+            console.log("Error");
+        });
+      }
 
     if (isLoading) {
         return <div>Loading ... </div>;
@@ -211,25 +243,32 @@ export default function YourOffer(props) {
                     >
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
-                    <Col md={2}>
+                    <Col md={1}>
                     </Col>
-                    <Col md={8} >
+                    <Col md={10} >
                         {/* <Row> */}
-                        <Form onSubmit={handleUpdate}>
+                        <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
                         <br></br>
                             <Form.Group controlId="tasks" bssize="large">
-                                <Form.Label><h3>Task</h3></Form.Label>
-                                {possibleTasks.map((task) => {
+                                <Form.Label style = {{marginBottom: -10}}><h2>Tasks</h2></Form.Label>
+                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select tasks you are willing to help with</p>
+                                {/* {possibleTasks.map((task) => {
                                     return <Form.Check key={task} 
                                                     type = "checkbox" 
                                                     label = {task}
                                                     onChange = {(evt) => { handleTaskChange(evt, task) }}
                                                     checked = {taskSelect[task]} />
-                                })}
+                                })} */}
+                                <ToggleButtonGroup type="checkbox" value={selectedTasks} onChange={handleChangeTasks}>
+                                    {possibleTasks.map((task, i) => {
+                                        return <ToggleButton className="toggleButton" variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
+                                    })}
+                                </ToggleButtonGroup>
                             </Form.Group>
                             <br></br>
                             <Form.Group controlId="details" bssize="large">
-                                <Form.Label><h3>Details</h3></Form.Label>
+                                <Form.Label style = {{marginBottom: -10}}><h3>Details</h3></Form.Label>
+                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Give us more information on how you can help!</p>
                                 <Form.Control as="textarea" 
                                               rows="3" 
                                               value={fields.details} 
@@ -237,7 +276,8 @@ export default function YourOffer(props) {
                             </Form.Group>
                             <br></br>
                             <Form.Group controlId="neighborhoods" bssize="large">
-                                <Form.Label><h3>Neighborhoods</h3></Form.Label>
+                                <Form.Label style = {{marginBottom: -10}}><h3>Neighborhoods</h3></Form.Label>
+                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select the neighborhoods you can help in </p>
                                 {getNeighborhoods.map((neighborhood) => {
                                     return <Form.Check key={neighborhood} 
                                                     type = "checkbox" 
@@ -247,13 +287,25 @@ export default function YourOffer(props) {
                                 })}
                             </Form.Group>
                             <br></br>
+                            <Form.Label style = {{marginBottom: -10}}><h3>Availability</h3></Form.Label>
+                            <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Switch on whether you are available to help</p>
+                            <Form.Check 
+                                type="switch"
+                                id="custom-switch"
+                                label={availableText}
+                                checked={switchSelected}
+                                onChange={handleChangeSwitch}
+                            />
+                            <br></br>
                             <Button variant="primary" type="submit">
                                 Update
                             </Button>
+                            <br></br>
+                            <br></br>
                         </Form>
                         {/* </Row> */}
                     </Col>
-                    <Col md={2}></Col>
+                    <Col md={1}></Col>
                 </Row>
             </div>
         );

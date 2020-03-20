@@ -46,7 +46,8 @@ class App extends Component {
       checked: false,
       showLogin: false,
       showRegistration: false,
-      currentZipCode: ''
+      currentZipCode: '',
+      currentNeighborhood: ''
     }
 
     this.getMyLocation = this.getMyLocation.bind(this)
@@ -118,17 +119,18 @@ class App extends Component {
     .catch((e) => {
         console.log("Error")
     });
-    
   }
 
   getMyLocation() {
+    var lat = '';
+    var long = '';
     if (Cookie.get('latitude') && Cookie.get('longitude')) {
+      lat = Cookie.get('latitude');
+      long = Cookie.get('longitude');
+      this.findAndSetNeighborhood(lat, long);
       this.setState({
-        isLoaded: true,
         latitude: Cookie.get('latitude'),
-        longitude: Cookie.get('longitude'),
-        // 'latitude': 40.4577988,
-        // 'longitude': -79.9235332,
+        longitude: Cookie.get('longitude')
       })
     }
     const location = window.navigator && window.navigator.geolocation
@@ -137,10 +139,12 @@ class App extends Component {
         Cookie.set('latitude', position.coords.latitude);
         Cookie.set('longitude', position.coords.longitude);
         this.setState({
-          isLoaded: true,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         });
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+        this.findAndSetNeighborhood(lat, long);
       }, (error) => {
         this.setState({ latitude: 'err-latitude', longitude: 'err-longitude' })
       })
@@ -152,10 +156,39 @@ class App extends Component {
     window.location.reload(false);
   }
 
+  findAndSetNeighborhood(lat, long) {
+    Geocode.fromLatLng(lat, long).then(
+      response => {
+        var foundNeighborhood = '';
+        for (var i = 0; i < Math.min(4, response.results.length); i++) {
+          const results = response.results[i]['address_components'];
+          for (var j = 0; j < results.length; j++) {
+            const types = results[j].types;
+            if (types.includes('neighborhood') || types.includes('locality')) {
+              const currNeighborhoodName = results[j]['long_name'];
+              if (foundNeighborhood == '') {
+                foundNeighborhood = currNeighborhoodName;
+              }
+            }
+          }
+        }
+        this.setState({
+          isLoaded: true,
+          currentNeighborhood: foundNeighborhood
+        });
+      },
+      error => {
+        console.error(error);
+      }
+    );
+
+  }
+
   setLatLongFromZip() {
     Geocode.fromAddress(this.state.currentZipCode).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
+        this.findAndSetNeighborhood(response);
         Cookie.set('latitude', lat);
         Cookie.set('longitude', lng);
         this.setState({
@@ -194,21 +227,17 @@ class App extends Component {
     var toggleSwitch;
     if (isLoggedIn) {
       rightNav = <>
-                  <Nav className="mr-sm-2">
+                  <Nav className="mr-sm-2" style ={{color: 'white'}}>
                     Hello, {this.state.first_name}
                   </Nav>
                   <Button className="mr-sm-2" onClick={this.logout} variant="outline-danger">
                     Logout
                   </Button>
                 </>;
-      yourOffer = <Tab eventKey="your-offer" title="Your Offer">
+      yourOffer = <Tab eventKey="your-offer" title="Your Offer" className="tabColor" id='bootstrap-overide'>
                     <YourOffer state = {this.state}/>
                   </Tab>;
       toggleSwitch = <>
-                <h5 style = {{fontWeight: 200}}>Your Availability</h5>
-                <label>
-                  <Switch onChange={this.handleChange} checked={this.state.checked} />
-                </label>
               </>;       
     } else {
       rightNav = <>
@@ -266,12 +295,12 @@ class App extends Component {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div className="BottomHalf"></div>
         <div className="App">
-          <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="#home">Cov-Aid</Navbar.Brand>
+          <Navbar variant="light" className = 'customNav'>
+            <Navbar.Brand href="#home" style ={{color: 'white', fontWeight: 800}}>Cov-Aid</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link href="#link">About Us (Under Construction)</Nav.Link>
+                <Nav.Link href="#link" style ={{color: 'white'}}>About Us (Under Construction)</Nav.Link>
                 <NavDropdown alignRight title="Any issues?" id="basic-nav-dropdown">
                   <NavDropdown.Item>
                     Email: debanik1997@gmail.com
@@ -289,9 +318,9 @@ class App extends Component {
 
 
           <Container style = {{padding: '40px 15px'}}>
-            <h5 style = {{fontWeight: 300, fontStyle: 'italic'}}>Need a hand?</h5>
-            <h1 style = {{fontWeight: 300}}>Mutual Aid For COVID-19</h1>
-            <h6 style = {{fontWeight: 300}}><i style={{color: "red", fontSize: 20}}class="fa fa-map-marker"></i> Lat: {this.state.latitude}, Long: {this.state.longitude}</h6>
+            <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white'}}>Need a hand?</h5>
+            <h1 style = {{fontWeight: 800, color: 'white'}}>Mutual Aid For COVID-19</h1>
+            <h6 style = {{fontWeight: 300, color: 'white'}}><i style={{color: "red", fontSize: 20, marginRight: 5}} class="fa fa-map-marker"></i> {this.state.currentNeighborhood}</h6>
 
             {toggleSwitch}
             <br />
@@ -300,11 +329,11 @@ class App extends Component {
               <Col md={1}></Col>
               <Col md={8}>
                 <Tabs defaultActiveKey="offers" id="uncontrolled-tab-example" className="justify-content-center">
-                  <Tab eventKey="offers" title="Offers">
+                  <Tab eventKey="offers" title="Offers" id='bootstrap-overide'>
                     <Offers state = {this.state}/>
                   </Tab>
                   {yourOffer}
-                  <Tab eventKey="links" title="Helpful Links">
+                  <Tab eventKey="links" title="Helpful Links" id='bootstrap-overide'>
                     <HelpfulLinks />
                   </Tab>
                 </Tabs>
