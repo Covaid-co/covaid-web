@@ -1,0 +1,12 @@
+@media only screen and (max-width : 480px) {
+    .break-button{
+        width:50%;
+        }
+}
+
+.break-button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}

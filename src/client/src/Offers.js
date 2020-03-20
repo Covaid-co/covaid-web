@@ -77,11 +77,15 @@ export default function Offers(props) {
         setDisplayedUsers(result);
     };
 
+    let buttonStyles = {
+        border: '0.5px solid #DADDE1',
+    }
+
     return (
         <div className="shadow p-3 mb-5 bg-white rounded">
-            <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
+            <ToggleButtonGroup type="checkbox" className="btn-group d-flex flex-wrap" value={value} onChange={handleChange}>
                 {possibleTasks.map((task, i) => {
-                    return <ToggleButton className="toggleButton" variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
+                    return <ToggleButton style={buttonStyles} variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
                 })}
             </ToggleButtonGroup>
             <ListGroup variant="flush">
