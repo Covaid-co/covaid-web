@@ -38,6 +38,7 @@ export default function YourOffer(props) {
                 // Get current lat and long from current location and find neighborhoods
                 const { latitude, longitude } = props.state;
                 var neighborhoods = [];
+                
                 Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
                     response => {
                         for (var i = 0; i < Math.min(4, response.results.length); i++) {
