@@ -26,7 +26,6 @@ export default function Register() {
           fields.password.length > 0 &&
           fields.first_name.length > 0 &&
           fields.last_name.length > 0 &&
-          fields.phone.length > 0 &&
           fields.password === fields.confirmPassword
         );
       }
@@ -90,9 +89,6 @@ export default function Register() {
                             />
                         </Form.Group>
                     </Col>
-                </Row>
-
-                <Row className="justify-content-md-center">
                     <Col md="auto">
                     <Form.Group controlId="last_name" bssize="large">
                             <Form.Label>Last Name</Form.Label>
@@ -115,9 +111,6 @@ export default function Register() {
                             />
                     </Form.Group>
                     </Col>
-                </Row>
-
-                <Row className="justify-content-md-center">
                     <Col md="auto">
                     <Form.Group controlId="phone" bssize="large">
                             <Form.Label>Phone (Optional)</Form.Label>
@@ -140,9 +133,6 @@ export default function Register() {
                             />
                         </Form.Group>
                     </Col>
-                </Row>
-
-                <Row className="justify-content-md-center">
                     <Col md="auto">
                     <Form.Group controlId="confirmPassword" bssize="large">
                             <Form.Label>Confirm Password</Form.Label>

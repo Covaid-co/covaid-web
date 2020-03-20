@@ -50,10 +50,6 @@ export default function Login() {
 
     return (
         <div className="p-3 mb-5 bg-white">
-            <Row>
-                <Col md="auto">Enter your credentials</Col>
-            </Row>
-
             <Form onSubmit={handleSubmit}>
                 <Row className="justify-content-md-center">
                     <Col md="auto">

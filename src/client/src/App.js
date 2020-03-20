@@ -6,6 +6,7 @@ import Offers from './Offers';
 import YourOffer from './YourOffer';
 import Login from './Login';
 import Register from './Register';
+import HelpfulLinks from './HelpfulLinks';
 
 import fetch_a from './util/fetch_auth';
 
@@ -20,8 +21,10 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 
 import Switch from "react-switch";
+import Cookie from 'js-cookie'
 
 const Users = () => <span>Users</span>;
 
@@ -36,16 +39,41 @@ class App extends Component {
       isLoggedIn: false,
       currentUser: undefined,
       currentUserAvailability: false,
-      checked: false 
+      checked: false,
+      showLogin: false,
+      showRegistration: false
     }
 
     this.getMyLocation = this.getMyLocation.bind(this)
     this.handleChange = this.handleChange.bind(this);
+    this.logout = this.logout.bind(this);
+    this.handleShowLogin = this.handleShowLogin.bind(this);
+    this.handleHideLogin = this.handleHideLogin.bind(this);
+    this.handleShowRegistration = this.handleShowRegistration.bind(this);
+    this.handleHideRegistration = this.handleHideRegistration.bind(this);
+  }
+
+  handleShowLogin() {
+    this.setState({showLogin: true});
+  }
+
+  handleHideLogin() {
+    this.setState({showLogin: false})
+  }
+
+  handleShowRegistration() {
+    this.setState({showRegistration: true});
+  }
+
+  handleHideRegistration() {
+    this.setState({showRegistration: false});
   }
 
   componentDidMount() {
-    this.getMyLocation()
-    this.fetchUser()
+    this.getMyLocation();
+    if (Cookie.get("token")) {
+      this.fetchUser()
+    }
   }
 
   fetchUser(){
@@ -103,6 +131,11 @@ class App extends Component {
     }
   }
 
+  logout() {
+    Cookie.remove('token');
+    window.location.reload(false);
+  }
+
   render() {
     const { isLoaded } = this.state;
     const { isLoggedIn } = this.state;
@@ -112,7 +145,7 @@ class App extends Component {
     var toggleSwitch;
     if (isLoggedIn) {
       rightNav = <>
-                  <Button variant="outline-danger">
+                  <Button onClick={this.logout} variant="outline-danger">
                     Logout
                   </Button>
                 </>;
@@ -126,12 +159,18 @@ class App extends Component {
                 </label>
               </>;       
     } else {
-      rightNav = <><NavDropdown title="Sign In" alignRight bssize="large" variant="success" id="basic-nav-dropdown">
-                  <Login />
-                </NavDropdown>
-                <NavDropdown title="Get Started" alignRight variant="success" id="basic-nav-dropdown">
-                  <Register />
-                </NavDropdown></>;
+      rightNav = <>
+                   <Button 
+                    onClick={this.handleShowLogin}
+                    variant="outline-success">
+                    Sign In
+                  </Button>
+                  <Button 
+                    onClick={this.handleShowRegistration} 
+                    variant="outline-success">
+                    Get Started
+                  </Button>
+                </>;
       yourOffer = <></>
       toggleSwitch = <></>
     }
@@ -179,8 +218,8 @@ class App extends Component {
                     <Offers state = {this.state}/>
                   </Tab>
                   {yourOffer}
-                  <Tab eventKey="faq" title="FAQ">
-                    <Users />
+                  <Tab eventKey="links" title="Helpful Links">
+                    <HelpfulLinks />
                   </Tab>
                 </Tabs>
               </Col>
@@ -188,6 +227,22 @@ class App extends Component {
               <Col md={1}></Col>
             </Row>
           </Container>
+          <Modal show={this.state.showLogin} onHide={this.handleHideLogin} style = {{marginTop: 60}}>
+                <Modal.Header closeButton>
+                <Modal.Title>Enter your credentials</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Login />
+                </Modal.Body>
+            </Modal>
+            <Modal show={this.state.showRegistration} onHide={this.handleHideRegistration} style = {{marginTop: 60}}>
+                <Modal.Header closeButton>
+                <Modal.Title>Get Started</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Register />
+                </Modal.Body>
+            </Modal>
         </div>
         </div>
       );
