@@ -11,12 +11,12 @@ const getTokenFromHeaders = (req) => {
 
 const auth = {
   required: jwt({
-    secret: 'secret',
+    secret: process.env.SECRET || 'secret',
     userProperty: 'token',
     getToken: getTokenFromHeaders,
   }),
   optional: jwt({
-    secret: 'secret',
+    secret: process.env.SECRET || 'secret',
     userProperty: 'token',
     getToken: getTokenFromHeaders,
     credentialsRequired: false,
