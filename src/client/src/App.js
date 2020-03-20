@@ -263,6 +263,7 @@ class App extends Component {
     } else {
       return (
         <div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div className="BottomHalf"></div>
         <div className="App">
           <Navbar bg="light" expand="lg">
@@ -290,7 +291,8 @@ class App extends Component {
           <Container style = {{padding: '40px 15px'}}>
             <h5 style = {{fontWeight: 300, fontStyle: 'italic'}}>Need a hand?</h5>
             <h1 style = {{fontWeight: 300}}>Mutual Aid For COVID-19</h1>
-            <br></br>
+            <h6 style = {{fontWeight: 300}}><i style={{color: "red", fontSize: 20}}class="fa fa-map-marker"></i> Lat: {this.state.latitude}, Long: {this.state.longitude}</h6>
+
             {toggleSwitch}
             <br />
 

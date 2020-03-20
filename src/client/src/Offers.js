@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import Badge from 'react-bootstrap/Badge'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
@@ -80,7 +81,7 @@ export default function Offers(props) {
         <div className="shadow p-3 mb-5 bg-white rounded">
             <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
                 {possibleTasks.map((task, i) => {
-                    return <ToggleButton variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
+                    return <ToggleButton className="toggleButton" variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
                 })}
             </ToggleButtonGroup>
             <ListGroup variant="flush">
@@ -94,34 +95,36 @@ export default function Offers(props) {
             <ListGroup variant="flush">
                 {displayedUsers.map((user) => {
                     return <ListGroup.Item key={user._id} action 
-                                            style = {{fontSize: 12}} 
+                                            style = {{fontSize: 16}} 
                                             onClick={() => { handleShow(); setModal({...user});}}>
                             <Row>
-                                <Col>{generateTasks(user.offer.tasks)}</Col>
-                                <Col>{generateTasks(user.offer.neighborhoods)}</Col>
+                                <Col>{user.offer.tasks.map((task) => {
+                                        return <><Badge pill variant="primary">{task}</Badge>{' '}</>
+                                    })}</Col>
+                                <Col>{user.offer.neighborhoods.map((neighborhood) => {
+                                        return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>
+                                    })}</Col>
                             </Row>
                         </ListGroup.Item>
                 })}
             </ListGroup>
             <Modal show={show} onHide={handleClose} style = {{marginTop: 60}}>
                 <Modal.Header closeButton>
-                <Modal.Title>Food Offer</Modal.Title>
+                <Modal.Title>Offer</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Tasks: {modalInfo.offer.tasks}</p>
-                    <p>Name: {modalInfo.first_name} {modalInfo.last_name}</p>
-                    <p>Contact: {modalInfo.email}</p>
-                    <p>Details: {modalInfo.offer.details}</p>
-                    <p>Neighborhoods: {modalInfo.offer.neighborhoods}</p>
+                    <p><b>Tasks:</b>  {modalInfo.offer.tasks.map((task) => {
+                            return <><Badge pill variant="primary">{task}</Badge>{' '}</>
+                        })}
+                    </p>
+                    <p><b>Name:</b> {modalInfo.first_name} {modalInfo.last_name}</p>
+                    <p><b>Contact:</b> {modalInfo.email}</p>
+                    <p><b>Details:</b> {modalInfo.offer.details}</p>
+                    <p><b>Neighborhoods:</b>  {modalInfo.offer.neighborhoods.map((neighborhood) => {
+                            return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>
+                        })}
+                    </p>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" href="sms://4846249881">>
-                        Contact Now!
-                    </Button>
-                </Modal.Footer>
             </Modal>
         </div>
     );
