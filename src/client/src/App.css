@@ -7,6 +7,30 @@
   pointer-events: none;
 }
 
+/* html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background: linear-gradient(to bottom, #ffffff 50%, #1652F0 50%);
+} */
+
+html, body {
+  height: 100%;
+}
+
+.BottomHalf {
+  position: absolute;
+  height: 100%; 
+  width: 100%;
+  z-index: -10;
+  top: 60%;
+  background: #1652F0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

@@ -78,45 +78,60 @@ export default function Register() {
       };
 
     return (
-        <div className="shadow p-3 mb-5 bg-white rounded">
-            <Row className="justify-content-md-center">
-                <Col md={2}></Col>
-                <Col md={8}>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="first_name" bssize="large">
+        <div className="p-3 mb-5 bg-white">
+            <Form onSubmit={handleSubmit}>
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Form.Group controlId="first_name" bssize="large">
                             <Form.Label>First Name</Form.Label>
                             <Form.Control 
                                 value={fields.first_name}
                                 onChange={handleFieldChange}
                             />
                         </Form.Group>
+                    </Col>
+                </Row>
 
-                        <Form.Group controlId="last_name" bssize="large">
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Form.Group controlId="last_name" bssize="large">
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control 
                                 value={fields.last_name}
                                 onChange={handleFieldChange}
                             />
-                        </Form.Group>
+                    </Form.Group>
+                    </Col>
+                </Row>
 
-                        <Form.Group controlId="email" bssize="large">
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Form.Group controlId="email" bssize="large">
                             <Form.Label>Email</Form.Label>
                             <Form.Control 
                                 type="email"
                                 value={fields.email}
                                 onChange={handleFieldChange}
                             />
-                        </Form.Group>
+                    </Form.Group>
+                    </Col>
+                </Row>
 
-                        <Form.Group controlId="phone" bssize="large">
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Form.Group controlId="phone" bssize="large">
                             <Form.Label>Phone (Optional)</Form.Label>
                             <Form.Control 
                                 value={fields.phone}
                                 onChange={handleFieldChange}
                             />
-                        </Form.Group>
+                    </Form.Group>
+                    </Col>
+                </Row>
 
-                        <Form.Group controlId="password" bssize="large">
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Form.Group controlId="password" bssize="large">
                             <Form.Label>Password</Form.Label>
                             <Form.Control 
                                 value={fields.password}
@@ -124,23 +139,32 @@ export default function Register() {
                                 type="password"
                             />
                         </Form.Group>
+                    </Col>
+                </Row>
 
-                        <Form.Group controlId="confirmPassword" bssize="large">
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Form.Group controlId="confirmPassword" bssize="large">
                             <Form.Label>Confirm Password</Form.Label>
                             <Form.Control
                                 type="password"
                                 onChange={handleFieldChange}
                                 value={fields.confirmPassword}
                             />
-                        </Form.Group>
+                    </Form.Group>
+                    </Col>
+                </Row>
 
-                        <Button variant="primary" disabled={!validateForm()} type="submit">
-                            Submit
-                        </Button>
-                    </Form>
-                </Col>
-                <Col md={2}></Col>
-            </Row>
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Button variant="primary" disabled={!validateForm()} type="submit">
+                        Submit
+                    </Button>
+                    </Col>
+                </Row>
+
+                
+            </Form>
         </div>
     )
 

@@ -14,6 +14,12 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
+import NavDropdown from 'react-bootstrap/NavDropdown'
+import Form from 'react-bootstrap/Form'
+import FormControl from 'react-bootstrap/FormControl'
+import Button from 'react-bootstrap/Button'
 
 import Switch from "react-switch";
 
@@ -79,6 +85,7 @@ class App extends Component {
 
   getMyLocation() {
     const location = window.navigator && window.navigator.geolocation
+    console.log(location)
     if (location) {
       location.getCurrentPosition((position) => {
         this.setState({
@@ -101,7 +108,36 @@ class App extends Component {
       return <div>Loading ... </div>;
     } else {
       return (
+        <div>
+        <div className="BottomHalf"></div>
         <div className="App">
+          <Navbar bg="light" expand="lg">
+            <Navbar.Brand href="#home">Corona-Aid</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link href="#home">Home</Nav.Link>
+                <Nav.Link href="#link">About Us</Nav.Link>
+                <NavDropdown title="Contact" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+              <Form inline>
+                <NavDropdown title="Sign In" alignRight bssize="large" variant="success" id="basic-nav-dropdown">
+                  <Login />
+                </NavDropdown>
+                <NavDropdown title="Get Started" alignRight variant="success" id="basic-nav-dropdown">
+                  <Register />
+                </NavDropdown>
+              </Form>
+            </Navbar.Collapse>
+          </Navbar>
+
+
           <Container style = {{padding: '40px 15px'}}>
             <h1 style = {{fontWeight: 300}}>Corona-Aid</h1>
             <h5 style = {{fontWeight: 200}}>Your Availability</h5>
@@ -124,22 +160,13 @@ class App extends Component {
                   <Tab eventKey="faq" title="FAQ">
                     <Users />
                   </Tab>
-                  <Tab eventKey="login" title="Login">
-                  <Login />
-                  </Tab>
-                  <Tab eventKey="register" title="Register">
-                    <Register />
-                  </Tab>
                 </Tabs>
               </Col>
 
               <Col md={1}></Col>
             </Row>
           </Container>
-          {/* <div>
-            <input type="text" value={latitude} />
-            <input type="text" value={longitude} />
-          </div> */}
+        </div>
         </div>
       );
     }
