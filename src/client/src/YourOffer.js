@@ -149,10 +149,12 @@ export default function YourOffer(props) {
         let form = {
             'offer': {
                 'tasks': taskList,
-                'latitude': props.state.latitude,
-                'longitude': props.state.longitude,
                 'neighborhoods': neighborList,
                 'details': fields.details,
+            },
+            'location': {
+                'type': 'Point',
+                'coordinates': [props.state.longitude, props.state.latitude]
             }
         };
         console.log(form);

@@ -109,64 +109,64 @@ class App extends Component {
     } else {
       return (
         <div>
-        <div className="BottomHalf"></div>
-        <div className="App">
-          <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="#home">Corona-Aid</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link">About Us</Nav.Link>
-                <NavDropdown title="Contact" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-              <Form inline>
-                <NavDropdown title="Sign In" alignRight bssize="large" variant="success" id="basic-nav-dropdown">
-                  <Login />
-                </NavDropdown>
-                <NavDropdown title="Get Started" alignRight variant="success" id="basic-nav-dropdown">
-                  <Register />
-                </NavDropdown>
-              </Form>
-            </Navbar.Collapse>
-          </Navbar>
+          <div className="BottomHalf"></div>
+          <div className="App">
+            <Navbar bg="light" expand="lg">
+              <Navbar.Brand href="#home">Corona-Aid</Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                  <Nav.Link href="#home">Home</Nav.Link>
+                  <Nav.Link href="#link">About Us</Nav.Link>
+                  <NavDropdown title="Contact" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                  </NavDropdown>
+                </Nav>
+                <Form inline>
+                  <NavDropdown title="Sign In" alignRight bssize="large" variant="success" id="basic-nav-dropdown">
+                    <Login />
+                  </NavDropdown>
+                  <NavDropdown title="Get Started" alignRight variant="success" id="basic-nav-dropdown">
+                    <Register />
+                  </NavDropdown>
+                </Form>
+              </Navbar.Collapse>
+            </Navbar>
 
 
-          <Container style = {{padding: '40px 15px'}}>
-            <h1 style = {{fontWeight: 300}}>Corona-Aid</h1>
-            <h5 style = {{fontWeight: 200}}>Your Availability</h5>
-            <label>
-              <Switch onChange={this.handleChange} checked={this.state.checked} />
-            </label>
-            <br />
-            <br />
+            <Container style = {{padding: '40px 15px'}}>
+              <h1 style = {{fontWeight: 300}}>Corona-Aid</h1>
+              <h5 style = {{fontWeight: 200}}>Your Availability</h5>
+              <label>
+                <Switch onChange={this.handleChange} checked={this.state.checked} />
+              </label>
+              <br />
+              <br />
 
-            <Row className="justify-content-md-center">
-              <Col md={1}></Col>
-              <Col md={8}>
-                <Tabs defaultActiveKey="offers" id="uncontrolled-tab-example" className="justify-content-center">
-                  <Tab eventKey="offers" title="Offers">
-                    <Offers state = {this.state}/>
-                  </Tab>
-                  <Tab eventKey="your-offer" title="Your Offer">
-                    <YourOffer state = {this.state}/>
-                  </Tab>
-                  <Tab eventKey="faq" title="FAQ">
-                    <Users />
-                  </Tab>
-                </Tabs>
-              </Col>
+              <Row className="justify-content-md-center">
+                <Col md={1}></Col>
+                <Col md={8}>
+                  <Tabs defaultActiveKey="offers" id="uncontrolled-tab-example" className="justify-content-center">
+                    <Tab eventKey="offers" title="Offers">
+                      <Offers state = {this.state}/>
+                    </Tab>
+                    <Tab eventKey="your-offer" title="Your Offer">
+                      <YourOffer state = {this.state}/>
+                    </Tab>
+                    <Tab eventKey="faq" title="FAQ">
+                      <Users />
+                    </Tab>
+                  </Tabs>
+                </Col>
 
-              <Col md={1}></Col>
-            </Row>
-          </Container>
-        </div>
+                <Col md={1}></Col>
+              </Row>
+            </Container>
+          </div>
         </div>
       );
     }
