@@ -22,8 +22,10 @@ import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import Spinner from 'react-bootstrap/Spinner'
 
 import Switch from "react-switch";
+import Geocode from "react-geocode";
 import Cookie from 'js-cookie'
 
 const Users = () => <span>Users</span>;
@@ -43,7 +45,8 @@ class App extends Component {
       currentUserAvailability: false,
       checked: false,
       showLogin: false,
-      showRegistration: false
+      showRegistration: false,
+      currentZipCode: ''
     }
 
     this.getMyLocation = this.getMyLocation.bind(this)
@@ -53,6 +56,7 @@ class App extends Component {
     this.handleHideLogin = this.handleHideLogin.bind(this);
     this.handleShowRegistration = this.handleShowRegistration.bind(this);
     this.handleHideRegistration = this.handleHideRegistration.bind(this);
+    this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
   }
 
   handleShowLogin() {
@@ -135,10 +139,8 @@ class App extends Component {
         this.setState({
           isLoaded: true,
           latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          // 'latitude': 40.4577988,
-          // 'longitude': -79.9235332,
-        })
+          longitude: position.coords.longitude
+        });
       }, (error) => {
         this.setState({ latitude: 'err-latitude', longitude: 'err-longitude' })
       })
@@ -148,6 +150,37 @@ class App extends Component {
   logout() {
     Cookie.remove('token');
     window.location.reload(false);
+  }
+
+  setLatLongFromZip() {
+    Geocode.fromAddress(this.state.currentZipCode).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.setState({
+          isLoaded: true,
+          latitude: lat,
+          longitude: lng,
+        })
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  handleChangeZip(value) {
+    this.setState({currentZipCode: value});
+  }
+
+  isNumeric(value) {
+    return /^-{0,1}\d+$/.test(value);
+  }
+
+  validateForm() {
+    if (this.state.currentZipCode.length != 5) {
+      return false;
+    }
+    return this.isNumeric(this.state.currentZipCode);
   }
 
   render() {
@@ -196,7 +229,35 @@ class App extends Component {
     }
 
     if (!isLoaded) {
-      return <div>Loading ... </div>;
+      return (
+        <div className="App">
+          <Container style = {{padding: '40px 15px'}}>
+              <div className="p-3 mb-5 bg-white">
+                  <Spinner animation="border" role="status" style = {{marginBottom: 50}}>
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                  <br></br>
+                  <h3 style = {{fontWeight: 300}}>Enter Zip Code if not Redirected</h3>
+                  <Row className="justify-content-md-center">
+                    <Col md={5}></Col>
+                    <Col md={2}>
+                      <Form>
+                        <br></br>
+                        <FormControl type="text" 
+                                      value={this.state.currentZipCode} 
+                                      onChange={(event) => {this.handleChangeZip(event.target.value)}} 
+                                      placeholder="Zip Code" 
+                                      className="mr-sm-2" />
+                        <br></br>
+                        <Button variant="outline-success" disabled={!this.validateForm()} onClick = {this.setLatLongFromZip}>Enter</Button>
+                      </Form>
+                    </Col>
+
+                    <Col md={5}></Col>
+                  </Row>
+                </div>
+              </Container>
+          </div>)
     } else {
       return (
         <div>
