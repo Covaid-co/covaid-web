@@ -6,9 +6,16 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import ToggleButton from 'react-bootstrap/ToggleButton'
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
 export default function Offers(props) {
+    const [value, setValue] = useState([]);
     const [users, setUsers] = useState([]);
+    const [displayedUsers, setDisplayedUsers] = useState([]);
+    const possibleTasks = ['Groceries', 'Medicine/Health Care', 'Transportation',
+    'Pet Care', 'Child Care', 'Virtual Meetup'];
+
     const [modalInfo, setModalInfo] = useState({
         'first_name': '',
         'last_name': '',
@@ -44,6 +51,7 @@ export default function Offers(props) {
             const response = await fetch(url);
             response.json().then((data) => {
                 setUsers(data);
+                setDisplayedUsers(data);
                 console.log(data);
             });
         }
@@ -59,8 +67,23 @@ export default function Offers(props) {
         return res;
     }
 
+    const handleChange = (val) => {
+        setValue(val);
+        const selectedTasks = [];
+        for (var i = 0; i < val.length; i++) {
+            selectedTasks.push(possibleTasks[val[i]]);
+        }
+        const result = users.filter(user => selectedTasks.some(v => user.offer.tasks.indexOf(v) !== -1));
+        setDisplayedUsers(result);
+    };
+
     return (
         <div className="shadow p-3 mb-5 bg-white rounded">
+            <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
+                {possibleTasks.map((task, i) => {
+                    return <ToggleButton key = {i} value={i}>{task}</ToggleButton>
+                })}
+            </ToggleButtonGroup>
             <ListGroup variant="flush">
                 <ListGroup.Item>
                     <Row>
@@ -70,7 +93,7 @@ export default function Offers(props) {
                 </ListGroup.Item>
             </ListGroup>
             <ListGroup variant="flush">
-                {users.map((user) => {
+                {displayedUsers.map((user) => {
                     return <ListGroup.Item key={user._id} action 
                                             style = {{fontSize: 12}} 
                                             onClick={() => { handleShow(); setModal({...user});}}>
