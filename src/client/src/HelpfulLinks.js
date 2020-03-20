@@ -21,7 +21,7 @@ export default function HelpfulLinks() {
             <ListGroup variant="flush">
                 <ListGroup.Item key='0' style = {{fontSize: 12}} >
                     <Row>
-                        <Col><a href="coronavirus.jhu.edu">Live COVID-19 Statistics</a></Col>
+                        <Col><a href="https://www.coronavirus.jhu.edu">Live COVID-19 Statistics</a></Col>
                     </Row>
                 </ListGroup.Item>
                 <ListGroup.Item key='1' style = {{fontSize: 12}} >

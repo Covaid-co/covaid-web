@@ -183,19 +183,11 @@ class App extends Component {
         <div className="BottomHalf"></div>
         <div className="App">
           <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="#home">Corona-Aid</Navbar.Brand>
+            <Navbar.Brand href="#home">Cov-Aid</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
                 <Nav.Link href="#link">About Us</Nav.Link>
-                <NavDropdown title="Contact" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                </NavDropdown>
               </Nav>
               <Form inline>
                 {rightNav}
@@ -205,7 +197,7 @@ class App extends Component {
 
 
           <Container style = {{padding: '40px 15px'}}>
-            <h1 style = {{fontWeight: 300}}>Corona-Aid</h1>
+            <h1 style = {{fontWeight: 300}}>Need a hand?</h1>
             {toggleSwitch}
             <br />
             <br />
