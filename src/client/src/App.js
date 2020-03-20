@@ -109,6 +109,7 @@ class App extends Component {
 
     var rightNav;
     var yourOffer;
+    var toggleSwitch;
     if (isLoggedIn) {
       rightNav = <>
                   <Button variant="outline-danger">
@@ -118,6 +119,12 @@ class App extends Component {
       yourOffer = <Tab eventKey="your-offer" title="Your Offer">
                     <YourOffer state = {this.state}/>
                   </Tab>;
+      toggleSwitch = <>
+                <h5 style = {{fontWeight: 200}}>Your Availability</h5>
+                <label>
+                  <Switch onChange={this.handleChange} checked={this.state.checked} />
+                </label>
+              </>;       
     } else {
       rightNav = <><NavDropdown title="Sign In" alignRight bssize="large" variant="success" id="basic-nav-dropdown">
                   <Login />
@@ -126,6 +133,7 @@ class App extends Component {
                   <Register />
                 </NavDropdown></>;
       yourOffer = <></>
+      toggleSwitch = <></>
     }
 
     if (!isLoaded) {
@@ -159,10 +167,7 @@ class App extends Component {
 
           <Container style = {{padding: '40px 15px'}}>
             <h1 style = {{fontWeight: 300}}>Corona-Aid</h1>
-            <h5 style = {{fontWeight: 200}}>Your Availability</h5>
-            <label>
-              <Switch onChange={this.handleChange} checked={this.state.checked} />
-            </label>
+            {toggleSwitch}
             <br />
             <br />
 
