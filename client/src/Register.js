@@ -9,7 +9,6 @@ import Row from 'react-bootstrap/Row'
 import Cookie from 'js-cookie'
 
 
-
 export default function Register() {
     const [fields, handleFieldChange] = useFormFields({
         first_name: "",
@@ -54,94 +53,91 @@ export default function Register() {
                 }
             }
         }
-        console.log(form)
         fetch('/api/users/', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
-        })
-        .then((response) => {
+        }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    console.log("Registration successful")
+                    console.log("Registration successful");
                     Cookie.set("token", data.user.token);
                     window.location.reload(false);
                 });
             } else {
-                alert('Registration unsuccessful')
+                alert('Registration unsuccessful');
             }
-        })
-        .catch((e) => {
-            alert('Registration unsuccessful')
+        }).catch((e) => {
+            alert('Registration unsuccessful');
         });
       };
 
     return (
-        <div className="p-3 mb-5 bg-white">
+        <div className="p-3 bg-white">
             <Form onSubmit={handleSubmit}>
                 <Row className="justify-content-md-center">
-                    <Col md="auto">
-                    <Form.Group controlId="first_name" bssize="large">
-                            <Form.Label>First Name</Form.Label>
+                    <Col md={6}>
+                        <Form.Group controlId="first_name" bssize="large">
                             <Form.Control 
+                                placeholder="First Name"
                                 value={fields.first_name}
                                 onChange={handleFieldChange}
                             />
                         </Form.Group>
                     </Col>
-                    <Col md="auto">
-                    <Form.Group controlId="last_name" bssize="large">
-                            <Form.Label>Last Name</Form.Label>
-                            <Form.Control 
+                    <Col md={6}>
+                        <Form.Group controlId="last_name" bssize="large">
+                            <Form.Control
+                                placeholder="Last Name"
                                 value={fields.last_name}
                                 onChange={handleFieldChange}
                             />
-                    </Form.Group>
+                        </Form.Group>
                     </Col>
                 </Row>
 
                 <Row className="justify-content-md-center">
-                    <Col md="auto">
-                    <Form.Group controlId="email" bssize="large">
-                            <Form.Label>Email</Form.Label>
+                    <Col md={12}>
+                        <Form.Group controlId="email" bssize="large">
                             <Form.Control 
                                 type="email"
+                                placeholder="Email"
                                 value={fields.email}
                                 onChange={handleFieldChange}
                             />
-                    </Form.Group>
+                        </Form.Group>
                     </Col>
-                    <Col md="auto">
-                    <Form.Group controlId="phone" bssize="large">
-                            <Form.Label>Phone (Optional)</Form.Label>
+                    <Col md={12}>
+                        <Form.Group controlId="phone" bssize="large">
                             <Form.Control 
+                                placeholder="Phone (Optional)"
                                 value={fields.phone}
                                 onChange={handleFieldChange}
                             />
-                    </Form.Group>
+                        </Form.Group>
                     </Col>
                 </Row>
 
                 <Row className="justify-content-md-center">
-                    <Col md="auto">
-                    <Form.Group controlId="password" bssize="large">
-                            <Form.Label>Password</Form.Label>
+                    <Col md={6}>
+                        <Form.Group controlId="password" bssize="large">
                             <Form.Control 
+                                placeholder="Password"
                                 value={fields.password}
                                 onChange={handleFieldChange}
                                 type="password"
                             />
                         </Form.Group>
                     </Col>
-                    <Col md="auto">
-                    <Form.Group controlId="confirmPassword" bssize="large">
-                            <Form.Label>Confirm Password</Form.Label>
+                    <Col md={6}>
+                        <Form.Group controlId="confirmPassword" bssize="large">
                             <Form.Control
                                 type="password"
+                                placeholder="Confirm Password"
                                 onChange={handleFieldChange}
                                 value={fields.confirmPassword}
                             />
-                    </Form.Group>
+                        </Form.Group>
                     </Col>
                 </Row>
 
@@ -152,11 +148,7 @@ export default function Register() {
                     </Button>
                     </Col>
                 </Row>
-
-                
             </Form>
         </div>
     )
-
-
 }

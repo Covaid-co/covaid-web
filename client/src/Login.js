@@ -26,7 +26,6 @@ export default function Login() {
                 'password': fields.password
             }
         };
-        console.log(form)
         fetch('/api/users/login/', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -49,26 +48,26 @@ export default function Login() {
       };
 
     return (
-        <div className="p-3 mb-5 bg-white">
+        <div className="p-3 bg-white">
             <Form onSubmit={handleSubmit}>
                 <Row className="justify-content-md-center">
-                    <Col md="auto">
-                    <Form.Group controlId="email" bssize="large">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control 
-                            type="email"
-                            value={fields.email}
-                            onChange={handleFieldChange}
-                        />
-                    </Form.Group>
+                    <Col md={12}>
+                        <Form.Group controlId="email" bssize="large">
+                            <Form.Control 
+                                type="email"
+                                placeholder="Email"
+                                value={fields.email}
+                                onChange={handleFieldChange}
+                            />
+                        </Form.Group>
                     </Col>
                 </Row>
 
                 <Row className="justify-content-md-center">
-                    <Col md="auto">
+                    <Col md={12}>
                     <Form.Group controlId="password" bssize="large">
-                        <Form.Label>Password</Form.Label>
                         <Form.Control 
+                            placeholder="Password"
                             value={fields.password}
                             onChange={handleFieldChange}
                             type="password"
@@ -79,9 +78,9 @@ export default function Login() {
 
                 <Row className="justify-content-md-center">
                     <Col md="auto">
-                    <Button variant="primary" disabled={!validateForm()} type="submit">
-                        Submit
-                    </Button>
+                        <Button variant="primary" disabled={!validateForm()} type="submit">
+                            Sign In
+                        </Button>
                     </Col>
                 </Row>
             </Form>

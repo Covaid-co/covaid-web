@@ -48,7 +48,6 @@ class App extends Component {
     }
 
     this.getMyLocation = this.getMyLocation.bind(this)
-    this.handleChange = this.handleChange.bind(this);
     this.logout = this.logout.bind(this);
     this.handleShowLogin = this.handleShowLogin.bind(this);
     this.handleHideLogin = this.handleHideLogin.bind(this);
@@ -82,66 +81,41 @@ class App extends Component {
 
   fetchUser(){
     fetch_a('/api/users/current')
-        .then((response) => response.json())
-        .then((user) => {
-          this.setState({ checked: user.availability });
-          this.setState({isLoggedIn: true});
-          this.setState({first_name: user.first_name});
-          this.setState({last_name: user.last_name});
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-  }
-
-  handleChange(checked) {
-    let form = {
-      'availability': checked
-    };
-    this.setState({checked : checked});
-
-    fetch_a('/api/users/update/', {
-      method: 'put',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(form)
-    })
-    .then((response) => {
-        if (response.ok) {
-          this.setState({checked : checked});
-          console.log("Update successful")
-        } else {
-          console.log("Update not successful")
-        }
-    })
-    .catch((e) => {
-        console.log("Error")
-    });
-  }
-
-  getMyLocation() {
-    var lat = '';
-    var long = '';
-    if (Cookie.get('latitude') && Cookie.get('longitude')) {
-      lat = Cookie.get('latitude');
-      long = Cookie.get('longitude');
-      this.findAndSetNeighborhood(lat, long);
-      this.setState({
-        latitude: Cookie.get('latitude'),
-        longitude: Cookie.get('longitude')
+      .then((response) => response.json())
+      .then((user) => {
+        this.setState({ checked: user.availability });
+        this.setState({ isLoggedIn: true });
+        this.setState({ first_name: user.first_name });
+        this.setState({ last_name: user.last_name });
       })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  setStateAndNeighborhood(lat, long) {
+    this.setState({
+      latitude: lat,
+      longitude: long
+    })
+    this.findAndSetNeighborhood(lat, long);
+  }
+
+  // Finds lat and long from cookie first and if found will load page
+  // lat and long will be updated once geolocation is working
+  getMyLocation() {
+    if (Cookie.get('latitude') && Cookie.get('longitude')) {
+      const lat = Cookie.get('latitude');
+      const long = Cookie.get('longitude');
+      this.setStateAndNeighborhood(lat, long);
     }
-    const location = window.navigator && window.navigator.geolocation
+
+    const location = window.navigator && window.navigator.geolocation;
     if (location) {
       location.getCurrentPosition((position) => {
         Cookie.set('latitude', position.coords.latitude);
         Cookie.set('longitude', position.coords.longitude);
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        });
-        lat = position.coords.latitude;
-        long = position.coords.longitude;
-        this.findAndSetNeighborhood(lat, long);
+        this.setStateAndNeighborhood(position.coords.latitude, position.coords.longitude);
       }, (error) => {
         this.setState({ latitude: 'err-latitude', longitude: 'err-longitude' })
       })
@@ -153,6 +127,7 @@ class App extends Component {
     window.location.reload(false);
   }
 
+  // Set isLoaded to true once a neighborhood is found
   findAndSetNeighborhood(lat, long) {
     Geocode.fromLatLng(lat, long).then(
       response => {
@@ -178,21 +153,15 @@ class App extends Component {
         console.error(error);
       }
     );
-
   }
 
   setLatLongFromZip() {
     Geocode.fromAddress(this.state.currentZipCode).then(
       response => {
-        const { lat, lng } = response.results[0].geometry.location;
-        this.findAndSetNeighborhood(response);
+        const { lat, long } = response.results[0].geometry.location;
         Cookie.set('latitude', lat);
-        Cookie.set('longitude', lng);
-        this.setState({
-          isLoaded: true,
-          latitude: lat,
-          longitude: lng,
-        });
+        Cookie.set('longitude', long);
+        this.setStateAndNeighborhood(lat, long);
       },
       error => {
         console.error(error);
@@ -221,39 +190,24 @@ class App extends Component {
 
     var rightNav;
     var yourOffer;
-    var toggleSwitch;
     if (isLoggedIn) {
       rightNav = <>
-                  <Nav className="mr-sm-2" style ={{color: 'white'}}>
-                    Hello, {this.state.first_name}
-                  </Nav>
-                  <Button className="mr-sm-2" onClick={this.logout} variant="danger">
-                    Logout
+                  <a style = {{marginRight: 20}}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Hello, {this.state.first_name}</font></a>
+                  <Button variant="outline-danger" onClick={this.logout}>
+                    <font color="white" style = {{fontWeight: 600, fontSize: 13}}>
+                      Logout
+                    </font>
                   </Button>
                 </>;
       yourOffer = <Tab eventKey="your-offer" title="Your Offer" className="tabColor" id='bootstrap-overide'>
                     <YourOffer state = {this.state}/>
-                  </Tab>;
-      toggleSwitch = <>
-              </>;       
+                  </Tab>;    
     } else {
       rightNav = <>
-                   <Button 
-                    onClick={this.handleShowLogin}
-                    variant="success"
-                    className="mr-sm-2">
-                    Sign In
-                  </Button>
-
-                  <Button 
-                    onClick={this.handleShowRegistration} 
-                    variant="success"
-                    className="mr-sm-2">
-                    Get Started
-                  </Button>
+                  <a class="btn" onClick={this.handleShowLogin}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Sign In</font></a>
+                  <Button variant="outline-light" onClick={this.handleShowRegistration}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Get Started</font></Button>
                 </>;
-      yourOffer = <></>
-      toggleSwitch = <></>
+      yourOffer = <></>;
     }
 
     if (!isLoaded) {
@@ -293,35 +247,31 @@ class App extends Component {
           <div className="BottomHalf"></div>
           <div className="App">
             <Navbar variant="light" expand="lg" className = 'customNav'>
-              <Navbar.Brand href="#home" style ={{color: 'white', fontWeight: 800, marginLeft: 140}}>Cov-Aid</Navbar.Brand>
+              <Navbar.Brand href="#home" style ={{color: 'white', fontWeight: 600, marginLeft: '15%', fontSize: 24}}>Cov-Aid</Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
+              <Navbar.Collapse id="basic-navbar-nav" style = {{marginLeft: 20}}>
                 <Nav className="mr-auto">
-                  <Nav.Link href="#link" style ={{color: 'white'}}>About Us (Under Construction)</Nav.Link>
-                  <NavDropdown alignRight title="Any issues?" id="basic-nav-dropdown">
+                  <Nav.Link href="#link" style ={{color: 'white', fontWeight: 600, fontSize: 13}}>About Us</Nav.Link>
+                  {/* <NavDropdown alignRight title="Any issues?" id="basic-nav-dropdown">
                     <NavDropdown.Item>
                       Email: debanik1997@gmail.com
                     </NavDropdown.Item>
                     <NavDropdown.Item>
                       Call/Text: 4846249881
                     </NavDropdown.Item>
-                  </NavDropdown>
+                  </NavDropdown> */}
                 </Nav>
-                <Form inline style ={{marginRight: 140}}>
+                <Form inline style ={{display: 'block', marginRight: '15%'}}>
                   {rightNav}
                 </Form>
               </Navbar.Collapse>
             </Navbar>
 
-
             <Container style = {{padding: '40px 15px'}}>
               <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white'}}>Need a hand?</h5>
               <h1 style = {{fontWeight: 800, color: 'white'}}>Mutual Aid For COVID-19</h1>
               <h6 style = {{fontWeight: 300, color: 'white'}}><i style={{color: "red", fontSize: 20, marginRight: 5}} class="fa fa-map-marker"></i> {this.state.currentNeighborhood}</h6>
-
-              {toggleSwitch}
               <br />
-
               <Row className="justify-content-md-center">
                 <Col md={1}></Col>
                 <Col md={8}>
@@ -335,11 +285,11 @@ class App extends Component {
                     </Tab>
                   </Tabs>
                 </Col>
-
                 <Col md={1}></Col>
               </Row>
             </Container>
-            <Modal show={this.state.showLogin} onHide={this.handleHideLogin} style = {{marginTop: 60}}>
+
+            <Modal size="sm" show={this.state.showLogin} onHide={this.handleHideLogin} style = {{marginTop: 60}}>
                   <Modal.Header closeButton>
                   <Modal.Title>Sign in to Cov-Aid</Modal.Title>
                   </Modal.Header>
@@ -347,14 +297,15 @@ class App extends Component {
                       <Login />
                   </Modal.Body>
               </Modal>
-              <Modal show={this.state.showRegistration} onHide={this.handleHideRegistration} style = {{marginTop: 60}}>
-                  <Modal.Header closeButton>
-                  <Modal.Title>Get Started</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Register />
-                  </Modal.Body>
-              </Modal>
+
+            <Modal show={this.state.showRegistration} onHide={this.handleHideRegistration} style = {{marginTop: 60}}>
+                <Modal.Header closeButton>
+                <Modal.Title>Create Your Account</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Register />
+                </Modal.Body>
+            </Modal>
           </div>
         </div>
       );

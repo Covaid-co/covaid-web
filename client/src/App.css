@@ -31,8 +31,8 @@ html, body {
   height: 100%; 
   width: 100%;
   z-index: -10;
-  bottom: 40%;
-  background: #1652F0;
+  bottom: 35%;
+  background: #194bd3;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -58,7 +58,7 @@ html, body {
 }
 
 .customNav {
-  background-color: #1652F0;
+  background-color: #194bd3;
 }
 
 .nav-item.nav-link.active {
@@ -80,6 +80,12 @@ html, body {
   background-color: #007bff !important;
   border: 0.5px solid #DADDE1;
   color: white !important;
+}
+
+#whiteText {
+  color: white !important;
+  font-weight: 600;
+  font-size: 13;
 }
 
 /* #uncontrolled-tab-example-tab-your-offer {
