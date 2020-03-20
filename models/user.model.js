@@ -41,12 +41,12 @@ UsersSchema.methods.generateJWT = function() {
     const today = new Date();
     const expirationDate = new Date(today);
     expirationDate.setDate(today.getDate() + 60);
-
+    const secret = process.env.SECRET || "secret"
     return jwt.sign({
     email: this.email,
     id: this._id,
     exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, 'secret');
+    }, secret);
 }
 
 UsersSchema.methods.toAuthJSON = function() {

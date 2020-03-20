@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "engines": {
+    "node": "10.16.0"
   },
   "author": "Debanik Purkayastha",
   "license": "ISC",
@@ -11,6 +15,7 @@
     "@googlemaps/google-maps-services-js": "^2.3.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "express-session": "^1.17.0",
