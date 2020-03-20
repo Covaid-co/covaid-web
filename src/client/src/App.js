@@ -33,6 +33,7 @@ class App extends Component {
       latitude: '',
       longitude: '',
       isLoaded: false,
+      isLoggedIn: false,
       currentUser: undefined,
       currentUserAvailability: false,
       checked: false 
@@ -52,6 +53,7 @@ class App extends Component {
         .then((response) => response.json())
         .then((user) => {
           this.setState({ checked: user.availability });
+          this.setState({isLoggedIn: true});
         })
         .catch((error) => {
           console.error(error);
@@ -103,6 +105,28 @@ class App extends Component {
 
   render() {
     const { isLoaded } = this.state;
+    const { isLoggedIn } = this.state;
+
+    var rightNav;
+    var yourOffer;
+    if (isLoggedIn) {
+      rightNav = <>
+                  <Button variant="outline-danger">
+                    Logout
+                  </Button>
+                </>;
+      yourOffer = <Tab eventKey="your-offer" title="Your Offer">
+                    <YourOffer state = {this.state}/>
+                  </Tab>;
+    } else {
+      rightNav = <><NavDropdown title="Sign In" alignRight bssize="large" variant="success" id="basic-nav-dropdown">
+                  <Login />
+                </NavDropdown>
+                <NavDropdown title="Get Started" alignRight variant="success" id="basic-nav-dropdown">
+                  <Register />
+                </NavDropdown></>;
+      yourOffer = <></>
+    }
 
     if (!isLoaded) {
       return <div>Loading ... </div>;
@@ -127,12 +151,7 @@ class App extends Component {
                 </NavDropdown>
               </Nav>
               <Form inline>
-                <NavDropdown title="Sign In" alignRight bssize="large" variant="success" id="basic-nav-dropdown">
-                  <Login />
-                </NavDropdown>
-                <NavDropdown title="Get Started" alignRight variant="success" id="basic-nav-dropdown">
-                  <Register />
-                </NavDropdown>
+                {rightNav}
               </Form>
             </Navbar.Collapse>
           </Navbar>
@@ -154,9 +173,7 @@ class App extends Component {
                   <Tab eventKey="offers" title="Offers">
                     <Offers state = {this.state}/>
                   </Tab>
-                  <Tab eventKey="your-offer" title="Your Offer">
-                    <YourOffer state = {this.state}/>
-                  </Tab>
+                  {yourOffer}
                   <Tab eventKey="faq" title="FAQ">
                     <Users />
                   </Tab>
