@@ -6,9 +6,6 @@
     "dev": "nodemon index.js",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
-  "engines": {
-    "node": "10.16.0"
-  },
   "author": "Debanik Purkayastha",
   "license": "ISC",
   "dependencies": {
