@@ -10,7 +10,7 @@ import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
 export default function Offers(props) {
-    const [value, setValue] = useState([]);
+    const [value, setValue] = useState([0, 1, 2, 3, 4, 5]);
     const [users, setUsers] = useState([]);
     const [displayedUsers, setDisplayedUsers] = useState([]);
     const possibleTasks = ['Groceries', 'Medicine/Health Care', 'Transportation',
