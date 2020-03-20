@@ -156,11 +156,13 @@ class App extends Component {
     Geocode.fromAddress(this.state.currentZipCode).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
+        Cookie.set('latitude', lat);
+        Cookie.set('longitude', lng);
         this.setState({
           isLoaded: true,
           latitude: lat,
           longitude: lng,
-        })
+        });
       },
       error => {
         console.error(error);
@@ -286,8 +288,9 @@ class App extends Component {
 
 
           <Container style = {{padding: '40px 15px'}}>
-            <h1 style = {{fontWeight: 300}}>Need a hand?</h1>
-            <h4 style = {{fontWeight: 300}}>Mutual Aid For COVID-19</h4>
+            <h5 style = {{fontWeight: 300, fontStyle: 'italic'}}>Need a hand?</h5>
+            <h1 style = {{fontWeight: 300}}>Mutual Aid For COVID-19</h1>
+            <br></br>
             {toggleSwitch}
             <br />
 
