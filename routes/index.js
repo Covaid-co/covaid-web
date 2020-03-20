@@ -17,11 +17,11 @@ module.exports = app => {
 	app.use('/api', router);
 
 	// set up React build files to be served from Express
-	app.use(express.static(path.join(__dirname, '/../../client/build')));
+	app.use(express.static(path.join(__dirname, "client", "build")))
 
 	// default to serving React files at all other endpoints 
 	// (this should always be the last routed endpoint)
-	app.get('*', (req, res) => {
-	  res.sendFile(path.join(__dirname + '/../../client/build/index.html'))
+	app.get("*", (req, res) => {
+		res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 	});
 }
