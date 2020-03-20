@@ -23,12 +23,9 @@ import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Spinner from 'react-bootstrap/Spinner'
-
-import Switch from "react-switch";
 import Geocode from "react-geocode";
 import Cookie from 'js-cookie'
 
-const Users = () => <span>Users</span>;
 
 class App extends Component {
   constructor() {
@@ -292,73 +289,73 @@ class App extends Component {
     } else {
       return (
         <div>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <div className="BottomHalf"></div>
-        <div className="App">
-          <Navbar variant="light" expand="lg" className = 'customNav'>
-            <Navbar.Brand href="#home" style ={{color: 'white', fontWeight: 800, marginLeft: 140}}>Cov-Aid</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link href="#link" style ={{color: 'white'}}>About Us (Under Construction)</Nav.Link>
-                <NavDropdown alignRight title="Any issues?" id="basic-nav-dropdown">
-                  <NavDropdown.Item>
-                    Email: debanik1997@gmail.com
-                  </NavDropdown.Item>
-                  <NavDropdown.Item>
-                    Call/Text: 4846249881
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-              <Form inline style ={{marginRight: 140}}>
-                {rightNav}
-              </Form>
-            </Navbar.Collapse>
-          </Navbar>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+          <div className="BottomHalf"></div>
+          <div className="App">
+            <Navbar variant="light" expand="lg" className = 'customNav'>
+              <Navbar.Brand href="#home" style ={{color: 'white', fontWeight: 800, marginLeft: 140}}>Cov-Aid</Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                  <Nav.Link href="#link" style ={{color: 'white'}}>About Us (Under Construction)</Nav.Link>
+                  <NavDropdown alignRight title="Any issues?" id="basic-nav-dropdown">
+                    <NavDropdown.Item>
+                      Email: debanik1997@gmail.com
+                    </NavDropdown.Item>
+                    <NavDropdown.Item>
+                      Call/Text: 4846249881
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </Nav>
+                <Form inline style ={{marginRight: 140}}>
+                  {rightNav}
+                </Form>
+              </Navbar.Collapse>
+            </Navbar>
 
 
-          <Container style = {{padding: '40px 15px'}}>
-            <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white'}}>Need a hand?</h5>
-            <h1 style = {{fontWeight: 800, color: 'white'}}>Mutual Aid For COVID-19</h1>
-            <h6 style = {{fontWeight: 300, color: 'white'}}><i style={{color: "red", fontSize: 20, marginRight: 5}} class="fa fa-map-marker"></i> {this.state.currentNeighborhood}</h6>
+            <Container style = {{padding: '40px 15px'}}>
+              <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white'}}>Need a hand?</h5>
+              <h1 style = {{fontWeight: 800, color: 'white'}}>Mutual Aid For COVID-19</h1>
+              <h6 style = {{fontWeight: 300, color: 'white'}}><i style={{color: "red", fontSize: 20, marginRight: 5}} class="fa fa-map-marker"></i> {this.state.currentNeighborhood}</h6>
 
-            {toggleSwitch}
-            <br />
+              {toggleSwitch}
+              <br />
 
-            <Row className="justify-content-md-center">
-              <Col md={1}></Col>
-              <Col md={8}>
-                <Tabs defaultActiveKey="offers" id="uncontrolled-tab-example" className="justify-content-center">
-                  <Tab eventKey="offers" title="Offers" id='bootstrap-overide'>
-                    <Offers state = {this.state}/>
-                  </Tab>
-                  {yourOffer}
-                  <Tab eventKey="links" title="Helpful Links" id='bootstrap-overide'>
-                    <HelpfulLinks />
-                  </Tab>
-                </Tabs>
-              </Col>
+              <Row className="justify-content-md-center">
+                <Col md={1}></Col>
+                <Col md={8}>
+                  <Tabs defaultActiveKey="offers" id="uncontrolled-tab-example" className="justify-content-center">
+                    <Tab eventKey="offers" title="Offers" id='bootstrap-overide'>
+                      <Offers state = {this.state}/>
+                    </Tab>
+                    {yourOffer}
+                    <Tab eventKey="links" title="Helpful Links" id='bootstrap-overide'>
+                      <HelpfulLinks />
+                    </Tab>
+                  </Tabs>
+                </Col>
 
-              <Col md={1}></Col>
-            </Row>
-          </Container>
-          <Modal show={this.state.showLogin} onHide={this.handleHideLogin} style = {{marginTop: 60}}>
-                <Modal.Header closeButton>
-                <Modal.Title>Enter your credentials</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Login />
-                </Modal.Body>
-            </Modal>
-            <Modal show={this.state.showRegistration} onHide={this.handleHideRegistration} style = {{marginTop: 60}}>
-                <Modal.Header closeButton>
-                <Modal.Title>Get Started</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Register />
-                </Modal.Body>
-            </Modal>
-        </div>
+                <Col md={1}></Col>
+              </Row>
+            </Container>
+            <Modal show={this.state.showLogin} onHide={this.handleHideLogin} style = {{marginTop: 60}}>
+                  <Modal.Header closeButton>
+                  <Modal.Title>Sign in to Cov-Aid</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                      <Login />
+                  </Modal.Body>
+              </Modal>
+              <Modal show={this.state.showRegistration} onHide={this.handleHideRegistration} style = {{marginTop: 60}}>
+                  <Modal.Header closeButton>
+                  <Modal.Title>Get Started</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Register />
+                  </Modal.Body>
+              </Modal>
+          </div>
         </div>
       );
     }
