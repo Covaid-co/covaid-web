@@ -49,36 +49,46 @@ export default function Login() {
       };
 
     return (
-        <div className="shadow p-3 mb-5 bg-white rounded">
-            <Row className="justify-content-md-center">
-                <Col md={2}></Col>
-                <Col md={8}>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="email" bssize="large">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control 
-                                type="email"
-                                value={fields.email}
-                                onChange={handleFieldChange}
-                            />
-                        </Form.Group>
-
-                        <Form.Group controlId="password" bssize="large">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control 
-                                value={fields.password}
-                                onChange={handleFieldChange}
-                                type="password"
-                            />
-                        </Form.Group>
-
-                        <Button variant="primary" disabled={!validateForm()} type="submit">
-                            Submit
-                        </Button>
-                    </Form>
-                </Col>
-                <Col md={2}></Col>
+        <div className="p-3 mb-5 bg-white">
+            <Row>
+                <Col md="auto">Enter your credentials</Col>
             </Row>
+
+            <Form onSubmit={handleSubmit}>
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Form.Group controlId="email" bssize="large">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control 
+                            type="email"
+                            value={fields.email}
+                            onChange={handleFieldChange}
+                        />
+                    </Form.Group>
+                    </Col>
+                </Row>
+
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Form.Group controlId="password" bssize="large">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control 
+                            value={fields.password}
+                            onChange={handleFieldChange}
+                            type="password"
+                        />
+                    </Form.Group>
+                    </Col>
+                </Row>
+
+                <Row className="justify-content-md-center">
+                    <Col md="auto">
+                    <Button variant="primary" disabled={!validateForm()} type="submit">
+                        Submit
+                    </Button>
+                    </Col>
+                </Row>
+            </Form>
         </div>
     )
 
