@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon gitindex.js"
+    "dev": "nodemon index.js"
   },
   "author": "Debanik Purkayastha",
   "license": "ISC",
