@@ -110,17 +110,17 @@ class App extends Component {
       const lat = Cookie.get('latitude');
       const long = Cookie.get('longitude');
       this.setStateAndNeighborhood(lat, long);
-    }
-
-    const location = window.navigator && window.navigator.geolocation;
-    if (location) {
-      location.getCurrentPosition((position) => {
-        Cookie.set('latitude', position.coords.latitude);
-        Cookie.set('longitude', position.coords.longitude);
-        this.setStateAndNeighborhood(position.coords.latitude, position.coords.longitude);
-      }, (error) => {
-        console.log("No geolocation")
-      })
+    } else {
+      const location = window.navigator && window.navigator.geolocation;
+      if (location) {
+        location.getCurrentPosition((position) => {
+          Cookie.set('latitude', position.coords.latitude);
+          Cookie.set('longitude', position.coords.longitude);
+          this.setStateAndNeighborhood(position.coords.latitude, position.coords.longitude);
+        }, (error) => {
+          console.log("No geolocation")
+        })
+      }
     }
   }
 
