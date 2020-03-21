@@ -105,7 +105,7 @@ export default function Offers(props) {
                             <Row>
                                 <Col>{user.first_name} {user.last_name}</Col>
                                 <Col>{user.offer.tasks.map((task) => {
-                                        return <><Badge pill variant="primary">{task}</Badge>{' '}<br /></>
+                                        return <><Badge pill variant="primary">{task}</Badge>{' '}</>
                                     })}</Col>
                                 <Col>{user.offer.neighborhoods.map((neighborhood) => {
                                         return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>
