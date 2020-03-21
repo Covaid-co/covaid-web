@@ -100,12 +100,12 @@ export default function Offers(props) {
             <ListGroup variant="flush">
                 {displayedUsers.map((user) => {
                     return <ListGroup.Item key={user._id} action 
-                                            style = {{fontSize: 16}} 
+                                            style = {{fontSize: 14}} 
                                             onClick={() => { handleShow(); setModal({...user});}}>
                             <Row>
                                 <Col>{user.first_name} {user.last_name}</Col>
                                 <Col>{user.offer.tasks.map((task) => {
-                                        return <><Badge pill variant="primary">{task}</Badge>{' '}</>
+                                        return <><Badge pill variant="primary">{task}</Badge>{' '}<br /></>
                                     })}</Col>
                                 <Col>{user.offer.neighborhoods.map((neighborhood) => {
                                         return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>
