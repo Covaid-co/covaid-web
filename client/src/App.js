@@ -210,10 +210,10 @@ class App extends Component {
                     </font>
                   </Button>
                 </>;
-      yourOffer = <Tab eventKey="your-offer" title="How can I help?" className="tabColor" id='bootstrap-overide'>
+      yourOffer = <Tab eventKey="your-offer" title="My Offer" className="tabColor" id='bootstrap-overide'>
                     <YourOffer state = {this.state}/>
                   </Tab>;  
-      howHelp = <><h5>How can I help?</h5>
+      howHelp = <><h5>My Offer</h5>
        <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></>  
     } else {
