@@ -329,7 +329,6 @@ class App extends Component {
                   <h5>Questions?</h5>
                   <p style={{fontWeight: 300, fontStyle: 'italic'}}>Direct any questions or concerns to 
                   debanik1997@gmail.com or lijeffrey39@gmail.com</p>
-
                 </Modal.Body>
             </Modal>
 
@@ -340,8 +339,8 @@ class App extends Component {
                 <Modal.Body>
                   <p>We're 2 college seniors who both recently had our final semesters taken away by COVID-19.
                      Wanting to play our part, we created  <font style = {{fontStyle: 'italic'}}> Cov-Aid</font>
-                     , a tool to help provide mutual aid to elderly and
-                    immuno-compromised groups in this time of distress. 
+                     , a tool to help provide mutual aid to elderly, immune-compromised, and those with underlying 
+                     illnesses in this time of distress. 
                   </p>
                 </Modal.Body>
             </Modal>
