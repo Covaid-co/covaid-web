@@ -177,7 +177,7 @@ class App extends Component {
         }
 
         var date = new Date();
-        date.setTime(date.getTime() + ((60 * 60 * 8) * 1000));
+        date.setTime(date.getTime() + ((60 * 60 * 1) * 1000));
         Cookie.set('latitude', latitude, { expires: date });
         Cookie.set('longitude', longitude,  { expires: date });
         Cookie.set('zipcode', foundZipCode,  { expires: date });
@@ -314,7 +314,11 @@ class App extends Component {
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></>  
     } else {
       rightNav = <>
-                  <Button variant="outline-light" onClick={this.handleShowRegistration}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Want to help?</font></Button>
+                  <Button variant="outline-light" onClick={this.handleShowRegistration}>
+                    <font id ="help" style = {{color:"white", fontWeight: 600, fontSize: 13}}>
+                      Want to help?
+                    </font>
+                  </Button>
                 </>;
       yourOffer = <></>;
       howHelp = <></>

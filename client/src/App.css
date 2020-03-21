@@ -80,6 +80,14 @@ html, body {
     color:#dc3545 !important;
   }
 
+  #help {
+    color:#194bd3 !important;
+  }
+
+  .btn-outline-light {
+    border-color: #194bd3 !important;
+  }
+
 }
 
 .App-header {
