@@ -91,8 +91,9 @@ export default function Offers(props) {
             <ListGroup variant="flush">
                 <ListGroup.Item>
                     <Row>
-                        <Col>Tasks</Col>
-                        <Col>Neighborhoods</Col>
+                        <Col style={{whiteSpace: 'nowrap'}}>Who's offering?</Col>
+                        <Col>Task</Col>
+                        <Col>Locality</Col>
                     </Row>
                 </ListGroup.Item>
             </ListGroup>
@@ -102,6 +103,7 @@ export default function Offers(props) {
                                             style = {{fontSize: 16}} 
                                             onClick={() => { handleShow(); setModal({...user});}}>
                             <Row>
+                                <Col>{user.first_name} {user.last_name}</Col>
                                 <Col>{user.offer.tasks.map((task) => {
                                         return <><Badge pill variant="primary">{task}</Badge>{' '}</>
                                     })}</Col>

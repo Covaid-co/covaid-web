@@ -201,7 +201,7 @@ class App extends Component {
                     </font>
                   </Button>
                 </>;
-      yourOffer = <Tab eventKey="your-offer" title="Your Offer" className="tabColor" id='bootstrap-overide'>
+      yourOffer = <Tab eventKey="your-offer" title="How can I help?" className="tabColor" id='bootstrap-overide'>
                     <YourOffer state = {this.state}/>
                   </Tab>;    
     } else {
@@ -278,7 +278,7 @@ class App extends Component {
                 <Col md={1}></Col>
                 <Col md={8}>
                   <Tabs defaultActiveKey="offers" id="uncontrolled-tab-example" className="justify-content-center">
-                    <Tab eventKey="offers" title="Offers" id='bootstrap-overide'>
+                    <Tab eventKey="offers" title="Community Bulletin" id='bootstrap-overide'>
                       <Offers state = {this.state}/>
                     </Tab>
                     {yourOffer}
