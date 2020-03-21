@@ -24,8 +24,10 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Spinner from 'react-bootstrap/Spinner'
 import Geocode from "react-geocode";
+
 import Cookie from 'js-cookie'
 
+Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 class App extends Component {
   constructor() {
@@ -158,10 +160,10 @@ class App extends Component {
   setLatLongFromZip() {
     Geocode.fromAddress(this.state.currentZipCode).then(
       response => {
-        const { lat, long } = response.results[0].geometry.location;
+        const { lat, lng } = response.results[0].geometry.location;
         Cookie.set('latitude', lat);
-        Cookie.set('longitude', long);
-        this.setStateAndNeighborhood(lat, long);
+        Cookie.set('longitude', lng);
+        this.setStateAndNeighborhood(lat, lng);
       },
       error => {
         console.error(error);
