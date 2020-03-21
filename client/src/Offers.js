@@ -87,12 +87,16 @@ export default function Offers(props) {
                 })}
                 
             </ToggleButtonGroup> */}
+            <br />
+            <Badge pill style = {{fontSize: 16}} variant="primary" className="shadow">
+                Offers of help from your community
+            </Badge>{' '}
+            <br /> <br />
             <ListGroup variant="flush">
                 <ListGroup.Item>
                     <Row>
-                        <Col style={{whiteSpace: 'nowrap'}}>Who's offering?</Col>
-                        <Col>Task</Col>
-                        {/* <Col>Locality</Col> */}
+                        <Col style={{whiteSpace: 'nowrap'}}><strong>Who's offering?</strong></Col>
+                        <Col ><strong>Offer</strong></Col>
                     </Row>
                 </ListGroup.Item>
             </ListGroup>
