@@ -17,7 +17,6 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
@@ -45,6 +44,8 @@ class App extends Component {
       checked: false,
       showLogin: false,
       showRegistration: false,
+      showWorks: false,
+      showAbout: false,
       currentZipCode: '',
       currentNeighborhood: ''
     }
@@ -55,6 +56,10 @@ class App extends Component {
     this.handleHideLogin = this.handleHideLogin.bind(this);
     this.handleShowRegistration = this.handleShowRegistration.bind(this);
     this.handleHideRegistration = this.handleHideRegistration.bind(this);
+    this.handleShowWorks = this.handleShowWorks.bind(this);
+    this.handleHideWorks = this.handleHideWorks.bind(this);
+    this.handleShowAbout = this.handleShowAbout.bind(this);
+    this.handleHideAbout = this.handleHideAbout.bind(this);
     this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
   }
 
@@ -72,6 +77,22 @@ class App extends Component {
 
   handleHideRegistration() {
     this.setState({showRegistration: false});
+  }
+
+  handleShowWorks() {
+    this.setState({showWorks: true});
+  }
+
+  handleHideWorks() {
+    this.setState({showWorks: false})
+  }
+
+  handleShowAbout() {
+    this.setState({showAbout: true});
+  }
+
+  handleHideAbout() {
+    this.setState({showAbout: false})
   }
 
   componentDidMount() {
@@ -140,7 +161,7 @@ class App extends Component {
             const types = results[j].types;
             if (types.includes('neighborhood') || types.includes('locality')) {
               const currNeighborhoodName = results[j]['long_name'];
-              if (foundNeighborhood == '') {
+              if (foundNeighborhood === '') {
                 foundNeighborhood = currNeighborhoodName;
               }
             }
@@ -180,7 +201,7 @@ class App extends Component {
   }
 
   validateForm() {
-    if (this.state.currentZipCode.length != 5) {
+    if (this.state.currentZipCode.length !== 5) {
       return false;
     }
     return this.isNumeric(this.state.currentZipCode);
@@ -192,9 +213,10 @@ class App extends Component {
 
     var rightNav;
     var yourOffer;
+    var howHelp;
     if (isLoggedIn) {
       rightNav = <>
-                  <a style = {{marginRight: 20}}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Hello, {this.state.first_name}</font></a>
+                  <span style = {{marginRight: 20}}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Hello, {this.state.first_name}</font></span>
                   <Button variant="outline-danger" onClick={this.logout}>
                     <font color="white" style = {{fontWeight: 600, fontSize: 13}}>
                       Logout
@@ -203,13 +225,17 @@ class App extends Component {
                 </>;
       yourOffer = <Tab eventKey="your-offer" title="How can I help?" className="tabColor" id='bootstrap-overide'>
                     <YourOffer state = {this.state}/>
-                  </Tab>;    
+                  </Tab>;  
+      howHelp = <><h5>How can I help?</h5>
+       <p style={{fontWeight: 300, fontStyle: 'italic'}}>Under this tab, logged-in users can create their own offers for support. They can choose 
+       their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></>  
     } else {
       rightNav = <>
-                  <a class="btn" onClick={this.handleShowLogin}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Sign In</font></a>
+                  <span class="btn" onClick={this.handleShowLogin}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Sign In</font></span>
                   <Button variant="outline-light" onClick={this.handleShowRegistration}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Get Started</font></Button>
                 </>;
       yourOffer = <></>;
+      howHelp = <></>
     }
 
     if (!isLoaded) {
@@ -253,15 +279,18 @@ class App extends Component {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav" style = {{marginLeft: 20}}>
                 <Nav className="mr-auto">
-                  <Nav.Link href="#link" style ={{color: 'white', fontWeight: 600, fontSize: 13}}>About Us</Nav.Link>
-                  {/* <NavDropdown alignRight title="Any issues?" id="basic-nav-dropdown">
-                    <NavDropdown.Item>
-                      Email: debanik1997@gmail.com
-                    </NavDropdown.Item>
-                    <NavDropdown.Item>
-                      Call/Text: 4846249881
-                    </NavDropdown.Item>
-                  </NavDropdown> */}
+                  <Nav.Link 
+                  style ={{color: 'white', fontWeight: 600, fontSize: 13}} 
+                  onClick={this.handleShowAbout}
+                  >
+                    About Us
+                  </Nav.Link>
+                  <Nav.Link 
+                  style ={{color: 'white', fontWeight: 600, fontSize: 13}} 
+                  onClick={this.handleShowWorks}
+                  >
+                    How It Works
+                  </Nav.Link>
                 </Nav>
                 <Form inline style ={{display: 'block', marginRight: '15%'}}>
                   {rightNav}
@@ -306,6 +335,31 @@ class App extends Component {
                 </Modal.Header>
                 <Modal.Body>
                   <Register />
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={this.state.showWorks} onHide={this.handleHideWorks} style = {{marginTop: 60}}>
+                <Modal.Header closeButton>
+                <Modal.Title>How It Works</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <h5>The Community Bulletin</h5>
+                  <p style={{fontWeight: 300, fontStyle: 'italic'}}>The community bulletin is home to all offers of mutual aid being made by your community. 
+                    Each entry represents an offer by a particular user, and displays information regarding what tasks
+                     this user can help undertake. More information about each offer, such as contact information, can be found by clicking the offer.</p>
+                  {howHelp}
+                  <h5>Questions?</h5>
+                  <p style={{fontWeight: 300, fontStyle: 'italic'}}>Direct any questions to debanik1997@gmail.com or call/text 4846249881.</p>
+
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={this.state.showAbout} onHide={this.handleHideAbout} style = {{marginTop: 60}}>
+                <Modal.Header closeButton>
+                <Modal.Title>About Us</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p>We're 2 seniors in college who both had our final semesters taken away by COVID-19.</p>
                 </Modal.Body>
             </Modal>
           </div>

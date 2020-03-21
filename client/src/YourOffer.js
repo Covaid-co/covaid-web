@@ -23,7 +23,6 @@ export default function YourOffer(props) {
     const [availableText, setAvailableText] = useState('');
     const [switchSelected, setSwitchSelected] = useState(false);
     const [selectedTasks, setSelectedTasks] = useState([]);
-    const [currentUser, setCurrentUser] = useState({});
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +36,6 @@ export default function YourOffer(props) {
         async function fetchData() {
             const response = await fetch_a('/api/users/current');
             response.json().then((user) => {
-                setCurrentUser(user);
                 fields.details = user.offer.details ? user.offer.details : '';
 
                 // Get current lat and long from current location and find neighborhoods
@@ -130,7 +128,7 @@ export default function YourOffer(props) {
         }
 
         // If there are non selected
-        if (selectedTasks.length == 0) {
+        if (selectedTasks.length === 0) {
             setShowToast(true);
             setToastMessage('No Task Selected');
             return false;

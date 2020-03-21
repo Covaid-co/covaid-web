@@ -5,7 +5,6 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
 import Badge from 'react-bootstrap/Badge'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
@@ -58,15 +57,6 @@ export default function Offers(props) {
         fetchData();
     }, []);
 
-    const generateTasks = (tasks) => {
-        var res = tasks[0]
-        for (var i = 1; i < tasks.length; i++) {
-            res += ', '
-            res += tasks[i];
-        }
-        return res;
-    }
-
     const handleChange = (val) => {
         setValue(val);
         const selectedTasks = [];
@@ -83,11 +73,11 @@ export default function Offers(props) {
 
     return (
         <div className="shadow p-3 mb-5 bg-white rounded">
-            <ToggleButtonGroup type="checkbox" className="btn-group d-flex flex-wrap" value={value} onChange={handleChange}>
+            {/* <ToggleButtonGroup type="checkbox" className="btn-group d-flex flex-wrap" value={value} onChange={handleChange}>
                 {possibleTasks.map((task, i) => {
                     return <ToggleButton style={buttonStyles} className="toggleButton" variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
                 })}
-            </ToggleButtonGroup>
+            </ToggleButtonGroup> */}
             <ListGroup variant="flush">
                 <ListGroup.Item>
                     <Row>
