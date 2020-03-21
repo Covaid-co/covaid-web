@@ -119,7 +119,7 @@ class App extends Component {
         Cookie.set('longitude', position.coords.longitude);
         this.setStateAndNeighborhood(position.coords.latitude, position.coords.longitude);
       }, (error) => {
-        this.setState({ latitude: 'err-latitude', longitude: 'err-longitude' })
+        console.log("No geolocation")
       })
     }
   }
