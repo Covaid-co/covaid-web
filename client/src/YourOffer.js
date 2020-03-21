@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
+import Alert from 'react-bootstrap/Alert'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
@@ -20,6 +21,7 @@ export default function YourOffer(props) {
         details: "",
     });
 
+    const [showAlert, setShowAlert] = useState(false);
     const [availableText, setAvailableText] = useState('');
     const [switchSelected, setSwitchSelected] = useState(false);
     const [selectedTasks, setSelectedTasks] = useState([]);
@@ -43,13 +45,11 @@ export default function YourOffer(props) {
 
                 Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
                     response => {
+                        var currentZipcode = '';
                         for (var i = 0; i < Math.min(5, response.results.length); i++) {
-                        // for (var i = 0; i < response.results.length; i++) {
                             const results = response.results[i]['address_components'];
                             for (var j = 0; j < results.length; j++) {
                                 const types = results[j].types;
-                                // console.log(types);
-                                // console.log(results[j]['long_name']);
                                 if (types.includes('neighborhood') || types.includes('locality')) {
                                     const currNeighborhoodName = results[j]['long_name'];
                                     if (neighborhoods.includes(currNeighborhoodName) === false) {
@@ -61,33 +61,65 @@ export default function YourOffer(props) {
                                         }));
                                     }
                                 }
+                                // find zip code from current location
+                                if (types.includes('postal_code')) {
+                                    if (currentZipcode === '') {
+                                        currentZipcode = results[j]['long_name'];
+                                    }
+                                }
                             }
                         }
+
+                        Geocode.fromLatLng(user.latlong[1], user.latlong[0]).then(
+                            response => {
+                                var foundZipCode = '';
+                                for (var i = 0; i < Math.min(4, response.results.length); i++) {
+                                    const results = response.results[i]['address_components'];
+                                    for (var j = 0; j < results.length; j++) {
+                                        const types = results[j].types;
+                                        // find zip code from current location
+                                        if (types.includes('postal_code')) {
+                                            if (foundZipCode === '') {
+                                                foundZipCode = results[j]['long_name'];
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (foundZipCode !== currentZipcode) {
+                                    setShowAlert(true);
+                                }
+                            },
+                            error => {
+                                console.error(error);
+                            }
+                        );
                     },
                     error => {
                         console.error(error);
                     }
                 );
+
                 // console.log(neighborhoods);
 
                 // Update Neighborhoods from current user and found neighbors
                 // Combine with found neighborhoods/overwrite
-                const currentNeighborhoods = user.offer.neighborhoods;
-                for (var i = 0; i < currentNeighborhoods.length; i++) {
-                    const currNeighborhoodName = currentNeighborhoods[i];
-                    setNeighborhoodSelect(prev => ({ 
-                        ...prev,
-                        [currNeighborhoodName]: true,
-                    }));
-                    if (neighborhoods.includes(currNeighborhoodName) === false) {
-                        neighborhoods.push(currNeighborhoodName);
-                    }
-                }
+                // const currentNeighborhoods = user.offer.neighborhoods;
+                // for (var i = 0; i < currentNeighborhoods.length; i++) {
+                //     const currNeighborhoodName = currentNeighborhoods[i];
+                //     setNeighborhoodSelect(prev => ({ 
+                //         ...prev,
+                //         [currNeighborhoodName]: true,
+                //     }));
+                //     if (neighborhoods.includes(currNeighborhoodName) === false) {
+                //         neighborhoods.push(currNeighborhoodName);
+                //     }
+                // }
                 setNeighborhoods(neighborhoods);
 
                 // Update tasks from current user
                 var tempTasks = [];
-                for (i = 0; i < possibleTasks.length; i++) {
+                for (var i = 0; i < possibleTasks.length; i++) {
                     const taskName = possibleTasks[i];
                     const currentUserTasks = user.offer.tasks;
                     const includedTask = (currentUserTasks.includes(taskName)) ? true : false;
@@ -245,6 +277,9 @@ export default function YourOffer(props) {
                     </Col>
                     <Col md={10} >
                         {/* <Row> */}
+                        <Alert show={showAlert} variant={'danger'}>
+                            Your location has changed! Press update to reflect this.
+                        </Alert>
                         <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
                             <br></br>
                             <Form.Label style = {{marginBottom: -10}}><h3>Availability</h3></Form.Label>

@@ -34,17 +34,19 @@ export default function Loading(props) {
                 <span className="sr-only">Loading...</span>
             </Spinner>
             <br></br>
-            <h3 style = {{fontWeight: 300}}>Enter your zipcode...</h3>
+            <h2 style = {{fontWeight: 300}}>Enter your Zipcode</h2>
+            <h6 style = {{fontWeight: 300, fontStyle: 'italic'}}>
+                We need your zipcode to help you find mutual aid in your neighborhood! 
+            </h6>
             <Row className="justify-content-md-center">
-                <Col md={5}></Col>
-                <Col md={2}>
+                <Col md={4} lg={5}></Col>
+                <Col md={4} lg={2}>
                     <Form onSubmit={(event) => props.setLatLong(event, zipCode)}>
                         <br></br>
                         <FormControl type="text" 
                                     value={zipCode} 
                                     onChange={(event) => {handleChangeZip(event.target.value)}} 
-                                    placeholder="Zip Code" 
-                                    className="mr-sm-2" />
+                                    placeholder="Zip Code"/>
                         <br></br>
                         <Button variant="outline-success" 
                                 type="submit"
@@ -53,7 +55,7 @@ export default function Loading(props) {
                         </Button>
                     </Form>
                 </Col>
-                <Col md={5}></Col>
+                <Col md={4} lg={5}></Col>
             </Row>
             </div>
         </Container>

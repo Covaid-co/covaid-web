@@ -80,8 +80,7 @@ exports.current = function (req, res) {
 };
 
 exports.all_users = function (req, res) {
-  Users.find({'offer.details': { $exists: true },
-              'availability': true,
+  Users.find({'availability': true,
               'location': 
                 { $geoWithin: 
                   { $centerSphere: 

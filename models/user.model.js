@@ -65,6 +65,7 @@ UsersSchema.methods.toJSON = function() {
         first_name: this.first_name,
         last_name: this.last_name,
         availability: this.availability,
+        latlong: this.location.coordinates,
         offer: {
             neighborhoods: this.offer.neighborhoods,
             tasks: this.offer.tasks,

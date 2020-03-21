@@ -10,6 +10,8 @@ import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
 export default function Offers(props) {
+    const [lat, setLatitude] = useState(props.state.latitude);
+    const [lng, setLongitude] = useState(props.state.longitude);
     const [value, setValue] = useState([0, 1, 2, 3, 4, 5]);
     const [users, setUsers] = useState([]);
     const [displayedUsers, setDisplayedUsers] = useState([]);
@@ -36,12 +38,35 @@ export default function Offers(props) {
         setModalInfo(user);
     }
 
+    // const refreshOffers = (newLat, newLong) => {
+    //     var url = "/api/users/all?";
+    //     let params = {
+    //         'latitude': newLat,
+    //         'longitude': newLong
+    //     }
+    //     let query = Object.keys(params)
+    //          .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+    //          .join('&');
+    //     url += query;
+
+    //     async function fetchData() {
+    //         const response = await fetch(url);
+    //         response.json().then((data) => {
+    //             setUsers(data);
+    //             setDisplayedUsers(data);
+    //         });
+    //     }
+    //     fetchData();
+    // }
+
     useEffect(() => {
         var url = "/api/users/all?";
         const { latitude, longitude } = props.state;
+        setLatitude(latitude);
+        setLongitude(longitude);
         let params = {
-            'latitude': latitude,
-            'longitude': longitude
+            'latitude': lat,
+            'longitude': lng
         }
         let query = Object.keys(params)
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
@@ -56,7 +81,7 @@ export default function Offers(props) {
             });
         }
         fetchData();
-    }, []);
+    }, [props.state.latitude, props.state.longitude]);
 
     const handleChange = (val) => {
         setValue(val);

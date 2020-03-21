@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row'
 import Cookie from 'js-cookie'
 
 
-export default function Register() {
+export default function Register(props) {
     const [fields, handleFieldChange] = useFormFields({
         first_name: "",
         last_name: "",
@@ -37,21 +37,16 @@ export default function Register() {
                 'last_name': fields.last_name,
                 'email': fields.email,
                 'password': fields.password,
-                'availability': true,
+                'availability': false,
+                'location': {
+                    'type': 'Point',
+                    'coordinates': [props.state.longitude, props.state.latitude]
+                }
             }
         };
 
         if (fields.phone.length > 0) {
-            form = {
-                'user': {
-                    'first_name': fields.first_name,
-                    'last_name': fields.last_name,
-                    'email': fields.email,
-                    'phone': fields.phone,
-                    'password': fields.password,
-                    'availability': true,
-                }
-            }
+            form['user']['phone'] = fields.phone;
         }
         fetch('/api/users/', {
             method: 'post',

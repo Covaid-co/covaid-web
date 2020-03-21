@@ -35,6 +35,13 @@ class App extends Component {
     this.state = {
       latitude: '',
       longitude: '',
+      zipCode: '',
+      currentNeighborhood: '',
+      nonCookieLat: '',
+      nonCookieLong: '',
+      nonCookieZip: '',
+      nonCookieNeighborhood: '',
+      promptChangeZip: false,
       isLoaded: false,
       isLoggedIn: false,
       first_name: '',
@@ -46,10 +53,12 @@ class App extends Component {
       showRegistration: false,
       showWorks: false,
       showAbout: false,
-      currentZipCode: '',
-      currentNeighborhood: ''
+      cookieSet: false
     }
+    
+    this.offerElement = React.createRef();
 
+    this.handleHidePrompt = this.handleHidePrompt.bind(this);
     this.getMyLocation = this.getMyLocation.bind(this)
     this.logout = this.logout.bind(this);
     this.handleShowLogin = this.handleShowLogin.bind(this);
@@ -61,6 +70,10 @@ class App extends Component {
     this.handleShowAbout = this.handleShowAbout.bind(this);
     this.handleHideAbout = this.handleHideAbout.bind(this);
     this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
+  }
+
+  handleHidePrompt() {
+    this.setState({promptChangeZip: false});
   }
 
   handleShowLogin() {
@@ -116,66 +129,140 @@ class App extends Component {
       });
   }
 
-  setStateAndNeighborhood(lat, long) {
-    this.setState({
-      latitude: lat,
-      longitude: long
-    })
-    this.findAndSetNeighborhood(lat, long);
-  }
-
-  // Finds lat and long from cookie first and if found will load page
-  // lat and long will be updated once geolocation is working
-  getMyLocation() {
-    if (Cookie.get('latitude') && Cookie.get('longitude')) {
-      const lat = Cookie.get('latitude');
-      const long = Cookie.get('longitude');
-      this.setStateAndNeighborhood(lat, long);
-    } else {
-      const location = window.navigator && window.navigator.geolocation;
-      if (location) {
-        location.getCurrentPosition((position) => {
-          Cookie.set('latitude', position.coords.latitude);
-          Cookie.set('longitude', position.coords.longitude);
-          this.setStateAndNeighborhood(position.coords.latitude, position.coords.longitude);
-        }, (error) => {
-          console.log("No geolocation")
-        })
-      }
+  updateNeighborhood(shouldUpdate) {
+    if (shouldUpdate) {
+      this.setState({
+        latitude: this.state.nonCookieLat,
+        longitude: this.state.nonCookieLong,
+        currentNeighborhood: this.state.nonCookieNeighborhood,
+        zipCode: this.state.nonCookieZip
+      });
+      // console.log(this.offerElement);
+      // this.offerElement.current.refreshOffers(this.state.nonCookieLat, this.state.nonCookieLong);
     }
+    this.handleHidePrompt();
   }
 
-  logout() {
-    Cookie.remove('token');
-    window.location.reload(false);
-  }
+  setNeighborhood(latitude, longitude, zipCode) {
+    if (this.state.isLoaded) {
+      return;
+    }
 
-  // Set isLoaded to true once a neighborhood is found
-  findAndSetNeighborhood(lat, long) {
-    Geocode.fromLatLng(lat, long).then(
+    Geocode.fromLatLng(latitude, longitude).then(
       response => {
         var foundNeighborhood = '';
+        var foundZipCode = '';
         for (var i = 0; i < Math.min(4, response.results.length); i++) {
           const results = response.results[i]['address_components'];
           for (var j = 0; j < results.length; j++) {
             const types = results[j].types;
+            // find neighborhood from current location
             if (types.includes('neighborhood') || types.includes('locality')) {
-              const currNeighborhoodName = results[j]['long_name'];
               if (foundNeighborhood === '') {
-                foundNeighborhood = currNeighborhoodName;
+                foundNeighborhood = results[j]['long_name'];
+              }
+            }
+            // find zip code from current location
+            if (types.includes('postal_code')) {
+              if (foundZipCode === '') {
+                foundZipCode = results[j]['long_name'];
               }
             }
           }
         }
+        
+        if (zipCode !== '') {
+          foundZipCode = zipCode;
+        }
+
+        var date = new Date();
+        date.setTime(date.getTime() + ((60 * 60 * 8) * 1000));
+        Cookie.set('latitude', latitude, { expires: date });
+        Cookie.set('longitude', longitude,  { expires: date });
+        Cookie.set('zipcode', foundZipCode,  { expires: date });
+        Cookie.set('neighborhood', foundNeighborhood,  { expires: date });
         this.setState({
           isLoaded: true,
-          currentNeighborhood: foundNeighborhood
+          latitude: latitude,
+          longitude: longitude,
+          currentNeighborhood: foundNeighborhood,
+          zipCode: foundZipCode
         });
+
+        // // if cookie is set, need to prompt user to pick which location to use
+        // if (this.state.cookieSet && Cookie.get('zipcode') !== foundZipCode) {
+        //   this.setState({
+        //     nonCookieLat: latitude,
+        //     nonCookieLong: longitude,
+        //     nonCookieZip: foundZipCode,
+        //     nonCookieNeighborhood: foundNeighborhood,
+        //     promptChangeZip: true
+        //   });
+        // } 
+        // if (!this.state.cookieSet) {
+        //   console.log("not set yet");
+        //   Cookie.set('latitude', latitude);
+        //   Cookie.set('longitude', longitude);
+        //   Cookie.set('zipcode', foundZipCode);
+        //   Cookie.set('neighborhood', foundNeighborhood);
+        //   this.setState({
+        //     isLoaded: true,
+        //     latitude: latitude,
+        //     longitude: longitude,
+        //     currentNeighborhood: foundNeighborhood,
+        //     zipCode: foundZipCode
+        //   });
+        // } else {
+        //   this.setState({isLoaded: true});
+        // }
       },
       error => {
         console.error(error);
       }
     );
+  }
+
+  // Finds lat and long from cookie first and if found will load page
+  // lat and long will be updated once geolocation is working
+  getMyLocation() {
+    // If cookie is set, keep that lat and long with associated zip code
+    if (Cookie.get('latitude') 
+        && Cookie.get('longitude')
+        && Cookie.get('zipcode')
+        && Cookie.get('neighborhood')) {
+      const lat = Cookie.get('latitude');
+      const long = Cookie.get('longitude');
+      const zip = Cookie.get('zipcode');
+      const neighborhood = Cookie.get('neighborhood');
+      this.setState({
+        cookieSet: true,
+        isLoaded: true,
+        latitude: lat,
+        longitude: long,
+        currentNeighborhood: neighborhood,
+        zipCode: zip
+      });
+      return;
+    }
+
+    // set actualLat and actualLong for the current users real location
+    // only if cookie has been set already
+    // ask user to confirm their current location now
+    const location = window.navigator && window.navigator.geolocation;
+    if (location) {
+      location.getCurrentPosition((position) => {
+        // Use actual current lat long to find zip and neighborhood
+        this.setNeighborhood(position.coords.latitude, position.coords.longitude, '');
+      }, (error) => {
+        console.log("No geolocation");
+      });
+    }
+
+  }
+
+  logout() {
+    Cookie.remove('token');
+    window.location.reload(false);
   }
 
   setLatLongFromZip(event, zipCode) {
@@ -184,9 +271,7 @@ class App extends Component {
     Geocode.fromAddress(zipCode).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-        Cookie.set('latitude', lat);
-        Cookie.set('longitude', lng);
-        this.setStateAndNeighborhood(lat, lng);
+        this.setNeighborhood(lat, lng, zipCode);
       },
       error => {
         console.error(error);
@@ -312,7 +397,7 @@ class App extends Component {
                 <Modal.Title>Create Your Account</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Register />
+                  <Register state = {this.state} />
                 </Modal.Body>
             </Modal>
 
@@ -342,6 +427,26 @@ class App extends Component {
                      , a tool to help provide mutual aid to elderly, immune-compromised, and those with underlying 
                      illnesses in this time of distress. 
                   </p>
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={this.state.promptChangeZip} style = {{marginTop: 60}}>
+                <Modal.Header>
+                  <Modal.Title>Confirm Location</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p style={{fontWeight: 300, fontStyle: 'italic'}}>
+                    Uh oh. It seems like you have moved. Confirm which neighborhood is your current location!
+                  </p>
+                  <br></br>
+                  <Row className="justify-content-md-center">
+                    <Col md={6} style = {{textAlign: 'right'}}>
+                      <Button variant="success" onClick={() => this.updateNeighborhood(false)}>{this.state.currentNeighborhood}</Button>
+                    </Col>
+                    <Col md={6} style = {{textAlign: 'left'}}>
+                      <Button variant="success" onClick={() => this.updateNeighborhood(true)}>{this.state.nonCookieNeighborhood}</Button>
+                    </Col>
+                  </Row>
                 </Modal.Body>
             </Modal>
           </div>
