@@ -6,6 +6,7 @@ import Offers from './Offers';
 import YourOffer from './YourOffer';
 import Login from './Login';
 import Register from './Register';
+import LoginRegisterModal from './LoginRegisterModal';
 import HelpfulLinks from './HelpfulLinks';
 import Loading from './Loading';
 
@@ -303,8 +304,7 @@ class App extends Component {
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></>  
     } else {
       rightNav = <>
-                  <span class="btn" onClick={this.handleShowLogin}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Sign In</font></span>
-                  <Button variant="outline-light" onClick={this.handleShowRegistration}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Get Started</font></Button>
+                  <Button variant="outline-light" onClick={this.handleShowRegistration}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Want to help?</font></Button>
                 </>;
       yourOffer = <></>;
       howHelp = <></>
@@ -382,23 +382,8 @@ class App extends Component {
                 <Col md={1}></Col>
               </Row>
             </Container>
-
-            <Modal size="sm" show={this.state.showLogin} onHide={this.handleHideLogin} style = {{marginTop: 60}}>
-                  <Modal.Header closeButton>
-                  <Modal.Title>Sign in to Cov-Aid</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                      <Login />
-                  </Modal.Body>
-              </Modal>
-
             <Modal show={this.state.showRegistration} onHide={this.handleHideRegistration} style = {{marginTop: 60}}>
-                <Modal.Header closeButton>
-                <Modal.Title>Create Your Account</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Register state = {this.state} />
-                </Modal.Body>
+              <LoginRegisterModal state = {this.state}/>
             </Modal>
 
             <Modal show={this.state.showWorks} onHide={this.handleHideWorks} style = {{marginTop: 60}}>

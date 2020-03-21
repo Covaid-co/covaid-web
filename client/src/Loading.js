@@ -30,13 +30,13 @@ export default function Loading(props) {
     return (
         <Container style = {{padding: '40px 15px'}}>
             <div className="p-3 mb-5 bg-white">
+            <br></br>
+            <h2 style = {{fontWeight: 300}}>Finding your location...</h2>
             <Spinner animation="border" role="status" style = {{marginBottom: 50}}>
                 <span className="sr-only">Loading...</span>
             </Spinner>
-            <br></br>
-            <h2 style = {{fontWeight: 300}}>Enter your Zipcode</h2>
             <h6 style = {{fontWeight: 300, fontStyle: 'italic'}}>
-                We need your zipcode to help you find mutual aid in your neighborhood! 
+               If you are not redirected in 10 seconds, enter your zipcode.
             </h6>
             <Row className="justify-content-md-center">
                 <Col md={4} lg={5}></Col>

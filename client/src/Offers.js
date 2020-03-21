@@ -14,6 +14,7 @@ export default function Offers(props) {
     const [lng, setLongitude] = useState(props.state.longitude);
     const [value, setValue] = useState([0, 1, 2, 3, 4, 5]);
     const [users, setUsers] = useState([]);
+    const [loaded, setLoaded] = useState(false);
     const [displayedUsers, setDisplayedUsers] = useState([]);
     const possibleTasks = ['Food', 'Health Care', 'Transportation',
     'Child Care', 'Pet Care', 'Storage', 'Emotional Support'];
@@ -78,6 +79,7 @@ export default function Offers(props) {
             response.json().then((data) => {
                 setUsers(data);
                 setDisplayedUsers(data);
+                setLoaded(true);
             });
         }
         fetchData();
@@ -104,6 +106,32 @@ export default function Offers(props) {
         phoneNumber = <></>;
     }
 
+    var message = <> </>;
+    var tabs = <> </>
+    if (loaded) {
+        if (users.length == 0) {
+            tabs = <></>
+            message = <>
+                        <ListGroup.Item>
+                        <Row>
+                            <Col ><strong>Seems to be no offers in your area. Make sure to spread the word to get your community involved!</strong></Col>
+                        </Row>
+                    </ListGroup.Item>
+                </>
+        } else {
+            tabs = <ListGroup variant="flush">
+                    <ListGroup.Item>
+                        <Row>
+                            <Col style={{whiteSpace: 'nowrap'}}><strong>Who's offering?</strong></Col>
+                            <Col ><strong>Offer</strong></Col>
+                        </Row>
+                    </ListGroup.Item>
+                </ListGroup>
+            message = <></>
+        }
+    }
+
+
     return (
         <div className="shadow p-3 mb-5 bg-white rounded">
             {/* <ToggleButtonGroup type="checkbox" className="btn-group d-flex flex-wrap" value={value} onChange={handleChange}>
@@ -112,16 +140,14 @@ export default function Offers(props) {
                 })}
                 
             </ToggleButtonGroup> */}
+            <br />
+            <Badge pill style = {{fontSize: 16}} variant="primary" className="shadow">
+                Offers of help from your community
+            </Badge>{' '}
+            <br /> <br />
+            {tabs}
             <ListGroup variant="flush">
-                <ListGroup.Item>
-                    <Row>
-                        <Col style={{whiteSpace: 'nowrap'}}>Who's offering?</Col>
-                        <Col>Task</Col>
-                        {/* <Col>Locality</Col> */}
-                    </Row>
-                </ListGroup.Item>
-            </ListGroup>
-            <ListGroup variant="flush">
+                {message}
                 {displayedUsers.map((user) => {
                     return <ListGroup.Item key={user._id} action 
                                             style = {{fontSize: 16}} 
