@@ -34,7 +34,7 @@ export default function Loading(props) {
                 <span className="sr-only">Loading...</span>
             </Spinner>
             <br></br>
-            <h3 style = {{fontWeight: 300}}>Enter Zip Code if not Redirected</h3>
+            <h3 style = {{fontWeight: 300}}>Enter your zipcode...</h3>
             <Row className="justify-content-md-center">
                 <Col md={5}></Col>
                 <Col md={2}>
