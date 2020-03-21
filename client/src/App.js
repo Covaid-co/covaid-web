@@ -21,6 +21,7 @@ import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import Badge from 'react-bootstrap/Badge'
 import Geocode from "react-geocode";
 
 import Cookie from 'js-cookie'
@@ -236,7 +237,13 @@ class App extends Component {
           <div className="BottomHalf"></div>
           <div className="App">
             <Navbar variant="light" expand="lg" className = 'customNav'>
-              <Navbar.Brand href="#home" style ={{color: 'white', fontWeight: 600, marginLeft: '15%', fontSize: 24}}>Cov-Aid</Navbar.Brand>
+              <Navbar.Brand href="#home" 
+                            style ={{color: 'white', 
+                                     fontWeight: 600, 
+                                     marginLeft: '5%', 
+                                     fontSize: 24}}>
+                Cov-Aid
+              </Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav" style = {{marginLeft: 20}}>
                 <Nav className="mr-auto">
@@ -253,16 +260,26 @@ class App extends Component {
                     How It Works
                   </Nav.Link>
                 </Nav>
-                <Form inline style ={{display: 'block', marginRight: '15%'}}>
+                <Form inline style ={{display: 'block', marginRight: '10%'}}>
                   {rightNav}
                 </Form>
               </Navbar.Collapse>
             </Navbar>
 
             <Container style = {{padding: '40px 15px'}}>
-              <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white'}}>Need a hand?</h5>
-              <h1 style = {{fontWeight: 800, color: 'white'}}>Mutual Aid For COVID-19</h1>
-              <h6 style = {{fontWeight: 300, color: 'white'}}><i style={{color: "red", fontSize: 20, marginRight: 5}} class="fa fa-map-marker"></i> {this.state.currentNeighborhood}</h6>
+              <h1 style = {{fontWeight: 700, color: 'white'}}>Mutual aid for COVID-19</h1>
+              <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 40}}>Need a hand?</h5>
+              <h6 style = {{fontWeight: 300, color: 'white'}}>
+                <i style={{color: "#e22447", fontSize: 25, marginRight: 5}} class="fa fa-map-marker"></i> 
+                <Badge variant="success"
+                       style = {{fontSize: '85%', 
+                                 position: 'relative',
+                                 borderRadius: 10, 
+                                 bottom: 4,
+                                 backgroundColor: '#26c470'}}>
+                  {this.state.currentNeighborhood}
+                </Badge>
+              </h6>
               <br />
               <Row className="justify-content-md-center">
                 <Col md={1}></Col>
