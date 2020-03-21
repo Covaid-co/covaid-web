@@ -13,8 +13,8 @@ export default function Offers(props) {
     const [value, setValue] = useState([0, 1, 2, 3, 4, 5]);
     const [users, setUsers] = useState([]);
     const [displayedUsers, setDisplayedUsers] = useState([]);
-    const possibleTasks = ['Groceries', 'Medicine/Health Care', 'Transportation',
-    'Pet Care', 'Child Care', 'Virtual Meetup'];
+    const possibleTasks = ['Food', 'Health Care', 'Transportation',
+    'Child Care', 'Pet Care', 'Storage', 'Emotional Support'];
 
     const [modalInfo, setModalInfo] = useState({
         'first_name': '',
@@ -32,6 +32,7 @@ export default function Offers(props) {
     const handleShow = () => setShow(true);
 
     function setModal(user) {
+        console.log(user);
         setModalInfo(user);
     }
 
@@ -69,6 +70,13 @@ export default function Offers(props) {
 
     let buttonStyles = {
         border: '0.5px solid #DADDE1',
+    }
+
+    var phoneNumber;
+    if (modalInfo.phone) {
+        phoneNumber = <p><b>Phone:</b> {modalInfo.phone}</p>;
+    } else {
+        phoneNumber = <></>;
     }
 
     return (
@@ -115,7 +123,8 @@ export default function Offers(props) {
                         })}
                     </p>
                     <p><b>Name:</b> {modalInfo.first_name} {modalInfo.last_name}</p>
-                    <p><b>Contact:</b> {modalInfo.email}</p>
+                    <p><b>Email:</b> {modalInfo.email}</p>
+                    {phoneNumber}
                     <p><b>Details:</b> {modalInfo.offer.details}</p>
                     <p><b>Neighborhoods:</b>  {modalInfo.offer.neighborhoods.map((neighborhood) => {
                             return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>

@@ -27,10 +27,9 @@ export default function YourOffer(props) {
     const [toastMessage, setToastMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [neighborhoodSelect, setNeighborhoodSelect] = useState({});
-    // const [taskSelect, setTaskSelect] = useState({});
     const [getNeighborhoods, setNeighborhoods] = useState([]);
-    const possibleTasks = ['Groceries', 'Medicine/Health Care', 'Transportation',
-                           'Pet Care', 'Child Care', 'Virtual Meetup'];
+    const possibleTasks = ['Food', 'Health Care', 'Transportation',
+                           'Storage', 'Emotional Support', 'Child Care', 'Pet Care'];
 
     useEffect(() => {
         async function fetchData() {
@@ -41,13 +40,16 @@ export default function YourOffer(props) {
                 // Get current lat and long from current location and find neighborhoods
                 const { latitude, longitude } = props.state;
                 var neighborhoods = [];
-                
+
                 Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
                     response => {
-                        for (var i = 0; i < Math.min(4, response.results.length); i++) {
+                        for (var i = 0; i < Math.min(5, response.results.length); i++) {
+                        // for (var i = 0; i < response.results.length; i++) {
                             const results = response.results[i]['address_components'];
                             for (var j = 0; j < results.length; j++) {
                                 const types = results[j].types;
+                                // console.log(types);
+                                // console.log(results[j]['long_name']);
                                 if (types.includes('neighborhood') || types.includes('locality')) {
                                     const currNeighborhoodName = results[j]['long_name'];
                                     if (neighborhoods.includes(currNeighborhoodName) === false) {
@@ -66,6 +68,7 @@ export default function YourOffer(props) {
                         console.error(error);
                     }
                 );
+                // console.log(neighborhoods);
 
                 // Update Neighborhoods from current user and found neighbors
                 // Combine with found neighborhoods/overwrite
@@ -96,15 +99,6 @@ export default function YourOffer(props) {
                 setSwitchSelected(user.availability);
                 const aText = user.availability ? 'Available' : 'Not Available'
                 setAvailableText(aText);
-                // for (i = 0; i < possibleTasks.length; i++) {
-                //     const taskName = possibleTasks[i];
-                //     const currentUserTasks = user.offer.tasks
-                //     const includedTask = (currentUserTasks.includes(taskName)) ? true : false
-                //     setTaskSelect(prev => ({ 
-                //         ...prev,
-                //         [taskName]: includedTask,
-                //     }));
-                // }
                 setIsLoading(false);
             });
         }
@@ -113,19 +107,19 @@ export default function YourOffer(props) {
     }, [props.state]);
 
     const checkInputs = () => {
-        var foundTrue = false;
-        for (const prop in neighborhoodSelect) {
-            if (neighborhoodSelect[prop] === true) {
-                foundTrue = true;
-            }
-        }
+        // var foundTrue = false;
+        // for (const prop in neighborhoodSelect) {
+        //     if (neighborhoodSelect[prop] === true) {
+        //         foundTrue = true;
+        //     }
+        // }
 
-        // Didn't select neighborhood
-        if (foundTrue === false) {
-            setShowToast(true);
-            setToastMessage('No Neighborhood Selected');
-            return false;
-        }
+        // // Didn't select neighborhood
+        // if (foundTrue === false) {
+        //     setShowToast(true);
+        //     setToastMessage('No Neighborhood Selected');
+        //     return false;
+        // }
 
         // If there are non selected
         if (selectedTasks.length === 0) {
@@ -134,7 +128,12 @@ export default function YourOffer(props) {
             return false;
         }
 
-        return true
+        if (fields.details === "") {
+            setShowToast(true);
+            setToastMessage('No Details Written');
+            return false;
+        }
+        return true;
     }
 
     const handleUpdate = async e => {
@@ -148,17 +147,18 @@ export default function YourOffer(props) {
             taskList.push(possibleTasks[selectedTasks[i]]);
         }
 
-        var neighborList = [];
-        for (const prop in neighborhoodSelect) {
-            if (neighborhoodSelect[prop] === true) {
-                neighborList.push(prop);
-            }
-        }
+        // var neighborList = [];
+        // for (const prop in neighborhoodSelect) {
+        //     if (neighborhoodSelect[prop] === true) {
+        //         neighborList.push(prop);
+        //     }
+        // }
 
         let form = {
             'offer': {
                 'tasks': taskList,
-                'neighborhoods': neighborList,
+                // 'neighborhoods': neighborList,
+                'neighborhoods': getNeighborhoods,
                 'details': fields.details,
             },
             'location': {
@@ -185,12 +185,12 @@ export default function YourOffer(props) {
         });
     };
 
-    const handleChange = (evt, neighborhood) => {
-        setNeighborhoodSelect(prev => ({ 
-            ...prev,
-            [neighborhood]: !neighborhoodSelect[neighborhood],
-        }));
-    }
+    // const handleChange = (evt, neighborhood) => {
+    //     setNeighborhoodSelect(prev => ({ 
+    //         ...prev,
+    //         [neighborhood]: !neighborhoodSelect[neighborhood],
+    //     }));
+    // }
 
     const handleChangeTasks = (val) => {
         setSelectedTasks(val);
@@ -283,7 +283,7 @@ export default function YourOffer(props) {
                                               onChange={handleFieldChange}/>
                             </Form.Group>
                             <br></br>
-                            <Form.Group controlId="neighborhoods" bssize="large">
+                            {/* <Form.Group controlId="neighborhoods" bssize="large">
                                 <Form.Label style = {{marginBottom: -10}}><h3>Neighborhoods</h3></Form.Label>
                                 <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select the primary neighborhoods in which you can help.</p>
                                 {getNeighborhoods.map((neighborhood) => {
@@ -294,7 +294,7 @@ export default function YourOffer(props) {
                                                     checked = {neighborhoodSelect[neighborhood]} />
                                 })}
                             </Form.Group>
-                            <br></br>
+                            <br></br> */}
                             <Button variant="primary" type="submit">
                                 Update
                             </Button>

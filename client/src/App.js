@@ -7,6 +7,7 @@ import YourOffer from './YourOffer';
 import Login from './Login';
 import Register from './Register';
 import HelpfulLinks from './HelpfulLinks';
+import Loading from './Loading';
 
 import fetch_a from './util/fetch_auth';
 
@@ -18,10 +19,8 @@ import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import Spinner from 'react-bootstrap/Spinner'
 import Geocode from "react-geocode";
 
 import Cookie from 'js-cookie'
@@ -178,8 +177,10 @@ class App extends Component {
     );
   }
 
-  setLatLongFromZip() {
-    Geocode.fromAddress(this.state.currentZipCode).then(
+  setLatLongFromZip(event, zipCode) {
+    event.preventDefault();
+    event.stopPropagation();
+    Geocode.fromAddress(zipCode).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
         Cookie.set('latitude', lat);
@@ -190,21 +191,6 @@ class App extends Component {
         console.error(error);
       }
     );
-  }
-
-  handleChangeZip(value) {
-    this.setState({currentZipCode: value});
-  }
-
-  isNumeric(value) {
-    return /^-{0,1}\d+$/.test(value);
-  }
-
-  validateForm() {
-    if (this.state.currentZipCode.length !== 5) {
-      return false;
-    }
-    return this.isNumeric(this.state.currentZipCode);
   }
 
   render() {
@@ -227,7 +213,7 @@ class App extends Component {
                     <YourOffer state = {this.state}/>
                   </Tab>;  
       howHelp = <><h5>How can I help?</h5>
-       <p style={{fontWeight: 300, fontStyle: 'italic'}}>Under this tab, logged-in users can create their own offers for support. They can choose 
+       <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></>  
     } else {
       rightNav = <>
@@ -241,33 +227,8 @@ class App extends Component {
     if (!isLoaded) {
       return (
         <div className="App">
-          <Container style = {{padding: '40px 15px'}}>
-              <div className="p-3 mb-5 bg-white">
-                  <Spinner animation="border" role="status" style = {{marginBottom: 50}}>
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                  <br></br>
-                  <h3 style = {{fontWeight: 300}}>Enter Zip Code if not Redirected</h3>
-                  <Row className="justify-content-md-center">
-                    <Col md={5}></Col>
-                    <Col md={2}>
-                      <Form>
-                        <br></br>
-                        <FormControl type="text" 
-                                      value={this.state.currentZipCode} 
-                                      onChange={(event) => {this.handleChangeZip(event.target.value)}} 
-                                      placeholder="Zip Code" 
-                                      className="mr-sm-2" />
-                        <br></br>
-                        <Button variant="outline-success" disabled={!this.validateForm()} onClick = {this.setLatLongFromZip}>Enter</Button>
-                      </Form>
-                    </Col>
-
-                    <Col md={5}></Col>
-                  </Row>
-                </div>
-              </Container>
-          </div>)
+          <Loading setLatLong={this.setLatLongFromZip}/>
+        </div>)
     } else {
       return (
         <div>
@@ -344,12 +305,13 @@ class App extends Component {
                 </Modal.Header>
                 <Modal.Body>
                   <h5>The Community Bulletin</h5>
-                  <p style={{fontWeight: 300, fontStyle: 'italic'}}>The community bulletin is home to all offers of mutual aid being made by your community. 
+                  <p style={{fontWeight: 300}}>The community bulletin is home to all offers of mutual aid being made by your community. 
                     Each entry represents an offer by a particular user, and displays information regarding what tasks
                      this user can help undertake. More information about each offer, such as contact information, can be found by clicking the offer.</p>
                   {howHelp}
                   <h5>Questions?</h5>
-                  <p style={{fontWeight: 300, fontStyle: 'italic'}}>Direct any questions to debanik1997@gmail.com or call/text 4846249881.</p>
+                  <p style={{fontWeight: 300, fontStyle: 'italic'}}>Direct any questions or concerns to 
+                  debanik1997@gmail.com or lijeffrey39@gmail.com</p>
 
                 </Modal.Body>
             </Modal>
@@ -359,7 +321,11 @@ class App extends Component {
                 <Modal.Title>About Us</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <p>We're 2 seniors in college who both had our final semesters taken away by COVID-19.</p>
+                  <p>We're 2 college seniors who both recently had our final semesters taken away by COVID-19.
+                     Wanting to play our part, we created  <font style = {{fontStyle: 'italic'}}> Cov-Aid</font>
+                     , a tool to help provide mutual aid to elderly and
+                    immuno-compromised groups in this time of distress. 
+                  </p>
                 </Modal.Body>
             </Modal>
           </div>
