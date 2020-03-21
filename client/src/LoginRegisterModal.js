@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
 
 export default function LoginRegisterModal(props) {
-    const [login, setLogin] = useState(true);
+    const [login, setLogin] = useState(false);
 
     function handleClick(e) {
         e.preventDefault();
@@ -20,7 +20,7 @@ export default function LoginRegisterModal(props) {
     var title;
     var footer;
     if (login) {
-        title = "Sign in to Cov-Aid";
+        title = "Welcome back!";
         body = <Login />;
         footer = <div>
                     <Button 
@@ -30,7 +30,7 @@ export default function LoginRegisterModal(props) {
 
                 </div>
     } else {
-        title = "Create an account to post offers";
+        title = "Register";
         body = <Register state={props.state}/>
         footer = <div>
                     <Button 

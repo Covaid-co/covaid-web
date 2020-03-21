@@ -142,11 +142,11 @@ export default function Offers(props) {
             </ToggleButtonGroup> */}
             <br />
             <Badge pill style = {{fontSize: 16, marginBottom: 5}} variant="primary" className="shadow">
-                Offers of help from your community
+                Offers of help from community volunteers
             </Badge>{' '}
             <br />
             <div style = {{fontSize: 14, fontStyle:'italic'}}>
-                Click on an offer below for help
+                Click on an offer below for more info
             </div>{' '}
             {tabs}
             <ListGroup variant="flush">

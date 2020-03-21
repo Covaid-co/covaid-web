@@ -70,6 +70,10 @@ export default function Register(props) {
     return (
         <div className="p-3 bg-white">
             <Form onSubmit={handleSubmit}>
+                <Row className="justify-content-md-center" style={{fontStyle: "italic"}}>
+                    Creating an account allows you to volunteer an offer to help your community. Once logged in, you will have the ability to create and update your offer.
+                </Row>
+                <Row className="justify-content-md-center">&nbsp;</Row>
                 <Row className="justify-content-md-center">
                     <Col md={6}>
                         <Form.Group controlId="first_name" bssize="large">
