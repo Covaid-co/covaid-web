@@ -92,22 +92,23 @@ export default function Offers(props) {
                     <Row>
                         <Col style={{whiteSpace: 'nowrap'}}>Who's offering?</Col>
                         <Col>Task</Col>
-                        <Col>Locality</Col>
+                        {/* <Col>Locality</Col> */}
                     </Row>
                 </ListGroup.Item>
             </ListGroup>
             <ListGroup variant="flush">
                 {displayedUsers.map((user) => {
                     return <ListGroup.Item key={user._id} action 
-                                            style = {{fontSize: 14}} 
+                                            style = {{fontSize: 16}} 
                                             onClick={() => { handleShow(); setModal({...user});}}>
                             <Row>
-                                <Col>{user.first_name} {user.last_name}</Col>
+                                <Col>{user.first_name} {user.last_name} <br/>
+                                    {user.offer.neighborhoods.map((neighborhood) => {
+                                        return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>
+                                    })}
+                                </Col>
                                 <Col>{user.offer.tasks.map((task) => {
                                         return <><Badge pill variant="primary">{task}</Badge>{' '}</>
-                                    })}</Col>
-                                <Col>{user.offer.neighborhoods.map((neighborhood) => {
-                                        return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>
                                     })}</Col>
                             </Row>
                         </ListGroup.Item>
