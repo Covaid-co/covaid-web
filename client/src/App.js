@@ -289,9 +289,19 @@ class App extends Component {
     var howHelp;
     if (isLoggedIn) {
       rightNav = <>
-                  <span style = {{marginRight: 20}}><font color="white" style = {{fontWeight: 600, fontSize: 13}}>Hello, {this.state.first_name}</font></span>
+                  <span id = "name" 
+                        style = {{color: 'white', 
+                                  marginRight: 20, 
+                                  marginBottom: 15, 
+                                  fontWeight: 600, 
+                                  fontSize: 13,
+                                  marginTop: 8}}>
+                    {/* <font color="white" style = {{fontWeight: 600, fontSize: 13}}> */}
+                      Hello, {this.state.first_name}
+                    {/* </font> */}
+                  </span>
                   <Button variant="outline-danger" onClick={this.logout}>
-                    <font color="white" style = {{fontWeight: 600, fontSize: 13}}>
+                    <font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
                       Logout
                     </font>
                   </Button>
@@ -321,31 +331,32 @@ class App extends Component {
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
           <div className="BottomHalf"></div>
           <div className="App">
-            <Navbar variant="light" expand="lg" className = 'customNav'>
-              <Navbar.Brand href="#home" 
+            <Navbar variant="light" expand="sm" className = 'customNav'>
+              <Navbar.Brand id="home" 
                             style ={{color: 'white', 
                                      fontWeight: 600, 
-                                     marginLeft: '5%', 
-                                     fontSize: 24}}>
+                                     marginLeft: '10%', 
+                                     fontSize: 24,
+                                     marginRight: 20}}>
                 Cov-Aid
               </Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav" style = {{marginLeft: 20}}>
+              <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                   <Nav.Link 
-                  style ={{color: 'white', fontWeight: 600, fontSize: 13}} 
-                  onClick={this.handleShowAbout}
-                  >
+                    id = "navLink1"
+                    style ={{color: 'white', fontWeight: 600, fontSize: 13}} 
+                    onClick={this.handleShowAbout}>
                     About Us
                   </Nav.Link>
                   <Nav.Link 
-                  style ={{color: 'white', fontWeight: 600, fontSize: 13}} 
-                  onClick={this.handleShowWorks}
-                  >
+                    id = "navLink2"
+                    style ={{color: 'white', fontWeight: 600, fontSize: 13}} 
+                    onClick={this.handleShowWorks}>
                     How It Works
                   </Nav.Link>
                 </Nav>
-                <Form inline style ={{display: 'block', marginRight: '10%'}}>
+                <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
                   {rightNav}
                 </Form>
               </Navbar.Collapse>
