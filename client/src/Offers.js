@@ -77,6 +77,7 @@ export default function Offers(props) {
                 {possibleTasks.map((task, i) => {
                     return <ToggleButton style={buttonStyles} className="toggleButton" variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
                 })}
+                
             </ToggleButtonGroup> */}
             <ListGroup variant="flush">
                 <ListGroup.Item>
