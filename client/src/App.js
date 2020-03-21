@@ -7,6 +7,7 @@ import YourOffer from './YourOffer';
 import Login from './Login';
 import Register from './Register';
 import HelpfulLinks from './HelpfulLinks';
+import Loading from './Loading';
 
 import fetch_a from './util/fetch_auth';
 
@@ -17,12 +18,9 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
 import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import Spinner from 'react-bootstrap/Spinner'
 import Geocode from "react-geocode";
 
 import Cookie from 'js-cookie'
@@ -157,8 +155,10 @@ class App extends Component {
     );
   }
 
-  setLatLongFromZip() {
-    Geocode.fromAddress(this.state.currentZipCode).then(
+  setLatLongFromZip(event, zipCode) {
+    event.preventDefault();
+    event.stopPropagation();
+    Geocode.fromAddress(zipCode).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
         Cookie.set('latitude', lat);
@@ -169,21 +169,6 @@ class App extends Component {
         console.error(error);
       }
     );
-  }
-
-  handleChangeZip(value) {
-    this.setState({currentZipCode: value});
-  }
-
-  isNumeric(value) {
-    return /^-{0,1}\d+$/.test(value);
-  }
-
-  validateForm() {
-    if (this.state.currentZipCode.length != 5) {
-      return false;
-    }
-    return this.isNumeric(this.state.currentZipCode);
   }
 
   render() {
@@ -215,33 +200,8 @@ class App extends Component {
     if (!isLoaded) {
       return (
         <div className="App">
-          <Container style = {{padding: '40px 15px'}}>
-              <div className="p-3 mb-5 bg-white">
-                  <Spinner animation="border" role="status" style = {{marginBottom: 50}}>
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                  <br></br>
-                  <h3 style = {{fontWeight: 300}}>Enter Zip Code if not Redirected</h3>
-                  <Row className="justify-content-md-center">
-                    <Col md={5}></Col>
-                    <Col md={2}>
-                      <Form>
-                        <br></br>
-                        <FormControl type="text" 
-                                      value={this.state.currentZipCode} 
-                                      onChange={(event) => {this.handleChangeZip(event.target.value)}} 
-                                      placeholder="Zip Code" 
-                                      className="mr-sm-2" />
-                        <br></br>
-                        <Button variant="outline-success" disabled={!this.validateForm()} onClick = {this.setLatLongFromZip}>Enter</Button>
-                      </Form>
-                    </Col>
-
-                    <Col md={5}></Col>
-                  </Row>
-                </div>
-              </Container>
-          </div>)
+          <Loading setLatLong={this.setLatLongFromZip}/>
+        </div>)
     } else {
       return (
         <div>
