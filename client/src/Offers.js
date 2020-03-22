@@ -112,9 +112,11 @@ export default function Offers(props) {
         if (users.length == 0) {
             tabs = <></>
             message = <>
-                        <ListGroup.Item>
+                    <ListGroup.Item>
                         <Row>
-                            <Col ><strong>Seems to be no offers in your area. Make sure to spread the word to get your community involved!</strong></Col>
+                            <Col>
+                                <strong>Seems to be no offers in your area. Make sure to spread the word to get your community involved!</strong>
+                            </Col>
                         </Row>
                     </ListGroup.Item>
                 </>
@@ -142,7 +144,7 @@ export default function Offers(props) {
             </ToggleButtonGroup> */}
             <br />
             <Badge pill style = {{fontSize: 16, marginBottom: 5}} variant="primary" className="shadow">
-                Offers of help from community volunteers
+                See who's helping in {props.state.locality}
             </Badge>{' '}
             <br />
             <div style = {{fontSize: 14, fontStyle:'italic'}}>

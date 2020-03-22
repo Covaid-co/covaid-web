@@ -4,8 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Offers from './Offers';
 import YourOffer from './YourOffer';
-import Login from './Login';
-import Register from './Register';
 import LoginRegisterModal from './LoginRegisterModal';
 import HelpfulLinks from './HelpfulLinks';
 import Loading from './Loading';
@@ -38,6 +36,7 @@ class App extends Component {
       longitude: '',
       zipCode: '',
       currentNeighborhood: '',
+      locality: '',
       nonCookieLat: '',
       nonCookieLong: '',
       nonCookieZip: '',
@@ -153,8 +152,11 @@ class App extends Component {
       response => {
         var foundNeighborhood = '';
         var foundZipCode = '';
+        var prevLocality = '';
+        var locality = '';
         for (var i = 0; i < Math.min(4, response.results.length); i++) {
           const results = response.results[i]['address_components'];
+          console.log(results);
           for (var j = 0; j < results.length; j++) {
             const types = results[j].types;
             // find neighborhood from current location
@@ -169,9 +171,19 @@ class App extends Component {
                 foundZipCode = results[j]['long_name'];
               }
             }
+            
+            for (var k = 0; k < types.length; k++) {
+              const type = types[k];
+              if (type.includes('administrative_area_level')) {
+                if (locality === '') {
+                  locality = prevLocality;
+                }
+              }
+            }
+            prevLocality = results[j]['long_name'];
           }
         }
-        
+
         if (zipCode !== '') {
           foundZipCode = zipCode;
         }
@@ -179,15 +191,17 @@ class App extends Component {
         var date = new Date();
         date.setTime(date.getTime() + ((60 * 60 * 1) * 1000));
         Cookie.set('latitude', latitude, { expires: date });
-        Cookie.set('longitude', longitude,  { expires: date });
-        Cookie.set('zipcode', foundZipCode,  { expires: date });
-        Cookie.set('neighborhood', foundNeighborhood,  { expires: date });
+        Cookie.set('longitude', longitude, { expires: date });
+        Cookie.set('zipcode', foundZipCode, { expires: date });
+        Cookie.set('neighborhood', foundNeighborhood, { expires: date });
+        Cookie.set('locality', locality, { expires: date })
         this.setState({
           isLoaded: true,
           latitude: latitude,
           longitude: longitude,
           currentNeighborhood: foundNeighborhood,
-          zipCode: foundZipCode
+          zipCode: foundZipCode,
+          locality: locality
         });
 
         // // if cookie is set, need to prompt user to pick which location to use
@@ -230,17 +244,20 @@ class App extends Component {
     if (Cookie.get('latitude') 
         && Cookie.get('longitude')
         && Cookie.get('zipcode')
-        && Cookie.get('neighborhood')) {
+        && Cookie.get('neighborhood')
+        && Cookie.get('locality')) {
       const lat = Cookie.get('latitude');
       const long = Cookie.get('longitude');
       const zip = Cookie.get('zipcode');
       const neighborhood = Cookie.get('neighborhood');
+      const locality = Cookie.get('locality');
       this.setState({
         cookieSet: true,
         isLoaded: true,
         latitude: lat,
         longitude: long,
         currentNeighborhood: neighborhood,
+        locality: locality,
         zipCode: zip
       });
       return;
@@ -385,7 +402,7 @@ class App extends Component {
                 <Col md={1}></Col>
                 <Col md={8}>
                   <Tabs defaultActiveKey="offers" id="uncontrolled-tab-example" className="justify-content-center">
-                    <Tab eventKey="offers" title="Community Bulletin" id='bootstrap-overide'>
+                    <Tab eventKey="offers" title="Community Bulletin" id='bootstrap123'>
                       <Offers state = {this.state}/>
                     </Tab>
                     {yourOffer}
