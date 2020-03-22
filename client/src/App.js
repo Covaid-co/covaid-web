@@ -411,8 +411,8 @@ class App extends Component {
                     <font id ="help" 
                           style = {{color:"white", 
                                     fontWeight: 600,
-                                    fontSize: 16}}>
-                      How can I help?
+                                    fontSize: 14, whiteSpace: 'nowrap'}}>
+                      How can I help my community?
                     </font>
                   </Button>
                 </>;
@@ -544,7 +544,7 @@ class App extends Component {
                 </Modal.Header>
                 <Modal.Body>
                   <p>We're 2 college seniors who want to play our part in the fight against COVID-19. Inspired by acts of mutual aid in our community, we created<strong><font id="home" style={{fontSize: 18}}> covaid</font></strong>
-                     , a tool to assist elderly and immunocompromised groups in this time of distress. We are neighbors that truly concerned about our community
+                     , a tool to assist elderly and immunocompromised groups in this time of distress. We are neighbors that are truly concerned about our community
                       as well as those affected around the United States. With this tool, we hope to give those
                       most affected and vulnerable the help they need. 
                   </p>
