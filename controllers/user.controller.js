@@ -2,6 +2,12 @@ const Users = require('../models/user.model');
 const Offers = require('../models/offer.model');
 const passport = require('passport');
 
+function validateEmailAccessibility(email){
+  return Users.findOne({email: email}).then(function(result){
+       return result === null;
+  });
+}
+
 exports.register = function (req, res) {
 
     const { body: { user } } = req;
@@ -12,21 +18,30 @@ exports.register = function (req, res) {
         },
         });
     }
-    
-    if(!user.password) {
+
+    validateEmailAccessibility(user.email).then(function(valid) {
+      if (valid) {
+        if(!user.password) {
+          return res.status(422).json({
+            errors: {
+                password: 'is required',
+            },
+          });
+        }
+      const finalUser = new Users(user);
+  
+      finalUser.setPassword(user.password);
+      
+      return finalUser.save()
+          .then(() => res.json({ user: finalUser.toAuthJSON() }));
+      } else {
         return res.status(422).json({
-        errors: {
-            password: 'is required',
-        },
+          errors: {
+            email: 'already exists',
+          },
         });
-    }
-
-    const finalUser = new Users(user);
-
-    finalUser.setPassword(user.password);
-    
-    return finalUser.save()
-        .then(() => res.json({ user: finalUser.toAuthJSON() }));
+      }
+    });
 };
 
 exports.login = function (req, res, next) {

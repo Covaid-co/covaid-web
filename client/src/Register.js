@@ -66,7 +66,7 @@ export default function Register(props) {
                     window.location.reload(false);
                 });
             } else {
-                alert('Registration unsuccessful');
+                alert('Email already exists');
             }
         }).catch((e) => {
             alert('Registration unsuccessful');
