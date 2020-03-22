@@ -6,8 +6,6 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Badge from 'react-bootstrap/Badge'
-import ToggleButton from 'react-bootstrap/ToggleButton'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
 export default function Offers(props) {
     const [lat, setLatitude] = useState(props.state.latitude);
@@ -112,9 +110,11 @@ export default function Offers(props) {
         if (users.length == 0) {
             tabs = <></>
             message = <>
-                        <ListGroup.Item>
+                    <ListGroup.Item>
                         <Row>
-                            <Col ><strong>Seems to be no offers in your area. Make sure to spread the word to get your community involved!</strong></Col>
+                            <Col>
+                                <strong>Seems to be no offers in your area. Make sure to spread the word to get your community involved!</strong>
+                            </Col>
                         </Row>
                     </ListGroup.Item>
                 </>
@@ -141,8 +141,8 @@ export default function Offers(props) {
                 
             </ToggleButtonGroup> */}
             <br />
-            <Badge pill style = {{fontSize: 16, marginBottom: 5, whiteSpace: "normal"}} variant="primary" className="shadow">
-                Offers of help from community volunteers
+            <Badge pill style = {{fontSize: 16, marginBottom: 5}} variant="primary" className="shadow">
+                See who's helping in {props.state.locality}
             </Badge>{' '}
             <br />
             <div style = {{fontSize: 14, fontStyle:'italic'}}>
