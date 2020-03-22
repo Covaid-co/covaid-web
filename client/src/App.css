@@ -87,7 +87,12 @@ html, body {
   .btn-outline-light {
     border-color: #194bd3 !important;
   }
+}
 
+@media (max-width:490px){
+  .BottomHalf {
+    bottom: 15% !important;
+  }
 }
 
 .App-header {
