@@ -132,6 +132,10 @@ export default function Offers(props) {
         }
     }
 
+    var localityText = "your area"
+    if (props.state.locality && props.state.locality.length > 0) {
+        localityText = props.state.locality
+    }
 
     return (
         <div className="shadow p-3 mb-5 bg-white rounded">
@@ -143,7 +147,7 @@ export default function Offers(props) {
             </ToggleButtonGroup> */}
             <br />
             <Badge pill style = {{fontSize: 16, whiteSpace:"normal", marginBottom: 5}} variant="primary" className="shadow">
-                See who's helping in {props.state.locality}
+                See who's helping in {localityText}
             </Badge>{' '}
             <br />
             <div style = {{fontSize: 14, fontStyle:'italic'}}>
