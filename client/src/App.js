@@ -428,17 +428,19 @@ class App extends Component {
     } else {
       return (
         <div>
+          <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
           <div className="BottomHalf"></div>
           <div className="App">
             <Navbar variant="light" expand="sm" className = 'customNav'>
               <Navbar.Brand id="home" 
+                            href = {window.location.protocol + '//' + window.location.host}
                             style ={{color: 'white', 
                                      fontWeight: 600, 
                                      marginLeft: '10%', 
-                                     fontSize: 24,
+                                     fontSize: 28,
                                      marginRight: 20}}>
-                Cov-Aid
+                covaid
               </Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
@@ -516,11 +518,11 @@ class App extends Component {
                 <Col md={1}></Col>
               </Row>
             </Container>
-            <Modal show={this.state.showRegistration} onHide={this.handleHideRegistration} style = {{marginTop: 60}}>
+            <Modal show={this.state.showRegistration} onHide={this.handleHideRegistration} style = {{marginTop: 30}}>
               <LoginRegisterModal state = {this.state}/>
             </Modal>
 
-            <Modal show={this.state.showWorks} onHide={this.handleHideWorks} style = {{marginTop: 60}}>
+            <Modal show={this.state.showWorks} onHide={this.handleHideWorks} style = {{marginTop: 30}}>
                 <Modal.Header closeButton>
                 <Modal.Title>How It Works</Modal.Title>
                 </Modal.Header>
@@ -557,14 +559,16 @@ class App extends Component {
                   <Modal.Title>Choose a Location</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
+                  <Form 
+                        onSubmit={(e) => this.onLocationSubmit(e)} 
+                        style={{marginTop: "10px", marginBottom: "30px", display: "block", whiteSpace: 'nowrap'}}>
                     <FormControl 
                       type="text" 
                       value={this.state.searchedLocation} 
                       onChange={e => this.handleLocationChange(e)}
                       placeholder="Enter city or zipcode" 
                       className="mr-sm-2" />
-                    <Button type="submit" variant="success"><i class="fa fa-search" aria-hidden="true"></i></Button>
+                    <Button type="submit" variant="success" style={{marginTop: "10px"}} >Search</Button>
                   </Form>
                 </Modal.Body>
             </Modal>

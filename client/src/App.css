@@ -50,6 +50,10 @@ html, body {
   border-color: #194bd3;
 }
 
+#home {
+  font-family: 'Baloo Chettan 2';
+}
+
 .smallPage {
   display: none !important;
 }
