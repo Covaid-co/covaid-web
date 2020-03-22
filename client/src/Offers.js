@@ -152,21 +152,21 @@ export default function Offers(props) {
             {tabs}
             <ListGroup variant="flush">
                 {message}
-                {displayedUsers.map((user) => {
+                {displayedUsers.map((user, i) => {
                     var name = user.first_name + " " + user.last_name;
 
-                    return <ListGroup.Item key={user._id} action 
+                    return <ListGroup.Item key={user._id + String(i * 19)} action 
                                             style = {{fontSize: 16}} 
                                             onClick={() => { handleShow(); setModal({...user});}}>
                             <Row>
                                 <Col style={{whiteSpace: "normal"}}>
                                     <div style={{whiteSpace: "normal", wordWrap: "break-word"}}>{name}</div>
-                                    <div style={{whiteSpace: "normal"}}>{user.offer.neighborhoods.map((neighborhood) => {
-                                        return <><Badge key={user._id + neighborhood} style = {{whiteSpace: "normal"}} pill variant="warning">{neighborhood}</Badge>{' '}</>
+                                    <div style={{whiteSpace: "normal"}}>{user.offer.neighborhoods.map((neighborhood, i) => {
+                                        return <><Badge key={user._id + neighborhood + String(i * 14)} style = {{whiteSpace: "normal"}} pill variant="warning">{neighborhood}</Badge>{' '}</>
                                     })}</div>
                                 </Col>
-                                <Col style={{whiteSpace: "normal"}}>{user.offer.tasks.map((task) => {
-                                        return <><Badge key={user._id + task} style = {{whiteSpace: "normal"}} pill variant="primary">{task}</Badge>{' '}</>
+                                <Col style={{whiteSpace: "normal"}}>{user.offer.tasks.map((task, i) => {
+                                        return <><Badge key={user._id + task + String((i + 1) * 23)} style = {{whiteSpace: "normal"}} pill variant="primary">{task}</Badge>{' '}</>
                                     })}</Col>
                             </Row>
                         </ListGroup.Item>
@@ -177,16 +177,16 @@ export default function Offers(props) {
                 <Modal.Title>Offer</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p><b>Tasks:</b>  {modalInfo.offer.tasks.map((task) => {
-                            return <><Badge key={modalInfo._id + task} pill variant="primary">{task}</Badge>{' '}</>
+                    <p><b>Tasks:</b>  {modalInfo.offer.tasks.map((task, i) => {
+                            return <><Badge key={modalInfo._id + task + String((i + 1) * 11)} pill variant="primary">{task}</Badge>{' '}</>
                         })}
                     </p>
                     <p><b>Name:</b> {modalInfo.first_name} {modalInfo.last_name}</p>
                     <p><b>Email:</b> {modalInfo.email}</p>
                     {phoneNumber}
                     <p><b>Details:</b> {modalInfo.offer.details}</p>
-                    <p><b>Neighborhoods:</b>  {modalInfo.offer.neighborhoods.map((neighborhood) => {
-                            return <><Badge key={modalInfo._id + neighborhood} pill variant="warning">{neighborhood}</Badge>{' '}</>
+                    <p><b>Neighborhoods:</b>  {modalInfo.offer.neighborhoods.map((neighborhood, i) => {
+                            return <><Badge key={modalInfo._id + neighborhood + String((i + 1) * 20)} pill variant="warning">{neighborhood}</Badge>{' '}</>
                         })}
                     </p>
                     

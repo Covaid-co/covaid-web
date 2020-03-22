@@ -487,7 +487,7 @@ class App extends Component {
                                 position: "relative",
                                 top: "50%",
                                 transform: "translateY(-15%)"}}variant="danger" size="sm">
-                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                  <i className="fa fa-refresh" aria-hidden="true"></i>
                 </Button>{' '}
               </h6>
               {/* <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
