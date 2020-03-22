@@ -543,10 +543,8 @@ class App extends Component {
                 <Modal.Title>About Us</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <p>We're 2 college seniors who both recently had our final semesters taken away by COVID-19.
-                     Wanting to play our part, we created  <font style = {{fontStyle: 'italic'}}> Cov-Aid</font>
-                     , a tool to help provide mutual aid to elderly, immune-compromised, and those with underlying 
-                     illnesses in this time of distress. 
+                  <p>We're 2 college seniors who want to play our part in the fight against COVID-19. Inspired by acts of mutual aid in our community, we created<strong><font id="home" style={{fontSize: 18}}> covaid</font></strong>
+                     , a tool to assist elderly and immunocompromised groups in this time of distress. 
                   </p>
                 </Modal.Body>
             </Modal>

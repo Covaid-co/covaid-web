@@ -19,12 +19,18 @@ export default function Register(props) {
         phone: ""
     });
 
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     function validateForm() {
         return (
-          fields.email.length > 0 &&
+          fields.email.length > 0 && validateEmail(fields.email) &&
           fields.password.length > 0 &&
           fields.first_name.length > 0 &&
           fields.last_name.length > 0 &&
+          (fields.phone.length === 0 || (fields.phone.length === 10)) && (/^\d+$/.test(fields.phone)) &&
           fields.password === fields.confirmPassword
         );
       }
@@ -70,7 +76,7 @@ export default function Register(props) {
     return (
         <div className="p-3 bg-white">
             <Form onSubmit={handleSubmit}>
-                <Row className="justify-content-md-center" style={{fontStyle: "italic"}}>
+                <Row className="justify-content-md-center" style={{fontStyle: "italic", marginTop: -10}}>
                     Creating an account allows you to volunteer an offer to help your community. Once logged in, you will have the ability to create and update your offer.
                 </Row>
                 <Row className="justify-content-md-center">&nbsp;</Row>
