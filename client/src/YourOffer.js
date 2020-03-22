@@ -30,16 +30,16 @@ export default function YourOffer(props) {
     const [isLoading, setIsLoading] = useState(true);
     // const [neighborhoodSelect, setNeighborhoodSelect] = useState({});
     const [getNeighborhoods, setNeighborhoods] = useState([]);
-    const possibleTasks = ['Food', 'Health Care', 'Transportation',
-                           'Storage', 'Emotional Support', 'Child Care', 'Pet Care'];
+    const possibleTasks = ['Food/Groceries', 'Health', 'Child/Petcare',
+                           'Transportation', 'Social Services', 'Donate', 'Misc.'];
 
     useEffect(() => {
-        const possible_tasks = ['Food', 'Health Care', 'Transportation',
-                           'Storage', 'Emotional Support', 'Child Care', 'Pet Care'];
+        const possible_tasks = ['Food/Groceries', 'Health', 'Child/Petcare',
+                                'Transportation', 'Social Services', 'Donate', 'Misc.'];
         async function fetchData() {
             const response = await fetch_a('/api/users/current');
             response.json().then((user) => {
-                fields.details = user.offer.details ? user.offer.details : '';
+                fields.details = user.offer.details;
 
                 // Get current lat and long from current location and find neighborhoods
                 const { latitude, longitude } = props.state;
@@ -138,7 +138,7 @@ export default function YourOffer(props) {
         }
         fetchData();
     
-    }, [fields.details, props.state]);
+    }, [props.state]);
 
     const checkInputs = () => {
         // var foundTrue = false;
@@ -314,7 +314,7 @@ export default function YourOffer(props) {
                             <Form.Group controlId="details" bssize="large">
                                 <Form.Label style = {{marginBottom: -10}}><h3>Details</h3></Form.Label>
                                 <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Give us more information on how you can help!</p>
-                                <p style = {{fontWeight: 300, fontSize: 14, fontStyle: 'italic'}}>Example: "I am free after 6pm on weekdays"</p>
+                                <p style = {{fontWeight: 300, fontSize: 14, fontStyle: 'italic', marginTop: -13}}>Example: "I am free after 6pm on weekdays"</p>
                                 <Form.Control as="textarea" 
                                               rows="3" 
                                               value={fields.details} 
