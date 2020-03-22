@@ -47,9 +47,10 @@ export default function LoginRegisterModal(props) {
             </Modal.Header>
             <Modal.Body>
                 {body}
+                {footer}
             </Modal.Body>
             <Modal.Footer>
-                {footer}
+                &nbsp;
             </Modal.Footer>
         </div>
     )

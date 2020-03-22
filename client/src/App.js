@@ -370,7 +370,7 @@ class App extends Component {
               <h1 style = {{fontWeight: 700, color: 'white'}}>Mutual aid for COVID-19</h1>
               <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 40}}>Need a hand?</h5>
               <h6 style = {{fontWeight: 300, color: 'white'}}>
-                <i style={{color: "#e22447", fontSize: 25, marginRight: 5}} class="fa fa-map-marker"></i> 
+                <i style={{color: "#e22447", fontSize: 25, marginRight: 5}} className="fa fa-map-marker"></i> 
                 <Badge variant="success"
                        style = {{fontSize: '85%', 
                                  position: 'relative',
@@ -430,7 +430,7 @@ class App extends Component {
                 </Modal.Body>
             </Modal>
 
-            <Modal show={this.state.promptChangeZip} style = {{marginTop: 60}}>
+            <Modal show={this.state.promptChangeZip} style = {{marginTop: 50, maxHeight: '100%', overflowY: 'auto'}}>
                 <Modal.Header>
                   <Modal.Title>Confirm Location</Modal.Title>
                 </Modal.Header>

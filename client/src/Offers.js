@@ -158,11 +158,11 @@ export default function Offers(props) {
                             <Row>
                                 <Col>{user.first_name} {user.last_name} <br/>
                                     {user.offer.neighborhoods.map((neighborhood) => {
-                                        return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>
+                                        return <><Badge key={user._id + neighborhood} pill variant="warning">{neighborhood}</Badge>{' '}</>
                                     })}
                                 </Col>
                                 <Col>{user.offer.tasks.map((task) => {
-                                        return <><Badge pill variant="primary">{task}</Badge>{' '}</>
+                                        return <><Badge key={user._id + task} pill variant="primary">{task}</Badge>{' '}</>
                                     })}</Col>
                             </Row>
                         </ListGroup.Item>
@@ -174,7 +174,7 @@ export default function Offers(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <p><b>Tasks:</b>  {modalInfo.offer.tasks.map((task) => {
-                            return <><Badge pill variant="primary">{task}</Badge>{' '}</>
+                            return <><Badge key={modalInfo._id + task} pill variant="primary">{task}</Badge>{' '}</>
                         })}
                     </p>
                     <p><b>Name:</b> {modalInfo.first_name} {modalInfo.last_name}</p>
@@ -182,7 +182,7 @@ export default function Offers(props) {
                     {phoneNumber}
                     <p><b>Details:</b> {modalInfo.offer.details}</p>
                     <p><b>Neighborhoods:</b>  {modalInfo.offer.neighborhoods.map((neighborhood) => {
-                            return <><Badge pill variant="warning">{neighborhood}</Badge>{' '}</>
+                            return <><Badge key={modalInfo._id + neighborhood} pill variant="warning">{neighborhood}</Badge>{' '}</>
                         })}
                     </p>
                 </Modal.Body>
