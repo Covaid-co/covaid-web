@@ -142,7 +142,7 @@ export default function Offers(props) {
                 
             </ToggleButtonGroup> */}
             <br />
-            <Badge pill style = {{fontSize: 16, marginBottom: 5}} variant="primary" className="shadow">
+            <Badge pill style = {{fontSize: 16, whiteSpace:"normal", marginBottom: 5}} variant="primary" className="shadow">
                 See who's helping in {props.state.locality}
             </Badge>{' '}
             <br />
