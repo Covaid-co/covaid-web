@@ -10,12 +10,12 @@ import Badge from 'react-bootstrap/Badge'
 export default function Offers(props) {
     const [lat, setLatitude] = useState(props.state.latitude);
     const [lng, setLongitude] = useState(props.state.longitude);
-    const [value, setValue] = useState([0, 1, 2, 3, 4, 5]);
+    // const [value, setValue] = useState([0, 1, 2, 3, 4, 5]);
     const [users, setUsers] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [displayedUsers, setDisplayedUsers] = useState([]);
-    const possibleTasks = ['Food', 'Health Care', 'Transportation',
-    'Child Care', 'Pet Care', 'Storage', 'Emotional Support'];
+    // const possibleTasks = ['Food', 'Health Care', 'Transportation',
+    // 'Child Care', 'Pet Care', 'Storage', 'Emotional Support'];
 
     const [modalInfo, setModalInfo] = useState({
         'first_name': '',
@@ -60,9 +60,10 @@ export default function Offers(props) {
 
     useEffect(() => {
         var url = "/api/users/all?";
-        const { latitude, longitude } = props.state;
-        setLatitude(latitude);
-        setLongitude(longitude);
+        // const { latitude, longitude } = props.state;
+        
+        setLatitude(lat);
+        setLongitude(lng);
         let params = {
             'latitude': lat,
             'longitude': lng
@@ -81,21 +82,21 @@ export default function Offers(props) {
             });
         }
         fetchData();
-    }, [props.state.latitude, props.state.longitude]);
+    }, [lat, lng]);
 
-    const handleChange = (val) => {
-        setValue(val);
-        const selectedTasks = [];
-        for (var i = 0; i < val.length; i++) {
-            selectedTasks.push(possibleTasks[val[i]]);
-        }
-        const result = users.filter(user => selectedTasks.some(v => user.offer.tasks.indexOf(v) !== -1));
-        setDisplayedUsers(result);
-    };
+    // const handleChange = (val) => {
+    //     setValue(val);
+    //     const selectedTasks = [];
+    //     for (var i = 0; i < val.length; i++) {
+    //         selectedTasks.push(possibleTasks[val[i]]);
+    //     }
+    //     const result = users.filter(user => selectedTasks.some(v => user.offer.tasks.indexOf(v) !== -1));
+    //     setDisplayedUsers(result);
+    // };
 
-    let buttonStyles = {
-        border: '0.5px solid #DADDE1',
-    }
+    // let buttonStyles = {
+    //     border: '0.5px solid #DADDE1',
+    // }
 
     var phoneNumber;
     if (modalInfo.phone) {
@@ -107,7 +108,7 @@ export default function Offers(props) {
     var message = <> </>;
     var tabs = <> </>
     if (loaded) {
-        if (users.length == 0) {
+        if (users.length === 0) {
             tabs = <></>
             message = <>
                     <ListGroup.Item>

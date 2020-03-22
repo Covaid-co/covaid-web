@@ -28,12 +28,14 @@ export default function YourOffer(props) {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [neighborhoodSelect, setNeighborhoodSelect] = useState({});
+    // const [neighborhoodSelect, setNeighborhoodSelect] = useState({});
     const [getNeighborhoods, setNeighborhoods] = useState([]);
     const possibleTasks = ['Food', 'Health Care', 'Transportation',
                            'Storage', 'Emotional Support', 'Child Care', 'Pet Care'];
 
     useEffect(() => {
+        const possible_tasks = ['Food', 'Health Care', 'Transportation',
+                           'Storage', 'Emotional Support', 'Child Care', 'Pet Care'];
         async function fetchData() {
             const response = await fetch_a('/api/users/current');
             response.json().then((user) => {
@@ -54,11 +56,11 @@ export default function YourOffer(props) {
                                     const currNeighborhoodName = results[j]['long_name'];
                                     if (neighborhoods.includes(currNeighborhoodName) === false) {
                                         neighborhoods.push(currNeighborhoodName);
-                                        // Update select object
-                                        setNeighborhoodSelect(prev => ({ 
-                                            ...prev,
-                                            [currNeighborhoodName]: false,
-                                        }));
+                                        // // Update select object
+                                        // setNeighborhoodSelect(prev => ({ 
+                                        //     ...prev,
+                                        //     [currNeighborhoodName]: false,
+                                        // }));
                                     }
                                 }
                                 // find zip code from current location
@@ -119,8 +121,8 @@ export default function YourOffer(props) {
 
                 // Update tasks from current user
                 var tempTasks = [];
-                for (var i = 0; i < possibleTasks.length; i++) {
-                    const taskName = possibleTasks[i];
+                for (var i = 0; i < possible_tasks.length; i++) {
+                    const taskName = possible_tasks[i];
                     const currentUserTasks = user.offer.tasks;
                     const includedTask = (currentUserTasks.includes(taskName)) ? true : false;
                     if (includedTask) {
@@ -136,7 +138,7 @@ export default function YourOffer(props) {
         }
         fetchData();
     
-    }, [props.state]);
+    }, [fields.details, props.state]);
 
     const checkInputs = () => {
         // var foundTrue = false;

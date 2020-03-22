@@ -118,7 +118,7 @@ class App extends Component {
   componentDidMount() {
     this.getMyLocation();
     this.update();
-    if (Cookie.get("token")) {
+    if (!this.state.isLoggedIn && Cookie.get("token")) {
       this.fetchUser()
     }
   }

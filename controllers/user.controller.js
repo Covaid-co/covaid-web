@@ -95,7 +95,6 @@ exports.all_users = function (req, res) {
 
 exports.update = function (req, res) {
   const id = req.token.id;
-  console.log(req.body);
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
     if (err) return next(err);
     res.send('User updated.');
