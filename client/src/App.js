@@ -21,7 +21,6 @@ import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import Badge from 'react-bootstrap/Badge'
 import Geocode from "react-geocode";
 
 import Cookie from 'js-cookie'
@@ -54,6 +53,7 @@ class App extends Component {
       showRegistration: false,
       showWorks: false,
       showAbout: false,
+      showLocation: false,
       cookieSet: false,
       searchedLocation: '',
       currentState: '',
@@ -64,6 +64,8 @@ class App extends Component {
     
     this.offerElement = React.createRef();
 
+    this.handleHideLocation = this.handleHideLocation.bind(this);
+    this.handleShowLocation = this.handleShowLocation.bind(this);
     this.handleHidePrompt = this.handleHidePrompt.bind(this);
     this.getMyLocation = this.getMyLocation.bind(this)
     this.logout = this.logout.bind(this);
@@ -79,6 +81,14 @@ class App extends Component {
     this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
   }
 
+  handleShowLocation() {
+    this.setState({showLocation: true});
+  }
+
+  handleHideLocation() {
+    this.setState({showLocation: false});
+  }
+    
   handleHidePrompt() {
     this.setState({promptChangeZip: false});
   }
@@ -170,7 +180,7 @@ class App extends Component {
         var locality = '';
         for (var i = 0; i < Math.min(4, response.results.length); i++) {
           const results = response.results[i]['address_components'];
-          console.log(results);
+          // console.log(results);
           for (var j = 0; j < results.length; j++) {
             const types = results[j].types;
             // find neighborhood from current location
@@ -315,7 +325,8 @@ class App extends Component {
 
   onLocationSubmit = (e) => {
       e.preventDefault();
-      console.log(this.state.searchedLocation)
+      this.handleHideLocation();
+      console.log(this.state.searchedLocation);
       Geocode.fromAddress(this.state.searchedLocation).then(
         response => {
           const { lat, lng } = response.results[0].geometry.location;
@@ -327,7 +338,7 @@ class App extends Component {
           this.setNeighborhood(lat, lng, '');
         },
         error => {
-          alert("Invalid address")
+          alert("Invalid address");
         }
       );
   }
@@ -379,7 +390,7 @@ class App extends Component {
                       Hello, {this.state.first_name}
                     {/* </font> */}
                   </span>
-                  <Button variant="outline-danger" onClick={this.logout}>
+                  <Button variant="outline-danger" id = 'logoutButton' onClick={this.logout}>
                     <font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
                       Logout
                     </font>
@@ -393,8 +404,14 @@ class App extends Component {
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></>  
     } else {
       rightNav = <>
-                  <Button variant="outline-light" style={{outlineWidth: "thick"}} onClick={this.handleShowRegistration}>
-                    <font id ="help" style = {{color:"white", fontWeight: 600, fontSize: 16}}>
+                  <Button variant="outline-light" 
+                          style={{outlineWidth: "thick"}}
+                          id = 'howHelpButton'
+                          onClick={this.handleShowRegistration}>
+                    <font id ="help" 
+                          style = {{color:"white", 
+                                    fontWeight: 600,
+                                    fontSize: 16}}>
                       How can I help?
                     </font>
                   </Button>
@@ -450,14 +467,16 @@ class App extends Component {
               <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 40}}>Need a hand?</h5>
               <h6 style = {{fontWeight: 300, color: 'white'}}>
                 {/* <i style={{color: "#e22447", fontSize: 25, marginRight: 5}} className="fa fa-map-marker"></i>  */}
-                <Badge variant="success"
-                       style = {{fontSize: '85%', 
-                                 position: 'relative',
-                                 borderRadius: 10, 
-                                 bottom: 4
-                                 }}>
+                <Button variant="success"
+                        size="sm"
+                        onClick={this.handleShowLocation}
+                        style = {{fontSize: '85%', 
+                                  position: 'relative',
+                                  bottom: 5,
+                                  padding: '.1rem .2rem',
+                                  fontWeight: 700}}>
                   {this.state.currentNeighborhood}
-                </Badge>{' '}
+                </Button>{' '}
                 <Button onClick={this.refreshLocation} style={{width: "30px",
                                 height: "30px",
                                 padding: "6px 0px",
@@ -471,7 +490,7 @@ class App extends Component {
                   <i class="fa fa-refresh" aria-hidden="true"></i>
                 </Button>{' '}
               </h6>
-              <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
+              {/* <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
                 <FormControl 
                   type="text" 
                   value={this.state.searchedLocation} 
@@ -479,7 +498,7 @@ class App extends Component {
                   placeholder="Enter city or zipcode" 
                   className="mr-sm-2" />
                 <Button type="submit" variant="success"><i class="fa fa-search" aria-hidden="true"></i></Button>
-              </Form>
+              </Form> */}
               <br />
               <Row className="justify-content-md-center">
                 <Col md={1}></Col>
@@ -527,6 +546,26 @@ class App extends Component {
                      , a tool to help provide mutual aid to elderly, immune-compromised, and those with underlying 
                      illnesses in this time of distress. 
                   </p>
+                </Modal.Body>
+            </Modal>
+
+            <Modal size="sm"
+                  show={this.state.showLocation} 
+                  onHide={this.handleHideLocation} 
+                  style = {{marginTop: 60}}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Choose a Location</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
+                    <FormControl 
+                      type="text" 
+                      value={this.state.searchedLocation} 
+                      onChange={e => this.handleLocationChange(e)}
+                      placeholder="Enter city or zipcode" 
+                      className="mr-sm-2" />
+                    <Button type="submit" variant="success"><i class="fa fa-search" aria-hidden="true"></i></Button>
+                  </Form>
                 </Modal.Body>
             </Modal>
 
