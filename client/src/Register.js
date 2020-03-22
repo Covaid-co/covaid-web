@@ -24,13 +24,23 @@ export default function Register(props) {
         return re.test(String(email).toLowerCase());
     }
 
+    function validatePhone(phone) {
+        if (phone == undefined || phone === '' || phone.length === 0) {
+            return true;
+        } else if (phone.length === 10) {
+            return (/^\d+$/.test(fields.phone));
+        } else {
+            return false;
+        }
+    }
+
     function validateForm() {
         return (
           fields.email.length > 0 && validateEmail(fields.email) &&
           fields.password.length > 0 &&
           fields.first_name.length > 0 &&
           fields.last_name.length > 0 &&
-          (fields.phone.length === 0 || (fields.phone.length === 10)) && (/^\d+$/.test(fields.phone)) &&
+          validatePhone(fields.phone) &&
           fields.password === fields.confirmPassword
         );
       }
