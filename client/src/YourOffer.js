@@ -142,6 +142,16 @@ export default function YourOffer(props) {
     
     }, [props.state]);
 
+    function validatePhone(phone) {
+        if (phone == undefined || phone === '' || phone.length === 0) {
+            return true;
+        } else if (phone.length === 10) {
+            return (/^\d+$/.test(fields.phone));
+        } else {
+            return false;
+        }
+    }
+
     const checkInputs = () => {
         // var foundTrue = false;
         // for (const prop in neighborhoodSelect) {
@@ -170,7 +180,7 @@ export default function YourOffer(props) {
             return false;
         }
 
-        if (!((fields.phone.length === 0 || (fields.phone.length === 10)) && (/^\d+$/.test(fields.phone)))) {
+        if (!validatePhone(fields.phone)) {
             setShowToast(true);
             setToastMessage('Please Use A Valid Phone Number');
             return false;

@@ -195,7 +195,7 @@ export default function Offers(props) {
                     </p>
                     
                 </Modal.Body>
-                <Modal.Footer><p style={{fontStyle: "italic"}}>Be sure to coordinate a safe drop-off! Follow <a target="_blank" rel="noopener noreferrer" href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">CDC guidelines</a> on cleanliness and avoid as much contact as possible to prevent further spread of virus.</p></Modal.Footer>
+                <Modal.Footer><p style={{fontStyle: "italic"}}>Be sure to coordinate a safe drop-off/interaction! Follow <a target="_blank" rel="noopener noreferrer" href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">CDC guidelines</a> on cleanliness and avoid as much contact as possible to prevent further spread of virus.</p></Modal.Footer>
             </Modal>
         </div>
     );
