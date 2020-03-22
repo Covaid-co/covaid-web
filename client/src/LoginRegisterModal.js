@@ -30,7 +30,7 @@ export default function LoginRegisterModal(props) {
 
                 </div>
     } else {
-        title = "Register";
+        title = "Want to help your community?";
         body = <Register state={props.state}/>
         footer = <div>
                     <Button 

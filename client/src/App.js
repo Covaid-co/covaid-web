@@ -4,8 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import Offers from './Offers';
 import YourOffer from './YourOffer';
-import Login from './Login';
-import Register from './Register';
 import LoginRegisterModal from './LoginRegisterModal';
 import HelpfulLinks from './HelpfulLinks';
 import Loading from './Loading';
@@ -20,6 +18,7 @@ import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
+import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Badge from 'react-bootstrap/Badge'
@@ -54,14 +53,20 @@ class App extends Component {
       showRegistration: false,
       showWorks: false,
       showAbout: false,
-      cookieSet: false
+      cookieSet: false,
+      searchedLocation: '',
+      currentState: '',
+      width: 0,
     }
+
+    window.addEventListener("resize", this.update);
     
     this.offerElement = React.createRef();
 
     this.handleHidePrompt = this.handleHidePrompt.bind(this);
     this.getMyLocation = this.getMyLocation.bind(this)
     this.logout = this.logout.bind(this);
+    this.refreshLocation = this.refreshLocation.bind(this);
     this.handleShowLogin = this.handleShowLogin.bind(this);
     this.handleHideLogin = this.handleHideLogin.bind(this);
     this.handleShowRegistration = this.handleShowRegistration.bind(this);
@@ -111,10 +116,17 @@ class App extends Component {
 
   componentDidMount() {
     this.getMyLocation();
+    this.update();
     if (Cookie.get("token")) {
       this.fetchUser()
     }
   }
+
+  update = () => {
+    this.setState({
+      width: window.innerWidth
+    });
+  };
 
   fetchUser(){
     fetch_a('/api/users/current')
@@ -153,14 +165,21 @@ class App extends Component {
       response => {
         var foundNeighborhood = '';
         var foundZipCode = '';
+        var foundState = '';
         for (var i = 0; i < Math.min(4, response.results.length); i++) {
           const results = response.results[i]['address_components'];
           for (var j = 0; j < results.length; j++) {
             const types = results[j].types;
             // find neighborhood from current location
+
             if (types.includes('neighborhood') || types.includes('locality')) {
               if (foundNeighborhood === '') {
                 foundNeighborhood = results[j]['long_name'];
+              }
+            }
+            if (types.includes('administrative_area_level_1')) {
+              if (foundState === '') {
+                foundState = results[j]['long_name'];
               }
             }
             // find zip code from current location
@@ -182,11 +201,15 @@ class App extends Component {
         Cookie.set('longitude', longitude,  { expires: date });
         Cookie.set('zipcode', foundZipCode,  { expires: date });
         Cookie.set('neighborhood', foundNeighborhood,  { expires: date });
+        Cookie.set('state', foundState,  { expires: date });
+
+        console.log(foundState)
         this.setState({
           isLoaded: true,
           latitude: latitude,
           longitude: longitude,
           currentNeighborhood: foundNeighborhood,
+          currentState: foundState,
           zipCode: foundZipCode
         });
 
@@ -235,12 +258,14 @@ class App extends Component {
       const long = Cookie.get('longitude');
       const zip = Cookie.get('zipcode');
       const neighborhood = Cookie.get('neighborhood');
+      const state = Cookie.get('state');
       this.setState({
         cookieSet: true,
         isLoaded: true,
         latitude: lat,
         longitude: long,
         currentNeighborhood: neighborhood,
+        currentState: state,
         zipCode: zip
       });
       return;
@@ -266,6 +291,40 @@ class App extends Component {
     window.location.reload(false);
   }
 
+  refreshLocation() {
+    Cookie.remove('latitude');
+    Cookie.remove('longitude');
+    Cookie.remove('zipcode');
+    Cookie.remove('neighborhood');
+    this.setState({isLoaded: false, searchedLocation: ''});
+    this.getMyLocation();
+  }
+
+  handleLocationChange = (e) => {
+      this.setState({
+          searchedLocation: e.target.value
+      })
+  }
+
+  onLocationSubmit = (e) => {
+      e.preventDefault();
+      console.log(this.state.searchedLocation)
+      Geocode.fromAddress(this.state.searchedLocation).then(
+        response => {
+          const { lat, lng } = response.results[0].geometry.location;
+          Cookie.remove('latitude');
+          Cookie.remove('longitude');
+          Cookie.remove('zipcode');
+          Cookie.remove('neighborhood');
+          this.setState({isLoaded: false});
+          this.setNeighborhood(lat, lng, '');
+        },
+        error => {
+          alert("Invalid address")
+        }
+      );
+  }
+
   setLatLongFromZip(event, zipCode) {
     event.preventDefault();
     event.stopPropagation();
@@ -283,6 +342,19 @@ class App extends Component {
   render() {
     const { isLoaded } = this.state;
     const { isLoggedIn } = this.state;
+
+    var bulletin;
+    var offer;
+    var link;
+    if (this.state.width < 575) {
+      bulletin = "Bulletin";
+      offer = "My Offer";
+      link = "Links";
+    } else {
+      bulletin = "Community Bulletin";
+      offer = "My Offer";
+      link = "Helpful Links";
+    }
 
     var rightNav;
     var yourOffer;
@@ -306,7 +378,7 @@ class App extends Component {
                     </font>
                   </Button>
                 </>;
-      yourOffer = <Tab eventKey="your-offer" title="My Offer" className="tabColor" id='bootstrap-overide'>
+      yourOffer = <Tab eventKey="your-offer" title={offer} className="tabColor" id='bootstrap-overide'>
                     <YourOffer state = {this.state}/>
                   </Tab>;  
       howHelp = <><h5>My Offer</h5>
@@ -314,9 +386,9 @@ class App extends Component {
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></>  
     } else {
       rightNav = <>
-                  <Button variant="outline-light" onClick={this.handleShowRegistration}>
-                    <font id ="help" style = {{color:"white", fontWeight: 600, fontSize: 13}}>
-                      Want to help?
+                  <Button variant="outline-light" style={{outlineWidth: "thick"}} onClick={this.handleShowRegistration}>
+                    <font id ="help" style = {{color:"white", fontWeight: 600, fontSize: 16}}>
+                      How can I help?
                     </font>
                   </Button>
                 </>;
@@ -349,13 +421,13 @@ class App extends Component {
                 <Nav className="mr-auto">
                   <Nav.Link 
                     id = "navLink1"
-                    style ={{color: 'white', fontWeight: 600, fontSize: 13}} 
+                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
                     onClick={this.handleShowAbout}>
                     About Us
                   </Nav.Link>
                   <Nav.Link 
                     id = "navLink2"
-                    style ={{color: 'white', fontWeight: 600, fontSize: 13}} 
+                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
                     onClick={this.handleShowWorks}>
                     How It Works
                   </Nav.Link>
@@ -370,26 +442,47 @@ class App extends Component {
               <h1 style = {{fontWeight: 700, color: 'white'}}>Mutual aid for COVID-19</h1>
               <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 40}}>Need a hand?</h5>
               <h6 style = {{fontWeight: 300, color: 'white'}}>
-                <i style={{color: "#e22447", fontSize: 25, marginRight: 5}} className="fa fa-map-marker"></i> 
+                {/* <i style={{color: "#e22447", fontSize: 25, marginRight: 5}} className="fa fa-map-marker"></i>  */}
                 <Badge variant="success"
                        style = {{fontSize: '85%', 
                                  position: 'relative',
                                  borderRadius: 10, 
-                                 bottom: 4,
-                                 backgroundColor: '#26c470'}}>
+                                 bottom: 4
+                                 }}>
                   {this.state.currentNeighborhood}
-                </Badge>
+                </Badge>{' '}
+                <Button onClick={this.refreshLocation} style={{width: "30px",
+                                height: "30px",
+                                padding: "6px 0px",
+                                borderRadius: "15px",
+                                textAlign: "center",
+                                fontSize: "12px",
+                                lineHeight: "1.22857",
+                                position: "relative",
+                                top: "50%",
+                                transform: "translateY(-15%)"}}variant="danger" size="sm">
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                </Button>{' '}
               </h6>
+              <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
+                <FormControl 
+                  type="text" 
+                  value={this.state.searchedLocation} 
+                  onChange={e => this.handleLocationChange(e)}
+                  placeholder="Enter city or zipcode" 
+                  className="mr-sm-2" />
+                <Button type="submit" variant="success"><i class="fa fa-search" aria-hidden="true"></i></Button>
+              </Form>
               <br />
               <Row className="justify-content-md-center">
                 <Col md={1}></Col>
                 <Col md={8}>
                   <Tabs defaultActiveKey="offers" id="uncontrolled-tab-example" className="justify-content-center">
-                    <Tab eventKey="offers" title="Community Bulletin" id='bootstrap-overide'>
+                    <Tab eventKey="offers" title={bulletin} id='bootstrap-overide'>
                       <Offers state = {this.state}/>
                     </Tab>
                     {yourOffer}
-                    <Tab eventKey="links" title="Helpful Links" id='bootstrap-overide'>
+                    <Tab eventKey="links" title={link} id='bootstrap-overide'>
                       <HelpfulLinks />
                     </Tab>
                   </Tabs>

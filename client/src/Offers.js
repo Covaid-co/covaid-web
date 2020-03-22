@@ -141,7 +141,7 @@ export default function Offers(props) {
                 
             </ToggleButtonGroup> */}
             <br />
-            <Badge pill style = {{fontSize: 16, marginBottom: 5}} variant="primary" className="shadow">
+            <Badge pill style = {{fontSize: 16, marginBottom: 5, whiteSpace: "normal"}} variant="primary" className="shadow">
                 Offers of help from community volunteers
             </Badge>{' '}
             <br />
@@ -152,17 +152,20 @@ export default function Offers(props) {
             <ListGroup variant="flush">
                 {message}
                 {displayedUsers.map((user) => {
+                    var name = user.first_name + " " + user.last_name;
+
                     return <ListGroup.Item key={user._id} action 
                                             style = {{fontSize: 16}} 
                                             onClick={() => { handleShow(); setModal({...user});}}>
                             <Row>
-                                <Col>{user.first_name} {user.last_name} <br/>
-                                    {user.offer.neighborhoods.map((neighborhood) => {
-                                        return <><Badge key={user._id + neighborhood} pill variant="warning">{neighborhood}</Badge>{' '}</>
-                                    })}
+                                <Col style={{whiteSpace: "normal"}}>
+                                    <div style={{whiteSpace: "normal", wordWrap: "break-word"}}>{name}</div>
+                                    <div style={{whiteSpace: "normal"}}>{user.offer.neighborhoods.map((neighborhood) => {
+                                        return <><Badge key={user._id + neighborhood} style = {{whiteSpace: "normal"}} pill variant="warning">{neighborhood}</Badge>{' '}</>
+                                    })}</div>
                                 </Col>
-                                <Col>{user.offer.tasks.map((task) => {
-                                        return <><Badge key={user._id + task} pill variant="primary">{task}</Badge>{' '}</>
+                                <Col style={{whiteSpace: "normal"}}>{user.offer.tasks.map((task) => {
+                                        return <><Badge key={user._id + task} style = {{whiteSpace: "normal"}} pill variant="primary">{task}</Badge>{' '}</>
                                     })}</Col>
                             </Row>
                         </ListGroup.Item>
@@ -185,7 +188,9 @@ export default function Offers(props) {
                             return <><Badge key={modalInfo._id + neighborhood} pill variant="warning">{neighborhood}</Badge>{' '}</>
                         })}
                     </p>
+                    
                 </Modal.Body>
+                <Modal.Footer><p style={{fontStyle: "italic"}}>Be sure to coordinate a safe drop-off! Follow <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">CDC guidelines</a> on cleanliness and avoid as much contact as possible to prevent further spread of virus.</p></Modal.Footer>
             </Modal>
         </div>
     );

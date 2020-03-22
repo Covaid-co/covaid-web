@@ -36,7 +36,7 @@ export default function Loading(props) {
                 <span className="sr-only">Loading...</span>
             </Spinner>
             <h6 style = {{fontWeight: 300, fontStyle: 'italic'}}>
-               If you are not redirected in 10 seconds, enter your zipcode.
+               If you are not redirected in 10 seconds, enter your current zipcode.
             </h6>
             <Row className="justify-content-md-center">
                 <Col md={4} lg={5}></Col>

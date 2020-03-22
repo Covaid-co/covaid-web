@@ -35,6 +35,7 @@ html, body {
   background: #194bd3;
 }
 
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -49,7 +50,13 @@ html, body {
   border-color: #194bd3;
 }
 
+.smallPage {
+  display: none !important;
+}
+
 @media (max-width:575px){
+  .smallPage { display: grid !important; }
+  .bigPage { display: none !important; }
   #getStarted {
     margin-right: 0 !important;
     display: grid !important;
