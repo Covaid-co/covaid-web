@@ -19,6 +19,7 @@ Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 export default function YourOffer(props) {
     const [fields, handleFieldChange] = useFormFields({
         details: "",
+        phone: ""
     });
 
     const [showAlert, setShowAlert] = useState(false);
@@ -40,6 +41,7 @@ export default function YourOffer(props) {
             const response = await fetch_a('/api/users/current');
             response.json().then((user) => {
                 fields.details = user.offer.details;
+                fields.phone = user.phone;
 
                 // Get current lat and long from current location and find neighborhoods
                 const { latitude, longitude } = props.state;
@@ -167,6 +169,12 @@ export default function YourOffer(props) {
             setToastMessage('No Details Written');
             return false;
         }
+
+        if (!((fields.phone.length === 0 || (fields.phone.length === 10)) && (/^\d+$/.test(fields.phone)))) {
+            setShowToast(true);
+            setToastMessage('Please Use A Valid Phone Number');
+            return false;
+        }
         return true;
     }
 
@@ -198,7 +206,8 @@ export default function YourOffer(props) {
             'location': {
                 'type': 'Point',
                 'coordinates': [props.state.longitude, props.state.latitude]
-            }
+            },
+            'phone': fields.phone
         };
         console.log(form);
         fetch_a('/api/users/update', {
@@ -321,6 +330,16 @@ export default function YourOffer(props) {
                                               onChange={handleFieldChange}/>
                             </Form.Group>
                             <br></br>
+                            <Form.Group controlId="phone" bssize="large">
+                                <Form.Label style = {{marginBottom: 0}}><h3>Update your contact number</h3></Form.Label>
+                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Optional</p>
+                                <Form.Control 
+                                    placeholder="10 Digit Contact Number"
+                                    value={fields.phone}
+                                    onChange={handleFieldChange}
+                                />
+                            </Form.Group>
+                            <br></br>
                             {/* <Form.Group controlId="neighborhoods" bssize="large">
                                 <Form.Label style = {{marginBottom: -10}}><h3>Neighborhoods</h3></Form.Label>
                                 <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select the primary neighborhoods in which you can help.</p>
@@ -333,7 +352,7 @@ export default function YourOffer(props) {
                                 })}
                             </Form.Group>
                             <br></br> */}
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" type="submit" >
                                 Update
                             </Button>
                             <br></br>
