@@ -108,15 +108,22 @@ html, body {
   }
 }
 
+@media (max-width:320px){
+  .BottomHalf {
+    bottom: -10% !important;
+  }
+}
+
+
 @media (max-width:490px){
   .BottomHalf {
-    bottom: 15% !important;
+    bottom: 5% !important;
   }
 }
 
 @media (max-width:340px){
   .BottomHalf {
-    bottom: 9% !important;
+    bottom: 10% !important;
   }
 }
 

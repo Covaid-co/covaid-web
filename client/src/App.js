@@ -375,6 +375,7 @@ class App extends Component {
     var bulletin;
     var offer;
     var link;
+    var covaidText = "Covaid connects volunteers to those who need in their community"
     if (this.state.width < 575) {
       bulletin = "Bulletin";
       offer = "My Offer";
@@ -383,6 +384,12 @@ class App extends Component {
       bulletin = "Community Bulletin";
       offer = "My Offer";
       link = "Helpful Links";
+    }
+
+    var titleSize = 43;
+    if (this.state.width <= 350) {
+      covaidText = "";
+      titleSize = 30;
     }
 
     var rightNav;
@@ -414,8 +421,10 @@ class App extends Component {
       howHelp = <><h5>My Offer</h5>
        <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></> 
-       
-       clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
+       if (this.state.width > 350) {
+        console.log(this.state.width)
+        clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
+       }
     } else {
       rightNav = <>
                   <Button variant="outline-light" 
@@ -444,7 +453,7 @@ class App extends Component {
         <div>
           <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-          <div className="BottomHalf"></div>
+
           <div className="App">
             <Navbar variant="light" expand="sm" className = 'customNav'>
               <Navbar.Brand id="home" 
@@ -484,10 +493,12 @@ class App extends Component {
               </Navbar.Collapse>
             </Navbar>
 
+            <div className="BottomHalf"></div>
+
             <Container style = {{padding: '40px 15px'}}>
-              <h1 style = {{fontWeight: 700, fontSize: 43, color: 'white'}}>Mutual aid for COVID-19</h1>
+              <h1 style = {{fontWeight: 700, fontSize: titleSize, color: 'white'}}>Mutual aid for COVID-19</h1>
               <h5 style = {{fontWeight: 400, fontSize: 15 ,color: 'white', marginBottom: 40, marginTop: 10}}>
-                Covaid connects volunteers to those who need in their community
+                {covaidText}
               </h5>
               <h6 style = {{fontWeight: 300, color: 'white'}}>
                 {/* <i style={{color: "#e22447", fontSize: 25, marginRight: 5}} className="fa fa-map-marker"></i>  */}

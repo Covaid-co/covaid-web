@@ -221,7 +221,7 @@ export default function Offers(props) {
                 style={{marginTop: "10px",
                         display: "block-inline", 
                         whiteSpace: 'nowrap',
-                        maxWidth: 240,
+                        maxWidth: 250,
                         marginLeft: 'auto',
                         marginRight: 'auto'}}>
                 <FormControl 
