@@ -374,7 +374,7 @@ class App extends Component {
     var bulletin;
     var offer;
     var link;
-    var covaidText = "Covaid connects volunteers to those who need in their community"
+    var covaidText = "Covaid connects community volunteers with those who need help"
     if (this.state.width < 575) {
       bulletin = "Bulletin";
       offer = "My Offer";
