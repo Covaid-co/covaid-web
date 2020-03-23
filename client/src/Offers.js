@@ -17,7 +17,7 @@ export default function Offers(props) {
     const [loaded, setLoaded] = useState(false);
     const [displayedUsers, setDisplayedUsers] = useState([]);
     const possibleTasks = ['Food/Groceries', 'Health', 'Child/Petcare',
-                           'Transportation', 'Social Services', 'Donate', 'Misc.'];
+                           'Transportation', 'Emotional Support', 'Donate', 'Misc.'];
 
     const [modalInfo, setModalInfo] = useState({
         'first_name': '',

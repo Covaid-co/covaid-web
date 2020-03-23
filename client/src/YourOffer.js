@@ -32,11 +32,11 @@ export default function YourOffer(props) {
     // const [neighborhoodSelect, setNeighborhoodSelect] = useState({});
     const [getNeighborhoods, setNeighborhoods] = useState([]);
     const possibleTasks = ['Food/Groceries', 'Health', 'Child/Petcare',
-                           'Transportation', 'Social Services', 'Donate', 'Misc.'];
+                           'Transportation', 'Emotional Support', 'Donate', 'Misc.'];
 
     useEffect(() => {
         const possible_tasks = ['Food/Groceries', 'Health', 'Child/Petcare',
-                                'Transportation', 'Social Services', 'Donate', 'Misc.'];
+                                'Transportation', 'Emotional Support', 'Donate', 'Misc.'];
         async function fetchData() {
             const response = await fetch_a('/api/users/current');
             response.json().then((user) => {
