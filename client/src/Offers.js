@@ -6,8 +6,9 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Badge from 'react-bootstrap/Badge'
-import FormControl from 'react-bootstrap/FormControl'
-import Form from 'react-bootstrap/Form'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
+import Dropdown from 'react-bootstrap/Dropdown'
 
 export default function Offers(props) {
     const [lat, setLatitude] = useState(props.state.latitude);
@@ -15,9 +16,12 @@ export default function Offers(props) {
     const [filterValue, setFilterValue] = useState('');
     const [users, setUsers] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [taskSelect, setTaskSelect] = useState({});
+    const [allTasks, setAllTasks] = useState(false);
     const [displayedUsers, setDisplayedUsers] = useState([]);
-    const possibleTasks = ['Food/Groceries', 'Health', 'Child/Petcare',
-                           'Transportation', 'Emotional Support', 'Donate', 'Misc.'];
+    const possibleTasks = ['Food/Groceries', 'Medication', 'Donate',
+                            'Emotional Support', 'Misc.'];
 
     const [modalInfo, setModalInfo] = useState({
         'first_name': '',
@@ -83,18 +87,15 @@ export default function Offers(props) {
             });
         }
         fetchData();
+
+        for (var i = 0; i < possibleTasks.length; i++) {
+            const taskName = possibleTasks[i];
+            setTaskSelect(prev => ({ 
+                ...prev,
+                [taskName]: false,
+            }));
+        }
     }, [lat, lng]);
-
-    // const handleChange = (val) => {
-    //     setValue(val);
-    //     const selectedTasks = [];
-    //     for (var i = 0; i < val.length; i++) {
-    //         selectedTasks.push(possibleTasks[val[i]]);
-    //     }
-    //     const result = users.filter(user => selectedTasks.some(v => user.offer.tasks.indexOf(v) !== -1));
-    //     setDisplayedUsers(result);
-    // };
-
 
     const searchWithinList = (list, value) => {
         for (var i = 0; i < list.length; i++) {
@@ -111,7 +112,6 @@ export default function Offers(props) {
         }
         return false;
     }
-
 
     const handleFilterChange = (e) => {
         setFilterValue(e.target.value);
@@ -155,16 +155,87 @@ export default function Offers(props) {
         setDisplayedUsers(result);
     };
 
-    // let buttonStyles = {
-    //     border: '0.5px solid #DADDE1',
-    // }
+    function formatPhoneNumber(phoneNumberString) {
+        var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+        var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+        if (match) {
+          return '(' + match[1] + ')-' + match[2] + '-' + match[3]
+        }
+        return null
+    }
 
     var phoneNumber;
     if (modalInfo.phone) {
-        phoneNumber = <p><b>Phone:</b> {modalInfo.phone}</p>;
+        phoneNumber = <p><b>Phone:</b> {formatPhoneNumber(modalInfo.phone)}</p>;
     } else {
         phoneNumber = <></>;
     }
+
+    const dropdownToggle = (newValue, event, metadata) => {
+        if (metadata.source === 'select') {
+            setDropdownOpen(true);
+        } else {
+            setDropdownOpen(newValue);
+        }
+    }
+
+    const handleTaskChange = (evt, task) => {
+
+        if (task === 'all') {
+            // Want to diplay all tasks
+            if (allTasks === false) {
+                for (var i = 0; i < possibleTasks.length; i++) {
+                    const taskFound = possibleTasks[i];
+                    setTaskSelect(prev => ({ 
+                        ...prev,
+                        [taskFound]: true,
+                    }));            
+                }
+                setDisplayedUsers(users);
+            } else {
+                for (i = 0; i < possibleTasks.length; i++) {
+                    const taskFound = possibleTasks[i];
+                    setTaskSelect(prev => ({ 
+                        ...prev,
+                        [taskFound]: false,
+                    }));            
+                }
+                setDisplayedUsers([]);
+            }
+            setAllTasks(!allTasks);
+            return;
+        }
+
+        var allTasksSelected = true;
+        const selectedTasks = [];
+        if (taskSelect[task] === false) {
+            selectedTasks.push(task);
+        } else {
+            allTasksSelected = false;
+        }
+
+        for (const taskFound in taskSelect) {
+            if (taskFound === task) {
+                continue;
+            }
+            if (taskSelect[taskFound]) {
+                selectedTasks.push(taskFound);
+            } else {
+                allTasksSelected = false;
+            }
+        }
+
+        setAllTasks(allTasksSelected);
+
+        setTaskSelect(prev => ({ 
+            ...prev,
+            [task]: !taskSelect[task],
+        }));
+
+        const result = users.filter(user => selectedTasks.some(v => user.offer.tasks.indexOf(v) !== -1));
+        setDisplayedUsers(result);
+    }
+
 
     var message = <> </>;
     var tabs = <> </>
@@ -184,8 +255,39 @@ export default function Offers(props) {
             tabs = <ListGroup variant="flush">
                     <ListGroup.Item>
                         <Row>
-                            <Col style={{whiteSpace: 'nowrap'}}><strong>Who's offering?</strong></Col>
-                            <Col ><strong>Offer</strong></Col>
+                            <Col style={{whiteSpace: 'nowrap', marginTop: 4}}><strong>Who's offering?</strong></Col>
+                            {/* <Col ><strong>Offer</strong></Col> */}
+                            <Col>
+                                <Dropdown drop = 'up' 
+                                          show={dropdownOpen}
+                                          onToggle={dropdownToggle}
+                                          alignRight>
+                                    <Dropdown.Toggle size = 'sm' 
+                                                    variant="secondary" 
+                                                    id="dropdown-basic">
+                                        <strong>Offers</strong>
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        {possibleTasks.map((task) => {
+                                        return <Dropdown.Item
+                                                onSelect = {(evt) => { handleTaskChange(evt, task)}}
+                                                active = {taskSelect[task]}> {task}
+                                                {/* <Form.Check type="checkbox" 
+                                                            label={task}
+                                                            // onChange={(evt) => { handleTaskChange(evt, task)}}
+                                                            checked = {taskSelect[task]} /> */}
+                                                </Dropdown.Item >
+                                        })}
+                                        <Dropdown.Divider />
+                                        <Dropdown.Item 
+                                            onSelect = {(evt) => { handleTaskChange(evt, 'all')}}
+                                            active = {allTasks}>
+                                            All Offers
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Col>
                         </Row>
                     </ListGroup.Item>
                 </ListGroup>
@@ -214,10 +316,10 @@ export default function Offers(props) {
                 See who's helping in {localityText}
             </Badge>{' '}
             <br />
-            <div style = {{fontSize: 14, fontStyle:'italic', marginTop: 5}}>
+            <div style = {{fontSize: 14, fontStyle:'italic', marginTop: 4, marginBottom: 5}}>
                 Click on an offer below for more info
             </div>{' '}
-            <Form 
+            {/* <Form 
                 style={{marginTop: "10px",
                         display: "block-inline", 
                         whiteSpace: 'nowrap',
@@ -230,7 +332,7 @@ export default function Offers(props) {
                     onChange={handleFilterChange}
                     placeholder="Filter by offer or neighborhood" 
                     className="mr-sm-2" />
-            </Form>
+            </Form> */}
             {tabs}
             <ListGroup variant="flush">
                 {message}
@@ -244,7 +346,21 @@ export default function Offers(props) {
                                 <Col style={{whiteSpace: "normal"}}>
                                     <div style={{whiteSpace: "normal", wordWrap: "break-word"}}>{name}</div>
                                     <div style={{whiteSpace: "normal"}}>{user.offer.neighborhoods.map((neighborhood, i) => {
-                                        return <><Badge key={user._id + neighborhood + String(i * 14)} style = {{whiteSpace: "normal"}} pill variant="warning">{neighborhood}</Badge>{' '}</>
+                                        return <>
+                                            <OverlayTrigger
+                                                    key={'top'}
+                                                    placement={'top'}
+                                                    overlay={
+                                                    <Tooltip id={`tooltip-top`}>
+                                                        Tooltip on <strong>top</strong>.
+                                                    </Tooltip>}>
+                                                    <Badge key={user._id + neighborhood + String(i * 14)} 
+                                                            style = {{whiteSpace: "normal"}} 
+                                                            pill 
+                                                            variant="warning">
+                                                            {neighborhood}
+                                                    </Badge>
+                                            </OverlayTrigger>{' '}</>
                                     })}</div>
                                 </Col>
                                 <Col style={{whiteSpace: "normal"}}>{user.offer.tasks.map((task, i) => {
