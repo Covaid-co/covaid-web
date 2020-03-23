@@ -6,16 +6,18 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Badge from 'react-bootstrap/Badge'
+import FormControl from 'react-bootstrap/FormControl'
+import Form from 'react-bootstrap/Form'
 
 export default function Offers(props) {
     const [lat, setLatitude] = useState(props.state.latitude);
     const [lng, setLongitude] = useState(props.state.longitude);
-    // const [value, setValue] = useState([0, 1, 2, 3, 4, 5]);
+    const [filterValue, setFilterValue] = useState('');
     const [users, setUsers] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [displayedUsers, setDisplayedUsers] = useState([]);
-    // const possibleTasks = ['Food', 'Health Care', 'Transportation',
-    // 'Child Care', 'Pet Care', 'Storage', 'Emotional Support'];
+    const possibleTasks = ['Food/Groceries', 'Health', 'Child/Petcare',
+                           'Transportation', 'Social Services', 'Donate', 'Misc.'];
 
     const [modalInfo, setModalInfo] = useState({
         'first_name': '',
@@ -60,7 +62,6 @@ export default function Offers(props) {
 
     useEffect(() => {
         var url = "/api/users/all?";
-        // const { latitude, longitude } = props.state;
         
         setLatitude(lat);
         setLongitude(lng);
@@ -93,6 +94,66 @@ export default function Offers(props) {
     //     const result = users.filter(user => selectedTasks.some(v => user.offer.tasks.indexOf(v) !== -1));
     //     setDisplayedUsers(result);
     // };
+
+
+    const searchWithinList = (list, value) => {
+        for (var i = 0; i < list.length; i++) {
+            const filterOption = list[i].toLowerCase();
+            var useValue = true;
+            for (var j = 0; j < Math.min(filterOption.length, value.length); j++) {
+                if (filterOption[j] !== value[j]) {
+                    useValue = false;
+                }
+            }
+            if (useValue && value.length <= list[i].length) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    const handleFilterChange = (e) => {
+        setFilterValue(e.target.value);
+        const val = e.target.value.toLowerCase();
+        if (val === '') {
+            setDisplayedUsers(users);
+        }
+
+        const result = users.filter((user) => {
+            // Search for name
+            const name = user.first_name + ' ' + user.last_name;
+            var useVal = true;
+            for (var j = 0; j < Math.min(name.length, val.length); j++) {
+                if (name[j].toLowerCase() !== val[j]) {
+                    useVal = false;
+                }
+            }
+            if (useVal && val.length <= name.length) {
+                return true;
+            }
+            
+            const userNeighborhoods = user.offer.neighborhoods;
+            const userTasks = JSON.parse(JSON.stringify(user.offer.tasks));
+            if (userTasks.includes('Food/Groceries')) {
+                userTasks.push('food');
+                userTasks.push('groceries');
+            }
+            if (userTasks.includes('Child/Petcare')) {
+                userTasks.push('childcare');
+                userTasks.push('child care');
+                userTasks.push('petcare');
+                userTasks.push('pet care');
+            }
+            if (searchWithinList(userNeighborhoods, val) ||
+                searchWithinList(userTasks, val)) {
+                return true;
+            }
+
+            return false;
+        });
+        setDisplayedUsers(result);
+    };
 
     // let buttonStyles = {
     //     border: '0.5px solid #DADDE1',
@@ -138,7 +199,10 @@ export default function Offers(props) {
     }
 
     return (
-        <div className="shadow p-3 mb-5 bg-white rounded">
+        <div className="shadow mb-5 bg-white rounded" 
+            style = {{paddingLeft: '1rem', 
+                      paddingRight: '1rem', 
+                      paddingBottom: '1rem'}}>
             {/* <ToggleButtonGroup type="checkbox" className="btn-group d-flex flex-wrap" value={value} onChange={handleChange}>
                 {possibleTasks.map((task, i) => {
                     return <ToggleButton style={buttonStyles} className="toggleButton" variant="outline-primary" size="sm" key = {i} value={i}>{task}</ToggleButton>
@@ -146,13 +210,27 @@ export default function Offers(props) {
                 
             </ToggleButtonGroup> */}
             <br />
-            <Badge pill style = {{fontSize: 16, whiteSpace:"normal", marginBottom: 5}} variant="primary" className="shadow">
+            <Badge pill style = {{fontSize: 16, whiteSpace:"normal", marginBottom: 5, marginTop: -13}} variant="primary" className="shadow">
                 See who's helping in {localityText}
             </Badge>{' '}
             <br />
-            <div style = {{fontSize: 14, fontStyle:'italic'}}>
+            <div style = {{fontSize: 14, fontStyle:'italic', marginTop: 5}}>
                 Click on an offer below for more info
             </div>{' '}
+            <Form 
+                style={{marginTop: "10px",
+                        display: "block-inline", 
+                        whiteSpace: 'nowrap',
+                        maxWidth: 240,
+                        marginLeft: 'auto',
+                        marginRight: 'auto'}}>
+                <FormControl 
+                    type="text" 
+                    value={filterValue} 
+                    onChange={handleFilterChange}
+                    placeholder="Filter by offer or neighborhood" 
+                    className="mr-sm-2" />
+            </Form>
             {tabs}
             <ListGroup variant="flush">
                 {message}
@@ -178,18 +256,18 @@ export default function Offers(props) {
             </ListGroup>
             <Modal show={show} onHide={handleClose} style = {{marginTop: 60}}>
                 <Modal.Header closeButton>
-                <Modal.Title>Offer</Modal.Title>
+                <Modal.Title>{modalInfo.first_name} {modalInfo.last_name}'s Offer</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p><b>Tasks:</b>  {modalInfo.offer.tasks.map((task, i) => {
                             return <><Badge key={modalInfo._id + task + String((i + 1) * 11)} pill variant="primary">{task}</Badge>{' '}</>
                         })}
                     </p>
-                    <p><b>Name:</b> {modalInfo.first_name} {modalInfo.last_name}</p>
+                    {/* <p><b>Name:</b> {modalInfo.first_name} {modalInfo.last_name}</p> */}
                     <p><b>Email:</b> {modalInfo.email}</p>
                     {phoneNumber}
                     <p><b>Details:</b> {modalInfo.offer.details}</p>
-                    <p><b>Neighborhoods:</b>  {modalInfo.offer.neighborhoods.map((neighborhood, i) => {
+                    <p style= {{marginBottom: -3}}><b>Neighborhoods:</b>  {modalInfo.offer.neighborhoods.map((neighborhood, i) => {
                             return <><Badge key={modalInfo._id + neighborhood + String((i + 1) * 20)} pill variant="warning">{neighborhood}</Badge>{' '}</>
                         })}
                     </p>

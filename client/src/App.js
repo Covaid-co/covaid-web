@@ -465,8 +465,10 @@ class App extends Component {
             </Navbar>
 
             <Container style = {{padding: '40px 15px'}}>
-              <h1 style = {{fontWeight: 700, color: 'white'}}>Mutual aid for COVID-19</h1>
-              <h5 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 40}}>Need a hand?</h5>
+              <h1 style = {{fontWeight: 700, fontSize: 43, color: 'white'}}>Mutual aid for COVID-19</h1>
+              <h5 style = {{fontWeight: 400, fontSize: 15 ,color: 'white', marginBottom: 40, marginTop: 10}}>
+                Covaid connects volunteers to those who need in their community
+              </h5>
               <h6 style = {{fontWeight: 300, color: 'white'}}>
                 {/* <i style={{color: "#e22447", fontSize: 25, marginRight: 5}} className="fa fa-map-marker"></i>  */}
                 <Button variant="success"

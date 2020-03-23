@@ -114,6 +114,12 @@ html, body {
   }
 }
 
+@media (max-width:340px){
+  .BottomHalf {
+    bottom: 9% !important;
+  }
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 50%;
