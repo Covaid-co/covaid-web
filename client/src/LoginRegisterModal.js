@@ -22,20 +22,22 @@ export default function LoginRegisterModal(props) {
     if (login) {
         title = "Welcome back!";
         body = <Login />;
-        footer = <div>
+        footer = <div style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}>
                     <Button 
                         variant="link"
                         onClick={handleClick}
+                        style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}
                     >Looking to create an account?</Button>
 
                 </div>
     } else {
         title = "Want to help your community?";
         body = <Register state={props.state}/>
-        footer = <div>
+        footer = <div style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}>
                     <Button 
                         variant="link"
                         onClick={handleClick}
+                        style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}
                     >Already have an account?</Button>
                 </div>
     }
@@ -46,8 +48,8 @@ export default function LoginRegisterModal(props) {
             <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {body}
                 {footer}
+                {body}
             </Modal.Body>
             <Modal.Footer>
                 &nbsp;
