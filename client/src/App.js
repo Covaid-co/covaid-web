@@ -54,6 +54,7 @@ class App extends Component {
       showWorks: false,
       showAbout: false,
       showLocation: false,
+      showFeedback: false,
       cookieSet: false,
       searchedLocation: '',
       currentState: '',
@@ -66,6 +67,8 @@ class App extends Component {
 
     this.handleHideLocation = this.handleHideLocation.bind(this);
     this.handleShowLocation = this.handleShowLocation.bind(this);
+    this.handleHideFeedback = this.handleHideFeedback.bind(this);
+    this.handleShowFeedback = this.handleShowFeedback.bind(this);
     this.handleHidePrompt = this.handleHidePrompt.bind(this);
     this.getMyLocation = this.getMyLocation.bind(this)
     this.logout = this.logout.bind(this);
@@ -107,6 +110,14 @@ class App extends Component {
 
   handleHideRegistration() {
     this.setState({showRegistration: false});
+  }
+
+  handleShowFeedback() {
+    this.setState({showFeedback: true});
+  }
+
+  handleHideFeedback() {
+    this.setState({showFeedback: false});
   }
 
   handleShowWorks() {
@@ -377,6 +388,7 @@ class App extends Component {
     var rightNav;
     var yourOffer;
     var howHelp;
+    var clickText = <></>;
     if (isLoggedIn) {
       rightNav = <>
                   <span id = "name" 
@@ -401,7 +413,9 @@ class App extends Component {
                   </Tab>;  
       howHelp = <><h5>My Offer</h5>
        <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
-       their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></>  
+       their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></> 
+       
+       clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
     } else {
       rightNav = <>
                   <Button variant="outline-light" 
@@ -411,7 +425,7 @@ class App extends Component {
                     <font id ="help" 
                           style = {{color:"white", 
                                     fontWeight: 600,
-                                    fontSize: 14, whiteSpace: 'nowrap'}}>
+                                    fontSize: 12, whiteSpace: 'nowrap'}}>
                       How can I help my community?
                     </font>
                   </Button>
@@ -457,6 +471,12 @@ class App extends Component {
                     onClick={this.handleShowWorks}>
                     How It Works
                   </Nav.Link>
+                  <Nav.Link 
+                    id = "navLink3"
+                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+                    onClick={this.handleShowFeedback}>
+                    Feedback?
+                  </Nav.Link>
                 </Nav>
                 <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
                   {rightNav}
@@ -492,6 +512,7 @@ class App extends Component {
                   <i className="fa fa-refresh" aria-hidden="true"></i>
                 </Button>{' '}
               </h6>
+              {clickText}
               {/* <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
                 <FormControl 
                   type="text" 
@@ -548,6 +569,28 @@ class App extends Component {
                       as well as those affected around the United States. With this tool, we hope to give those
                       most affected and vulnerable the help they need. 
                   </p>
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={this.state.showFeedback} onHide={this.handleHideFeedback} style = {{marginTop: 60}}>
+                <Modal.Header closeButton>
+                <Modal.Title>Let us know if you have any feedback!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <Form 
+                      action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSdvk1_J6JuQjva7VXdonad4QRC7E7rZBzQL9M3aX42bANyEQA/formResponse"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      method="POST"
+                      onSubmit={this.handleHideFeedback}
+                      style={{marginTop: "10px", marginBottom: "30px", display: "block", whiteSpace: 'nowrap'}}>
+                    <FormControl 
+                      type="text" 
+                      name="entry.1354002737"
+
+                      className="mr-sm-2" />
+                    <Button type="submit" variant="success" style={{marginTop: "10px"}} >Submit</Button>
+                  </Form>
                 </Modal.Body>
             </Modal>
 
