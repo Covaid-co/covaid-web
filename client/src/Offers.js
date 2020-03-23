@@ -181,37 +181,36 @@ export default function Offers(props) {
 
     const handleTaskChange = (evt, task) => {
 
-        if (task === 'all') {
-            // Want to diplay all tasks
-            if (allTasks === false) {
-                for (var i = 0; i < possibleTasks.length; i++) {
-                    const taskFound = possibleTasks[i];
-                    setTaskSelect(prev => ({ 
-                        ...prev,
-                        [taskFound]: true,
-                    }));            
-                }
-                setDisplayedUsers(users);
-            } else {
-                for (i = 0; i < possibleTasks.length; i++) {
-                    const taskFound = possibleTasks[i];
-                    setTaskSelect(prev => ({ 
-                        ...prev,
-                        [taskFound]: false,
-                    }));            
-                }
-                setDisplayedUsers([]);
-            }
-            setAllTasks(!allTasks);
-            return;
-        }
+        // if (task === 'all') {
+        //     // Want to diplay all tasks
+        //     if (allTasks === false) {
+        //         for (var i = 0; i < possibleTasks.length; i++) {
+        //             const taskFound = possibleTasks[i];
+        //             setTaskSelect(prev => ({ 
+        //                 ...prev,
+        //                 [taskFound]: true,
+        //             }));            
+        //         }
+        //         setDisplayedUsers(users);
+        //     } else {
+        //         for (i = 0; i < possibleTasks.length; i++) {
+        //             const taskFound = possibleTasks[i];
+        //             setTaskSelect(prev => ({ 
+        //                 ...prev,
+        //                 [taskFound]: false,
+        //             }));            
+        //         }
+        //         setDisplayedUsers([]);
+        //     }
+        //     setAllTasks(!allTasks);
+        //     return;
+        // }
 
-        var allTasksSelected = true;
+        var noTasksSelected = true;
         const selectedTasks = [];
         if (taskSelect[task] === false) {
             selectedTasks.push(task);
-        } else {
-            allTasksSelected = false;
+            noTasksSelected = false;
         }
 
         for (const taskFound in taskSelect) {
@@ -220,17 +219,19 @@ export default function Offers(props) {
             }
             if (taskSelect[taskFound]) {
                 selectedTasks.push(taskFound);
-            } else {
-                allTasksSelected = false;
+                noTasksSelected = false;
             }
         }
-
-        setAllTasks(allTasksSelected);
 
         setTaskSelect(prev => ({ 
             ...prev,
             [task]: !taskSelect[task],
         }));
+
+        if (noTasksSelected) {
+            setDisplayedUsers(users);
+            return;
+        }
 
         const result = users.filter(user => selectedTasks.some(v => user.offer.tasks.indexOf(v) !== -1));
         setDisplayedUsers(result);
@@ -279,12 +280,12 @@ export default function Offers(props) {
                                                             checked = {taskSelect[task]} /> */}
                                                 </Dropdown.Item >
                                         })}
-                                        <Dropdown.Divider />
+                                        {/* <Dropdown.Divider />
                                         <Dropdown.Item 
                                             onSelect = {(evt) => { handleTaskChange(evt, 'all')}}
                                             active = {allTasks}>
                                             All Offers
-                                        </Dropdown.Item>
+                                        </Dropdown.Item> */}
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
