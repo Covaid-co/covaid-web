@@ -348,20 +348,13 @@ export default function Offers(props) {
                                     <div style={{whiteSpace: "normal", wordWrap: "break-word"}}>{name}</div>
                                     <div style={{whiteSpace: "normal"}}>{user.offer.neighborhoods.map((neighborhood, i) => {
                                         return <>
-                                            <OverlayTrigger
-                                                    key={'top'}
-                                                    placement={'top'}
-                                                    overlay={
-                                                    <Tooltip id={`tooltip-top`}>
-                                                        Tooltip on <strong>top</strong>.
-                                                    </Tooltip>}>
-                                                    <Badge key={user._id + neighborhood + String(i * 14)} 
+                                            
+                                            <Badge key={user._id + neighborhood + String(i * 14)} 
                                                             style = {{whiteSpace: "normal"}} 
                                                             pill 
                                                             variant="warning">
                                                             {neighborhood}
-                                                    </Badge>
-                                            </OverlayTrigger>{' '}</>
+                                                    </Badge> </>
                                     })}</div>
                                 </Col>
                                 <Col style={{whiteSpace: "normal"}}>{user.offer.tasks.map((task, i) => {
