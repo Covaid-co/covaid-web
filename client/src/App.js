@@ -337,7 +337,6 @@ class App extends Component {
   onLocationSubmit = (e) => {
       e.preventDefault();
       this.handleHideLocation();
-      console.log(this.state.searchedLocation);
       Geocode.fromAddress(this.state.searchedLocation).then(
         response => {
           const { lat, lng } = response.results[0].geometry.location;
@@ -422,7 +421,6 @@ class App extends Component {
        <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></> 
        if (this.state.width > 350) {
-        console.log(this.state.width)
         clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
        }
     } else {
