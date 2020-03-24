@@ -26,6 +26,7 @@ export default function Offers(props) {
     const [showRequestHelp, setShowRequestHelp] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [showCompletedToast, setShowCompletedToast] = useState(true);
 
     const [lat, setLatitude] = useState(props.state.latitude);
     const [lng, setLongitude] = useState(props.state.longitude);
@@ -171,7 +172,7 @@ export default function Offers(props) {
 
         if (validateEmail(fields.email) === false) {
             setShowToast(true);
-            setToastMessage('No Details Written');
+            setToastMessage('Not a valid email');
             return false;
         }
 
@@ -197,7 +198,7 @@ export default function Offers(props) {
 
         let form = {
             'offerer_id': modalInfo._id,
-            'offerer_email': modalInfo.phone,
+            'offerer_email': modalInfo.email,
             'requester_phone': fields.phone,
             'details': fields.details,
             'requester_email': fields.email
@@ -210,7 +211,8 @@ export default function Offers(props) {
         .then((response) => {
             if (response.ok) {
                 console.log("Request successfully created");
-                window.location.reload(true);
+                setShowRequestHelp(false);
+                setShowCompletedToast(true);
             } else {
                 console.log("Request not successful")
             }
@@ -281,6 +283,20 @@ export default function Offers(props) {
                       paddingRight: '1rem', 
                       paddingBottom: '1rem'}}>
             <br />
+            <Toast
+                show={showCompletedToast}
+                delay={3000}
+                onClose={() => setShowCompletedToast(false)}
+                autohide
+                style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    right: 0,
+                    // mar: 150,
+                    marginRight: 40
+                }}>
+                <Toast.Body>Helalsdkfjalkdsjflkdjsllo</Toast.Body>
+            </Toast>
             <Badge pill style = {{fontSize: 16, whiteSpace:"normal", marginBottom: 5, marginTop: -13}} variant="warning" className="shadow">
                 See who's helping around {localityText}
             </Badge>{' '}
@@ -363,20 +379,19 @@ export default function Offers(props) {
                 <Modal.Title>Request for {modalInfo.first_name} {modalInfo.last_name}'s Help</Modal.Title>
                 </Modal.Header>
                 <Toast
-                show={showToast}
-                delay={3000}
-                onClose={() => setShowToast(false)}
-                autohide
-                style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    right: 0,
-                    marginBottom: 120,
-                    marginRight: 10
-                }}
-            >
-                <Toast.Body>{toastMessage}</Toast.Body>
-            </Toast>
+                    show={showToast}
+                    delay={3000}
+                    onClose={() => setShowToast(false)}
+                    autohide
+                    style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                        marginBottom: 120,
+                        marginRight: 10
+                    }}>
+                    <Toast.Body>{toastMessage}</Toast.Body>
+                </Toast>
                 <Modal.Body>
                     <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
                         <Form.Group controlId="details" bssize="large">
