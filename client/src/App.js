@@ -598,7 +598,13 @@ class App extends Component {
                     <FormControl 
                       type="text" 
                       name="entry.1354002737"
-
+                      placeholder="Feedback"
+                      className="mr-sm-2" />
+                      <br />
+                      <FormControl 
+                      type="text" 
+                      name="entry.1347491217"
+                      placeholder="Email Address"
                       className="mr-sm-2" />
                     <Button type="submit" variant="success" style={{marginTop: "10px"}} >Submit</Button>
                   </Form>
