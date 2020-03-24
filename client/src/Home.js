@@ -403,26 +403,28 @@ class Home extends Component {
       communityText = "Want to help?"
     }
 
-    if (this.state.width <= 767) {
-      communityButton = <><Button variant="outline-light" 
-                              marginLeft="auto"
-                              style={{outlineWidth: "thick",
-                                      textAlign: 'right',
-                                      paddingLeft: 5,
-                                      paddingRight: 5,
-                                      paddingTop: 0,
-                                      paddingBottom: 2,
-                                      marginRight: 3}}
-                              id = 'howHelpButton1'
-                              
-                              onClick={this.handleShowRegistration}>
-                          <font id ="help" 
-                                style = {{color:"white", 
-                                          fontWeight: 600,
-                                          fontSize: 11, whiteSpace: 'nowrap'}}>
-                            {communityText}
-                          </font>
-                        </Button></>
+    if (!this.state.isLoggedIn) {
+      if (this.state.width <= 767) {
+        communityButton = <><Button variant="outline-light" 
+                                marginLeft="auto"
+                                style={{outlineWidth: "thick",
+                                        textAlign: 'right',
+                                        paddingLeft: 5,
+                                        paddingRight: 5,
+                                        paddingTop: 0,
+                                        paddingBottom: 2,
+                                        marginRight: 3}}
+                                id = 'howHelpButton1'
+                                
+                                onClick={this.handleShowRegistration}>
+                            <font id ="help" 
+                                  style = {{color:"white", 
+                                            fontWeight: 600,
+                                            fontSize: 11, whiteSpace: 'nowrap'}}>
+                              {communityText}
+                            </font>
+                          </Button></>
+      }
     }
 
     var rightNav;
