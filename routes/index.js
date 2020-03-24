@@ -9,9 +9,11 @@ router.get('/name', (req, res) => {
 
 const offer_routes = require('./api/offer.routes.js');
 const user_routes = require('./api/user.routes.js');
+const request_routes = require('./api/request.routes.js')
 
 router.use('/offers', offer_routes);
 router.use('/users', user_routes);
+router.use('/request', request_routes);
 
 module.exports = app => {
 	app.use('/api', router);
