@@ -196,6 +196,7 @@ export default function Offers(props) {
         }
 
         let form = {
+            'offerer_id': modalInfo._id,
             'offerer_email': modalInfo.phone,
             'requester_phone': fields.phone,
             'details': fields.details,
@@ -386,8 +387,8 @@ export default function Offers(props) {
                                         marginBottom: 2}}>Give us more information on what you need help with!</p>
                             <Form.Control as="textarea" 
                                             rows="3" 
-                                            placeholder="Example: 'I need milk and eggs and can be dropped off at 123 Main street. 
-                                            I can pay via Venmo or Paypal.'"
+                                            placeholder="Example: 'I need milk and eggs and they can be dropped 
+                                            off at 123 Main street. I can pre-pay via Venmo or Paypal.'"
                                             value={fields.details} 
                                             onChange={handleFieldChange}/>
                         </Form.Group>

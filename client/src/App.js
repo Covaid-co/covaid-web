@@ -620,7 +620,7 @@ class App extends Component {
                       type="text" 
                       value={this.state.searchedLocation} 
                       onChange={e => this.handleLocationChange(e)}
-                      placeholder="Enter city or zipcode" 
+                      placeholder="Enter a city or zipcode" 
                       className="mr-sm-2" />
                     <Button type="submit" variant="success" style={{marginTop: "10px"}} >Search</Button>
                   </Form>
