@@ -49,10 +49,12 @@ exports.handleRequest = function (req, res) {
             result: result // the "result" object can be filtered or you can simply return the message
         });
 
-        var link = 'http://localhost:5000/api/request/' + result._id + '/update_completed/';
+        var mode = "localhost:5000";
         if (process.env.PORT) {
-            var link = 'https://covaid.co/api/request/' + result._id + '/update_completed/'
+            more = "covaid.co"
         }
+
+        var link = 'http://' + mode + '/completeOffer?ID=' + result._id;
 
         var email = requester_email
         var phone = requester_phone
