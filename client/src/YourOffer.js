@@ -140,7 +140,7 @@ export default function YourOffer(props) {
         }
         fetchData();
     
-    }, [props.state]);
+    }, []);
 
     function validatePhone(phone) {
         if (phone === undefined || phone === '' || phone.length === 0) {
