@@ -86,11 +86,20 @@ export default function Register(props) {
     return (
         <div className="p-3 bg-white">
             <Form onSubmit={handleSubmit}>
-                <Row className="justify-content-md-center" style={{fontStyle: "italic", marginTop: -10}}>
-                    Creating an account allows you to volunteer an offer to help your community. Once logged in, you will have the ability to create and update your offer.
+                <Row className="justify-content-md-center"
+                    style = {{marginRight: -25, marginLeft: -25}}>
+                    <Col md={12} style={{marginTop: -15}}>
+                        <p> Creating an account allows you to volunteer an offer
+                        to help your community. Once logged in, you will be able to update your
+                        offer with things such availability or tasks.</p>
+                    </Col>
+                    <Col md={12} style={{fontStyle: "italic", marginTop: -13, fontSize: 14}}>
+                        <p>Your private information contact information will <bold style = {{fontWeight: 700}}>never</bold> be
+                        publicly visible.</p>
+                    </Col>
                 </Row>
-                <Row className="justify-content-md-center">&nbsp;</Row>
-                <Row className="justify-content-md-center">
+                <Row className="justify-content-md-center"
+                    style = {{marginRight: -25, marginLeft: -25}}>
                     <Col md={6}>
                         <Form.Group controlId="first_name" bssize="large">
                             <Form.Control 
@@ -111,7 +120,8 @@ export default function Register(props) {
                     </Col>
                 </Row>
 
-                <Row className="justify-content-md-center">
+                <Row className="justify-content-md-center"
+                    style = {{marginRight: -25, marginLeft: -25}}>
                     <Col md={12}>
                         <Form.Group controlId="email" bssize="large">
                             <Form.Control 
@@ -133,7 +143,8 @@ export default function Register(props) {
                     </Col>
                 </Row>
 
-                <Row className="justify-content-md-center">
+                <Row className="justify-content-md-center"
+                    style = {{marginRight: -25, marginLeft: -25}}>
                     <Col md={6}>
                         <Form.Group controlId="password" bssize="large">
                             <Form.Control 
@@ -156,7 +167,8 @@ export default function Register(props) {
                     </Col>
                 </Row>
 
-                <Row className="justify-content-md-center">
+                <Row className="justify-content-md-center"
+                    style = {{marginRight: -25, marginLeft: -25}}>
                     <Col md="auto">
                     <Button variant="primary" disabled={!validateForm()} type="submit">
                         Submit

@@ -22,6 +22,7 @@ import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Geocode from "react-geocode";
+import InputGroup from 'react-bootstrap/InputGroup'
 
 import Cookie from 'js-cookie'
 
@@ -58,7 +59,7 @@ class Home extends Component {
       cookieSet: false,
       searchedLocation: '',
       currentState: '',
-      width: 0,
+      width: 0
     }
 
     window.addEventListener("resize", this.update);
@@ -337,6 +338,7 @@ class Home extends Component {
   onLocationSubmit = (e) => {
       e.preventDefault();
       this.handleHideLocation();
+      this.setState({searchedLocation: ''});
       Geocode.fromAddress(this.state.searchedLocation).then(
         response => {
           const { lat, lng } = response.results[0].geometry.location;
@@ -367,6 +369,10 @@ class Home extends Component {
     );
   }
 
+  toggleNavBar(e) {
+    console.log(e);
+  }
+
   render() {
     const { isLoaded } = this.state;
     const { isLoggedIn } = this.state;
@@ -389,6 +395,34 @@ class Home extends Component {
     if (this.state.width <= 350) {
       covaidText = "";
       titleSize = 30;
+    }
+
+    var communityButton = <></>;
+    var communityText = "Want to help your community?";
+    if (this.state.width <= 374) {
+      communityText = "Want to help?"
+    }
+
+    if (this.state.width <= 767) {
+      communityButton = <><Button variant="outline-light" 
+                              marginLeft="auto"
+                              style={{outlineWidth: "thick",
+                                      textAlign: 'right',
+                                      paddingLeft: 5,
+                                      paddingRight: 5,
+                                      paddingTop: 0,
+                                      paddingBottom: 2,
+                                      marginRight: 3}}
+                              id = 'howHelpButton1'
+                              
+                              onClick={this.handleShowRegistration}>
+                          <font id ="help" 
+                                style = {{color:"white", 
+                                          fontWeight: 600,
+                                          fontSize: 11, whiteSpace: 'nowrap'}}>
+                            {communityText}
+                          </font>
+                        </Button></>
     }
 
     var rightNav;
@@ -424,7 +458,8 @@ class Home extends Component {
         clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
        }
     } else {
-      rightNav = <>
+      if (this.state.width > 767) {
+        rightNav = <>
                   <Button variant="outline-light" 
                           style={{outlineWidth: "thick"}}
                           id = 'howHelpButton'
@@ -433,10 +468,11 @@ class Home extends Component {
                           style = {{color:"white", 
                                     fontWeight: 600,
                                     fontSize: 12, whiteSpace: 'nowrap'}}>
-                      How can I help my community?
+                      Want to help your community?
                     </font>
                   </Button>
                 </>;
+      }
       yourOffer = <></>;
       howHelp = <></>
     }
@@ -453,36 +489,45 @@ class Home extends Component {
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
           <div className="App">
-            <Navbar variant="light" expand="sm" className = 'customNav'>
+            <Navbar collapseOnSelect 
+                    onToggle={this.toggleNavBar}
+                    variant="light" 
+                    expand="md" 
+                    className = 'customNav'>
               <Navbar.Brand id="home" 
-                            href = {window.location.protocol + '//' + window.location.host}
-                            style ={{color: 'white', 
-                                     fontWeight: 600, 
-                                     marginLeft: '10%', 
-                                     fontSize: 28,
-                                     marginRight: 20}}>
+                    href = {window.location.protocol + '//' + window.location.host}
+                    style ={{color: 'white', 
+                              fontWeight: 600, 
+                              marginLeft: '10%', 
+                              fontSize: 28,
+                              marginRight: 20}}>
                 covaid
               </Navbar.Brand>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              {/* {communityButton} */}
+              <Form inline style ={{display: 'block'}}>
+                {communityButton}
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              </Form>
+
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                   <Nav.Link 
                     id = "navLink1"
                     style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
                     onClick={this.handleShowAbout}>
-                    About Us
+                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
                   </Nav.Link>
                   <Nav.Link 
                     id = "navLink2"
                     style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
                     onClick={this.handleShowWorks}>
-                    How It Works
+                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
                   </Nav.Link>
                   <Nav.Link 
                     id = "navLink3"
                     style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
                     onClick={this.handleShowFeedback}>
-                    Feedback?
+                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
                   </Nav.Link>
                 </Nav>
                 <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
@@ -614,12 +659,12 @@ class Home extends Component {
             <Modal size="sm"
                   show={this.state.showLocation} 
                   onHide={this.handleHideLocation} 
-                  style = {{marginTop: 60}}>
+                  style = {{marginTop: 170}}>
                 <Modal.Header closeButton>
                   <Modal.Title>Choose a Location</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <Form 
+                  {/* <Form 
                         onSubmit={(e) => this.onLocationSubmit(e)} 
                         style={{marginTop: "10px", marginBottom: "30px", display: "block", whiteSpace: 'nowrap'}}>
                     <FormControl 
@@ -629,7 +674,30 @@ class Home extends Component {
                       placeholder="Enter city or zipcode" 
                       className="mr-sm-2" />
                     <Button type="submit" variant="success" style={{marginTop: "10px"}} >Search</Button>
-                  </Form>
+                  </Form> */}
+                  <Form 
+                        onSubmit={(e) => this.onLocationSubmit(e)} >
+                    <p style={{fontWeight: 300, 
+                              fontStyle: 'italic',
+                              textAlign: 'center'}}>
+                      See volunteers in other communities
+                    </p>
+                    <InputGroup className="mb-3">
+                      <FormControl
+                        type="text" 
+                        value={this.state.searchedLocation} 
+                        onChange={e => this.handleLocationChange(e)}
+                        placeholder="Enter city or zipcode" 
+                        aria-label="Enter city or zipcode" 
+                        aria-describedby="basic-addon2"
+                        style={{marginTop: -8}}
+                      />
+                      <InputGroup.Append>
+                        <Button  style={{marginTop: -8}} type="submit" variant="outline-success">Search</Button>
+                      </InputGroup.Append>
+                    </InputGroup>
+                    </Form>
+
                 </Modal.Body>
             </Modal>
 

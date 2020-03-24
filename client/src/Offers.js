@@ -15,6 +15,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 
+
 export default function Offers(props) {
     const [fields, handleFieldChange] = useFormFields({
         details: "",
@@ -26,7 +27,7 @@ export default function Offers(props) {
     const [showRequestHelp, setShowRequestHelp] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-    const [showCompletedToast, setShowCompletedToast] = useState(true);
+    const [showCompletedToast, setShowCompletedToast] = useState(false);
 
     const [lat, setLatitude] = useState(props.state.latitude);
     const [lng, setLongitude] = useState(props.state.longitude);
@@ -164,6 +165,12 @@ export default function Offers(props) {
     }
 
     const checkInputs = () => {
+        if (fields.details === "") {
+            setShowToast(true);
+            setToastMessage('No Details Written');
+            return false;
+        }
+
         if (fields.email === "") {
             setShowToast(true);
             setToastMessage('No Email Set');
@@ -173,12 +180,6 @@ export default function Offers(props) {
         if (validateEmail(fields.email) === false) {
             setShowToast(true);
             setToastMessage('Not a valid email');
-            return false;
-        }
-
-        if (fields.details === "") {
-            setShowToast(true);
-            setToastMessage('No Details Written');
             return false;
         }
 
@@ -213,6 +214,9 @@ export default function Offers(props) {
                 console.log("Request successfully created");
                 setShowRequestHelp(false);
                 setShowCompletedToast(true);
+                fields.details = '';
+                fields.phone = '';
+                fields.email = '';
             } else {
                 console.log("Request not successful")
             }
@@ -283,20 +287,6 @@ export default function Offers(props) {
                       paddingRight: '1rem', 
                       paddingBottom: '1rem'}}>
             <br />
-            <Toast
-                show={showCompletedToast}
-                delay={3000}
-                onClose={() => setShowCompletedToast(false)}
-                autohide
-                style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    right: 0,
-                    // mar: 150,
-                    marginRight: 40
-                }}>
-                <Toast.Body>Helalsdkfjalkdsjflkdjsllo</Toast.Body>
-            </Toast>
             <Badge pill style = {{fontSize: 16, whiteSpace:"normal", marginBottom: 5, marginTop: -13}} variant="warning" className="shadow">
                 See who's helping around {localityText}
             </Badge>{' '}
@@ -356,7 +346,10 @@ export default function Offers(props) {
                     {/* {phoneNumber} */}
                     <p><b>Details:</b> {modalInfo.offer.details}</p>
                     <Button variant="danger" 
-                            style={{marginBottom: 5, marginTop: 10}}
+                            style={{marginTop: 15,
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    display: 'block'}}
                             onClick={() => {setShowOffer(false); setShowRequestHelp(true);}}>
                         Request Help
                     </Button>
@@ -376,7 +369,7 @@ export default function Offers(props) {
                    onHide={handleCloseRequest} 
                    style = {{marginTop: 10}}>
                 <Modal.Header closeButton>
-                <Modal.Title>Request for {modalInfo.first_name} {modalInfo.last_name}'s Help</Modal.Title>
+                <Modal.Title>Request for Help</Modal.Title>
                 </Modal.Header>
                 <Toast
                     show={showToast}
@@ -402,7 +395,7 @@ export default function Offers(props) {
                                         marginBottom: 2}}>Give us more information on what you need help with!</p>
                             <Form.Control as="textarea" 
                                             rows="3" 
-                                            placeholder="Example: 'I need milk and eggs and they can be dropped 
+                                            placeholder="Example: 'I need milk and eggs and they can be dropped
                                             off at 123 Main street. I can pre-pay via Venmo or Paypal.'"
                                             value={fields.details} 
                                             onChange={handleFieldChange}/>
@@ -412,7 +405,7 @@ export default function Offers(props) {
                             <p style = {{fontWeight: 300, 
                                         fontStyle: 'italic', 
                                         fontSize: 13,
-                                        marginBottom: 2}}>How a volunteer will reach out to you</p>
+                                        marginBottom: 2}}>How {modalInfo.first_name} will reach out to you</p>
                             <Form.Control 
                                 placeholder="Email"
                                 value={fields.email}
@@ -440,6 +433,28 @@ export default function Offers(props) {
                            rel="noopener noreferrer" 
                            href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html"> CDC guidelines</a> on 
                            cleanliness and avoid as much contact as possible to prevent further spread of virus.
+                    </p>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showCompletedToast} 
+                   onHide={() => setShowCompletedToast(false)} 
+                   style = {{marginTop: 220}}>
+                <Modal.Header closeButton style = {{backgroundColor: '#ccebd2', borderBottom: '0 none'}}>
+                    <Modal.Title 
+                        style = {{color: '#155724'}}>
+                        Thanks for taking up on an offer!
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Footer 
+                    style = {{backgroundColor: '#ccebd2', 
+                              color: '#155724', 
+                              display: 'block', 
+                              borderTop: '0 none',
+                              marginTop: -20}}>
+                    <p>
+                        Your request has been just been sent to {modalInfo.first_name} and 
+                        they should be in contact with you soon.
                     </p>
                 </Modal.Footer>
             </Modal>

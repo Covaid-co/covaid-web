@@ -47,10 +47,10 @@ export default function Loading(props) {
                                     value={zipCode} 
                                     onChange={(event) => {handleChangeZip(event.target.value)}} 
                                     placeholder="Zip Code"/>
-                        <br></br>
                         <Button variant="outline-success" 
                                 type="submit"
-                                disabled={!validateForm()}>
+                                disabled={!validateForm()}
+                                style={{marginTop: 8}}>
                                 Enter
                         </Button>
                     </Form>
