@@ -7,7 +7,7 @@ export default function CompleteOffer(props) {
         const ID = queryString.parse( props.location.search).ID;
         
         const response = fetch('/api/request/' + ID + '/update_completed/', {
-            method: 'post'
+            method: 'get'
         });
     }
 

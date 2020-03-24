@@ -10,10 +10,12 @@ exports.update_completed = function (req, res) {
     Requests.findByIdAndUpdate(req.params.id, 
             {"completed": true}, function(err, result){
         if(err){
-            res.send(err)
+            console.log("ERROR")
+            res.sendStatus(500)
         }
         else{
-            res.send("<p>Thanks for helping your community!</p>")
+            console.log("Success")
+            res.sendStatus(200)
         }
 
     })
@@ -49,7 +51,7 @@ exports.handleRequest = function (req, res) {
             result: result // the "result" object can be filtered or you can simply return the message
         });
 
-        var mode = "localhost:5000";
+        var mode = "localhost:3000";
         if (process.env.PORT) {
             more = "covaid.co"
         }
