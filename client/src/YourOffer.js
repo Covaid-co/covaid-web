@@ -143,7 +143,7 @@ export default function YourOffer(props) {
     }, [props.state]);
 
     function validatePhone(phone) {
-        if (phone == undefined || phone === '' || phone.length === 0) {
+        if (phone === undefined || phone === '' || phone.length === 0) {
             return true;
         } else if (phone.length === 10) {
             return (/^\d+$/.test(fields.phone));
