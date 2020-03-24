@@ -52,8 +52,8 @@ exports.handleRequest = function (req, res) {
         });
 
         var mode = "localhost:3000";
-        if (process.env.PORT) {
-            more = "covaid.co"
+        if (process.env.PROD) {
+            mode = "covaid.co"
         }
 
         var link = 'http://' + mode + '/completeOffer?ID=' + result._id;
