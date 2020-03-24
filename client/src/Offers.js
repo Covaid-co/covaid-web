@@ -314,7 +314,7 @@ export default function Offers(props) {
             </ToggleButtonGroup> */}
             <br />
             <Badge pill style = {{fontSize: 16, whiteSpace:"normal", marginBottom: 5, marginTop: -13}} variant="warning" className="shadow">
-                See who's helping in {localityText}
+                See who's helping around {localityText}
             </Badge>{' '}
             <br />
             <div style = {{fontSize: 14, fontStyle:'italic', marginTop: 4, marginBottom: 5}}>
