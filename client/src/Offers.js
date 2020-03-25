@@ -15,6 +15,9 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 
+import Offer from './CommunityBulletinComponents/Offer'
+import Pagination from './CommunityBulletinComponents/Pagination'
+
 
 export default function Offers(props) {
     const [fields, handleFieldChange] = useFormFields({
@@ -32,6 +35,8 @@ export default function Offers(props) {
     const [lat, setLatitude] = useState(props.state.latitude);
     const [lng, setLongitude] = useState(props.state.longitude);
     const [users, setUsers] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(6);
     const [loaded, setLoaded] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [taskSelect, setTaskSelect] = useState({});
@@ -281,6 +286,12 @@ export default function Offers(props) {
         localityText = props.state.locality
     }
 
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentDisplayedUsers = displayedUsers.slice(indexOfFirstPost, indexOfLastPost)
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
     return (
         <div className="shadow mb-5 bg-white rounded" 
             style = {{paddingLeft: '1rem', 
@@ -297,31 +308,15 @@ export default function Offers(props) {
             {tabs}
             <ListGroup variant="flush">
                 {message}
-                {displayedUsers.map((user, i) => {
-                    var name = user.first_name + " " + user.last_name;
-
-                    return <ListGroup.Item key={user._id + String(i * 19)} action 
-                                            style = {{fontSize: 16}} 
-                                            onClick={() => { handleShow(); setModal({...user});}}>
-                            <Row>
-                                <Col style={{whiteSpace: "normal"}}>
-                                    <div style={{whiteSpace: "normal", wordWrap: "break-word"}}>{name}</div>
-                                    <div style={{whiteSpace: "normal"}}>{user.offer.neighborhoods.map((neighborhood, i) => {
-                                        return <>
-                                            <Badge key={user._id + neighborhood + String(i * 14)} 
-                                                            style = {{whiteSpace: "normal"}} 
-                                                            pill 
-                                                            variant="warning">
-                                                            {neighborhood}
-                                                    </Badge> </>
-                                    })}</div>
-                                </Col>
-                                <Col style={{whiteSpace: "normal"}}>{user.offer.tasks.map((task, i) => {
-                                        return <><Badge key={user._id + task + String((i + 1) * 23)} style = {{whiteSpace: "normal"}} pill variant="primary">{task}</Badge>{' '}</>
-                                    })}</Col>
-                            </Row>
-                        </ListGroup.Item>
-                })}
+                <Offer displayedUsers={currentDisplayedUsers}
+                        handleShow={handleShow}
+                        setModal={setModal} 
+                />
+                <Pagination
+                    postsPerPage={postsPerPage}
+                    totalPosts={displayedUsers.length}
+                    paginate={paginate}
+                />
             </ListGroup>
             <Modal show={showOffer} onHide={handleClose} style = {{marginTop: 60}}>
                 <Modal.Header closeButton>
