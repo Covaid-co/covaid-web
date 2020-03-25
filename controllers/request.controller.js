@@ -37,7 +37,7 @@ exports.handleRequest = function (req, res) {
         service: 'gmail',
         auth: {
                user: 'covaidco@gmail.com',
-               pass: 'CMUJHU2020'
+               pass: 'supportyourcity_covaid_1?'
         }
     });
 
