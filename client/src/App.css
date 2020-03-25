@@ -128,6 +128,14 @@ html, body {
   }
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination li {
+  display: block;
+}
 
 @media (max-width:490px){
   .BottomHalf {

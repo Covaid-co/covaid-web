@@ -94,6 +94,22 @@ exports.current = function (req, res) {
     });
 };
 
+var rad = function(x) {
+  return x * Math.PI / 180;
+};
+
+function calcDistance(latA, longA, latB, longB) {
+  var R = 6378137; // Earth’s mean radius in meter
+  var dLat = rad(latB - latA);
+  var dLong = rad(longB - longA);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(rad(latA)) * Math.cos(rad(latB)) *
+    Math.sin(dLong / 2) * Math.sin(dLong / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d; // returns the distance in meter
+}
+
 exports.all_users = function (req, res) {
   Users.find({'availability': true,
               'location': 
@@ -104,13 +120,19 @@ exports.all_users = function (req, res) {
                   }
                 }
     }).then(function (users) {
+    // console.log(users);
+    for (var i = 0; i < users.length; i++) {
+      const coords = users[i].location.coordinates;
+      const distance = calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
+      users[i]['distance'] = distance;
+    }
+    users.sort(function(a, b){return a['distance'] - b['distance']});
     res.send(users);
   });
 }
 
 exports.total_users = function (req, res) {
   Users.find({}).count(function(err, count) {
-    console.log(count);
     res.send({'count': count});
   })
 }

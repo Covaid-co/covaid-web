@@ -8,8 +8,6 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Badge from 'react-bootstrap/Badge'
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Tooltip from 'react-bootstrap/Tooltip'
 import Form from 'react-bootstrap/Form'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
@@ -59,7 +57,6 @@ export default function Offers(props) {
     const handleShow = () => setShowOffer(true);
 
     const handleCloseRequest = () => setShowRequestHelp(false);
-    const handleShowRequest = () => setShowRequestHelp(true);
 
     function setModal(user) {
         console.log(user);
@@ -106,13 +103,6 @@ export default function Offers(props) {
           return '(' + match[1] + ')-' + match[2] + '-' + match[3]
         }
         return null
-    }
-
-    var phoneNumber;
-    if (modalInfo.phone) {
-        phoneNumber = <p><b>Phone:</b> {formatPhoneNumber(modalInfo.phone)}</p>;
-    } else {
-        phoneNumber = <></>;
     }
 
     const dropdownToggle = (newValue, event, metadata) => {
@@ -306,18 +296,21 @@ export default function Offers(props) {
                 Click on an offer below for more info
             </div>{' '}
             {tabs}
-            <ListGroup variant="flush">
+            <ListGroup variant="flush"
+                       style = {{marginBottom: 23}}>
                 {message}
                 <Offer displayedUsers={currentDisplayedUsers}
                         handleShow={handleShow}
                         setModal={setModal} 
                 />
-                <Pagination
-                    postsPerPage={postsPerPage}
-                    totalPosts={displayedUsers.length}
-                    paginate={paginate}
-                />
             </ListGroup>
+            <Pagination
+                className='justfiy-content-center'
+                style = {{paddingTop: 15}}
+                postsPerPage={postsPerPage}
+                totalPosts={displayedUsers.length}
+                paginate={paginate}
+            />
             <Modal show={showOffer} onHide={handleClose} style = {{marginTop: 60}}>
                 <Modal.Header closeButton>
                 <Modal.Title>{modalInfo.first_name} {modalInfo.last_name}'s Offer</Modal.Title>
@@ -337,8 +330,6 @@ export default function Offers(props) {
                                     </Badge>{' '}</>
                         })}
                     </p>
-                    {/* <p><b>Email:</b> {modalInfo.email}</p> */}
-                    {/* {phoneNumber} */}
                     <p><b>Details:</b> {modalInfo.offer.details}</p>
                     <Button variant="danger" 
                             style={{marginTop: 15,

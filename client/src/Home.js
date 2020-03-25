@@ -379,9 +379,9 @@ class Home extends Component {
     );
   }
 
-  toggleNavBar(e) {
-    console.log(e);
-  }
+  // toggleNavBar(e) {
+  //   console.log(e);
+  // }
 
   render() {
     const { isLoaded } = this.state;
@@ -426,14 +426,12 @@ class Home extends Component {
             <Badge variant="success">{this.state.totalVolunteers} Volunteers</Badge>
           </OverlayTrigger> */}
           <Button variant="outline-light" 
-                  marginLeft="auto"
                   style={{outlineWidth: "thick",
                           textAlign: 'right',
                           paddingLeft: 5,
                           paddingRight: 5,
                           paddingTop: 0,
                           paddingBottom: 2,
-                          marginLeft: 10,
                           marginRight: 3}}
                   id = 'howHelpButton1'
                   onClick={this.handleShowRegistration}>
@@ -512,7 +510,7 @@ class Home extends Component {
 
           <div className="App">
             <Navbar collapseOnSelect 
-                    onToggle={this.toggleNavBar}
+                    // onToggle={this.toggleNavBar}
                     variant="light" 
                     expand="md" 
                     className = 'customNav'>
