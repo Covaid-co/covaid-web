@@ -108,6 +108,13 @@ exports.all_users = function (req, res) {
   });
 }
 
+exports.total_users = function (req, res) {
+  Users.find({}).count(function(err, count) {
+    console.log(count);
+    res.send({'count': count});
+  })
+}
+
 exports.update = function (req, res) {
   const id = req.token.id;
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {

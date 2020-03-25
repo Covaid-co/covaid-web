@@ -23,6 +23,9 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Geocode from "react-geocode";
 import InputGroup from 'react-bootstrap/InputGroup'
+import Badge from 'react-bootstrap/Badge'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 
 import Cookie from 'js-cookie'
 
@@ -59,7 +62,8 @@ class Home extends Component {
       cookieSet: false,
       searchedLocation: '',
       currentState: '',
-      width: 0
+      width: 0,
+      totalVolunteers: 0
     }
 
     window.addEventListener("resize", this.update);
@@ -143,6 +147,12 @@ class Home extends Component {
     if (!this.state.isLoggedIn && Cookie.get("token")) {
       this.fetchUser()
     }
+    fetch('/api/users/totalUsers')
+      .then((res) => res.json())
+      .then((res) => {
+        this.setState({totalVolunteers: res.count});
+      })
+      
   }
 
   update = () => {
@@ -405,25 +415,35 @@ class Home extends Component {
 
     if (!this.state.isLoggedIn) {
       if (this.state.width <= 767) {
-        communityButton = <><Button variant="outline-light" 
-                                marginLeft="auto"
-                                style={{outlineWidth: "thick",
-                                        textAlign: 'right',
-                                        paddingLeft: 5,
-                                        paddingRight: 5,
-                                        paddingTop: 0,
-                                        paddingBottom: 2,
-                                        marginRight: 3}}
-                                id = 'howHelpButton1'
-                                
-                                onClick={this.handleShowRegistration}>
-                            <font id ="help" 
-                                  style = {{color:"white", 
-                                            fontWeight: 600,
-                                            fontSize: 11, whiteSpace: 'nowrap'}}>
-                              {communityText}
-                            </font>
-                          </Button></>
+        communityButton = <>
+          {/* <OverlayTrigger
+            key='bottom'
+            placement='bottom'
+            overlay={
+              <Tooltip id={`tooltip-bottom`}>
+                Number of volunteers in your communities!
+              </Tooltip>}>
+            <Badge variant="success">{this.state.totalVolunteers} Volunteers</Badge>
+          </OverlayTrigger> */}
+          <Button variant="outline-light" 
+                  marginLeft="auto"
+                  style={{outlineWidth: "thick",
+                          textAlign: 'right',
+                          paddingLeft: 5,
+                          paddingRight: 5,
+                          paddingTop: 0,
+                          paddingBottom: 2,
+                          marginLeft: 10,
+                          marginRight: 3}}
+                  id = 'howHelpButton1'
+                  onClick={this.handleShowRegistration}>
+            <font id ="help" 
+                  style = {{color:"white", 
+                            fontWeight: 600,
+                            fontSize: 11, whiteSpace: 'nowrap'}}>
+              {communityText}
+            </font>
+          </Button></>
       }
     }
 
@@ -530,6 +550,21 @@ class Home extends Component {
                     style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
                     onClick={this.handleShowFeedback}>
                     <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
+                  </Nav.Link>
+                  <Nav.Link 
+                    id = "navLink4"
+                    style ={{border: '0px solid'}} 
+                    // onClick={this.handleShowFeedback}
+                    >
+                    <OverlayTrigger
+                      key='bottom'
+                      placement='bottom'
+                      overlay={
+                        <Tooltip id={`tooltip-bottom`}>
+                          Number of volunteers in your communities!
+                        </Tooltip>}>
+                      <Badge variant="success">{this.state.totalVolunteers} Volunteers</Badge>
+                    </OverlayTrigger>
                   </Nav.Link>
                 </Nav>
                 <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
