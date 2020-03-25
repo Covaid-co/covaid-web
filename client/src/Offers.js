@@ -40,7 +40,7 @@ export default function Offers(props) {
     const [taskSelect, setTaskSelect] = useState({});
     const [displayedUsers, setDisplayedUsers] = useState([]);
     const possibleTasks = ['Food/Groceries', 'Medication', 'Donate',
-                            'Emotional Support', 'Misc.'];
+                            'Emotional Support', 'Academic/Professional', 'Misc.'];
 
     const [modalInfo, setModalInfo] = useState({
         'first_name': '',
