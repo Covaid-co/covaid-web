@@ -561,7 +561,7 @@ class Home extends Component {
                       placement='bottom'
                       overlay={
                         <Tooltip id={`tooltip-bottom`}>
-                          Number of volunteers in your communities!
+                          Number of active volunteers on COVAID!
                         </Tooltip>}>
                       <Badge variant="success">{this.state.totalVolunteers} Volunteers</Badge>
                     </OverlayTrigger>
