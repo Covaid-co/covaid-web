@@ -9,30 +9,27 @@ var compiledTemplate = Hogan.compile(template)
 exports.update_completed = function (req, res) {
     Requests.findByIdAndUpdate(req.params.id, 
             {"completed": true}, function(err, result){
-        if(err){
-            console.log("ERROR")
-            res.sendStatus(500)
+        if (err){
+            console.log("ERROR");
+            res.sendStatus(500);
         }
-        else{
-            console.log("Success")
-            res.sendStatus(200)
+        else {
+            console.log("Success");
+            res.sendStatus(200);
         }
-
-    })
+    });
 };
 
 exports.handleRequest = function (req, res) {
     const { 
-        body: { 
+        body: {
             requester_email,
             requester_phone,
             offerer_email,
-            offerer_id,
             details
         } 
     } = req;
 
-    // console.log(req.body)
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -58,8 +55,8 @@ exports.handleRequest = function (req, res) {
 
         var link = 'http://' + mode + '/completeOffer?ID=' + result._id;
 
-        var email = requester_email
-        var phone = requester_phone
+        var email = requester_email;
+        var phone = requester_phone;
 
         if (!requester_email || requester_email.length == 0) {
             email = "N/A"
@@ -69,7 +66,7 @@ exports.handleRequest = function (req, res) {
             phone = "N/A"
         }
 
-        console.log(link)
+        console.log(link);
 
         const mailOptions = {
             from: 'covaidco@gmail.com', // sender address
@@ -79,14 +76,15 @@ exports.handleRequest = function (req, res) {
         };
 
         transporter.sendMail(mailOptions, function (err, info) {
-            if(err)
+            console.log(err);
+            if (err)
                 res.sendStatus(400);
             else
                 res.sendStatus(200);
         });
-
     }).catch(err => {
-        console.log(err);
+        // console.log(err);
+        console.log("huh");
         res.status(500).json({
             error: err 
         });

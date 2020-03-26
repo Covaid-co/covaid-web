@@ -19,11 +19,14 @@ import Pagination from './CommunityBulletinComponents/Pagination'
 
 export default function Offers(props) {
     const [fields, handleFieldChange] = useFormFields({
+        first: "",
+        last: "",
         details: "",
         email: "",
         phone: ""
     });
 
+    const [selectedPayment, setSelectedIndex] = useState(0);
     const [showOffer, setShowOffer] = useState(false);
     const [showRequestHelp, setShowRequestHelp] = useState(false);
     const [showToast, setShowToast] = useState(false);
@@ -160,15 +163,27 @@ export default function Offers(props) {
     }
 
     const checkInputs = () => {
+        if (fields.first === "") {
+            setShowToast(true);
+            setToastMessage('No first name');
+            return false;
+        }
+
+        if (fields.last === "") {
+            setShowToast(true);
+            setToastMessage('No last name');
+            return false;
+        }
+
         if (fields.details === "") {
             setShowToast(true);
-            setToastMessage('No Details Written');
+            setToastMessage('No details written');
             return false;
         }
 
         if (fields.email === "") {
             setShowToast(true);
-            setToastMessage('No Email Set');
+            setToastMessage('No email set');
             return false;
         }
 
@@ -180,7 +195,7 @@ export default function Offers(props) {
 
         if (!validatePhone(fields.phone)) {
             setShowToast(true);
-            setToastMessage('Please Use A Valid Phone Number');
+            setToastMessage('Please use a valid phone number');
             return false;
         }
         return true;
@@ -195,9 +210,12 @@ export default function Offers(props) {
         let form = {
             'offerer_id': modalInfo._id,
             'offerer_email': modalInfo.email,
+            'requester_first': fields.first,
+            'requester_last': fields.last,
             'requester_phone': fields.phone,
+            'requester_email': fields.email,
             'details': fields.details,
-            'requester_email': fields.email
+            'payment': selectedPayment
         };
         fetch('/api/request/handle_request', {
             method: 'post',
@@ -219,6 +237,11 @@ export default function Offers(props) {
         .catch((e) => {
             console.log("Error");
         });
+    }
+
+    const changeFormSelect = (e) => {
+        e.persist();
+        setSelectedIndex(e.target.selectedIndex);
     }
 
     var message = <> </>;
@@ -373,25 +396,32 @@ export default function Offers(props) {
                 </Toast>
                 <Modal.Body>
                     <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
-                        <Form.Group controlId="details" bssize="large">
-                            <Form.Label style = {{marginBottom: -10}}><h4>Details</h4></Form.Label>
-                            <p style = {{fontWeight: 300, 
-                                        fontStyle: 'italic', 
-                                        fontSize: 13, 
-                                        marginBottom: 2}}>Give us more information on what you need help with!</p>
-                            <Form.Control as="textarea" 
-                                            rows="3" 
-                                            placeholder="Example: 'I need milk and eggs and they can be dropped
-                                            off at 123 Main street. I can pre-pay via Venmo or Paypal.'"
-                                            value={fields.details} 
-                                            onChange={handleFieldChange}/>
-                        </Form.Group>
-                        <Form.Group controlId="email" bssize="large" style = {{marginBottom: 5}}>
-                            <Form.Label style = {{marginBottom: -10}}><h4>Contact Information</h4></Form.Label>
-                            <p style = {{fontWeight: 300, 
-                                        fontStyle: 'italic', 
-                                        fontSize: 13,
-                                        marginBottom: 2}}>How {modalInfo.first_name} will reach out to you</p>
+                        {/* <Form.Group controlId="name" bssize="large" style = {{marginBottom: 8}}> */}
+                        <Form.Label style = {{marginBottom: -10}}><h4>Contact Information</h4></Form.Label>
+                        <p style = {{fontWeight: 300, 
+                                    fontStyle: 'italic', 
+                                    fontSize: 13,
+                                    marginBottom: 6}}>How {modalInfo.first_name} will reach out to you</p>
+                        <Row style = {{marginBottom: -8}}>
+                            <Col md={6}>
+                                <Form.Group controlId="first" bssize="large" style = {{marginBottom: 8}}>
+                                    <Form.Control 
+                                    placeholder="First name"
+                                    value={fields.first} 
+                                    onChange={handleFieldChange}/>
+                                </Form.Group>
+                            </Col>
+                            <Col md={6} style = {{marginBottom: 8}}>
+                                <Form.Group controlId="last" bssize="large" style = {{marginBottom: 8}}>
+                                    <Form.Control 
+                                    placeholder="Last name"
+                                    value={fields.last} 
+                                    onChange={handleFieldChange}/>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        {/* </Form.Group> */}
+                        <Form.Group controlId="email" bssize="large" style = {{marginBottom: 8}}>
                             <Form.Control 
                                 placeholder="Email"
                                 value={fields.email}
@@ -404,6 +434,32 @@ export default function Offers(props) {
                                 value={fields.phone}
                                 onChange={handleFieldChange}
                             />
+                        </Form.Group>
+                        <Form.Group controlId="details" bssize="large">
+                            <Form.Label style = {{marginBottom: -10}}><h4>Details</h4></Form.Label>
+                            <p style = {{fontWeight: 300, 
+                                        fontStyle: 'italic', 
+                                        fontSize: 13, 
+                                        marginBottom: 2}}>Give us more information on what you need help with! Please be as specific as possible.</p>
+                            <Form.Control as="textarea" 
+                                            rows="3" 
+                                            placeholder="Example: 'I need milk and eggs and they can be dropped
+                                            off at 123 Main street. I can pre-pay via Venmo or Paypal.'"
+                                            value={fields.details} 
+                                            onChange={handleFieldChange}/>
+                        </Form.Group>
+                        <Form.Group controlId="exampleForm.ControlSelect2">
+                            <Form.Label style = {{marginBottom: -10}}><h4>Payment</h4></Form.Label>
+                            <p style = {{fontWeight: 300, 
+                                        fontStyle: 'italic', 
+                                        fontSize: 13, 
+                                        marginBottom: 2}}>How would you like to pay the volunteer?</p>
+                            <Form.Control as="select"
+                                    onChange={changeFormSelect}>
+                                <option>Call ahead to store and pay (Best option)</option>
+                                <option>Have volunteer pay and reimburse when delivered</option>
+                                <option>N/A</option>
+                            </Form.Control>
                         </Form.Group>
                         <Button variant="success"
                                 type="submit"
