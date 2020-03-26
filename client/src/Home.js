@@ -32,7 +32,7 @@ import Cookie from 'js-cookie'
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 class Home extends Component {
-  constructor() {
+  constructor(props) {
     super()
 
     this.state = {
@@ -142,6 +142,10 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.location.verified)
+    if (this.props.location.verified) {
+      this.setState({showRegistration: true});
+    }
     this.getMyLocation();
     this.update();
     if (!this.state.isLoggedIn && Cookie.get("token")) {

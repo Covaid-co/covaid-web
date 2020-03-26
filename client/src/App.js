@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import Home from './Home'
 import CompleteOffer from './CompleteOffer'
+import InternalRequests from './InternalRequests'
+import Verify from './Verify'
 
 function App() {
 
@@ -13,6 +15,8 @@ function App() {
   	<Router>
         <Switch>
           <Route exact path="/completeOffer" component={CompleteOffer}/>
+          <Route exact path="/internal/requests" component={InternalRequests}/>
+          <Route exact path="/verify" component={Verify}/>
           <Route path="/" component={Home}/>
           <Route path="*" component={Home}/>
         </Switch>

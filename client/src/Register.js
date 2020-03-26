@@ -10,7 +10,7 @@ import Toast from 'react-bootstrap/Toast'
 
 import Cookie from 'js-cookie'
 
-export default function Register(props) {
+export default function Register(props, switchToLogin) {
     const [fields, handleFieldChange] = useFormFields({
         first_name: "",
         last_name: "",
@@ -49,9 +49,8 @@ export default function Register(props) {
         }
 
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
-        console.log(phoneOnlyDigits);
-
-        if (phoneOnlyDigits.length !== 10) {
+        
+        if (phoneOnlyDigits.length != 0 && phoneOnlyDigits.length !== 10) {
             setShowToast(true);
             setToastMessage('Enter a valid phone number');
             return false;
@@ -62,7 +61,7 @@ export default function Register(props) {
             setToastMessage('Set a password');
             return false;
         }
-        
+
         if (fields.password !== fields.confirmPassword) {
             setShowToast(true);
             setToastMessage('Passwords not the same');
@@ -94,6 +93,8 @@ export default function Register(props) {
 
         if (phoneNumber.length > 0) {
             form['user']['phone'] = phoneNumber;
+        } else {
+            form['user']['phone'] = ''
         }
 
         fetch('/api/users/', {
@@ -104,11 +105,12 @@ export default function Register(props) {
             if (response.ok) {
                 response.json().then(data => {
                     console.log("Registration successful");
-                    Cookie.set("token", data.user.token);
-                    window.location.reload(false);
+                    props.switchToLogin();
                 });
             } else {
-                alert('Email already exists');
+                console.log("exists");
+                setShowToast(true);
+                setToastMessage('Email already used/exists');
             }
         }).catch((e) => {
             alert('Registration unsuccessful');
