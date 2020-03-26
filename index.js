@@ -11,6 +11,15 @@ require("dotenv").config()
 const app = express();
 const port = process.env.PORT || 5000;
 
+if(process.env.PORT) {
+    app.use((req, res, next) => {
+      if (req.header('x-forwarded-proto') !== 'https')
+        res.redirect(`https://${req.header('host')}${req.url}`)
+      else
+        next()
+    })
+  }
+
 app.use(cors());
 app.use(require('morgan')('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
