@@ -76,15 +76,12 @@ exports.handleRequest = function (req, res) {
         };
 
         transporter.sendMail(mailOptions, function (err, info) {
-            console.log(err);
             if (err)
                 res.sendStatus(400);
             else
                 res.sendStatus(200);
         });
     }).catch(err => {
-        // console.log(err);
-        console.log("huh");
         res.status(500).json({
             error: err 
         });
