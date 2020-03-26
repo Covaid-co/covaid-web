@@ -36,57 +36,63 @@ exports.register = function (req, res) {
 
     validateEmailAccessibility(user.email).then(function(valid) {
       if (valid) {
-        if(!user.password) {
-          return res.status(422).json({
-            errors: {
-                password: 'is required',
-            },
-        });
-      }
-      const finalUser = new Users(user);
-  
-      finalUser.setPassword(user.password);
-      finalUser.preVerified = false;
-      finalUser.verified = false;
-
-      finalUser.save(function(err, result) {
-        if (err) {    
-          // Some other error
-          return res.status(422).send(err);
-        } 
-        var transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-                 user: 'covaidco@gmail.com',
-                 pass: 'supportyourcity_covaid_1?'
-          }
-        });
-        var userID = result._id;
-  
-        var mode = "localhost:3000";
-        if (process.env.PROD) {
-            mode = "covaid.co"
+          if(!user.password) {
+            return res.status(422).json({
+              errors: {
+                  password: 'is required',
+              },
+          });
         }
-  
-        var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
-  
-        var mailOptions = {
-          from: 'covaidco@gmail.com',
-          to: user.email,
-          subject: 'Covaid -- Verify your email',
-          text: message
-      };
-  
-      transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-              console.log(error);
-          } else {
-              console.log('Email sent: ' + info.response);
+        const finalUser = new Users(user);
+    
+        finalUser.setPassword(user.password);
+        finalUser.preVerified = false;
+        finalUser.verified = false;
+
+        finalUser.save(function(err, result) {
+          if (err) {    
+            // Some other error
+            return res.status(422).send(err);
+          } 
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                  user: 'covaidco@gmail.com',
+                  pass: 'supportyourcity_covaid_1?'
+            }
+          });
+          var userID = result._id;
+    
+          var mode = "localhost:3000";
+          if (process.env.PROD) {
+              mode = "covaid.co"
           }
-      });
-  
-      return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
-      });
+    
+          var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
+    
+          var mailOptions = {
+            from: 'covaidco@gmail.com',
+            to: user.email,
+            subject: 'Covaid -- Verify your email',
+            text: message
+          };
+    
+          transporter.sendMail(mailOptions, function(error, info){
+              if (error) {
+                  console.log(error);
+              } else {
+                  console.log('Email sent: ' + info.response);
+              }
+          });
+    
+        return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
+        });
+      } else {
+        return res.status(403).json({
+          errors: {
+              email: 'Already Exists',
+          },
+        });
       }
     });
 };
