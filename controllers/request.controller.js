@@ -39,7 +39,7 @@ exports.handleRequest = function (req, res) {
                user: 'covaidco@gmail.com',
                pass: 'supportyourcity_covaid_1?'
         }
-    });
+    }); 
 
     const request = new Requests(req.body);
     request.completed = false;
