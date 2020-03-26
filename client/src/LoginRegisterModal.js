@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 export default function LoginRegisterModal(props) {
     const [login, setLogin] = useState(false);
+    const [justRegistered, setJustRegistered] = useState(false)
 
     function handleClick(e) {
         e.preventDefault();
@@ -16,11 +17,19 @@ export default function LoginRegisterModal(props) {
         }
     }
 
+    const switchToLogin = () => {
+        setLogin(true);
+        setJustRegistered(true)
+    }
+
     var body;
     var title;
     var footer;
     if (login) {
         title = "Welcome back!";
+        if (justRegistered) {
+            title = "Check your inbox for a verification email! "
+        }
         body = <Login />;
         footer = <div style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}>
                     <Button 
@@ -32,7 +41,7 @@ export default function LoginRegisterModal(props) {
                 </div>
     } else {
         title = "Want to help your community?";
-        body = <Register state={props.state}/>
+        body = <Register state={props.state} switchToLogin={switchToLogin}/>
         footer = <div style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}>
                     <Button 
                         variant="link"

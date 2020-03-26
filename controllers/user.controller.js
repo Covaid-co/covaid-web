@@ -1,11 +1,26 @@
 const Users = require('../models/user.model');
 const Offers = require('../models/offer.model');
 const passport = require('passport');
+var nodemailer = require('nodemailer');
 
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
        return result === null;
   });
+}
+
+exports.verify = function(req, res) {
+  Users.findByIdAndUpdate(req.query.ID, 
+      {"preVerified": true}, function(err, result){
+    if(err){
+        console.log("ERROR");
+        res.sendStatus(500);
+    }
+    else{
+        console.log("Success");
+        res.sendStatus(200);
+    }
+  })
 }
 
 exports.register = function (req, res) {
@@ -21,23 +36,61 @@ exports.register = function (req, res) {
 
     validateEmailAccessibility(user.email).then(function(valid) {
       if (valid) {
-        if(!user.password) {
-          return res.status(422).json({
-            errors: {
-                password: 'is required',
-            },
+          if(!user.password) {
+            return res.status(422).json({
+              errors: {
+                  password: 'is required',
+              },
           });
         }
-      const finalUser = new Users(user);
-  
-      finalUser.setPassword(user.password);
-      
-      return finalUser.save()
-          .then(() => res.json({ user: finalUser.toAuthJSON() }));
+        const finalUser = new Users(user);
+    
+        finalUser.setPassword(user.password);
+        finalUser.preVerified = false;
+        finalUser.verified = false;
+
+        finalUser.save(function(err, result) {
+          if (err) {    
+            // Some other error
+            return res.status(422).send(err);
+          } 
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                  user: 'covaidco@gmail.com',
+                  pass: 'supportyourcity_covaid_1?'
+            }
+          });
+          var userID = result._id;
+    
+          var mode = "localhost:3000";
+          if (process.env.PROD) {
+              mode = "covaid.co"
+          }
+    
+          var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
+    
+          var mailOptions = {
+            from: 'covaidco@gmail.com',
+            to: user.email,
+            subject: 'Covaid -- Verify your email',
+            text: message
+          };
+    
+          transporter.sendMail(mailOptions, function(error, info){
+              if (error) {
+                  console.log(error);
+              } else {
+                  console.log('Email sent: ' + info.response);
+              }
+          });
+    
+        return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
+        });
       } else {
-        return res.status(422).json({
+        return res.status(403).json({
           errors: {
-            email: 'already exists',
+              email: 'Already Exists',
           },
         });
       }
@@ -110,8 +163,17 @@ function calcDistance(latA, longA, latB, longB) {
   return d; // returns the distance in meter
 }
 
+async function updatePreVerified() {
+  await Users.updateMany({}, 
+    {'$set': {
+      'preVerified': true
+    }})
+}
+
 exports.all_users = function (req, res) {
+  updatePreVerified()
   Users.find({'availability': true,
+              'preVerified': true,
               'location': 
                 { $geoWithin: 
                   { $centerSphere: 
