@@ -19,4 +19,6 @@ router.put('/update', auth.required, user_controller.update);
 
 router.get('/totalUsers', auth.optional, user_controller.total_users);
 
+router.post('/verify', user_controller.verify);
+
 module.exports = router;

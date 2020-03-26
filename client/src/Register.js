@@ -10,7 +10,7 @@ import Toast from 'react-bootstrap/Toast'
 
 import Cookie from 'js-cookie'
 
-export default function Register(props) {
+export default function Register(props, switchToLogin) {
     const [fields, handleFieldChange] = useFormFields({
         first_name: "",
         last_name: "",
@@ -104,8 +104,8 @@ export default function Register(props) {
             if (response.ok) {
                 response.json().then(data => {
                     console.log("Registration successful");
-                    Cookie.set("token", data.user.token);
-                    window.location.reload(false);
+                    props.switchToLogin();
+                    
                 });
             } else {
                 alert('Email already exists');
