@@ -336,7 +336,7 @@ export default function Offers(props) {
             />
             <Modal show={showOffer} onHide={handleClose} style = {{marginTop: 60}}>
                 <Modal.Header closeButton>
-                <Modal.Title>{modalInfo.first_name} {modalInfo.last_name}'s Offer</Modal.Title>
+                <Modal.Title>{modalInfo.first_name}'s Offer</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p style= {{marginBottom: 10}}><b>Neighborhoods:</b>  {modalInfo.offer.neighborhoods.map((neighborhood, i) => {

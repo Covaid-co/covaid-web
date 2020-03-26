@@ -48,6 +48,15 @@ exports.handleRequest = function (req, res) {
             result: result // the "result" object can be filtered or you can simply return the message
         });
 
+        var paymentText;
+        if (request.payment == 0) {
+            paymentText = "Call Ahead"
+        } else if (request.payment == 1) {
+            paymentText = "Reimburse Volunteer"
+        } else {
+            paymentText = "N/A"
+        }
+
         var mode = "localhost:3000";
         if (process.env.PROD) {
             mode = "covaid.co"
@@ -70,9 +79,9 @@ exports.handleRequest = function (req, res) {
 
         const mailOptions = {
             from: 'covaidco@gmail.com', // sender address
-            to: offerer_email, // list of receivers
+            to: 'covaidco@gmail.com', // list of receivers
             subject: 'Someone needs your help!', // Subject line
-            html: compiledTemplate.render({email: email, phone: phone, details: details, id: result._id, link: link})
+            html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: result._id, link: link, payment: paymentText})
         };
 
         transporter.sendMail(mailOptions, function (err, info) {

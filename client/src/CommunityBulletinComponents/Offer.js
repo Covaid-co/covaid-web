@@ -8,7 +8,7 @@ const Offer = ({ displayedUsers, handleShow, setModal }) => {
   return (
     <>
         {displayedUsers.map((user, i) => {
-            var name = user.first_name + " " + user.last_name;
+            var name = user.first_name;
             return <ListGroup.Item key={user._id + String(i * 19)} action 
                                             style = {{fontSize: 16}} 
                                             onClick={() => { handleShow(); setModal({...user});}}>
