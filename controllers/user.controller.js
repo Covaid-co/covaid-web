@@ -13,12 +13,12 @@ exports.verify = function(req, res) {
   Users.findByIdAndUpdate(req.query.ID, 
       {"preVerified": true}, function(err, result){
     if(err){
-        console.log("ERROR")
-        res.sendStatus(500)
+        console.log("ERROR");
+        res.sendStatus(500);
     }
     else{
-        console.log("Success")
-        res.sendStatus(200)
+        console.log("Success");
+        res.sendStatus(200);
     }
   })
 }
@@ -157,8 +157,17 @@ function calcDistance(latA, longA, latB, longB) {
   return d; // returns the distance in meter
 }
 
+async function updatePreVerified() {
+  await Users.updateMany({}, 
+    {'$set': {
+      'preVerified': true
+    }})
+}
+
 exports.all_users = function (req, res) {
+  updatePreVerified()
   Users.find({'availability': true,
+              'preVerified': true,
               'location': 
                 { $geoWithin: 
                   { $centerSphere: 
