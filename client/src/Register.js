@@ -49,9 +49,8 @@ export default function Register(props, switchToLogin) {
         }
 
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
-        console.log(phoneOnlyDigits);
-
-        if (phoneOnlyDigits.length !== 10) {
+        
+        if (phoneOnlyDigits.length != 0 && phoneOnlyDigits.length !== 10) {
             setShowToast(true);
             setToastMessage('Enter a valid phone number');
             return false;
@@ -62,7 +61,7 @@ export default function Register(props, switchToLogin) {
             setToastMessage('Set a password');
             return false;
         }
-        
+
         if (fields.password !== fields.confirmPassword) {
             setShowToast(true);
             setToastMessage('Passwords not the same');
@@ -94,6 +93,8 @@ export default function Register(props, switchToLogin) {
 
         if (phoneNumber.length > 0) {
             form['user']['phone'] = phoneNumber;
+        } else {
+            form['user']['phone'] = ''
         }
 
         fetch('/api/users/', {
@@ -105,10 +106,11 @@ export default function Register(props, switchToLogin) {
                 response.json().then(data => {
                     console.log("Registration successful");
                     props.switchToLogin();
-                    
                 });
             } else {
-                alert('Email already exists');
+                console.log("exists");
+                setShowToast(true);
+                setToastMessage('Email already used/exists');
             }
         }).catch((e) => {
             alert('Registration unsuccessful');

@@ -41,8 +41,8 @@ exports.register = function (req, res) {
             errors: {
                 password: 'is required',
             },
-          });
-        }
+        });
+      }
       const finalUser = new Users(user);
   
       finalUser.setPassword(user.password);
@@ -64,9 +64,9 @@ exports.register = function (req, res) {
         var userID = result._id;
   
         var mode = "localhost:3000";
-          if (process.env.PROD) {
-              mode = "covaid.co"
-          }
+        if (process.env.PROD) {
+            mode = "covaid.co"
+        }
   
         var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
   
