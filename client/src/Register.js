@@ -199,8 +199,7 @@ export default function Register(props, switchToLogin) {
         setPhoneNumber(result);
     };
 
-    const handleTermChange = (event, task) => {
-        console.log(currentTerms);
+    const handleTermChange = (event, task) => { 
         setCurrentTerms(prev => ({ 
             ...prev,
             [task]: !currentTerms[task]
@@ -213,12 +212,11 @@ export default function Register(props, switchToLogin) {
                 <Row className="justify-content-md-center"
                     style = {{marginRight: -25, marginLeft: -25}}>
                     <Col md={12} style={{marginTop: -15}}>
-                        <p> Creating an account allows you to volunteer an offer
-                        to help your community. Once logged in, you will be able to update your
-                        offer with things such availability or tasks.</p>
+                        <p> Creating an account allows you to be listed as a volunteer in your area. 
+                            Once logged in, you will be able to update your availability and indicate which tasks you’re able to complete.</p>
                     </Col>
                     <Col md={12} style={{fontStyle: "italic", marginTop: -13, fontSize: 14}}>
-                        <p>Your private information contact information will <bold style = {{fontWeight: 700}}>never</bold> be
+                        <p>Your contact information will <bold style = {{fontWeight: 700}}>never</bold> be
                         publicly visible.</p>
                     </Col>
                 </Row>
@@ -304,7 +302,7 @@ export default function Register(props, switchToLogin) {
                                     fontSize: 13,
                                     marginBottom: 5}}>For the your safety and the safety of all community members, please check the 
                                     boxes to complete the volunteer pledge. If you have any questions about any of the choices, do not fill 
-                                    out the form and contact as at covaidco@gmail.com </p>
+                                    out the form and contact us at covaidco@gmail.com </p>
                     </Col>
                 </Row>
 

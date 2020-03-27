@@ -299,7 +299,7 @@ export default function YourOffer(props) {
                     <Col md={10} >
                         {/* <Row> */}
                         <Alert show={showAlert} variant={'danger'}>
-                            Your location has changed! Press press update to reflect this.
+                            Your location has changed! Press update to reflect this.
                         </Alert>
                         <Alert style={{marginTop: 10, marginBottom: -10}} variant={'danger'}>
                             If you are showing any symptoms or have traveled in the past 2 weeks, please refrain from marking yourself as available.
@@ -336,7 +336,9 @@ export default function YourOffer(props) {
                             <Form.Group controlId="details" bssize="large">
                                 <Form.Label style = {{marginBottom: -10}}><h3>Details</h3></Form.Label>
                                 <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Give us more information on how you can help!</p>
-                                <p style = {{fontWeight: 300, fontSize: 14, fontStyle: 'italic', marginTop: -13}}>Example: "I am free after 6pm on weekdays"</p>
+                                <p style = {{fontWeight: 300, fontSize: 14, fontStyle: 'italic', marginTop: -13}}>
+                                    Example: "I am free after 6pm on weekdays and am happy to deliver from any store or pharmacy in St. Louis County!"
+                                </p>
                                 <Form.Control as="textarea" 
                                               rows="3" 
                                               value={fields.details} 

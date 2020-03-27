@@ -15,6 +15,7 @@ import Toast from 'react-bootstrap/Toast'
 
 import Offer from './CommunityBulletinComponents/Offer'
 import Pagination from './CommunityBulletinComponents/Pagination'
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 export default function Offers(props) {
@@ -26,6 +27,27 @@ export default function Offers(props) {
         phone: ""
     });
 
+    const [currentTerms, setCurrentTerms] = useState({
+        0: false, 
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false
+    });
+
+
+    const terms = [0, 1, 2, 3, 4, 5];
+    const termSentences = [
+        'I have not traveled out-of-country in the past 14 days',
+        'I am not exhibiting any symptoms of COVID-19 (cough, fever, etc.)',
+        'I have not come in contact with a sick person in the past 14 days',
+        'I have been practicing social distancing -- staying indoors, avoiding crowds, staying 6 feet away from other people if you have to go outside',
+        'I will take take every CDC-provided safety precaution',
+        'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
+    ];
+
+    const [captcha, setCaptcha] = useState(false);
     const [selectedPayment, setSelectedIndex] = useState(0);
     const [showOffer, setShowOffer] = useState(false);
     const [showRequestHelp, setShowRequestHelp] = useState(false);
@@ -198,6 +220,20 @@ export default function Offers(props) {
             setToastMessage('Please use a valid phone number');
             return false;
         }
+
+        for (const term in currentTerms) {
+            if (currentTerms[term] === false) {
+                setShowToast(true);
+                setToastMessage('Must agree to all choices');
+                return false;
+            }
+        }
+        
+        if (captcha === false) {
+            setShowToast(true);
+            setToastMessage('Captcha not checked');
+            return false;
+        }
         return true;
     }
 
@@ -243,6 +279,14 @@ export default function Offers(props) {
         e.persist();
         setSelectedIndex(e.target.selectedIndex);
     }
+
+    const handleTermChange = (event, task) => {
+        setCurrentTerms(prev => ({ 
+            ...prev,
+            [task]: !currentTerms[task]
+        }));
+    }
+
 
     var message = <> </>;
     var tabs = <> </>
@@ -420,7 +464,6 @@ export default function Offers(props) {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        {/* </Form.Group> */}
                         <Form.Group controlId="email" bssize="large" style = {{marginBottom: 8}}>
                             <Form.Control 
                                 placeholder="Email"
@@ -435,7 +478,7 @@ export default function Offers(props) {
                                 onChange={handleFieldChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId="details" bssize="large">
+                        <Form.Group controlId="details" bssize="large" style = {{marginTop: 20}}>
                             <Form.Label style = {{marginBottom: -10}}><h4>Details</h4></Form.Label>
                             <p style = {{fontWeight: 300, 
                                         fontStyle: 'italic', 
@@ -448,19 +491,44 @@ export default function Offers(props) {
                                             value={fields.details} 
                                             onChange={handleFieldChange}/>
                         </Form.Group>
-                        <Form.Group controlId="exampleForm.ControlSelect2">
+                        <Form.Group controlId="payment" style = {{marginTop: 20}}>
                             <Form.Label style = {{marginBottom: -10}}><h4>Payment</h4></Form.Label>
                             <p style = {{fontWeight: 300, 
                                         fontStyle: 'italic', 
                                         fontSize: 13, 
                                         marginBottom: 2}}>How would you like to pay the volunteer?</p>
                             <Form.Control as="select"
-                                    onChange={changeFormSelect}>
+                                    onChange={changeFormSelect} style = {{fontSize: 13}}>
                                 <option>Call ahead to store and pay (Best option)</option>
                                 <option>Have volunteer pay and reimburse when delivered</option>
                                 <option>N/A</option>
                             </Form.Control>
                         </Form.Group>
+
+                        <Form.Group controlId="health" style = {{marginTop: 20}}>
+                            <Form.Label style = {{marginBottom: -5}}><h4>Health *</h4></Form.Label>
+                            <p style = {{fontWeight: 300, 
+                                        fontStyle: 'italic', 
+                                        fontSize: 13,
+                                        marginBottom: 5}}>For the your safety and the safety of all community members, please check the 
+                                        boxes to complete the volunteer pledge. If you have any questions about any of the choices, do not fill 
+                                        out the form and contact as at covaidco@gmail.com </p>
+                                {terms.map((term) => {
+                                    return <Form.Check key={term} 
+                                                    type = "checkbox" 
+                                                    label = {termSentences[term]}
+                                                    onChange = {(evt) => { handleTermChange(evt, term) }}
+                                                    checked = {currentTerms[term]} 
+                                                    style = {{fontSize: 12, marginTop: 2}}/>
+                                })}
+                        </Form.Group>
+
+                        <ReCAPTCHA
+                            sitekey="6LeZmeQUAAAAALo6YR9A7H-f7EZsYj3c0KJ189Ev"
+                            onChange={() => {setCaptcha(true)}}
+                            style = {{marginBottom: 10}}
+                        />
+
                         <Button variant="success"
                                 type="submit"
                                 style={{marginBottom: 5, marginTop: 10}}>

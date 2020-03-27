@@ -18,51 +18,64 @@ export default function LoginRegisterModal(props) {
     }
 
     const switchToLogin = () => {
-        setLogin(true);
-        setJustRegistered(true)
+        setJustRegistered(true);
     }
 
-    var body;
-    var title;
-    var footer;
+    var header = <></>;
+    var body = <></>;
+    var realFooter = <></>;
     if (login) {
-        title = "Welcome back!";
-        if (justRegistered) {
-            title = "Check your inbox for a verification email! "
-        }
-        body = <Login />;
-        footer = <div style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}>
-                    <Button 
-                        variant="link"
-                        onClick={handleClick}
-                        style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}
-                    >Looking to create an account?</Button>
-
-                </div>
+        header = <Modal.Header closeButton>
+                    <Modal.Title>Welcome Back!</Modal.Title>
+                </Modal.Header>;
+        body = <Modal.Body>
+                    <div style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}>
+                        <Button 
+                            variant="link"
+                            onClick={handleClick}
+                            style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}
+                        >Looking to create an account?</Button>
+                    </div>
+                    <Login />
+                </Modal.Body>;
+    } else if (justRegistered) {
+        header = <Modal.Header closeButton style = {{backgroundColor: '#ccebd2', borderBottom: '0 none'}}>
+                    <Modal.Title 
+                        style = {{color: '#155724'}}>
+                        Thank you for signing up to be a volunteer!
+                    </Modal.Title>
+                </Modal.Header>;
+        realFooter = <Modal.Footer 
+                        style = {{backgroundColor: '#ccebd2', 
+                                color: '#155724', 
+                                display: 'block', 
+                                borderTop: '0 none',
+                                marginTop: -20}}>
+                        <p>
+                            You should receive a confirmation to register as a volunteer in your email soon. 
+                        </p>
+                    </Modal.Footer>;
     } else {
-        title = "Want to help your community?";
-        body = <Register state={props.state} switchToLogin={switchToLogin}/>
-        footer = <div style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}>
-                    <Button 
-                        variant="link"
-                        onClick={handleClick}
-                        style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}
-                    >Already have an account?</Button>
-                </div>
+        header = <Modal.Header closeButton>
+                    <Modal.Title>Want to help your community?</Modal.Title>
+                </Modal.Header>;
+        body = <Modal.Body>
+                    <div style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}>
+                        <Button 
+                            variant="link"
+                            onClick={handleClick}
+                            style={{margin: "auto", textAlign:"center", display: "inlineBlock"}}
+                        >Already have an account?</Button>
+                    </div>
+                    <Register state={props.state} switchToLogin={switchToLogin}/>
+                </Modal.Body>;
     }
 
     return (
         <div>
-            <Modal.Header closeButton>
-            <Modal.Title>{title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {footer}
-                {body}
-            </Modal.Body>
-            <Modal.Footer>
-                &nbsp;
-            </Modal.Footer>
+            {header}
+            {body}
+            {realFooter}
         </div>
     )
 }
