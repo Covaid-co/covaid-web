@@ -63,7 +63,8 @@ class Home extends Component {
       searchedLocation: '',
       currentState: '',
       width: 0,
-      totalVolunteers: 0
+      totalVolunteers: 0,
+      justVerified: false
     }
 
     window.addEventListener("resize", this.update);
@@ -145,6 +146,7 @@ class Home extends Component {
     console.log(this.props.location.verified)
     if (this.props.location.verified) {
       this.setState({showRegistration: true});
+      this.setState({justVerified: true});
     }
     this.getMyLocation();
     this.update();

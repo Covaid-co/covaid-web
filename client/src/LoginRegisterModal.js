@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Login from './Login';
 import Register from './Register';
 import Modal from 'react-bootstrap/Modal'
@@ -7,6 +7,12 @@ import Button from 'react-bootstrap/Button';
 export default function LoginRegisterModal(props) {
     const [login, setLogin] = useState(false);
     const [justRegistered, setJustRegistered] = useState(false)
+
+    useEffect(() => {
+        if (props.state.justVerified) {
+            setLogin(true)
+        }
+      }, []);
 
     function handleClick(e) {
         e.preventDefault();
