@@ -172,7 +172,6 @@ async function updatePreVerified() {
 }
 
 exports.all_users = function (req, res) {
-  updatePreVerified()
   Users.find({'availability': true,
               'preVerified': true,
               'location': 

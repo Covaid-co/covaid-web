@@ -36,7 +36,7 @@ export default function YourOffer(props) {
 
     useEffect(() => {
         const possible_tasks = ['Food/Groceries', 'Medication', 'Donate',
-        'Emotional Support', 'Academic/Professional', 'Misc.'];
+                                'Emotional Support', 'Academic/Professional', 'Misc.'];
         async function fetchData() {
             const response = await fetch_a('/api/users/current');
             response.json().then((user) => {
