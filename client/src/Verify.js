@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Redirect } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 const queryString = require('query-string');
 
 export default function Verify(props) {
@@ -11,8 +12,11 @@ export default function Verify(props) {
     }
 
     return (
-        <div>
-            <p> Redirecting... </p>
+        <div style = {{textAlign: 'center'}}>
+            <Spinner animation="border" role="status" style = {{marginTop: 100}}>
+                <span className="sr-only">Loading...</span>
+            </Spinner>
+            <p style = {{marginTop: 30}}> Redirecting... </p>
             {verify()}
             <Redirect to={{
                 pathname: '/',

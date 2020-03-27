@@ -7,8 +7,8 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
+import ReCAPTCHA from "react-google-recaptcha";
 
-import Cookie from 'js-cookie'
 
 export default function Register(props, switchToLogin) {
     const [fields, handleFieldChange] = useFormFields({
@@ -19,9 +19,29 @@ export default function Register(props, switchToLogin) {
         confirmPassword: ""
     });
 
+    const [currentTerms, setCurrentTerms] = useState({
+        0: false, 
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false
+    }); 
+
+    const [captcha, setCaptcha] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+
+    const terms = [0, 1, 2, 3, 4, 5];
+    const termSentences = [
+        'I have not traveled out-of-country in the past 14 days',
+        'I am not exhibiting any symptoms of COVID-19 (cough, fever, etc.)',
+        'I have not come in contact with a sick person in the past 14 days',
+        'I have been practicing social distancing -- staying indoors, avoiding crowds, staying 6 feet away from other people if you have to go outside',
+        'I will take take every CDC-provided safety precaution',
+        'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
+    ];
 
     function validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -67,6 +87,21 @@ export default function Register(props, switchToLogin) {
             setToastMessage('Passwords not the same');
             return false;
         }
+
+        for (const term in currentTerms) {
+            if (currentTerms[term] === false) {
+                setShowToast(true);
+                setToastMessage('Must agree to all choices');
+                return false;
+            }
+        }
+        
+        if (captcha === false) {
+            setShowToast(true);
+            setToastMessage('Captcha not checked');
+            return false;
+        }
+        
         return true;
     }
 
@@ -164,6 +199,14 @@ export default function Register(props, switchToLogin) {
         setPhoneNumber(result);
     };
 
+    const handleTermChange = (event, task) => {
+        console.log(currentTerms);
+        setCurrentTerms(prev => ({ 
+            ...prev,
+            [task]: !currentTerms[task]
+        }));
+    }
+
     return (
         <div className="p-3 bg-white">
             <Form onSubmit={handleSubmit}>
@@ -251,7 +294,34 @@ export default function Register(props, switchToLogin) {
                             />
                         </Form.Group>
                     </Col>
-                </Row>  
+                </Row>
+
+                <Row style = {{marginRight: -25, marginLeft: -25, marginBottom: 0, marginTop: 10}}>
+                    <Col md={12}>
+                        <Form.Label style = {{marginBottom: -5}}><h4>Health *</h4></Form.Label>
+                        <p style = {{fontWeight: 300, 
+                                    fontStyle: 'italic', 
+                                    fontSize: 13,
+                                    marginBottom: 5}}>For the your safety and the safety of all community members, please check the 
+                                    boxes to complete the volunteer pledge. If you have any questions about any of the choices, do not fill 
+                                    out the form and contact as at covaidco@gmail.com </p>
+                    </Col>
+                </Row>
+
+                <Row className="justify-content-md-center"
+                    style = {{marginRight: -25, marginLeft: -25, marginBottom: 20}}>
+                    <Col md={12}>
+                    {terms.map((term) => {
+                        return <Form.Check key={term} 
+                                        type = "checkbox" 
+                                        label = {termSentences[term]}
+                                        onChange = {(evt) => { handleTermChange(evt, term) }}
+                                        checked = {currentTerms[term]} 
+                                        style = {{fontSize: 12, marginTop: 2}}/>
+                    })}
+                    </Col>
+                </Row>
+
                 <Toast
                     show={showToast}
                     delay={3000}
@@ -265,14 +335,20 @@ export default function Register(props, switchToLogin) {
                         marginRight: 10
                     }}>
                     <Toast.Body>{toastMessage}</Toast.Body>
-                </Toast>
+                </Toast>    
 
-                <Row className="justify-content-md-center"
+                <ReCAPTCHA
+                    sitekey="6LeZmeQUAAAAALo6YR9A7H-f7EZsYj3c0KJ189Ev"
+                    onChange={() => {setCaptcha(true)}}
+                    style = {{marginBottom: 10}}
+                />
+
+                <Row
                     style = {{marginRight: -25, marginLeft: -25}}>
-                    <Col md="auto">
-                    <Button variant="primary" type="submit">
-                        Submit
-                    </Button>
+                    <Col md="auto" style = {{marginLeft: 10}}>
+                        <Button variant="primary" type="submit">
+                            Sign up!
+                        </Button>
                     </Col>
                 </Row>
             </Form>

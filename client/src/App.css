@@ -61,10 +61,11 @@ html, body {
 #howHelpButton:hover #help{
   color: #194bd3 !important;
 }
-/* 
-#howHelpButton1 {
-  padding-left: 0.1 !important;
-} */
+
+.form-check-input {
+  position: absolute;
+  margin-top: .2rem;
+}
 
 @media (max-width:767px){
   .smallPage { display: grid !important; }

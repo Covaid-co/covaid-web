@@ -14,6 +14,7 @@ let UsersSchema = new Schema({
     salt: {type: String, required: true},
     preVerified: {type: Boolean},
     verified: {type: Boolean},
+    agreedToTerms: {type: Boolean},
     offer: {
         tasks: [String],
         neighborhoods: [String],

@@ -48,6 +48,7 @@ exports.register = function (req, res) {
         finalUser.setPassword(user.password);
         finalUser.preVerified = false;
         finalUser.verified = false;
+        finalUser.agreedToTerms = true;
 
         finalUser.save(function(err, result) {
           if (err) {    
