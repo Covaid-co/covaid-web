@@ -143,7 +143,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.location.verified)
     if (this.props.location.verified) {
       this.setState({showRegistration: true});
       this.setState({justVerified: true});

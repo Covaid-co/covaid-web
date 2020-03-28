@@ -18,7 +18,9 @@ let UsersSchema = new Schema({
     offer: {
         tasks: [String],
         neighborhoods: [String],
-        details: String
+        details: String,
+        car: {type: Boolean, requried: true},
+        timesAvailable: [String]
     },
     location: {
         type: { type: String },
@@ -26,7 +28,9 @@ let UsersSchema = new Schema({
             type: [Number],
             index: "2dsphere"
         }
-    }
+    },
+    association: {type: String, required: true},
+    languages: [String]
 });
 
 
@@ -72,8 +76,12 @@ UsersSchema.methods.toJSON = function() {
         offer: {
             neighborhoods: this.offer.neighborhoods,
             tasks: this.offer.tasks,
-            details: this.offer.details
-        }
+            details: this.offer.details,
+            car: this.offer.car,
+            timesAvailable: this.offer.timesAvailable
+        },
+        association: this.association,
+        languages: this.languages
     };
 };
 
