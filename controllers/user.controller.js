@@ -2,11 +2,32 @@ const Users = require('../models/user.model');
 const Offers = require('../models/offer.model');
 const passport = require('passport');
 var nodemailer = require('nodemailer');
+const {GoogleSpreadsheet }= require('google-spreadsheet')
+const creds = require('../client_secret.json')
+
+const SPREADSHEET_ID = '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0'
 
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
        return result === null;
   });
+}
+
+async function addUserToSpreadsheet(user) {
+  const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+  await doc.useServiceAccountAuth({
+    client_email: creds.client_email,
+    private_key: creds.private_key,
+  });
+
+  await doc.loadInfo(); // loads document properties and worksheets
+
+  // create a sheet and set the header row
+  const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+  
+  // append rows 
+  await sheet.addRow({ firstName: user.first_name, lastName: user.last_name, email: user.email});
+
 }
 
 exports.verify = function(req, res) {
@@ -49,6 +70,8 @@ exports.register = function (req, res) {
         finalUser.preVerified = false;
         finalUser.verified = false;
         finalUser.agreedToTerms = true;
+
+        addUserToSpreadsheet(finalUser)
 
         finalUser.save(function(err, result) {
           if (err) {    
