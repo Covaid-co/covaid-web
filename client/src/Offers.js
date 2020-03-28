@@ -221,13 +221,13 @@ export default function Offers(props) {
             return false;
         }
 
-        for (const term in currentTerms) {
-            if (currentTerms[term] === false) {
-                setShowToast(true);
-                setToastMessage('Must agree to all choices');
-                return false;
-            }
-        }
+        // for (const term in currentTerms) {
+        //     if (currentTerms[term] === false) {
+        //         setShowToast(true);
+        //         setToastMessage('Must agree to all choices');
+        //         return false;
+        //     }
+        // }
         
         if (captcha === false) {
             setShowToast(true);
@@ -505,7 +505,7 @@ export default function Offers(props) {
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group controlId="health" style = {{marginTop: 20}}>
+                        {/* <Form.Group controlId="health" style = {{marginTop: 20}}>
                             <Form.Label style = {{marginBottom: -5}}><h4>Health *</h4></Form.Label>
                             <p style = {{fontWeight: 300, 
                                         fontStyle: 'italic', 
@@ -521,7 +521,7 @@ export default function Offers(props) {
                                                     checked = {currentTerms[term]} 
                                                     style = {{fontSize: 12, marginTop: 2}}/>
                                 })}
-                        </Form.Group>
+                        </Form.Group> */}
 
                         <ReCAPTCHA
                             sitekey="6LeZmeQUAAAAALo6YR9A7H-f7EZsYj3c0KJ189Ev"
