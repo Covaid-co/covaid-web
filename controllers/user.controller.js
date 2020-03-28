@@ -4,6 +4,7 @@ const passport = require('passport');
 var nodemailer = require('nodemailer');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
 const creds = require('../client_secret.json')
+const association_controller = require('./association.controller'); 
 
 const SPREADSHEET_ID = '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0'
 
@@ -23,10 +24,16 @@ async function addUserToSpreadsheet(user) {
   await doc.loadInfo(); // loads document properties and worksheets
 
   // create a sheet and set the header row
-  const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+  const volunterSheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+  
   
   // append rows 
-  await sheet.addRow({ firstName: user.first_name, lastName: user.last_name, email: user.email});
+  await volunterSheet.addRow({ 
+    Timestamp: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+    Name: user.first_name + " " + user.last_name,
+    Email: user.email, 
+    Phone: user.phone
+  });
 
 }
 
@@ -45,7 +52,6 @@ exports.verify = function(req, res) {
 }
 
 exports.register = function (req, res) {
-
     const { body: { user } } = req;
     if(!user.email) {
         return res.status(422).json({
@@ -64,6 +70,7 @@ exports.register = function (req, res) {
               },
           });
         }
+
         const finalUser = new Users(user);
     
         finalUser.setPassword(user.password);
@@ -71,7 +78,7 @@ exports.register = function (req, res) {
         finalUser.verified = false;
         finalUser.agreedToTerms = true;
 
-        addUserToSpreadsheet(finalUser)
+        // addUserToSpreadsheet(finalUser)
 
         finalUser.save(function(err, result) {
           if (err) {    

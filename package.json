@@ -9,7 +9,7 @@
   "author": "Debanik Purkayastha",
   "license": "ISC",
   "dependencies": {
-    "@googlemaps/google-maps-services-js": "^2.3.1",
+    "@googlemaps/google-maps-services-js": "^2.4.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -26,6 +26,7 @@
     "nodemon": "^1.19.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "reverse-geocoding": "^3.0.2",
     "util.promisify": "^1.0.1"
   }
 }
