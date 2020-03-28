@@ -28,22 +28,18 @@ export default function Offers(props) {
     });
 
     const [currentTerms, setCurrentTerms] = useState({
-        0: false, 
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false
+        0: false
     });
 
 
-    const terms = [0, 1, 2, 3, 4, 5];
+    // const terms = [0, 1, 2, 3, 4, 5];
+    const terms = [0];
     const termSentences = [
-        'I have not traveled out-of-country in the past 14 days',
-        'I am not exhibiting any symptoms of COVID-19 (cough, fever, etc.)',
-        'I have not come in contact with a sick person in the past 14 days',
-        'I have been practicing social distancing -- staying indoors, avoiding crowds, staying 6 feet away from other people if you have to go outside',
-        'I will take take every CDC-provided safety precaution',
+        // 'I have not traveled out-of-country in the past 14 days',
+        // 'I am not exhibiting any symptoms of COVID-19 (cough, fever, etc.)',
+        // 'I have not come in contact with a sick person in the past 14 days',
+        // 'I have been practicing social distancing -- staying indoors, avoiding crowds, staying 6 feet away from other people if you have to go outside',
+        // 'I will take take every CDC-provided safety precaution',
         'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
     ];
 
@@ -221,13 +217,14 @@ export default function Offers(props) {
             return false;
         }
 
-        // for (const term in currentTerms) {
-        //     if (currentTerms[term] === false) {
-        //         setShowToast(true);
-        //         setToastMessage('Must agree to all choices');
-        //         return false;
-        //     }
-        // }
+        for (const term in currentTerms) {
+            if (currentTerms[term] === false) {
+                console.log(term)
+                setShowToast(true);
+                setToastMessage('Must agree to the terms and conditions');
+                return false;
+            }
+        }
         
         if (captcha === false) {
             setShowToast(true);
@@ -281,6 +278,7 @@ export default function Offers(props) {
     }
 
     const handleTermChange = (event, task) => {
+        console.log(task)
         setCurrentTerms(prev => ({ 
             ...prev,
             [task]: !currentTerms[task]
@@ -505,13 +503,12 @@ export default function Offers(props) {
                             </Form.Control>
                         </Form.Group>
 
-                        {/* <Form.Group controlId="health" style = {{marginTop: 20}}>
-                            <Form.Label style = {{marginBottom: -5}}><h4>Health *</h4></Form.Label>
+                        <Form.Group controlId="health" style = {{marginTop: 20}}>
+                            <Form.Label style = {{marginBottom: -5}}><h4>Terms *</h4></Form.Label>
                             <p style = {{fontWeight: 300, 
                                         fontStyle: 'italic', 
                                         fontSize: 13,
-                                        marginBottom: 5}}>For the your safety and the safety of all community members, please check the 
-                                        boxes to complete the volunteer pledge. If you have any questions about any of the choices, do not fill 
+                                        marginBottom: 5}}>Please indicate that you agree to the Covaid Terms and Conditions. If you have any questions/concerns, do not fill 
                                         out the form and contact as at covaidco@gmail.com </p>
                                 {terms.map((term) => {
                                     return <Form.Check key={term} 
@@ -521,7 +518,7 @@ export default function Offers(props) {
                                                     checked = {currentTerms[term]} 
                                                     style = {{fontSize: 12, marginTop: 2}}/>
                                 })}
-                        </Form.Group> */}
+                        </Form.Group>
 
                         <ReCAPTCHA
                             sitekey="6LeZmeQUAAAAALo6YR9A7H-f7EZsYj3c0KJ189Ev"
