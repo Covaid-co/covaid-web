@@ -99,8 +99,9 @@ exports.handleRequest = function (req, res) {
 };
 
 function getBestVolunteers(request) {
-    // Match on tasks
     // Match on assoc
+    // Match on task
     // 3 closest
+    
     
 }

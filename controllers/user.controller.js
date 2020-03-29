@@ -14,7 +14,31 @@ function validateEmailAccessibility(email){
   });
 }
 
-async function addUserToSpreadsheet(user) {
+async function updateUserInSpreadsheet(user) {
+  const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+  await doc.useServiceAccountAuth({
+    client_email: creds.client_email,
+    private_key: creds.private_key,
+  });
+
+  await doc.loadInfo(); // loads document properties and worksheets
+
+  // create a sheet and set the header row
+  const volunterSheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+
+  const rows = await volunterSheet.getRows();
+  var updateRow;
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i].ID == "123") {
+      updateRow = rows[i];
+    }
+  }
+  updateRow.Name = "Subhanik Purkayastha"
+  console.log(updateRow)
+  await updateRow.save()
+}
+
+async function addUserToSpreadsheet(user, ID) {
   const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
   await doc.useServiceAccountAuth({
     client_email: creds.client_email,
@@ -29,7 +53,9 @@ async function addUserToSpreadsheet(user) {
   
   // append rows 
   await volunterSheet.addRow({ 
+    ID: ID,
     Timestamp: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+    AvailabilityStatus: user.availability.toString(),
     Name: user.first_name + " " + user.last_name,
     Email: user.email, 
     Phone: user.phone
@@ -60,6 +86,7 @@ exports.register = function (req, res) {
         },
         });
     }
+    // console.log(user)
 
     validateEmailAccessibility(user.email).then(function(valid) {
       if (valid) {
@@ -78,43 +105,45 @@ exports.register = function (req, res) {
         finalUser.verified = false;
         finalUser.agreedToTerms = true;
 
-        // addUserToSpreadsheet(finalUser)
-
         finalUser.save(function(err, result) {
           if (err) {    
             // Some other error
             return res.status(422).send(err);
           } 
-          var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                  user: 'covaidco@gmail.com',
-                  pass: 'supportyourcity_covaid_1?'
-            }
-          });
+
           var userID = result._id;
+          addUserToSpreadsheet(finalUser, userID)
+
+          // var transporter = nodemailer.createTransport({
+          //   service: 'gmail',
+          //   auth: {
+          //         user: 'covaidco@gmail.com',
+          //         pass: 'supportyourcity_covaid_1?'
+          //   }
+          // });
+          // var userID = result._id;
     
-          var mode = "localhost:3000";
-          if (process.env.PROD) {
-              mode = "covaid.co"
-          }
+          // var mode = "localhost:3000";
+          // if (process.env.PROD) {
+          //     mode = "covaid.co"
+          // }
     
-          var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
+          // var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
     
-          var mailOptions = {
-            from: 'covaidco@gmail.com',
-            to: user.email,
-            subject: 'Covaid -- Verify your email',
-            text: message
-          };
+          // var mailOptions = {
+          //   from: 'covaidco@gmail.com',
+          //   to: user.email,
+          //   subject: 'Covaid -- Verify your email',
+          //   text: message
+          // };
     
-          transporter.sendMail(mailOptions, function(error, info){
-              if (error) {
-                  console.log(error);
-              } else {
-                  console.log('Email sent: ' + info.response);
-              }
-          });
+          // transporter.sendMail(mailOptions, function(error, info){
+          //     if (error) {
+          //         console.log(error);
+          //     } else {
+          //         console.log('Email sent: ' + info.response);
+          //     }
+          // });
     
         return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
         });
@@ -233,6 +262,7 @@ exports.update = function (req, res) {
   const id = req.token.id;
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
     if (err) return next(err);
+    
     res.send('User updated.');
   });
 };
