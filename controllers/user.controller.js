@@ -3,7 +3,7 @@ const Offers = require('../models/offer.model');
 const passport = require('passport');
 var nodemailer = require('nodemailer');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
-const creds = require('../client_secret.json')
+// const creds = require('../client_secret.json')
 const association_controller = require('./association.controller'); 
 
 const SPREADSHEET_ID = '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0'
@@ -14,28 +14,27 @@ function validateEmailAccessibility(email){
   });
 }
 
-async function addUserToSpreadsheet(user) {
-  const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
-  await doc.useServiceAccountAuth({
-    client_email: creds.client_email,
-    private_key: creds.private_key,
-  });
+// async function addUserToSpreadsheet(user) {
+//   const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+//   await doc.useServiceAccountAuth({
+//     client_email: creds.client_email,
+//     private_key: creds.private_key,
+//   });
 
-  await doc.loadInfo(); // loads document properties and worksheets
+//   await doc.loadInfo(); // loads document properties and worksheets
 
-  // create a sheet and set the header row
-  const volunterSheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+//   // create a sheet and set the header row
+//   const volunterSheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
   
   
-  // append rows 
-  await volunterSheet.addRow({ 
-    Timestamp: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
-    Name: user.first_name + " " + user.last_name,
-    Email: user.email, 
-    Phone: user.phone
-  });
-
-}
+//   // append rows 
+//   await volunterSheet.addRow({ 
+//     Timestamp: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+//     Name: user.first_name + " " + user.last_name,
+//     Email: user.email, 
+//     Phone: user.phone
+//   });
+// }
 
 exports.verify = function(req, res) {
   Users.findByIdAndUpdate(req.query.ID, 

@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css'
+import './Home.css'
 import Offers from './Offers';
 import YourOffer from './YourOffer';
 import LoginRegisterModal from './LoginRegisterModal';
 import HelpfulLinks from './HelpfulLinks';
 import Loading from './Loading';
+import RequestHelp from './RequestHelp';
 
 import fetch_a from './util/fetch_auth';
 
@@ -26,6 +28,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Badge from 'react-bootstrap/Badge'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import Jumbotron from 'react-bootstrap/Jumbotron'
 
 import Cookie from 'js-cookie'
 
@@ -33,7 +36,7 @@ Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 class Home extends Component {
   constructor(props) {
-    super()
+    super(props);
 
     this.state = {
       latitude: '',
@@ -64,7 +67,11 @@ class Home extends Component {
       currentState: '',
       width: 0,
       totalVolunteers: 0,
-      justVerified: false
+      justVerified: false,
+  
+      showRequestHelp: true,
+      associations: [],
+      currentAssoc: {}
     }
 
     window.addEventListener("resize", this.update);
@@ -88,6 +95,13 @@ class Home extends Component {
     this.handleShowAbout = this.handleShowAbout.bind(this);
     this.handleHideAbout = this.handleHideAbout.bind(this);
     this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
+
+    this.handleHideRequestHelp = this.handleHideRequestHelp.bind(this);
+    this.findAssociations = this.findAssociations.bind(this)
+  }
+
+  handleHideRequestHelp() {
+    this.setState({showRequestHelp: false});
   }
 
   handleShowLocation() {
@@ -288,9 +302,33 @@ class Home extends Component {
     );
   }
 
+  findAssociations(lat, long, currentComponent) {
+    var url = "/api/association/get_assoc/lat_long?";
+    let params = {
+        'latitude': lat,
+        'longitude': long
+    }
+    let query = Object.keys(params)
+          .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+          .join('&');
+    url += query;
+
+    async function fetchData() {
+        const response = await fetch(url);
+        response.json().then((data) => {
+            currentComponent.setState({associations: data});
+            if (data.length > 0) {
+              currentComponent.setState({currentAssoc: data[0]})
+            }
+        });
+    }
+    fetchData();
+  }
+
   // Finds lat and long from cookie first and if found will load page
   // lat and long will be updated once geolocation is working
   getMyLocation() {
+    let currentComponent = this;
     // If cookie is set, keep that lat and long with associated zip code
     if (Cookie.get('latitude') 
         && Cookie.get('longitude')
@@ -311,6 +349,7 @@ class Home extends Component {
         locality: locality,
         zipCode: zip
       });
+      this.findAssociations(lat, long, currentComponent);
       return;
     }
 
@@ -322,6 +361,7 @@ class Home extends Component {
       location.getCurrentPosition((position) => {
         // Use actual current lat long to find zip and neighborhood
         this.setNeighborhood(position.coords.latitude, position.coords.longitude, '');
+        this.findAssociations(position.coords.latitude, position.coords.longitude, currentComponent);
       }, (error) => {
         console.log("No geolocation");
       });
@@ -397,6 +437,7 @@ class Home extends Component {
     var covaidText = "Covaid connects community volunteers with those who need help"
     if (this.state.width < 575) {
       bulletin = "Bulletin";
+      console.log("less");
       offer = "My Offer";
       link = "Links";
     } else {
@@ -420,15 +461,6 @@ class Home extends Component {
     if (!this.state.isLoggedIn) {
       if (this.state.width <= 767) {
         communityButton = <>
-          {/* <OverlayTrigger
-            key='bottom'
-            placement='bottom'
-            overlay={
-              <Tooltip id={`tooltip-bottom`}>
-                Number of volunteers in your communities!
-              </Tooltip>}>
-            <Badge variant="success">{this.state.totalVolunteers} Volunteers</Badge>
-          </OverlayTrigger> */}
           <Button variant="outline-light" 
                   style={{outlineWidth: "thick",
                           textAlign: 'right',
@@ -507,6 +539,85 @@ class Home extends Component {
           <Loading setLatLong={this.setLatLongFromZip}/>
         </div>)
     } else {
+      // return (
+      //    <div>
+      //     <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
+      //     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+      //     <div className="App">
+      //       <Navbar collapseOnSelect 
+      //               // onToggle={this.toggleNavBar}
+      //               variant="light" 
+      //               expand="md" 
+      //               className = 'customNav'>
+      //         <Navbar.Brand id="home" 
+      //               href = {window.location.protocol + '//' + window.location.host}
+      //               style ={{color: 'white', 
+      //                         fontWeight: 600, 
+      //                         marginLeft: '10%', 
+      //                         fontSize: 28,
+      //                         marginRight: 20}}>
+      //           covaid
+      //         </Navbar.Brand>
+      //         {/* {communityButton} */}
+      //         <Form inline style ={{display: 'block'}}>
+      //           {communityButton}
+      //           <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      //         </Form>
+
+      //         <Navbar.Collapse id="basic-navbar-nav">
+      //           <Nav className="mr-auto">
+      //             <Nav.Link 
+      //               id = "navLink1"
+      //               style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+      //               onClick={this.handleShowAbout}>
+      //               <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
+      //             </Nav.Link>
+      //             <Nav.Link 
+      //               id = "navLink2"
+      //               style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+      //               onClick={this.handleShowWorks}>
+      //               <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
+      //             </Nav.Link>
+      //             <Nav.Link 
+      //               id = "navLink3"
+      //               style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+      //               onClick={this.handleShowFeedback}>
+      //               <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
+      //             </Nav.Link>
+      //             <Nav.Link 
+      //               id = "navLink4"
+      //               style ={{border: '0px solid'}} 
+      //               // onClick={this.handleShowFeedback}
+      //               >
+      //               <OverlayTrigger
+      //                 key='bottom'
+      //                 placement='bottom'
+      //                 overlay={
+      //                   <Tooltip id={`tooltip-bottom`}>
+      //                     Number of active volunteers on COVAID!
+      //                   </Tooltip>}>
+      //                 <Badge variant="success">{this.state.totalVolunteers} Volunteers</Badge>
+      //               </OverlayTrigger>
+      //             </Nav.Link>
+      //           </Nav>
+      //           <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
+      //             {rightNav}
+      //           </Form>
+      //         </Navbar.Collapse>
+      //       </Navbar>
+      //       <Jumbotron fluid>
+      //         <Container>
+      //           <h1>Fluid jumbotron</h1>
+      //           <p>
+      //             This is a modified jumbotron that occupies the entire horizontal space of
+      //             its parent.
+      //           </p>
+      //         </Container>
+      //       </Jumbotron>
+      //     </div>
+      //   </div>);
+
       return (
         <div>
           <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
@@ -608,6 +719,14 @@ class Home extends Component {
                 </Button>{' '}
               </h6>
               {clickText}
+              <Button onClick={() => this.setState({showRequestHelp: true})} 
+                      id="homeButtons" >
+                  Request for Help
+              </Button>
+              <RequestHelp showRequestHelp={this.state.showRequestHelp} 
+                           hideRequestHelp={this.handleHideRequestHelp}
+                           state={this.state}/>
+              <br></br>
               {/* <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
                 <FormControl 
                   type="text" 
