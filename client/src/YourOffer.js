@@ -12,41 +12,55 @@ import Alert from 'react-bootstrap/Alert'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
+import Resources from './Resources';
+import PhoneNumber from './PhoneNumber';
+import Languages from './Languages';
+import Details from './Details';
+import HasCar from './HasCar';
+import Availability from './Availability';
+import TimesAvailable from './TimesAvailable';
+
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 
 export default function YourOffer(props) {
     const [fields, handleFieldChange] = useFormFields({
-        details: "",
-        phone: ""
+        details: ""
     });
 
     const [showAlert, setShowAlert] = useState(false);
     const [availableText, setAvailableText] = useState('');
     const [switchSelected, setSwitchSelected] = useState(false);
-    const [selectedTasks, setSelectedTasks] = useState([]);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    // const [neighborhoodSelect, setNeighborhoodSelect] = useState({});
     const [getNeighborhoods, setNeighborhoods] = useState([]);
-    const possibleTasks = ['Food/Groceries', 'Medication', 'Donate',
-                            'Emotional Support', 'Academic/Professional', 'Misc.'];
+
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [languageChecked, setLanguageChecked] = useState({});
+    const [hasCar, setHasCar] = useState(false);
+
+    const [association, setAssociation] = useState('');
+    const [resources, setResources] = useState({});
+    const [times, setTimes] = useState({});
+    const [defaultResources, setDefaultResources] = useState(['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.']);
+    const timeNames = ['Mornings', 'Afternoons', 'Evenings', 'Weekends'];
+    const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in Anything Else)'];
+    const pittsburghResources = ['Food', 'Childcare', 'Pet care', 'Eldercare', 
+        'Help running errands (groceries, prescriptions, supplies, etc)',
+        'A ride somewhere', 'Health Care Support (doctor, medicine, etc)',
+        'Housing', 'Shower / Laundry', 'Internet / Phone Access', 
+        'Emotional / Spiritual Support', 'Storage', 'Financial Support', 'Legal assistance', 'Other'];
 
     useEffect(() => {
-        const possible_tasks = ['Food/Groceries', 'Medication', 'Donate',
-                                'Emotional Support', 'Academic/Professional', 'Misc.'];
         async function fetchData() {
             const response = await fetch_a('/api/users/current');
             response.json().then((user) => {
-                fields.details = user.offer.details;
-                fields.phone = user.phone;
-
                 // Get current lat and long from current location and find neighborhoods
                 const { latitude, longitude } = props.state;
                 var neighborhoods = [];
-
+                var locationChanged = false;
                 Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
                     response => {
                         var currentZipcode = '';
@@ -58,11 +72,6 @@ export default function YourOffer(props) {
                                     const currNeighborhoodName = results[j]['long_name'];
                                     if (neighborhoods.includes(currNeighborhoodName) === false) {
                                         neighborhoods.push(currNeighborhoodName);
-                                        // // Update select object
-                                        // setNeighborhoodSelect(prev => ({ 
-                                        //     ...prev,
-                                        //     [currNeighborhoodName]: false,
-                                        // }));
                                     }
                                 }
                                 // find zip code from current location
@@ -92,7 +101,9 @@ export default function YourOffer(props) {
 
                                 if (foundZipCode !== currentZipcode) {
                                     setShowAlert(true);
+                                    locationChanged = true;
                                 }
+                                getAssoc(locationChanged);
                             },
                             error => {
                                 console.error(error);
@@ -104,73 +115,73 @@ export default function YourOffer(props) {
                     }
                 );
 
-                // console.log(neighborhoods);
-
-                // Update Neighborhoods from current user and found neighbors
-                // Combine with found neighborhoods/overwrite
-                // const currentNeighborhoods = user.offer.neighborhoods;
-                // for (var i = 0; i < currentNeighborhoods.length; i++) {
-                //     const currNeighborhoodName = currentNeighborhoods[i];
-                //     setNeighborhoodSelect(prev => ({ 
-                //         ...prev,
-                //         [currNeighborhoodName]: true,
-                //     }));
-                //     if (neighborhoods.includes(currNeighborhoodName) === false) {
-                //         neighborhoods.push(currNeighborhoodName);
-                //     }
-                // }
+                // Set neighborhoods based on location in backend
                 setNeighborhoods(neighborhoods);
 
-                // Update tasks from current user
-                var tempTasks = [];
-                for (var i = 0; i < possible_tasks.length; i++) {
-                    const taskName = possible_tasks[i];
-                    const currentUserTasks = user.offer.tasks;
-                    const includedTask = (currentUserTasks.includes(taskName)) ? true : false;
-                    if (includedTask) {
-                        tempTasks.push(i);
-                    }
+                setCurrentUserObject(user.offer.timesAvailable, timeNames, setTimes);
+
+                fields.details = user.offer.details;
+                setPhoneNumber(user.phone);
+                if (user.offer.car) {
+                    setHasCar(user.offer.car);
                 }
-                setSelectedTasks(tempTasks);
+
+                // Set language (if exists) based on user
+                if (user.languages) {
+                    setCurrentUserObject(user.languages, languages, setLanguageChecked);
+                }
                 setSwitchSelected(user.availability);
                 const aText = user.availability ? 'Available' : 'Not Available'
                 setAvailableText(aText);
-                setIsLoading(false);
+
+                async function getAssoc(locChanged) {
+                    var url = "/api/association/get_assoc/?";
+                    if (!user.association || locChanged) {
+                        setCurrentUserObject(user.offer.tasks, defaultResources, setResources);
+                        setIsLoading(false);
+                        return;
+                    }
+                    let params = {
+                        'associationID': user.association
+                    }
+                    let query = Object.keys(params)
+                        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                        .join('&');
+                    url += query;
+
+                    const response = await fetch(url);
+                    response.json().then((data) => {
+                        setIsLoading(false);
+                        setCurrentUserObject(user.offer.tasks, data.resources, setResources);
+                    });
+                }
             });
         }
         fetchData();
-    
     }, []);
 
-    function validatePhone(phone) {
-        if (phone === undefined || phone === '' || phone.length === 0) {
-            return true;
-        } else if (phone.length === 10) {
-            return (/^\d+$/.test(fields.phone));
-        } else {
-            return false;
+
+    const setCurrentUserObject = (userList, fullList, setFunction) => {
+        for (var i = 0; i < fullList.length; i++) {
+            const curr = fullList[i];
+            const include = (userList.includes(curr)) ? true : false;
+            setFunction(prev => ({ 
+                ...prev,
+                [curr]: include,
+            }));
         }
     }
 
     const checkInputs = () => {
-        // var foundTrue = false;
-        // for (const prop in neighborhoodSelect) {
-        //     if (neighborhoodSelect[prop] === true) {
-        //         foundTrue = true;
-        //     }
-        // }
-
-        // // Didn't select neighborhood
-        // if (foundTrue === false) {
-        //     setShowToast(true);
-        //     setToastMessage('No Neighborhood Selected');
-        //     return false;
-        // }
-
-        // If there are non selected
-        if (selectedTasks.length === 0) {
+        if (Object.values(resources).every(v => v === false)) {
             setShowToast(true);
             setToastMessage('No Task Selected');
+            return false;
+        }
+
+        if (Object.values(languageChecked).every(v => v === false)) {
+            setShowToast(true);
+            setToastMessage('No Language Selected');
             return false;
         }
 
@@ -180,12 +191,24 @@ export default function YourOffer(props) {
             return false;
         }
 
-        if (!validatePhone(fields.phone)) {
+        const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
+        if (phoneOnlyDigits.length != 0 && phoneOnlyDigits.length !== 10) {
             setShowToast(true);
-            setToastMessage('Please Use A Valid Phone Number');
+            setToastMessage('Enter a valid phone number');
             return false;
         }
+
         return true;
+    }
+
+    const extractTrueObj = (obj) => {
+        var result = [];
+        for (const p in obj) {
+            if (obj[p]) {
+                result.push(p);
+            }
+        }
+        return result;
     }
 
     const handleUpdate = async e => {
@@ -194,85 +217,48 @@ export default function YourOffer(props) {
             return;
         }
 
-        var taskList = [];
-        for (var i = 0; i < selectedTasks.length; i++) {
-            taskList.push(possibleTasks[selectedTasks[i]]);
-        }
-
-        // var neighborList = [];
-        // for (const prop in neighborhoodSelect) {
-        //     if (neighborhoodSelect[prop] === true) {
-        //         neighborList.push(prop);
-        //     }
-        // }
+        var resourceList = extractTrueObj(resources);
+        var selectedLanguages = extractTrueObj(languageChecked);
+        var selectedTimes = extractTrueObj(times);
 
         let form = {
             'offer': {
-                'tasks': taskList,
-                // 'neighborhoods': neighborList,
+                'tasks': resourceList,
                 'neighborhoods': getNeighborhoods,
                 'details': fields.details,
+                'car': hasCar,
+                'timesAvailable': selectedTimes
             },
             'location': {
                 'type': 'Point',
                 'coordinates': [props.state.longitude, props.state.latitude]
             },
-            'phone': fields.phone
+            'association': association,
+            'languages': selectedLanguages
         };
-        console.log(form);
+
+        const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
+        if (phoneNumber.length > 0) {
+            form['phone'] = phoneOnlyDigits;
+        } else {
+            form['phone'] = ''
+        }
+
         fetch_a('/api/users/update', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
-        })
-        .then((response) => {
+        }).then((response) => {
             if (response.ok) {
                 console.log("Offer successfully created");
                 window.location.reload(true);
             } else {
                 console.log("Offer not successful")
             }
-        })
-        .catch((e) => {
+        }).catch((e) => {
             console.log("Error");
         });
     };
-
-    // const handleChange = (evt, neighborhood) => {
-    //     setNeighborhoodSelect(prev => ({ 
-    //         ...prev,
-    //         [neighborhood]: !neighborhoodSelect[neighborhood],
-    //     }));
-    // }
-
-    const handleChangeTasks = (val) => {
-        setSelectedTasks(val);
-    };
-
-    const handleChangeSwitch = (evnt) => {
-        let form = {
-          'availability': !switchSelected
-        };
-        setSwitchSelected(!switchSelected);
-        const aText = !switchSelected ? 'Available' : 'Not Available'
-        setAvailableText(aText);
-
-        fetch_a('/api/users/update/', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(form)
-        })
-        .then((response) => {
-            if (response.ok) {
-              console.log("Update successful");
-            } else {
-              console.log("Update not successful");
-            }
-        })
-        .catch((e) => {
-            console.log("Error");
-        });
-      }
 
     if (isLoading) {
         return <div>Loading ... </div>;
@@ -297,7 +283,6 @@ export default function YourOffer(props) {
                     <Col md={1}>
                     </Col>
                     <Col md={10} >
-                        {/* <Row> */}
                         <Alert show={showAlert} variant={'danger'}>
                             Your location has changed! Press update to reflect this.
                         </Alert>
@@ -305,75 +290,31 @@ export default function YourOffer(props) {
                             If you are showing any symptoms or have traveled in the past 2 weeks, please refrain from marking yourself as available.
                         </Alert>
                         <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
-                            <br></br>
-                            <Form.Label style = {{marginBottom: -10}}><h3>Availability</h3></Form.Label>
-                            <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Switch on whether you are available to help.</p>
-                            <Form.Check 
-                                type="switch"
-                                id="custom-switch"
-                                label={availableText}
-                                checked={switchSelected}
-                                onChange={handleChangeSwitch}
-                            />
-                            <br></br>
-                            <Form.Group controlId="tasks" bssize="large">
-                                <Form.Label style = {{marginBottom: -10}}><h2>Tasks</h2></Form.Label>
-                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select tasks with which you are willing to help.</p>
-                                {/* {possibleTasks.map((task) => {
-                                    return <Form.Check key={task} 
-                                                    type = "checkbox" 
-                                                    label = {task}
-                                                    onChange = {(evt) => { handleTaskChange(evt, task) }}
-                                                    checked = {taskSelect[task]} />
-                                })} */}
-                                <ToggleButtonGroup type="checkbox" className="btn-group flex-wrap" value={selectedTasks} onChange={handleChangeTasks}>
-                                    {possibleTasks.map((task, i) => {
-                                        return <ToggleButton className="toggleButton" variant="outline-primary" size="md" key = {i} value={i}>{task}</ToggleButton>
-                                    })}
-                                </ToggleButtonGroup>
-                            </Form.Group>
-                            <br></br>
-                            <Form.Group controlId="details" bssize="large">
-                                <Form.Label style = {{marginBottom: -10}}><h3>Details</h3></Form.Label>
-                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Give us more information on how you can help!</p>
-                                <p style = {{fontWeight: 300, fontSize: 14, fontStyle: 'italic', marginTop: -13}}>
-                                    Example: "I am free after 6pm on weekdays and am happy to deliver from any store or pharmacy in St. Louis County!"
-                                </p>
-                                <Form.Control as="textarea" 
-                                              rows="3" 
-                                              value={fields.details} 
-                                              onChange={handleFieldChange}/>
-                            </Form.Group>
-                            <br></br>
+                            <Availability availableText={availableText}
+                                          setAvailableText={setAvailableText}
+                                          switchSelected={switchSelected}
+                                          setSwitchSelected={setSwitchSelected}/>
+                            <Resources resources={resources}
+                                       setResources={setResources}/>
+                            <Details fields={fields.details} 
+                                     handleFieldChange={handleFieldChange}/>
                             <Form.Group controlId="phone" bssize="large">
                                 <Form.Label style = {{marginBottom: 0}}><h3>Update your contact number</h3></Form.Label>
                                 <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Optional</p>
-                                <Form.Control 
-                                    placeholder="10 Digit Contact Number"
-                                    value={fields.phone}
-                                    onChange={handleFieldChange}
-                                />
+                                <PhoneNumber phoneNumber={phoneNumber} 
+                                             setPhoneNumber={setPhoneNumber}/> 
                             </Form.Group>
-                            <br></br>
-                            {/* <Form.Group controlId="neighborhoods" bssize="large">
-                                <Form.Label style = {{marginBottom: -10}}><h3>Neighborhoods</h3></Form.Label>
-                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select the primary neighborhoods in which you can help.</p>
-                                {getNeighborhoods.map((neighborhood) => {
-                                    return <Form.Check key={neighborhood} 
-                                                    type = "checkbox" 
-                                                    label = {neighborhood}
-                                                    onChange = {(evt) => { handleChange(evt, neighborhood) }}
-                                                    checked = {neighborhoodSelect[neighborhood]} />
-                                })}
-                            </Form.Group>
-                            <br></br> */}
+                            <Languages languages={languages}
+                                       languageChecked={languageChecked} 
+                                       setLanguageChecked={setLanguageChecked}/>
+                            <TimesAvailable times={times} setTimes={setTimes}/>
+                            <HasCar hasCar={hasCar} 
+                                    setHasCar={setHasCar}/>
                             <Button variant="primary" type="submit" >
-                                Update
+                                Update your Offer!
                             </Button>
                             <br></br>
-                            <br></br>
                         </Form>
-                        {/* </Row> */}
                     </Col>
                     <Col md={1}></Col>
                 </Row>

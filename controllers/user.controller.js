@@ -253,7 +253,7 @@ exports.all_users = function (req, res) {
 }
 
 exports.total_users = function (req, res) {
-  Users.find({}).count(function(err, count) {
+  Users.find({'preVerified': true}).count(function(err, count) {
     res.send({'count': count});
   })
 }
