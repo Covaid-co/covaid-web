@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "./libs/hooksLib";
 
@@ -9,7 +9,9 @@ import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
 import ReCAPTCHA from "react-google-recaptcha";
 
-import PhoneNumber from './PhoneNumber'
+import SelectionForm from './SelectionForm';
+import PhoneNumber from './PhoneNumber';
+import Languages from './Languages';
 
 export default function Register(props, switchToLogin) {
     const [fields, handleFieldChange] = useFormFields({
@@ -33,7 +35,11 @@ export default function Register(props, switchToLogin) {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [associations, setAssociations] = useState({});
+    const [associationNames, setAssociationNames] = useState({});
+    const [languageChecked, setLanguageChecked] = useState({});
 
+    const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in Anything Else)'];
     const terms = [0, 1, 2, 3, 4, 5];
     const termSentences = [
         'I have not traveled out-of-country in the past 14 days',
@@ -43,6 +49,43 @@ export default function Register(props, switchToLogin) {
         'I will take take every CDC-provided safety precaution',
         'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
     ];
+
+    useEffect(() => {
+        var url = "/api/association/get_assoc/lat_long?";
+        let params = {
+            'latitude': props.state.latitude,
+            'longitude': props.state.longitude
+        }
+        let query = Object.keys(params)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+             .join('&');
+        url += query;
+
+        async function fetchData() {
+            const response = await fetch(url);
+            response.json().then((data) => {
+                var notSelected = true;
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    const curr = data[i]['_id'];
+                    const name = data[i]['name'];
+                    setAssociations(prev => ({ 
+                        ...prev,
+                        [curr]: notSelected,
+                    }));
+                    setAssociationNames(prev => ({ 
+                        ...prev,
+                        [curr]: name,
+                    }));
+
+                    if (notSelected) {
+                        notSelected = false;
+                    }
+                }
+            });
+        }
+        fetchData();
+    }, []);
 
     function validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -89,6 +132,12 @@ export default function Register(props, switchToLogin) {
             return false;
         }
 
+        if (Object.values(languageChecked).every(v => v === false)) {
+            setShowToast(true);
+            setToastMessage('No Language Selected');
+            return false;
+        }
+
         for (const term in currentTerms) {
             if (currentTerms[term] === false) {
                 setShowToast(true);
@@ -106,12 +155,34 @@ export default function Register(props, switchToLogin) {
         return true;
     }
 
+    const extractTrueObj = (obj) => {
+        var result = [];
+        for (const p in obj) {
+            if (obj[p]) {
+                result.push(p);
+            }
+        }
+        return result;
+    }
 
     const handleSubmit = async e => {
         e.preventDefault();
         if (checkInputs() === false) {
             return;
         }
+
+        var currentAssoc = '';
+        if (Object.keys(associations).length > 0) {
+            const tempID = Object.keys(associations).filter(function(id) {
+                                return associations[id];
+                            })[0];
+            console.log(tempID);
+            currentAssoc = Object.keys(associationNames).filter(function(name) {
+                                return name === tempID;
+                            })[0];
+        }
+
+        var selectedLanguages = extractTrueObj(languageChecked);
 
         let form = {
             'user': {
@@ -123,7 +194,9 @@ export default function Register(props, switchToLogin) {
                 'location': {
                     'type': 'Point',
                     'coordinates': [props.state.longitude, props.state.latitude]
-                }
+                },
+                'association': currentAssoc,
+                'languages': selectedLanguages
             }
         };
 
@@ -237,6 +310,13 @@ export default function Register(props, switchToLogin) {
                         </Form.Group>
                     </Col>
                 </Row>
+
+                <Languages languages={languages}
+                                       languageChecked={languageChecked} 
+                                       setLanguageChecked={setLanguageChecked}/>
+                <SelectionForm associations={associations} 
+                               setAssociations={setAssociations}
+                               associationNames={associationNames}/>
 
                 <Row style = {{marginRight: -25, marginLeft: -25, marginBottom: 0, marginTop: 10}}>
                     <Col md={12}>

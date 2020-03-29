@@ -44,10 +44,9 @@ export default function YourOffer(props) {
     const [association, setAssociation] = useState('');
     const [resources, setResources] = useState({});
     const [times, setTimes] = useState({});
-
+    const [defaultResources, setDefaultResources] = useState(['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.']);
     const timeNames = ['Mornings', 'Afternoons', 'Evenings', 'Weekends'];
     const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in Anything Else)'];
-    const defaultResources = ['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.'];
     const pittsburghResources = ['Food', 'Childcare', 'Pet care', 'Eldercare', 
         'Help running errands (groceries, prescriptions, supplies, etc)',
         'A ride somewhere', 'Health Care Support (doctor, medicine, etc)',
@@ -61,7 +60,7 @@ export default function YourOffer(props) {
                 // Get current lat and long from current location and find neighborhoods
                 const { latitude, longitude } = props.state;
                 var neighborhoods = [];
-
+                var locationChanged = false;
                 Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
                     response => {
                         var currentZipcode = '';
@@ -102,7 +101,9 @@ export default function YourOffer(props) {
 
                                 if (foundZipCode !== currentZipcode) {
                                     setShowAlert(true);
+                                    locationChanged = true;
                                 }
+                                getAssoc(locationChanged);
                             },
                             error => {
                                 console.error(error);
@@ -116,19 +117,7 @@ export default function YourOffer(props) {
 
                 // Set neighborhoods based on location in backend
                 setNeighborhoods(neighborhoods);
-                
-                // Handle resource list per association
-                // Default for users if no association
-                // usedResources updated based on association
-                var usedResources = defaultResources;
-                if (user.association) {
-                    setAssociation(user.association);
-                    if (user.association == 'Pittsburgh Mutual Aid') {
-                        usedResources = pittsburghResources;
-                    }
-                }
 
-                setCurrentUserObject(user.offer.tasks, usedResources, setResources);
                 setCurrentUserObject(user.offer.timesAvailable, timeNames, setTimes);
 
                 fields.details = user.offer.details;
@@ -144,13 +133,28 @@ export default function YourOffer(props) {
                 setSwitchSelected(user.availability);
                 const aText = user.availability ? 'Available' : 'Not Available'
                 setAvailableText(aText);
-                setIsLoading(false);
 
-                // const response = await fetch_a('/api/association/current');
-                // response.json().then((user) => {
-                //     setIsLoading(false);
-                    
-                // });
+                async function getAssoc(locChanged) {
+                    var url = "/api/association/get_assoc/?";
+                    if (!user.association || locChanged) {
+                        setCurrentUserObject(user.offer.tasks, defaultResources, setResources);
+                        setIsLoading(false);
+                        return;
+                    }
+                    let params = {
+                        'associationID': user.association
+                    }
+                    let query = Object.keys(params)
+                        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                        .join('&');
+                    url += query;
+
+                    const response = await fetch(url);
+                    response.json().then((data) => {
+                        setIsLoading(false);
+                        setCurrentUserObject(user.offer.tasks, data.resources, setResources);
+                    });
+                }
             });
         }
         fetchData();
@@ -167,7 +171,6 @@ export default function YourOffer(props) {
             }));
         }
     }
-
 
     const checkInputs = () => {
         if (Object.values(resources).every(v => v === false)) {

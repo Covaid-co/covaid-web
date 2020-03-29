@@ -17,6 +17,7 @@ export default function Languages(props) {
             <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Which are you comfortable speaking. Check all that apply.</p>
             {props.languages.map((lang) => {
                 return <Form.Check key={lang} 
+                                id={lang}
                                 type = "checkbox" 
                                 label = {lang}
                                 onChange = {(evt) => { handleChangeLanguage(evt, lang) }}

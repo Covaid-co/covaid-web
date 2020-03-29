@@ -2,7 +2,7 @@ const Association = require('../models/association.model');
 var geocoding = new require('reverse-geocoding');
 
 exports.association_details = function (req, res) {
-    Association.findById(req.params.id, function (err, association) {
+    Association.findById(req.query.associationID, function (err, association) {
         if (err) return res.send(err);
         res.send(association);
     })
@@ -27,10 +27,9 @@ exports.create_association = function (req, res) {
 };
 
 exports.assoc_by_lat_long = function (req, res) {
-    const { body: { location } } = req;
     var config = {
-        'latitude': location.latitude,
-        'longitude': location.longitude, 
+        'latitude': req.query.latitude,
+        'longitude': req.query.longitude,
         'key': "AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY"
     };
     geocoding(config, function (err, data){
@@ -55,7 +54,7 @@ exports.assoc_by_lat_long = function (req, res) {
                   prevLocality = results[j]['long_name'];
                 }
             }
-            console.log(locality)
+            // console.log(locality)
             Association.find({'city': locality}).then(function (associations) {
                 res.send(associations)
             })       

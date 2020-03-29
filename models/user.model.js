@@ -29,7 +29,7 @@ let UsersSchema = new Schema({
             index: "2dsphere"
         }
     },
-    association: {type: String, required: true},
+    association: {type: String},
     languages: [String]
 });
 
