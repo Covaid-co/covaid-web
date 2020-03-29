@@ -9,9 +9,9 @@ export default function Resources(props) {
     const handleResourceChange = (e, resource) => {
         props.setResources(prev => ({ 
             ...prev,
-            [resource]: !props.setResources[resource],
+            [resource]: !props.resources[resource],
         }));
-    }
+    } 
 
     return (
         <Form.Group controlId="payment" bssize="large" style = {{marginBottom: 30}}>

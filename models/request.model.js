@@ -8,12 +8,14 @@ let RequestSchema = new Schema({
     requester_email: String,
     requester_phone: String,
     resource_request: [String],
+    languages: [String],
     association: String,
     latitude: Number,
     longitude: Number,
     payment: Number,
     details: String,
-    status: Boolean,
+    status: String,
+    volunteer: String
 });
 
 module.exports = mongoose.model('Requests', RequestSchema);

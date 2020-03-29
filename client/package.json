@@ -30,9 +30,6 @@
     "sitemap": "babel-node ./src/util/sitemap-generator.js",
     "predeploy": "npm run sitemap"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",

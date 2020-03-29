@@ -39,11 +39,11 @@ export default function Login() {
                     window.location.reload(false);
                 });
             } else {
-                alert('Incorrect Login!')
+                alert('Incorrect/Invalid Login!')
             }
         })
         .catch((e) => {
-            alert('Incorrect Login!')
+            alert('Incorrect/Invalid Login!')
         });
       };
 

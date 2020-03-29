@@ -14,7 +14,8 @@ function validateEmailAccessibility(email){
   });
 }
 
-async function updateUserInSpreadsheet(user) {
+async function updateUserInSpreadsheet(id, updates) {
+  console.log(updates)
   const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
   await doc.useServiceAccountAuth({
     client_email: creds.client_email,
@@ -29,12 +30,20 @@ async function updateUserInSpreadsheet(user) {
   const rows = await volunterSheet.getRows();
   var updateRow;
   for (i = 0; i < rows.length; i++) {
-    if (rows[i].ID == "123") {
+    if (rows[i].ID == id) {
       updateRow = rows[i];
     }
   }
-  updateRow.Name = "Subhanik Purkayastha"
-  console.log(updateRow)
+  updateRow.Neighborhood = updates.offer.neighborhoods.join(", ")
+  updateRow.Details = updates.offer.details
+  updateRow.Resource = updates.offer.tasks.join(", ")
+  updateRow.Car = updates.offer.car.toString()
+  updateRow.TimeOfAvailability = updates.offer.timesAvailable.join(", ")
+  updateRow.Languages = updates.languages.join(", ")
+  updateRow.Phone = updates.phone
+  updateRow.AvailabilityStatus = updates.availability.toString()
+
+  // console.log(updateRow)
   await updateRow.save()
 }
 
@@ -58,7 +67,9 @@ async function addUserToSpreadsheet(user, ID) {
     AvailabilityStatus: user.availability.toString(),
     Name: user.first_name + " " + user.last_name,
     Email: user.email, 
-    Phone: user.phone
+    Phone: user.phone,
+    Languages: user.languages.join(", "),
+    Agreement: true
   });
 
 }
@@ -86,8 +97,7 @@ exports.register = function (req, res) {
         },
         });
     }
-    // console.log(user)
-
+    
     validateEmailAccessibility(user.email).then(function(valid) {
       if (valid) {
           if(!user.password) {
@@ -107,43 +117,44 @@ exports.register = function (req, res) {
 
         finalUser.save(function(err, result) {
           if (err) {    
-            // Some other error
             return res.status(422).send(err);
           } 
 
           var userID = result._id;
-          addUserToSpreadsheet(finalUser, userID)
+          if (user.association == "5e7f9badc80c292245264ebe") {
+            addUserToSpreadsheet(finalUser, userID)
+          }
 
-          // var transporter = nodemailer.createTransport({
-          //   service: 'gmail',
-          //   auth: {
-          //         user: 'covaidco@gmail.com',
-          //         pass: 'supportyourcity_covaid_1?'
-          //   }
-          // });
-          // var userID = result._id;
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                  user: 'covaidco@gmail.com',
+                  pass: 'supportyourcity_covaid_1?'
+            }
+          });
+          var userID = result._id;
     
-          // var mode = "localhost:3000";
-          // if (process.env.PROD) {
-          //     mode = "covaid.co"
-          // }
+          var mode = "localhost:3000";
+          if (process.env.PROD) {
+              mode = "covaid.co"
+          }
     
-          // var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
+          var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
     
-          // var mailOptions = {
-          //   from: 'covaidco@gmail.com',
-          //   to: user.email,
-          //   subject: 'Covaid -- Verify your email',
-          //   text: message
-          // };
+          var mailOptions = {
+            from: 'covaidco@gmail.com',
+            to: user.email,
+            subject: 'Covaid -- Verify your email',
+            text: message
+          };
     
-          // transporter.sendMail(mailOptions, function(error, info){
-          //     if (error) {
-          //         console.log(error);
-          //     } else {
-          //         console.log('Email sent: ' + info.response);
-          //     }
-          // });
+          transporter.sendMail(mailOptions, function(error, info){
+              if (error) {
+                  console.log(error);
+              } else {
+                  console.log('Email sent: ' + info.response);
+              }
+          });
     
         return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
         });
@@ -182,8 +193,16 @@ exports.login = function (req, res, next) {
   
       if(passportUser) {
         const user = passportUser;
-        user.token = passportUser.generateJWT();
-        return res.json({ user: user.toAuthJSON() });
+        if (passportUser.preVerified) {
+          user.token = passportUser.generateJWT();
+          return res.json({ user: user.toAuthJSON() });
+        } else {
+          return res.status(400).json({
+            errors: {
+              verifed: "unverifed",
+            },
+          });
+        }
       } else {
         return res.status(400).json({
           errors: {
@@ -230,6 +249,16 @@ async function updatePreVerified() {
     }})
 }
 
+exports.all_users_of_an_association = function (req, res) {
+  var assoc = req.body.association;
+  Users.find({
+      'association': assoc
+    }).then(function (users) {
+    
+    res.send(users);
+  });
+}
+
 exports.all_users = function (req, res) {
   Users.find({'availability': true,
               'preVerified': true,
@@ -260,6 +289,11 @@ exports.total_users = function (req, res) {
 
 exports.update = function (req, res) {
   const id = req.token.id;
+  console.log(id)
+  if (user.association == "5e7f9badc80c292245264ebe") {
+    updateUserInSpreadsheet(id, req.body)
+  }
+  console.log(req.body)
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
     if (err) return next(err);
     

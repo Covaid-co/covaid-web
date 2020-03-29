@@ -5,30 +5,13 @@ import fetch_a from './util/fetch_auth';
 
 export default function Availability(props) {
 
-    const handleChangeSwitch = (evnt) => {
-        let form = {
-          'availability': !props.switchSelected
-        };
+    const handleChangeAvailability = (event) => {
+        event.persist();
+        props.setAvailability(!props.switchSelected);
         props.setSwitchSelected(!props.switchSelected);
         const aText = !props.switchSelected ? 'Available' : 'Not Available'
         props.setAvailableText(aText);
-
-        fetch_a('/api/users/update/', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        })
-        .then((response) => {
-            if (response.ok) {
-              console.log("Update successful");
-            } else {
-              console.log("Update not successful");
-            }
-        })
-        .catch((e) => {
-            console.log("Error");
-        });
-    }
+    };
 
     return (
         <Form.Group controlId="phone" bssize="large" style = {{marginBottom: 30, marginTop: 20}}>
@@ -39,7 +22,7 @@ export default function Availability(props) {
                 id="custom-switch"
                 label={props.availableText}
                 checked={props.switchSelected}
-                onChange={handleChangeSwitch}
+                onChange={handleChangeAvailability}
             />
         </Form.Group>
     );

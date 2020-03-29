@@ -38,6 +38,7 @@ export default function YourOffer(props) {
     const [getNeighborhoods, setNeighborhoods] = useState([]);
 
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [availability, setAvailability] = useState(false);
     const [languageChecked, setLanguageChecked] = useState({});
     const [hasCar, setHasCar] = useState(false);
 
@@ -133,6 +134,7 @@ export default function YourOffer(props) {
                 setSwitchSelected(user.availability);
                 const aText = user.availability ? 'Available' : 'Not Available'
                 setAvailableText(aText);
+                setAvailability(user.availability);
 
                 async function getAssoc(locChanged) {
                     var url = "/api/association/get_assoc/?";
@@ -233,8 +235,8 @@ export default function YourOffer(props) {
                 'type': 'Point',
                 'coordinates': [props.state.longitude, props.state.latitude]
             },
-            'association': association,
-            'languages': selectedLanguages
+            'languages': selectedLanguages,
+            'availability': availability
         };
 
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
@@ -293,7 +295,8 @@ export default function YourOffer(props) {
                             <Availability availableText={availableText}
                                           setAvailableText={setAvailableText}
                                           switchSelected={switchSelected}
-                                          setSwitchSelected={setSwitchSelected}/>
+                                          setSwitchSelected={setSwitchSelected}
+                                          setAvailability={setAvailability}/>
                             <Resources resources={resources}
                                        setResources={setResources}/>
                             <Details fields={fields.details} 

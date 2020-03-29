@@ -15,6 +15,8 @@ router.get('/current', auth.required, user_controller.current);
 
 router.get('/all', user_controller.all_users);
 
+router.get('/allfromassoc', user_controller.all_users_of_an_association);
+
 router.put('/update', auth.required, user_controller.update);
 
 router.get('/totalUsers', auth.optional, user_controller.total_users);
