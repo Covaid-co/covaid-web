@@ -143,7 +143,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.location.verified)
     if (this.props.location.verified) {
       this.setState({showRegistration: true});
       this.setState({justVerified: true});
@@ -157,8 +156,7 @@ class Home extends Component {
       .then((res) => res.json())
       .then((res) => {
         this.setState({totalVolunteers: res.count});
-      })
-      
+      });
   }
 
   update = () => {

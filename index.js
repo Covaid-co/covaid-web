@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
 // Set up mongoose connection
-let dev_db_url = 'mongodb+srv://debanik:Corona2020@coronacluster-9wiub.mongodb.net/test?retryWrites=true&w=majority';
+let dev_db_url = 'mongodb+srv://debanik:Corona2020@coronacluster-9wiub.mongodb.net/dev?retryWrites=true&w=majority';
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true }, );
 mongoose.Promise = global.Promise;

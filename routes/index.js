@@ -10,10 +10,12 @@ router.get('/name', (req, res) => {
 const offer_routes = require('./api/offer.routes.js');
 const user_routes = require('./api/user.routes.js');
 const request_routes = require('./api/request.routes.js')
+const association_routes = require('./api/association_routes')
 
 router.use('/offers', offer_routes);
 router.use('/users', user_routes);
 router.use('/request', request_routes);
+router.use('/association', association_routes);
 
 module.exports = app => {
 	app.use('/api', router);
