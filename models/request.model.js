@@ -7,11 +7,13 @@ let RequestSchema = new Schema({
     requester_last: String,
     requester_email: String,
     requester_phone: String,
+    resource_request: [String],
+    association: String,
+    latitude: String,
+    longitude: String,
     payment: Number,
-    offerer_email: String,
-    offerer_id: String,
     details: String,
-    completed: Boolean,
+    status: Boolean,
 });
 
 module.exports = mongoose.model('Requests', RequestSchema);

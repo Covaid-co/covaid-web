@@ -20,16 +20,10 @@ exports.update_completed = function (req, res) {
     });
 };
 
-exports.handleRequest = function (req, res) {
-    const { 
-        body: {
-            requester_email,
-            requester_phone,
-            offerer_email,
-            details
-        } 
-    } = req;
-
+function sendMail(request, requester_email,
+    requester_phone,
+    offerer_email,
+    details, result) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -38,57 +32,63 @@ exports.handleRequest = function (req, res) {
         }
     }); 
 
+    var paymentText;
+    if (request.payment == 0) {
+        paymentText = "Call Ahead"
+    } else if (request.payment == 1) {
+        paymentText = "Reimburse Volunteer"
+    } else {
+        paymentText = "N/A"
+    }
+
+    var mode = "localhost:3000";
+    if (process.env.PROD) {
+        mode = "covaid.co"
+    }
+
+
+    var link = 'http://' + mode + '/completeOffer?ID=' + result._id;
+
+    var email = requester_email;
+    var phone = requester_phone;
+
+
+
+    if (!requester_email || requester_email.length == 0) {
+        email = "N/A"
+    }
+
+    if (!requester_phone || requester_phone.length == 0) {
+        phone = "N/A"
+    }
+
+
+    const mailOptions = {
+        from: 'covaidco@gmail.com', // sender address
+        to: 'covaidco@gmail.com', // list of receivers
+        subject: 'Someone needs your help!', // Subject line
+        html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: result._id, link: link, payment: paymentText})
+    };
+
+    transporter.sendMail(mailOptions)
+}
+
+exports.handleRequest = function (req, res) {
     const request = new Requests(req.body);
-    request.completed = false;
-    console.log(request)
 
     request.save().then(result => {
+        // Find optimal users
+
+        // sendMail(request, requester_email,
+        //     requester_phone,
+        //     offerer_email,
+        //     details, result)
+
+        var bestVolunteers = getBestVolunteers(request)
+
         res.status(201).json({
             message: "Request Created", //
             result: result // the "result" object can be filtered or you can simply return the message
-        });
-
-        var paymentText;
-        if (request.payment == 0) {
-            paymentText = "Call Ahead"
-        } else if (request.payment == 1) {
-            paymentText = "Reimburse Volunteer"
-        } else {
-            paymentText = "N/A"
-        }
-
-        var mode = "localhost:3000";
-        if (process.env.PROD) {
-            mode = "covaid.co"
-        }
-
-        var link = 'http://' + mode + '/completeOffer?ID=' + result._id;
-
-        var email = requester_email;
-        var phone = requester_phone;
-
-        if (!requester_email || requester_email.length == 0) {
-            email = "N/A"
-        }
-
-        if (!requester_phone || requester_phone.length == 0) {
-            phone = "N/A"
-        }
-
-        console.log(link);
-
-        const mailOptions = {
-            from: 'covaidco@gmail.com', // sender address
-            to: 'covaidco@gmail.com', // list of receivers
-            subject: 'Someone needs your help!', // Subject line
-            html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: result._id, link: link, payment: paymentText})
-        };
-
-        transporter.sendMail(mailOptions, function (err, info) {
-            if (err)
-                res.sendStatus(400);
-            else
-                res.sendStatus(200);
         });
     }).catch(err => {
         res.status(500).json({
@@ -97,3 +97,10 @@ exports.handleRequest = function (req, res) {
     });
 
 };
+
+function getBestVolunteers(request) {
+    // Match on tasks
+    // Match on assoc
+    // 3 closest
+    
+}
