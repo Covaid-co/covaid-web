@@ -49,7 +49,7 @@ export default function NewLogin(props) {
       };
 
     return (
-        <Modal show={props.state.showLogin} size='sm' onHide={props.handleHideLogin} style={{marginTop: 200}}>
+        <Modal show={props.state.showLogin} size='sm' onHide={props.handleHideLogin} style={{marginTop: 110}}>
             <Modal.Header closeButton>
                 <Modal.Title>Volunteer Login</Modal.Title>
             </Modal.Header>
@@ -78,8 +78,8 @@ export default function NewLogin(props) {
                         </Col>
                     </Row>
                     <Button style={{marginTop: 10}} id="nextPage" disabled={!validateForm()} type="submit">Sign In</Button>
-                    <p id="or">--- o r ---</p>
-                    <Button id="createAccount" onClick={() => {props.handleHideLogin(); props.handleShowRegistration();}}>Volunteer Sign Up</Button>
+                    {/* <p id="or">--- o r ---</p>
+                    <Button id="createAccount" onClick={() => {props.handleHideLogin(); props.handleShowRegistration();}}>Volunteer Sign Up</Button> */}
                 </Form>
             </Modal.Body>
         </Modal>

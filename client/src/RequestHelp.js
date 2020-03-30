@@ -37,6 +37,7 @@ export default function RequestHelp(props) {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [languageChecked, setLanguageChecked] = useState({});
     const [firstPage, setFirstPage] = useState(true);
+    const [completed, setCompleted] = useState(false);
     const [selectedPayment, setSelectedIndex] = useState(0);
     const [time, setTime] = useState('')
     const [date, setDate] = useState('')
@@ -85,8 +86,7 @@ export default function RequestHelp(props) {
             if (languageChecked[key]) {
                 languages.push(key)
             }
-        }); 
-        console.log(props.state)
+        });
 
         let form = {
             'requester_first': fields.first,
@@ -112,6 +112,7 @@ export default function RequestHelp(props) {
         .then((response) => {
             if (response.ok) {
                 console.log("Request successfully created");
+                setCompleted(true);
                 fields.details = '';
                 fields.phone = '';
                 fields.email = '';
@@ -163,26 +164,43 @@ export default function RequestHelp(props) {
             </Modal>
         )
     } else {
-        return (
-            <Modal show={props.state.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal">
-                <Modal.Header closeButton>
-                    <Modal.Title>Almost Done!</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <h5 className="titleHeadings" style = {{marginTop: '8px', marginBottom: '4px'}}>
-                        What language do you speak?
-                    </h5>
-                    <p id="locationInfo">
-                        If language not listed, please mention in details section below
-                    </p>
-                    <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
-                    <NeededBy setTime={setTime} setDate={setDate}/>
-                    <NewPaymentMethod setSelectedIndex={setSelectedIndex}/>
-                    <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
-                    <Button id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
-                    <p id="pageNumber">Page 2 of 2</p>
-                </Modal.Body>
-            </Modal>
-        )
+        if (completed === false) {
+            return (
+                <Modal show={props.state.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal">
+                    <Modal.Header closeButton>
+                        <Modal.Title>Almost Done!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <h5 className="titleHeadings" style = {{marginTop: '8px', marginBottom: '4px'}}>
+                            What language do you speak?
+                        </h5>
+                        <p id="locationInfo">
+                            If language not listed, please mention in details section below
+                        </p>
+                        <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
+                        <NeededBy setTime={setTime} setDate={setDate}/>
+                        <NewPaymentMethod setSelectedIndex={setSelectedIndex}/>
+                        <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
+                        <Button id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
+                        <p id="pageNumber">Page 2 of 2</p>
+                    </Modal.Body>
+                </Modal>
+            )
+        } else {
+            return (
+                <Modal show={completed} onHide={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal">
+                    <Modal.Header closeButton>
+                        <Modal.Title>Your request has been sent!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p id="locationInfo">
+                            Your request has been saved and you should receive an email soon 
+                            from a matched volunteer to help you.
+                        </p>
+                        <Button id="nextPage" onClick={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}}>Return to home</Button>
+                    </Modal.Body>
+                </Modal>
+            )
+        }
     }
 }

@@ -499,25 +499,29 @@ class Home extends Component {
                     <YourOffer state = {this.state}/>
                   </Tab>;  
       volunteerButton =  <Button onClick={() => this.setState({volunteerPortal: true})} id="homeButtons" >
-          Update your offer from the volunteer portal
+          Volunteer portal
         </Button>
 
-      rightNav = <>
-                    <span id = "name" 
-                        style = {{color: 'white', 
-                                  marginRight: 5, 
-                                  marginBottom: 15, 
-                                  fontWeight: 600, 
-                                  fontSize: 13,
-                                  marginTop: 8}}>
+      if (this.state.toggled) {
+        rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
+                    <Button variant="outline-danger" id='logoutButton' onClick={this.logout} style={{width: '100%'}}>
+                      <font id = "logout" style = {{color: '#dc3545', fontWeight: 600, fontSize: 13}}>
+                        Logout
+                      </font>
+                    </Button>
+                  </Form>;
+      } else {
+        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
+                    {!collapsed ? <span id="name">
                       Hello, {this.state.first_name}
-                    </span>
-                  <Button variant="outline-danger" id = 'logoutButton' onClick={this.logout} style={{marginLeft: 5}}>
-                    <font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
-                      Logout
-                    </font>
-                  </Button>
-                </>;
+                    </span> : <></>}
+                    <Button variant="outline-danger" id='logoutButton' onClick={this.logout}>
+                      <font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
+                        Logout
+                      </font>
+                    </Button>
+                  </Form>;
+      }
                   howHelp = <><h5>My Offer</h5>
                   <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
                   their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></> 
@@ -526,12 +530,32 @@ class Home extends Component {
        }
     } else {
       if (collapsed === false) {
-        rightNav = <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/>;
+        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
+          <Button variant="outline-light" 
+                          style={{outlineWidth: "thick"}}
+                          id = 'howHelpButton'
+                          onClick={this.handleShowLogin}>
+                    <font id ="help" 
+                          style = {{color:"white", 
+                                    fontWeight: 600,
+                                    fontSize: 12, whiteSpace: 'nowrap'}}>
+                      Volunteer Login
+                    </font>
+                  </Button>
+        </Form>
+      } else {
+        rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
+                    <Button variant="outline-light" id='loginButton' onClick={this.handleShowLogin} style={{width: '100%'}}>
+                      <font id = "login" style = {{color: '#194bd3', fontWeight: 600, fontSize: 13}}>
+                        Volunteer Login
+                      </font>
+                    </Button>
+                  </Form>;
       }
       yourOffer = <></>;
       howHelp = <></>;
-      volunteerButton = <Button onClick={() => this.setState({showLogin: true})} id="homeButtons" >
-                          Volunteer Log in / Sign up
+      volunteerButton = <Button onClick={() => this.setState({showRegistration: true})} id="homeButtons" >
+                          Volunteer Sign up
                         </Button>
     }
 
@@ -546,11 +570,11 @@ class Home extends Component {
               <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
               <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
               <Button onClick={() => this.setState({showRequestHelp: true})} id="homeButtons" >
-                Request for Help
+                Request Help
               </Button>{' '}
               {volunteerButton}
               <br />
-              <Button variant="link" style={{color: "white", marginTop: 10, marginBottom: -30}} onClick={() => this.handleShowModal(4)}><u>View COVID-19 Resources</u></Button>
+              <Button variant="link" style={{color: "white", marginTop: 10, paddingLeft: 0}} onClick={() => this.handleShowModal(4)}><u>View COVID-19 Resources</u></Button>
             </Container>
           </Jumbotron>
           <RequestHelp hideRequestHelp={this.handleHideRequestHelp}
@@ -612,18 +636,13 @@ class Home extends Component {
                   variant="light" 
                   expand="md"
                   className = {this.state.toggled ? 'customNavToggled': 'customNav'}>
-            <Navbar.Brand id={this.state.toggled ? 'homeToggled': 'home'} href = {window.location.protocol + '//' + window.location.host}>
+            <Navbar.Brand className={collapsed ? 'homeCollapsed': 'home'} href = {window.location.protocol + '//' + window.location.host}
+              style={this.state.toggled ? {'color': '#194bd3'} : {'color': 'white'}}>
               covaid
             </Navbar.Brand>
             <Form inline style ={{display: 'block'}}>
               {collapsed ? <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/> : <></>}
               <Navbar.Toggle aria-controls="basic-navbar-nav" id={this.state.toggled ? 'toggledNav1': 'nav1'}/>
-              {/* <button aria-controls="basic-navbar-nav"
-                      type="button"
-                      aria-label="Toggle navigation" 
-                      class="navbar-toggler collapsed">
-                <span class="navbar-toggler-icon"></span>
-              </button> */}
             </Form>
 
             <Navbar.Collapse id="basic-navbar-nav">
@@ -644,9 +663,7 @@ class Home extends Component {
                                 <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/>
                               </Nav.Link> : <></>}
               </Nav>
-              <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
-                {rightNav}
-              </Form>
+              {rightNav}
             </Navbar.Collapse>
           </Navbar>
         {pageContent}

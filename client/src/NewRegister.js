@@ -214,15 +214,15 @@ export default function NewRegister(props, switchToLogin) {
             phoneString = phoneNumber.replace(/\D/g,'').substring(0,10);
         }
 
-        var currentAssoc = '';
-        if (Object.keys(props.state.associations).length > 0) {
-            const tempID = Object.keys(props.state.associations).filter(function(id) {
-                                return props.state.associations[id];
-                            })[0];
-            currentAssoc = Object.keys(props.state.associationNames).filter(function(name) {
-                                return name === tempID;
-                            })[0];
-        }
+        // var currentAssoc = '';
+        // if (Object.keys(props.state.associations).length > 0) {
+        //     const tempID = Object.keys(props.state.associations).filter(function(id) {
+        //                         return props.state.associations[id];
+        //                     })[0];
+        //     currentAssoc = Object.keys(props.state.associationNames).filter(function(name) {
+        //                         return name === tempID;
+        //                     })[0];
+        // }
 
         let form = {
             'user': {
@@ -235,7 +235,7 @@ export default function NewRegister(props, switchToLogin) {
                     'type': 'Point',
                     'coordinates': [props.state.longitude, props.state.latitude]
                 },
-                'association': currentAssoc,
+                'association': props.state.currentAssoc['_id'],
                 'languages': selectedLanguages,
                 'times_available': selectedTimes,
                 'phone': phoneString
@@ -321,12 +321,15 @@ export default function NewRegister(props, switchToLogin) {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <h5 className="titleHeadings" style = {{marginTop: '8px', marginBottom: '8px'}}>
+                        <h5 className="titleHeadings" style = {{marginTop: '18px', marginBottom: '4px'}}>
                             What languages do you speak?
                         </h5>
                         <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
+                        <h5 className="titleHeadings" style = {{marginTop: '24px', marginBottom: '4px'}}>
+                            Can you drive?
+                        </h5>
                         <NewHasCar hasCar={hasCar} setHasCar={setHasCar}/>
-                        <h5 className="titleHeadings" style = {{marginTop: '32px', marginBottom: '8px'}}>
+                        <h5 className="titleHeadings" style = {{marginTop: '24px', marginBottom: '8px'}}>
                             What is your general availability?
                         </h5>
                         <NewLanguages languages={availability} languageChecked={availabilityChecked} setLanguageChecked={setAvailabilityChecked}/>
@@ -403,21 +406,16 @@ export default function NewRegister(props, switchToLogin) {
         }
     } else {
         return (
-            <Modal show={justRegistered} onHide={() => setJustRegistered(false)}>
-                <Modal.Header  id="justRegisteredModal" closeButton style = {{backgroundColor: '#ccebd2', borderBottom: '0 none'}}>
-                    <Modal.Title 
-                        style = {{color: '#155724'}}>
-                        Thank you for signing up to be a volunteer!
-                    </Modal.Title>
+            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); setFirstPage(true); props.handleHideRegistration();}}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Thank you for signing up to be a volunteer!</Modal.Title>
                 </Modal.Header>
-                <Modal.Footer 
-                    style = {{backgroundColor: '#ccebd2', 
-                            color: '#155724', 
-                            display: 'block', 
-                            borderTop: '0 none',
-                            marginTop: -20}}>
-                    <p>You should receive a confirmation to register as a volunteer in your email soon. </p>
-                </Modal.Footer>
+                <Modal.Body>
+                    <p id="locationInfo">
+                        We appreciate your care for your community. To create new offers of help, reference your volunteer profile portal.
+                    </p>
+                    <Button id="nextPage" onClick={() => {setJustRegistered(false); setFirstPage(true); props.handleHideRegistration();}}>Return to home</Button>
+                </Modal.Body>
             </Modal>
         );
     }

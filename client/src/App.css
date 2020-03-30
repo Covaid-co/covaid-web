@@ -44,6 +44,7 @@ html, body {
 
 
 #navLink {
+  font-family: "SF Text";
   color: white;
   font-weight: 600;
   font-size: 13px;
@@ -51,6 +52,7 @@ html, body {
 }
 
 #navLinkToggled {
+  font-family: "SF Text";
   color: #194bd3;
   font-weight: 600;
   font-size: 13px;
@@ -58,8 +60,13 @@ html, body {
 }
 
 
-#home {
+.home.navbar-brand {
   font-family: 'Baloo Chettan 2';
+  color: white;
+  font-weight: 600;
+  margin-left: 10%;
+  font-size: 28px;
+  margin-right: 20px;
 }
 
 .customNav {
@@ -70,9 +77,13 @@ html, body {
   background-color: white !important;
 }
 
-#homeToggled {
+.homeCollapsed.navbar-brand {
   font-family: 'Baloo Chettan 2';
-  color: #194bd3 !important;
+  color: white;
+  margin-left: 5%;
+  font-weight: 600;
+  font-size: 28px;
+  margin-right: 20px;
 }
 
 .navBorderToggled.nav-link {
@@ -94,6 +105,32 @@ html, body {
 .form-check-input {
   position: absolute;
   margin-top: .2rem;
+}
+
+#name {
+  color: white;
+  font-weight: 600;
+  font-family: "SF Text";
+  margin-right: 10px;
+  font-size: 13px;
+}
+
+#nameToggled {
+  color: #194bd3;
+  /* margin-right: -20px; */
+  font-size: 13px;
+}
+
+#logoutButton:hover #logout {
+  color: white !important;
+}
+
+#loginButton:hover #login {
+  color: white !important;
+}
+
+#loginButton:hover {
+  background-color: #194bd3;
 }
 
 /* @media (max-width:767px){
