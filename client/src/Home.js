@@ -15,6 +15,9 @@ import NewRegister from './NewRegister';
 import NewOffers from './NewOffers';
 import LocationSetting from './LocationSetting';
 import VolunteerPortal from './VolunteerPortal'
+import AboutUs from './AboutUs'
+import HowItWorks from './HowItWorks'
+import Feedback from './Feedback'
 
 import fetch_a from './util/fetch_auth';
 
@@ -68,6 +71,8 @@ class Home extends Component {
       showAbout: false,
       showLocation: false,
       showFeedback: false,
+      showModal: false,
+      modalType: '',
       cookieSet: false,
       searchedLocation: '',
       currentState: '',
@@ -87,8 +92,8 @@ class Home extends Component {
 
     this.handleHideLocation = this.handleHideLocation.bind(this);
     this.handleShowLocation = this.handleShowLocation.bind(this);
-    this.handleHideFeedback = this.handleHideFeedback.bind(this);
-    this.handleShowFeedback = this.handleShowFeedback.bind(this);
+    this.handleHideModal = this.handleHideModal.bind(this);
+    this.handleShowModal = this.handleShowModal.bind(this);
     this.handleHidePrompt = this.handleHidePrompt.bind(this);
     this.getMyLocation = this.getMyLocation.bind(this)
     this.logout = this.logout.bind(this);
@@ -98,12 +103,7 @@ class Home extends Component {
     this.handleHideLogin = this.handleHideLogin.bind(this);
     this.handleShowRegistration = this.handleShowRegistration.bind(this);
     this.handleHideRegistration = this.handleHideRegistration.bind(this);
-    this.handleShowWorks = this.handleShowWorks.bind(this);
-    this.handleHideWorks = this.handleHideWorks.bind(this);
-    this.handleShowAbout = this.handleShowAbout.bind(this);
-    this.handleHideAbout = this.handleHideAbout.bind(this);
     this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
-
     this.handleShowRequestHelp = this.handleShowRequestHelp.bind(this);
     this.handleHideRequestHelp = this.handleHideRequestHelp.bind(this);
     this.findAssociations = this.findAssociations.bind(this)
@@ -145,29 +145,14 @@ class Home extends Component {
     this.setState({showRegistration: false});
   }
 
-  handleShowFeedback() {
-    this.setState({showFeedback: true});
-  }
-
-  handleHideFeedback() {
-    this.setState({showFeedback: false});
-  }
-
-  handleShowWorks() {
-    this.setState({showWorks: true});
-  }
-
-  handleHideWorks() {
-    this.setState({showWorks: false})
-  }
-
-  handleShowAbout() {
-    this.setState({showAbout: true});
-  }
-
-  handleHideAbout() {
-    this.setState({showAbout: false})
-  }
+ handleShowModal(modalType) {
+  this.setState({modalType: modalType})
+  this.setState({showModal: true});
+ }
+ 
+ handleHideModal() {
+  this.setState({showModal: false});
+ }
 
   componentDidMount() {
     if (this.props.location.verified) {
@@ -563,8 +548,6 @@ class Home extends Component {
                         </Button>
     }
 
-
-
     var pageContent = <></>
     if (isLoaded) {
       if (this.state.volunteerPortal) {
@@ -579,6 +562,8 @@ class Home extends Component {
                 Request for Help
               </Button>{' '}
               {volunteerButton}
+              <br />
+              <Button variant="link" style={{color: "white", marginTop: 10, marginBottom: -30}} onClick={() => this.handleShowModal(4)}><u>View COVID-19 Resources</u></Button>
             </Container>
           </Jumbotron>
           <RequestHelp hideRequestHelp={this.handleHideRequestHelp}
@@ -597,6 +582,29 @@ class Home extends Component {
     } else {
       pageContent = <Loading setLatLong={this.setLatLongFromZip}/>
       
+    }
+
+    var modal = <></>
+    switch(this.state.modalType) {
+      case 1:
+        modal = <AboutUs />
+        break;
+      case 2:
+        modal = <HowItWorks />
+        break;
+      case 3:
+        modal = <Feedback handleHide={this.handleHideModal}/>
+        break;
+      case 4:
+        modal = <>
+         <Modal.Header closeButton>
+                <Modal.Title>Useful Resources in the Midst of COVID-19</Modal.Title>
+          </Modal.Header>
+          <Modal.Body><HelpfulLinks /></Modal.Body>
+          </>
+        break;
+      default:
+        modal = <></>
     }
       return (
          <div>
@@ -622,19 +630,19 @@ class Home extends Component {
                   <Nav.Link 
                     id = "navLink1"
                     style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                    onClick={this.handleShowAbout}>
+                    onClick={() => this.handleShowModal(1)}>
                     <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
                   </Nav.Link>
                   <Nav.Link 
                     id = "navLink2"
                     style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                    onClick={this.handleShowWorks}>
+                    onClick={() => this.handleShowModal(2)}>
                     <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
                   </Nav.Link>
                   <Nav.Link 
                     id = "navLink3"
                     style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                    onClick={this.handleShowFeedback}>
+                    onClick={() => this.handleShowModal(3)}>
                     <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
                   </Nav.Link>
                 </Nav>
@@ -645,6 +653,10 @@ class Home extends Component {
             </Navbar>
             {pageContent}
           </div>
+
+          <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 30}}>
+            {modal}
+          </Modal>
         </div>);
 
       return (

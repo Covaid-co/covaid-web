@@ -21,14 +21,7 @@ export default function HelpfulLinks() {
     ]
 
     return (
-        <div className="shadow p-3 mb-5 bg-white rounded">
-            <ListGroup variant="flush">
-                <ListGroup.Item>
-                    <Row>
-                        <Col>Useful Resources in the Midst of COVID-19</Col>
-                    </Row>
-                </ListGroup.Item>
-            </ListGroup>
+
             <ListGroup variant="flush">
             {links.map((link, i) => {                
                 return <ListGroup.Item key={i} style = {{fontSize: 12}}>
@@ -40,6 +33,5 @@ export default function HelpfulLinks() {
                     </ListGroup.Item>      
                 })}
             </ListGroup>
-        </div>
     );
 }
