@@ -74,7 +74,7 @@ export default function NewOffers(props) {
             <OfferDetails modalOfferOpen={modalOfferOpen} 
                           setModalOfferOpen={setModalOfferOpen} 
                           modalInfo={modalInfo}
-                          handleShowRequestHelp={props.handleShowRequestHelp}/>
+                          handleShowRequestHelp={() => props.handleShowRequestHelp(modalInfo)}/>
             <NewFilterButton resources={resources}
                              taskSelect={taskSelect} 
                              setTaskSelect={setTaskSelect} 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -13,15 +13,14 @@ import SelectionForm from './SelectionForm';
 
 export default function LocationSetting(props) {
 
-    const [fields, handleFieldChange] = useFormFields({
-        locationString: ""
-    });
+    const [locationString, setLocationString] = useState('');
 
     const handleSubmit = async e => {
         e.preventDefault();
         e.stopPropagation();
-        console.log(e.target.value);
-        console.log("submitting");
+        // console.log(locationString)
+        props.handleLocationChange(locationString);
+        props.locationSubmit(e, locationString);
     }
 
     return (
@@ -34,14 +33,16 @@ export default function LocationSetting(props) {
                         {/* <Form.Group controlId="first_name" bssize="large">
                             <Form.Control value={fields.locationString} onChange={handleFieldChange} placeholder="City/Zip Code: 19426" />
                         </Form.Group> */}
-                        <InputGroup className="mb-3">
+                        <InputGroup controlId="locationString" className="mb-3">
                             <FormControl
-                                placeholder="City/Zip Code: 19426" 
+                                placeholder="Enter City/Zip Code" 
                                 aria-label="City/Zip Code: 19426"
                                 aria-describedby="basic-addon2"
+                                value={locationString}
+                                onChange={e => setLocationString(e.target.value)}
                             />
                             <InputGroup.Append>
-                                <Button variant="outline-secondary" type="submit">Button</Button>
+                                <Button variant="outline-secondary" type="submit">Search</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Col>

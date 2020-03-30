@@ -79,7 +79,7 @@ class Home extends Component {
       width: 0,
       totalVolunteers: 0,
       justVerified: false,
-  
+      currentClickedUser: '',
       showRequestHelp: false,
       associations: [],
       currentAssoc: {},
@@ -382,17 +382,17 @@ class Home extends Component {
     this.getMyLocation();
   }
 
-  handleLocationChange = (e) => {
+  handleLocationChange = (location) => {
       this.setState({
-          searchedLocation: e.target.value
+          searchedLocation: location
       })
   }
 
-  onLocationSubmit = (e) => {
+  onLocationSubmit = (e, location) => {
       e.preventDefault();
       this.handleHideLocation();
       this.setState({searchedLocation: ''});
-      Geocode.fromAddress(this.state.searchedLocation).then(
+      Geocode.fromAddress(location).then(
         response => {
           const { lat, lng } = response.results[0].geometry.location;
           Cookie.remove('latitude');
@@ -564,7 +564,8 @@ class Home extends Component {
             </Container>
           </Jumbotron>
           <RequestHelp hideRequestHelp={this.handleHideRequestHelp}
-                        state={this.state}/>
+                        state={this.state}
+                        />
           <NewLogin handleShowRegistration={this.handleShowRegistration}
                     handleHideLogin={this.handleHideLogin}
                     state={this.state}/>
@@ -574,9 +575,10 @@ class Home extends Component {
           <Row>
             <Col></Col>
             <Col lg={8} md={10} sm={12}>
-              <LocationSetting state={this.state} setState={this.setState}/>
+              <LocationSetting state={this.state} setState={this.setState} handleLocationChange={this.handleLocationChange} locationSubmit={this.onLocationSubmit} />
               <NewOffers state={this.state} 
-                          handleShowRequestHelp={this.handleShowRequestHelp}/>
+                          handleShowRequestHelp={this.handleShowRequestHelp}
+                          clickOnUser={this.clickOnUser}/>
             </Col>
             <Col></Col>
           </Row>

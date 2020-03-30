@@ -86,6 +86,7 @@ export default function RequestHelp(props) {
                 languages.push(key)
             }
         }); 
+        console.log(props.state)
 
         let form = {
             'requester_first': fields.first,
