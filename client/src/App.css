@@ -7,17 +7,6 @@
   pointer-events: none;
 }
 
-/* html {
-  height: 100%;
-}
-body {
-  height: 100%;
-  margin: 0;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background: linear-gradient(to bottom, #ffffff 50%, #1652F0 50%);
-} */
-
 html, body {
   height: 100%;
 }
@@ -35,24 +24,64 @@ html, body {
   background: #194bd3;
 }
 
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(25, 75, 211, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+#nav1 .navbar-toggler-icon{
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
+.navbar-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(25, 75, 211, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+/* 
 .navbar-light .navbar-toggler {
   border-color: white;
+} */
+
+
+#navLink {
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
 }
+
+#navLinkToggled {
+  color: #194bd3;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
 
 #home {
   font-family: 'Baloo Chettan 2';
 }
+
+.customNav {
+  background-color: #194bd3;
+}
+
+.customNavToggled {
+  background-color: white !important;
+}
+
+#homeToggled {
+  font-family: 'Baloo Chettan 2';
+  color: #194bd3 !important;
+}
+
+.navBorderToggled.nav-link {
+  border: 1px solid rgb(237, 237, 237);
+    margin-bottom: 5px;
+    border-radius: 0.25rem !important;
+}
+
+
 
 .smallPage {
   display: none !important;
@@ -166,9 +195,6 @@ html, body {
   color: #61dafb;
 }
 
-.customNav {
-  background-color: #194bd3;
-}
 
 .nav-item.nav-link.active {
   color: #1652F0 !important;

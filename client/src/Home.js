@@ -83,7 +83,8 @@ class Home extends Component {
       showRequestHelp: false,
       associations: [],
       currentAssoc: {},
-      volunteerPortal: false
+      volunteerPortal: false,
+      toggled: false
     }
 
     window.addEventListener("resize", this.update);
@@ -106,6 +107,7 @@ class Home extends Component {
     this.handleShowRequestHelp = this.handleShowRequestHelp.bind(this);
     this.handleHideRequestHelp = this.handleHideRequestHelp.bind(this);
     this.findAssociations = this.findAssociations.bind(this)
+    this.toggleNavBar = this.toggleNavBar.bind(this);
   }
 
   handleHideRequestHelp() {
@@ -144,14 +146,14 @@ class Home extends Component {
     this.setState({showRegistration: false});
   }
 
- handleShowModal(modalType) {
-  this.setState({modalType: modalType})
-  this.setState({showModal: true});
- }
- 
- handleHideModal() {
-  this.setState({showModal: false});
- }
+  handleShowModal(modalType) {
+    this.setState({modalType: modalType})
+    this.setState({showModal: true});
+  }
+  
+  handleHideModal() {
+    this.setState({showModal: false});
+  }
 
   componentDidMount() {
     if (this.props.location.verified) {
@@ -422,9 +424,9 @@ class Home extends Component {
     );
   }
 
-  // toggleNavBar(e) {
-  //   console.log(e);
-  // }
+  toggleNavBar(e) {
+    this.setState({toggled: e});
+  }
 
   render() {
 		var collapsed = false
@@ -501,28 +503,16 @@ class Home extends Component {
         </Button>
 
       rightNav = <>
-                  <span id = "name" 
-                        style = {{color: 'white', 
-                                  marginRight: 20, 
-                                  marginBottom: 15, 
-                                  fontWeight: 600, 
-                                  fontSize: 13,
-                                  marginTop: 8}}>
-                    {/* <font color="white" style = {{fontWeight: 600, fontSize: 13}}> */}
                     <span id = "name" 
                         style = {{color: 'white', 
-                                  marginRight: 20, 
+                                  marginRight: 5, 
                                   marginBottom: 15, 
                                   fontWeight: 600, 
                                   fontSize: 13,
                                   marginTop: 8}}>
-                    {/* <font color="white" style = {{fontWeight: 600, fontSize: 13}}> */}
                       Hello, {this.state.first_name}
-                    {/* </font> */}
                     </span>
-                    {/* </font> */}
-                  </span>
-                  <Button variant="outline-danger" id = 'logoutButton' onClick={this.logout}>
+                  <Button variant="outline-danger" id = 'logoutButton' onClick={this.logout} style={{marginLeft: 5}}>
                     <font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
                       Logout
                     </font>
@@ -618,38 +608,41 @@ class Home extends Component {
 
         <div className="App" style={{overflowX: 'hidden'}}>
           <Navbar collapseOnSelect 
-                  // onToggle={this.toggleNavBar}
+                  onToggle={this.toggleNavBar}
                   variant="light" 
                   expand="md"
-                  className = 'customNav'>
-            <Navbar.Brand id="home" href = {window.location.protocol + '//' + window.location.host}>
+                  className = {this.state.toggled ? 'customNavToggled': 'customNav'}>
+            <Navbar.Brand id={this.state.toggled ? 'homeToggled': 'home'} href = {window.location.protocol + '//' + window.location.host}>
               covaid
             </Navbar.Brand>
             <Form inline style ={{display: 'block'}}>
               {collapsed ? <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/> : <></>}
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Toggle aria-controls="basic-navbar-nav" id={this.state.toggled ? 'toggledNav1': 'nav1'}/>
+              {/* <button aria-controls="basic-navbar-nav"
+                      type="button"
+                      aria-label="Toggle navigation" 
+                      class="navbar-toggler collapsed">
+                <span class="navbar-toggler-icon"></span>
+              </button> */}
             </Form>
 
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link 
-                  id = "navLink1"
-                  style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                  onClick={() => this.handleShowModal(1)}>
-                  <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
+                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(1)} >
+                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'} 
+                     style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
                 </Nav.Link>
-                <Nav.Link 
-                  id = "navLink2"
-                  style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                  onClick={() => this.handleShowModal(2)}>
-                  <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
+                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(2)}>
+                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}
+                     style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
                 </Nav.Link>
-                <Nav.Link 
-                  id = "navLink3"
-                  style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                  onClick={() => this.handleShowModal(3)}>
-                  <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
+                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(3)}>
+                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'} 
+                     style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
                 </Nav.Link>
+                {!collapsed ? <Nav.Link style ={{border: '0px solid'}} >
+                                <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/>
+                              </Nav.Link> : <></>}
               </Nav>
               <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
                 {rightNav}
@@ -659,7 +652,7 @@ class Home extends Component {
         {pageContent}
       </div>
 
-      <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 30}}>
+      <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 60}}>
         {modal}
       </Modal>
     </div>);

@@ -368,8 +368,8 @@ textarea.form-control {
   height: 27px;
   vertical-align: middle;
   padding: 10px;
-  font-size: 14px;
-  padding-top: 7px;
+  font-size: 12px;
+  padding-top: 8px !important;
 }
 
 .container {
