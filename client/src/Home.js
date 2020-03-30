@@ -608,17 +608,13 @@ class Home extends Component {
       default:
         modal = <></>
     }
-      return (
-         <div>
-          <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
     return (
         <div>
         <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
-        <div className="App">
+        <div className="App" style={{overflowX: 'hidden'}}>
           <Navbar collapseOnSelect 
                   // onToggle={this.toggleNavBar}
                   variant="light" 
@@ -637,59 +633,34 @@ class Home extends Component {
                 <Nav.Link 
                   id = "navLink1"
                   style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                  onClick={this.handleShowAbout}>
+                  onClick={() => this.handleShowModal(1)}>
                   <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
                 </Nav.Link>
                 <Nav.Link 
                   id = "navLink2"
                   style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                  onClick={this.handleShowWorks}>
+                  onClick={() => this.handleShowModal(2)}>
                   <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
                 </Nav.Link>
                 <Nav.Link 
                   id = "navLink3"
                   style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                  onClick={this.handleShowFeedback}>
+                  onClick={() => this.handleShowModal(3)}>
                   <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
                 </Nav.Link>
               </Nav>
               <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
                 {rightNav}
               </Form>
+            </Navbar.Collapse>
+          </Navbar>
+        {pageContent}
+      </div>
 
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                  <Nav.Link 
-                    id = "navLink1"
-                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                    onClick={() => this.handleShowModal(1)}>
-                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
-                  </Nav.Link>
-                  <Nav.Link 
-                    id = "navLink2"
-                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                    onClick={() => this.handleShowModal(2)}>
-                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
-                  </Nav.Link>
-                  <Nav.Link 
-                    id = "navLink3"
-                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-                    onClick={() => this.handleShowModal(3)}>
-                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
-                  </Nav.Link>
-                </Nav>
-                <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
-                  {rightNav}
-                </Form>
-              </Navbar.Collapse>
-            </Navbar>
-            {pageContent}
-          </div>
-
-          <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 30}}>
-            {modal}
-          </Modal>
-        </div>);
+      <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 30}}>
+        {modal}
+      </Modal>
+    </div>);
 
       return (
         <div>
