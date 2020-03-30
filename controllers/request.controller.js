@@ -4,9 +4,43 @@ var Hogan = require('hogan.js')
 const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
 const asyncWrapper = require('../util/asyncWrapper');
+const SPREADSHEET_ID = '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0'
+const creds = require('../client_secret.json')
+const {GoogleSpreadsheet }= require('google-spreadsheet')
 
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
+
+async function addRequestToSpreadsheet(request, ID, volunteers) {
+    const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+    await doc.useServiceAccountAuth({
+      client_email: creds.client_email,
+      private_key: creds.private_key,
+    });
+  
+    await doc.loadInfo(); // loads document properties and worksheets
+  
+    // create a sheet and set the header row
+    const requestSheet = doc.sheetsByIndex[1]; // or use doc.sheetsById[id]
+
+    var volunteer_emails = []
+    for (var i = 0; i < volunteers.length; i++) {
+        volunteer_emails.push(volunteers[i].email)
+    }
+    
+    // append rows 
+    await requestSheet.addRow({ 
+        Name: request.requester_first + " " + request.requester_last,
+        Email: request.requester_email,
+        Phone: request.requester_phone,
+        NeedHelpWith: request.resource_request.join(", "),
+        Languages: request.languages.join(", "),
+        Details: request.details,
+        When: request.time + " " + request.date,
+        BestVolunteers: volunteer_emails.join(", ")
+    });
+
+  }
 
 exports.update_completed = function (req, res) {
     Requests.findByIdAndUpdate(req.params.id, 
@@ -99,6 +133,22 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
 
 })
 
+exports.removeVolunteer = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id
+    const volunteer_id = req.body.volunteer_id
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            "status": "incomplete",
+            "volunteer": ""
+        }
+    }, function (err, request) {
+        if (err) return next(err);
+        
+        res.send('Request updated.');
+    });
+
+})
+
 exports.completeARequest = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     Requests.findByIdAndUpdate(request_id, 
@@ -112,11 +162,92 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
     });
 })
 
+exports.handle_old_request = asyncWrapper(async (req, res) => {
+    const { 
+        body: {
+            requester_email,
+            requester_phone,
+            offerer_email,
+            details
+        } 
+    } = req;
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+               user: 'covaidco@gmail.com',
+               pass: 'supportyourcity_covaid_1?'
+        }
+    }); 
+
+    const request = new Requests(req.body);
+    request.completed = false;
+    console.log(request)
+
+    request.save().then(result => {
+        res.status(201).json({
+            message: "Request Created", //
+            result: result // the "result" object can be filtered or you can simply return the message
+        });
+
+        var paymentText;
+        if (request.payment == 0) {
+            paymentText = "Call Ahead"
+        } else if (request.payment == 1) {
+            paymentText = "Reimburse Volunteer"
+        } else {
+            paymentText = "N/A"
+        }
+
+        var mode = "localhost:3000";
+        if (process.env.PROD) {
+            mode = "covaid.co"
+        }
+
+        var link = 'http://' + mode + '/completeOffer?ID=' + result._id;
+
+        var email = requester_email;
+        var phone = requester_phone;
+
+        if (!requester_email || requester_email.length == 0) {
+            email = "N/A"
+        }
+
+        if (!requester_phone || requester_phone.length == 0) {
+            phone = "N/A"
+        }
+
+        console.log(link);
+
+        const mailOptions = {
+            from: 'covaidco@gmail.com', // sender address
+            to: 'covaidco@gmail.com', // list of receivers
+            subject: 'Someone needs your help!', // Subject line
+            html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: result._id, link: link, payment: paymentText})
+        };
+
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err)
+                res.sendStatus(400);
+            else
+                res.sendStatus(200);
+        });
+    }).catch(err => {
+        res.status(500).json({
+            error: err 
+        });
+    });
+});
+
 exports.createARequest = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
     request.status = "incomplete"
-    await request.save()
+    var result = await request.save()
     var volunteers = await getBestVolunteers(request)
+    console.log(volunteers)
+    if (request.association == "5e7f9badc80c292245264ebe") {
+        await addRequestToSpreadsheet(request, result._id, volunteers)
+    }
     res.status(200).json({
         volunteers: volunteers 
     });

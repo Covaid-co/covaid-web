@@ -14,6 +14,8 @@ let RequestSchema = new Schema({
     longitude: Number,
     payment: Number,
     details: String,
+    time: String,
+    date: String,
     status: String,
     volunteer: String
 });

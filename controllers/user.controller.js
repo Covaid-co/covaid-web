@@ -8,6 +8,7 @@ const association_controller = require('./association.controller');
 
 const SPREADSHEET_ID = '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0'
 
+
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
        return result === null;
@@ -58,7 +59,6 @@ async function addUserToSpreadsheet(user, ID) {
 
   // create a sheet and set the header row
   const volunterSheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
-  
   
   // append rows 
   await volunterSheet.addRow({ 
@@ -289,7 +289,6 @@ exports.total_users = function (req, res) {
 
 exports.update = function (req, res) {
   const id = req.token.id;
-  console.log(id)
   if (user.association == "5e7f9badc80c292245264ebe") {
     updateUserInSpreadsheet(id, req.body)
   }
