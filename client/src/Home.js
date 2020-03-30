@@ -14,6 +14,7 @@ import NewLogin from './NewLogin';
 import NewRegister from './NewRegister';
 import NewOffers from './NewOffers';
 import LocationSetting from './LocationSetting';
+import VolunteerPortal from './VolunteerPortal'
 
 import fetch_a from './util/fetch_auth';
 
@@ -76,7 +77,8 @@ class Home extends Component {
   
       showRequestHelp: false,
       associations: [],
-      currentAssoc: {}
+      currentAssoc: {},
+      volunteerPortal: false
     }
 
     window.addEventListener("resize", this.update);
@@ -90,6 +92,7 @@ class Home extends Component {
     this.handleHidePrompt = this.handleHidePrompt.bind(this);
     this.getMyLocation = this.getMyLocation.bind(this)
     this.logout = this.logout.bind(this);
+    this.switchToVolunteer = this.switchToVolunteer.bind(this)
     this.refreshLocation = this.refreshLocation.bind(this);
     this.handleShowLogin = this.handleShowLogin.bind(this);
     this.handleHideLogin = this.handleHideLogin.bind(this);
@@ -329,7 +332,7 @@ class Home extends Component {
         response.json().then((data) => {
             console.log(data);
             currentComponent.setState({associations: data});
-            if (data.length > 0) {
+            if (data[0]) {
               currentComponent.setState({currentAssoc: data[0]})
             }
         });
@@ -384,6 +387,10 @@ class Home extends Component {
   logout() {
     Cookie.remove('token');
     window.location.reload(false);
+  }
+
+  switchToVolunteer() {
+    this.setState({volunteerPortal: true})
   }
 
   refreshLocation() {
@@ -503,6 +510,7 @@ class Home extends Component {
     var yourOffer;
     var howHelp;
     var clickText = <></>;
+    var volunteerButton = <></>
     if (isLoggedIn) {
       rightNav = <>
                   <span id = "name" 
@@ -513,7 +521,17 @@ class Home extends Component {
                                   fontSize: 13,
                                   marginTop: 8}}>
                     {/* <font color="white" style = {{fontWeight: 600, fontSize: 13}}> */}
+                    <span id = "name" 
+                        style = {{color: 'white', 
+                                  marginRight: 20, 
+                                  marginBottom: 15, 
+                                  fontWeight: 600, 
+                                  fontSize: 13,
+                                  marginTop: 8}}>
+                    {/* <font color="white" style = {{fontWeight: 600, fontSize: 13}}> */}
                       Hello, {this.state.first_name}
+                    {/* </font> */}
+                    </span>
                     {/* </font> */}
                   </span>
                   <Button variant="outline-danger" id = 'logoutButton' onClick={this.logout}>
@@ -528,6 +546,9 @@ class Home extends Component {
       howHelp = <><h5>My Offer</h5>
        <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
        their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></> 
+      volunteerButton =  <Button onClick={this.switchToVolunteer} id="homeButtons" >
+             Update your offer from the volunteer portal
+           </Button>
        if (this.state.width > 350) {
         clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
        }
@@ -536,17 +557,47 @@ class Home extends Component {
         rightNav = <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/>;
       }
       yourOffer = <></>;
-      howHelp = <></>
+      howHelp = <></>;
+      volunteerButton = <Button onClick={() => this.setState({showLogin: true})} id="homeButtons" >
+                          Volunteer Log in / Sign up
+                        </Button>
     }
 
 
 
-    if (!isLoaded) {
-      return (
-        <div className="App">
-          <Loading setLatLong={this.setLatLongFromZip}/>
-        </div>)
+    var pageContent = <></>
+    if (isLoaded) {
+      if (this.state.volunteerPortal) {
+        pageContent = <VolunteerPortal state={this.state}/>
+      } else {
+        pageContent = <>
+          <Jumbotron fluid>
+            <Container>
+              <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
+              <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
+              <Button onClick={() => this.setState({showRequestHelp: true})} id="homeButtons" >
+                Request for Help
+              </Button>{' '}
+              {volunteerButton}
+            </Container>
+          </Jumbotron>
+          <RequestHelp hideRequestHelp={this.handleHideRequestHelp}
+                        state={this.state}/>
+          <NewLogin handleShowRegistration={this.handleShowRegistration}
+                    handleHideLogin={this.handleHideLogin}
+                    state={this.state}/>
+          <NewRegister handleHideRegistration={this.handleHideRegistration}
+                        state={this.state}
+                        setState={this.setState}/>
+          <LocationSetting state={this.state} setState={this.setState}/>
+          <NewOffers state={this.state} 
+                      handleShowRequestHelp={this.handleShowRequestHelp}/>
+        </>
+      }
     } else {
+      pageContent = <Loading setLatLong={this.setLatLongFromZip}/>
+      
+    }
       return (
          <div>
           <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
@@ -592,29 +643,7 @@ class Home extends Component {
                 </Form>
               </Navbar.Collapse>
             </Navbar>
-            <Jumbotron fluid>
-              <Container>
-                <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
-                <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
-								<Button onClick={() => this.setState({showRequestHelp: true})} id="homeButtons" >
-                  Request for Help
-              	</Button>{' '}
-								<Button onClick={() => this.setState({showLogin: true})} id="homeButtons" >
-									Volunteer Log in / Sign up
-              	</Button>
-              </Container>
-            </Jumbotron>
-						<RequestHelp hideRequestHelp={this.handleHideRequestHelp}
-												 state={this.state}/>
-						<NewLogin handleShowRegistration={this.handleShowRegistration}
-											handleHideLogin={this.handleHideLogin}
-											state={this.state}/>
-						<NewRegister handleHideRegistration={this.handleHideRegistration}
-												 state={this.state}
-                         setState={this.setState}/>
-            <LocationSetting state={this.state} setState={this.setState}/>
-            <NewOffers state={this.state} 
-                       handleShowRequestHelp={this.handleShowRequestHelp}/>
+            {pageContent}
           </div>
         </div>);
 
@@ -882,7 +911,6 @@ class Home extends Component {
         </div>
       );
     }
-  }
 }
 
 export default Home;

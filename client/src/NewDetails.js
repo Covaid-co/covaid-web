@@ -14,7 +14,7 @@ export default function NewDetails(props) {
             </h5>
             <Row >
                 <Col xs={12}>
-                    <Form.Group controlId="payment">
+                    <Form.Group controlId="details">
                         <Form.Control as="textarea" 
                                         rows="3" 
                                         placeholder="Example: 'I need milk and eggs and they can be dropped

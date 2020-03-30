@@ -9,9 +9,10 @@ export default function NewHasCar(props) {
 
     return (
         <>
-            <h5 className="titleHeadings" style = {{marginTop: '26px', marginBottom: '0px'}}>
+             <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
                 Can you drive?
             </h5>
+
             <Row>
                 <Col xs={6} style = {{padding: 0, paddingLeft: 15}}>
                     <Button id={props.hasCar ? 'leftCarButtonPressed' : 'leftCarButton'}

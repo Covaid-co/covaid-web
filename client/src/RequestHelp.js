@@ -25,26 +25,103 @@ export default function RequestHelp(props) {
 
     const languages = ['English', 'Chinese', 'French', 'Spanish', 'Italian'];
     const defaultResources = ['Food/Groceries', 'Medication', 'Emotional Support', 'Donate', 'Academic/Professional', 'Misc.'];
-    const [resources, setResources] = useState({});
+    const [resources, setResources] = useState(
+        {'Food/Groceries': false, 
+        'Medication': false, 
+        'Emotional Support': false, 
+        'Donate': false, 
+        'Academic/Professional': false,
+        'Misc.': false
+        }
+    );
     const [phoneNumber, setPhoneNumber] = useState('');
     const [languageChecked, setLanguageChecked] = useState({});
     const [firstPage, setFirstPage] = useState(true);
     const [selectedPayment, setSelectedIndex] = useState(0);
+    const [time, setTime] = useState('')
+    const [date, setDate] = useState('')
 
     useEffect(() => {
-        var tempList = defaultResources;
-        if (props.state.currentAssoc && Object.keys(props.state.currentAssoc).length != 0) {
-            tempList = props.state.currentAssoc.resources;
-        };
-
-        for (var i = 0; i < tempList.length; i++) {
-            const curr = tempList[i];
-            setResources(prev => ({ 
-                ...prev,
-                [curr]: false,
-            }));
+        var url = "/api/association/get_assoc/lat_long?";
+        let params = {
+            'latitude': props.state.latitude,
+            'longitude': props.state.longitude,
         }
-    }, [props.state.currentAssoc]);
+        let query = Object.keys(params)
+                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                .join('&');
+        url += query;
+    
+        async function fetchData() {
+            const response = await fetch(url);
+            response.json().then((data) => {
+                var resourcesFromAssoc = defaultResources
+                if (data[0]) {
+                    resourcesFromAssoc = data[0].resources
+                }
+                
+                var tempAssoc = {}
+
+                for (var i = 0; i < resourcesFromAssoc.length; i++) {
+                  tempAssoc[resourcesFromAssoc[i]] = false
+                }
+                console.log(tempAssoc)
+                setResources(tempAssoc)
+            });
+        }
+        fetchData();
+    }, []);
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        var resource_request = []
+        Object.keys(resources).forEach(function(key) {
+            if (resources[key]) {
+                resource_request.push(key)
+            }
+        }); 
+        var languages = []
+        Object.keys(languageChecked).forEach(function(key) {
+            if (languageChecked[key]) {
+                languages.push(key)
+            }
+        }); 
+
+        let form = {
+            'requester_first': fields.first,
+            'requester_last': fields.last,
+            'requester_phone': phoneNumber,
+            'requester_email': fields.email,
+            'details': fields.details,
+            'payment': selectedPayment,
+            'resource_request': resource_request,
+            'languages': languages,
+            'association': props.state.currentAssoc._id,
+            'time': time,
+            'date': date,
+            'latitude': props.state.latitude,
+            'longitude': props.state.longitude,
+        };
+        console.log(form)
+        fetch('/api/request/create_request', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Request successfully created");
+                fields.details = '';
+                fields.phone = '';
+                fields.email = '';
+            } else {
+                console.log("Request not successful")
+            }
+        })
+        .catch((e) => {
+            console.log("Error");
+        });
+    }
 
     if (firstPage) {
         return (
@@ -60,12 +137,12 @@ export default function RequestHelp(props) {
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>
                         <Col xs={6} style = {{paddingRight: '4px'}}>
-                            <Form.Group controlId="first_name" bssize="large">
+                            <Form.Group controlId="first" bssize="large">
                                 <Form.Control value={fields.first} onChange={handleFieldChange} placeholder="First Name" />
                             </Form.Group>
                         </Col>
                         <Col xs={6} style = {{paddingLeft: '4px'}}>
-                            <Form.Group controlId="last_name" bssize="large">
+                            <Form.Group controlId="last" bssize="large">
                                 <Form.Control value={fields.last} onChange={handleFieldChange} placeholder="Last Name" />
                             </Form.Group>
                         </Col>
@@ -98,10 +175,10 @@ export default function RequestHelp(props) {
                         If language not listed, please mention in details section below
                     </p>
                     <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
-                    <NeededBy/>
+                    <NeededBy setTime={setTime} setDate={setDate}/>
                     <NewPaymentMethod setSelectedIndex={setSelectedIndex}/>
                     <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
-                    <Button id="nextPage">Submit a Request</Button>
+                    <Button id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
                     <p id="pageNumber">Page 2 of 2</p>
                 </Modal.Body>
             </Modal>

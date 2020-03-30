@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 export default function NewTasks(props) {
 
     const handleResourceChange = (resource) => {
+        console.log(props.resources)
         props.setResources(prev => ({ 
             ...prev,
             [resource]: !props.resources[resource],

@@ -29,13 +29,13 @@ export default function Loading(props) {
 
     return (
         <Container style = {{padding: '40px 15px'}}>
-            <div className="p-3 mb-5 bg-white">
+            <div className="p-3 mb-5 bg-white" style={{textAlign: "center"}}>
             <br></br>
-            <h2 style = {{fontWeight: 300}}>Finding your location...</h2>
-            <Spinner animation="border" role="status" style = {{marginBottom: 50}}>
+            <h2 style = {{fontWeight: 300, marginLeft: "auto", marginRight: "auto", color: "black"}}>Finding your location...</h2>
+            <Spinner animation="border" role="status" style = {{marginBottom: 50, marginLeft: "auto", marginRight: "auto", color: "black"}}>
                 <span className="sr-only">Loading...</span>
             </Spinner>
-            <h6 style = {{fontWeight: 300, fontStyle: 'italic'}}>
+            <h6 style = {{fontWeight: 300, marginLeft: "auto", marginRight: "auto", fontStyle: 'italic', color: "black"}}>
                If you are not redirected in 10 seconds, enter your current zipcode.
             </h6>
             <Row className="justify-content-md-center">

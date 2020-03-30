@@ -14,9 +14,9 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 
 import Resources from './Resources';
 import PhoneNumber from './PhoneNumber';
-import Languages from './Languages';
+import NewLanguages from './NewLanguages';
 import Details from './Details';
-import HasCar from './HasCar';
+import NewCar from './NewHasCar';
 import Availability from './Availability';
 import TimesAvailable from './TimesAvailable';
 
@@ -38,6 +38,7 @@ export default function YourOffer(props) {
     const [getNeighborhoods, setNeighborhoods] = useState([]);
 
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [availability, setAvailability] = useState(false);
     const [languageChecked, setLanguageChecked] = useState({});
     const [hasCar, setHasCar] = useState(false);
 
@@ -61,6 +62,7 @@ export default function YourOffer(props) {
                 const { latitude, longitude } = props.state;
                 var neighborhoods = [];
                 var locationChanged = false;
+                setAssociation(user.association)
                 Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
                     response => {
                         var currentZipcode = '';
@@ -133,6 +135,7 @@ export default function YourOffer(props) {
                 setSwitchSelected(user.availability);
                 const aText = user.availability ? 'Available' : 'Not Available'
                 setAvailableText(aText);
+                setAvailability(user.availability);
 
                 async function getAssoc(locChanged) {
                     var url = "/api/association/get_assoc/?";
@@ -152,6 +155,7 @@ export default function YourOffer(props) {
                     const response = await fetch(url);
                     response.json().then((data) => {
                         setIsLoading(false);
+                        setDefaultResources(data.resources)
                         setCurrentUserObject(user.offer.tasks, data.resources, setResources);
                     });
                 }
@@ -233,8 +237,9 @@ export default function YourOffer(props) {
                 'type': 'Point',
                 'coordinates': [props.state.longitude, props.state.latitude]
             },
-            'association': association,
-            'languages': selectedLanguages
+            'languages': selectedLanguages,
+            'availability': availability,
+            'association': association
         };
 
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
@@ -264,7 +269,7 @@ export default function YourOffer(props) {
         return <div>Loading ... </div>;
     } else {
         return (
-            <div className="shadow p-3 mb-5 bg-white rounded">
+            
                 <Row >
                     <Toast
                         show={showToast}
@@ -286,39 +291,51 @@ export default function YourOffer(props) {
                         <Alert show={showAlert} variant={'danger'}>
                             Your location has changed! Press update to reflect this.
                         </Alert>
-                        <Alert style={{marginTop: 10, marginBottom: -10}} variant={'danger'}>
+                        <Alert style={{marginTop: 10, marginBottom: 0}} variant={'danger'}>
                             If you are showing any symptoms or have traveled in the past 2 weeks, please refrain from marking yourself as available.
                         </Alert>
                         <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
                             <Availability availableText={availableText}
                                           setAvailableText={setAvailableText}
                                           switchSelected={switchSelected}
-                                          setSwitchSelected={setSwitchSelected}/>
-                            <Resources resources={resources}
-                                       setResources={setResources}/>
+                                          setSwitchSelected={setSwitchSelected}
+                                          setAvailability={setAvailability}/>
+                            <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
+                                What can you help with?
+                            </h5>
+                            <NewLanguages languages={defaultResources}
+                                       languageChecked={resources} 
+                                       setLanguageChecked={setResources}/>
                             <Details fields={fields.details} 
                                      handleFieldChange={handleFieldChange}/>
                             <Form.Group controlId="phone" bssize="large">
-                                <Form.Label style = {{marginBottom: 0}}><h3>Update your contact number</h3></Form.Label>
-                                <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Optional</p>
+                                <Form.Label style = {{marginBottom: 0, color: "black"}}> <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
+                                Update your contact number
+                            </h5></Form.Label>
+                                <p style = {{fontWeight: 300, fontStyle: 'italic'}} id="createAccountText">Optional</p>
                                 <PhoneNumber phoneNumber={phoneNumber} 
                                              setPhoneNumber={setPhoneNumber}/> 
                             </Form.Group>
-                            <Languages languages={languages}
+                            <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
+                                What languages do you speak?
+                            </h5>
+                            <NewLanguages languages={languages}
                                        languageChecked={languageChecked} 
                                        setLanguageChecked={setLanguageChecked}/>
-                            <TimesAvailable times={times} setTimes={setTimes}/>
-                            <HasCar hasCar={hasCar} 
+                            <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
+                                What is your general availability?
+                            </h5>
+                            <NewLanguages languages={timeNames} languageChecked={times} setLanguageChecked={setTimes}/>
+                            <NewCar hasCar={hasCar} 
                                     setHasCar={setHasCar}/>
-                            <Button variant="primary" type="submit" >
-                                Update your Offer!
+                            <Button style = {{marginTop: '30px', backgroundColor:"#194bd3"}} variant="primary" type="submit" >
+                                Update your offer
                             </Button>
-                            <br></br>
+                            
                         </Form>
                     </Col>
                     <Col md={1}></Col>
                 </Row>
-            </div>
         );
     }
 }

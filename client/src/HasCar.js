@@ -6,7 +6,7 @@ export default function HasCar(props) {
 
     return (
         <Form.Group controlId="payment" bssize="large" style = {{marginBottom: 30}}>
-            <Form.Label style = {{marginBottom: 0}}><h3>Do you have a car?</h3></Form.Label>
+            <Form.Label style = {{marginBottom: 0, color: "black"}}><h3>Do you have a car?</h3></Form.Label>
             <Form.Control as="select"
                     onChange={(e) => {
                         e.persist();

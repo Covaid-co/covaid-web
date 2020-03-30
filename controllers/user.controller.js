@@ -3,10 +3,11 @@ const Offers = require('../models/offer.model');
 const passport = require('passport');
 var nodemailer = require('nodemailer');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
-// const creds = require('../client_secret.json')
+const creds = require('../client_secret.json')
 const association_controller = require('./association.controller'); 
 
 const SPREADSHEET_ID = '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0'
+
 
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
@@ -14,27 +15,64 @@ function validateEmailAccessibility(email){
   });
 }
 
-// async function addUserToSpreadsheet(user) {
-//   const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
-//   await doc.useServiceAccountAuth({
-//     client_email: creds.client_email,
-//     private_key: creds.private_key,
-//   });
+async function updateUserInSpreadsheet(id, updates) {
+  console.log(updates)
+  const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+  await doc.useServiceAccountAuth({
+    client_email: creds.client_email,
+    private_key: creds.private_key,
+  });
 
-//   await doc.loadInfo(); // loads document properties and worksheets
+  await doc.loadInfo(); // loads document properties and worksheets
 
-//   // create a sheet and set the header row
-//   const volunterSheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+  // create a sheet and set the header row
+  const volunterSheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+
+  const rows = await volunterSheet.getRows();
+  var updateRow;
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i].ID == id) {
+      updateRow = rows[i];
+    }
+  }
+  updateRow.Neighborhood = updates.offer.neighborhoods.join(", ")
+  updateRow.Details = updates.offer.details
+  updateRow.Resource = updates.offer.tasks.join(", ")
+  updateRow.Car = updates.offer.car.toString()
+  updateRow.TimeOfAvailability = updates.offer.timesAvailable.join(", ")
+  updateRow.Languages = updates.languages.join(", ")
+  updateRow.Phone = updates.phone
+  updateRow.AvailabilityStatus = updates.availability.toString()
+
+  // console.log(updateRow)
+  await updateRow.save()
+}
+
+async function addUserToSpreadsheet(user, ID) {
+  const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+  await doc.useServiceAccountAuth({
+    client_email: creds.client_email,
+    private_key: creds.private_key,
+  });
+
+  await doc.loadInfo(); // loads document properties and worksheets
+
+  // create a sheet and set the header row
+  const volunterSheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
   
-  
-//   // append rows 
-//   await volunterSheet.addRow({ 
-//     Timestamp: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
-//     Name: user.first_name + " " + user.last_name,
-//     Email: user.email, 
-//     Phone: user.phone
-//   });
-// }
+  // append rows 
+  await volunterSheet.addRow({ 
+    ID: ID,
+    Timestamp: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+    AvailabilityStatus: user.availability.toString(),
+    Name: user.first_name + " " + user.last_name,
+    Email: user.email, 
+    Phone: user.phone,
+    Languages: user.languages.join(", "),
+    Agreement: true
+  });
+
+}
 
 exports.verify = function(req, res) {
   Users.findByIdAndUpdate(req.query.ID, 
@@ -59,7 +97,7 @@ exports.register = function (req, res) {
         },
         });
     }
-
+    
     validateEmailAccessibility(user.email).then(function(valid) {
       if (valid) {
           if(!user.password) {
@@ -77,13 +115,16 @@ exports.register = function (req, res) {
         finalUser.verified = false;
         finalUser.agreedToTerms = true;
 
-        // addUserToSpreadsheet(finalUser)
-
         finalUser.save(function(err, result) {
           if (err) {    
-            // Some other error
             return res.status(422).send(err);
           } 
+
+          var userID = result._id;
+          if (user.association == "5e7f9badc80c292245264ebe") {
+            addUserToSpreadsheet(finalUser, userID)
+          }
+
           var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -152,8 +193,16 @@ exports.login = function (req, res, next) {
   
       if(passportUser) {
         const user = passportUser;
-        user.token = passportUser.generateJWT();
-        return res.json({ user: user.toAuthJSON() });
+        if (passportUser.preVerified) {
+          user.token = passportUser.generateJWT();
+          return res.json({ user: user.toAuthJSON() });
+        } else {
+          return res.status(400).json({
+            errors: {
+              verifed: "unverifed",
+            },
+          });
+        }
       } else {
         return res.status(400).json({
           errors: {
@@ -200,6 +249,16 @@ async function updatePreVerified() {
     }})
 }
 
+exports.all_users_of_an_association = function (req, res) {
+  var assoc = req.body.association;
+  Users.find({
+      'association': assoc
+    }).then(function (users) {
+    
+    res.send(users);
+  });
+}
+
 exports.all_users = function (req, res) {
   Users.find({'availability': true,
               'preVerified': true,
@@ -230,8 +289,12 @@ exports.total_users = function (req, res) {
 
 exports.update = function (req, res) {
   const id = req.token.id;
+  if (req.body.association == "5e7f9badc80c292245264ebe") {
+    updateUserInSpreadsheet(id, req.body)
+  }
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
     if (err) return next(err);
+    
     res.send('User updated.');
   });
 };

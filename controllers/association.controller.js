@@ -14,8 +14,18 @@ exports.all = function (req, res) {
     });
 };
 
+exports.update_association = function (req, res) {
+  const id = req.query.associationID;
+  const { body: { association } } = req
+  Association.findByIdAndUpdate(id, {$set: association}, function (err, offer) {
+    if (err) return next(err);
+    res.send('Association updated.');
+  });
+};
+
 exports.create_association = function (req, res) {
     const { body: { association } } = req;
+
     let newAssociation = new Association(association)
     newAssociation.save(function (err) {
         if (err) {
@@ -27,37 +37,19 @@ exports.create_association = function (req, res) {
 };
 
 exports.assoc_by_lat_long = function (req, res) {
-    var config = {
-        'latitude': req.query.latitude,
-        'longitude': req.query.longitude,
-        'key': "AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY"
-    };
-    geocoding(config, function (err, data){
-        if(err){
-            res.send(err)
-        } else{
-            var prevLocality = '';
-            var locality = '';
-            for (var i = 0; i < Math.min(4, data.results.length); i++) {
-                const results = data.results[i]['address_components'];
-                for (var j = 0; j < results.length; j++) {
-                  const types = results[j].types;
-                  // find neighborhood from current location
-                  for (var k = 0; k < types.length; k++) {
-                    const type = types[k];
-                    if (type.includes('administrative_area_level')) {
-                      if (locality === '') {
-                        locality = prevLocality;
-                      }
-                    }
+    var latitude = req.query.latitude
+    var longitude = req.query.longitude
+
+    Association.find({
+              'location': 
+                { $geoWithin: 
+                  { $centerSphere: 
+                    [[ latitude, longitude], 
+                      20 / 3963.2] 
                   }
-                  prevLocality = results[j]['long_name'];
                 }
-            }
-            // console.log(locality)
-            Association.find({'city': locality}).then(function (associations) {
-                res.send(associations)
-            })       
+    }).then(function (associations) {
+        res.send(associations)
         }
-    });
+    )
 };
