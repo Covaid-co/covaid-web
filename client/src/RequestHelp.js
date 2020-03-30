@@ -48,7 +48,7 @@ export default function RequestHelp(props) {
 
     if (firstPage) {
         return (
-            <Modal show={props.showRequestHelp} onHide={props.hideRequestHelp} id='showRequestModal'>
+            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} id='showRequestModal'>
                 <Modal.Header closeButton>
                     <Modal.Title>Make a request</Modal.Title>
                 </Modal.Header>
@@ -86,11 +86,17 @@ export default function RequestHelp(props) {
         )
     } else {
         return (
-            <Modal show={props.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id='showRequestModal'>
+            <Modal show={props.state.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal">
                 <Modal.Header closeButton>
                     <Modal.Title>Almost Done!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <h5 className="titleHeadings" style = {{marginTop: '8px', marginBottom: '4px'}}>
+                        What language do you speak?
+                    </h5>
+                    <p id="locationInfo">
+                        If language not listed, please mention in details section below
+                    </p>
                     <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
                     <NeededBy/>
                     <NewPaymentMethod setSelectedIndex={setSelectedIndex}/>

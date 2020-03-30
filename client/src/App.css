@@ -67,7 +67,7 @@ html, body {
   margin-top: .2rem;
 }
 
-@media (max-width:767px){
+/* @media (max-width:767px){
   .smallPage { display: grid !important; }
   .bigPage { display: none !important; }
   #getStarted {
@@ -121,7 +121,7 @@ html, body {
   .btn-outline-light {
     border-color: #194bd3 !important;
   }
-}
+} */
 
 @media (max-width:320px){
   .BottomHalf {

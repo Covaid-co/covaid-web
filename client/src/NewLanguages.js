@@ -15,12 +15,6 @@ export default function NewLanguages(props) {
 
     return (
         <>
-            <h5 className="titleHeadings" style = {{marginTop: '8px', marginBottom: '4px'}}>
-                What language do you speak?
-            </h5>
-            <p id="locationInfo">
-                If language not listed, please mention in details section below
-            </p>
             {props.languages.map((lang) => {
                 return <Button key={lang}
                                id={props.languageChecked[lang] ? "selected" : "notSelected"}

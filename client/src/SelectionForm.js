@@ -23,35 +23,35 @@ export default function SelectionForm(props) {
         return (<></>);
     } else {
         return (
-            <Row style = {{marginRight: -25, marginLeft: -25, marginBottom: 0, marginTop: 10}}>
-                <Col md={12}>
-                    <Form.Label style = {{marginBottom: -5}}><h4>Association *</h4></Form.Label>
-                    <p style = {{fontWeight: 300, 
-                                fontStyle: 'italic', 
-                                fontSize: 13,
-                                marginBottom: 5}}>Select an organization you would like to volunteer with</p>
-
+            <Row>
+                <Col xs={12}>
                     <Form.Group controlId="payment" bssize="large">
                         <Form.Control as="select"
+                                id="orgSelect"
                                 onChange={(e) => {
                                     e.persist();
                                     var id = findCurrentAssocID();
-                                    props.setAssociations(prev => ({ 
+                                    props.setState(prev => ({
                                         ...prev,
-                                        [id]: false,
+                                        associations: {
+                                            ...prev.associations,
+                                            id: false
+                                        }
                                     }));
-
                                     const assoc = e.target.value;
                                     id = findIDFromAssoc(assoc);
-                                    props.setAssociations(prev => ({ 
+                                    props.setState(prev => ({
                                         ...prev,
-                                        [id]: true,
+                                        associations: {
+                                            ...prev.associations,
+                                            id: true
+                                        }
                                     }));
                                 }}
                                 value = {props.associationNames[findCurrentAssocID()]}
-                                style = {{fontSize: 13}}>
+                                style = {{fontSize: 15}}>
                             {Object.keys(props.associations).map((assocID) => {
-                                return <option>{props.associationNames[assocID]}</option>;
+                                return <option style={{textIndent: 10}}>{props.associationNames[assocID]}</option>;
                             })}
                         </Form.Control>
                     </Form.Group>

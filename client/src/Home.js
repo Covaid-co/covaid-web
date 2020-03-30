@@ -9,6 +9,11 @@ import LoginRegisterModal from './LoginRegisterModal';
 import HelpfulLinks from './HelpfulLinks';
 import Loading from './Loading';
 import RequestHelp from './RequestHelp';
+import VolunteerBadge from './components/VolunteerBadge';
+import NewLogin from './NewLogin';
+import NewRegister from './NewRegister';
+import NewOffers from './NewOffers';
+import LocationSetting from './LocationSetting';
 
 import fetch_a from './util/fetch_auth';
 
@@ -69,9 +74,10 @@ class Home extends Component {
       totalVolunteers: 0,
       justVerified: false,
   
-      showRequestHelp: true,
-      associations: [],
-      currentAssoc: {}
+      showRequestHelp: false,
+      associations: {},
+      currentAssoc: {},
+      associationNames: {}
     }
 
     window.addEventListener("resize", this.update);
@@ -302,6 +308,7 @@ class Home extends Component {
     );
   }
 
+  // Set association objects
   findAssociations(lat, long, currentComponent) {
     var url = "/api/association/get_assoc/lat_long?";
     let params = {
@@ -320,6 +327,21 @@ class Home extends Component {
             if (data.length > 0) {
               currentComponent.setState({currentAssoc: data[0]})
             }
+
+            var tempAssoc = {};
+            var tempAssocNames = {};
+            var notSelected = true;
+            for (var i = 0; i < data.length; i++) {
+              const curr = data[i]['_id'];
+              const name = data[i]['name'];
+              tempAssoc[curr] = notSelected;
+              tempAssocNames[curr] = name;
+              if (notSelected) {
+                  notSelected = false;
+              }
+            }
+            currentComponent.setState({associations: tempAssoc});
+            currentComponent.setState({associationNames: tempAssocNames});
         });
     }
     fetchData();
@@ -428,6 +450,12 @@ class Home extends Component {
   // }
 
   render() {
+		var collapsed = false
+		if (this.state.width <= 767) {
+			collapsed = true;
+		}
+
+
     const { isLoaded } = this.state;
     const { isLoggedIn } = this.state;
 
@@ -445,7 +473,7 @@ class Home extends Component {
       offer = "My Offer";
       link = "Helpful Links";
     }
-
+		
     var titleSize = 43;
     if (this.state.width <= 350) {
       covaidText = "";
@@ -514,24 +542,14 @@ class Home extends Component {
         clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
        }
     } else {
-      if (this.state.width > 767) {
-        rightNav = <>
-                  <Button variant="outline-light" 
-                          style={{outlineWidth: "thick"}}
-                          id = 'howHelpButton'
-                          onClick={this.handleShowRegistration}>
-                    <font id ="help" 
-                          style = {{color:"white", 
-                                    fontWeight: 600,
-                                    fontSize: 12, whiteSpace: 'nowrap'}}>
-                      Want to help your community?
-                    </font>
-                  </Button>
-                </>;
+      if (collapsed === false) {
+        rightNav = <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/>;
       }
       yourOffer = <></>;
       howHelp = <></>
     }
+
+
 
     if (!isLoaded) {
       return (
@@ -539,84 +557,75 @@ class Home extends Component {
           <Loading setLatLong={this.setLatLongFromZip}/>
         </div>)
     } else {
-      // return (
-      //    <div>
-      //     <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
-      //     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+      return (
+         <div>
+          <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
-      //     <div className="App">
-      //       <Navbar collapseOnSelect 
-      //               // onToggle={this.toggleNavBar}
-      //               variant="light" 
-      //               expand="md" 
-      //               className = 'customNav'>
-      //         <Navbar.Brand id="home" 
-      //               href = {window.location.protocol + '//' + window.location.host}
-      //               style ={{color: 'white', 
-      //                         fontWeight: 600, 
-      //                         marginLeft: '10%', 
-      //                         fontSize: 28,
-      //                         marginRight: 20}}>
-      //           covaid
-      //         </Navbar.Brand>
-      //         {/* {communityButton} */}
-      //         <Form inline style ={{display: 'block'}}>
-      //           {communityButton}
-      //           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      //         </Form>
+          <div className="App">
+            <Navbar collapseOnSelect 
+                    // onToggle={this.toggleNavBar}
+                    variant="light" 
+                    expand="md"
+                    className = 'customNav'>
+              <Navbar.Brand id="home" href = {window.location.protocol + '//' + window.location.host}>
+                covaid
+              </Navbar.Brand>
+              <Form inline style ={{display: 'block'}}>
+                {collapsed ? <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/> : <></>}
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              </Form>
 
-      //         <Navbar.Collapse id="basic-navbar-nav">
-      //           <Nav className="mr-auto">
-      //             <Nav.Link 
-      //               id = "navLink1"
-      //               style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-      //               onClick={this.handleShowAbout}>
-      //               <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
-      //             </Nav.Link>
-      //             <Nav.Link 
-      //               id = "navLink2"
-      //               style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-      //               onClick={this.handleShowWorks}>
-      //               <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
-      //             </Nav.Link>
-      //             <Nav.Link 
-      //               id = "navLink3"
-      //               style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
-      //               onClick={this.handleShowFeedback}>
-      //               <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
-      //             </Nav.Link>
-      //             <Nav.Link 
-      //               id = "navLink4"
-      //               style ={{border: '0px solid'}} 
-      //               // onClick={this.handleShowFeedback}
-      //               >
-      //               <OverlayTrigger
-      //                 key='bottom'
-      //                 placement='bottom'
-      //                 overlay={
-      //                   <Tooltip id={`tooltip-bottom`}>
-      //                     Number of active volunteers on COVAID!
-      //                   </Tooltip>}>
-      //                 <Badge variant="success">{this.state.totalVolunteers} Volunteers</Badge>
-      //               </OverlayTrigger>
-      //             </Nav.Link>
-      //           </Nav>
-      //           <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
-      //             {rightNav}
-      //           </Form>
-      //         </Navbar.Collapse>
-      //       </Navbar>
-      //       <Jumbotron fluid>
-      //         <Container>
-      //           <h1>Fluid jumbotron</h1>
-      //           <p>
-      //             This is a modified jumbotron that occupies the entire horizontal space of
-      //             its parent.
-      //           </p>
-      //         </Container>
-      //       </Jumbotron>
-      //     </div>
-      //   </div>);
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                  <Nav.Link 
+                    id = "navLink1"
+                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+                    onClick={this.handleShowAbout}>
+                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
+                  </Nav.Link>
+                  <Nav.Link 
+                    id = "navLink2"
+                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+                    onClick={this.handleShowWorks}>
+                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
+                  </Nav.Link>
+                  <Nav.Link 
+                    id = "navLink3"
+                    style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+                    onClick={this.handleShowFeedback}>
+                    <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
+                  </Nav.Link>
+                </Nav>
+                <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
+                  {rightNav}
+                </Form>
+              </Navbar.Collapse>
+            </Navbar>
+            <Jumbotron fluid>
+              <Container>
+                <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
+                <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
+								<Button onClick={() => this.setState({showRequestHelp: true})} id="homeButtons" >
+                  Request for Help
+              	</Button>{' '}
+								<Button onClick={() => this.setState({showLogin: true})} id="homeButtons" >
+									Volunteer Log in / Sign up
+              	</Button>
+              </Container>
+            </Jumbotron>
+						<RequestHelp hideRequestHelp={this.handleHideRequestHelp}
+												 state={this.state}/>
+						<NewLogin handleShowRegistration={this.handleShowRegistration}
+											handleHideLogin={this.handleHideLogin}
+											state={this.state}/>
+						<NewRegister handleHideRegistration={this.handleHideRegistration}
+												 state={this.state}
+                         setState={this.setState}/>
+            <LocationSetting state={this.state} setState={this.setState}/>
+            <NewOffers state={this.state}/>
+          </div>
+        </div>);
 
       return (
         <div>
@@ -719,13 +728,13 @@ class Home extends Component {
                 </Button>{' '}
               </h6>
               {clickText}
-              <Button onClick={() => this.setState({showRequestHelp: true})} 
+              {/* <Button onClick={() => this.setState({showRequestHelp: true})} 
                       id="homeButtons" >
                   Request for Help
               </Button>
               <RequestHelp showRequestHelp={this.state.showRequestHelp} 
                            hideRequestHelp={this.handleHideRequestHelp}
-                           state={this.state}/>
+                           state={this.state}/> */}
               <br></br>
               {/* <Form inline onSubmit={(e) => this.onLocationSubmit(e)} style={{marginTop: "10px", marginBottom: "30px", display: "inline-block"}}>
                 <FormControl 
