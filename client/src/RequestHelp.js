@@ -55,13 +55,18 @@ export default function RequestHelp(props) {
         async function fetchData() {
             const response = await fetch(url);
             response.json().then((data) => {
-                var association = data[0]
-                var newResources = {}
-                var i;
-                for (i = 0; i < association.resources.length; i++) {
-                    newResources[association.resources[i]] = false
+                var resourcesFromAssoc = defaultResources
+                if (data[0]) {
+                    resourcesFromAssoc = data[0].resources
                 }
-                setResources(newResources)
+                
+                var tempAssoc = {}
+
+                for (var i = 0; i < resourcesFromAssoc.length; i++) {
+                  tempAssoc[resourcesFromAssoc[i]] = false
+                }
+                console.log(tempAssoc)
+                setResources(tempAssoc)
             });
         }
         fetchData();
@@ -120,7 +125,7 @@ export default function RequestHelp(props) {
 
     if (firstPage) {
         return (
-            <Modal show={props.showRequestHelp} onHide={props.hideRequestHelp} id='showRequestModal'>
+            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} id='showRequestModal'>
                 <Modal.Header closeButton>
                     <Modal.Title>Make a request</Modal.Title>
                 </Modal.Header>
@@ -158,11 +163,17 @@ export default function RequestHelp(props) {
         )
     } else {
         return (
-            <Modal show={props.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id='showRequestModal'>
+            <Modal show={props.state.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal">
                 <Modal.Header closeButton>
                     <Modal.Title>Almost Done!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <h5 className="titleHeadings" style = {{marginTop: '8px', marginBottom: '4px'}}>
+                        What language do you speak?
+                    </h5>
+                    <p id="locationInfo">
+                        If language not listed, please mention in details section below
+                    </p>
                     <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
                     <NeededBy setTime={setTime} setDate={setDate}/>
                     <NewPaymentMethod setSelectedIndex={setSelectedIndex}/>

@@ -180,6 +180,7 @@
   height: 40px;
   padding-left: 15px;
   padding-right: 15px;
+  margin-top: 10px;
 }
 
 #showRequestModal {
@@ -252,7 +253,7 @@ input {
   border: 1px solid #314CCE;
   box-sizing: border-box;
 
-  margin: 4px;
+  margin: 4px 8px 4px 0px;
   padding-bottom: 0;
   padding-top: 0;
   display: inline-block;
@@ -273,7 +274,7 @@ input {
   border: 1px solid #314CCE;
   box-sizing: border-box;
 
-  margin: 4px;
+  margin: 4px 8px 4px 0px;
   padding-bottom: 0;
   padding-top: 0;
   display: inline-block;
@@ -285,10 +286,15 @@ input {
 }
 
 .form-control {
-  /* width: 100px; */
-  /* margin: 0px; */
-  /* display: block; */
+  font-family: "SF Text";
+  font-size: 16px !important;
   height: 39px;
+  color: #7F7F7F;
+  text-indent: 7px;
+}
+
+#orgSelect {
+  text-indent: 12px;
 }
 
 textarea.form-control {
@@ -313,10 +319,233 @@ textarea.form-control {
   color: #7F7F7F;
 }
 
+/* Home Page / navbar */
 .jumbotron {
   background-color: #194bd3;
 }
 
-/* .customNav {
+.navbar-brand {
+  color: white !important;
+  font-weight: 600;
+  margin-left: 5%;
+  font-size: 28px;
+  margin-right: 20px;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.navbar-light .navbar-toggler {
+  border-color: transparent;
+}
+
+#volunteerBadge {
+  font-family: "SF Text";
+  font-weight: bold;
+  height: 27px;
+  vertical-align: middle;
+  padding: 10px;
+  font-size: 14px;
+  padding-top: 7px;
+}
+
+.container {
+  width: auto;
+  margin-left: 5%;
+  margin-right: 5%;
+  text-align: left;
+  font-family: "SF Display";
+  color: white;
+}
+
+#jumboHeading {
+  font-weight: bold;
+  font-size: 35px;
+  margin-top: 10px;
+}
+
+#jumboText {
+  font-family: "SF Text";
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* login/register */
+
+#or {
+  letter-spacing: -2px;
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 0px;
+  color: #7F7F7F;
+}
+
+#createAccount {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 49px;
+  font-family: "SF Text";
+  background-color: transparent;
+  border-color: #194bd3;
+  color: #194bd3;
+  border-radius: 8px;
+}
+
+#createAccountText {
+  font-family: "SF Text";
+  font-size: 14px;
+  color: #7F7F7F;
+  margin-bottom: 5px;
+}
+
+#contactInfoText {
+  font-family: "SF Text";
+  font-size: 14px;
+  color: #7F7F7F;
+  font-style: italic;
+}
+
+#never {
+  font-family: "SF Text";
+  font-weight: 600;
+  font-style: italic;
+  font-size: 14px;
+  color: black;
+}
+
+#leftCarButton {
+  font-family: "SF Text";
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 39px;
+  background-color: transparent;
+  border-color: #194bd3;
+  color: #194bd3;
+  border-width: 1px 0px 1px 1px;
+  border-radius: 8px 0px 0px 8px;
+}
+
+
+#leftCarButtonPressed {
+  font-family: "SF Text";
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 39px;
   background-color: #194bd3;
-} */
+  border-color: #194bd3;
+  color: white;
+  border-width: 1px 0px 1px 1px;
+  border-radius: 8px 0px 0px 8px;
+}
+
+#rightCarButton {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 39px;
+  background-color: transparent;
+  border-color: #194bd3;
+  color: #194bd3;
+  font-family: "SF Text";
+  border-radius: 0px 8px 8px 0px;
+}
+
+#rightCarButtonPressed {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 39px;
+  background-color: #194bd3;
+  border-color: #194bd3;
+  color: white;
+  font-family: "SF Text";
+  border-radius: 0px 8px 8px 0px;
+}
+
+.form-check-label {
+  font-size: 13px;
+  font-family: "SF Text";
+}
+
+#toastError {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 130px;
+  margin-right: 10px;
+}
+
+#justRegisteredModal {
+  width: 100%;
+  padding: 1rem;
+}
+
+
+/* location component */
+#helpText {
+  font-family: "SF Text";
+  font-size: 16px;
+  color: #7F7F7F;
+  margin-bottom: 10px;
+}
+
+
+/* offer related */
+.list-group-item {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#offerContainer {
+  padding: 1rem;
+  border-radius: 16px 0px 16px 16px !important;
+  box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
+  z-index: 1;
+  /* margin-top: 30px; */
+}
+
+.badge {
+  padding-top: 6px !important;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 100%;
+}
+
+#filterButton {
+  z-index: 10;
+  border-radius: 8px 8px 0px 0px;
+  background-color: rgba(255,255,255, 0.93);
+  color: #314CCE;
+  font-family: "SF Text";
+  font-weight: bold;
+  border: transparent;
+  box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.05);
+}
+
+#notSelectedFilter {
+  height: 29px;
+  background: transparent;
+  color: #314CCE;
+  font-family: "SF Text";
+  font-weight: normal;
+  border: transparent;
+
+  padding: 0;
+  display: block;
+  vertical-align: middle;
+}
+
+.toast {
+  border-radius: 8px;
+  border: transparent;
+}

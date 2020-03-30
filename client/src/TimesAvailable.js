@@ -13,15 +13,15 @@ export default function TimesAvailable(props) {
 
     return (
         <Form.Group controlId="payment" bssize="large" style = {{marginBottom: 30}}>
-            <Form.Label style = {{marginBottom: 0}}><h3>Times</h3></Form.Label>
-            <p style = {{fontWeight: 300, fontStyle: 'italic'}}>What general times are you available to help</p>
+            <Form.Label style = {{marginBottom: 0, color: "black"}}><h3>Times</h3></Form.Label>
+            <p style = {{fontWeight: 300, fontStyle: 'italic'}} id="createAccountText">What general times are you available to help</p>
             {Object.keys(props.times).map(function(time) {
                 return  <Form.Check key={time} 
                                     type = "checkbox" 
                                     label = {time}
                                     onChange = {(evt) => { handleChangeTime(evt, time) }}
                                     checked = {props.times[time]} 
-                                    style = {{fontSize: 14, marginTop: 1}}/>
+                                    style = {{fontSize: 14, marginTop: 1, color: "black"}}/>
             })}
         </Form.Group>
     );

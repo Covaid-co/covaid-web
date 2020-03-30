@@ -289,10 +289,9 @@ exports.total_users = function (req, res) {
 
 exports.update = function (req, res) {
   const id = req.token.id;
-  if (user.association == "5e7f9badc80c292245264ebe") {
+  if (req.body.association == "5e7f9badc80c292245264ebe") {
     updateUserInSpreadsheet(id, req.body)
   }
-  console.log(req.body)
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
     if (err) return next(err);
     

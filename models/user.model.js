@@ -15,6 +15,7 @@ let UsersSchema = new Schema({
     preVerified: {type: Boolean},
     verified: {type: Boolean},
     agreedToTerms: {type: Boolean},
+    times_available: [String],
     offer: {
         tasks: [String],
         neighborhoods: [String],
