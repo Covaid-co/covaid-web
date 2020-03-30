@@ -29,9 +29,9 @@ export default function LocationSetting(props) {
                         <Form.Group controlId="first_name" bssize="large">
                             <Form.Control value={fields.locationString} onChange={handleFieldChange} placeholder="City/Zip Code: 19426" />
                         </Form.Group>
-                        <SelectionForm associations={props.state.associations} 
-                                       setState={props.setState} 
-                                       associationNames={props.state.associationNames}/>
+                        <SelectionForm associations={props.state.associations}
+                                       setState={props.setState}
+                                       currAssoc={props.state.currAssoc}/>
                         <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
                     </Col>
                 </Row>

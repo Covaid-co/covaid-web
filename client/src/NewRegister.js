@@ -45,7 +45,7 @@ export default function NewRegister(props, switchToLogin) {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [languageChecked, setLanguageChecked] = useState({});
     const [availabilityChecked, setAvailabilityChecked] = useState({});
-    const [firstPage, setFirstPage] = useState(false);
+    const [firstPage, setFirstPage] = useState(true);
     const [hasCar, setHasCar] = useState(false);
     const [justRegistered, setJustRegistered] = useState(false);
 

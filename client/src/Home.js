@@ -75,9 +75,8 @@ class Home extends Component {
       justVerified: false,
   
       showRequestHelp: false,
-      associations: {},
-      currentAssoc: {},
-      associationNames: {}
+      associations: [],
+      currentAssoc: {}
     }
 
     window.addEventListener("resize", this.update);
@@ -102,12 +101,17 @@ class Home extends Component {
     this.handleHideAbout = this.handleHideAbout.bind(this);
     this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
 
+    this.handleShowRequestHelp = this.handleShowRequestHelp.bind(this);
     this.handleHideRequestHelp = this.handleHideRequestHelp.bind(this);
     this.findAssociations = this.findAssociations.bind(this)
   }
 
   handleHideRequestHelp() {
     this.setState({showRequestHelp: false});
+  }
+
+  handleShowRequestHelp() {
+    this.setState({showRequestHelp: true});
   }
 
   handleShowLocation() {
@@ -323,25 +327,11 @@ class Home extends Component {
     async function fetchData() {
         const response = await fetch(url);
         response.json().then((data) => {
+            console.log(data);
             currentComponent.setState({associations: data});
             if (data.length > 0) {
               currentComponent.setState({currentAssoc: data[0]})
             }
-
-            var tempAssoc = {};
-            var tempAssocNames = {};
-            var notSelected = true;
-            for (var i = 0; i < data.length; i++) {
-              const curr = data[i]['_id'];
-              const name = data[i]['name'];
-              tempAssoc[curr] = notSelected;
-              tempAssocNames[curr] = name;
-              if (notSelected) {
-                  notSelected = false;
-              }
-            }
-            currentComponent.setState({associations: tempAssoc});
-            currentComponent.setState({associationNames: tempAssocNames});
         });
     }
     fetchData();
@@ -623,7 +613,8 @@ class Home extends Component {
 												 state={this.state}
                          setState={this.setState}/>
             <LocationSetting state={this.state} setState={this.setState}/>
-            <NewOffers state={this.state}/>
+            <NewOffers state={this.state} 
+                       handleShowRequestHelp={this.handleShowRequestHelp}/>
           </div>
         </div>);
 

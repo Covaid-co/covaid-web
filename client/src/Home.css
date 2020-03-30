@@ -190,6 +190,7 @@
 .modal-content {
   border-radius: 8px;
   border: transparent;
+  font-family: "SF Text";
 }
 
 .modal-header {
@@ -199,6 +200,15 @@
   padding-left: 0px;
   padding-right: 10px;
   padding-bottom: 10px;
+}
+
+.modal-footer {
+  width: 93%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 20px;
 }
 
 .modal-title {
@@ -241,6 +251,7 @@ input {
   font-family: "SF Text";
   color: #7F7F7F;
   margin-bottom: 5px;
+  margin-top: 0px;
 }
 
 #notSelected {
@@ -548,4 +559,42 @@ textarea.form-control {
 .toast {
   border-radius: 8px;
   border: transparent;
+}
+
+.dropdown-item {
+  height: 29px;
+  background: transparent;
+  color: #314CCE;
+  font-family: "SF Text";
+  font-weight: normal;
+}
+
+.dropdown-item.active {
+  background: #314CCE;
+  background-color: #314CCE;
+  color: white;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  background: #314CCE;
+  background-color: #314CCE;
+  color: white;
+}
+
+.dropdown-menu.show {
+  border-radius: 8px;
+  border: transparent;
+  box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
+}
+
+.volunteerName {
+  font-family: "SF Text";
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 8px;
+  margin-bottom: 2px;
+  margin-left: 10px;
+  font-size: 20px;
+  color: black;
 }
