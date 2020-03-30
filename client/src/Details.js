@@ -8,13 +8,9 @@ export default function Details(props) {
     
     return (
         <Form.Group controlId="details" bssize="large" style = {{marginBottom: 0, marginTop: 30}}>
-            <Form.Label style = {{marginBottom: -10, color: "black"}}>
-            <h5 className="titleHeadings" style = {{marginTop: '8px', marginBottom: '8px', color:"black"}}>
-                Details
-            </h5>
-            </Form.Label>
-            <p style = {{fontWeight: 300, fontStyle: 'italic'}} id="createAccountText">Give us more information on how you can help!</p>
-            <p style = {{fontWeight: 300, fontSize: 14, fontStyle: 'italic', marginTop: -13}} id="createAccountText">
+            <h5 className="volunteerName">Details</h5>
+            <p style={{fontSize: 15}} id="locationInfo">Give us more information on how you can help!</p>
+            <p style = {{fontWeight: 300, fontSize: 14, fontStyle: 'italic', marginTop: -3}} id="createAccountText">
                 Example: "I am free after 6pm on weekdays and am happy to deliver from any store or pharmacy in St. Louis County!"
             </p>
             <Form.Control as="textarea" 

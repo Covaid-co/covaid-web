@@ -301,11 +301,11 @@ input {
   font-size: 16px !important;
   height: 39px;
   color: #7F7F7F;
-  text-indent: 7px;
+  /* text-indent: 7px; */
 }
 
 #orgSelect {
-  text-indent: 12px;
+  text-indent: 5px;
 }
 
 textarea.form-control {
@@ -331,6 +331,17 @@ textarea.form-control {
 }
 
 /* Home Page / navbar */
+
+@media (max-width:767px){
+  #jumboContainer {
+    margin-left: 5% !important;
+  }
+}
+
+#jumboContainer {
+  margin-left: 14%;
+}
+
 .jumbotron {
   background-color: #194bd3;
 }
@@ -372,15 +383,15 @@ textarea.form-control {
 
 #jumboHeading {
   font-weight: bold;
-  font-size: 35px;
-  margin-top: 10px;
+  font-size: 40px;
+  /* margin-top: -15px; */
 }
 
 #jumboText {
   font-family: "SF Text";
   font-size: 16px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 8px;
+  margin-bottom: 24px;
 }
 
 /* login/register */
@@ -433,7 +444,7 @@ textarea.form-control {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
+  margin-top: 0px;
   height: 39px;
   background-color: transparent;
   border-color: #194bd3;
@@ -448,7 +459,7 @@ textarea.form-control {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
+  margin-top: 0px;
   height: 39px;
   background-color: #194bd3;
   border-color: #194bd3;
@@ -461,7 +472,7 @@ textarea.form-control {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
+  margin-top: 0px;
   height: 39px;
   background-color: transparent;
   border-color: #194bd3;
@@ -474,7 +485,7 @@ textarea.form-control {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
+  margin-top: 0px;
   height: 39px;
   background-color: #194bd3;
   border-color: #194bd3;
@@ -521,8 +532,12 @@ textarea.form-control {
   padding: 1rem;
   border-radius: 16px 0px 16px 16px !important;
   box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
-  z-index: 1;
-  /* margin-top: 30px; */
+}
+
+#yourOffer {
+  padding: 1rem;
+  border-radius: 0px 16px 16px 16px !important;
+  box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
 }
 
 .badge {
@@ -541,6 +556,10 @@ textarea.form-control {
   font-weight: bold;
   border: transparent;
   box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.05);
+  padding-right: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 25px;
 }
 
 #notSelectedFilter {
@@ -591,10 +610,17 @@ textarea.form-control {
 .volunteerName {
   font-family: "SF Text";
   font-weight: bold;
-  font-size: 16px;
-  margin-top: 8px;
+  margin-top: 24px;
   margin-bottom: 2px;
-  margin-left: 10px;
-  font-size: 20px;
+  font-size: 16px;
   color: black;
+}
+
+.alert {
+  font-family: "SF Text";
+  font-size: 16px;
+}
+
+.custom-control-label {
+  padding-top: 2px;
 }

@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
+import InputGroup from 'react-bootstrap/InputGroup'
+import FormControl from 'react-bootstrap/FormControl'
 import { useFormFields } from "./libs/hooksLib";
 
 import SelectionForm from './SelectionForm';
@@ -16,6 +18,9 @@ export default function LocationSetting(props) {
     });
 
     const handleSubmit = async e => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log(e.target.value);
         console.log("submitting");
     }
 
@@ -25,13 +30,27 @@ export default function LocationSetting(props) {
             <p id="helpText">Click an offer below for more info.</p>
             <Form onSubmit={handleSubmit}>
                 <Row>
-                    <Col md={4}>
-                        <Form.Group controlId="first_name" bssize="large">
+                    <Col sm={6}>
+                        {/* <Form.Group controlId="first_name" bssize="large">
                             <Form.Control value={fields.locationString} onChange={handleFieldChange} placeholder="City/Zip Code: 19426" />
-                        </Form.Group>
+                        </Form.Group> */}
+                        <InputGroup className="mb-3">
+                            <FormControl
+                                placeholder="City/Zip Code: 19426" 
+                                aria-label="City/Zip Code: 19426"
+                                aria-describedby="basic-addon2"
+                            />
+                            <InputGroup.Append>
+                                <Button variant="outline-secondary" type="submit">Button</Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </Col>
+                    <Col sm={6}>
                         <SelectionForm associations={props.state.associations}
-                                       setState={props.setState}
-                                       currAssoc={props.state.currAssoc}/>
+                                        setState={props.setState}
+                                        currAssoc={props.state.currAssoc}/>
+                    </Col>
+                    <Col xs={12}>
                         <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
                     </Col>
                 </Row>

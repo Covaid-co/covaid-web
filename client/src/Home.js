@@ -97,7 +97,6 @@ class Home extends Component {
     this.handleHidePrompt = this.handleHidePrompt.bind(this);
     this.getMyLocation = this.getMyLocation.bind(this)
     this.logout = this.logout.bind(this);
-    this.switchToVolunteer = this.switchToVolunteer.bind(this)
     this.refreshLocation = this.refreshLocation.bind(this);
     this.handleShowLogin = this.handleShowLogin.bind(this);
     this.handleHideLogin = this.handleHideLogin.bind(this);
@@ -374,10 +373,6 @@ class Home extends Component {
     window.location.reload(false);
   }
 
-  switchToVolunteer() {
-    this.setState({volunteerPortal: true})
-  }
-
   refreshLocation() {
     Cookie.remove('latitude');
     Cookie.remove('longitude');
@@ -441,6 +436,7 @@ class Home extends Component {
     const { isLoaded } = this.state;
     const { isLoggedIn } = this.state;
 
+    // var jumboStyling = '%'
     var bulletin;
     var offer;
     var link;
@@ -497,6 +493,13 @@ class Home extends Component {
     var clickText = <></>;
     var volunteerButton = <></>
     if (isLoggedIn) {
+      yourOffer = <Tab eventKey="your-offer" title={offer} className="tabColor" id='bootstrap-overide'>
+                    <YourOffer state = {this.state}/>
+                  </Tab>;  
+      volunteerButton =  <Button onClick={() => this.setState({volunteerPortal: true})} id="homeButtons" >
+          Update your offer from the volunteer portal
+        </Button>
+
       rightNav = <>
                   <span id = "name" 
                         style = {{color: 'white', 
@@ -525,15 +528,9 @@ class Home extends Component {
                     </font>
                   </Button>
                 </>;
-      yourOffer = <Tab eventKey="your-offer" title={offer} className="tabColor" id='bootstrap-overide'>
-                    <YourOffer state = {this.state}/>
-                  </Tab>;  
-      howHelp = <><h5>My Offer</h5>
-       <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
-       their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></> 
-      volunteerButton =  <Button onClick={this.switchToVolunteer} id="homeButtons" >
-             Update your offer from the volunteer portal
-           </Button>
+                  howHelp = <><h5>My Offer</h5>
+                  <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
+                  their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></> 
        if (this.state.width > 350) {
         clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
        }
@@ -555,7 +552,7 @@ class Home extends Component {
       } else {
         pageContent = <>
           <Jumbotron fluid>
-            <Container>
+            <Container id="jumboContainer">
               <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
               <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
               <Button onClick={() => this.setState({showRequestHelp: true})} id="homeButtons" >
@@ -574,14 +571,19 @@ class Home extends Component {
           <NewRegister handleHideRegistration={this.handleHideRegistration}
                         state={this.state}
                         setState={this.setState}/>
-          <LocationSetting state={this.state} setState={this.setState}/>
-          <NewOffers state={this.state} 
-                      handleShowRequestHelp={this.handleShowRequestHelp}/>
+          <Row>
+            <Col></Col>
+            <Col lg={8} md={10} sm={12}>
+              <LocationSetting state={this.state} setState={this.setState}/>
+              <NewOffers state={this.state} 
+                          handleShowRequestHelp={this.handleShowRequestHelp}/>
+            </Col>
+            <Col></Col>
+          </Row>
         </>
       }
     } else {
-      pageContent = <Loading setLatLong={this.setLatLongFromZip}/>
-      
+      pageContent = <Loading setLatLong={this.setLatLongFromZip}/>  
     }
 
     var modal = <></>
@@ -611,18 +613,48 @@ class Home extends Component {
           <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
-          <div className="App">
-            <Navbar collapseOnSelect 
-                    // onToggle={this.toggleNavBar}
-                    variant="light" 
-                    expand="md"
-                    className = 'customNav'>
-              <Navbar.Brand id="home" href = {window.location.protocol + '//' + window.location.host}>
-                covaid
-              </Navbar.Brand>
-              <Form inline style ={{display: 'block'}}>
-                {collapsed ? <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/> : <></>}
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    return (
+        <div>
+        <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+        <div className="App">
+          <Navbar collapseOnSelect 
+                  // onToggle={this.toggleNavBar}
+                  variant="light" 
+                  expand="md"
+                  className = 'customNav'>
+            <Navbar.Brand id="home" href = {window.location.protocol + '//' + window.location.host}>
+              covaid
+            </Navbar.Brand>
+            <Form inline style ={{display: 'block'}}>
+              {collapsed ? <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/> : <></>}
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            </Form>
+
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link 
+                  id = "navLink1"
+                  style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+                  onClick={this.handleShowAbout}>
+                  <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
+                </Nav.Link>
+                <Nav.Link 
+                  id = "navLink2"
+                  style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+                  onClick={this.handleShowWorks}>
+                  <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
+                </Nav.Link>
+                <Nav.Link 
+                  id = "navLink3"
+                  style ={{color: 'white', fontWeight: 600, fontSize: 13, whiteSpace: "nowrap"}} 
+                  onClick={this.handleShowFeedback}>
+                  <p className='blackCustom' style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
+                </Nav.Link>
+              </Nav>
+              <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
+                {rightNav}
               </Form>
 
               <Navbar.Collapse id="basic-navbar-nav">

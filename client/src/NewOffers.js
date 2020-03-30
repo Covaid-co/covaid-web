@@ -84,7 +84,7 @@ export default function NewOffers(props) {
                 <ListGroup variant="flush">
                     {displayedVolunteers.map((user, i) => {
                         return (<ListGroup.Item action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
-                            <h5 className="volunteerName">
+                            <h5 className="volunteerName" style={{marginLeft: 10, fontSize: 20}}>
                                 {user.first_name} {user.last_name}
                             </h5>
                             <p style = {{marginLeft: 10}} id="locationInfo">{user.offer.neighborhoods.join(', ')}</p>

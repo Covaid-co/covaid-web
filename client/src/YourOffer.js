@@ -133,7 +133,7 @@ export default function YourOffer(props) {
                     setCurrentUserObject(user.languages, languages, setLanguageChecked);
                 }
                 setSwitchSelected(user.availability);
-                const aText = user.availability ? 'Available' : 'Not Available'
+                const aText = user.availability ? 'Available' : 'Unavailable'
                 setAvailableText(aText);
                 setAvailability(user.availability);
 
@@ -285,9 +285,7 @@ export default function YourOffer(props) {
                     >
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
-                    <Col md={1}>
-                    </Col>
-                    <Col md={10} >
+                    <Col>
                         <Alert show={showAlert} variant={'danger'}>
                             Your location has changed! Press update to reflect this.
                         </Alert>
@@ -300,41 +298,33 @@ export default function YourOffer(props) {
                                           switchSelected={switchSelected}
                                           setSwitchSelected={setSwitchSelected}
                                           setAvailability={setAvailability}/>
-                            <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
-                                What can you help with?
-                            </h5>
+                            <h5 className="volunteerName">What can you help with?</h5>
                             <NewLanguages languages={defaultResources}
                                        languageChecked={resources} 
                                        setLanguageChecked={setResources}/>
                             <Details fields={fields.details} 
                                      handleFieldChange={handleFieldChange}/>
                             <Form.Group controlId="phone" bssize="large">
-                                <Form.Label style = {{marginBottom: 0, color: "black"}}> <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
-                                Update your contact number
-                            </h5></Form.Label>
-                                <p style = {{fontWeight: 300, fontStyle: 'italic'}} id="createAccountText">Optional</p>
+                                <h5 className="volunteerName">Phone Number</h5>
+                                <p style={{fontSize: 15}} id="locationInfo">Optional</p>
                                 <PhoneNumber phoneNumber={phoneNumber} 
                                              setPhoneNumber={setPhoneNumber}/> 
                             </Form.Group>
-                            <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
-                                What languages do you speak?
-                            </h5>
+                            <h5 className="volunteerName">What languages do you speak?</h5>
                             <NewLanguages languages={languages}
                                        languageChecked={languageChecked} 
                                        setLanguageChecked={setLanguageChecked}/>
-                            <h5 className="titleHeadings" style = {{marginTop: '30px', marginBottom: '0px', color:"black"}}>
-                                What is your general availability?
-                            </h5>
+                            <h5 className="volunteerName">What is your general availability?</h5>
                             <NewLanguages languages={timeNames} languageChecked={times} setLanguageChecked={setTimes}/>
+                            <h5 className="volunteerName" style={{marginBottom: 5}}>Can you drive?</h5>
                             <NewCar hasCar={hasCar} 
                                     setHasCar={setHasCar}/>
-                            <Button style = {{marginTop: '30px', backgroundColor:"#194bd3"}} variant="primary" type="submit" >
+                            <br/>
+                            <Button id="nextPage" type="submit" >
                                 Update your offer
                             </Button>
-                            
                         </Form>
                     </Col>
-                    <Col md={1}></Col>
                 </Row>
         );
     }
