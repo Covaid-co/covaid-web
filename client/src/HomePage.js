@@ -32,7 +32,7 @@ export default function HomePage(props) {
           <Jumbotron fluid id="jumbo">
             <Container id="jumboContainer">
               <Row>
-              <Col xs={6} id="jumbo-text">
+              <Col md={6} id="jumbo-text">
                 <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
                 <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
                 <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons" >
@@ -46,7 +46,7 @@ export default function HomePage(props) {
                     <u>View COVID-19 Resources</u>
                 </Button>
               </Col>
-              <Col xs={6} id="community-bulletin">
+              <Col md={6} id="community-bulletin">
                 <p className='location-text'>See who's helping in {props.state.locality}</p>
                 <p className="volunteer-info">Click an volunteer's offer below for more info</p>
                 <NewOffers state={props.state} 
