@@ -11,6 +11,7 @@ import NewOffers from './NewOffers';
 import NewRegister from './NewRegister';
 import NewLogin from './NewLogin';
 import RequestHelp from './RequestHelp';
+import GetLocation from './GetLocation';
 
 import './HomePage.css'
 
@@ -63,6 +64,8 @@ export default function HomePage(props) {
           <NewRegister handleHideRegistration={props.handleHideRegistration}
                         state={props.state}
                         setState={props.setState}/>
+          <GetLocation state={props.state}
+                       setLatLong={props.setLatLong}/>
           <Container id="location-container">
               <LocationSetting state={props.state} 
                                setState={props.setState} 
@@ -70,9 +73,6 @@ export default function HomePage(props) {
                                locationSubmit={props.onLocationSubmit}
                                refreshLocation={props.refreshLocation}
                                associations={props.state.associations} />
-              {/* <NewOffers state={props.state} 
-                          handleShowRequestHelp={props.handleShowRequestHelp}
-                          clickOnUser={props.clickOnUser}/> */}
           </Container>
           <Container id="jumboContainer" className="mobile-bulletin-container">
             <Col xs={12} id="mobile-bulletin">
