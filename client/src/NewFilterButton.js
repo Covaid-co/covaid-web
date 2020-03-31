@@ -52,26 +52,25 @@ export default function NewFilterButton(props) {
     }
 
     return (
-        <Container style={{paddingRight: 0, paddingLeft: 0, textAlign: 'right'}}>
-            <Dropdown drop = 'up' 
-                    show={dropdownOpen}
-                    onToggle={dropdownToggle}
-                    alignRight>
-                <Dropdown.Toggle size = 'sm' 
-                                variant="secondary"
-                                id="filterButton">
-                    <strong>Resource Filter</strong>
-                </Dropdown.Toggle>
+        <Dropdown drop = 'up' 
+                show={dropdownOpen}
+                onToggle={dropdownToggle}
+                style={{textAlign: 'right'}}
+                alignRight>
+            <Dropdown.Toggle size = 'sm' 
+                            variant="secondary"
+                            id="filterButton">
+                <strong>Resource Filter</strong>
+            </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                    {props.resources.map((task) => {
-                    return <Dropdown.Item
-                                onSelect = {(evt) => { handleTaskChange(evt, task)}}
-                                active = {props.taskSelect[task]}> {task}
-                            </Dropdown.Item >
-                    })}
-                </Dropdown.Menu>
-            </Dropdown>
-        </Container>
+            <Dropdown.Menu>
+                {props.resources.map((task) => {
+                return <Dropdown.Item
+                            onSelect = {(evt) => { handleTaskChange(evt, task)}}
+                            active = {props.taskSelect[task]}> {task}
+                        </Dropdown.Item >
+                })}
+            </Dropdown.Menu>
+        </Dropdown>
     );
 }

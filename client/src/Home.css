@@ -337,18 +337,6 @@ textarea.form-control {
 
 /* Home Page / navbar */
 
-@media (max-width:1100px){ 
-  #jumboContainer {
-    height: 250px;
-  }
-}
-
-/* @media (max-width:768px){ 
-  #jumboContainer {
-    height: 320px;
-  }
-} */
-
 .jumbotron {
   background-color: #194bd3;
 }
@@ -533,8 +521,11 @@ textarea.form-control {
 }
 
 #offerContainer {
+  max-width: 1500px;
   padding: 1rem;
+  margin-right: 0px;
   margin-left: 0px;
+  margin-top: 0px;
   border-radius: 16px 0px 16px 16px !important;
   box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
 }

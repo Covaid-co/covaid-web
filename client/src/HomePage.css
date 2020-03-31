@@ -36,12 +36,26 @@
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 20px;
+  margin-top: 10px;
 }
 
 .volunteer-location {
   font-family: "SF Text";
   color: #7F7F7F;
   margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+#volunteer-mobile {
+  font-family: "SF Text";
+  font-weight: bold;
+  height: 24px;
+  vertical-align: middle;
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  padding-top: 7px;
+  padding-bottom: 0px !important;
   margin-top: 0px;
 }
 
@@ -72,7 +86,164 @@
   margin-right: 5%;
   height: 240px;
   padding-top: 22px;
+  max-width: 1500px;
 }
+
+#location-container {
+  margin-left: 7%;
+  max-width: 1200px;
+}
+
+#city-support-text-tablet { 
+  display: none;
+}
+
+#mobile-tablet-separate {
+  display: none;
+}
+
+#mobile-org {
+  display: none;
+}
+
+@media (max-width:1150px){ 
+  #jumboContainer {
+    height: 290px;
+    margin-left: 5%;
+  }
+
+  #location-container {
+    margin-left: 5%;
+  }
+}
+
+@media (max-width:1000px){ 
+  #jumboContainer {
+    margin-left: 4%;
+    margin-right: 4%;
+  }
+
+  #location-container {
+    margin-left: 4%;
+  }
+}
+
+@media (max-width:900px){ 
+  #jumboContainer {
+    margin-left: 3%;
+    margin-right: 3%;
+  }
+  
+  #location-container {
+    margin-left: 3%;
+  }
+}
+
+@media (max-width:800px){ 
+  #jumboContainer {
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+
+  #location-container {
+    margin-left: 2%;
+  }
+}
+
+@media (max-width:768px){ 
+  #jumboContainer {
+    height: 260px;
+  }
+
+  #community-bulletin {
+    display: none;
+  }
+
+
+  .volunteer-badge-web {
+    display: none;
+  }
+
+  .volunteer-badge-mobile {
+    display: block !important;
+  }
+
+  .mobile-bulletin-container {
+    display: block !important;
+  }
+
+  #city-support-text-tablet { 
+    display: block;
+  }
+
+  #mobile-tablet-separate {
+    display: block;
+  }
+
+  #web-separate {
+    display: none;
+  }
+
+  #jumbo {
+    padding-top: 50px;
+  }
+}
+
+
+@media (min-width:578px){ 
+.mobile-bulletin-container {
+  padding-top: 0px !important;
+}
+}
+
+@media (max-width:578px){ 
+  #jumboContainer {
+    height: 320px;
+  }
+
+  #city-support-text-tablet { 
+    display: none;
+  }
+
+  #mobile-org {
+    display: none;
+  }
+
+  .mobile-bulletin-container {
+    padding-top: 0px !important;
+  }
+
+  #jumbo {
+    padding-top: 10px;
+  }
+}
+
+@media (max-width:345px){ 
+  #jumboContainer {
+    height: 360px;
+  }
+
+  #jumbo {
+    padding-top: 0px;
+  }
+}
+
+@media (max-width:345px){ 
+  #jumboContainer {
+    height: 410px;
+  }
+}
+
+.volunteer-badge-mobile {
+  display: none;
+}
+
+
+/* @media (min-width: 100px) {
+  #jumboContainer{
+    max-width: 1400px;
+  }
+} */
 
 #jumboHeading {
   font-weight: bold;
@@ -84,6 +255,17 @@
   margin-top: -20px;
   padding-right: 0px;
   padding-left: 10px;
+}
+
+#mobile-bulletin {
+  margin-top: -2px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.mobile-bulletin-container {
+  /* padding-top: 0px !important; */
+  display: none;
 }
 
 #jumbo-text {
@@ -103,12 +285,6 @@
   font-size: 16px;
   margin-top: -5px;
   margin-bottom: 0px;
-}
-
-@media (min-width: 768px) {
-  #jumboContainer.container{
-    max-width: 1400px;
-  }
 }
 
 #enter-location {

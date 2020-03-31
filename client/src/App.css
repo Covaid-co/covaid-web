@@ -186,11 +186,6 @@ html, body {
   }
 } */
 
-@media (max-width:320px){
-  .BottomHalf {
-    bottom: -10% !important;
-  }
-}
 
 .pagination {
   display: flex;
@@ -204,12 +199,6 @@ html, body {
 @media (max-width:490px){
   .BottomHalf {
     bottom: 5% !important;
-  }
-}
-
-@media (max-width:340px){
-  .BottomHalf {
-    bottom: 10% !important;
   }
 }
 

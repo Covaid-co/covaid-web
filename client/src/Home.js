@@ -613,8 +613,8 @@ class Home extends Component {
               style={this.state.toggled ? {'color': '#194bd3'} : {'color': 'white'}}>
               covaid
             </Navbar.Brand>
-            <Form inline style ={{display: 'block'}}>
-              {collapsed ? <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/> : <></>}
+            <Form inline className="volunteer-badge-mobile">
+              <Badge aria-describedby='tooltip-bottom' variant="success" id='volunteer-mobile'>{this.state.totalVolunteers} Volunteers</Badge>
               <Navbar.Toggle aria-controls="basic-navbar-nav" id={this.state.toggled ? 'toggledNav1': 'nav1'}/>
             </Form>
 
@@ -629,9 +629,9 @@ class Home extends Component {
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(3)}>
                   <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
                 </Nav.Link>
-                {!collapsed ? <Nav.Link style ={{border: '0px solid'}} >
-                                <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/>
-                              </Nav.Link> : <></>}
+                <Nav.Link className="volunteer-badge-web">
+                  <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/>
+                </Nav.Link>
               </Nav>
               {rightNav}
             </Navbar.Collapse>

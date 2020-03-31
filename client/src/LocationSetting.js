@@ -28,7 +28,7 @@ export default function LocationSetting(props) {
             <h1 id="enter-location">Enter your location</h1>
             <Form onSubmit={handleSubmit}>
                 <Row>
-                    <Col lg={4} md={6} sm={6}>
+                    <Col lg={4} md={6} sm={6} xs={12}>
                         <InputGroup controlId="locationString" className="mb-3">
                             <FormControl
                                 placeholder="Pittsburgh, Pennsylvania" 
@@ -49,23 +49,46 @@ export default function LocationSetting(props) {
                             </u>
                         </Button>
                     </Col>
+                    <Col md={6} sm={6} id="city-support-text-tablet">
+                        <p style={{marginTop: -8, float: 'right'}}className="volunteer-location">
+                            This city is supported by:<br/> 
+                            <p style={{color: '#194bd3', float: 'right'}}className="volunteer-location">Pittsburgh Mutual Aid</p>
+                        </p>
+                    </Col>
                 </Row>
-                <Row>
-                    <Col lg={4} md={6} sm={6}>
+                <Row id="web-separate">
+                    <Col lg={4} md={6} sm={6} xs={12}>
+                        <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
+                        <p style={{marginTop: -8, float: 'left'}}className="volunteer-location">
+                            This city is supported by:<br/> 
+                            <p style={{color: '#194bd3', float: 'left'}}className="volunteer-location">Pittsburgh Mutual Aid</p>
+                        </p>
+                    </Col>
+                </Row>
+                <Row id="mobile-tablet-separate">
+                    <Col lg={12} md={12}>
                         <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
                     </Col>
                 </Row>
-                <Row>
-                    <Col lg={4} md={6} sm={6}>
+                <Row id="mobile-org">
+                    <Col md={12}>
+                        <p style={{marginTop: -8, float: 'left'}}className="volunteer-location">
+                            This city is supported by:<br/> 
+                            <p style={{color: '#194bd3', float: 'left'}}className="volunteer-location">Pittsburgh Mutual Aid</p>
+                        </p>
+                    </Col>
+                </Row>
+                {/* <Row>
+                    <Col md={6} sm={6} xs={12}>
                         <p style={{marginTop: -8}}className="volunteer-location">This city is supported by:</p>
                         <p style={{marginTop: -8, color: '#194bd3'}}className="volunteer-location">Pittsburgh Mutual Aid</p>
                     </Col>
-                </Row>
-                <Row>
+                </Row> */}
+                {/* <Row>
                     <Col lg={4} md={6} sm={6}>
                         <p id="requestCall" style={{marginTop: 12, marginBottom: 20}}></p>
                     </Col>
-                </Row>
+                </Row> */}
             </Form>
         </>
     );
