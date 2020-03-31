@@ -17,6 +17,15 @@ import './HomePage.css'
 const queryString = require('query-string');
 
 export default function HomePage(props) {
+    const [mode, setMode] = useState('');
+    const [modalInfo, setModalInfo] = useState({});
+
+    function updateRequestHelpMode(mode, modalInfo) {
+      props.handleShowRequestHelp()
+      setMode(mode)
+      setModalInfo(modalInfo)
+    }
+
     return (
         <div>
           <Jumbotron fluid>
@@ -25,7 +34,7 @@ export default function HomePage(props) {
               <Col xs={6} id="jumbo-text">
                 <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
                 <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
-                <Button onClick={props.handleShowRequestHelp} id="homeButtons" >
+                <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons" >
                   Request Help
                 </Button>{' '}
                 {props.volunteerButton}
@@ -40,14 +49,14 @@ export default function HomePage(props) {
                 <p className='location-text'>See who's helping in {props.state.locality}</p>
                 <p className="volunteer-info">Click an volunteer's offer below for more info</p>
                 <NewOffers state={props.state} 
-                          handleShowRequestHelp={props.handleShowRequestHelp}
+                          handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}
                           clickOnUser={props.clickOnUser}/>
               </Col>
               </Row>
             </Container>
           </Jumbotron>
-          <RequestHelp hideRequestHelp={props.handleHideRequestHelp}
-                        state={props.state}/>
+          <RequestHelp requestHelpMode={mode} hideRequestHelp={props.handleHideRequestHelp}
+                        state={props.state} volunteer={modalInfo}/>
           <NewLogin handleShowRegistration={props.handleShowRegistration}
                     handleHideLogin={props.handleHideLogin}
                     state={props.state}/>

@@ -24,7 +24,7 @@ async function addRequestToSpreadsheet(request, ID, volunteers) {
     const requestSheet = doc.sheetsByIndex[1]; // or use doc.sheetsById[id]
 
     var volunteer_emails = []
-    for (var i = 0; i < volunteers.length; i++) {
+    for (var i = 0; i < Math.min(volunteers.length, 3); i++) {
         volunteer_emails.push(volunteers[i].email)
     }
     
@@ -163,23 +163,6 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
 })
 
 exports.handle_old_request = asyncWrapper(async (req, res) => {
-    const { 
-        body: {
-            requester_email,
-            requester_phone,
-            offerer_email,
-            details
-        } 
-    } = req;
-
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-               user: 'covaidco@gmail.com',
-               pass: 'supportyourcity_covaid_1?'
-        }
-    }); 
-
     const request = new Requests(req.body);
     request.completed = false;
     console.log(request)
@@ -189,53 +172,7 @@ exports.handle_old_request = asyncWrapper(async (req, res) => {
             message: "Request Created", //
             result: result // the "result" object can be filtered or you can simply return the message
         });
-
-        var paymentText;
-        if (request.payment == 0) {
-            paymentText = "Call Ahead"
-        } else if (request.payment == 1) {
-            paymentText = "Reimburse Volunteer"
-        } else {
-            paymentText = "N/A"
-        }
-
-        var mode = "localhost:3000";
-        if (process.env.PROD) {
-            mode = "covaid.co"
-        }
-
-        var link = 'http://' + mode + '/completeOffer?ID=' + result._id;
-
-        var email = requester_email;
-        var phone = requester_phone;
-
-        if (!requester_email || requester_email.length == 0) {
-            email = "N/A"
-        }
-
-        if (!requester_phone || requester_phone.length == 0) {
-            phone = "N/A"
-        }
-
-        console.log(link);
-
-        const mailOptions = {
-            from: 'covaidco@gmail.com', // sender address
-            to: 'covaidco@gmail.com', // list of receivers
-            subject: 'Someone needs your help!', // Subject line
-            html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: result._id, link: link, payment: paymentText})
-        };
-
-        transporter.sendMail(mailOptions, function (err, info) {
-            if (err)
-                res.sendStatus(400);
-            else
-                res.sendStatus(200);
-        });
-    }).catch(err => {
-        res.status(500).json({
-            error: err 
-        });
+        sendEmail(req);
     });
 });
 
@@ -243,7 +180,13 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
     request.status = "incomplete"
     var result = await request.save()
-    var volunteers = await getBestVolunteers(request)
+    var volunteers;
+    if (!req.body.volunteer) {
+        volunteers = await getBestVolunteers(request)
+        console.log(volunteers)
+    } else {
+        volunteers = [req.body.volunteer]
+    }
     console.log(volunteers)
     if (request.association == "5e7f9badc80c292245264ebe") {
         await addRequestToSpreadsheet(request, result._id, volunteers)
@@ -271,13 +214,13 @@ function calcDistance(latA, longA, latB, longB) {
 
 
 async function getBestVolunteers(request) {
+    console.log(request)
     var users = await Users.find({'availability': true,
                         'preVerified': true,
                         'association': request.association,
-                        'offer.tasks': { $in: request.resource_request },
-                        'languages': { $in: request.languages },
+                        'offer.tasks': { $all: request.resource_request },
                 })
-
+    
     for (var i = 0; i < users.length; i++) {
         const coords = users[i].location.coordinates;
         const distance = calcDistance(request.latitude, request.longitude, coords[1], coords[0]);
@@ -285,4 +228,66 @@ async function getBestVolunteers(request) {
     }
     users.sort(function(a, b){return a['distance'] - b['distance']});
     return users;
+}
+
+function sendEmail(req, request, ID) {
+    const { 
+        body: {
+            requester_email,
+            requester_phone,
+            details
+        } 
+    } = req;
+    var offerer_email = req.body.volunteer.email;
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+               user: 'covaidco@gmail.com',
+               pass: 'supportyourcity_covaid_1?'
+        }
+    }); 
+    
+    var paymentText;
+    if (request.payment == 0) {
+        paymentText = "Call Ahead"
+    } else if (request.payment == 1) {
+        paymentText = "Reimburse Volunteer"
+    } else {
+        paymentText = "N/A"
+    }
+
+    var mode = "localhost:3000";
+    if (process.env.PROD) {
+        mode = "covaid.co"
+    }
+
+    var link = 'http://' + mode + '/completeOffer?ID=' + ID;
+
+    var email = requester_email;
+    var phone = requester_phone;
+
+    if (!requester_email || requester_email.length == 0) {
+        email = "N/A"
+    }
+
+    if (!requester_phone || requester_phone.length == 0) {
+        phone = "N/A"
+    }
+
+    console.log(link);
+
+    const mailOptions = {
+        from: 'covaidco@gmail.com', // sender address
+        to: 'covaidco@gmail.com', // list of receivers
+        subject: 'Someone needs your help!', // Subject line
+        html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: ID, link: link, payment: paymentText})
+    };
+
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err)
+            res.sendStatus(400);
+        else
+            res.sendStatus(200);
+    });
 }
