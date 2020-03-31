@@ -23,6 +23,8 @@ export default function RequestHelp(props) {
         phone: ""
     });
 
+    const [mode, setMode] = useState(props.requestHelpMode);
+
     const languages = ['English', 'Chinese', 'French', 'Spanish', 'Italian'];
     const defaultResources = ['Food/Groceries', 'Medication', 'Emotional Support', 'Donate', 'Academic/Professional', 'Misc.'];
     const [resources, setResources] = useState(
@@ -44,6 +46,8 @@ export default function RequestHelp(props) {
 
     useEffect(() => {
         var url = "/api/association/get_assoc/lat_long?";
+        setMode(props.requestHelpMode)
+        setLanguageChecked({})
         let params = {
             'latitude': props.state.latitude,
             'longitude': props.state.longitude,
@@ -52,26 +56,26 @@ export default function RequestHelp(props) {
                 .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
                 .join('&');
         url += query;
-    
-        async function fetchData() {
-            const response = await fetch(url);
-            response.json().then((data) => {
-                var resourcesFromAssoc = defaultResources
+
+        function fetchResources() {
+            var resourcesFromAssoc;
+            if (props.requestHelpMode == "bulletin") {
+                resourcesFromAssoc = props.volunteer.offer.tasks
+            } else {
+                var data = props.state.associations
+                resourcesFromAssoc = defaultResources
                 if (data[0]) {
                     resourcesFromAssoc = data[0].resources
                 }
-                
-                var tempAssoc = {}
-
-                for (var i = 0; i < resourcesFromAssoc.length; i++) {
-                  tempAssoc[resourcesFromAssoc[i]] = false
-                }
-                console.log(tempAssoc)
-                setResources(tempAssoc)
-            });
+            }
+            var tempAssoc = {}
+            for (var i = 0; i < resourcesFromAssoc.length; i++) {
+                tempAssoc[resourcesFromAssoc[i]] = false
+            }
+            setResources(tempAssoc)
         }
-        fetchData();
-    }, []);
+        fetchResources();
+    }, [props.requestHelpMode, props.volunteer]);
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -102,6 +106,8 @@ export default function RequestHelp(props) {
             'date': date,
             'latitude': props.state.latitude,
             'longitude': props.state.longitude,
+            'volunteer': props.volunteer,
+            'status': "pending"
         };
         console.log(form)
         fetch('/api/request/create_request', {
@@ -134,7 +140,7 @@ export default function RequestHelp(props) {
                 <Modal.Body>
                     <p id="requestCall">
                         For those who would rather call in a request, 
-                        please call <p id="phoneNumber">(401) 526-8243</p>
+                        please call <span id="phoneNumber">(401) 526-8243</span>
                     </p>
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>

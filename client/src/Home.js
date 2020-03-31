@@ -82,6 +82,7 @@ class Home extends Component {
       justVerified: false,
       currentClickedUser: '',
       showRequestHelp: false,
+      requestHelpMode: '',
       associations: [],
       currentAssoc: {},
       volunteerPortal: false,
@@ -218,6 +219,8 @@ class Home extends Component {
         var foundZipCode = '';
         var prevLocality = '';
         var locality = '';
+
+        this.findAssociations(latitude, longitude, this);
         for (var i = 0; i < Math.min(4, response.results.length); i++) {
           const results = response.results[i]['address_components'];
           // console.log(results);
@@ -567,6 +570,7 @@ class Home extends Component {
                                 handleLocationChange={this.handleLocationChange}
                                 onLocationSubmit={this.onLocationSubmit}
                                 handleShowRequestHelp={this.handleShowRequestHelp}
+                                requestHelpMode={this.requestHelpMode}
                                 clickOnUser={this.clickOnUser}
                                 volunteerButton={volunteerButton}
                                 refreshLocation={this.refreshLocation}/>
