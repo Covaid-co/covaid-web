@@ -8,16 +8,17 @@ import YourOffer from './YourOffer';
 import LoginRegisterModal from './LoginRegisterModal';
 import HelpfulLinks from './HelpfulLinks';
 import Loading from './Loading';
-import RequestHelp from './RequestHelp';
+// import RequestHelp from './RequestHelp';
 import VolunteerBadge from './components/VolunteerBadge';
-import NewLogin from './NewLogin';
-import NewRegister from './NewRegister';
-import NewOffers from './NewOffers';
-import LocationSetting from './LocationSetting';
+// import NewLogin from './NewLogin';
+// import NewRegister from './NewRegister';
+// import NewOffers from './NewOffers';
+// import LocationSetting from './LocationSetting';
 import VolunteerPortal from './VolunteerPortal'
 import AboutUs from './AboutUs'
 import HowItWorks from './HowItWorks'
 import Feedback from './Feedback'
+import HomePage from './HomePage'
 
 import fetch_a from './util/fetch_auth';
 
@@ -531,18 +532,10 @@ class Home extends Component {
     } else {
       if (collapsed === false) {
         rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
-          <Button variant="outline-light" 
-                          style={{outlineWidth: "thick"}}
-                          id = 'howHelpButton'
-                          onClick={this.handleShowLogin}>
-                    <font id ="help" 
-                          style = {{color:"white", 
-                                    fontWeight: 600,
-                                    fontSize: 12, whiteSpace: 'nowrap'}}>
+                    <Button variant="outline-light" id = 'homeButtons'onClick={this.handleShowLogin}>
                       Volunteer Login
-                    </font>
-                  </Button>
-        </Form>
+                    </Button>
+                  </Form>
       } else {
         rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
                     <Button variant="outline-light" id='loginButton' onClick={this.handleShowLogin} style={{width: '100%'}}>
@@ -564,42 +557,22 @@ class Home extends Component {
       if (this.state.volunteerPortal) {
         pageContent = <VolunteerPortal state={this.state}/>
       } else {
-        pageContent = <>
-          <Jumbotron fluid>
-            <Container id="jumboContainer">
-              <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
-              <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
-              <Button onClick={() => this.setState({showRequestHelp: true})} id="homeButtons" >
-                Request Help
-              </Button>{' '}
-              {volunteerButton}
-              <br />
-              <Button variant="link" style={{color: "white", marginTop: 10, paddingLeft: 0}} onClick={() => this.handleShowModal(4)}><u>View COVID-19 Resources</u></Button>
-            </Container>
-          </Jumbotron>
-          <RequestHelp hideRequestHelp={this.handleHideRequestHelp}
-                        state={this.state}
-                        />
-          <NewLogin handleShowRegistration={this.handleShowRegistration}
-                    handleHideLogin={this.handleHideLogin}
-                    state={this.state}/>
-          <NewRegister handleHideRegistration={this.handleHideRegistration}
-                        state={this.state}
-                        setState={this.setState}/>
-          <Row>
-            <Col></Col>
-            <Col lg={8} md={10} sm={12}>
-              <LocationSetting state={this.state} setState={this.setState} handleLocationChange={this.handleLocationChange} locationSubmit={this.onLocationSubmit} />
-              <NewOffers state={this.state} 
-                          handleShowRequestHelp={this.handleShowRequestHelp}
-                          clickOnUser={this.clickOnUser}/>
-            </Col>
-            <Col></Col>
-          </Row>
-        </>
+        pageContent = <HomePage state={this.state} 
+                                setState={this.setState}
+                                handleShowModal={this.handleShowModal} 
+                                handleHideRequestHelp={this.handleHideRequestHelp}
+                                handleShowRegistration={this.handleShowRegistration}
+                                handleHideLogin={this.handleHideLogin}
+                                handleHideRegistration={this.handleHideRegistration}
+                                handleLocationChange={this.handleLocationChange}
+                                onLocationSubmit={this.onLocationSubmit}
+                                handleShowRequestHelp={this.handleShowRequestHelp}
+                                clickOnUser={this.clickOnUser}
+                                volunteerButton={volunteerButton}
+                                refreshLocation={this.refreshLocation}/>
       }
     } else {
-      pageContent = <Loading setLatLong={this.setLatLongFromZip}/>  
+      pageContent = <Loading setLatLong={this.setLatLongFromZip}/>;
     }
 
     var modal = <></>
@@ -626,17 +599,17 @@ class Home extends Component {
     }
 
     return (
-        <div>
+        <>
         <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
-        <div className="App" style={{overflowX: 'hidden'}}>
+        <div className="App">
           <Navbar collapseOnSelect 
                   onToggle={this.toggleNavBar}
                   variant="light" 
                   expand="md"
                   className = {this.state.toggled ? 'customNavToggled': 'customNav'}>
-            <Navbar.Brand className={collapsed ? 'homeCollapsed': 'home'} href = {window.location.protocol + '//' + window.location.host}
+            <Navbar.Brand className={'home'} href = {window.location.protocol + '//' + window.location.host}
               style={this.state.toggled ? {'color': '#194bd3'} : {'color': 'white'}}>
               covaid
             </Navbar.Brand>
@@ -648,16 +621,13 @@ class Home extends Component {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(1)} >
-                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'} 
-                     style={{marginTop: 5, marginBottom: 5, padding: 0}}>About us</p>
+                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>About us</p>
                 </Nav.Link>
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(2)}>
-                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}
-                     style={{marginTop: 5, marginBottom: 5, padding: 0}}>How it works</p>
+                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>How it works</p>
                 </Nav.Link>
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(3)}>
-                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'} 
-                     style={{marginTop: 5, marginBottom: 5, padding: 0}}>Feedback</p>
+                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
                 </Nav.Link>
                 {!collapsed ? <Nav.Link style ={{border: '0px solid'}} >
                                 <VolunteerBadge totalVolunteers={this.state.totalVolunteers}/>
@@ -666,13 +636,13 @@ class Home extends Component {
               {rightNav}
             </Navbar.Collapse>
           </Navbar>
-        {pageContent}
+          {pageContent}
       </div>
 
       <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 60}}>
         {modal}
       </Modal>
-    </div>);
+    </>);
 
       return (
         <div>

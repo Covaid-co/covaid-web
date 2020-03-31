@@ -84,13 +84,32 @@ export default function NewOffers(props) {
                 <ListGroup variant="flush">
                     {displayedVolunteers.map((user, i) => {
                         return (<ListGroup.Item action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
-                            <h5 className="volunteerName" style={{marginLeft: 10, fontSize: 20, marginTop: 8}}>
-                                {user.first_name} {user.last_name}
-                            </h5>
-                            <p style = {{marginLeft: 10}} id="locationInfo">{user.offer.neighborhoods.join(', ')}</p>
-                            <div style = {{marginLeft: 10}}>
+                            <div >
+                                <h5 className="volunteer-name">
+                                    {user.first_name}
+                                </h5>
+                                <h5 className="association-name"> Pittsburgh Mutual Aid</h5>
+                            </div>
+                            <p className="volunteer-location">{user.offer.neighborhoods.join(', ')}</p>
+                            <div>
                                 {user.offer.tasks.map((task, i) => {
-                                    return <Badge key={i} id="selected" style = {{whiteSpace: "normal"}}>{task}</Badge>
+                                    return <Badge key={i} className='task-info'>{task}</Badge>
+                                })}
+                            </div>
+                        </ListGroup.Item>);
+                    })}
+                    {displayedVolunteers.map((user, i) => {
+                        return (<ListGroup.Item action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
+                            <div >
+                                <h5 className="volunteer-name">
+                                    {user.first_name}
+                                </h5>
+                                <h5 className="association-name"> Pittsburgh Mutual Aid</h5>
+                            </div>
+                            <p className="volunteer-location">{user.offer.neighborhoods.join(', ')}</p>
+                            <div>
+                                {user.offer.tasks.map((task, i) => {
+                                    return <Badge key={i} className='task-info'>{task}</Badge>
                                 })}
                             </div>
                         </ListGroup.Item>);

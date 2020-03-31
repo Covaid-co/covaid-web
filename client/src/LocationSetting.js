@@ -24,19 +24,15 @@ export default function LocationSetting(props) {
     }
 
     return (
-        <Container style={{color: 'black'}}>
-            <h1 id="jumboHeading" style={{fontSize: 24, marginBottom: 1}}>See who's helping in {props.state.locality}</h1>
-            <p id="helpText">Click an offer below for more info.</p>
+        <>
+            <h1 id="enter-location">Enter your location</h1>
             <Form onSubmit={handleSubmit}>
                 <Row>
-                    <Col sm={6}>
-                        {/* <Form.Group controlId="first_name" bssize="large">
-                            <Form.Control value={fields.locationString} onChange={handleFieldChange} placeholder="City/Zip Code: 19426" />
-                        </Form.Group> */}
+                    <Col lg={4} md={6} sm={6}>
                         <InputGroup controlId="locationString" className="mb-3">
                             <FormControl
-                                placeholder="Enter City/Zip Code" 
-                                aria-label="City/Zip Code: 19426"
+                                placeholder="Pittsburgh, Pennsylvania" 
+                                aria-label="Pittsburgh, Pennsylvania"
                                 aria-describedby="basic-addon2"
                                 value={locationString}
                                 onChange={e => setLocationString(e.target.value)}
@@ -45,17 +41,32 @@ export default function LocationSetting(props) {
                                 <Button variant="outline-secondary" type="submit">Search</Button>
                             </InputGroup.Append>
                         </InputGroup>
+                        <Button variant="link" 
+                                id="refresh-location"
+                                onClick={props.refreshLocation} >
+                            <u>Return to Original Location 
+                                <i className="fa fa-refresh" style={{marginLeft: 10}} aria-hidden="true"></i>
+                            </u>
+                        </Button>
                     </Col>
-                    <Col sm={6}>
-                        <SelectionForm associations={props.state.associations}
-                                        setState={props.setState}
-                                        currAssoc={props.state.currAssoc}/>
-                    </Col>
-                    <Col xs={12}>
+                </Row>
+                <Row>
+                    <Col lg={4} md={6} sm={6}>
                         <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
                     </Col>
                 </Row>
+                <Row>
+                    <Col lg={4} md={6} sm={6}>
+                        <p style={{marginTop: -8}}className="volunteer-location">This city is supported by:</p>
+                        <p style={{marginTop: -8, color: '#194bd3'}}className="volunteer-location">Pittsburgh Mutual Aid</p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={4} md={6} sm={6}>
+                        <p id="requestCall" style={{marginTop: 12, marginBottom: 20}}></p>
+                    </Col>
+                </Row>
             </Form>
-        </Container>
+        </>
     );
 }

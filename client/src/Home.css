@@ -183,6 +183,11 @@
   margin-top: 10px;
 }
 
+#homeButtons:hover{
+  color: #194bd3 !important;
+  background-color: white;
+}
+
 #showRequestModal {
   margin-top: 60px;
 }
@@ -332,15 +337,17 @@ textarea.form-control {
 
 /* Home Page / navbar */
 
-@media (max-width:767px){
+@media (max-width:1100px){ 
   #jumboContainer {
-    margin-left: 5% !important;
+    height: 250px;
   }
 }
 
-#jumboContainer {
-  margin-left: 14%;
-}
+/* @media (max-width:768px){ 
+  #jumboContainer {
+    height: 320px;
+  }
+} */
 
 .jumbotron {
   background-color: #194bd3;
@@ -370,8 +377,9 @@ textarea.form-control {
   padding: 10px;
   border-radius: 20px;
   font-size: 13px;
-  padding-top: 6px !important;
+  padding-top: 7px;
   padding-bottom: 0px !important;
+  margin-top: 11px;
 }
 
 .container {
@@ -383,16 +391,10 @@ textarea.form-control {
   color: white;
 }
 
-#jumboHeading {
-  font-weight: bold;
-  font-size: 40px;
-  /* margin-top: -15px; */
-}
-
 #jumboText {
   font-family: "SF Text";
   font-size: 16px;
-  margin-top: 8px;
+  margin-top: 0px;
   margin-bottom: 24px;
 }
 
@@ -532,6 +534,7 @@ textarea.form-control {
 
 #offerContainer {
   padding: 1rem;
+  margin-left: 0px;
   border-radius: 16px 0px 16px 16px !important;
   box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
 }
@@ -543,25 +546,10 @@ textarea.form-control {
 }
 
 .badge {
-  padding-top: 6px !important;
+  padding-top: 6px;
   padding-left: 10px;
   padding-right: 10px;
   font-size: 100%;
-}
-
-#filterButton {
-  z-index: 10;
-  border-radius: 8px 8px 0px 0px;
-  background-color: rgba(255,255,255, 0.93);
-  color: #314CCE;
-  font-family: "SF Text";
-  font-weight: bold;
-  border: transparent;
-  box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.05);
-  padding-right: 25px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 25px;
 }
 
 #notSelectedFilter {

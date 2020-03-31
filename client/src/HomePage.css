@@ -1,0 +1,133 @@
+.volunteer-name {
+  font-family: "SF Text";
+  font-weight: bold;
+  margin-top: 4px;
+  margin-bottom: 0px;
+  font-size: 16px;
+  color: black;
+  display: inline;
+}
+
+.association-name {
+  font-family: "SF Text";
+  margin-top: 4px;
+  margin-bottom: 0px;
+  font-size: 13px;
+  color: #314CCE;
+  display: inline;
+  font-weight: 300;
+  margin-left: 5px;
+  /* float: right; */
+}
+
+.list-group-flush .list-group-item {
+  padding-left: 10px;
+}
+
+#filterButton {
+  z-index: 10;
+  border-radius: 8px 8px 0px 0px;
+  background-color: rgba(255,255,255, 1);
+  color: #314CCE;
+  font-family: "SF Text";
+  border: transparent;
+  box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.05);
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+}
+
+.volunteer-location {
+  font-family: "SF Text";
+  color: #7F7F7F;
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+.task-info {
+  height: 25px;
+  border-radius: 40px;
+  background: #194bd3 !important;
+  color: white;
+  font-size: 13px;
+  font-family: "SF Text";
+  font-weight: bold;
+  border: 1px solid #314CCE;
+  box-sizing: border-box;
+
+  margin: 4px 8px 4px 0px;
+  padding-bottom: 0;
+  padding-top: 6px;
+  display: inline-block;
+
+  flex: none;
+  order: 0;
+  align-self: flex-start;
+  vertical-align: middle;
+}
+
+#jumboContainer {
+  margin-left: 7%;
+  margin-right: 5%;
+  height: 240px;
+  padding-top: 22px;
+}
+
+#jumboHeading {
+  font-weight: bold;
+  font-size: 48px;
+  margin-bottom: 0px;
+}
+
+#community-bulletin {
+  margin-top: -20px;
+  padding-right: 0px;
+  padding-left: 10px;
+}
+
+#jumbo-text {
+  margin-top: 10px;
+  padding-right: 35px;
+}
+
+.location-text {
+  font-family: "SF Text";
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 0px;
+}
+
+.volunteer-info {
+  font-family: "SF Text";
+  font-size: 16px;
+  margin-top: -5px;
+  margin-bottom: 0px;
+}
+
+@media (min-width: 768px) {
+  #jumboContainer.container{
+    max-width: 1400px;
+  }
+}
+
+#enter-location {
+  font-family: "SF Text";
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+}
+
+#covid-resources {
+  color: white;
+  font-family: "SF Text";
+  margin-top: 10px;
+  padding-left: 0px;
+}
+
+#refresh-location {
+  color: #314CCE;
+  font-family: "SF Text";
+  margin-top: -17px;
+  padding-left: 0px;
+}
