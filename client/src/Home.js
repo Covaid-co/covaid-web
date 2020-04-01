@@ -137,6 +137,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    console.log(process.eng.GOOGLE_API_KEY)
     if (this.props.location.verified) {
       this.setState({showLogin: true});
       this.setState({justVerified: true});
