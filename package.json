@@ -26,7 +26,6 @@
     "nodemon": "^1.19.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "reverse-geocoding": "^3.0.2",
-    "util.promisify": "^1.0.1"
+    "reverse-geocoding": "^3.0.2"
   }
 }
