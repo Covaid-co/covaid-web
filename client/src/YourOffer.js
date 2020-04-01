@@ -16,7 +16,7 @@ import NewCar from './NewHasCar';
 import Availability from './Availability';
 
 import Geocode from "react-geocode";
-Geocode.setApiKey(process.env.GOOGLE_API_KEY);
+Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 
 export default function YourOffer(props) {

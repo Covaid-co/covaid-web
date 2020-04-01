@@ -23,7 +23,7 @@ import Badge from 'react-bootstrap/Badge'
 
 import Cookie from 'js-cookie'
 
-Geocode.setApiKey(process.env.GOOGLE_API_KEY);
+Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 class Home extends Component {
   constructor(props) {
@@ -137,7 +137,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    console.log(process.env.GOOGLE_API_KEY)
     if (this.props.location.verified) {
       this.setState({showLogin: true});
       this.setState({justVerified: true});
