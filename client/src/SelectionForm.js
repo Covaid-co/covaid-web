@@ -26,8 +26,7 @@ export default function SelectionForm(props) {
                     Please choose an organization
                 </h5>
                 <p id="createAccountText" style={{marginBottom: 5}}>
-                    Choose an organization you would like to support with. You will be a volunteer under 
-                    this organization and receive requests from people who need help here.
+                    Choose a nearby supporting organization to help manage your mutual aid efforts.
                 </p>
                 <Row>
                     <Col xs={12}>
