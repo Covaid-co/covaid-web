@@ -100,6 +100,7 @@ export default function NewOffers(props) {
                             </div>
                         </ListGroup.Item>);
                     })}
+                    {displayedVolunteers.length === 0 ? <p id="no-offers">Seems to be no offers in your area. Make sure to spread the word to get your community involved!</p> : ''}
                 </ListGroup>
             </Container>
         </>

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
-import Row from 'react-bootstrap/Row'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
-import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
+import RequestDetails from './RequestDetails'
 
 export default function RequestsDashboard(props) {
 
     const [requests, setRequests] = useState([]);
     const [filteredRequests, setFilteredRequests] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currRequest, setCurrRequest] = useState({});
 
     useEffect(() => {
         var url = "/api/request/allRequestsInAssoc?";
@@ -29,6 +30,7 @@ export default function RequestsDashboard(props) {
             if (response.ok) {
                 response.json().then(data => {
                     setRequests(data)
+                    console.log(data)
                     setFilteredRequests(data)
                 });
             } else {
@@ -55,7 +57,6 @@ export default function RequestsDashboard(props) {
             return emailMatch
         });
         setFilteredRequests(filtered)
-
     }
 
     return (
@@ -75,26 +76,24 @@ export default function RequestsDashboard(props) {
             <ListGroup variant="flush">
                 {filteredRequests.map((request, i) => {
                     return (
-                    <ListGroup.Item action>
+                    <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true)}}>
                         <div >
                             <h5 className="volunteer-name">
-                                {request.requester_email}
+                                {request.requester_first} {request.requester_last}
                             </h5>
                         </div>
                         <div style={{display: 'inline-block', width: '100%'}}>
-                            <p style={{float: 'left', marginBottom: 0}}>Needed by: Jan 2, 2020</p>
-                            {request.resource_request.map((task, i) => {
-                                return <Badge key={i} className='request-status'>{task}</Badge>
-                            })}
-                            {/* <p style={{float: 'left', marginBottom: 0}}>Needed by: Jan 2, 2020</p>
-                            <Badge id="request-status">Action Needed</Badge> */}
+                            <p style={{float: 'left', marginBottom: 0}}>Needed by: {request.date}</p>
                         </div>
                         <div>
-                            <Badge className='task-info'>Medication</Badge>
+                        {request.resource_request.map((task, i) => {
+                                return <Badge key={i} className='task-info'>{task}</Badge>
+                            })}
                         </div>
                     </ListGroup.Item>);
                     })}
             </ListGroup>
+            <RequestDetails modalOpen={modalOpen} setModalOpen={setModalOpen} currRequest={currRequest}/>
         </>
     );
 }

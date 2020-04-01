@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Toast from 'react-bootstrap/Toast'
 import { useFormFields } from "./libs/hooksLib";
 
 import NewLanguages from './NewLanguages';
@@ -41,8 +42,10 @@ export default function RequestHelp(props) {
     const [firstPage, setFirstPage] = useState(true);
     const [completed, setCompleted] = useState(false);
     const [selectedPayment, setSelectedIndex] = useState(0);
-    const [time, setTime] = useState('')
-    const [date, setDate] = useState('')
+    const [time, setTime] = useState('Morning')
+    const [date, setDate] = useState(new Date(Date.now()).toLocaleString().split(',')[0])
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
 
     useEffect(() => {
         var url = "/api/association/get_assoc/lat_long?";
@@ -77,8 +80,64 @@ export default function RequestHelp(props) {
         fetchResources();
     }, [props.requestHelpMode, props.volunteer]);
 
+
+    const checkFirstPageInput = () => {
+        if (fields.first.length === 0) {
+            setShowToast(true);
+            setToastMessage('Enter a first name');
+            return false;
+        }
+
+        if (fields.last.length === 0) {
+            setShowToast(true);
+            setToastMessage('Enter a last name');
+            return false;
+        }
+
+        const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
+        if (phoneOnlyDigits.length != 0 && phoneOnlyDigits.length !== 10) {
+            setShowToast(true);
+            setToastMessage('Enter a valid phone number');
+            return false;
+        }
+
+        if (Object.values(resources).every(v => v === false)) {
+            setShowToast(true);
+            setToastMessage('No task selected');
+            return false;
+        }
+        return true;
+    }
+
+    const goToSecondPage = () => {
+        if (checkFirstPageInput()) {
+            setFirstPage(false);
+        }
+    }
+
+    const checkSecondPageInput = () => {
+        if (Object.values(languageChecked).every(v => v === false)) {
+            setShowToast(true);
+            setToastMessage('No language selected');
+            return false;
+        }
+
+        if (fields.details.length === 0) {
+            setShowToast(true);
+            setToastMessage('Enter details about your request');
+            return false;
+        }
+
+        return true;
+    }
+    
+
     const handleSubmit = async e => {
         e.preventDefault();
+        if (checkSecondPageInput() === false) {
+            return;
+        }
+
         var resource_request = []
         Object.keys(resources).forEach(function(key) {
             if (resources[key]) {
@@ -164,8 +223,16 @@ export default function RequestHelp(props) {
                         </Col>
                     </Row>
                     <NewTasks resources={resources} setResources={setResources}/>
-                    <Button id="nextPage" onClick={() => setFirstPage(false)}>Next</Button>
+                    <Button id="nextPage" onClick={goToSecondPage}>Next</Button>
                     <p id="pageNumber">Page 1 of 2</p>
+                    <Toast
+                        show={showToast}
+                        delay={3000}
+                        onClose={() => setShowToast(false)}
+                        autohide
+                        id='toastError'>
+                        <Toast.Body>{toastMessage}</Toast.Body>
+                    </Toast>
                 </Modal.Body>
             </Modal>
         )
@@ -189,6 +256,14 @@ export default function RequestHelp(props) {
                         <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
                         <Button id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
                         <p id="pageNumber">Page 2 of 2</p>
+                        <Toast
+                            show={showToast}
+                            delay={3000}
+                            onClose={() => setShowToast(false)}
+                            autohide
+                            id='toastError'>
+                            <Toast.Body>{toastMessage}</Toast.Body>
+                        </Toast>
                     </Modal.Body>
                 </Modal>
             )

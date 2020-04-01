@@ -117,6 +117,14 @@ exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
     res.send(requests)
 })
 
+exports.getAllRequestsInVolunteer = asyncWrapper(async (req, res) => {
+    const id = req.query.volunteerID
+    var requests = await Requests.find({
+        'status.volunteer': id
+    })
+    res.send(requests)
+})
+
 exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     const volunteer_id = req.body.volunteer_id

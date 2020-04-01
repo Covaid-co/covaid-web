@@ -36,11 +36,11 @@ export default function VolunteerPortal(props) {
 						</Container>
 						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 							style={firstTab ? {'display': 'block'} : {'display': 'none'}}>
-							<VolunteerRequests state = {props.state} />
+							<YourOffer state = {props.state} />
 						</Container>
 						<Container className="shadow mb-5 bg-white rounded" id="request-view"
 							style={firstTab ? {'display': 'none'} : {'display': 'block'}}>
-							<YourOffer state={props.state}/>
+							<VolunteerRequests state={props.state}/>
 						</Container>
 						</Col>
 					<Col ></Col>

@@ -163,6 +163,8 @@ class Home extends Component {
     fetch_a('token', '/api/users/current')
       .then((response) => response.json())
       .then((user) => {
+        console.log(user);
+        this.setState({ currentUser: user });
         this.setState({ checked: user.availability });
         this.setState({ isLoggedIn: true });
         this.setState({ first_name: user.first_name });
@@ -455,7 +457,7 @@ class Home extends Component {
                       Hello, {this.state.first_name}
                     </span> : <></>}
                     <Button variant="outline-danger" id='logoutButton' onClick={this.logout}>
-                      <font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
+                      <font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 15}}>
                         Logout
                       </font>
                     </Button>

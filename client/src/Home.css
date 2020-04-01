@@ -305,7 +305,7 @@ input {
   font-family: "SF Text";
   font-size: 16px !important;
   height: 39px;
-  color: #7F7F7F;
+  color: black;
   /* text-indent: 7px; */
 }
 
@@ -537,6 +537,13 @@ textarea.form-control {
   max-width: 1500px;
   border-radius: 0px 16px 16px 16px !important;
   box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
+}
+
+#no-offers {
+  color: black;
+  font-family: "SF Text";
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 .badge {

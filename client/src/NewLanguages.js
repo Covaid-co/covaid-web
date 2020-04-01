@@ -15,8 +15,8 @@ export default function NewLanguages(props) {
 
     return (
         <>
-            {props.languages.map((lang) => {
-                return <Button key={lang}
+            {props.languages.map((lang, i) => {
+                return <Button key={lang + i}
                                id={props.languageChecked[lang] ? "task-info-selected" : "task-info-not-selected"}
                                onClick = {() => handleChangeLanguage(lang)}>
                             {lang}

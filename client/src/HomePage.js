@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import YourOffer from './YourOffer'
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
@@ -14,8 +13,6 @@ import RequestHelp from './RequestHelp';
 import GetLocation from './GetLocation';
 
 import './HomePage.css'
-
-const queryString = require('query-string');
 
 export default function HomePage(props) {
     const [mode, setMode] = useState('');

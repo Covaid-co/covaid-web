@@ -109,7 +109,9 @@ html, body {
   font-weight: 600;
   font-family: "SF Text";
   margin-right: 10px;
-  font-size: 13px;
+  font-size: 15px;
+  position: relative;
+  top: 3px;
 }
 
 #nameToggled {

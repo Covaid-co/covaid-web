@@ -11,14 +11,7 @@ import Toast from 'react-bootstrap/Toast'
 import ReCAPTCHA from "react-google-recaptcha";
 
 import SelectionForm from './SelectionForm';
-import Languages from './Languages';
-
-
 import NewLanguages from './NewLanguages';
-import NewTasks from './NewTasks';
-import NeededBy from './NeededBy';
-import NewPaymentMethod from './NewPaymentMethod';
-import NewDetails from './NewDetails';
 import PhoneNumber from './PhoneNumber';
 import NewHasCar from './NewHasCar';
 
