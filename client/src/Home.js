@@ -3,17 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css'
 import './Home.css'
-import Offers from './Offers';
-import YourOffer from './YourOffer';
-import LoginRegisterModal from './LoginRegisterModal';
 import HelpfulLinks from './HelpfulLinks';
-import Loading from './Loading';
-// import RequestHelp from './RequestHelp';
 import VolunteerBadge from './components/VolunteerBadge';
-// import NewLogin from './NewLogin';
-// import NewRegister from './NewRegister';
-// import NewOffers from './NewOffers';
-// import LocationSetting from './LocationSetting';
 import VolunteerPortal from './VolunteerPortal'
 import AboutUs from './AboutUs'
 import HowItWorks from './HowItWorks'
@@ -22,23 +13,13 @@ import HomePage from './HomePage'
 
 import fetch_a from './util/fetch_auth';
 
-import Container from 'react-bootstrap/Container';
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Geocode from "react-geocode";
-import InputGroup from 'react-bootstrap/InputGroup'
 import Badge from 'react-bootstrap/Badge'
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Tooltip from 'react-bootstrap/Tooltip'
-import Jumbotron from 'react-bootstrap/Jumbotron'
 
 import Cookie from 'js-cookie'
 
@@ -90,8 +71,6 @@ class Home extends Component {
     }
 
     window.addEventListener("resize", this.update);
-    
-    this.offerElement = React.createRef();
 
     this.handleHideLocation = this.handleHideLocation.bind(this);
     this.handleShowLocation = this.handleShowLocation.bind(this);
@@ -202,8 +181,6 @@ class Home extends Component {
         currentNeighborhood: this.state.nonCookieNeighborhood,
         zipCode: this.state.nonCookieZip
       });
-      // console.log(this.offerElement);
-      // this.offerElement.current.refreshOffers(this.state.nonCookieLat, this.state.nonCookieLong);
     }
     this.handleHidePrompt();
   }
@@ -223,7 +200,6 @@ class Home extends Component {
         this.findAssociations(latitude, longitude, this);
         for (var i = 0; i < Math.min(4, response.results.length); i++) {
           const results = response.results[i]['address_components'];
-          // console.log(results);
           for (var j = 0; j < results.length; j++) {
             const types = results[j].types;
             // find neighborhood from current location
@@ -271,33 +247,6 @@ class Home extends Component {
           zipCode: foundZipCode,
           locality: locality
         });
-
-        // // if cookie is set, need to prompt user to pick which location to use
-        // if (this.state.cookieSet && Cookie.get('zipcode') !== foundZipCode) {
-        //   this.setState({
-        //     nonCookieLat: latitude,
-        //     nonCookieLong: longitude,
-        //     nonCookieZip: foundZipCode,
-        //     nonCookieNeighborhood: foundNeighborhood,
-        //     promptChangeZip: true
-        //   });
-        // } 
-        // if (!this.state.cookieSet) {
-        //   console.log("not set yet");
-        //   Cookie.set('latitude', latitude);
-        //   Cookie.set('longitude', longitude);
-        //   Cookie.set('zipcode', foundZipCode);
-        //   Cookie.set('neighborhood', foundNeighborhood);
-        //   this.setState({
-        //     isLoaded: true,
-        //     latitude: latitude,
-        //     longitude: longitude,
-        //     currentNeighborhood: foundNeighborhood,
-        //     zipCode: foundZipCode
-        //   });
-        // } else {
-        //   this.setState({isLoaded: true});
-        // }
       },
       error => {
         console.error(error);
@@ -438,11 +387,8 @@ class Home extends Component {
 			collapsed = true;
 		}
 
-
-    const { isLoaded } = this.state;
     const { isLoggedIn } = this.state;
 
-    // var jumboStyling = '%'
     var bulletin;
     var offer;
     var link;
@@ -494,18 +440,7 @@ class Home extends Component {
     }
 
     var rightNav;
-    var yourOffer;
-    var howHelp;
-    var clickText = <></>;
-    var volunteerButton = <></>
     if (isLoggedIn) {
-      yourOffer = <Tab eventKey="your-offer" title={offer} className="tabColor" id='bootstrap-overide'>
-                    <YourOffer state = {this.state}/>
-                  </Tab>;  
-      volunteerButton =  <Button onClick={() => this.setState({volunteerPortal: true})} id="homeButtons" >
-          Volunteer portal
-        </Button>
-
       if (this.state.toggled) {
         rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
                     <Button variant="outline-danger" id='logoutButton' onClick={this.logout} style={{width: '100%'}}>
@@ -515,7 +450,7 @@ class Home extends Component {
                     </Button>
                   </Form>;
       } else {
-        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
+        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%'}}>
                     {!collapsed ? <span id="name">
                       Hello, {this.state.first_name}
                     </span> : <></>}
@@ -526,15 +461,9 @@ class Home extends Component {
                     </Button>
                   </Form>;
       }
-                  howHelp = <><h5>My Offer</h5>
-                  <p style={{fontWeight: 300}}>Under this tab, logged-in users can create their own offers for support. They can choose 
-                  their primary neighborhood to support, provide more details regarding their offer, and update their availability status (whether or not they want their offer to be displayed on the community bulletin.).</p></> 
-       if (this.state.width > 350) {
-        clickText = <h6 style = {{fontWeight: 300, fontStyle: 'italic', color: 'white', marginBottom: 5}}>Use the <strong style={{fontWeight: 600, fontStyle: "normal"}}>My Offer</strong> tab below to create/update your offer to help</h6>
-       }
     } else {
       if (collapsed === false) {
-        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '10%'}}>
+        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%'}}>
                     <Button variant="outline-light" id = 'homeButtons'onClick={this.handleShowLogin}>
                       Volunteer Login
                     </Button>
@@ -548,11 +477,16 @@ class Home extends Component {
                     </Button>
                   </Form>;
       }
-      yourOffer = <></>;
-      howHelp = <></>;
-      volunteerButton = <Button onClick={() => this.setState({showRegistration: true})} id="homeButtons" >
-                          Volunteer Sign up
-                        </Button>
+    }
+
+    var volunteerButton = <Button onClick={() => this.setState({showRegistration: true})} id="homeButtons" >
+        Volunteer Sign up
+      </Button>
+
+    if (isLoggedIn) {
+      volunteerButton =  <Button onClick={() => this.setState({volunteerPortal: true})} id="homeButtons" >
+        Volunteer portal
+      </Button>
     }
 
     var pageContent = <></>

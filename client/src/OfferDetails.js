@@ -24,7 +24,7 @@ export default function OfferDetails(props) {
                 </p>
                 <h5 className="titleHeadings" style={{marginBottom: 0, marginTop: 16}}>Tasks:</h5>
                 {props.modalInfo.offer.tasks.map((task, i) => {
-                    return <Badge key={i} id="selected" style = {{whiteSpace: "normal"}}>{task}</Badge>
+                    return <Badge key={i} className='task-info'>{task}</Badge>
                 })}
                 <h5 className="titleHeadings" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                 <p id="locationInfo">{props.modalInfo.offer.details}</p>

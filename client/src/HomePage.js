@@ -32,27 +32,27 @@ export default function HomePage(props) {
           <Jumbotron fluid id="jumbo">
             <Container id="jumboContainer">
               <Row>
-              <Col md={6} id="jumbo-text">
-                <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
-                <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
-                <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons" >
-                  Request Help
-                </Button>{' '}
-                {props.volunteerButton}
-                <br />
-                <Button variant="link" 
-                        id="covid-resources" 
-                        onClick={() => props.handleShowModal(4)}>
-                    <u>View COVID-19 Resources</u>
-                </Button>
-              </Col>
-              <Col md={6} id="community-bulletin">
-                <p className='location-text'>See who's helping in {props.state.locality}</p>
-                <p className="volunteer-info">Click an volunteer's offer below for more info</p>
-                <NewOffers state={props.state} 
-                          handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}
-                          clickOnUser={props.clickOnUser}/>
-              </Col>
+                <Col md={6} id="jumbo-text">
+                  <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
+                  <p id="jumboText">Covaid connects community volunteers with those who need help.</p>
+                  <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons" >
+                    Request Help
+                  </Button>{' '}
+                  {props.volunteerButton}
+                  <br />
+                  <Button variant="link" 
+                          id="covid-resources" 
+                          onClick={() => props.handleShowModal(4)}>
+                      <u>View COVID-19 Resources</u>
+                  </Button>
+                </Col>
+                <Col md={6} id="community-bulletin">
+                  <p className='location-text'>See who's helping in {props.state.locality}</p>
+                  <p className="volunteer-info">Click an volunteer's offer below for more info</p>
+                  <NewOffers state={props.state} 
+                            handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}
+                            clickOnUser={props.clickOnUser}/>
+                </Col>
               </Row>
             </Container>
           </Jumbotron>

@@ -25,7 +25,7 @@ export default function Availability(props) {
                 type="switch"
                 id="custom-switch"
                 style={{color: '#7F7F7F', fontSize: 14}}
-                label={props.availableText}
+                label=""
                 checked={props.switchSelected}
                 onChange={handleChangeAvailability}
             />

@@ -47,7 +47,7 @@ export default function YourOffer(props) {
     const [times, setTimes] = useState({});
     const [defaultResources, setDefaultResources] = useState(['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.']);
     const timeNames = ['Mornings', 'Afternoons', 'Evenings', 'Weekends'];
-    const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in Anything Else)'];
+    const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in details)'];
     const pittsburghResources = ['Food', 'Childcare', 'Pet care', 'Eldercare', 
         'Help running errands (groceries, prescriptions, supplies, etc)',
         'A ride somewhere', 'Health Care Support (doctor, medicine, etc)',
@@ -179,13 +179,19 @@ export default function YourOffer(props) {
     const checkInputs = () => {
         if (Object.values(resources).every(v => v === false)) {
             setShowToast(true);
-            setToastMessage('No Task Selected');
+            setToastMessage('No task selected');
             return false;
         }
 
         if (Object.values(languageChecked).every(v => v === false)) {
             setShowToast(true);
-            setToastMessage('No Language Selected');
+            setToastMessage('No language selected');
+            return false;
+        }
+
+        if (Object.values(times).every(v => v === false)) {
+            setShowToast(true);
+            setToastMessage('No general availability selected');
             return false;
         }
 
@@ -271,21 +277,18 @@ export default function YourOffer(props) {
         return (
             
                 <Row >
-                    <Toast
-                        show={showToast}
-                        delay={3000}
-                        onClose={() => setShowToast(false)}
-                        autohide
-                        style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            right: 0,
-                            marginBottom: 60,
-                        }}
-                    >
-                        <Toast.Body>{toastMessage}</Toast.Body>
-                    </Toast>
                     <Col>
+                        <Toast
+                            show={showToast}
+                            delay={3000}
+                            onClose={() => setShowToast(false)}
+                            autohide
+                            id="volunteer-error-toast">
+                            <Toast.Header>
+                                <strong className="mr-auto">Covaid</strong>
+                            </Toast.Header>
+                            <Toast.Body>{toastMessage}</Toast.Body>
+                        </Toast>
                         <Alert show={showAlert} variant={'danger'}>
                             Your location has changed! Press update to reflect this.
                         </Alert>
