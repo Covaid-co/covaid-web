@@ -10,6 +10,8 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 import Modal from 'react-bootstrap/Modal'
+import Pagination from './CommunityBulletinComponents/Pagination'
+import Offer from './CommunityBulletinComponents/Offer'
 import Container from 'react-bootstrap/Container'
 
 import NewFilterButton from './NewFilterButton'
@@ -21,6 +23,8 @@ export default function NewOffers(props) {
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
     const [resources, setResources] = useState([]);
     const [taskSelect, setTaskSelect] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(7);
 
     const [modalOfferOpen, setModalOfferOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState({
@@ -71,6 +75,12 @@ export default function NewOffers(props) {
         }
     }, [props.state.currentAssoc, props.state.latitude, props.state.longitude]);
 
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentDisplayedUsers = displayedVolunteers.slice(indexOfFirstPost, indexOfLastPost)
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
 
     return (
         <>
@@ -85,24 +95,19 @@ export default function NewOffers(props) {
                              volunteers={volunteers}/>
             <Container className="shadow mb-5 bg-white rounded" id="offerContainer">
                 <ListGroup variant="flush">
-                    {displayedVolunteers.map((user, i) => {
-                        return (<ListGroup.Item action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
-                            <div >
-                                <h5 className="volunteer-name">
-                                    {user.first_name}
-                                </h5>
-                                <h5 className="association-name"> {user.association_name}</h5>
-                            </div>
-                            <p className="volunteer-location">{user.offer.neighborhoods.join(', ')}</p>
-                            <div>
-                                {user.offer.tasks.map((task, i) => {
-                                    return <Badge key={i} className='task-info'>{task}</Badge>
-                                })}
-                            </div>
-                        </ListGroup.Item>);
-                    })}
-                    {displayedVolunteers.length === 0 ? <p id="no-offers">Seems to be no offers in your area. Make sure to spread the word to get your community involved!</p> : ''}
+                <Offer displayedVolunteers={currentDisplayedUsers}
+                        setModalInfo={setModalInfo}
+                        setModalOfferOpen={setModalOfferOpen} 
+                />
+                <Pagination
+                    className='justfiy-content-center'
+                    style = {{paddingTop: 15, marginTop: 50}}
+                    postsPerPage={postsPerPage}
+                    totalPosts={displayedVolunteers.length}
+                    paginate={paginate}
+                />
                 </ListGroup>
+                
             </Container>
         </>
     );

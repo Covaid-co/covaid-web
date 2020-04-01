@@ -129,7 +129,7 @@ exports.handle_old_request = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
     request.completed = false;
     console.log(request)
-
+    
     request.save().then(result => {
         res.status(201).json({
             message: "Request Created", //
@@ -144,7 +144,11 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     var volunteers;
     if (!req.body.volunteer) {
         volunteers = await getBestVolunteers(request)
-        console.log(volunteers)
+        var volunteer_emails = []
+        for (var i = 0; i < Math.min(volunteers.length, 3); i++) {
+            volunteer_emails.push(volunteers[i].email)
+        }
+        sendEmail(request, volunteer_emails.join(", "), "", 'covaidco@gmail.com')
     } else {
         volunteers = [req.body.volunteer]
         request.status = {
