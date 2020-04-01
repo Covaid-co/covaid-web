@@ -41,7 +41,7 @@ export default function YourOffer(props) {
     const [resources, setResources] = useState({});
     const [times, setTimes] = useState({});
     const [defaultResources, setDefaultResources] = useState(['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.']);
-    const timeNames = ['Mornings', 'Afternoons', 'Evenings', 'Weekends'];
+    const timeNames = ['Morning', 'Afternoon', 'Evening', 'Weekdays', 'Weekends'];
     const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in details)'];
     // const pittsburghResources = ['Food', 'Childcare', 'Pet care', 'Eldercare', 
     //     'Help running errands (groceries, prescriptions, supplies, etc)',

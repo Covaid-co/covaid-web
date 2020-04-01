@@ -10,7 +10,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
   function paginatePages(event, number){
       event.preventDefault()
       paginate(number)
-  }
+  } 
 
   return (
     <nav>

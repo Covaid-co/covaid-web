@@ -6,8 +6,6 @@ const {GoogleSpreadsheet }= require('google-spreadsheet')
 const creds = require('../client_secret.json')
 const association_controller = require('./association.controller'); 
 
-const SPREADSHEET_ID = '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0'
-
 
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
@@ -15,9 +13,9 @@ function validateEmailAccessibility(email){
   });
 }
 
-async function updateUserInSpreadsheet(id, updates) {
+async function updateUserInSpreadsheet(id, updates, spreadsheetID) {
   console.log(updates)
-  const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+  const doc = new GoogleSpreadsheet(spreadsheetID);
   await doc.useServiceAccountAuth({
     client_email: creds.client_email,
     private_key: creds.private_key,
@@ -48,8 +46,8 @@ async function updateUserInSpreadsheet(id, updates) {
   await updateRow.save()
 }
 
-async function addUserToSpreadsheet(user, ID) {
-  const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+async function addUserToSpreadsheet(user, ID, spreadsheetID) {
+  const doc = new GoogleSpreadsheet(spreadsheetID);
   await doc.useServiceAccountAuth({
     client_email: creds.client_email,
     private_key: creds.private_key,
@@ -121,8 +119,11 @@ exports.register = function (req, res) {
           } 
 
           var userID = result._id;
-          if (user.association == "5e7f9badc80c292245264ebe") {
-            addUserToSpreadsheet(finalUser, userID)
+          if (user.association == "5e8414970f41a53dae08de51") {
+            // PITT
+            addUserToSpreadsheet(finalUser, userID, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
+          } else if (user.association == "5e8414e40f41a53dae08de52") {
+            addUserToSpreadsheet(finalUser, userID, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4') 
           }
 
           var transporter = nodemailer.createTransport({
@@ -300,9 +301,15 @@ exports.total_users = function (req, res) {
 
 exports.update = function (req, res) {
   const id = req.token.id;
-  if (req.body.association == "5e7f9badc80c292245264ebe") {
-    updateUserInSpreadsheet(id, req.body)
+
+  if (req.body.association == "5e8414970f41a53dae08de51") {
+    // PITT
+    updateUserInSpreadsheet(id, req.body, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
+  } else if (req.body.association == "5e8414e40f41a53dae08de52") {
+    // BALTI
+    updateUserInSpreadsheet(id, req.body, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4') 
   }
+  
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
     if (err) return next(err);
     

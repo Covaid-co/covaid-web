@@ -59,8 +59,9 @@ export default function LocationSetting(props) {
                         <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
                         <a style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
                             This city is supported by:<br/> 
+                            <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> <br />
                             {props.associations.map((association, i) => {                
-                                return <p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
+                                return <><p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p><br /> </>
                             })}
                         </a>
                     </Col>

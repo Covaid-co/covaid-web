@@ -3,35 +3,27 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
-
-const Offer = ({ displayedUsers, handleShow, setModal }) => {
+ 
+const Offer = ({ displayedVolunteers, setModalInfo, setModalOfferOpen }) => {
   return (
     <>
-        {displayedUsers.map((user, i) => {
-            var name = user.first_name;
-            name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
-            return <ListGroup.Item key={user._id + String(i * 19)} action 
-                                            style = {{fontSize: 16}} 
-                                            onClick={() => { handleShow(); setModal({...user});}}>
-                            <Row>
-                                <Col style={{whiteSpace: "normal"}}>
-                                    <div style={{whiteSpace: "normal", wordWrap: "break-word"}}>{name}</div>
-                                    <div style={{whiteSpace: "normal"}}>{user.offer.neighborhoods.map((neighborhood, i) => {
-                                        return <>
-                                            <Badge key={user._id + neighborhood + String(i * 14)} 
-                                                            style = {{whiteSpace: "normal"}} 
-                                                            pill 
-                                                            variant="warning">
-                                                            {neighborhood}
-                                                    </Badge> </>
-                                    })}</div>
-                                </Col>
-                                <Col style={{whiteSpace: "normal"}}>{user.offer.tasks.map((task, i) => {
-                                        return <><Badge key={user._id + task + String((i + 1) * 23)} style = {{whiteSpace: "normal"}} pill variant="primary">{task}</Badge>{' '}</>
-                                    })}</Col>
-                            </Row>
-                        </ListGroup.Item>
-        })}
+        {displayedVolunteers.map((user, i) => {
+                        return (<ListGroup.Item action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
+                            <div >
+                                <h5 className="volunteer-name">
+                                    {user.first_name}
+                                </h5>
+                                <h5 className="association-name">{user.association_name}</h5>
+                            </div>
+                            <p className="volunteer-location">{user.offer.neighborhoods.join(', ')}</p>
+                            <div>
+                                {user.offer.tasks.map((task, i) => {
+                                    return <Badge key={i} className='task-info'>{task}</Badge>
+                                })}
+                            </div>
+                        </ListGroup.Item>);
+                    })}
+        {displayedVolunteers.length === 0 ? <p id="no-offers">Seems to be no offers in your area. Make sure to spread the word to get your community involved!</p> : ''}
     </>
   );
 };

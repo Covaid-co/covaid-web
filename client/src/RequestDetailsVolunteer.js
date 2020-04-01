@@ -21,7 +21,7 @@ export default function RequestDetailsVolunteer(props) {
                 <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5>
                 <p id="request-info">Email: {props.currRequest.requester_email}</p>
                 <p id="request-info">Phone: {props.currRequest.requester_phone}</p>
-                <p id="request-info">Languages: {props.currRequest.languages}</p>
+                <p id="request-info">Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Needs:</h5>
                 <Badge className='task-info'>Medication</Badge>
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
@@ -30,7 +30,7 @@ export default function RequestDetailsVolunteer(props) {
                 <p id="request-info">{props.currRequest.time} of {props.currRequest.date}</p>
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Payment:</h5>
                 <p id="request-info">{options[props.currRequest.payment]}</p>
-                <Row style={{marginTop: 24}}>
+                {/* <Row style={{marginTop: 24}}>
                     <Col xs={6} style = {{padding: 0, paddingLeft: 15}}>
                         <Button id='leftCarButton'>
                             Accept
@@ -41,7 +41,7 @@ export default function RequestDetailsVolunteer(props) {
                             Decline
                         </Button>
                     </Col>
-                </Row>
+                </Row> */}
             </Modal.Body>
         </Modal>
     );

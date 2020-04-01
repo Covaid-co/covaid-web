@@ -365,6 +365,15 @@ textarea.form-control {
   border-color: transparent;
 }
 
+.pagination {
+  margin-top: 25px;
+}
+
+.page-link {
+  color: #194bd3;
+  font-family: "SF Text";
+}
+
 #volunteerBadge {
   font-family: "SF Text";
   font-weight: bold;
