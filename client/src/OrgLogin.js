@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Cookie from 'js-cookie'
 
-export default function NewLogin(props) {
+export default function OrgLogin(props) {
     const [fields, handleFieldChange] = useFormFields({
         email: "",
         password: "",
@@ -22,12 +22,12 @@ export default function NewLogin(props) {
     const handleSubmit = async e => {
         e.preventDefault();
         let form = {
-            'user': {
+            'association': {
                 'email': fields.email,
                 'password': fields.password
             }
         };
-        fetch('/api/users/login/', {
+        fetch('/api/association/login/', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
@@ -36,8 +36,9 @@ export default function NewLogin(props) {
             if (response.ok) {
                 response.json().then(data => {
                     console.log("Login successful")
-                    Cookie.set("token", data.user.token);
-                    window.location.reload(false);
+                    Cookie.set("org_token", data.user.token);
+                    props.handleHideLogin()
+                    props.login()
                 });
             } else {
                 alert('Incorrect Login!')
@@ -49,9 +50,9 @@ export default function NewLogin(props) {
       };
 
     return (
-        <Modal show={props.showLogin} size='sm' onHide={props.handleHideLogin} style={{marginTop: 110}}>
-            <Modal.Header closeButton>
-                <Modal.Title>Volunteer Login</Modal.Title>
+        <Modal show={props.showLogin} size='sm' style={{marginTop: 110}}>
+            <Modal.Header>
+                <Modal.Title>Login to your portal</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>

@@ -14,12 +14,13 @@ export default function RequestsDashboard(props) {
     useEffect(() => {
         var url = "/api/request/allRequestsInAssoc?";
         let params = {
-            'association': "5e7f9badc80c292245264ebe"
+            'association': props.association._id
         }
         let query = Object.keys(params)
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
              .join('&');
         url += query;
+        console.log(url)
 
         fetch(url, {
             method: 'get',
@@ -36,7 +37,7 @@ export default function RequestsDashboard(props) {
         }).catch((e) => {
             console.log(e)
         });
-    }, [])
+    }, [props.association])
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();

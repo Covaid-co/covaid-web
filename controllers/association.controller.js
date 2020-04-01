@@ -88,6 +88,18 @@ exports.assoc_by_lat_long = function (req, res) {
     )
 };
 
+exports.current = function (req, res) {
+  const id = req.token.id;
+
+  return Association.findById(id)
+    .then((association) => {
+      if(!association) {
+        return res.sendStatus(400);
+      }
+      return res.json(association);
+  });
+};
+
 exports.login = function (req, res, next) {
     const { body: { association } } = req;
     if(!association.email) {

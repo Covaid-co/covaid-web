@@ -60,7 +60,7 @@ export default function HomePage(props) {
                         state={props.state} volunteer={modalInfo}/>
           <NewLogin handleShowRegistration={props.handleShowRegistration}
                     handleHideLogin={props.handleHideLogin}
-                    state={props.state}/>
+                    showLogin={props.state.showLogin}/>
           <NewRegister handleHideRegistration={props.handleHideRegistration}
                         state={props.state}
                         setState={props.setState}/>

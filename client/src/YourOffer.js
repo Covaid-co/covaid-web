@@ -56,7 +56,7 @@ export default function YourOffer(props) {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch_a('/api/users/current');
+            const response = await fetch_a('token', '/api/users/current');
             response.json().then((user) => {
                 // Get current lat and long from current location and find neighborhoods
                 const { latitude, longitude } = props.state;
@@ -255,7 +255,7 @@ export default function YourOffer(props) {
             form['phone'] = ''
         }
 
-        fetch_a('/api/users/update', {
+        fetch_a('token', '/api/users/update', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)

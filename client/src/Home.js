@@ -160,7 +160,7 @@ class Home extends Component {
   };
 
   fetchUser(){
-    fetch_a('/api/users/current')
+    fetch_a('token', '/api/users/current')
       .then((response) => response.json())
       .then((user) => {
         this.setState({ checked: user.availability });

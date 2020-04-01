@@ -1,7 +1,7 @@
 import Cookie from "js-cookie";
 
-async function fetch_a(url, options) {
-    const tokenString = `Token ${Cookie.get('token')}`;
+async function fetch_a(token, url, options) {
+    const tokenString = `Token ${Cookie.get(token)}`;
     if (options === undefined) {
         options = {
             'headers': {
