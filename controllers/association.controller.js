@@ -1,5 +1,4 @@
 const Association = require('../models/association.model');
-var geocoding = new require('reverse-geocoding');
 const passport = require('passport');
 
 exports.association_details = function (req, res) {
