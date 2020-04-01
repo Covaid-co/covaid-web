@@ -91,7 +91,7 @@ export default function NewOffers(props) {
                                 <h5 className="volunteer-name">
                                     {user.first_name}
                                 </h5>
-                                <h5 className="association-name"> Pittsburgh Mutual Aid</h5>
+                                <h5 className="association-name"> {user.association_name}</h5>
                             </div>
                             <p className="volunteer-location">{user.offer.neighborhoods.join(', ')}</p>
                             <div>
