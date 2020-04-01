@@ -3,9 +3,7 @@ const Offers = require('../models/offer.model');
 const passport = require('passport');
 var nodemailer = require('nodemailer');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
-const config = require("../config/client_secret").config
 const association_controller = require('./association.controller'); 
-const creds = JSON.parse(JSON.stringify(config))
 
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
@@ -14,7 +12,14 @@ function validateEmailAccessibility(email){
 }
 
 async function updateUserInSpreadsheet(id, updates, spreadsheetID) {
-  console.log(updates)
+  var creds;
+  if (process.env.GOOGLE_PRIVATE_KEY) {
+    const config = require("../config/client_secret").config
+    config["private_key"] = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n')
+    creds = JSON.parse(JSON.stringify(config))
+  } else {
+    creds = require('../config/client_secret.json')
+  }
   const doc = new GoogleSpreadsheet(spreadsheetID);
   await doc.useServiceAccountAuth({
     client_email: creds.client_email,
@@ -47,6 +52,14 @@ async function updateUserInSpreadsheet(id, updates, spreadsheetID) {
 }
 
 async function addUserToSpreadsheet(user, ID, spreadsheetID) {
+  var creds;
+  if (process.env.GOOGLE_PRIVATE_KEY) {
+    const config = require("../config/client_secret").config
+    config["private_key"] = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n')
+    creds = JSON.parse(JSON.stringify(config))
+  } else {
+    creds = require('../config/client_secret.json')
+  }
   const doc = new GoogleSpreadsheet(spreadsheetID);
   await doc.useServiceAccountAuth({
     client_email: creds.client_email,

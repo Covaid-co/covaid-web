@@ -25,7 +25,7 @@ exports.offer_create = function (req, res) {
         if (err) {
             res.send(err);
         } else {
-            console.log("yuh");
+           
             res.send('Offer created successfully')
         }
     })

@@ -4,19 +4,27 @@ var Hogan = require('hogan.js')
 const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
 const asyncWrapper = require('../util/asyncWrapper');
-const config = require("../config/client_secret").config
 const {GoogleSpreadsheet }= require('google-spreadsheet')
-const creds = JSON.parse(JSON.stringify(config))
+const config = require("../config/client_secret").config
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
 
 async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
-    console.log(creds)
+    var creds;
+    if (process.env.GOOGLE_PRIVATE_KEY) {
+        const config = require("../config/client_secret").config
+        config["private_key"] = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n')
+        creds = JSON.parse(JSON.stringify(config))
+    } else {
+        creds = require('../config/client_secret.json')
+    }
+
     const doc = new GoogleSpreadsheet(spreadsheetID);
     await doc.useServiceAccountAuth({
       client_email: creds.client_email,
       private_key: creds.private_key,
     });
+
   
     await doc.loadInfo(); // loads document properties and worksheets
   
@@ -37,7 +45,8 @@ async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
         Languages: request.languages.join(", "),
         Details: request.details,
         When: request.time + " " + request.date,
-        BestVolunteers: volunteer_emails.join(", ")
+        BestVolunteers: volunteer_emails.join(", "),
+        Location: "(" + request.latitude +  ", " + request.longitude + ")"
     });
 
   }
@@ -128,7 +137,7 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
 exports.handle_old_request = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
     request.completed = false;
-    console.log(request)
+    
     
     request.save().then(result => {
         res.status(201).json({
@@ -177,6 +186,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         sendEmail(request, req.body.volunteer.email, result._id, req.body.volunteer.email)
         await addRequestToSpreadsheet(request, result._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
     } else {
+        await addRequestToSpreadsheet(request, result._id, volunteers, '1lymbkyVvNQPzLeCdmo3NHOs5Rrl97AaRzapDzP-YRmg')
         sendEmail(request, req.body.volunteer.email, result._id, 'covaidco@gmail.com')
     }
     res.status(200).json({
@@ -255,7 +265,6 @@ function sendEmail(request, volunteer_email, ID, recipient) {
         phone = "N/A"
     }
 
-    console.log(link);
 
     const mailOptions = {
         from: 'covaidco@gmail.com', // sender address

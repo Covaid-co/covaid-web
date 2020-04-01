@@ -163,7 +163,6 @@ class Home extends Component {
     fetch_a('token', '/api/users/current')
       .then((response) => response.json())
       .then((user) => {
-        console.log(user);
         this.setState({ currentUser: user });
         this.setState({ checked: user.availability });
         this.setState({ isLoggedIn: true });
@@ -320,7 +319,7 @@ class Home extends Component {
         this.setNeighborhood(position.coords.latitude, position.coords.longitude, '');
         this.findAssociations(position.coords.latitude, position.coords.longitude, currentComponent);
       }, (error) => {
-        console.log("No geolocation");
+        
       });
     }
 
