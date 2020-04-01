@@ -57,7 +57,7 @@ export default function NewFilterButton(props) {
             <Dropdown.Toggle size = 'sm' 
                             variant="secondary"
                             id="filterButton">
-                <strong>Resource Filter</strong>
+                <strong>Community Bulletin</strong>
             </Dropdown.Toggle>
 
             <Dropdown.Menu>

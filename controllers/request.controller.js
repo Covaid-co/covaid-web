@@ -157,11 +157,11 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     }
     var result = await request.save()
     console.log(volunteers)
-    if (request.association == "5e8414970f41a53dae08de51") {
+    if (request.association == "5e843ab29ad8d24834c8edbf") {
         // PITT
         await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
     } 
-    else if (request.association == '5e8414e40f41a53dae08de52') {
+    else if (request.association == '5e8439ad9ad8d24834c8edbe') {
         // BALTIMORE
         sendEmail(request, req.body.volunteer.email, result._id, req.body.volunteer.email)
         await addRequestToSpreadsheet(request, result._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')

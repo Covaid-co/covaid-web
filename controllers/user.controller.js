@@ -119,10 +119,11 @@ exports.register = function (req, res) {
           } 
 
           var userID = result._id;
-          if (user.association == "5e8414970f41a53dae08de51") {
+          if (user.association == "5e843ab29ad8d24834c8edbf") {
             // PITT
             addUserToSpreadsheet(finalUser, userID, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-          } else if (user.association == "5e8414e40f41a53dae08de52") {
+          } else if (user.association == "5e8439ad9ad8d24834c8edbe") {
+            // BALTI
             addUserToSpreadsheet(finalUser, userID, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4') 
           }
 
@@ -143,7 +144,7 @@ exports.register = function (req, res) {
           var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
 
           // if user association is baltimore, send google forms link
-          if (user.association == '5e8414e40f41a53dae08de52') {
+          if (user.association == '5e8439ad9ad8d24834c8edbe') {
             message = "Verify your account here: https://forms.gle/aTxAbGVC49ff18R1A . You will be contacted within 24 hours once your account account is verified!"
           }
           var mailOptions = {
@@ -272,6 +273,7 @@ exports.all_users_of_an_association = function (req, res) {
 }
 
 exports.all_users = function (req, res) {
+  updatePreVerified()
   Users.find({'availability': true,
               'preVerified': true,
               'location': 
@@ -294,7 +296,7 @@ exports.all_users = function (req, res) {
 }
 
 exports.total_users = function (req, res) {
-  Users.find({'preVerified': true}).count(function(err, count) {
+  Users.find({}).count(function(err, count) {
     res.send({'count': count});
   })
 }
@@ -302,10 +304,10 @@ exports.total_users = function (req, res) {
 exports.update = function (req, res) {
   const id = req.token.id;
 
-  if (req.body.association == "5e8414970f41a53dae08de51") {
+  if (req.body.association == "5e843ab29ad8d24834c8edbf") {
     // PITT
     updateUserInSpreadsheet(id, req.body, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-  } else if (req.body.association == "5e8414e40f41a53dae08de52") {
+  } else if (req.body.association == "5e8439ad9ad8d24834c8edbe") {
     // BALTI
     updateUserInSpreadsheet(id, req.body, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4') 
   }
