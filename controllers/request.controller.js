@@ -4,15 +4,14 @@ var Hogan = require('hogan.js')
 const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
 const asyncWrapper = require('../util/asyncWrapper');
-const SPREADSHEET_ID = '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0'
 const creds = require('../client_secret.json')
 const {GoogleSpreadsheet }= require('google-spreadsheet')
 
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
 
-async function addRequestToSpreadsheet(request, ID, volunteers) {
-    const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
+    const doc = new GoogleSpreadsheet(spreadsheetID);
     await doc.useServiceAccountAuth({
       client_email: creds.client_email,
       private_key: creds.private_key,
@@ -159,10 +158,13 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     var result = await request.save()
     console.log(volunteers)
     if (request.association == "5e8414970f41a53dae08de51") {
-        await addRequestToSpreadsheet(request, result._id, volunteers)
+        // PITT
+        await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
     } 
     else if (request.association == '5e8414e40f41a53dae08de52') {
+        // BALTIMORE
         sendEmail(request, req.body.volunteer.email, result._id, req.body.volunteer.email)
+        await addRequestToSpreadsheet(request, result._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
     } else {
         sendEmail(request, req.body.volunteer.email, result._id, 'covaidco@gmail.com')
     }

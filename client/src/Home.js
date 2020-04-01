@@ -138,7 +138,7 @@ class Home extends Component {
 
   componentDidMount() {
     if (this.props.location.verified) {
-      this.setState({showRegistration: true});
+      this.setState({showLogin: true});
       this.setState({justVerified: true});
     }
     this.getMyLocation();
@@ -481,13 +481,16 @@ class Home extends Component {
       }
     }
 
+    var portalText = <></>
+
     var volunteerButton = <Button onClick={() => this.setState({showRegistration: true})} id="homeButtons" >
-        Volunteer Sign up
+        Become a volunteer
       </Button>
 
     if (isLoggedIn) {
+      portalText = <p id="jumboText">Manage your offer of help from the volunteer portal</p>
       volunteerButton =  <Button onClick={() => this.setState({volunteerPortal: true})} id="homeButtons" >
-        Volunteer portal
+        Manage your offer
       </Button>
     }
 
@@ -509,7 +512,8 @@ class Home extends Component {
                               clickOnUser={this.clickOnUser}
                               volunteerButton={volunteerButton}
                               refreshLocation={this.refreshLocation}
-                              setLatLong={this.setLatLongFromZip}/>
+                              setLatLong={this.setLatLongFromZip}
+                              portalText={portalText}/>
     }
 
     var modal = <></>
