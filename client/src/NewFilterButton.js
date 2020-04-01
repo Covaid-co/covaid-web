@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import Container from 'react-bootstrap/Container'
 import Dropdown from 'react-bootstrap/Dropdown'
 
 
 export default function NewFilterButton(props) {
 
-    const [showFilter, setShowFilter] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleTaskChange = (evt, task) => {
@@ -64,8 +61,9 @@ export default function NewFilterButton(props) {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                {props.resources.map((task) => {
+                {props.resources.map((task, i) => {
                 return <Dropdown.Item
+                            key={i}
                             onSelect = {(evt) => { handleTaskChange(evt, task)}}
                             active = {props.taskSelect[task]}> {task}
                         </Dropdown.Item >

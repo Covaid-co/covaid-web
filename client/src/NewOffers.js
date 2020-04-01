@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
 import ListGroup from 'react-bootstrap/ListGroup'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import Toast from 'react-bootstrap/Toast'
-import Modal from 'react-bootstrap/Modal'
 import Container from 'react-bootstrap/Container'
 
 import NewFilterButton from './NewFilterButton'
@@ -54,7 +46,6 @@ export default function NewOffers(props) {
             const response = await fetch(url);
             response.json().then((data) => {
                 setVolunteers(data);
-                console.log(data);
                 setDisplayedVolunteers(data);
             });
         }
@@ -86,7 +77,7 @@ export default function NewOffers(props) {
             <Container className="shadow mb-5 bg-white rounded" id="offerContainer">
                 <ListGroup variant="flush">
                     {displayedVolunteers.map((user, i) => {
-                        return (<ListGroup.Item action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
+                        return (<ListGroup.Item key={i} action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
                             <div >
                                 <h5 className="volunteer-name">
                                     {user.first_name}

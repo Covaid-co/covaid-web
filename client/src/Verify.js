@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Redirect } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 const queryString = require('query-string');
@@ -6,7 +6,7 @@ const queryString = require('query-string');
 export default function Verify(props) {
     function verify() {
         const ID = queryString.parse( props.location.search).ID;
-        const response = fetch('/api/users/verify?ID=' + ID, {
+        fetch('/api/users/verify?ID=' + ID, {
             method: 'post'
         });
     }

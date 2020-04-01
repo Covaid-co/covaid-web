@@ -138,7 +138,7 @@ class Home extends Component {
 
   componentDidMount() {
     if (this.props.location.verified) {
-      this.setState({showRegistration: true});
+      this.setState({showLogin: true});
       this.setState({justVerified: true});
     }
     this.getMyLocation();
@@ -271,10 +271,11 @@ class Home extends Component {
     async function fetchData() {
         const response = await fetch(url);
         response.json().then((data) => {
-            console.log(data);
             currentComponent.setState({associations: data});
-            if (data[0]) {
+            if (data.length > 0) {
               currentComponent.setState({currentAssoc: data[0]})
+            } else {
+              currentComponent.setState({currentAssoc: {}})
             }
         });
     }
@@ -391,56 +392,6 @@ class Home extends Component {
 
     const { isLoggedIn } = this.state;
 
-    var bulletin;
-    var offer;
-    var link;
-    var covaidText = "Covaid connects community volunteers with those who need help"
-    if (this.state.width < 575) {
-      bulletin = "Bulletin";
-      console.log("less");
-      offer = "My Offer";
-      link = "Links";
-    } else {
-      bulletin = "Community Bulletin";
-      offer = "My Offer";
-      link = "Helpful Links";
-    }
-		
-    var titleSize = 43;
-    if (this.state.width <= 350) {
-      covaidText = "";
-      titleSize = 30;
-    }
-
-    var communityButton = <></>;
-    var communityText = "Want to help your community?";
-    if (this.state.width <= 374) {
-      communityText = "Want to help?"
-    }
-
-    if (!this.state.isLoggedIn) {
-      if (this.state.width <= 767) {
-        communityButton = <>
-          <Button variant="outline-light" 
-                  style={{outlineWidth: "thick",
-                          textAlign: 'right',
-                          paddingLeft: 5,
-                          paddingRight: 5,
-                          paddingTop: 0,
-                          paddingBottom: 2,
-                          marginRight: 3}}
-                  id = 'howHelpButton1'
-                  onClick={this.handleShowRegistration}>
-            <font id ="help" 
-                  style = {{color:"white", 
-                            fontWeight: 600,
-                            fontSize: 11, whiteSpace: 'nowrap'}}>
-              {communityText}
-            </font>
-          </Button></>
-      }
-    }
-
     var rightNav;
     if (isLoggedIn) {
       if (this.state.toggled) {
@@ -528,7 +479,7 @@ class Home extends Component {
          <Modal.Header closeButton>
                 <Modal.Title>Useful Resources in the Midst of COVID-19</Modal.Title>
           </Modal.Header>
-          <Modal.Body><HelpfulLinks /></Modal.Body>
+          <Modal.Body style={{paddingTop: 0}}><HelpfulLinks /></Modal.Body>
           </>
         break;
       default:
@@ -576,7 +527,7 @@ class Home extends Component {
           {pageContent}
       </div>
 
-      <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 60}}>
+      <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 50}} id="general-modal">
         {modal}
       </Modal>
     </>);

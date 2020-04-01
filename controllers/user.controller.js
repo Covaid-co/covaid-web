@@ -140,7 +140,11 @@ exports.register = function (req, res) {
           }
     
           var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
-    
+
+          // if user association is baltimore, send google forms link
+          if (user.association == '5e8414e40f41a53dae08de52') {
+            message = "Verify your account here: https://forms.gle/aTxAbGVC49ff18R1A . You will be contacted within 24 hours once your account account is verified!"
+          }
           var mailOptions = {
             from: 'covaidco@gmail.com',
             to: user.email,

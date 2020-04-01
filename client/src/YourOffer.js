@@ -9,16 +9,11 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
 import Alert from 'react-bootstrap/Alert'
-import ToggleButton from 'react-bootstrap/ToggleButton'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
-
-import Resources from './Resources';
 import PhoneNumber from './PhoneNumber';
 import NewLanguages from './NewLanguages';
 import Details from './Details';
 import NewCar from './NewHasCar';
 import Availability from './Availability';
-import TimesAvailable from './TimesAvailable';
 
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
@@ -48,11 +43,11 @@ export default function YourOffer(props) {
     const [defaultResources, setDefaultResources] = useState(['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.']);
     const timeNames = ['Mornings', 'Afternoons', 'Evenings', 'Weekends'];
     const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in details)'];
-    const pittsburghResources = ['Food', 'Childcare', 'Pet care', 'Eldercare', 
-        'Help running errands (groceries, prescriptions, supplies, etc)',
-        'A ride somewhere', 'Health Care Support (doctor, medicine, etc)',
-        'Housing', 'Shower / Laundry', 'Internet / Phone Access', 
-        'Emotional / Spiritual Support', 'Storage', 'Financial Support', 'Legal assistance', 'Other'];
+    // const pittsburghResources = ['Food', 'Childcare', 'Pet care', 'Eldercare', 
+    //     'Help running errands (groceries, prescriptions, supplies, etc)',
+    //     'A ride somewhere', 'Health Care Support (doctor, medicine, etc)',
+    //     'Housing', 'Shower / Laundry', 'Internet / Phone Access', 
+    //     'Emotional / Spiritual Support', 'Storage', 'Financial Support', 'Legal assistance', 'Other'];
 
     useEffect(() => {
         async function fetchData() {
@@ -202,7 +197,7 @@ export default function YourOffer(props) {
         }
 
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
-        if (phoneOnlyDigits.length != 0 && phoneOnlyDigits.length !== 10) {
+        if (phoneOnlyDigits.length !== 0 && phoneOnlyDigits.length !== 10) {
             setShowToast(true);
             setToastMessage('Enter a valid phone number');
             return false;

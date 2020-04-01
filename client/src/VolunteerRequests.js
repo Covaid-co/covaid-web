@@ -45,7 +45,7 @@ export default function VolunteerRequests(props) {
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
-        if (!query || query == "") {
+        if (!query || query === "") {
             setFilteredRequests(requests)
         }
 

@@ -62,7 +62,7 @@ export default function RequestHelp(props) {
 
         function fetchResources() {
             var resourcesFromAssoc;
-            if (props.requestHelpMode == "bulletin") {
+            if (props.requestHelpMode === "bulletin") {
                 resourcesFromAssoc = props.volunteer.offer.tasks
             } else {
                 var data = props.state.associations
@@ -95,7 +95,7 @@ export default function RequestHelp(props) {
         }
 
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
-        if (phoneOnlyDigits.length != 0 && phoneOnlyDigits.length !== 10) {
+        if (phoneOnlyDigits.length !== 0 && phoneOnlyDigits.length !== 10) {
             setShowToast(true);
             setToastMessage('Enter a valid phone number');
             return false;
@@ -192,7 +192,7 @@ export default function RequestHelp(props) {
 
     if (firstPage) {
         return (
-            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} id='showRequestModal'>
+            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal'>
                 <Modal.Header closeButton>
                     <Modal.Title>Make a request</Modal.Title>
                 </Modal.Header>

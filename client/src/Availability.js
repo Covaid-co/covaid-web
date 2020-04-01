@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form'
-import fetch_a from './util/fetch_auth';
 
 export default function Availability(props) {
 

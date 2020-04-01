@@ -46,23 +46,23 @@ export default function LocationSetting(props) {
                         </Button>
                     </Col>
                     <Col md={6} sm={6} id="city-support-text-tablet">
-                        <p style={{marginTop: -8, float: 'right'}}className="volunteer-location">
+                        <a style={{marginTop: -8, float: 'right', color: '#797979'}} className="volunteer-location">
                             This city is supported by:<br/> 
                             {props.associations.map((association, i) => {                
                                 return <p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
                             })}
-                        </p>
+                        </a>
                     </Col>
                 </Row>
                 <Row id="web-separate">
                     <Col lg={4} md={6} sm={6} xs={12}>
                         <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
-                        <p style={{marginTop: -8, float: 'left'}}className="volunteer-location">
+                        <a style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
                             This city is supported by:<br/> 
                             {props.associations.map((association, i) => {                
                                 return <p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
                             })}
-                        </p>
+                        </a>
                     </Col>
                 </Row>
                 <Row id="mobile-tablet-separate">
@@ -72,12 +72,12 @@ export default function LocationSetting(props) {
                 </Row>
                 <Row id="mobile-org">
                     <Col md={12}>
-                        <p style={{marginTop: -8, float: 'left'}}className="volunteer-location">
+                        <a style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
                             This city is supported by:<br/> 
                             {props.associations.map((association, i) => {                
                                 return <p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
                             })}
-                        </p>
+                        </a>
                     </Col>
                 </Row>
             </Form>

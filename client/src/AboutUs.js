@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from 'react-bootstrap/Modal'
 
 export default function AboutUs(props) {

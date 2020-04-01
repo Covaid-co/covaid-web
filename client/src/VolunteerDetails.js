@@ -1,13 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-import ListGroup from 'react-bootstrap/ListGroup'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 
 export default function VolunteerDetails(props) {

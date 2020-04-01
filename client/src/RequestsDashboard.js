@@ -43,7 +43,7 @@ export default function RequestsDashboard(props) {
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
-        if (!query || query == "") {
+        if (!query || query === "") {
             setFilteredRequests(requests)
         }
 

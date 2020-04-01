@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "./libs/hooksLib";
 
@@ -121,7 +121,7 @@ export default function NewRegister(props, switchToLogin) {
         }
 
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
-        if (phoneOnlyDigits.length != 0 && phoneOnlyDigits.length !== 10) {
+        if (phoneOnlyDigits.length !== 0 && phoneOnlyDigits.length !== 10) {
             setShowToast(true);
             setToastMessage('Enter a valid phone number');
             return false;
@@ -207,15 +207,8 @@ export default function NewRegister(props, switchToLogin) {
             phoneString = phoneNumber.replace(/\D/g,'').substring(0,10);
         }
 
-        // var currentAssoc = '';
-        // if (Object.keys(props.state.associations).length > 0) {
-        //     const tempID = Object.keys(props.state.associations).filter(function(id) {
-        //                         return props.state.associations[id];
-        //                     })[0];
-        //     currentAssoc = Object.keys(props.state.associationNames).filter(function(name) {
-        //                         return name === tempID;
-        //                     })[0];
-        // }
+        var associationID = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['_id'] : "";
+        var associationName = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['name'] : "";
 
         let form = {
             'user': {
@@ -228,7 +221,8 @@ export default function NewRegister(props, switchToLogin) {
                     'type': 'Point',
                     'coordinates': [props.state.longitude, props.state.latitude]
                 },
-                'association': props.state.currentAssoc['_id'],
+                'association': associationID, 
+                'association_name': associationName,
                 'languages': selectedLanguages,
                 'times_available': selectedTimes,
                 'phone': phoneString
@@ -349,14 +343,7 @@ export default function NewRegister(props, switchToLogin) {
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={newHandleSubmit}>
-                            <h5 className="titleHeadings" style = {{marginTop: '0px', marginBottom: '4px'}}>
-                                Please choose an organization
-                            </h5>
-                            <p id="createAccountText" style={{marginBottom: 5}}>
-                                Choose an organization you would like to support with. You will be a volunteer under 
-                                this organization and receive requests from people who need help here.
-                            </p>
-                            <SelectionForm associations={props.state.associations} setState={props.setState} associationNames={props.state.associationNames}/>
+                            <SelectionForm associations={props.state.associations} setState={props.setState} currentAssoc={props.state.currentAssoc}/>
                             <h5 className="titleHeadings" style = {{marginTop: '10px', marginBottom: '4px'}}>
                                 Health
                             </h5>

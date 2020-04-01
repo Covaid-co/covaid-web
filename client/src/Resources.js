@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Form from 'react-bootstrap/Form'
@@ -29,13 +29,3 @@ export default function Resources(props) {
     );
     
 }
-
-{/* <Form.Group controlId="tasks" bssize="large">
-    <Form.Label style = {{marginBottom: -10}}><h2>Tasks</h2></Form.Label>
-    <p style = {{fontWeight: 300, fontStyle: 'italic'}}>Select tasks with which you are willing to help.</p>
-    <ToggleButtonGroup type="checkbox" className="btn-group flex-wrap" value={selectedTasks} onChange={handleChangeTasks}>
-        {possibleTasks.map((task, i) => {
-            return <ToggleButton className="toggleButton" variant="outline-primary" size="md" key = {i} value={i}>{task}</ToggleButton>
-        })}
-    </ToggleButtonGroup>
-</Form.Group>; */}

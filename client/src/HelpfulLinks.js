@@ -17,21 +17,19 @@ export default function HelpfulLinks() {
         ['https://www.mapping-access.com/blog-1/2020/3/10/accessible-teaching-in-the-time-of-covid-19', 'Accessible teaching'],
         ['https://afsp.org/taking-care-of-your-mental-health-in-the-face-of-uncertainty/', 'Mental health in the face of uncertainty'],
         ['https://www.epa.gov/pesticide-registration/list-n-disinfectants-use-against-sars-cov-2', 'EPA List of disinfectants that kill coronavirus'],
-
     ]
 
     return (
-
-            <ListGroup variant="flush">
-            {links.map((link, i) => {                
-                return <ListGroup.Item key={i} style = {{fontSize: 12}}>
-                        <Row>
-                            <Col><a target="_blank" 
-                                    href={link[0]}
-                                    rel="noopener noreferrer">{link[1]}</a></Col>
-                        </Row>
-                    </ListGroup.Item>      
-                })}
-            </ListGroup>
+        <ListGroup variant="flush">
+        {links.map((link, i) => {                
+            return <ListGroup.Item key={i} style = {{fontSize: 12}}>
+                    <Row>
+                        <Col><a target="_blank" 
+                                href={link[0]}
+                                rel="noopener noreferrer">{link[1]}</a></Col>
+                    </Row>
+                </ListGroup.Item>      
+            })}
+        </ListGroup>
     );
 }

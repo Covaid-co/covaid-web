@@ -82,6 +82,7 @@ UsersSchema.methods.toJSON = function() {
             timesAvailable: this.offer.timesAvailable
         },
         association: this.association,
+        association_name: this.association_name,
         languages: this.languages
     };
 };

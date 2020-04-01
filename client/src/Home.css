@@ -189,7 +189,11 @@
 }
 
 #showRequestModal {
-  margin-top: 60px;
+  margin-top: 30px !important;
+}
+
+.modal-open .modal {
+  margin-top: 50px !important;
 }
 
 .modal-content {
@@ -299,6 +303,10 @@ input {
   order: 0;
   align-self: flex-start;
   vertical-align: middle;
+}
+
+#general-modal {
+  font-family: "SF Text";
 }
 
 .form-control {
