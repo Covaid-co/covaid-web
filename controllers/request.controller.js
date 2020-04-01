@@ -158,7 +158,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         await addRequestToSpreadsheet(request, result._id, volunteers)
     } 
     else if (request.association == '5e8414e40f41a53dae08de52') {
-        sendEnail(request, req.body.volunteer.email, result._id, req.body.volunteer.email)
+        sendEmail(request, req.body.volunteer.email, result._id, req.body.volunteer.email)
     } else {
         sendEmail(request, req.body.volunteer.email, result._id, 'covaidco@gmail.com')
     }
