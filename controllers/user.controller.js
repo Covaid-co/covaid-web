@@ -186,7 +186,7 @@ exports.login = function (req, res, next) {
       });
     }
   
-    return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+    return passport.authenticate('userLocal', { session: false }, (err, passportUser, info) => {
       if(err) {
         return next(err);
       }
@@ -250,7 +250,7 @@ async function updatePreVerified() {
 }
 
 exports.all_users_of_an_association = function (req, res) {
-  var assoc = req.body.association;
+  var assoc = req.query.association;
   Users.find({
       'association': assoc
     }).then(function (users) {

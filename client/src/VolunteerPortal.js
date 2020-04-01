@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import VolunteerRequests from './VolunteerRequests';
-import VolunteerList from './VolunteerList';
 import './VolunteerPage.css'
 
 export default function VolunteerPortal(props) {
@@ -17,14 +16,14 @@ export default function VolunteerPortal(props) {
 		<> 
 			<Jumbotron fluid id="jumbo-volunteer">
 				<Container id="jumbo-container-volunteer">
-				<Row>
-					<Col lg={2} md={1} sm={0}>
-					</Col>
-					<Col>
-					<h1 id="jumboHeading">Welcome back, {props.state.first_name}!</h1>
-					<p id="jumboText">This is your volunteer portal, a place for you to manage your offers and requests</p>
-					</Col>
-				</Row>
+					<Row>
+						<Col lg={2} md={1} sm={0}>
+						</Col>
+						<Col>
+							<h1 id="jumboHeading">Welcome back, {props.state.first_name}!</h1>
+							<p id="jumboText">This is your volunteer portal, a place for you to manage your offers and requests</p>
+						</Col>
+					</Row>
 				</Container>
 			</Jumbotron>
 			<Container id="volunteer-info">
@@ -37,11 +36,11 @@ export default function VolunteerPortal(props) {
 						</Container>
 						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 							style={firstTab ? {'display': 'block'} : {'display': 'none'}}>
-							<VolunteerList state = {props.state} />
+							<VolunteerRequests state = {props.state} />
 						</Container>
 						<Container className="shadow mb-5 bg-white rounded" id="request-view"
 							style={firstTab ? {'display': 'none'} : {'display': 'block'}}>
-							<VolunteerRequests state={props.state}/>
+							<YourOffer state={props.state}/>
 						</Container>
 						</Col>
 					<Col ></Col>

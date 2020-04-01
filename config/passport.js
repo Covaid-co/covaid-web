@@ -3,8 +3,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
 const Users = mongoose.model('Users');
+const Association = mongoose.model('Association');
 
-passport.use(new LocalStrategy({
+passport.use('userLocal', new LocalStrategy({
   usernameField: 'user[email]',
   passwordField: 'user[password]',
 }, (email, password, done) => {
@@ -15,5 +16,19 @@ passport.use(new LocalStrategy({
       }
 
       return done(null, user);
+    }).catch(done);
+}));
+
+passport.use('associationLocal', new LocalStrategy({
+  usernameField: 'association[email]',
+  passwordField: 'association[password]',
+}, (email, password, done) => {
+  Association.findOne({ email })
+    .then((association) => {
+      if(!association || !association.validatePassword(password)) {
+        return done(null, false, { errors: { 'email or password': 'is invalid' } });
+      }
+
+      return done(null, association);
     }).catch(done);
 }));
