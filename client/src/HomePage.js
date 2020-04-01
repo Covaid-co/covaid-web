@@ -79,7 +79,7 @@ export default function HomePage(props) {
           <Container id="jumboContainer" className="mobile-bulletin-container">
             <Col xs={12} id="mobile-bulletin">
               <p className='location-text' style={{color: 'black', float: 'left', width: '100%', fontSize: "5vw"}}>
-                See who's helping in {props.state.locality}<br/> 
+                See who's helping near {props.state.locality}<br/> 
                 
               </p>
               <p className="volunteer-info" style={{color: 'black', float: 'left', fontWeight: 'normal', fontSize: "3vw"}}>Click an offer below for more info</p>

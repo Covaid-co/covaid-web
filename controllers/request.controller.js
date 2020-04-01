@@ -4,7 +4,7 @@ var Hogan = require('hogan.js')
 const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
 const asyncWrapper = require('../util/asyncWrapper');
-const creds = require('../client_secret.json')
+const creds = require('../config/client_secret.json')
 const {GoogleSpreadsheet }= require('google-spreadsheet')
 
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')

@@ -3,7 +3,7 @@ const Offers = require('../models/offer.model');
 const passport = require('passport');
 var nodemailer = require('nodemailer');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
-const creds = require('../client_secret.json')
+const creds = require('../config/client_secret.json')
 const association_controller = require('./association.controller'); 
 
 
