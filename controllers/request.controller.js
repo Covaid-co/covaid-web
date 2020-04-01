@@ -148,6 +148,15 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             volunteer_emails.push(volunteers[i].email)
         }
         sendEmail(request, volunteer_emails.join(", "), "", 'covaidco@gmail.com')
+        var dbResult = await request.save()
+        if (request.association == "5e843ab29ad8d24834c8edbf") {
+            // PITT
+            await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
+        } 
+        res.status(200).json({
+            volunteers: volunteers 
+        });
+        return
     } else {
         volunteers = [req.body.volunteer]
         request.status = {
@@ -156,7 +165,6 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         }
     }
     var result = await request.save()
-    console.log(volunteers)
     if (request.association == "5e843ab29ad8d24834c8edbf") {
         // PITT
         await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
@@ -171,6 +179,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     res.status(200).json({
         volunteers: volunteers 
     });
+    return
 });
 
 var rad = function(x) {
@@ -191,7 +200,6 @@ function calcDistance(latA, longA, latB, longB) {
 
 
 async function getBestVolunteers(request) {
-    console.log(request)
     var users = await Users.find({'availability': true,
                         'preVerified': true,
                         'association': request.association,
