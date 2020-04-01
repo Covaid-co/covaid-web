@@ -154,10 +154,10 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     }
     var result = await request.save()
     console.log(volunteers)
-    if (request.association == "5e7f9badc80c292245264ebe") {
+    if (request.association == "5e8414970f41a53dae08de51") {
         await addRequestToSpreadsheet(request, result._id, volunteers)
     } 
-    else if (request.association == '5e83dbc187327049c4936587') {
+    else if (request.association == '5e8414e40f41a53dae08de52') {
         sendEnail(request, req.body.volunteer.email, result._id, req.body.volunteer.email)
     } else {
         sendEmail(request, req.body.volunteer.email, result._id, 'covaidco@gmail.com')
