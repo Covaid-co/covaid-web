@@ -56,56 +56,6 @@ exports.update_completed = function (req, res) {
     });
 };
 
-function sendMail(request, requester_email, result) {
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-               user: 'covaidco@gmail.com',
-               pass: 'supportyourcity_covaid_1?'
-        }
-    }); 
-
-    var paymentText;
-    if (request.payment == 0) {
-        paymentText = "Call Ahead"
-    } else if (request.payment == 1) {
-        paymentText = "Reimburse Volunteer"
-    } else {
-        paymentText = "N/A"
-    }
-
-    var mode = "localhost:3000";
-    if (process.env.PROD) {
-        mode = "covaid.co"
-    }
-
-
-    var link = 'http://' + mode + '/completeOffer?ID=' + result._id;
-
-    var email = requester_email;
-    var phone = requester_phone;
-
-
-
-    if (!requester_email || requester_email.length == 0) {
-        email = "N/A"
-    }
-
-    if (!requester_phone || requester_phone.length == 0) {
-        phone = "N/A"
-    }
-
-
-    const mailOptions = {
-        from: 'covaidco@gmail.com', // sender address
-        to: offerer_email, // list of receivers
-        subject: 'Someone needs your help!', // Subject line
-        html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: result._id, link: link, payment: paymentText})
-    };
-
-    transporter.sendMail(mailOptions)
-}
-
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
     const assoc = req.query.association
     var requests = await Requests.find({
@@ -207,11 +157,11 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     if (request.association == "5e7f9badc80c292245264ebe") {
         await addRequestToSpreadsheet(request, result._id, volunteers)
     } 
-    // else if (request.association == '5e83dbc187327049c4936587') {
-    //     sendMail(request, req.body, result, req.body.volunteer.email)
-    // } else {
-    //     sendMail(request, req.body, result, 'covaidco@gmail.com')
-    // }
+    else if (request.association == '5e83dbc187327049c4936587') {
+        sendEnail(request, req.body.volunteer.email, result._id, req.body.volunteer.email)
+    } else {
+        sendEmail(request, req.body.volunteer.email, result._id, 'covaidco@gmail.com')
+    }
     res.status(200).json({
         volunteers: volunteers 
     });
@@ -251,16 +201,7 @@ async function getBestVolunteers(request) {
     return users;
 }
 
-function sendEmail(req, request, ID) {
-    const { 
-        body: {
-            requester_email,
-            requester_phone,
-            details
-        } 
-    } = req;
-    var offerer_email = req.body.volunteer.email;
-
+function sendEmail(request, volunteer_email, ID, recipient) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -286,14 +227,14 @@ function sendEmail(req, request, ID) {
     // var link = 'http://' + mode + '/completeOffer?ID=' + ID;
     var link = 'http://' + mode;
 
-    var email = requester_email;
-    var phone = requester_phone;
+    var email = request.requester_email
+    var phone = request.requester_phone;
 
-    if (!requester_email || requester_email.length == 0) {
+    if (!request.requester_email || request.requester_email.length == 0) {
         email = "N/A"
     }
 
-    if (!requester_phone || requester_phone.length == 0) {
+    if (!request.requester_phone || request.requester_phone.length == 0) {
         phone = "N/A"
     }
 
@@ -301,9 +242,9 @@ function sendEmail(req, request, ID) {
 
     const mailOptions = {
         from: 'covaidco@gmail.com', // sender address
-        to: 'covaidco@gmail.com', // list of receivers
+        to: recipient, // list of receivers
         subject: 'Someone needs your help!', // Subject line
-        html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: ID, link: link, payment: paymentText})
+        html: compiledTemplate.render({email: email, offer_email: volunteer_email, phone: phone, details: request.details, id: ID, link: link, payment: paymentText})
     };
 
     transporter.sendMail(mailOptions, function (err, info) {

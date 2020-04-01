@@ -267,7 +267,6 @@ exports.all_users_of_an_association = function (req, res) {
 }
 
 exports.all_users = function (req, res) {
-  updatePreVerified()
   Users.find({'availability': true,
               'preVerified': true,
               'location': 
