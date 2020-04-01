@@ -49,7 +49,7 @@ export default function HomePage(props) {
                   </Button>
                 </Col>
                 <Col md={6} id="community-bulletin">
-                  <p className='location-text'>See who's helping in {props.state.locality}</p>
+                  <p className='location-text'>See who's helping near {props.state.locality}</p>
                   <p className="volunteer-info">Click a volunteer's offer below for more info</p>
                   <NewOffers state={props.state} 
                             handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}
