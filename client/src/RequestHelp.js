@@ -199,7 +199,7 @@ export default function RequestHelp(props) {
                 <Modal.Body>
                     <p id="requestCall">
                         For those who would rather call in a request, 
-                        please call <span id="phoneNumber">(401) 526-8243</span>
+                        please call <br /><span id="phoneNumber">(401) 526-8243</span>
                     </p>
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>
