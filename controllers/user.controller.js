@@ -245,8 +245,15 @@ function calcDistance(latA, longA, latB, longB) {
 async function updatePreVerified() {
   await Users.updateMany({}, 
     {'$set': {
-      'preVerified': true
-    }})
+      'languages': ['English'],
+      'offer.car': false,
+      'offer.timesAvailable': [],
+      'association': '',
+      'association_name': '',
+      'agreedToTerms': true,
+      'verified': false
+      }
+    })
 }
 
 exports.all_users_of_an_association = function (req, res) {
@@ -260,6 +267,7 @@ exports.all_users_of_an_association = function (req, res) {
 }
 
 exports.all_users = function (req, res) {
+  updatePreVerified()
   Users.find({'availability': true,
               'preVerified': true,
               'location': 

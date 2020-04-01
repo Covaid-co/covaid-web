@@ -54,6 +54,7 @@ export default function NewOffers(props) {
             const response = await fetch(url);
             response.json().then((data) => {
                 setVolunteers(data);
+                console.log(data);
                 setDisplayedVolunteers(data);
             });
         }

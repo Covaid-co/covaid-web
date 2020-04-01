@@ -56,10 +56,7 @@ exports.update_completed = function (req, res) {
     });
 };
 
-function sendMail(request, requester_email,
-    requester_phone,
-    offerer_email,
-    details, result) {
+function sendMail(request, requester_email, result) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -101,7 +98,7 @@ function sendMail(request, requester_email,
 
     const mailOptions = {
         from: 'covaidco@gmail.com', // sender address
-        to: 'covaidco@gmail.com', // list of receivers
+        to: offerer_email, // list of receivers
         subject: 'Someone needs your help!', // Subject line
         html: compiledTemplate.render({email: email, offer_email: offerer_email, phone: phone, details: details, id: result._id, link: link, payment: paymentText})
     };
@@ -209,7 +206,12 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     console.log(volunteers)
     if (request.association == "5e7f9badc80c292245264ebe") {
         await addRequestToSpreadsheet(request, result._id, volunteers)
-    }
+    } 
+    // else if (request.association == '5e83dbc187327049c4936587') {
+    //     sendMail(request, req.body, result, req.body.volunteer.email)
+    // } else {
+    //     sendMail(request, req.body, result, 'covaidco@gmail.com')
+    // }
     res.status(200).json({
         volunteers: volunteers 
     });
@@ -281,7 +283,8 @@ function sendEmail(req, request, ID) {
         mode = "covaid.co"
     }
 
-    var link = 'http://' + mode + '/completeOffer?ID=' + ID;
+    // var link = 'http://' + mode + '/completeOffer?ID=' + ID;
+    var link = 'http://' + mode;
 
     var email = requester_email;
     var phone = requester_phone;

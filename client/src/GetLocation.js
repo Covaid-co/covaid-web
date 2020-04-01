@@ -42,7 +42,7 @@ export default function GetLocation(props) {
                         <Col xs={12}>
                             <Form.Group controlId="zip" bssize="large">
                                 <Form.Control 
-                                    placeholder="Pittsburgh, PA / 15213"
+                                    placeholder="City/Zipcode"
                                     value={zipCode} 
                                     onChange={(event) => {handleChangeZip(event.target.value)}}
                                 />
