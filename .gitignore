@@ -7,6 +7,7 @@
 .DS_Store
 node_modules/
 client/node_modules/
+config/client_secret.json
 .env
 *.orig
 .idea/

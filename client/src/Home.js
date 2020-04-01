@@ -23,7 +23,7 @@ import Badge from 'react-bootstrap/Badge'
 
 import Cookie from 'js-cookie'
 
-Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
+Geocode.setApiKey(process.env.GOOGLE_API_KEY);
 
 class Home extends Component {
   constructor(props) {

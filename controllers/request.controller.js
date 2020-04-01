@@ -4,9 +4,9 @@ var Hogan = require('hogan.js')
 const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
 const asyncWrapper = require('../util/asyncWrapper');
-const creds = require('../config/client_secret.json')
+const config = require("../config/client_secret")
 const {GoogleSpreadsheet }= require('google-spreadsheet')
-
+const creds = JSON.parse(JSON.stringify(config))
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
 
@@ -152,7 +152,9 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         if (request.association == "5e843ab29ad8d24834c8edbf") {
             // PITT
             await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-        } 
+        } else {
+            await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1lymbkyVvNQPzLeCdmo3NHOs5Rrl97AaRzapDzP-YRmg')
+        }
         res.status(200).json({
             volunteers: volunteers 
         });
