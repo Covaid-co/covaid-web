@@ -3,8 +3,9 @@ const Offers = require('../models/offer.model');
 const passport = require('passport');
 var nodemailer = require('nodemailer');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
-const creds = require('../config/client_secret.json')
+const config = require("../config/client_secret")
 const association_controller = require('./association.controller'); 
+const creds = JSON.parse(JSON.stringify(config))
 
 
 function validateEmailAccessibility(email){
