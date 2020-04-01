@@ -65,7 +65,9 @@ export default function NewOffers(props) {
                 [taskName]: false,
             }));
         }
-        fetchData();
+        if (props.state.latitude && props.state.longitude){
+            fetchData();
+        }
     }, [props.state.currentAssoc, props.state.latitude, props.state.longitude]);
 
 

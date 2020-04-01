@@ -16,8 +16,10 @@ let RequestSchema = new Schema({
     details: String,
     time: String,
     date: String,
-    status: String,
-    volunteer: String
+    status: {
+        current_status: String,
+        volunteer: String
+    }
 });
 
 module.exports = mongoose.model('Requests', RequestSchema);

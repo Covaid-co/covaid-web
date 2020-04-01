@@ -110,7 +110,7 @@ function sendMail(request, requester_email,
 }
 
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
-    const assoc = req.body.association
+    const assoc = req.query.association
     var requests = await Requests.find({
         'association': assoc
     })
@@ -122,8 +122,10 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const volunteer_id = req.body.volunteer_id
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
-            "status": "pending",
-            "volunteer": volunteer_id
+            "status": {
+                "current_status": "in_progress",
+                "volunteer": volunteer_id
+            }
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -151,9 +153,13 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
 
 exports.completeARequest = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
+    const volunteer_id = req.body.volunteer_id
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
-            "status": "complete",
+            "status": {
+                "current_status": "complete",
+                "volunteer": volunteer_id
+            }
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -178,15 +184,18 @@ exports.handle_old_request = asyncWrapper(async (req, res) => {
 
 exports.createARequest = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
-    request.status = "incomplete"
-    var result = await request.save()
     var volunteers;
     if (!req.body.volunteer) {
         volunteers = await getBestVolunteers(request)
         console.log(volunteers)
     } else {
         volunteers = [req.body.volunteer]
+        request.status = {
+            "current_status": "pending",
+            "volunteer": req.body.volunteer._id
+        }
     }
+    var result = await request.save()
     console.log(volunteers)
     if (request.association == "5e7f9badc80c292245264ebe") {
         await addRequestToSpreadsheet(request, result._id, volunteers)
