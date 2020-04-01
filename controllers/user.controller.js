@@ -7,7 +7,6 @@ const config = require("../config/client_secret")
 const association_controller = require('./association.controller'); 
 const creds = JSON.parse(JSON.stringify(config))
 
-
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
        return result === null;

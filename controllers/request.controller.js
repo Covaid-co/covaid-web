@@ -11,6 +11,7 @@ var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
 
 async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
+    console.log(creds)
     const doc = new GoogleSpreadsheet(spreadsheetID);
     await doc.useServiceAccountAuth({
       client_email: creds.client_email,
