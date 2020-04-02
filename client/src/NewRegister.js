@@ -388,11 +388,11 @@ export default function NewRegister(props, switchToLogin) {
         return (
             <Modal show={justRegistered} onHide={() => {setJustRegistered(false); setFirstPage(true); props.handleHideRegistration();}}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Thank you for signing up to be a volunteer!</Modal.Title>
+                    <Modal.Title>Check your email for a verification link!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p id="locationInfo">
-                        We appreciate your care for your community. To create new offers of help, reference your volunteer profile portal.
+                        Once verified, you will be able to post an offer to help your community directly from your volunteer portal.
                     </p>
                     <Button id="nextPage" onClick={() => {setJustRegistered(false); setFirstPage(true); props.handleHideRegistration();}}>Return to home</Button>
                 </Modal.Body>

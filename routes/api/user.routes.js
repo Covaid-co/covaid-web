@@ -23,4 +23,8 @@ router.get('/totalUsers', auth.optional, user_controller.total_users);
 
 router.post('/verify', user_controller.verify);
 
+router.post('/emailpasswordresetlink', user_controller.emailPasswordResetLink)
+router.get('/verifyresetlink/:id/:token', user_controller.verifyPasswordResetLink)
+router.post('/resetpassword', user_controller.resetPassword)
+
 module.exports = router;
