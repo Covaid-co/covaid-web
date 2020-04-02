@@ -41,7 +41,7 @@ export default function RequestsDashboard(props) {
         }).catch((e) => {
             console.log(e)
         });
-    }, [props.association])
+    }, [props.association]);
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
