@@ -234,6 +234,7 @@ export default function RequestHelp(props) {
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
                 </Modal.Body>
+                <Modal.Footer></Modal.Footer>
             </Modal>
         )
     } else {
@@ -265,6 +266,7 @@ export default function RequestHelp(props) {
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
                     </Modal.Body>
+                    <Modal.Footer></Modal.Footer>
                 </Modal>
             )
         } else {
@@ -280,6 +282,7 @@ export default function RequestHelp(props) {
                         </p>
                         <Button id="nextPage" onClick={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}}>Return to home</Button>
                     </Modal.Body>
+                    <Modal.Footer></Modal.Footer>
                 </Modal>
             )
         }

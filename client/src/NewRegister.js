@@ -45,8 +45,6 @@ export default function NewRegister(props, switchToLogin) {
     const [captcha, setCaptcha] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-    // const [associations, setAssociations] = useState({});
-    // const [associationNames, setAssociationNames] = useState({});
     const terms = [0, 1, 2, 3, 4, 5];
     const termSentences = [
         'I have not traveled out-of-country in the past 14 days',
@@ -56,44 +54,6 @@ export default function NewRegister(props, switchToLogin) {
         'I will take take every CDC-provided safety precaution',
         'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
     ];
-
-    // useEffect(() => {
-    //     var url = "/api/association/get_assoc/lat_long?";
-    //     let params = {
-    //         'latitude': props.state.latitude,
-    //         'longitude': props.state.longitude
-    //     }
-    //     let query = Object.keys(params)
-    //          .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-    //          .join('&');
-    //     url += query;
-
-    //     console.log(url);
-    //     async function fetchData() {
-    //         const response = await fetch(url);
-    //         response.json().then((data) => {
-    //             var notSelected = true;
-    //             console.log(data);
-    //             for (var i = 0; i < data.length; i++) {
-    //                 const curr = data[i]['_id'];
-    //                 const name = data[i]['name'];
-    //                 setAssociations(prev => ({ 
-    //                     ...prev,
-    //                     [curr]: notSelected,
-    //                 }));
-    //                 setAssociationNames(prev => ({ 
-    //                     ...prev,
-    //                     [curr]: name,
-    //                 }));
-
-    //                 if (notSelected) {
-    //                     notSelected = false;
-    //                 }
-    //             }
-    //         });
-    //     }
-    //     fetchData();
-    // }, []);
 
     function validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -333,7 +293,8 @@ export default function NewRegister(props, switchToLogin) {
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
                     </Modal.Body>
-                </Modal>      
+                    <Modal.Footer></Modal.Footer>
+                </Modal>
             );
         } else {
             return (
@@ -381,6 +342,7 @@ export default function NewRegister(props, switchToLogin) {
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
                     </Modal.Body>
+                    <Modal.Footer></Modal.Footer>
                 </Modal>
             )
         }
@@ -396,6 +358,7 @@ export default function NewRegister(props, switchToLogin) {
                     </p>
                     <Button id="nextPage" onClick={() => {setJustRegistered(false); setFirstPage(true); props.handleHideRegistration();}}>Return to home</Button>
                 </Modal.Body>
+                <Modal.Footer></Modal.Footer>
             </Modal>
         );
     }

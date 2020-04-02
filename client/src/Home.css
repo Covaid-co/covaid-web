@@ -188,10 +188,6 @@
   background-color: white;
 }
 
-#showRequestModal {
-  margin-top: 30px !important;
-}
-
 .modal-open .modal {
   margin-top: 50px !important;
 }
@@ -559,7 +555,7 @@ textarea.form-control {
 #no-offers {
   color: black;
   font-family: "SF Text";
-  font-weight: bold;
+  /* font-weight: bold; */
   margin-top: 10px;
 }
 

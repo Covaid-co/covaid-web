@@ -61,10 +61,11 @@ html, body {
 
 #navLinkToggled {
   font-family: "SF Text";
-  color: #194bd3;
+  color: black;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
   white-space: nowrap;
+  margin-top: 7px;
 }
 
 
@@ -87,8 +88,9 @@ html, body {
 
 .navBorderToggled.nav-link {
   border: 1px solid rgb(237, 237, 237);
-    margin-bottom: 5px;
-    border-radius: 0.25rem !important;
+  margin-bottom: 5px;
+  border-radius: 0.25rem !important;
+  height: 52px;
 }
 
 .smallPage {
@@ -122,6 +124,16 @@ html, body {
 
 #logoutButton:hover #logout {
   color: white !important;
+}
+
+#loginButton {
+  height: 52px;
+}
+
+#login {
+  color: #194bd3;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 #loginButton:hover #login {

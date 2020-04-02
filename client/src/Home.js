@@ -423,7 +423,7 @@ class Home extends Component {
       } else {
         rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
                     <Button variant="outline-light" id='loginButton' onClick={this.handleShowLogin} style={{width: '100%'}}>
-                      <font id = "login" style = {{color: '#194bd3', fontWeight: 600, fontSize: 13}}>
+                      <font id = "login">
                         Volunteer Login
                       </font>
                     </Button>
