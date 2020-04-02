@@ -4,13 +4,15 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Badge from 'react-bootstrap/Badge'
 import RequestDetails from './RequestDetails'
+import RequestMatches from './RequestMatches'
 
 export default function RequestsDashboard(props) {
 
     const [requests, setRequests] = useState([]);
     const [filteredRequests, setFilteredRequests] = useState([]);
-    const [modalOpen, setModalOpen] = useState(false);
+    const [requestDetailsModal, setRequestDetailsModal] = useState(false);
     const [currRequest, setCurrRequest] = useState({});
+    const [topMatchesModal, setTopMatchesModal] = useState(false);
 
     useEffect(() => {
         var url = "/api/request/allRequestsInAssoc?";
@@ -29,12 +31,12 @@ export default function RequestsDashboard(props) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    setRequests(data)
-                    console.log(data)
-                    setFilteredRequests(data)
+                    setRequests(data);
+                    console.log(data);
+                    setFilteredRequests(data);
                 });
             } else {
-                console.log("Error")
+                console.log("Error");
             }
         }).catch((e) => {
             console.log(e)
@@ -44,7 +46,7 @@ export default function RequestsDashboard(props) {
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
         if (!query || query === "") {
-            setFilteredRequests(requests)
+            setFilteredRequests(requests);
         }
 
         var filtered = requests.filter(p => {
@@ -56,7 +58,7 @@ export default function RequestsDashboard(props) {
             }
             return emailMatch
         });
-        setFilteredRequests(filtered)
+        setFilteredRequests(filtered);
     }
 
     return (
@@ -76,7 +78,7 @@ export default function RequestsDashboard(props) {
             <ListGroup variant="flush">
                 {filteredRequests.map((request, i) => {
                     return (
-                    <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true)}}>
+                    <ListGroup.Item key={i} action onClick={() => {setCurrRequest({...request}); setRequestDetailsModal(true)}}>
                         <div >
                             <h5 className="volunteer-name">
                                 {request.requester_first} {request.requester_last}
@@ -93,7 +95,13 @@ export default function RequestsDashboard(props) {
                     </ListGroup.Item>);
                     })}
             </ListGroup>
-            <RequestDetails modalOpen={modalOpen} setModalOpen={setModalOpen} currRequest={currRequest}/>
+            <RequestDetails requestDetailsModal={requestDetailsModal} 
+                            setRequestDetailsModal={setRequestDetailsModal} 
+                            currRequest={currRequest}
+                            setTopMatchesModal={setTopMatchesModal} />
+            <RequestMatches topMatchesModal={topMatchesModal} 
+                            setTopMatchesModal={setTopMatchesModal} 
+                            currRequest={currRequest}/>
         </>
     );
 }

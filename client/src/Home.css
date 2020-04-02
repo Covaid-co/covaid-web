@@ -183,13 +183,68 @@
   margin-top: 10px;
 }
 
+#login-button {
+  border-radius: 8px;
+  background-color: transparent;
+  border-color: transparent;
+  font-family: "SF Text", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  height: 40px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 10px;
+}
+
+#register-button {
+  border-radius: 8px;
+  background-color: transparent;
+  border-color: white;
+  font-family: "SF Text", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  height: 40px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 10px;
+  padding-top: 7px;
+}
+
+#request-help-button {
+  border-radius: 8px;
+  background-color: transparent;
+  border-color: white;
+  font-family: "SF Text", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  height: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* margin-top: 10px; */
+  padding-top: 7px;
+}
+
+#request-help-button:hover{
+  color: #194bd3 !important;
+  background-color: white;
+}
+
+#register-button:hover{
+  color: #194bd3 !important;
+  background-color: white;
+}
+
+#login-button:hover{
+  color: white !important;
+}
+
 #homeButtons:hover{
   color: #194bd3 !important;
   background-color: white;
 }
 
 .modal-open .modal {
-  margin-top: 50px !important;
+  margin-top: 40px !important;
 }
 
 .modal-content {
