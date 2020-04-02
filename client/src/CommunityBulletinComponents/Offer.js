@@ -7,7 +7,7 @@ const Offer = ({ displayedVolunteers, setModalInfo, setModalOfferOpen }) => {
     return (
         <>
             {displayedVolunteers.map((user, i) => {
-                            return (<ListGroup.Item action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
+                            return (<ListGroup.Item key={i} action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
                                 <div >
                                     <h5 className="volunteer-name">
                                         {user.first_name}
