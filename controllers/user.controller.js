@@ -3,7 +3,9 @@ const Offers = require('../models/offer.model');
 const passport = require('passport');
 var nodemailer = require('nodemailer');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
-const association_controller = require('./association.controller'); 
+const emailer =  require("../util/emailer");
+const asyncWrapper = require("../util/asyncWrapper")
+var jwt = require('jwt-simple');
 
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
@@ -216,14 +218,14 @@ exports.login = function (req, res, next) {
           user.token = passportUser.generateJWT();
           return res.json({ user: user.toAuthJSON() });
         } else {
-          return res.status(400).json({
+          return res.status(403).json({
             errors: {
               verifed: "unverifed",
             },
           });
         }
       } else {
-        return res.status(400).json({
+        return res.status(401).json({
           errors: {
             password: "incorrect",
           },
@@ -331,3 +333,53 @@ exports.update = function (req, res) {
     res.send('User updated.');
   });
 };
+
+exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
+  if (req.body.email !== undefined) {
+    var emailAddress = req.body.email;
+    Users.findOne({email: emailAddress}, function (err, user) {
+      if (err) {
+        return res.sendStatus(403)
+      }
+      const today = new Date();
+      const expirationDate = new Date(today);
+      expirationDate.setMinutes(today.getMinutes() + 5);
+
+      var payload = {
+          id: user._id,        // User ID from database
+          email: emailAddress,
+      };
+      var secret = user.hash;
+      var token = jwt.encode(payload, secret);
+      emailer.sendPasswordLink(emailAddress, payload.id, token);
+      res.sendStatus(200)
+    })
+  } else {
+    return res.status(422).send('Email address is missing.')
+  }
+});
+
+exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
+  const user = await Users.findById(req.params.id)
+  var secret = user.hash;
+  try{
+    var payload = jwt.decode(req.params.token, secret);   
+    res.sendStatus(200)      
+  }catch(error){
+    console.log(error.message);
+    res.sendStatus(403);
+  }
+});
+
+exports.resetPassword = asyncWrapper(async (req, res) => {
+  var newPassword = req.body.newPassword
+  // update password
+  const user = await Users.findById(req.body.id)
+  user.setPassword(newPassword)
+  user.save(function(err, result) {
+    if (err) {    
+      return res.status(422).send(err);
+    } 
+    res.sendStatus(200)
+  })
+});
