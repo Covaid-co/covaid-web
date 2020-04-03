@@ -202,14 +202,15 @@ export default function RequestHelp(props) {
 
     if (firstPage) {
         return (
-            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal'>
+            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal' style={{marginTop: 10}}>
                 <Modal.Header closeButton>
             <Modal.Title>Submit a {general}request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p id="requestCall">
-                        For those who would rather call in a request, 
-                        please call <br /><span id="phoneNumber">(401) 526-8243</span>.
+                    <p id="requestCall" style={{marginBottom: 10, paddingBottom: 10}}>
+                        After submitting a general request for help, we will attempt to match you with the best volunteer in your area.<br/>
+                        <font style={{fontStyle: 'italic'}}> For those who would rather call in a request, 
+                        please call <br /><span id="phoneNumber">(401) 526-8243</span>. </font>
                     </p>
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>
