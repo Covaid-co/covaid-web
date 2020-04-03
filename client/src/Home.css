@@ -224,6 +224,17 @@
   padding-top: 7px;
 }
 
+@media (min-width: 576px) {
+  #volunteer-details-matching.modal-dialog{
+    max-width: 300px;
+  }
+}
+
+#volunteer-details-matching .modal-content{
+  border-radius: 16px 16px 16px 16px !important;
+  box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
+}
+
 #request-help-button:hover{
   color: #194bd3 !important;
   background-color: white;
@@ -244,7 +255,7 @@
 }
 
 .modal-open .modal {
-  margin-top: 40px !important;
+  margin-top: 40px;
 }
 
 .modal-content {

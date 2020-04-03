@@ -172,7 +172,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     } else {
         volunteers = [req.body.volunteer]
         request.status = {
-            "current_status": "pending",
+            "current_status": "in_progress",
             "volunteer": req.body.volunteer._id
         }
     }
