@@ -133,15 +133,23 @@ html, body {
 #login {
   color: #194bd3;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
+  font-family: "SF Text", sans-serif;
 }
 
-#loginButton:hover #login {
-  color: white !important;
-}
-
-#loginButton:hover {
+#register-button-mobile {
+  height: 52px;
+  width: 100%;
   background-color: #194bd3;
+  color: white;
+  font-family: "SF Text", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+#register-button-mobile:hover {
+  color: #194bd3;
+  background-color: white;
 }
 
 /* @media (max-width:767px){

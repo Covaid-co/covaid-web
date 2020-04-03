@@ -368,13 +368,15 @@ class Home extends Component {
   setLatLongFromZip(event, zipCode) {
     event.preventDefault();
     event.stopPropagation();
-    Geocode.fromAddress(zipCode).then(
+    return Geocode.fromAddress(zipCode).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
         this.setNeighborhood(lat, lng, zipCode);
+        return true;
       },
       error => {
         console.error(error);
+        return false;
       }
     );
   }
@@ -416,8 +418,11 @@ class Home extends Component {
     } else {
       if (collapsed === false) {
         rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%'}}>
-                    <Button variant="outline-light" id = 'homeButtons'onClick={this.handleShowLogin}>
-                      Volunteer Login
+                    <Button variant="outline-light" id = 'login-button'onClick={this.handleShowLogin}>
+                      Sign In
+                    </Button>
+                    <Button variant="outline-light" id = 'register-button'onClick={this.handleShowRegistration}>
+                      Volunteer Registration
                     </Button>
                   </Form>
       } else {
@@ -427,15 +432,18 @@ class Home extends Component {
                         Volunteer Login
                       </font>
                     </Button>
+                    <Button variant="outline-light" id='register-button-mobile' onClick={this.handleShowRegistration}>
+                      {/* <font id = "regi"> */}
+                        Volunteer Registration
+                      {/* </font> */}
+                    </Button>
                   </Form>;
       }
     }
 
     var portalText = <></>
 
-    var volunteerButton = <Button onClick={() => this.setState({showRegistration: true})} id="homeButtons" >
-        Become a volunteer
-      </Button>
+    var volunteerButton = <></>
 
     if (isLoggedIn) {
       portalText = <p id="jumboText">Manage your offer of help from the volunteer portal</p>

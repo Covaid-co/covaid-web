@@ -85,17 +85,17 @@ export default function NewOffers(props) {
                              volunteers={volunteers}/>
             <Container className="shadow mb-5 bg-white rounded" id="offerContainer">
                 <ListGroup variant="flush">
-                <Offer displayedVolunteers={currentDisplayedUsers}
-                        setModalInfo={setModalInfo}
-                        setModalOfferOpen={setModalOfferOpen} 
-                />
-                <Pagination
-                    className='justfiy-content-center'
-                    style = {{paddingTop: 15, marginTop: 50}}
-                    postsPerPage={postsPerPage}
-                    totalPosts={displayedVolunteers.length}
-                    paginate={paginate}
-                />
+                    <Offer displayedVolunteers={currentDisplayedUsers}
+                            setModalInfo={setModalInfo}
+                            setModalOfferOpen={setModalOfferOpen} 
+                    />
+                    <Pagination
+                        className='justfiy-content-center'
+                        style = {{paddingTop: 15, marginTop: 50}}
+                        postsPerPage={postsPerPage}
+                        totalPosts={displayedVolunteers.length}
+                        paginate={paginate}
+                    />
                 </ListGroup>
                 
             </Container>

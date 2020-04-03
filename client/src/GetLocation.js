@@ -5,29 +5,22 @@ import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Toast from 'react-bootstrap/Toast'
 
 export default function GetLocation(props) {
 
     const [zipCode, setZipCode] = useState('');
+    const [showInvalid, setShowInvalid] = useState(false);
 
     const handleChangeZip = (value) => {
         setZipCode(value);
     }
 
     const handleSubmit = (e) => {
-        props.setLatLong(e, zipCode)
+        props.setLatLong(e, zipCode).then((res) => {
+            setShowInvalid(true);
+        });
     };
-
-    const isNumeric = (value) => {
-        return /^-{0,1}\d+$/.test(value);
-    }
-
-    const validateForm = () => {
-        if (zipCode.length !== 5) {
-            return false;
-        }
-        return isNumeric(zipCode);
-    }
 
     return (
         <Modal show={!props.state.isLoaded} style = {{marginTop: 60}}>
@@ -49,9 +42,18 @@ export default function GetLocation(props) {
                             </Form.Group>
                         </Col>
                     </Row>
-                    <Button style={{marginTop: 10}} id="nextPage" disabled={!validateForm()} type="submit">Enter Page</Button>
+                    <Button style={{marginTop: 10}} id="nextPage" type="submit">Enter Page</Button>
                 </Form>
             </Modal.Body>
+            <Toast
+                show={showInvalid}
+                delay={300000}
+                onClose={() => setShowInvalid(false)}
+                autohide
+                id='toastError'
+                style={{marginBottom: 75, marginRight: 18}}>
+                <Toast.Body>Invalid city/zipcode</Toast.Body>
+            </Toast>
         </Modal>
     );
 }

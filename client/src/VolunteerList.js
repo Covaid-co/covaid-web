@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -10,6 +10,35 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function VolunteerList(props) {
 
     const [modalOpen, setModalOpen] = useState(false);
+
+    // useEffect(() => {
+    //     var url = "/api/user/allfromassoc?";
+    //     let params = {
+    //         'association': props.association._id
+    //     }
+    //     let query = Object.keys(params)
+    //          .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+    //          .join('&');
+    //     url += query;
+    //     console.log(url)
+
+    //     fetch(url, {
+    //         method: 'get',
+    //         headers: {'Content-Type': 'application/json'},
+    //     }).then((response) => {
+    //         if (response.ok) {
+    //             response.json().then(data => {
+    //                 setRequests(data);
+    //                 console.log(data);
+    //                 setFilteredRequests(data);
+    //             });
+    //         } else {
+    //             console.log("Error");
+    //         }
+    //     }).catch((e) => {
+    //         console.log(e)
+    //     });
+    // }, [props.association])
 
     return (
         <>

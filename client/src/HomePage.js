@@ -26,7 +26,7 @@ export default function HomePage(props) {
 
     var helpButton = <></>
     if (!props.state.isLoggedIn) {
-      helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons" >
+      helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="request-help-button" >
                       Request Help
                     </Button>
     }

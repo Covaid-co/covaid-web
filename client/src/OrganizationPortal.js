@@ -17,7 +17,7 @@ export default function OrganiationPortal(props) {
 
   const [firstTab, setFirstTab] = useState(true); 
   const [showLogin, setShowLogin] = useState(false); 
-  const [association, setAssociation] = useState({})
+  const [association, setAssociation] = useState({});
 
   function fetchAssociation() {
     fetch_a('org_token', '/api/association/current')
@@ -79,7 +79,7 @@ export default function OrganiationPortal(props) {
 				<Col></Col>
 					<Col lg={6} md={8} sm={10}>
 						<Container style={{padding: 0,  marginLeft: 0}}> 
-							<Button id={firstTab ? "tab-button-selected" : "tab-button"} onClick={() => {setFirstTab(true)}}>Requests</Button>
+							<Button id={firstTab ? "tab-button-selected" : "tab-button"} onClick={() => {setFirstTab(true)}}>Unmatched</Button>
 							<Button id={!firstTab ? "tab-button-selected" : "tab-button"} onClick={() => {setFirstTab(false)}}>Volunteers</Button>
 						</Container>
 						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
