@@ -11,13 +11,14 @@ export default function NewDetails(props) {
             <h5 className="titleHeadings" style = {{marginTop: '26px', marginBottom: '8px'}}>
                 Details about request
             </h5>
+            <p id="locationInfo">Use as much detail as you feel comfortable sharing, no judgements here</p>
             <Row >
                 <Col xs={12}>
                     <Form.Group controlId="details">
                         <Form.Control as="textarea" 
                                         rows="3" 
-                                        placeholder="Example: 'I need milk and eggs and they can be dropped
-                                        off at 123 Main street. I can pre-pay via Venmo or Paypal.'"
+                                        placeholder="Example: 'I'm quarantined and need groceries for the week. Can they can be dropped
+                                        off at 123 Main street?'"
                                         value={props.fields.details} 
                                         onChange={props.handleFieldChange}
                                         />

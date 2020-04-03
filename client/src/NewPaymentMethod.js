@@ -14,7 +14,7 @@ export default function NewPaymentMethod(props) {
     return (
         <>
             <h5 className="titleHeadings" style = {{marginTop: '26px', marginBottom: '8px'}}>
-                Payment Method
+                Payment method (if necessary)
             </h5>
             <Row >
                 <Col xs={12}>

@@ -20,6 +20,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Geocode from "react-geocode";
 import Badge from 'react-bootstrap/Badge'
+import {Redirect} from 'react-router-dom'
 
 import Cookie from 'js-cookie'
 
@@ -448,10 +449,10 @@ class Home extends Component {
     if (isLoggedIn) {
       portalText = <p id="jumboText">Manage your offer of help from the volunteer portal</p>
       volunteerButton =  <Button onClick={() => this.setState({volunteerPortal: true})} id="homeButtons" >
-        Manage your offer
+        Create/update your offer
       </Button>
     }
-
+    
     var pageContent = <></>
     if (this.state.volunteerPortal) {
       pageContent = <VolunteerPortal state={this.state}/>
@@ -496,7 +497,7 @@ class Home extends Component {
       default:
         modal = <></>
     }
-
+    
     return (
       <>
         <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>

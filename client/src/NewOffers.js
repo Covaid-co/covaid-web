@@ -15,7 +15,7 @@ export default function NewOffers(props) {
     const [resources, setResources] = useState([]);
     const [taskSelect, setTaskSelect] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(7);
+    const [postsPerPage, setPostsPerPage] = useState(4);
 
     const [modalOfferOpen, setModalOfferOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState({
@@ -48,8 +48,8 @@ export default function NewOffers(props) {
         async function fetchData() {
             const response = await fetch(url);
             response.json().then((data) => {
-                setVolunteers(data);
-                setDisplayedVolunteers(data);
+                setVolunteers(data.slice(0, Math.min(data.length, 20)));
+                setDisplayedVolunteers(data.slice(0, Math.min(data.length, 20)));
             });
         }
 

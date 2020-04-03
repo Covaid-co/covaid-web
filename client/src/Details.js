@@ -9,10 +9,10 @@ export default function Details(props) {
     
     return (
         <Form.Group controlId="details" bssize="large" style = {{marginBottom: 0, marginTop: 30}}>
-            <h5 className="volunteerName">Details</h5>
-            <p style={{fontSize: 15}} id="locationInfo">Give us more information on how you can help!</p>
+            <h5 className="volunteerName">Details?</h5>
+            <p style={{fontSize: 15}} id="locationInfo">Let us know more about you and how you can help! Be as specific as you can so that we can make sure to match you more quickly.</p>
             <p style = {{fontWeight: 300, fontSize: 14, fontStyle: 'italic', marginTop: -3}} id="createAccountText">
-                Example: "I am free after 6pm on weekdays and am happy to deliver from any store or pharmacy in St. Louis County!"
+                Example: "I am a college student, and am happy to deliver food from stores or food banks in St. Louis County! I would prefer if requesters could call ahead and pay over the phone."
             </p>
             <Form.Control as="textarea" 
                         rows="3" 

@@ -24,11 +24,16 @@ export default function HomePage(props) {
       setModalInfo(modalInfo)
     }
 
-    var helpButton = <></>
-    if (!props.state.isLoggedIn) {
-      helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="request-help-button" >
-                      Request Help
+
+    var helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons" >
+                      Request help
                     </Button>
+    var cantFindLink = <></>
+
+    
+    if (props.state.currentAssoc.name === "Baltimore Mutual Aid") {
+      helpButton = <></>
+      cantFindLink = <Button variant="link" onClick={() => updateRequestHelpMode('general')} id="general-request-link">Can't find what you're looking for? Click here.</Button>
     }
 
     return (
@@ -54,6 +59,7 @@ export default function HomePage(props) {
                   <NewOffers state={props.state} 
                             handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}
                             clickOnUser={props.clickOnUser}/>
+                  {cantFindLink}
                 </Col>
               </Row>
             </Container>
@@ -86,6 +92,7 @@ export default function HomePage(props) {
               <NewOffers state={props.state} 
                         handleShowRequestHelp={props.handleShowRequestHelp}
                         clickOnUser={props.clickOnUser}/>
+              {cantFindLink}
             </Col>
           </Container>    
         </div>

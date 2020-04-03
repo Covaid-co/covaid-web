@@ -173,6 +173,11 @@ export default function NewRegister(props, switchToLogin) {
         }
     }
 
+    const clearFields = () => {
+        
+        setPageNum(1)
+    }
+
     const newHandleSubmit = async e => {
         e.preventDefault();
         if (checkThirdPageInput() === false) {
@@ -236,7 +241,7 @@ export default function NewRegister(props, switchToLogin) {
     if (justRegistered === false) {
         if (pageNum === 1) {
             return (
-                <Modal show={props.state.showRegistration} onHide={props.handleHideRegistration} id='showRequestModal'>
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); clearFields();}} id='showRequestModal'>
                     <Modal.Header closeButton>
                         <Modal.Title>Create a new account</Modal.Title>
                     </Modal.Header>
@@ -259,6 +264,11 @@ export default function NewRegister(props, switchToLogin) {
                             <Col xs={6} style = {{paddingLeft: '4px'}}>
                                 <Form.Group controlId="last_name" bssize="large">
                                     <Form.Control value={fields.last} onChange={handleFieldChange} placeholder="Last Name" />
+                                </Form.Group>
+                            </Col>
+                            <Col xs={12}>
+                                <Form.Group controlId="pronouns" bssize="large">
+                                    <Form.Control placeholder="Preferred Pronouns (Optional)" />
                                 </Form.Group>
                             </Col>
                             <Col xs={12}>
@@ -330,7 +340,7 @@ export default function NewRegister(props, switchToLogin) {
 
                         <Button style={{marginTop: 30}}
                                 id="createAccount"
-                                onClick={() => setPageNum(3)}>Next</Button>
+                                onClick={goToThirdPage}>Next</Button>
                         <p id="pageNumber">Page 2 of 3</p>
                         <Toast
                             show={showToast}
@@ -346,7 +356,7 @@ export default function NewRegister(props, switchToLogin) {
             )
         } else {
             return (
-                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); setPageNum(1);}} id='showRequestModal'>
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); clearFields();}} id='showRequestModal'>
                     <Modal.Header closeButton>
                         <Modal.Title>Almost Done!</Modal.Title>
                     </Modal.Header>
@@ -395,7 +405,7 @@ export default function NewRegister(props, switchToLogin) {
         }
     } else {
         return (
-            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); setPageNum(1); props.handleHideRegistration();}}>
+            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); clearFields(); props.handleHideRegistration();}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Check your email for a verification link!</Modal.Title>
                 </Modal.Header>
@@ -403,7 +413,7 @@ export default function NewRegister(props, switchToLogin) {
                     <p id="locationInfo">
                         Once verified, you will be able to post an offer to help your community directly from your volunteer portal.
                     </p>
-                    <Button id="nextPage" onClick={() => {setJustRegistered(false); setPageNum(1); props.handleHideRegistration();}}>Return to home</Button>
+                    <Button id="nextPage" onClick={() => {setJustRegistered(false); clearFields(); props.handleHideRegistration();}}>Return to home</Button>
                 </Modal.Body>
                 <Modal.Footer></Modal.Footer>
             </Modal>

@@ -22,7 +22,7 @@ export default function SelectionForm(props) {
     } else {
         return (
             <>
-                <h5 className="titleHeadings" style = {{marginTop: '0px', marginBottom: '4px'}}>
+                <h5 className="titleHeadings" style = {{marginTop: '24px', marginBottom: '4px'}}>
                     Please choose an organization
                 </h5>
                 <p id="createAccountText" style={{marginBottom: 5}}>

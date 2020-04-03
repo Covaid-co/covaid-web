@@ -190,16 +190,26 @@ export default function RequestHelp(props) {
         });
     }
 
+    var general = "";
+    if (props.requestHelpMode === "general") {
+        general = "general "
+    }
+
+    var payment = <></>
+    if (props.state.currentAssoc.name !== "Pittsburgh Mutual Aid") {
+        payment = <NewPaymentMethod setSelectedIndex={setSelectedIndex}/>
+    }
+
     if (firstPage) {
         return (
             <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal'>
                 <Modal.Header closeButton>
-                    <Modal.Title>Make a request</Modal.Title>
+            <Modal.Title>Submit a {general}request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p id="requestCall">
                         For those who would rather call in a request, 
-                        please call <br /><span id="phoneNumber">(401) 526-8243</span>
+                        please call <br /><span id="phoneNumber">(401) 526-8243</span>.
                     </p>
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>
@@ -253,7 +263,7 @@ export default function RequestHelp(props) {
                         </p>
                         <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
                         <NeededBy setTime={setTime} setDate={setDate}/>
-                        <NewPaymentMethod setSelectedIndex={setSelectedIndex}/>
+                        {payment}
                         <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
                         <Button id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
                         <p id="pageNumber">Page 2 of 2</p>

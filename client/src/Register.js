@@ -250,7 +250,7 @@ export default function Register(props, switchToLogin) {
                 </Row>
                 <Row className="justify-content-md-center"
                     style = {{marginRight: -25, marginLeft: -25}}>
-                    <Col md={6}>
+                    <Col md={4}>
                         <Form.Group controlId="first_name" bssize="large">
                             <Form.Control 
                                 placeholder="First Name"
@@ -259,12 +259,19 @@ export default function Register(props, switchToLogin) {
                             />
                         </Form.Group>
                     </Col>
-                    <Col md={6}>
+                    <Col md={4}>
                         <Form.Group controlId="last_name" bssize="large">
                             <Form.Control
                                 placeholder="Last Name"
                                 value={fields.last_name}
                                 onChange={handleFieldChange}
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group controlId="pronouns" bssize="large">
+                            <Form.Control
+                                placeholder="Pronouns that you use (optional)"
                             />
                         </Form.Group>
                     </Col>

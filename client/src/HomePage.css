@@ -287,6 +287,22 @@
   margin-bottom: 0px;
 }
 
+#general-request-link {
+  font-family: "SF Text";
+  font-size: 16px;
+  float: right;
+  color: #314CCE;
+  margin-top: -30px;
+  margin-right: 20px;
+}
+
+#enter-location {
+  font-family: "SF Text";
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+}
+
 #enter-location {
   font-family: "SF Text";
   font-weight: bold;
