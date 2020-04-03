@@ -14,6 +14,7 @@ import SelectionForm from './SelectionForm';
 import NewLanguages from './NewLanguages';
 import PhoneNumber from './PhoneNumber';
 import NewHasCar from './NewHasCar';
+import Details from './Details'
 
 export default function NewRegister(props, switchToLogin) {
     const [currentTerms, setCurrentTerms] = useState({
@@ -30,7 +31,8 @@ export default function NewRegister(props, switchToLogin) {
         last_name: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "", 
+        details: ""
     });
 
     const languages = ['English', 'Chinese', 'French', 'Spanish', 'Other'];
@@ -38,7 +40,7 @@ export default function NewRegister(props, switchToLogin) {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [languageChecked, setLanguageChecked] = useState({});
     const [availabilityChecked, setAvailabilityChecked] = useState({});
-    const [firstPage, setFirstPage] = useState(true);
+    const [pageNum, setPageNum] = useState(1);
     const [hasCar, setHasCar] = useState(false);
     const [justRegistered, setJustRegistered] = useState(false);
 
@@ -106,17 +108,6 @@ export default function NewRegister(props, switchToLogin) {
             return false;
         }
 
-        if (Object.values(languageChecked).every(v => v === false)) {
-            setShowToast(true);
-            setToastMessage('No language selected');
-            return false;
-        }
-
-        if (Object.values(availabilityChecked).every(v => v === false)) {
-            setShowToast(true);
-            setToastMessage('No availability selected');
-            return false;
-        }
         return true;
     }
 
@@ -131,6 +122,27 @@ export default function NewRegister(props, switchToLogin) {
     }
 
     const checkSecondPageInput = () => {
+        if (Object.values(languageChecked).every(v => v === false)) {
+            setShowToast(true);
+            setToastMessage('No language selected');
+            return false;
+        }
+
+        if (Object.values(availabilityChecked).every(v => v === false)) {
+            setShowToast(true);
+            setToastMessage('No availability selected');
+            return false;
+        }
+
+        if (fields.details.length === 0) {
+            setShowToast(true);
+            setToastMessage('Please enter some details');
+            return false;
+        }
+        return true;
+    }
+
+    const checkThirdPageInput = () => {
         for (const term in currentTerms) {
             if (currentTerms[term] === false) {
                 setShowToast(true);
@@ -144,19 +156,26 @@ export default function NewRegister(props, switchToLogin) {
             setToastMessage('Captcha not checked');
             return false;
         }
+
         return true;
     }
 
     // Check whether to go to second page
     const goToSecondPage = () => {
         if (checkFirstPageInput()) {
-            setFirstPage(false);
+            setPageNum(2);
+        }
+    }
+
+    const goToThirdPage = () => {
+        if (checkSecondPageInput()) {
+            setPageNum(3)
         }
     }
 
     const newHandleSubmit = async e => {
         e.preventDefault();
-        if (checkSecondPageInput() === false) {
+        if (checkThirdPageInput() === false) {
             return;
         }
 
@@ -180,6 +199,9 @@ export default function NewRegister(props, switchToLogin) {
                 'location': {
                     'type': 'Point',
                     'coordinates': [props.state.longitude, props.state.latitude]
+                },
+                'offer': {
+                    'details': fields.details
                 },
                 'association': associationID, 
                 'association_name': associationName,
@@ -212,7 +234,7 @@ export default function NewRegister(props, switchToLogin) {
     }
 
     if (justRegistered === false) {
-        if (firstPage) {
+        if (pageNum === 1) {
             return (
                 <Modal show={props.state.showRegistration} onHide={props.handleHideRegistration} id='showRequestModal'>
                     <Modal.Header closeButton>
@@ -268,6 +290,28 @@ export default function NewRegister(props, switchToLogin) {
                                 </Form.Group>
                             </Col>
                         </Row>
+                        <Button style={{marginTop: 30}}
+                                id="createAccount"
+                                onClick={goToSecondPage}>Next</Button>
+                        <p id="pageNumber">Page 1 of 3</p>
+                        <Toast
+                            show={showToast}
+                            delay={3000}
+                            onClose={() => setShowToast(false)}
+                            autohide
+                            id='toastError'>
+                            <Toast.Body>{toastMessage}</Toast.Body>
+                        </Toast>
+                    </Modal.Body>
+                </Modal>
+            );
+        } else if (pageNum == 2){
+            return (
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); setPageNum(1);}} id='showRequestModal'>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Tell us more about you!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
                         <h5 className="titleHeadings" style = {{marginTop: '18px', marginBottom: '4px'}}>
                             What languages do you speak?
                         </h5>
@@ -280,10 +324,14 @@ export default function NewRegister(props, switchToLogin) {
                             What is your general availability?
                         </h5>
                         <NewLanguages languages={availability} languageChecked={availabilityChecked} setLanguageChecked={setAvailabilityChecked}/>
+                        <SelectionForm associations={props.state.associations} setState={props.setState} currentAssoc={props.state.currentAssoc}/>
+                        <Details fields={fields.details} 
+                                    handleFieldChange={handleFieldChange}/>
+
                         <Button style={{marginTop: 30}}
                                 id="createAccount"
-                                onClick={goToSecondPage}>Next</Button>
-                        <p id="pageNumber">Page 1 of 2</p>
+                                onClick={() => setPageNum(3)}>Next</Button>
+                        <p id="pageNumber">Page 2 of 3</p>
                         <Toast
                             show={showToast}
                             delay={3000}
@@ -295,16 +343,15 @@ export default function NewRegister(props, switchToLogin) {
                     </Modal.Body>
                     <Modal.Footer></Modal.Footer>
                 </Modal>
-            );
+            )
         } else {
             return (
-                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); setFirstPage(true);}} id='showRequestModal'>
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); setPageNum(1);}} id='showRequestModal'>
                     <Modal.Header closeButton>
                         <Modal.Title>Almost Done!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={newHandleSubmit}>
-                            <SelectionForm associations={props.state.associations} setState={props.setState} currentAssoc={props.state.currentAssoc}/>
                             <h5 className="titleHeadings" style = {{marginTop: '10px', marginBottom: '4px'}}>
                                 Health
                             </h5>
@@ -332,7 +379,7 @@ export default function NewRegister(props, switchToLogin) {
                             />
                             <Button id="nextPage" type="submit">Sign up!</Button>
                         </Form>
-                        <p id="pageNumber">Page 2 of 2</p>
+                        <p id="pageNumber">Page 3 of 3</p>
                         <Toast
                             show={showToast}
                             delay={3000}
@@ -348,7 +395,7 @@ export default function NewRegister(props, switchToLogin) {
         }
     } else {
         return (
-            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); setFirstPage(true); props.handleHideRegistration();}}>
+            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); setPageNum(1); props.handleHideRegistration();}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Check your email for a verification link!</Modal.Title>
                 </Modal.Header>
@@ -356,7 +403,7 @@ export default function NewRegister(props, switchToLogin) {
                     <p id="locationInfo">
                         Once verified, you will be able to post an offer to help your community directly from your volunteer portal.
                     </p>
-                    <Button id="nextPage" onClick={() => {setJustRegistered(false); setFirstPage(true); props.handleHideRegistration();}}>Return to home</Button>
+                    <Button id="nextPage" onClick={() => {setJustRegistered(false); setPageNum(1); props.handleHideRegistration();}}>Return to home</Button>
                 </Modal.Body>
                 <Modal.Footer></Modal.Footer>
             </Modal>

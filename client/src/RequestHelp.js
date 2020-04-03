@@ -26,7 +26,7 @@ export default function RequestHelp(props) {
 
     const [mode, setMode] = useState(props.requestHelpMode);
 
-    const languages = ['English', 'Chinese', 'French', 'Spanish', 'Italian'];
+    const languages = ['English', 'Chinese', 'French', 'Spanish', 'Other'];
     const defaultResources = ['Food/Groceries', 'Medication', 'Emotional Support', 'Donate', 'Academic/Professional', 'Misc.'];
     const [resources, setResources] = useState(
         {'Food/Groceries': false, 
