@@ -24,13 +24,14 @@ exports.update_association = function (req, res) {
 };
 
 function validateEmailAccessibility(email){
-    return Association.findOne({email: email}).then(function(result){
-         return result === null;
-    });
-  }
+  return Association.findOne({email: email}).then(function(result){
+    return result === null;
+  });
+}
 
 exports.create_association = function (req, res) {
     const { body: { association } } = req;
+    console.log(req.body);
 
     if(!association.email) {
         return res.status(422).json({

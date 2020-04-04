@@ -14,7 +14,7 @@ router.post('/login', auth.optional, user_controller.login);
 router.get('/current', auth.required, user_controller.current);
 
 router.get('/all', user_controller.all_users);
-
+router.get('/user', user_controller.find_user);
 router.get('/allFromAssoc', auth.optional, user_controller.all_users_of_an_association);
 
 router.put('/update', auth.required, user_controller.update);

@@ -56,9 +56,10 @@ export default function UnmatchedRequests(props) {
                                     <h5 className="volunteer-name">
                                         {request.requester_first} {request.requester_last}
                                     </h5>
+                                    <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
                                 </div>
                                 <div style={{display: 'inline-block', width: '100%'}}>
-                                    <p style={{float: 'left', marginBottom: 0}}>Needed by: {request.date}</p>
+                                    <p style={{float: 'left', marginBottom: 0}}>Assignee: {request.assignee ? request.assignee : "No one assigned"}</p>
                                 </div>
                                 <div>
                                     {request.resource_request.map((task, i) => {

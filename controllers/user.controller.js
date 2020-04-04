@@ -279,11 +279,32 @@ async function updatePreVerified() {
 
 exports.all_users_of_an_association = function (req, res) {
   var assoc = req.query.association;
+  if (assoc === '5e88cf8a6ea53ef574d1b80c') {
+    Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
+      for (var i = 0; i < users.length; i++) {
+        const coords = users[i].location.coordinates;
+        const distance = calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
+        users[i]['distance'] = distance;
+      }
+      users.sort(function(a, b){return a['distance'] - b['distance']});
+      res.send(users);
+    });
+    return;
+  }
   Users.find({
       'association': assoc
     }).then(function (users) {
     
     res.send(users);
+  });
+}
+
+exports.find_user = function (req, res) {
+  var id = req.query.id;
+  Users.find({
+      '_id': id
+    }).then(function (user) {
+      res.send(user);
   });
 }
 

@@ -5,8 +5,24 @@ import Modal from 'react-bootstrap/Modal'
 
 export default function VolunteerDetails(props) {
 
+    if ((props.currRequest && props.currRequest.status.volunteer === "") || props.currRequest && props.currRequest.status.volunteer === null) {
+        return (
+            <Modal  id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{props.currRequest.manual_match.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5>
+                    <p id="request-info">Email: {props.currRequest.manual_match.email}</p>
+                    <p id="request-info">Phone: {props.currRequest.manual_match.phone}</p>
+                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
+                    <p id="request-info"> {props.currRequest.manual_match.details}</p>
+                </Modal.Body>
+            </Modal>
+        )
+    }
     return (
-        <Modal show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
+        <Modal  id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
             <Modal.Header closeButton>
                 <Modal.Title>{props.currVolunteer.first_name} {props.currVolunteer.last_name}</Modal.Title>
             </Modal.Header>

@@ -5,7 +5,7 @@ import BestMatches from './BestMatches'
 
 export default function RequestMatches(props) {
     return (
-        <Modal show={props.topMatchesModal} onHide={() => props.setTopMatchesModal(false)} style = {{marginTop: 30}}>
+        <Modal show={props.topMatchesModal} onHide={() => props.setTopMatchesModal(false)} style = {{marginTop: 30, paddingBottom: 40}}>
             <Modal.Header closeButton>
                 <Modal.Title> {props.currRequest.requester_first}'s Top Matches</Modal.Title>
             </Modal.Header>

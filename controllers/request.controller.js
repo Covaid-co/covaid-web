@@ -67,10 +67,15 @@ exports.update_completed = function (req, res) {
 
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
     const assoc = req.query.association
+    if (assoc === '5e88cf8a6ea53ef574d1b80c') {
+        var requests = await Requests.find({$or: [{'association': assoc}, {'association': {"$exists": false}}]});
+        res.send(requests);
+        return;
+    }
     var requests = await Requests.find({
         'association': assoc
-    })
-    res.send(requests)
+    });
+    res.send(requests);
 })
 
 exports.getAllRequestsInVolunteer = asyncWrapper(async (req, res) => {
@@ -133,6 +138,41 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
         res.send('Request updated.');
     });
 })
+
+exports.setAssignee = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id;
+    const assignee = req.body.assignee;
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            "assignee": assignee
+        }
+    }, function (err, request) {
+        if (err) return next(err);
+        res.send('Request updated.');
+    });
+});
+
+exports.setManualVolunteer = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id;
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            'manual_match': {
+                "name": req.body.name,
+                "email": req.body.email,
+                "phone": req.body.phone,
+                "details": req.body.details
+            },
+            "status": {
+                "current_status": "in_progress",
+                "volunteer": ""
+            }
+        }
+    }, function (err, request) {
+        console.log(err);
+        if (err) return next(err);
+        res.send('Request updated.');
+    });
+});
 
 exports.handle_old_request = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);

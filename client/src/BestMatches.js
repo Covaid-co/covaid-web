@@ -2,21 +2,26 @@ import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import VolunteerDetailsMatching from './VolunteerDetailsMatching'
+import ManualVolunteerMatching from './ManualVolunteerMatching'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function BestMatches(props) {
 
     const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
+    const [manualModal, setManualModal] = useState(false);
     const [volunteers, setVolunteers] = useState([]);
     const [currVolunteer, setCurrVolunteer] = useState({});
 
     useEffect(() => {
         var url = "/api/users/allFromAssoc?";
         let params = {
-            'association': props.association._id
+            'association': props.association._id,
+            'latitude': props.currRequest.latitude,
+            'longitude': props.currRequest.longitude
         }
         let query = Object.keys(params)
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
@@ -39,7 +44,7 @@ export default function BestMatches(props) {
         }).catch((e) => {
             console.log(e);
         });
-    }, [props.association])
+    }, [props.association]);
 
     var rad = function(x) {
         return x * Math.PI / 180;
@@ -70,7 +75,9 @@ export default function BestMatches(props) {
     return (
         <>
             <Row style={{marginTop: -9}}>
+
                 <Col xs={12}>
+                    <Button id="nextPage" onClick={()=>{setManualModal(true)}} style={{marginTop: 0}}>Manually Enter Volunteer</Button>;
                     <Form>
                         <Form.Group controlId="zip" bssize="large" style={{marginTop: 10}}>
                             <Form.Control placeholder="Search for a volunteer"/>
@@ -103,6 +110,9 @@ export default function BestMatches(props) {
                     </ListGroup>
                 </Col>
             </Row>
+            <ManualVolunteerMatching manualModal={manualModal}
+                                     setManualModal={setManualModal}
+                                     currRequest={props.currRequest}/>
             <VolunteerDetailsMatching volunteerDetailModal={volunteerDetailModal}
                                       setVolunteerDetailsModal={setVolunteerDetailsModal}
                                       currVolunteer={currVolunteer}

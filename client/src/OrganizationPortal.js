@@ -52,7 +52,7 @@ export default function OrganiationPortal(props) {
 								if (data[i].status) {
 									if (data[i].status.current_status === 'in_progress') {
 										matchedArr.push(data[i]);
-									} else if (data[i].status.current_status === 'incomplete') {
+									} else if (data[i].status.current_status === 'incomplete' || data[i].status.current_status === 'pending') {
 										unMatchedArr.push(data[i]);
 									} else {
 										completedArr.push(data[i]);
@@ -61,6 +61,10 @@ export default function OrganiationPortal(props) {
 									unMatchedArr.push(data[i]);
 								}
 							}
+							console.log(data.length)
+							console.log(unMatchedArr.length)
+							console.log(matchedArr.length)
+							console.log(completedArr.length)
 							setUnmatched(unMatchedArr);
 							setMatched(matchedArr);
 							setCompleted(completedArr);
@@ -139,7 +143,7 @@ export default function OrganiationPortal(props) {
 			<Container id="volunteer-info">
 					<Row className="justify-content-md-center">
 						<Col></Col>
-							<Col lg={6} md={8} sm={10}>
+							<Col lg={7} md={10} sm={12}>
 								<Container style={{padding: 0,  marginLeft: 0}}> 
 									<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched</Button>
 									<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched</Button>

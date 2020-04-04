@@ -11,6 +11,7 @@ export default function MatchedRequests(props) {
     const [filteredRequests, setFilteredRequests] = useState([]);
     const [requestDetailsModal, setRequestDetailsModal] = useState(false);
     const [currRequest, setCurrRequest] = useState({});
+    const [currVolunteer, setCurrVolunteer] = useState({});
 
     useEffect(() => {
         setFilteredRequests(props.matched);
@@ -34,6 +35,38 @@ export default function MatchedRequests(props) {
         setFilteredRequests(filtered);
     }
 
+
+    const findUser = (request) => {
+        var url = "/api/users/user?";
+        let params = {
+            'id': request.status.volunteer
+        }
+        let query = Object.keys(params)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+             .join('&');
+        url += query;
+        console.log(url)
+
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+                    console.log(data);
+                    if (data.length > 0) {
+                        setCurrVolunteer(data[0]);
+                    }
+                    // setVolunteers(data);
+                });
+            } else {
+                console.log(response);
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    }
+
     return (
         <>
             <Row>
@@ -51,14 +84,15 @@ export default function MatchedRequests(props) {
                     <ListGroup variant="flush">
                         {filteredRequests.map((request, i) => {
                             return (
-                            <ListGroup.Item key={i} action onClick={() => {setCurrRequest({...request}); setRequestDetailsModal(true)}}>
+                            <ListGroup.Item key={i} action onClick={() => {setCurrRequest({...request}); findUser(request); setRequestDetailsModal(true)}}>
                                 <div >
                                     <h5 className="volunteer-name">
                                         {request.requester_first} {request.requester_last}
                                     </h5>
+                                    <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
                                 </div>
                                 <div style={{display: 'inline-block', width: '100%'}}>
-                                    <p style={{float: 'left', marginBottom: 0}}>Needed by: {request.date}</p>
+                                    <p style={{float: 'left', marginBottom: 0}}>Assignee: {request.assignee ? request.assignee : "No one assigned"}</p>
                                 </div>
                                 <div>
                                     {request.resource_request.map((task, i) => {
@@ -74,6 +108,7 @@ export default function MatchedRequests(props) {
                             setRequestDetailsModal={setRequestDetailsModal} 
                             currRequest={currRequest}
                             association={props.association}
+                            currVolunteer={currVolunteer}
                             mode={2}/>
         </>
     );
