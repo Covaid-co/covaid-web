@@ -20,6 +20,7 @@ export default function OrganiationPortal(props) {
 	const [currTabNumber, setCurrTab] = useState(1); 
 	const [showLogin, setShowLogin] = useState(false); 
 	const [association, setAssociation] = useState({});
+	const [gotAssociation, setGotAssociation] = useState(false)
 	const [volunteers, setVolunteers] = useState([]);
 
 	const [unmatched, setUnmatched] = useState([]);
@@ -31,6 +32,7 @@ export default function OrganiationPortal(props) {
 			.then((response) => response.json())
 			.then((association_response) => {
 				setAssociation(association_response);
+				setGotAssociation(true)
 
 				var url = "/api/request/allRequestsInAssoc?";
 				let params = {
@@ -63,7 +65,6 @@ export default function OrganiationPortal(props) {
 									unMatchedArr.push(data[i]);
 								}
 							}
-							console.log(unMatchedArr)
 							setUnmatched(unMatchedArr);
 							setMatched(matchedArr);
 							setCompleted(completedArr);
@@ -83,7 +84,6 @@ export default function OrganiationPortal(props) {
 					 .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
 					 .join('&');
 				url += query;
-				console.log(url)
 		
 				fetch(url, {
 					method: 'get',
@@ -91,7 +91,6 @@ export default function OrganiationPortal(props) {
 				}).then((response) => {
 					if (response.ok) {
 						response.json().then(data => {
-							console.log(data);
 							var resVolunteer = data.map((volunteer) => {
 								return {'latitude': volunteer.latlong[1], 'longitude': volunteer.latlong[0]}
 							})
@@ -141,6 +140,16 @@ export default function OrganiationPortal(props) {
 		} else {
 			return 'tab-button';
 		}
+	}
+
+	var map1 = <></>
+	var map2 = <></>
+
+	if (gotAssociation) {
+		map1 = <Maps show={currTabNumber === 5} requests={unmatched} association={association}>
+				</Maps>
+		map2 = <Maps show={currTabNumber === 6} requests={volunteers} association={association}>
+				</Maps>
 	}
 
 	return (<>
@@ -209,13 +218,11 @@ export default function OrganiationPortal(props) {
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="request-view"
 									style={displayTab(5)}>
-									<Maps show={currTabNumber === 5} requests={unmatched}>
-                    				</Maps>
+									{map1}
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="request-view"
 									style={displayTab(6)}>
-									<Maps show={currTabNumber === 6} requests={volunteers}>
-                    				</Maps>
+									{map2}
 								</Container>
 							</Col>
 						<Col ></Col>

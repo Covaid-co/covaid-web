@@ -4,6 +4,18 @@ import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 export class MapContainer extends Component {
     constructor(props) {
       super(props);
+
+      var assocLat = 38.7528233
+      var assocLong = -98.1970437
+      var customZoom = 4
+
+      console.log(this.props)
+
+      if (this.props.association.name !== "Covaid") {
+          assocLat = this.props.association.location.coordinates[0]
+          assocLong = this.props.association.location.coordinates[1]
+          customZoom = 10
+      }
   
       this.state = {
         stores: [{lat: 47.49855629475769, lng: -122.14184416996333},
@@ -15,12 +27,15 @@ export class MapContainer extends Component {
         mapStyles: {
                     width: '93%',
                     height: '500px',
-                  }
+                  },
+        lat: assocLat,
+        lng: assocLong,
+        zoom: customZoom
       }
     }
-  
+
     displayMarkers = () => {
-        console.log(this.props.requests)
+        
         if (!this.props.requests) {
             return <Marker></Marker>
         }
@@ -31,32 +46,20 @@ export class MapContainer extends Component {
            }}
            onClick={() => console.log("You clicked me!")} />
         })
-    //   return this.state.stores.map((store, index) => {
-    //     return <Marker key={index} id={index} position={{
-    //      lat: store.latitude,
-    //      lng: store.longitude
-    //    }}
-    //    onClick={() => console.log("You clicked me!")} />
-    //   })
     }
   
     render() {
-        // if (this.props.hide) {
-        //     return (<></>)
-        // } else {
-        //     return (
             return (
                 <Map
                     visible={this.props.show}
                     google={this.props.google}
-                    zoom={4}
+                    zoom={this.state.zoom}
                     style={this.state.mapStyles}
-                    initialCenter={{ lat: 38.7528233, lng: -98.1970437}}
+                    initialCenter={{ lat: this.state.lat, lng: this.state.lng}}
                 >
                     {this.displayMarkers()}
                 </Map>
             );
-        // }
     }
 }
 

@@ -87,12 +87,6 @@ export default function RequestHelp(props) {
             return false;
         }
 
-        if (fields.last.length === 0) {
-            setShowToast(true);
-            setToastMessage('Enter a last name');
-            return false;
-        }
-
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
         if (phoneOnlyDigits.length === 0 && fields.email.length === 0) {
             setShowToast(true);
@@ -226,16 +220,12 @@ export default function RequestHelp(props) {
                     </p>
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>
-                        <Col xs={6} style = {{paddingRight: '4px'}}>
+                        <Col xs={12}>
                             <Form.Group controlId="first" bssize="large">
                                 <Form.Control value={fields.first} onChange={handleFieldChange} placeholder="First Name" />
                             </Form.Group>
                         </Col>
-                        <Col xs={6} style = {{paddingLeft: '4px'}}>
-                            <Form.Group controlId="last" bssize="large">
-                                <Form.Control value={fields.last} onChange={handleFieldChange} placeholder="Last Name" />
-                            </Form.Group>
-                        </Col>
+                       
                         <Col xs={12}>
                             <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder={"Phone"}/>
                         </Col>
