@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form'
 import Badge from 'react-bootstrap/Badge'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Dropdown from  'react-bootstrap/Dropdown'
 
 export default function UnmatchedRequests(props) {
 
@@ -23,13 +24,18 @@ export default function UnmatchedRequests(props) {
         }
 
         var filtered = props.unmatched.filter(p => {
-            var emailMatch = String(p.requester_email).startsWith(query)
-            for (var i = 0; i < p.resource_request.length; i++) {
-                if (String(p.resource_request[i]).toLowerCase().startsWith(query)) {
+            var dup = JSON.parse(JSON.stringify(p.resource_request));
+            dup.push('groceries');
+            var emailMatch = String(p.requester_email.toLowerCase()).startsWith(query);
+            var firstNameMatch = String(p.requester_first.toLowerCase()).startsWith(query);
+            var lastNameMatch = String(p.requester_last.toLowerCase()).startsWith(query);
+            var ass = (p.assignee) ? String(p.assignee.toLowerCase()).startsWith(query) : false;
+            for (var i = 0; i < dup.length; i++) {
+                if (String(dup[i]).toLowerCase().startsWith(query)) {
                     return true;
                 }
             }
-            return emailMatch;
+            return emailMatch || firstNameMatch || lastNameMatch || ass;
         });
         setFilteredRequests(filtered);
     }
@@ -37,12 +43,25 @@ export default function UnmatchedRequests(props) {
     return (
         <>
             <Row>
-                <Col xs={12}>
+                <Col xs={8}>
                     <Form>
                         <Form.Group controlId="zip" bssize="large" style={{marginTop: 10}}>
-                            <Form.Control placeholder="Search for a request" onChange={filterRequests}/>
+                            <Form.Control placeholder="Search by First/Last name, Assignee or task" onChange={filterRequests}/>
                         </Form.Group>
                     </Form>
+                </Col>
+                <Col xs={4}>
+                <Dropdown drop='up'>
+                    <Dropdown.Toggle id="dropdown-basic" style={{marginTop: 10, width: '100%', backgroundColor: '#314CCE'}}>
+                        Sorting
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu style={{width: '100%'}}>
+                        <Dropdown.Item href="#/action-1">Name</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Needed By</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Request Date</Dropdown.Item>
+                    </Dropdown.Menu>
+                    </Dropdown>
                 </Col>
                 <Col xs={12}>
                     <p id="requestCall" style={{marginTop: 10, marginBottom: 0}}></p>
@@ -54,7 +73,7 @@ export default function UnmatchedRequests(props) {
                             <ListGroup.Item key={i} action onClick={() => {setCurrRequest({...request}); setRequestDetailsModal(true)}}>
                                 <div >
                                     <h5 className="volunteer-name">
-                                        {request.requester_first} {request.requester_last}
+                                        {request.requester_first}&nbsp;{request.requester_last}
                                     </h5>
                                     <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
                                 </div>
@@ -75,6 +94,7 @@ export default function UnmatchedRequests(props) {
                             setRequestDetailsModal={setRequestDetailsModal} 
                             currRequest={currRequest}
                             association={props.association}
+                            setCurrRequest={setCurrRequest}
                             mode={1}/>
         </>
     );

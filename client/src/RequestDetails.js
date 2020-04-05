@@ -9,18 +9,30 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import VolunteerDetails from './VolunteerDetails'
+import { useFormFields } from "./libs/hooksLib";
 
 export default function RequestDetails(props) {
 
     const [topMatchesModal, setTopMatchesModal] = useState(false);
     const [assignee, setAssignee] = useState('');
     const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
+    const [notesModal, setNotesModal] = useState(false);
+    const [confirmCompleteModal, setConfirmCompleteModal] = useState(false);
+    const [mapsURL, setMapsURL] = useState('')
     const options = ['Call ahead to store and pay (Best option)',
                      'Have volunteer pay and reimburse when delivered',
                      'N/A']
 
+    const [fields, handleFieldChange] = useFormFields({
+        email2: ""
+    });
+
     useEffect(() => {
         setAssignee(props.currRequest.assignee ? props.currRequest.assignee : '');
+        var tempURL = "https://www.google.com/maps/@";
+        tempURL += props.currRequest.latitude + ',';
+        tempURL += props.currRequest.longitude + ',15z';
+        setMapsURL(tempURL);
     }, [props.currRequest]);
 
 
@@ -56,13 +68,17 @@ export default function RequestDetails(props) {
         });
     }
 
-    const completeRequest = () => {
+    const completeRequest = (noVolunteer) => {
         const requester_id = props.currRequest._id;
-        const volunteer_id = props.currRequest.status.volunteer;
+        // const volunteer_id = "";
+
+        // if (noVolunteer === false) {
+        //     volunteer_id = props.currRequest.status.volunteer;
+        // }
 
         let form = {
             'request_id': requester_id,
-            'volunteer_id': volunteer_id
+            // 'volunteer_id': volunteer_id
         };
 
         fetch('/api/request/completeRequest', {
@@ -109,7 +125,15 @@ export default function RequestDetails(props) {
 
     const modeButton = () => {
         if (props.mode === 1) {
-            return <Button id="nextPage" onClick={topMatch}>Find a volunteer for {props.currRequest.requester_first}!</Button>;
+            return <>
+                        <Button id="nextPage" onClick={topMatch}>Find a volunteer for {props.currRequest.requester_first}!</Button>
+                        <Button variant="link"
+                                style={{color: 'black', width: '100%', fontSize: 14}} 
+                                id="covid-resources"
+                                onClick={()=>setConfirmCompleteModal(true)}>
+                            <u>Request has been completed</u>
+                        </Button>
+                    </>;
         } else if (props.mode === 2) {
             console.log(props.currRequest)
             return (<>
@@ -150,6 +174,34 @@ export default function RequestDetails(props) {
         }
     }
 
+    const setNotes = async e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let form = {
+            'request_id': props.currRequest._id,
+            'note': fields.email2
+        };
+
+        fetch('/api/request/set_notes', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => {
+            if (response.ok) {
+                setNotesModal(false);
+                props.setCurrRequest(prev => ({
+                    ...prev,
+                    'note': fields.email2
+                }));
+            } else {
+                alert("unable to attach");
+            }
+        }).catch((e) => {
+            alert('could not attach');
+        });
+    }
+
     return (
         <>
             <Modal show={props.requestDetailsModal} onHide={() => props.setRequestDetailsModal(false)} style = {{marginTop: 30, paddingBottom: 50}}>
@@ -179,9 +231,47 @@ export default function RequestDetails(props) {
                     <p id="request-info">Payment: {options[props.currRequest.payment]}</p>
                     <p id="request-info">Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
                     <p id="request-info">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
+                    <p id="request-info">Location: <a target="_blank" href={mapsURL}>Click here</a></p>
                     <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
                     <p id="request-info"> {props.currRequest.details}</p>
+                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>
+                        Notes: <Button onClick={()=>{setNotesModal(true)}} id="add-notes">+</Button>
+                    </h5>
+                    <p id="request-info">{props.currRequest.note ? props.currRequest.note : 'No notes entered'}</p>
                     {modeButton()}
+                </Modal.Body>
+            </Modal>
+
+            <Modal size="sm" id="notes-modal" show={notesModal} onHide={() => setNotesModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Notes for {props.currRequest.requester_first}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={setNotes}>
+                        <p id="createAccountText">
+                            Enter notes about this request
+                        </p>
+                        <Form.Group controlId="email2" bssize="large">
+                            <Form.Control as="textarea" 
+                                        rows="4"
+                                        placeholder="Details about this request"
+                                        value={fields.email2} 
+                                        onChange={handleFieldChange}/>
+                        </Form.Group>
+                        <Button id="nextPage" type="submit">Enter Details</Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+
+            <Modal size="sm" id="notes-modal" show={confirmCompleteModal} onHide={() => setConfirmCompleteModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Completing the request</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p id="createAccountText">
+                        Confirm that this request is complete
+                    </p>
+                    <Button id="nextPage" onClick={()=>{completeRequest(true)}}>Complete Request</Button>
                 </Modal.Body>
             </Modal>
 
