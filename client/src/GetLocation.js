@@ -46,7 +46,7 @@ export default function GetLocation(props) {
                 </Form>
             </Modal.Body>
             <Toast
-                show={showInvalid}
+                show={false}
                 delay={300000}
                 onClose={() => setShowInvalid(false)}
                 autohide

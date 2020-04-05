@@ -26,7 +26,7 @@ const Offer = ({ displayedVolunteers, setModalInfo, setModalOfferOpen }) => {
                 <div>
                     <p id="no-offers">
                         <strong style={{fontSize: 18}}>There seems to be no offers in your area. <br/></strong> 
-                        Use the <strong>Request Help</strong> button and we will match you with a volunteer in your area!
+                        Use the <strong>Request support</strong> button and we will match you with a volunteer in your area!
                     </p>
                 </div>
             : ''}

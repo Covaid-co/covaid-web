@@ -56,7 +56,7 @@ export default function PhoneNumber(props) {
     return (
         <Form.Group controlId="phone" bssize="large">
             <Form.Control 
-                placeholder="Phone (Optional)"
+                placeholder={props.placeholder}
                 value={props.phoneNumber}
                 onKeyUp={handleChangePhone}
                 onKeyDown={enforceFormat}

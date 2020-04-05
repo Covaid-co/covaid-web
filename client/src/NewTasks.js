@@ -14,7 +14,7 @@ export default function NewTasks(props) {
     return (
         <>
             <h5 className="titleHeadings" style = {{marginTop: '24px', marginBottom: '8px'}}>
-                Tasks you need help with
+                What support do you need?
             </h5>
             {Object.keys(props.resources).map((resource) => {
                 return <Button key={resource}

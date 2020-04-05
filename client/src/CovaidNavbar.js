@@ -48,6 +48,18 @@ export default function CovaidNavbar(props) {
         setToggled(e);
     }
 
+    var rightNav = <></>
+    if(!props.isLoggedIn) {
+        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%'}}>
+        <Button variant="outline-light" id = 'login-button' onClick={() => props.setShowLogin(true)}>
+          Sign In
+        </Button>
+        <Button variant="outline-light" id = 'register-button' onClick={() => props.setShowRegistration(true)}>
+          Volunteer Registration
+        </Button>
+      </Form>
+    }
+
     useEffect(() => { 
       fetch('/api/users/totalUsers')
       .then((res) => res.json())
@@ -88,14 +100,7 @@ export default function CovaidNavbar(props) {
                   <VolunteerBadge totalVolunteers={totalVolunteers}/>
                 </Nav.Link>
               </Nav>
-                  <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%'}}>
-                    <Button variant="outline-light" id = 'login-button' onClick={() => props.setShowLogin(true)}>
-                      Sign In
-                    </Button>
-                    <Button variant="outline-light" id = 'register-button' onClick={() => props.setShowRegistration(true)}>
-                      Volunteer Registration
-                    </Button>
-                  </Form>
+                  {rightNav}
             </Navbar.Collapse>
           </Navbar>
           <Modal show={showNavModal} onHide={hideModal} style = {{marginTop: 50}} id="general-modal">

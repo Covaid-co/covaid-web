@@ -26,7 +26,7 @@ export default function HomePage(props) {
 
 
     var helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons" >
-                      Request help
+                      Request support
                     </Button>
     var cantFindLink = <></>
 
@@ -43,7 +43,7 @@ export default function HomePage(props) {
               <Row>
                 <Col md={6} id="jumbo-text">
                   <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
-                  <p id="jumboText">Covaid connects community volunteers with those who need help</p>
+                  <p id="jumboText">Covaid connects community volunteers with those who need support</p>
                   {helpButton}{' '}
                   {props.volunteerButton}
                   <br />

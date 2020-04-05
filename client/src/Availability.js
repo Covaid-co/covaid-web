@@ -19,7 +19,7 @@ export default function Availability(props) {
                     Availability
                 </h5>
             </Form.Label>
-            <p style={{fontSize: 15}}  id="locationInfo">Switch on whether you are available to help.</p>
+            <p style={{fontSize: 15}}  id="locationInfo">Switch on whether you are available to offer support.</p>
             <Form.Check 
                 type="switch"
                 id="custom-switch"

@@ -16,7 +16,7 @@ export default function Resources(props) {
     return (
         <Form.Group controlId="payment" bssize="large" style = {{marginBottom: 30}}>
             <Form.Label style = {{marginBottom: 0, color: "black"}}><h3>Resources</h3></Form.Label>
-            <p style = {{fontWeight: 300, fontStyle: 'italic'}} id="createAccountText">Select what you can help with</p>
+            <p style = {{fontWeight: 300, fontStyle: 'italic'}} id="createAccountText">Select what resources you can support</p>
             {Object.keys(props.resources).map(function(resource) {
                 return  <Form.Check key={resource} 
                                     type = "checkbox"

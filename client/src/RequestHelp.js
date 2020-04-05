@@ -18,7 +18,6 @@ export default function RequestHelp(props) {
 
     const [fields, handleFieldChange] = useFormFields({
         first: "",
-        last: "",
         details: "",
         email: "",
         phone: ""
@@ -95,9 +94,9 @@ export default function RequestHelp(props) {
         }
 
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
-        if (phoneOnlyDigits.length !== 0 && phoneOnlyDigits.length !== 10) {
+        if (phoneOnlyDigits.length === 0 && fields.email.length === 0) {
             setShowToast(true);
-            setToastMessage('Enter a valid phone number');
+            setToastMessage('Enter contact information');
             return false;
         }
 
@@ -153,7 +152,6 @@ export default function RequestHelp(props) {
 
         let form = {
             'requester_first': fields.first,
-            'requester_last': fields.last,
             'requester_phone': phoneNumber,
             'requester_email': fields.email,
             'details': fields.details,
@@ -200,6 +198,20 @@ export default function RequestHelp(props) {
         payment = <NewPaymentMethod setSelectedIndex={setSelectedIndex}/>
     }
 
+    var agreement = <></>
+    if (props.state.currentAssoc.name === "Baltimore Mutual Aid") {
+        agreement = <>
+                    <Form.Check
+                        type = "checkbox" 
+                        label = "Please accept this liability disclaimer specifying that Covaid.co and organizers are not currently vetting volunteers and are to be held harmless."
+                        style = {{fontSize: 12, marginTop: 2}}/>
+                    <Form.Check
+                        type = "checkbox" 
+                        label = "We are currently not accepting donations from volunteers. Requests must be reimbursed prior to completion."
+                        style = {{fontSize: 12, marginTop: 2}}/>
+                    </>
+    }
+
     if (firstPage) {
         return (
             <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal' style={{marginTop: 10}}>
@@ -208,7 +220,7 @@ export default function RequestHelp(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <p id="requestCall" style={{marginBottom: 10, paddingBottom: 10}}>
-                        After submitting a general request for help, we will attempt to match you with the best volunteer in your area.<br/>
+                        After submitting a general request for support, we will attempt to match you with the best volunteer in your area.<br/>
                         <font style={{fontStyle: 'italic'}}> For those who would rather call in a request, 
                         please call <br /><span id="phoneNumber">(401) 526-8243</span>. </font>
                     </p>
@@ -225,12 +237,15 @@ export default function RequestHelp(props) {
                             </Form.Group>
                         </Col>
                         <Col xs={12}>
-                            <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber}/>
+                            <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder={"Phone"}/>
                         </Col>
                         <Col xs={12}>
                             <Form.Group controlId="email" bssize="large">
                                 <Form.Control value={fields.email} onChange={handleFieldChange} placeholder="Email" />
                             </Form.Group>
+                            <p id="locationInfo">
+                            Please enter either an email or a phone number.
+                        </p>
                         </Col>
                     </Row>
                     <NewTasks resources={resources} setResources={setResources}/>
@@ -266,6 +281,7 @@ export default function RequestHelp(props) {
                         <NeededBy setTime={setTime} setDate={setDate}/>
                         {payment}
                         <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
+                        {agreement}
                         <Button id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
                         <p id="pageNumber">Page 2 of 2</p>
                         <Toast
@@ -289,7 +305,7 @@ export default function RequestHelp(props) {
                     <Modal.Body>
                         <p id="locationInfo">
                             Your request has been saved and you should receive an email soon 
-                            from a matched volunteer to help you.
+                            from a matched volunteer who can support you.
                         </p>
                         <Button id="nextPage" onClick={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}}>Return to home</Button>
                     </Modal.Body>

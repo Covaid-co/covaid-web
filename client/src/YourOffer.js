@@ -54,7 +54,8 @@ export default function YourOffer(props) {
             const response = await fetch_a('token', '/api/users/current');
             response.json().then((user) => {
                 // Get current lat and long from current location and find neighborhoods
-                const { latitude, longitude } = props.state;
+                var latitude = props.latitude
+                var longitude = props.longitude
                 var neighborhoods = [];
                 var locationChanged = false;
                 setAssociation(user.association)
@@ -236,7 +237,7 @@ export default function YourOffer(props) {
             },
             'location': {
                 'type': 'Point',
-                'coordinates': [props.state.longitude, props.state.latitude]
+                'coordinates': [props.longitude, props.latitude]
             },
             'languages': selectedLanguages,
             'availability': availability,

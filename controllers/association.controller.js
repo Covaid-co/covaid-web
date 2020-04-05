@@ -84,7 +84,7 @@ exports.assoc_by_lat_long = function (req, res) {
                 }
     }).then(function (associations) {
         res.send(associations)
-        }
+      }
     )
 };
 

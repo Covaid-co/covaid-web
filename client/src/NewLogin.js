@@ -43,7 +43,9 @@ export default function NewLogin(props) {
                 response.json().then(data => {
                     console.log("Login successful")
                     Cookie.set("token", data.user.token);
-                    window.location.reload(false);
+                    var url = window.location.href; 
+                    url += "volunteerPortal"
+                    window.location.href = url;
                 });
             } else {
                 if (response.status === 403) {

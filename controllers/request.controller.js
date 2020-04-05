@@ -38,7 +38,7 @@ async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
     
     // append rows 
     await requestSheet.addRow({ 
-        Name: request.requester_first + " " + request.requester_last,
+        Name: request.requester_first,
         Email: request.requester_email,
         Phone: request.requester_phone,
         NeedHelpWith: request.resource_request.join(", "),
@@ -202,6 +202,9 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         if (request.association == "5e843ab29ad8d24834c8edbf") {
             // PITT
             await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
+        } else if (request.association == "5e8439ad9ad8d24834c8edbe") {
+            // BALTIMORE
+            await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
         } else {
             await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1lymbkyVvNQPzLeCdmo3NHOs5Rrl97AaRzapDzP-YRmg')
         }

@@ -454,9 +454,6 @@ class Home extends Component {
     }
     
     var pageContent = <></>
-    if (this.state.volunteerPortal) {
-      pageContent = <VolunteerPortal state={this.state}/>
-    } else {
       pageContent = <HomePage state={this.state} 
                               setState={this.setState}
                               handleShowModal={this.handleShowModal} 
@@ -473,7 +470,6 @@ class Home extends Component {
                               refreshLocation={this.refreshLocation}
                               setLatLong={this.setLatLongFromZip}
                               portalText={portalText}/>
-    }
 
     var modal = <></>
     switch(this.state.modalType) {
@@ -496,6 +492,12 @@ class Home extends Component {
         break;
       default:
         modal = <></>
+    }
+
+    if (this.state.volunteerPortal) {
+      const userID = this.state.currentUser._id
+      const route = 'volunteerPortal'
+      return <Redirect to={route} />
     }
     
     return (

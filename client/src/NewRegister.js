@@ -272,7 +272,7 @@ export default function NewRegister(props, switchToLogin) {
                                 </Form.Group>
                             </Col>
                             <Col xs={12}>
-                                <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber}/>
+                                <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder={"Phone (Optional)"} />
                             </Col>
                             <Col xs={12}>
                                 <Form.Group controlId="email" bssize="large">
@@ -411,7 +411,7 @@ export default function NewRegister(props, switchToLogin) {
                 </Modal.Header>
                 <Modal.Body>
                     <p id="locationInfo">
-                        Once verified, you will be able to post an offer to help your community directly from your volunteer portal.
+                        Once verified, you will be able to post an offer to support your community directly from your volunteer portal.
                     </p>
                     <Button id="nextPage" onClick={() => {setJustRegistered(false); clearFields(); props.handleHideRegistration();}}>Return to home</Button>
                 </Modal.Body>
