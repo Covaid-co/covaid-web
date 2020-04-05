@@ -159,3 +159,25 @@
   margin-bottom: -3px;
   margin-top: 0px;
 }
+
+#add-notes {
+  padding-bottom: 0px;
+  padding-top: 0px;
+  padding-right: 7px;
+  padding-left: 7px;
+  font-weight: 700;
+  font-size: 19px;
+  /* height: 25px;/ */
+}
+
+/* @media (min-width: 576px) {
+  #notes-modal {
+    max-width: 300px;
+  }
+} */
+
+#notes-modal {
+  border: 1px solid rgba(0,0,0,.3);
+  margin-top: 80px;
+  border-radius: 8px;
+}

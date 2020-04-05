@@ -11,6 +11,7 @@ import MatchedRequests from './MatchedRequests'
 import VolunteerList from './VolunteerList';
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
+import Maps from './Maps'
 
 import fetch_a from './util/fetch_auth';
 
@@ -19,6 +20,7 @@ export default function OrganiationPortal(props) {
 	const [currTabNumber, setCurrTab] = useState(1); 
 	const [showLogin, setShowLogin] = useState(false); 
 	const [association, setAssociation] = useState({});
+	const [volunteers, setVolunteers] = useState([]);
 
 	const [unmatched, setUnmatched] = useState([]);
 	const [matched, setMatched] = useState([]);
@@ -61,10 +63,7 @@ export default function OrganiationPortal(props) {
 									unMatchedArr.push(data[i]);
 								}
 							}
-							console.log(data.length)
-							console.log(unMatchedArr.length)
-							console.log(matchedArr.length)
-							console.log(completedArr.length)
+							console.log(unMatchedArr)
 							setUnmatched(unMatchedArr);
 							setMatched(matchedArr);
 							setCompleted(completedArr);
@@ -74,6 +73,35 @@ export default function OrganiationPortal(props) {
 					}
 				}).catch((e) => {
 					console.log(e)
+				});
+
+				var url = "/api/users/allFromAssoc?";
+				params = {
+					'association': association_response._id
+				}
+				query = Object.keys(params)
+					 .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+					 .join('&');
+				url += query;
+				console.log(url)
+		
+				fetch(url, {
+					method: 'get',
+					headers: {'Content-Type': 'application/json'},
+				}).then((response) => {
+					if (response.ok) {
+						response.json().then(data => {
+							console.log(data);
+							var resVolunteer = data.map((volunteer) => {
+								return {'latitude': volunteer.latlong[1], 'longitude': volunteer.latlong[0]}
+							})
+							setVolunteers(resVolunteer);
+						});
+					} else {
+						console.log(response);
+					}
+				}).catch((e) => {
+					console.log(e);
 				});
 			}).catch((error) => {
 				console.error(error);
@@ -98,6 +126,9 @@ export default function OrganiationPortal(props) {
 
 	const displayTab = (tabNumber) => {
 		if (tabNumber === currTabNumber) {
+			if (tabNumber === 5 || tabNumber === 6) {
+				return {'display': 'block', 'paddingBottom': 600};
+			}
 			return {'display': 'block'};
 		} else {
 			return {'display': 'none'};
@@ -143,12 +174,16 @@ export default function OrganiationPortal(props) {
 			<Container id="volunteer-info">
 					<Row className="justify-content-md-center">
 						<Col></Col>
-							<Col lg={7} md={10} sm={12}>
-								<Container style={{padding: 0,  marginLeft: 0}}> 
+							<Col lg={8} md={10} sm={12}>
+								{/* <Maps>
+                    			</Maps> */}
+								<Container style={{padding: 0,  marginLeft: 0}}>
 									<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched</Button>
 									<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched</Button>
 									<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed</Button>
 									<Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Volunteers</Button>
+									<Button id={tabID(5)} onClick={() => {setCurrTab(5)}}>Request Map</Button>
+									<Button id={tabID(6)} onClick={() => {setCurrTab(6)}}>Volunteer Map</Button>
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 									style={displayTab(1)}>
@@ -171,6 +206,16 @@ export default function OrganiationPortal(props) {
 								<Container className="shadow mb-5 bg-white rounded" id="request-view"
 									style={displayTab(4)}>
 									<VolunteerList state={props.state} association={association}/>
+								</Container>
+								<Container className="shadow mb-5 bg-white rounded" id="request-view"
+									style={displayTab(5)}>
+									<Maps show={currTabNumber === 5} requests={unmatched}>
+                    				</Maps>
+								</Container>
+								<Container className="shadow mb-5 bg-white rounded" id="request-view"
+									style={displayTab(6)}>
+									<Maps show={currTabNumber === 6} requests={volunteers}>
+                    				</Maps>
 								</Container>
 							</Col>
 						<Col ></Col>

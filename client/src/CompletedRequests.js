@@ -74,6 +74,7 @@ export default function CompletedRequests(props) {
                             setRequestDetailsModal={setRequestDetailsModal} 
                             currRequest={currRequest}
                             association={props.association}
+                            setCurrRequest={setCurrRequest}
                             mode={3}/>
         </>
     );

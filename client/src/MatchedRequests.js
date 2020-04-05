@@ -109,6 +109,7 @@ export default function MatchedRequests(props) {
                             currRequest={currRequest}
                             association={props.association}
                             currVolunteer={currVolunteer}
+                            setCurrRequest={setCurrRequest}
                             mode={2}/>
         </>
     );
