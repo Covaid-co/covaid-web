@@ -365,15 +365,18 @@ exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
       const today = new Date();
       const expirationDate = new Date(today);
       expirationDate.setMinutes(today.getMinutes() + 5);
-
-      var payload = {
+      if (user) {
+        var payload = {
           id: user._id,        // User ID from database
           email: emailAddress,
-      };
-      var secret = user.hash;
-      var token = jwt.encode(payload, secret);
-      emailer.sendPasswordLink(emailAddress, payload.id, token);
-      res.sendStatus(200)
+        };
+        var secret = user.hash;
+        var token = jwt.encode(payload, secret);
+        emailer.sendPasswordLink(emailAddress, payload.id, token);
+        res.sendStatus(200)
+      } else {
+        return res.status(403).send('No accounts with that email')
+      }
     })
   } else {
     return res.status(422).send('Email address is missing.')
