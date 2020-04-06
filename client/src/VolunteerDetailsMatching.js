@@ -51,7 +51,7 @@ export default function VolunteerDetailsMatching(props) {
                 <p id="request-info">Phone: {props.currVolunteer.phone}</p>
                 <p id="request-info">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}
                 </p>
-                <p id="request-info">Languages: {props.currVolunteer.languages.join(', ')}</p>
+                <p id="request-info">Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ''}</p>
                 <p id="request-info">Has car: 
                     {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}
                 </p>
