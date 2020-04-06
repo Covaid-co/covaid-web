@@ -28,7 +28,8 @@ let RequestSchema = new Schema({
     status: {
         current_status: String,
         volunteer: String
-    }
+    },
+    volunteer_status: String
 });
 
 module.exports = mongoose.model('Requests', RequestSchema);

@@ -7,7 +7,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import RequestDetailsVolunteer from './RequestDetailsVolunteer'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function VolunteerRequests(props) {
+export default function PendingVolunteerRequests(props) {
 
     const [requests, setRequests] = useState([]);
     const [filteredRequests, setFilteredRequests] = useState([]);
@@ -15,9 +15,9 @@ export default function VolunteerRequests(props) {
     const [currRequest, setCurrRequest] = useState({});
 
     useEffect(() => {
-        var url = "/api/request/allRequestsInVolunteer?";
+        var url = "/api/request/allPendingRequestsInVolunteer?";
         let params = {
-            'volunteerID': props.state.currentUser._id
+            'volunteerID': props.user._id
         }
         let query = Object.keys(params)
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
@@ -41,7 +41,7 @@ export default function VolunteerRequests(props) {
         }).catch((e) => {
             console.log(e)
         });
-    }, [props.state.currentUser])
+    }, [props.user_id])
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
@@ -81,21 +81,21 @@ export default function VolunteerRequests(props) {
                     <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true)}}>
                         <div >
                             <h5 className="volunteer-name">
-                                {request.requester_first} {request.requester_last}
+                                Someone needs your support!
                             </h5>
-                        </div>
-                        <div style={{display: 'inline-block', width: '100%'}}>
-                            <p style={{float: 'left', marginBottom: 0}}>Needed by: {request.date}</p>
                         </div>
                         <div>
                         {request.resource_request.map((task, i) => {
                                 return <Badge key={i} className='task-info'>{task}</Badge>
                             })}
                         </div>
+                        <div style={{display: 'inline-block', width: '100%'}}>
+                            <p style={{float: 'left', marginBottom: 0}}>Needed by: {request.date}</p>
+                        </div>
                     </ListGroup.Item>);
                     })}
             </ListGroup>
-            <RequestDetailsVolunteer modalOpen={modalOpen} setModalOpen={setModalOpen} currRequest={currRequest}/>
+            <RequestDetailsVolunteer modalOpen={modalOpen} setModalOpen={setModalOpen} currRequest={currRequest} />
         </>
     )
 }

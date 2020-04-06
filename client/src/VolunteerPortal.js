@@ -5,7 +5,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import VolunteerRequests from './VolunteerRequests';
+import PendingVolunteerRequests from './PendingVolunteerRequests';
 import CovaidNavbar from './CovaidNavbar'
 import './VolunteerPage.css'
 
@@ -13,9 +13,10 @@ import fetch_a from './util/fetch_auth'
 
 export default function VolunteerPortal(props) {
 
-	const [firstTab, setFirstTab] = useState(true);
+	const [tabNum, setTabNum] = useState(1);
 	const [user, setUser] = useState({})
 	const [foundUser, setFoundUser] = useState(false)
+	const [pendingRequests, setPendingRequests] = useState([])
 
 	const fetchUser = () => {
 		fetch_a('token', '/api/users/current')
@@ -39,6 +40,8 @@ export default function VolunteerPortal(props) {
 	useEffect(() => {
 		fetchUser()
 	}, []);
+
+	
 
 	if (foundUser) {
 		return (
@@ -64,17 +67,22 @@ export default function VolunteerPortal(props) {
 						<Col></Col>
 						<Col lg={6} md={8} sm={10}>
 							<Container style={{padding: 0, marginLeft: 0}}> 
-								<Button id={firstTab ? "tab-button-selected" : "tab-button"} onClick={() => {setFirstTab(true)}}>Your Offer</Button>
-								{/* <Button id={!firstTab ? "tab-button-selected" : "tab-button"} onClick={() => {setFirstTab(false)}}>Requests</Button> */}
+								<Button id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your Offer</Button>
+								<Button id={tabNum==2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>Pending Requests</Button>
+								<Button id={tabNum==3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>Current Requests</Button>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-								style={firstTab ? {'display': 'block'} : {'display': 'none'}}>
+								style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
 								<YourOffer latitude = {user.latlong[1]} longitude = {user.latlong[0]}/>
 							</Container>
-							{/* <Container className="shadow mb-5 bg-white rounded" id="request-view"
-								style={firstTab ? {'display': 'none'} : {'display': 'block'}}>
-								{/* <VolunteerRequests state={props.state}/> */}
-							{/* </Container> */}
+							<Container className="shadow mb-5 bg-white rounded" id="request-view"
+								style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
+								<PendingVolunteerRequests user={user}/>
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="request-view"
+								style={tabNum==3 ? {'display': 'block'} : {'display': 'none'}}>
+								<PendingVolunteerRequests user={user}/>
+							</Container>
 							</Col>
 						<Col ></Col>
 					</Row>
