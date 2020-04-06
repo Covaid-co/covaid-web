@@ -119,8 +119,9 @@
                         <p style="font-family: sans-serif; font-size: 16px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><strong>Requester Email: </strong>{{email}}</p>
                         <p style="font-family: sans-serif; font-size: 16px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><strong>Requester Phone: </strong>{{phone}}</p>
                         <p style="font-family: sans-serif; font-size: 16px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><strong>Details: </strong>{{details}}</p>
-                        <p style="font-family: sans-serif; font-size: 16px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><strong>Payment: </strong>{{payment}}</p>
-                        <p style="font-family: sans-serif; font-size: 19px; font-weight: normal; margin: 0; Margin-bottom: 25px;">Please reach out to covaidco@gmail.com if you have any questions and/or concerns. Otherwise, please contact the requester!</p>
+                        <p style="font-family: sans-serif; font-size: 16px; font-weight: normal; margin: 0; Margin-bottom: 25px;">
+                          Please reach out to {{assoc_email}} if you have any questions or concerns about this request or if you are unable to fulfil this request. Otherwise, please contact the requester directly and email {{assoc_email}} to let us know when you have fulfilled the request.
+                        </p>
                       </td>
                     </tr>
                   </table>
