@@ -65,7 +65,7 @@ export default function OrganiationPortal(props) {
 									unMatchedArr.push(data[i]);
 								}
 							}
-							console.log(unMatchedArr);
+							// console.log(unMatchedArr);
 							setUnmatched(unMatchedArr);
 							setMatched(matchedArr);
 							setCompleted(completedArr);

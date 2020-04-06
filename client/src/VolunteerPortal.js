@@ -21,7 +21,7 @@ export default function VolunteerPortal(props) {
 		fetch_a('token', '/api/users/current')
 		  .then((response) => response.json())
 		  .then((user) => {
-			  console.log(user)
+			//   console.log(user)
 				setUser(user)
 				setFoundUser(true)
 		  })

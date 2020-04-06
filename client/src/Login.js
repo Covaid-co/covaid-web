@@ -34,7 +34,7 @@ export default function Login() {
         .then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    console.log("Login successful")
+                    // console.log("Login successful")
                     Cookie.set("token", data.user.token);
                     window.location.reload(false);
                 });

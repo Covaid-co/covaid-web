@@ -30,7 +30,7 @@ export default function OrgLogin(props) {
         let form = {
             'email': fields.email,
         };
-        console.log(form)
+        // console.log(form)
         fetch('/api/association/emailpasswordresetlink', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},

@@ -60,7 +60,7 @@ export default function UnmatchedRequests(props) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    console.log(data);
+                    // console.log(data);
                     if (data.length > 0) {
                         setCurrVolunteer(data[0]);
                     }

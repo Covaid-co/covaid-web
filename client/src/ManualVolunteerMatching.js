@@ -75,7 +75,7 @@ export default function ManualVolunteerMatching(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                console.log("attached");
+                // console.log("attached");
                 window.location.reload();
             } else {
                 alert("unable to attach");

@@ -65,7 +65,7 @@ export default function Register(props, switchToLogin) {
             const response = await fetch(url);
             response.json().then((data) => {
                 var notSelected = true;
-                console.log(data);
+                // console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     const curr = data[i]['_id'];
                     const name = data[i]['name'];

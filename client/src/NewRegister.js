@@ -35,7 +35,7 @@ export default function NewRegister(props, switchToLogin) {
         details: ""
     });
 
-    const languages = ['English', 'Chinese', 'French', 'Spanish', 'Other'];
+    const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in details)'];
     const availability = ['Morning', 'Afternoon', 'Evening', 'Weekdays', 'Weekends'];
     const [phoneNumber, setPhoneNumber] = useState('');
     const [languageChecked, setLanguageChecked] = useState({});
@@ -223,7 +223,7 @@ export default function NewRegister(props, switchToLogin) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    console.log("Registration successful");
+                    // console.log("Registration successful");
                     setJustRegistered(true);
                 });
             } else {

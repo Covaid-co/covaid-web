@@ -160,7 +160,7 @@ export default function RequestHelp(props) {
             'volunteer': props.volunteer,
             'status': "pending"
         };
-        console.log(form)
+        // console.log(form)
         fetch('/api/request/create_request', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},

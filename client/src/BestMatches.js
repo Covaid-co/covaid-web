@@ -27,7 +27,7 @@ export default function BestMatches(props) {
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
              .join('&');
         url += query;
-        console.log(url)
+        // console.log(url)
 
         fetch(url, {
             method: 'get',
@@ -35,7 +35,7 @@ export default function BestMatches(props) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    console.log(data);
+                    // console.log(data);
                     setVolunteers(data);
                 });
             } else {

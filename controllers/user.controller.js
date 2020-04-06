@@ -127,6 +127,7 @@ exports.register = function (req, res) {
         finalUser.preVerified = false;
         finalUser.verified = false;
         finalUser.agreedToTerms = true;
+        finalUser.availability = true;
 
         finalUser.save(function(err, result) {
           if (err) {    
