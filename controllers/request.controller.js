@@ -124,12 +124,12 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
 
 exports.completeARequest = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
-    const volunteer_id = req.body.volunteer_id
+    // const volunteer_id = req.body.volunteer_id
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "status": {
                 "current_status": "complete",
-                "volunteer": volunteer_id
+                // "volunteer": volunteer_id
             }
         }
     }, function (err, request) {
@@ -145,6 +145,19 @@ exports.setAssignee = asyncWrapper(async (req, res) => {
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "assignee": assignee
+        }
+    }, function (err, request) {
+        if (err) return next(err);
+        res.send('Request updated.');
+    });
+});
+
+exports.setNotes = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id;
+    const note = req.body.note;
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            "note": note
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -190,6 +203,7 @@ exports.handle_old_request = asyncWrapper(async (req, res) => {
 
 exports.createARequest = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
+    request.time = new Date();
     var volunteers;
     if (!req.body.volunteer) {
         volunteers = await getBestVolunteers(request)

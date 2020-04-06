@@ -16,6 +16,7 @@ let RequestSchema = new Schema({
     details: String,
     time: String,
     date: String,
+    note: String,
     assignee: String,
     manual_match: {
         name: String,

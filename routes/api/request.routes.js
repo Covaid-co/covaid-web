@@ -14,5 +14,6 @@ router.put('/removeVolunteerFromRequest', request_controller.removeVolunteer);
 router.put('/completeRequest', request_controller.completeARequest);
 router.put('/set_assignee', request_controller.setAssignee);
 router.put('/manual_volunteer', request_controller.setManualVolunteer);
+router.put('/set_notes', request_controller.setNotes);
 
 module.exports = router;
