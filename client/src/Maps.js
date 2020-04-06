@@ -12,7 +12,7 @@ export class MapContainer extends Component {
       if (this.props.association.name !== "Covaid") {
           assocLat = this.props.association.location.coordinates[0]
           assocLong = this.props.association.location.coordinates[1]
-          customZoom = 10
+          customZoom = 9
       }
   
       this.state = {

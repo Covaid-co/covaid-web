@@ -197,19 +197,22 @@ export default function OrganiationPortal(props) {
 									style={displayTab(1)}>
 									<UnmatchedRequests state={props.state} 
 													   association={association}
-													   unmatched={unmatched}/>
+													   requests={unmatched}
+													   mode={1}/>
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 									style={displayTab(2)}>
-									<MatchedRequests state={props.state} 
+									<UnmatchedRequests state={props.state} 
 													   association={association}
-													   matched={matched}/>
+													   requests={matched}
+													   mode={2}/>
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 									style={displayTab(3)}>
-									<CompletedRequests state={props.state} 
+									<UnmatchedRequests state={props.state} 
 													   association={association}
-													   completed={completed}/>
+													   requests={completed}
+													   mode={3}/>
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="request-view"
 									style={displayTab(4)}>
