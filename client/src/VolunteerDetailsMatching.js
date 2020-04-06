@@ -9,10 +9,14 @@ export default function VolunteerDetailsMatching(props) {
     const matchVolunteer = () => {
         const requester_id = props.currRequest._id;
         const volunteer_id = props.currVolunteer._id;
+        const volunteer_email = props.currVolunteer.email
+        const assoc_id = props.currRequest.association
 
         let form = {
             'request_id': requester_id,
-            'volunteer_id': volunteer_id
+            'volunteer_id': volunteer_id,
+            'volunteer_email': volunteer_email,
+            'association': assoc_id
         };
 
         fetch('/api/request/attachVolunteerToRequest', {
@@ -61,4 +65,5 @@ export default function VolunteerDetailsMatching(props) {
             </Modal.Body>
         </Modal>
     );
+
 }

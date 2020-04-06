@@ -89,6 +89,8 @@ exports.getAllRequestsInVolunteer = asyncWrapper(async (req, res) => {
 exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     const volunteer_id = req.body.volunteer_id
+    const assoc_id = req.body.association
+    const volunteer_email = req.body.volunteer_email
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "status": {
@@ -98,7 +100,10 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
-        
+        console.log(assoc_id)
+        if (assoc_id === "5e8439ad9ad8d24834c8edbe") {
+            sendEmail(request, volunteer_email, 'bmoremutualaid@gmail.com')
+        }
         res.send('Request updated.');
     });
 
@@ -116,7 +121,6 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
-        
         res.send('Request updated.');
     });
 
@@ -134,7 +138,7 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
-        
+       
         res.send('Request updated.');
     });
 })
@@ -211,7 +215,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         for (var i = 0; i < Math.min(volunteers.length, 3); i++) {
             volunteer_emails.push(volunteers[i].email)
         }
-        sendEmail(request, volunteer_emails.join(", "), "", 'covaidco@gmail.com')
+        sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
         var dbResult = await request.save()
         if (request.association == "5e843ab29ad8d24834c8edbf") {
             // PITT
@@ -240,11 +244,11 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     } 
     else if (request.association == '5e8439ad9ad8d24834c8edbe') {
         // BALTIMORE
-        sendEmail(request, req.body.volunteer.email, result._id, req.body.volunteer.email)
+        sendEmail(request, req.body.volunteer.email, 'bmoremutualaid@gmail.com')
         await addRequestToSpreadsheet(request, result._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
     } else {
         await addRequestToSpreadsheet(request, result._id, volunteers, '1lymbkyVvNQPzLeCdmo3NHOs5Rrl97AaRzapDzP-YRmg')
-        sendEmail(request, req.body.volunteer.email, result._id, 'covaidco@gmail.com')
+        sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
     }
     res.status(200).json({
         volunteers: volunteers 
@@ -285,7 +289,7 @@ async function getBestVolunteers(request) {
     return users;
 }
 
-function sendEmail(request, volunteer_email, ID, recipient) {
+function sendEmail(request, recipient, assoc_email) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -327,7 +331,7 @@ function sendEmail(request, volunteer_email, ID, recipient) {
         from: 'covaidco@gmail.com', // sender address
         to: recipient, // list of receivers
         subject: 'Someone needs your help!', // Subject line
-        html: compiledTemplate.render({email: email, offer_email: volunteer_email, phone: phone, details: request.details, id: ID, link: link, payment: paymentText})
+        html: compiledTemplate.render({email: email, phone: phone, details: request.details, assoc_email: assoc_email})
     };
 
     transporter.sendMail(mailOptions, function (err, info) {

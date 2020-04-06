@@ -1,5 +1,8 @@
 const Association = require('../models/association.model');
 const passport = require('passport');
+const asyncWrapper = require('../util/asyncWrapper');
+var jwt = require('jwt-simple');
+const emailer =  require("../util/emailer");
 
 exports.association_details = function (req, res) {
     Association.findById(req.query.associationID, function (err, association) {
@@ -69,6 +72,59 @@ exports.create_association = function (req, res) {
       }
     });
 };
+
+exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
+  if (req.body.email !== undefined) {
+    var emailAddress = req.body.email;
+    Association.findOne({email: emailAddress}, function (err, association) {
+      if (err) {
+        return res.sendStatus(403)
+      }
+      const today = new Date();
+      const expirationDate = new Date(today);
+      expirationDate.setMinutes(today.getMinutes() + 5);
+      if (association) {
+        var payload = {
+          id: association._id,        // User ID from database
+          email: emailAddress,
+        };
+        var secret = association.hash;
+        var token = jwt.encode(payload, secret);
+        emailer.sendAssocPasswordLink(emailAddress, payload.id, token);
+        res.sendStatus(200)
+      } else {
+        return res.status(403).send('No accounts with that email')
+      }
+    })
+  } else {
+    return res.status(422).send('Email address is missing.')
+  }
+});
+
+exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
+  const association = await Association.findById(req.params.id)
+  var secret = association.hash;
+  try{
+    var payload = jwt.decode(req.params.token, secret);   
+    res.sendStatus(200)      
+  }catch(error){
+    console.log(error.message);
+    res.sendStatus(403);
+  }
+});
+
+exports.resetPassword = asyncWrapper(async (req, res) => {
+  var newPassword = req.body.newPassword
+  // update password
+  const association = await Association.findById(req.body.id)
+  association.setPassword(newPassword)
+  association.save(function(err, result) {
+    if (err) {    
+      return res.status(422).send(err);
+    } 
+    res.sendStatus(200)
+  })
+});
 
 exports.assoc_by_lat_long = function (req, res) {
     var latitude = req.query.latitude
