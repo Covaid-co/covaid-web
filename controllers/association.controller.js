@@ -135,7 +135,7 @@ exports.assoc_by_lat_long = function (req, res) {
                 { $geoWithin: 
                   { $centerSphere: 
                     [[ latitude, longitude], 
-                      20 / 3963.2] 
+                      10 / 3963.2] 
                   }
                 }
     }).then(function (associations) {

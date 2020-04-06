@@ -293,8 +293,7 @@ exports.all_users_of_an_association = function (req, res) {
     return;
   }
   Users.find({
-      'association': assoc,
-      'availability': true
+      'association': assoc
     }).then(function (users) {
     
     res.send(users);
