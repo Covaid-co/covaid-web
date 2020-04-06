@@ -33,6 +33,7 @@ export default function RequestDetails(props) {
         tempURL += props.currRequest.latitude + ',';
         tempURL += props.currRequest.longitude + ',15z';
         setMapsURL(tempURL);
+        fields.email2 = props.currRequest.note
     }, [props.currRequest]);
 
 
@@ -135,7 +136,6 @@ export default function RequestDetails(props) {
                         </Button>
                     </>;
         } else if (props.mode === 2) {
-            console.log(props.currRequest)
             return (<>
                     {/* <Button id="nextPage"
                             onClick={unMatch}

@@ -15,6 +15,7 @@ let RequestSchema = new Schema({
     payment: Number,
     details: String,
     time: String,
+    time_posted: String,
     date: String,
     note: String,
     assignee: String,

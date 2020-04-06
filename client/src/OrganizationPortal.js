@@ -65,6 +65,7 @@ export default function OrganiationPortal(props) {
 									unMatchedArr.push(data[i]);
 								}
 							}
+							console.log(unMatchedArr);
 							setUnmatched(unMatchedArr);
 							setMatched(matchedArr);
 							setCompleted(completedArr);
@@ -184,8 +185,6 @@ export default function OrganiationPortal(props) {
 					<Row className="justify-content-md-center">
 						<Col></Col>
 							<Col lg={8} md={10} sm={12}>
-								{/* <Maps>
-                    			</Maps> */}
 								<Container style={{padding: 0,  marginLeft: 0}}>
 									<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched</Button>
 									<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched</Button>

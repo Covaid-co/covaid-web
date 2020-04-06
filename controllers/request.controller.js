@@ -203,7 +203,7 @@ exports.handle_old_request = asyncWrapper(async (req, res) => {
 
 exports.createARequest = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
-    request.time = new Date();
+    request.time_posted = new Date(); 
     var volunteers;
     if (!req.body.volunteer) {
         volunteers = await getBestVolunteers(request)

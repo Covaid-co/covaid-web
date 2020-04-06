@@ -22,7 +22,6 @@ export default function VolunteerList(props) {
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
              .join('&');
         url += query;
-        console.log(url)
 
         fetch(url, {
             method: 'get',
@@ -30,7 +29,6 @@ export default function VolunteerList(props) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    console.log(data);
                     setVolunteers(data);
                 });
             } else {

@@ -12,9 +12,23 @@ export default function UnmatchedRequests(props) {
     const [filteredRequests, setFilteredRequests] = useState([]);
     const [requestDetailsModal, setRequestDetailsModal] = useState(false);
     const [currRequest, setCurrRequest] = useState({});
+    const [name, setName] = useState(false);
+    const [need, setNeed] = useState(false);
 
     useEffect(() => {
-        setFilteredRequests(props.unmatched);
+        var temp = JSON.parse(JSON.stringify(props.unmatched));
+        temp.sort(function(a, b) {
+            const x = new Date(a.date);
+            const y = new Date(b.date);
+            if (x > y) {
+                return -1;
+            }
+            if (y > x) {
+                return 1;
+            }
+            return 0;
+        });
+        setFilteredRequests(temp);
     }, [props.unmatched]);
 
     const filterRequests = (e) => {
@@ -40,6 +54,58 @@ export default function UnmatchedRequests(props) {
         setFilteredRequests(filtered);
     }
 
+    const sortRequests = (type) => {
+        if (type === 'name') {
+            var temp = JSON.parse(JSON.stringify(filteredRequests));
+            setName(!name);
+            temp.sort(function(a, b) {
+                const x = String(a.requester_first.toLowerCase())
+                const y = String(b.requester_first.toLowerCase())
+                if (name) {
+                    if (x > y) {
+                        return -1;
+                    }
+                    if (y > x) {
+                        return 1;
+                    }
+                } else {
+                    if (x < y) {
+                        return -1;
+                    }
+                    if (y < x) {
+                        return 1;
+                    }
+                }
+                return 0;
+            });
+            setFilteredRequests(temp);
+        } else {
+            setNeed(!need);
+            var temp = JSON.parse(JSON.stringify(filteredRequests));
+            temp.sort(function(a, b) {
+                const x = new Date(a.date);
+                const y = new Date(b.date);
+                if (need) {
+                    if (x > y) {
+                        return -1;
+                    }
+                    if (y > x) {
+                        return 1;
+                    }
+                } else {
+                    if (x < y) {
+                        return -1;
+                    }
+                    if (y < x) {
+                        return 1;
+                    }
+                }
+                return 0;
+            });
+            setFilteredRequests(temp);
+        }
+    }
+
     return (
         <>
             <Row>
@@ -57,9 +123,8 @@ export default function UnmatchedRequests(props) {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu style={{width: '100%'}}>
-                        <Dropdown.Item href="#/action-1">Name</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Needed By</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Request Date</Dropdown.Item>
+                        <Dropdown.Item onClick={()=>sortRequests('name')}>Name</Dropdown.Item>
+                        <Dropdown.Item onClick={()=>sortRequests('need')}>Needed By</Dropdown.Item>
                     </Dropdown.Menu>
                     </Dropdown>
                 </Col>
@@ -78,7 +143,8 @@ export default function UnmatchedRequests(props) {
                                     <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
                                 </div>
                                 <div style={{display: 'inline-block', width: '100%'}}>
-                                    <p style={{float: 'left', marginBottom: 0}}>Assignee: {request.assignee ? request.assignee : "No one assigned"}</p>
+                                    <p style={{float: 'left', marginBottom: 0}}>Assignee: 
+                                    {request.assignee ? <Badge style={{background: '#28a745', border: '1px solid #28a745', marginLeft: 8}} key={i} className='task-info'>{request.assignee}</Badge> : "No one assigned"}</p>
                                 </div>
                                 <div>
                                     {request.resource_request.map((task, i) => {

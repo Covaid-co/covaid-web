@@ -9,8 +9,6 @@ export class MapContainer extends Component {
       var assocLong = -98.1970437
       var customZoom = 4
 
-      console.log(this.props)
-
       if (this.props.association.name !== "Covaid") {
           assocLat = this.props.association.location.coordinates[0]
           assocLong = this.props.association.location.coordinates[1]
