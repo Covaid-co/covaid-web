@@ -35,7 +35,7 @@ export default function VolunteerDetails(props) {
                 <p id="request-info">Neighborhoods: 
                     {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}
                 </p>
-                <p id="request-info">Languages: {props.currVolunteer.languages}</p>
+                <p id="request-info">Languages: {props.currVolunteer.languages.join(', ')}</p>
                 <p id="request-info">Has car: 
                     {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}
                 </p>
