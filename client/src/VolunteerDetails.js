@@ -29,7 +29,7 @@ export default function VolunteerDetails(props) {
             <Modal.Body>
                 <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5>
                 {/* <p id="request-info">Name: {props.currVolunteer.requester_first} {props.currVolunteer.requester_last}</p> */}
-                <p id="request-info">Availabile to help: {props.currVolunteer.availability ? 'yes':'no'}</p>
+                <p id="request-info">Availabile to help: {props.currVolunteer.availability ? ' Yes':' No'}</p>
                 <p id="request-info">Email: {props.currVolunteer.email}</p>
                 <p id="request-info">Phone: {props.currVolunteer.phone}</p>
                 <p id="request-info">Neighborhoods: 
@@ -37,7 +37,7 @@ export default function VolunteerDetails(props) {
                 </p>
                 <p id="request-info">Languages: {props.currVolunteer.languages}</p>
                 <p id="request-info">Has car: 
-                    {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' yes': ' no') : ""}
+                    {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}
                 </p>
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Tasks:</h5>
                 {props.currVolunteer.offer ? props.currVolunteer.offer.tasks.map((task, i) => {
