@@ -19,6 +19,7 @@ let RequestSchema = new Schema({
     date: String,
     note: String,
     assignee: String,
+    delete: Boolean,
     manual_match: {
         name: String,
         email: String,
@@ -27,7 +28,8 @@ let RequestSchema = new Schema({
     },
     status: {
         current_status: String,
-        volunteer: String
+        volunteer: String,
+        reason: String
     }
 });
 

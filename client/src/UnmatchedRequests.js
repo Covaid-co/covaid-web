@@ -73,6 +73,20 @@ export default function UnmatchedRequests(props) {
         });
     }
 
+    const resourceCompleteBadge = (request) => {
+        var result = <></>;
+        if (props.mode == 3) {
+            result = <Badge className='task-info-requests' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
+                        {request.status.reason ? request.status.reason : "Volunteer Completed"}
+                    </Badge>                      
+        } else {
+            result = request.resource_request.map((task, i) => {
+                return <Badge key={i} className='task-info-requests'>{task}</Badge>
+            })
+        }
+        return result;
+    }
+
     return (
         <>
             <Row>
@@ -115,9 +129,7 @@ export default function UnmatchedRequests(props) {
                                     <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
                                 </div>
                                 <div>
-                                    {request.resource_request.map((task, i) => {
-                                        return <Badge key={i} className='task-info-requests'>{task}</Badge>
-                                    })}
+                                    {resourceCompleteBadge(request)}
                                 </div>
                                 <div style={{display: 'inline-block', width: '100%'}}>
                                     <p style={{float: 'left', marginBottom: 0}}>Assignee: 

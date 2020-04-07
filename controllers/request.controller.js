@@ -68,12 +68,14 @@ exports.update_completed = function (req, res) {
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
     const assoc = req.query.association
     if (assoc === '5e88cf8a6ea53ef574d1b80c') {
-        var requests = await Requests.find({$or: [{'association': assoc}, {'association': {"$exists": false}}]});
+        var requests = await Requests.find({'$or': [{'association': assoc}, {'association': {"$exists": false}}], 
+                                            '$or': [{'delete': false}, {'delete': {"$exists": false}}]});
         res.send(requests);
         return;
     }
     var requests = await Requests.find({
-        'association': assoc
+        'association': assoc,
+        '$or': [{'delete': false}, {'delete': {"$exists": false}}]
     });
     res.send(requests);
 })
@@ -111,7 +113,6 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
 
 exports.removeVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
-    const volunteer_id = req.body.volunteer_id
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "status": {
@@ -128,12 +129,12 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
 
 exports.completeARequest = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
-    // const volunteer_id = req.body.volunteer_id
+    const reason = req.body.reason
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "status": {
                 "current_status": "complete",
-                // "volunteer": volunteer_id
+                "reason": reason
             }
         }
     }, function (err, request) {
@@ -162,6 +163,18 @@ exports.setNotes = asyncWrapper(async (req, res) => {
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "note": note
+        }
+    }, function (err, request) {
+        if (err) return next(err);
+        res.send('Request updated.');
+    });
+});
+
+exports.setDelete = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id;
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            "delete": true
         }
     }, function (err, request) {
         if (err) return next(err);

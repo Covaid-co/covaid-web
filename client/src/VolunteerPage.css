@@ -181,3 +181,15 @@
   margin-top: 80px;
   border-radius: 8px;
 }
+
+#request-delete {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 35px;
+  font-family: "SF Text";
+  background-color: #dc3545;
+  border-color: #dc3545;
+  border-radius: 8px;
+}
