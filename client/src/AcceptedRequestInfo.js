@@ -5,22 +5,24 @@ import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal' 
+import fetch_a from './util/fetch_auth'
 
-export default function RequestDetailsVolunteer(props) {
+export default function AcceptedRequestInfo(props) {
 
     const reject = () => {
-        console.log("reject")
-
+        
     }
 
     const accept = () => {
-        console.log("accept")
+
+        props.setModalOpen(false)
+        // window.location.reload(false)
     }
 
     return (
         <Modal show={props.modalOpen} onHide={() => {props.setModalOpen(false)}} style = {{marginTop: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title>We are requesting your support!</Modal.Title>
+                <Modal.Title>In-progress Request</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 0}}>Details:</h5>

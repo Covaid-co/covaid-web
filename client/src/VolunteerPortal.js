@@ -6,10 +6,14 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import PendingVolunteerRequests from './PendingVolunteerRequests';
+import InProgressVolunteerRequests from './InProgressVolunteerRequests'
 import CovaidNavbar from './CovaidNavbar'
 import './VolunteerPage.css'
 
 import fetch_a from './util/fetch_auth'
+
+// Create context object
+export const VolunteerPortalContext = React.createContext();
 
 export default function VolunteerPortal(props) {
 
@@ -17,6 +21,9 @@ export default function VolunteerPortal(props) {
 	const [user, setUser] = useState({})
 	const [foundUser, setFoundUser] = useState(false)
 	const [pendingRequests, setPendingRequests] = useState([])
+	const [acceptedRequests, setAcceptedRequests] = useState([])
+
+	const [pendingRequestNum, setPendingRequestNum] = useState('')
 
 	const fetchUser = () => {
 		fetch_a('token', '/api/users/current')
@@ -31,11 +38,71 @@ export default function VolunteerPortal(props) {
 		  });
 	  }
 
+	  const fetchPendingRequests = (id) => {
+		var url = "/api/request/allPendingRequestsInVolunteer?";
+        let params = {
+            'volunteerID': id
+        }
+        let query = Object.keys(params)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+             .join('&');
+        url += query;
+
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+                    setPendingRequests(data)
+                });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+	  }
+
+	  const fetchAcceptedRequests = (id) => {
+		var url = "/api/request/allAcceptedRequestsInVolunteer?";
+        let params = {
+            'volunteerID': props.user._id
+        }
+        let query = Object.keys(params)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+             .join('&');
+        url += query;
+
+        console.log(url)
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+                    setAcceptedRequests(data)
+                    // console.log(data)
+                    // setFilteredRequests(data)
+                });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+	  }
+
 	  const returnToHome = () => {
 		var url = window.location.href; 
 		url = url.substring(0, url.length - 'volunteerPortal'.length)
 		window.location.href = url;
 	  }
+
+	const moveRequestFromPendingToInProgress = (request) => {
+		console.log("Moving to in-progress")
+		
+	}
 
 	useEffect(() => {
 		fetchUser()
@@ -68,7 +135,10 @@ export default function VolunteerPortal(props) {
 						<Col lg={6} md={8} sm={10}>
 							<Container style={{padding: 0, marginLeft: 0}}> 
 								<Button id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your Offer</Button>
-								<Button id={tabNum==2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>Pending Requests</Button>
+								<Button style={{"position": "relative"}}id={tabNum==2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
+									Pending Requests
+									<div class="notificationBadge">{pendingRequestNum}</div>
+								</Button>
 								<Button id={tabNum==3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>Current Requests</Button>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
@@ -77,11 +147,11 @@ export default function VolunteerPortal(props) {
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
 								style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
-								<PendingVolunteerRequests user={user}/>
+								<PendingVolunteerRequests user={user} setPendingRequestNum={setPendingRequestNum}/>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
 								style={tabNum==3 ? {'display': 'block'} : {'display': 'none'}}>
-								<PendingVolunteerRequests user={user}/>
+								<InProgressVolunteerRequests user={user} />
 							</Container>
 							</Col>
 						<Col ></Col>

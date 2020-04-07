@@ -104,6 +104,25 @@ exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     res.send(requests)
 })
 
+exports.acceptRequest = asyncWrapper(async (req, res) => {
+    const req_id = req.query.ID
+
+    var request = await Requests.findByIdAndUpdate(req_id, 
+        {
+            $set: {
+                volunteer_status: 'accepted'
+            }
+        })
+    if (request) {
+        res.sendStatus(200)
+        return
+    } else {
+        res.sendStatus(404)
+        return
+    }
+
+})
+
 exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     const volunteer_id = req.body.volunteer_id

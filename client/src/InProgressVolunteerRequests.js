@@ -7,17 +7,17 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import PendingRequestInfo from './PendingRequestInfo'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function PendingVolunteerRequests(props) {
+export default function InProgressVolunteerRequests(props) {
 
     const [requests, setRequests] = useState([]);
     const [filteredRequests, setFilteredRequests] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [currRequest, setCurrRequest] = useState({});
 
-    const fetchRequests = (id) => {
-        var url = "/api/request/allPendingRequestsInVolunteer?";
+    useEffect(() => {
+        var url = "/api/request/allAcceptedRequestsInVolunteer?";
         let params = {
-            'volunteerID': id
+            'volunteerID': props.user._id
         }
         let query = Object.keys(params)
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
@@ -34,7 +34,6 @@ export default function PendingVolunteerRequests(props) {
                     setRequests(data)
                     // console.log(data)
                     setFilteredRequests(data)
-                    props.setPendingRequestNum(data.length)
                 });
             } else {
                 console.log("Error")
@@ -42,11 +41,7 @@ export default function PendingVolunteerRequests(props) {
         }).catch((e) => {
             console.log(e)
         });
-    }
-
-    useEffect(() => {
-        fetchRequests(props.user._id)
-    }, [props.user._id])
+    }, [props.user_id])
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
@@ -64,11 +59,6 @@ export default function PendingVolunteerRequests(props) {
             return emailMatch
         });
         setFilteredRequests(filtered)
-    }
-
-    const acceptRequest = () => {
-        props.moveRequestFromPendingToInProgress()
-        fetchRequests(props.user_id)
     }
 
     return (
