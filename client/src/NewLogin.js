@@ -41,7 +41,7 @@ export default function NewLogin(props) {
         .then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    console.log("Login successful")
+                    // console.log("Login successful")
                     Cookie.set("token", data.user.token);
                     var url = window.location.href; 
                     url += "volunteerPortal"

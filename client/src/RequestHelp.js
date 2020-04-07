@@ -160,7 +160,7 @@ export default function RequestHelp(props) {
             'volunteer': props.volunteer,
             'status': "pending"
         };
-        console.log(form)
+        // console.log(form)
         fetch('/api/request/create_request', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -193,17 +193,18 @@ export default function RequestHelp(props) {
     }
 
     var agreement = <></>
+    var paymentAgreement = <></>
     if (props.state.currentAssoc.name === "Baltimore Mutual Aid") {
         agreement = <>
                     <Form.Check
                         type = "checkbox" 
-                        label = "Please accept this liability disclaimer specifying that Covaid.co and organizers are not currently vetting volunteers and are to be held harmless."
+                        label = "This match program is being organized by private citizens for the benefit of those in our community. By completing the sign up form to be matched, you agree to accept all risk and responsibility and further hold any facilitator associated with Baltimore Mutual Aid Network and/or Covaid.co harmless. For any additional questions, please contact bmoremutualaid@gmail.com."
                         style = {{fontSize: 12, marginTop: 2}}/>
-                    <Form.Check
-                        type = "checkbox" 
-                        label = "We are currently not accepting donations from volunteers. Requests must be reimbursed prior to completion."
-                        style = {{fontSize: 12, marginTop: 2}}/>
+
                     </>
+        paymentAgreement = <p id="locationInfo">
+            Baltimore Mutual Aid is not able to provide financial assistance at this time. Any purchases made by volunteers must be reimbursed.
+                            </p>
     }
 
     if (firstPage) {
@@ -270,6 +271,7 @@ export default function RequestHelp(props) {
                         <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
                         <NeededBy setTime={setTime} setDate={setDate}/>
                         {payment}
+                        {paymentAgreement}
                         <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
                         {agreement}
                         <Button id="nextPage" onClick={handleSubmit}>Submit a Request</Button>

@@ -9,6 +9,7 @@ import CompleteOffer from './CompleteOffer'
 import InternalRequests from './InternalRequests'
 import Verify from './Verify'
 import ResetPassword from './ResetPassword'
+import ResetAssociationPassword from './ResetAssociationPassword'
 import OrganizationPortal from './OrganizationPortal'
 import VolunteerPortal from './VolunteerPortal'
 
@@ -23,6 +24,7 @@ function App() {
           <Route exact path="/volunteerPortal" component={VolunteerPortal}/>
           <Route exact path="/verify" component={Verify}/>
           <Route exact path="/resetPassword" component={ResetPassword}/>
+          <Route exact path="/resetAssociationPassword" component={ResetAssociationPassword}/>
           <Route path="/" component={Home}/>
           <Route path="*" component={Home}/>
         </Switch>

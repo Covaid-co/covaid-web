@@ -32,7 +32,7 @@ export default function PendingVolunteerRequests(props) {
             if (response.ok) {
                 response.json().then(data => {
                     setRequests(data)
-                    console.log(data)
+                    // console.log(data)
                     setFilteredRequests(data)
                 });
             } else {

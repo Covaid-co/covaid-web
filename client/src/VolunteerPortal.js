@@ -22,7 +22,7 @@ export default function VolunteerPortal(props) {
 		fetch_a('token', '/api/users/current')
 		  .then((response) => response.json())
 		  .then((user) => {
-			  console.log(user)
+			//   console.log(user)
 				setUser(user)
 				setFoundUser(true)
 		  })
@@ -54,7 +54,7 @@ export default function VolunteerPortal(props) {
 							</Col>
 							<Col>
 								<h1 id="jumboHeading">Welcome back, {user.first_name}!</h1>
-								<p id="jumboText">This is your volunteer portal, a place for you to manage your offers and requests</p>
+								<p id="jumboText">This is your volunteer portal, a place for you to manage your offer below</p>
 								<Button onClick={() => returnToHome()} id="homeButtons" >
 									Return to home
 								</Button>

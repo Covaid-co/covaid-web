@@ -65,7 +65,7 @@ export default function OrganiationPortal(props) {
 									unMatchedArr.push(data[i]);
 								}
 							}
-							console.log(unMatchedArr);
+							// console.log(unMatchedArr);
 							setUnmatched(unMatchedArr);
 							setMatched(matchedArr);
 							setCompleted(completedArr);
@@ -114,7 +114,12 @@ export default function OrganiationPortal(props) {
 
 	const login = () => {
 		fetchAssociation();
-  	}
+	  }
+	  
+	const logout = () => {
+		Cookie.remove('org_token');
+		window.location.reload(false);
+	}
 
 	useEffect(() => {
 		if (Cookie.get("org_token")) {
@@ -177,6 +182,11 @@ export default function OrganiationPortal(props) {
 							<h1 id="jumboHeading">Welcome back, </h1>
 							<h1 id="jumboHeading">{association.name}</h1>
 							<p id="jumboText">This is your organization portal, a place for you to manage volunteers and requests in your area</p>	
+							<Button variant="outline-danger" id='logoutButton' onClick={logout} style={{width: '10%'}}>
+								<font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
+									Logout
+								</font>
+                    		</Button>
 						</Col>
 					</Row>
 				</Container>
@@ -197,19 +207,22 @@ export default function OrganiationPortal(props) {
 									style={displayTab(1)}>
 									<UnmatchedRequests state={props.state} 
 													   association={association}
-													   unmatched={unmatched}/>
+													   requests={unmatched}
+													   mode={1}/>
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 									style={displayTab(2)}>
-									<MatchedRequests state={props.state} 
+									<UnmatchedRequests state={props.state} 
 													   association={association}
-													   matched={matched}/>
+													   requests={matched}
+													   mode={2}/>
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 									style={displayTab(3)}>
-									<CompletedRequests state={props.state} 
+									<UnmatchedRequests state={props.state} 
 													   association={association}
-													   completed={completed}/>
+													   requests={completed}
+													   mode={3}/>
 								</Container>
 								<Container className="shadow mb-5 bg-white rounded" id="request-view"
 									style={displayTab(4)}>

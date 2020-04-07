@@ -59,7 +59,7 @@ function findAssociations(lat, long, setViewableAssociation) {
     async function fetchData() {
         const response = await fetch(url);
         response.json().then((data) => {
-            console.log(data)
+            // console.log(data)
             // currentComponent.setState({associations: data});
             // if (data.length > 0) {
             //   currentComponent.setState({currentAssoc: data[0]})

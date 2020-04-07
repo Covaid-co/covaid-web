@@ -45,7 +45,7 @@ export default function MatchedRequests(props) {
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
              .join('&');
         url += query;
-        console.log(url)
+        // console.log(url)
 
         fetch(url, {
             method: 'get',
@@ -53,11 +53,10 @@ export default function MatchedRequests(props) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    console.log(data);
+                    // console.log(data);
                     if (data.length > 0) {
                         setCurrVolunteer(data[0]);
                     }
-                    // setVolunteers(data);
                 });
             } else {
                 console.log(response);
@@ -70,13 +69,6 @@ export default function MatchedRequests(props) {
     return (
         <>
             <Row>
-                <Col xs={12}>
-                    <Form>
-                        <Form.Group controlId="zip" bssize="large" style={{marginTop: 10}}>
-                            <Form.Control placeholder="Search for a request" onChange={filterRequests}/>
-                        </Form.Group>
-                    </Form>
-                </Col>
                 <Col xs={12}>
                     <p id="requestCall" style={{marginTop: 10, marginBottom: 0}}></p>
                 </Col>

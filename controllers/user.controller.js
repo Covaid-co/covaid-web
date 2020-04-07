@@ -127,6 +127,7 @@ exports.register = function (req, res) {
         finalUser.preVerified = false;
         finalUser.verified = false;
         finalUser.agreedToTerms = true;
+        finalUser.availability = true;
 
         finalUser.save(function(err, result) {
           if (err) {    
@@ -292,8 +293,7 @@ exports.all_users_of_an_association = function (req, res) {
     return;
   }
   Users.find({
-      'association': assoc,
-      'availability': true
+      'association': assoc
     }).then(function (users) {
     
     res.send(users);

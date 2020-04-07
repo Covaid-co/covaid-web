@@ -9,10 +9,14 @@ export default function VolunteerDetailsMatching(props) {
     const matchVolunteer = () => {
         const requester_id = props.currRequest._id;
         const volunteer_id = props.currVolunteer._id;
+        const volunteer_email = props.currVolunteer.email
+        const assoc_id = props.currRequest.association
 
         let form = {
             'request_id': requester_id,
-            'volunteer_id': volunteer_id
+            'volunteer_id': volunteer_id,
+            'volunteer_email': volunteer_email,
+            'association': assoc_id
         };
 
         fetch('/api/request/attachVolunteerToRequest', {
@@ -42,14 +46,14 @@ export default function VolunteerDetailsMatching(props) {
             <Modal.Body>
                 <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5>
                 {/* <p id="request-info">Name: {props.currVolunteer.requester_first} {props.currVolunteer.requester_last}</p> */}
-                <p id="request-info">Availabile to help: {props.currVolunteer.availability ? 'yes':'no'}</p>
+                <p id="request-info">Availabile to help: {props.currVolunteer.availability ? ' Yes':' No'}</p>
                 <p id="request-info">Email: {props.currVolunteer.email}</p>
                 <p id="request-info">Phone: {props.currVolunteer.phone}</p>
                 <p id="request-info">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}
                 </p>
-                <p id="request-info">Languages: {props.currVolunteer.languages}</p>
+                <p id="request-info">Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ''}</p>
                 <p id="request-info">Has car: 
-                    {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' yes': ' no') : ""}
+                    {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}
                 </p>
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Tasks:</h5>
                 {props.currVolunteer.offer ? props.currVolunteer.offer.tasks.map((task, i) => {
@@ -61,4 +65,5 @@ export default function VolunteerDetailsMatching(props) {
             </Modal.Body>
         </Modal>
     );
+
 }
