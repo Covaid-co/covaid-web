@@ -17,8 +17,11 @@ export default function RequestDetails(props) {
     const [assignee, setAssignee] = useState('');
     const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
     const [notesModal, setNotesModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [unmatchModal, setUnmatchModal] = useState(false);
     const [confirmCompleteModal, setConfirmCompleteModal] = useState(false);
-    const [mapsURL, setMapsURL] = useState('')
+    const [reason, setReason] = useState('');
+    const [mapsURL, setMapsURL] = useState('');
     const options = ['Call ahead to store and pay (Best option)',
                      'Have volunteer pay and reimburse when delivered',
                      'N/A']
@@ -44,11 +47,8 @@ export default function RequestDetails(props) {
 
     const unMatch = () => {
         const requester_id = props.currRequest._id;
-        const volunteer_id = props.currRequest.status.volunteer;
-
         let form = {
-            'request_id': requester_id,
-            'volunteer_id': volunteer_id
+            'request_id': requester_id
         };
 
         fetch('/api/request/removeVolunteerFromRequest', {
@@ -69,17 +69,14 @@ export default function RequestDetails(props) {
         });
     }
 
-    const completeRequest = (noVolunteer) => {
+    const completeRequest = async e => {
+        e.preventDefault();
+        e.stopPropagation();
+
         const requester_id = props.currRequest._id;
-        // const volunteer_id = "";
-
-        // if (noVolunteer === false) {
-        //     volunteer_id = props.currRequest.status.volunteer;
-        // }
-
         let form = {
             'request_id': requester_id,
-            // 'volunteer_id': volunteer_id
+            'reason': reason
         };
 
         fetch('/api/request/completeRequest', {
@@ -88,9 +85,6 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                console.log("attached");
-                setTopMatchesModal(false);
-                props.setRequestDetailsModal(false);
                 window.location.reload();
             } else {
                 alert("unable to attach");
@@ -131,22 +125,12 @@ export default function RequestDetails(props) {
                         <Button variant="link"
                                 style={{color: 'black', width: '100%', fontSize: 14}} 
                                 id="covid-resources"
-                                onClick={()=>setConfirmCompleteModal(true)}>
+                                onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
                             <u>Request has been completed</u>
                         </Button>
                     </>;
         } else if (props.mode === 2) {
             return (<>
-                    {/* <Button id="nextPage"
-                            onClick={unMatch}
-                            style={{backgroundColor: '#dc3545', borderColor: '#dc3545'}}>
-                        Unmatch {props.currRequest.requester_first}'s Volunteer
-                    </Button>
-                    <Button id="nextPage" 
-                            style={{backgroundColor: '#28a745', borderColor: '#28a745', marginTop: 8}} 
-                            onClick={completeRequest}>
-                        Complete {props.currRequest.requester_first}'s Request
-                    </Button> */}
                     <Button id="nextPage" 
                             style={{marginTop: 15, height: 35}}
                             onClick={() => setVolunteerDetailsModal(true)}>
@@ -154,10 +138,10 @@ export default function RequestDetails(props) {
                     </Button>
                     <Row style={{marginTop: 15}}>
                         <Col xs={6} style = {{padding: 0, paddingLeft: 15}}>
-                            <Button onClick={unMatch} id='leftCarButtonPressed' style={{backgroundColor: '#dc3545', borderColor: '#dc3545', height: 50}}>Unmatch Volunteer</Button>
+                            <Button onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false)}} id='leftCarButtonPressed' style={{backgroundColor: '#dc3545', borderColor: '#dc3545', height: 50}}>Unmatch Volunteer</Button>
                         </Col>
                         <Col xs={6} style = {{padding: 0, paddingRight: 15}}>
-                            <Button onClick={completeRequest} id='rightCarButtonPressed' style={{backgroundColor: '#28a745', borderColor: '#28a745', height: 50}}>Complete Request</Button>
+                            <Button onClick={() => {setConfirmCompleteModal(true); props.setRequestDetailsModal(false);}} id='rightCarButtonPressed' style={{backgroundColor: '#28a745', borderColor: '#28a745', height: 50}}>Complete Request</Button>
                         </Col>
                     </Row>
                     <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
@@ -167,11 +151,32 @@ export default function RequestDetails(props) {
                 </>);
         } else {
             return (<Button id="nextPage"
-                        onClick={unMatch}
+                        onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false)}}
                         style={{backgroundColor: '#dc3545', borderColor: '#dc3545'}}>
                         Unmatch Request Volunteer
                     </Button>);
         }
+    }
+
+    const deleteRequest = () => {
+        const requester_id = props.currRequest._id;
+        let form = {
+            'request_id': requester_id
+        };
+
+        fetch('/api/request/set_delete', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert("unable to attach");
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
     }
 
     const setNotes = async e => {
@@ -202,9 +207,28 @@ export default function RequestDetails(props) {
         });
     }
 
+    const handleChangeReasons = (event) => {
+        event.persist();
+        var result = event.target.value;
+        setReason(result);
+    }
+
+    const changeCompleteStatus = () => {
+        var result = <></>;
+        if (props.mode == 3) {
+            result = (<Button variant="link"
+                        style={{color: 'black', width: '100%', fontSize: 14}} 
+                        id="covid-resources"
+                        onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
+                    <u>Update complete status</u>
+                    </Button>);
+        }
+        return result;
+    }
+
     return (
         <>
-            <Modal show={props.requestDetailsModal} onHide={() => props.setRequestDetailsModal(false)} style = {{marginTop: 30, paddingBottom: 50}}>
+            <Modal show={props.requestDetailsModal} onHide={() => props.setRequestDetailsModal(false)} style = {{marginTop: 0, paddingBottom: 50}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Request Details</Modal.Title>
                 </Modal.Header>
@@ -223,6 +247,7 @@ export default function RequestDetails(props) {
                             </InputGroup.Append>
                         </InputGroup>
                     </Form>
+                    {changeCompleteStatus()}
                     <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5>
                     <p id="request-info">Name: {props.currRequest.requester_first} {props.currRequest.requester_last}</p>
                     <p id="request-info">Email: {props.currRequest.requester_email}</p>
@@ -239,6 +264,10 @@ export default function RequestDetails(props) {
                     </h5>
                     <p id="request-info">{props.currRequest.note ? props.currRequest.note : 'No notes entered'}</p>
                     {modeButton()}
+                    <Button id="request-delete"
+                        onClick={() => {setDeleteModal(true)}}>
+                        Delete Request
+                    </Button>
                 </Modal.Body>
             </Modal>
 
@@ -263,15 +292,51 @@ export default function RequestDetails(props) {
                 </Modal.Body>
             </Modal>
 
-            <Modal size="sm" id="notes-modal" show={confirmCompleteModal} onHide={() => setConfirmCompleteModal(false)}>
+
+            <Modal size="sm" id="notes-modal" show={deleteModal} onHide={() => setDeleteModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Request from {props.currRequest.requester_first}</Modal.Title>
+                </Modal.Header>
+            <Modal.Body>
+                    <p id="createAccountText">
+                        Are you sure you want to delete this request?
+                    </p>
+                    <Button id="request-delete" onClick={deleteRequest}>Delete Request</Button>
+                </Modal.Body>
+            </Modal>
+
+            <Modal size="sm" id="notes-modal" show={unmatchModal} onHide={() => {setUnmatchModal(false); props.setRequestDetailsModal(true);}}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Unmatch Request</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p id="createAccountText">
+                        Are you sure you want to unmatch this request?
+                    </p>
+                    <Button id="request-delete" onClick={unMatch}>Unmatch Request</Button>
+                </Modal.Body>
+            </Modal>
+
+            <Modal size="sm" id="notes-modal" show={confirmCompleteModal} onHide={() => {setConfirmCompleteModal(false); props.setRequestDetailsModal(true);}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Completing the request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p id="createAccountText">
-                        Confirm that this request is complete
+                        Reason the request is complete
                     </p>
-                    <Button id="nextPage" onClick={()=>{completeRequest(true)}}>Complete Request</Button>
+                    <Form onSubmit={completeRequest}>
+                        <Form.Group controlId="time" onChange={handleChangeReasons}>
+                            <Form.Control as="select">
+                                <option>Volunteer Completed</option>
+                                <option>Could not reach</option>
+                                <option>No one area</option>
+                                <option>Recurring Request</option>
+                                <option>Referred for support</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <Button id="nextPage" type='submit'>Complete Request</Button>
+                    </Form>
                 </Modal.Body>
             </Modal>
 

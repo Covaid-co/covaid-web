@@ -15,5 +15,6 @@ router.put('/completeRequest', request_controller.completeARequest);
 router.put('/set_assignee', request_controller.setAssignee);
 router.put('/manual_volunteer', request_controller.setManualVolunteer);
 router.put('/set_notes', request_controller.setNotes);
+router.put('/set_delete', request_controller.setDelete);
 
 module.exports = router;

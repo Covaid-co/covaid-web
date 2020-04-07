@@ -107,12 +107,12 @@
 .assignee-info {
   height: 25px;
   border-radius: 40px;
-  background: #28a745;
+  background: #6c757d;
   color: white;
   font-size: 13px;
   font-family: "SF Text";
   font-weight: bold;
-  border: 1px solid #28a745;
+  border: 1px solid #6c757d;
   box-sizing: border-box;
   margin-left: 5px !important;
 
