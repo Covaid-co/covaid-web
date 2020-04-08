@@ -408,3 +408,10 @@ exports.resetPassword = asyncWrapper(async (req, res) => {
     res.sendStatus(200)
   })
 });
+
+exports.delete = function (req, res) {
+  Users.findByIdAndRemove(req.params.id, function (err) {
+      if (err) return next(err);
+      res.send('Successfully opted out!');
+  })
+};
