@@ -196,11 +196,11 @@ export default function OrganiationPortal(props) {
 							{/* <Button id="homeButtons">
 								Add/View Organization Admins
 							</Button> */}
-							{/* <Button variant="outline-danger" id='logoutButton' onClick={logout} style={{width: '10%'}}>
+							<Button variant="outline-danger" id='logoutButton' onClick={logout} style={{marginTop: 10, marginLeft: 10}}>
 								<font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
 									Logout
 								</font>
-                    		</Button> */}
+                    		</Button>
 						</Col>
 					</Row>
 				</Container>

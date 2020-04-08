@@ -126,23 +126,43 @@ exports.resetPassword = asyncWrapper(async (req, res) => {
   })
 });
 
-exports.assoc_by_lat_long = function (req, res) {
+var rad = function(x) {
+  return x * Math.PI / 180;
+};
+
+function calcDistance(latA, longA, latB, longB) {
+  var R = 6378137; // Earth’s mean radius in meter
+  var dLat = rad(latB - latA);
+  var dLong = rad(longB - longA);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(rad(latA)) * Math.cos(rad(latB)) *
+      Math.sin(dLong / 2) * Math.sin(dLong / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d;
+}
+
+exports.assoc_by_lat_long = asyncWrapper(async (req, res) => {
     var latitude = req.query.latitude
     var longitude = req.query.longitude
 
-    Association.find({
-              'location': 
-                { $geoWithin: 
-                  { $centerSphere: 
-                    [[ latitude, longitude], 
-                      10 / 3963.2] 
-                  }
-                }
-    }).then(function (associations) {
-        res.send(associations)
-      }
-    )
-};
+    var associations = await Association.find({});
+    var relevantAssociations = []
+
+    for (var i = 0; i < associations.length; i++) {
+        var currentAssociation = associations[i]
+        if (currentAssociation.name !== "Covaid") {
+          var rad = currentAssociation.radius
+          var currentAssociationLat = currentAssociation.location.coordinates[0]
+          var currentAssociationLong = currentAssociation.location.coordinates[1]
+          var distance = calcDistance(latitude, longitude, currentAssociationLat, currentAssociationLong) / 1609.34
+          if (distance <= rad) {
+            relevantAssociations.push(currentAssociation)
+          }
+        }
+    }
+    res.send(relevantAssociations)
+});
 
 exports.current = function (req, res) {
   const id = req.token.id;

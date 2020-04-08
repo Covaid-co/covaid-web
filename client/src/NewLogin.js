@@ -116,7 +116,7 @@ export default function NewLogin(props) {
                             </Row>
                             <Button style={{marginTop: 10}} id="nextPage" disabled={!validateForm()} type="submit">Sign In</Button>
                             <p id="or">---------</p>
-                            <Button id="createAccount" onClick={() => {setMode(!mode);}}>Trouble logging in?</Button>
+                            <Button id="createAccount" onClick={() => {setMode(!mode);}}>Reset your password</Button>
                         </Form>
                     </Modal.Body>
                 </Modal>
