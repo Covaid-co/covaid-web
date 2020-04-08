@@ -170,13 +170,13 @@ exports.register = function (req, res) {
             text: message
           };
     
-          transporter.sendMail(mailOptions, function(error, info){
-              if (error) {
-                  console.log(error);
-              } else {
-                  console.log('Email sent: ' + info.response);
-              }
-          });
+          // transporter.sendMail(mailOptions, function(error, info){
+          //     if (error) {
+          //         console.log(error);
+          //     } else {
+          //         console.log('Email sent: ' + info.response);
+          //     }
+          // });
     
         return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
         });
@@ -408,3 +408,10 @@ exports.resetPassword = asyncWrapper(async (req, res) => {
     res.sendStatus(200)
   })
 });
+
+exports.delete = function (req, res) {
+  Users.findByIdAndRemove(req.params.id, function (err) {
+      if (err) return next(err);
+      res.send('Successfully opted out!');
+  })
+};

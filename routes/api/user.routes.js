@@ -27,4 +27,6 @@ router.post('/emailpasswordresetlink', user_controller.emailPasswordResetLink)
 router.get('/verifyresetlink/:id/:token', user_controller.verifyPasswordResetLink)
 router.post('/resetpassword', user_controller.resetPassword)
 
+router.get('/:id/delete', user_controller.delete);
+
 module.exports = router;
