@@ -170,13 +170,13 @@ exports.register = function (req, res) {
             text: message
           };
     
-          // transporter.sendMail(mailOptions, function(error, info){
-          //     if (error) {
-          //         console.log(error);
-          //     } else {
-          //         console.log('Email sent: ' + info.response);
-          //     }
-          // });
+          transporter.sendMail(mailOptions, function(error, info){
+              if (error) {
+                  console.log(error);
+              } else {
+                  console.log('Email sent: ' + info.response);
+              }
+          });
     
         return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
         });
