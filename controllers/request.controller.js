@@ -3,6 +3,7 @@ var fs = require('fs')
 var Hogan = require('hogan.js')
 const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
+const Association = require('../models/association.model')
 const asyncWrapper = require('../util/asyncWrapper');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
 const config = require("../config/client_secret").config
@@ -140,13 +141,16 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
-        console.log(assoc_id)
-        if (assoc_id === "5e8439ad9ad8d24834c8edbe") {
-            sendEmail(request, volunteer_email, 'bmoremutualaid@gmail.com')
+        if (request.association){
+            Association.findById(request.association, function (err, assoc) {
+                if (err) res.sendStatus(403)
+                var associationEmail = assoc.email;
+                sendEmail(request, volunteer_email, associationEmail)
+                }
+            )
         }
         res.send('Request updated.');
     });
-
 })
 
 exports.removeVolunteer = asyncWrapper(async (req, res) => {
@@ -262,28 +266,37 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
     request.time_posted = new Date(); 
     var volunteers;
+    var associationEmail = 'covaidco@gmail.com'
+    if (request.association){
+        var assoc = await Association.findById(request.association)
+        associationEmail = assoc.email;
+    }
     if (!req.body.volunteer) {
+        // General requests
         volunteers = await getBestVolunteers(request)
         var volunteer_emails = []
         for (var i = 0; i < Math.min(volunteers.length, 3); i++) {
             volunteer_emails.push(volunteers[i].email)
         }
-        sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
+
         var dbResult = await request.save()
+
+        sendEmail(request, associationEmail, associationEmail)
+
         if (request.association == "5e843ab29ad8d24834c8edbf") {
             // PITT
             await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
         } else if (request.association == "5e8439ad9ad8d24834c8edbe") {
             // BALTIMORE
             await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
-        } else {
-            await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1lymbkyVvNQPzLeCdmo3NHOs5Rrl97AaRzapDzP-YRmg')
         }
+
         res.status(200).json({
             volunteers: volunteers 
         });
         return
     } else {
+        // Direct Matches
         volunteers = [req.body.volunteer]
         request.status = {
             "current_status": "in_progress",
@@ -295,15 +308,14 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     if (request.association == "5e843ab29ad8d24834c8edbf") {
         // PITT
         await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-    } 
-    else if (request.association == '5e8439ad9ad8d24834c8edbe') {
-        // BALTIMORE
-        sendEmail(request, req.body.volunteer.email, 'bmoremutualaid@gmail.com')
-        await addRequestToSpreadsheet(request, result._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
     } else {
-        await addRequestToSpreadsheet(request, result._id, volunteers, '1lymbkyVvNQPzLeCdmo3NHOs5Rrl97AaRzapDzP-YRmg')
-        sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
-    }
+        if (associationEmail === "covaidco@gmail.com") {
+            sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
+        } else {
+            sendEmail(request, req.body.volunteer.email, associationEmail)
+        }
+    } 
+
     res.status(200).json({
         volunteers: volunteers 
     });
