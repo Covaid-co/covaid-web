@@ -1,0 +1,23 @@
+.dropdown-sort {
+    margin-top: 10px;
+    width: 100%;
+    background-color: transparent;
+    border-color: #314CCE;
+    color: #314CCE;
+    border-radius: 8px;
+    font-weight: 700;
+    font-family: "SF Text";
+}
+
+.dropdown-sort:hover {
+    background-color: #314CCE;
+    color: white;
+}
+
+input {
+    border-radius: 8px !important;
+}
+
+/* .list-group {
+    font-family: "SF Text";
+} */

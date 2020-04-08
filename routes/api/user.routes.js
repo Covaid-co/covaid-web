@@ -6,6 +6,7 @@ const user_controller = require('../../controllers/user.controller');
 
 //POST new user route (optional, everyone has access)
 router.post('/', auth.optional, user_controller.register);
+router.post('/registerMaster', auth.optional, user_controller.registerMaster);
 
 //POST login route (optional, everyone has access)
 router.post('/login', auth.optional, user_controller.login);

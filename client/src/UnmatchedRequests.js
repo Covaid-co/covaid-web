@@ -99,8 +99,8 @@ export default function UnmatchedRequests(props) {
                 </Col>
                 <Col xs={4}>
                 <Dropdown drop='up'>
-                    <Dropdown.Toggle id="dropdown-basic" style={{marginTop: 10, width: '100%', backgroundColor: '#314CCE'}}>
-                        Sorting
+                    <Dropdown.Toggle id="dropdown-basic" className='dropdown-sort'>
+                        Sort
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{width: '100%'}}>
                         <Dropdown.Item onClick={()=>sortRequests('name')}>Name</Dropdown.Item>

@@ -190,6 +190,51 @@ exports.register = function (req, res) {
     });
 };
 
+exports.registerMaster = function (req, res) {
+  const { body: { user } } = req;
+  if(!user.email) {
+      return res.status(422).json({
+      errors: {
+          email: 'is required',
+      },
+      });
+  }
+  
+  validateEmailAccessibility(user.email).then(function(valid) {
+    if (valid) {
+        if(!user.password) {
+          return res.status(422).json({
+            errors: {
+                password: 'is required',
+            },
+        });
+      }
+
+      const finalUser = new Users(user);
+  
+      finalUser.setPassword(user.password);
+      finalUser.preVerified = true;
+      finalUser.verified = false;
+      finalUser.agreedToTerms = true;
+      finalUser.availability = true;
+      
+      finalUser.save(function(err, result) {
+        var userID = result._id;
+        if (err) {    
+          return res.status(422).send(err);
+        }
+        return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
+      });
+    } else {
+      return res.status(403).json({
+        errors: {
+            email: 'Already Exists',
+        },
+      });
+    }
+  });
+};
+
 exports.login = function (req, res, next) {
     const { body: { user } } = req;
     if(!user.email) {

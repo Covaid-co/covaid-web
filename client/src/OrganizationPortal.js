@@ -12,6 +12,7 @@ import VolunteerList from './VolunteerList';
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
 import Maps from './Maps'
+import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
 
