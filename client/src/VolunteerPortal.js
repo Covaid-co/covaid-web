@@ -5,7 +5,8 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import VolunteerRequests from './VolunteerRequests';
+import PendingVolunteerRequests from './PendingVolunteerRequests';
+import InProgressVolunteerRequests from './InProgressVolunteerRequests'
 import CovaidNavbar from './CovaidNavbar'
 import './VolunteerPage.css'
 
@@ -13,9 +14,69 @@ import fetch_a from './util/fetch_auth'
 
 export default function VolunteerPortal(props) {
 
-	const [firstTab, setFirstTab] = useState(true);
+	const [tabNum, setTabNum] = useState(1);
 	const [user, setUser] = useState({})
 	const [foundUser, setFoundUser] = useState(false)
+	const [pendingRequests, setPendingRequests] = useState([])
+	const [acceptedRequests, setAcceptedRequests] = useState([])
+
+	const [pendingRequestNum, setPendingRequestNum] = useState('')
+
+	const fetchPendingRequests = (id) => {
+		var url = "/api/request/allPendingRequestsInVolunteer?";
+        let params = {
+            'volunteerID': id
+        }
+        let query = Object.keys(params)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+             .join('&');
+        url += query;
+
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+					setPendingRequests(data)
+					setPendingRequestNum(data.length)
+                });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+	  }
+
+	  const fetchAcceptedRequests = (id) => {
+		var url = "/api/request/allAcceptedRequestsInVolunteer?";
+        let params = {
+            'volunteerID': id
+        }
+        let query = Object.keys(params)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+             .join('&');
+        url += query;
+
+        console.log(url)
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+					setAcceptedRequests(data)
+                    // console.log(data)
+                    // setFilteredRequests(data)
+                });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+	  }
 
 	const fetchUser = () => {
 		fetch_a('token', '/api/users/current')
@@ -24,6 +85,8 @@ export default function VolunteerPortal(props) {
 			//   console.log(user)
 				setUser(user)
 				setFoundUser(true)
+				fetchPendingRequests(user._id);
+				fetchAcceptedRequests(user._id)
 		  })
 		  .catch((error) => {
 			console.error(error);
@@ -36,9 +99,27 @@ export default function VolunteerPortal(props) {
 		window.location.href = url;
 	  }
 
+	const moveRequestFromPendingToInProgress = (request) => {
+		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
+		setPendingRequestNum(pendingRequestNum-1);
+		setAcceptedRequests(acceptedRequests.concat(request))
+		setTabNum(3)
+	}
+	const rejectAPendingRequest = (request) => {
+		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
+		setPendingRequestNum(pendingRequestNum-1);
+	}
+
+	const completeAnInProgressRequest = (request) => {
+		setAcceptedRequests(acceptedRequests.filter(acceptedRequest => acceptedRequest._id !== request._id))
+		setTabNum(1)
+	}
+
 	useEffect(() => {
 		fetchUser()
 	}, []);
+
+	
 
 	if (foundUser) {
 		return (
@@ -64,17 +145,31 @@ export default function VolunteerPortal(props) {
 						<Col></Col>
 						<Col lg={6} md={8} sm={10}>
 							<Container style={{padding: 0, marginLeft: 0}}> 
-								<Button id={firstTab ? "tab-button-selected" : "tab-button"} onClick={() => {setFirstTab(true)}}>Your Offer</Button>
-								{/* <Button id={!firstTab ? "tab-button-selected" : "tab-button"} onClick={() => {setFirstTab(false)}}>Requests</Button> */}
+								<Button id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your Offer</Button>
+								<Button style={{"position": "relative"}}id={tabNum==2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
+									Pending Requests
+									<div class="notificationBadge">{pendingRequestNum}</div>
+								</Button>
+								<Button id={tabNum==3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>In-Progress Requests</Button>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-								style={firstTab ? {'display': 'block'} : {'display': 'none'}}>
+								style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
 								<YourOffer latitude = {user.latlong[1]} longitude = {user.latlong[0]}/>
 							</Container>
-							{/* <Container className="shadow mb-5 bg-white rounded" id="request-view"
-								style={firstTab ? {'display': 'none'} : {'display': 'block'}}>
-								{/* <VolunteerRequests state={props.state}/> */}
-							{/* </Container> */}
+							<Container className="shadow mb-5 bg-white rounded" id="request-view"
+								style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
+								<PendingVolunteerRequests user={user} 
+									pendingRequests={pendingRequests} 
+									moveRequestFromPendingToInProgress={moveRequestFromPendingToInProgress} 
+									rejectAPendingRequest={rejectAPendingRequest} />
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="request-view"
+								style={tabNum==3 ? {'display': 'block'} : {'display': 'none'}}>
+								<InProgressVolunteerRequests 
+									user={user} 
+									acceptedRequests={acceptedRequests} 
+									completeAnInProgressRequest={completeAnInProgressRequest}/>
+							</Container>
 							</Col>
 						<Col ></Col>
 					</Row>

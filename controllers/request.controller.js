@@ -88,6 +88,43 @@ exports.getAllRequestsInVolunteer = asyncWrapper(async (req, res) => {
     res.send(requests)
 })
 
+exports.getAllPendingRequestsInVolunteer = asyncWrapper(async (req, res) => {
+    const id = req.query.volunteerID
+    var requests = await Requests.find({
+        'status.volunteer': id,
+        'volunteer_status': 'pending',
+    })
+    res.send(requests)
+})
+
+exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
+    const id = req.query.volunteerID
+    var requests = await Requests.find({
+        'status.volunteer': id,
+        'volunteer_status': 'accepted',
+    })
+    res.send(requests)
+})
+
+exports.acceptRequest = asyncWrapper(async (req, res) => {
+    const req_id = req.query.ID
+
+    var request = await Requests.findByIdAndUpdate(req_id, 
+        {
+            $set: {
+                volunteer_status: 'accepted'
+            }
+        })
+    if (request) {
+        res.sendStatus(200)
+        return
+    } else {
+        res.sendStatus(404)
+        return
+    }
+
+})
+
 exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     const volunteer_id = req.body.volunteer_id
@@ -98,7 +135,8 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
             "status": {
                 "current_status": "in_progress",
                 "volunteer": volunteer_id
-            }
+            }, 
+            "volunteer_status": 'pending'
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -118,7 +156,8 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
             "status": {
                 "current_status": "incomplete",
                 "volunteer": ""
-            }
+            },
+            "volunteer_status": ""
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -135,7 +174,8 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
             "status": {
                 "current_status": "complete",
                 "reason": reason
-            }
+            },
+            "volunteer_status": "completed"
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -249,6 +289,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             "current_status": "in_progress",
             "volunteer": req.body.volunteer._id
         }
+        request.volunteer_status = "pending"
     }
     var result = await request.save()
     if (request.association == "5e843ab29ad8d24834c8edbf") {
