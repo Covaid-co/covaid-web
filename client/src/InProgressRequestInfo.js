@@ -9,6 +9,17 @@ import fetch_a from './util/fetch_auth'
 
 export default function InProgressRequestInfo(props) {
 
+    useEffect(() => {
+        var tempURL = "https://www.google.com/maps/@";
+        if (props.currRequest.latitude && props.currRequest.longitude) {
+            tempURL += props.currRequest.latitude + ',';
+            tempURL += props.currRequest.longitude + ',15z';
+        }
+        setMapURL(tempURL);
+    }, [props.currRequest])
+
+    const [mapURL, setMapURL] = useState('');
+
     const reject = () => {
         const requester_id = props.currRequest._id;
         const volunteer_id = props.currRequest.status.volunteer;
@@ -79,6 +90,8 @@ export default function InProgressRequestInfo(props) {
                 }
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Needed by:</h5>
                 <p id="request-info">{props.currRequest.time} of {props.currRequest.date}</p>
+                <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Location:</h5>
+                <p id="request-info"><a target="_blank" href={mapURL}>Click here</a></p>
                 <Row style={{marginTop: 15}}>
                         <Col xs={6} style = {{padding: 0, paddingLeft: 15}}>
                             <Button onClick={reject} id='leftCarButtonPressed' style={{backgroundColor: '#dc3545', borderColor: '#dc3545', height: 50}}>Cancel this request</Button>

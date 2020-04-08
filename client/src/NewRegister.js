@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "./libs/hooksLib";
 
@@ -15,6 +15,9 @@ import NewLanguages from './NewLanguages';
 import PhoneNumber from './PhoneNumber';
 import NewHasCar from './NewHasCar';
 import Details from './Details'
+
+import Geocode from "react-geocode";
+Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 export default function NewRegister(props, switchToLogin) {
     const [currentTerms, setCurrentTerms] = useState({
@@ -36,9 +39,11 @@ export default function NewRegister(props, switchToLogin) {
     });
 
     const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in details)'];
+    const [tasks, setTasks] = useState(['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.']);
     const availability = ['Morning', 'Afternoon', 'Evening', 'Weekdays', 'Weekends'];
     const [phoneNumber, setPhoneNumber] = useState('');
     const [languageChecked, setLanguageChecked] = useState({});
+    const [taskChecked, setTaskChecked] = useState({});
     const [availabilityChecked, setAvailabilityChecked] = useState({});
     const [pageNum, setPageNum] = useState(1);
     const [hasCar, setHasCar] = useState(false);
@@ -56,6 +61,12 @@ export default function NewRegister(props, switchToLogin) {
         'I will take take every CDC-provided safety precaution',
         'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
     ];
+
+    useEffect(() => {
+        if (props.state.currentAssoc.resources) {
+            setTasks(props.state.currentAssoc.resources)
+        }
+    }, [props.state.currentAssoc])
 
     function validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -122,11 +133,17 @@ export default function NewRegister(props, switchToLogin) {
     }
 
     const checkSecondPageInput = () => {
-        if (Object.values(languageChecked).every(v => v === false)) {
+        if (Object.values(taskChecked).every(v => v === false)) {
             setShowToast(true);
-            setToastMessage('No language selected');
+            setToastMessage('No task selected');
             return false;
         }
+
+        // if (Object.values(languageChecked).every(v => v === false)) {
+        //     setShowToast(true);
+        //     setToastMessage('No language selected');
+        //     return false;
+        // }
 
         if (Object.values(availabilityChecked).every(v => v === false)) {
             setShowToast(true);
@@ -184,58 +201,81 @@ export default function NewRegister(props, switchToLogin) {
             return;
         }
 
-        const selectedLanguages = extractTrueObj(languageChecked);
-        const selectedTimes = extractTrueObj(availabilityChecked);
-        var phoneString = '';
-        if (phoneNumber.length > 0) {
-            phoneString = phoneNumber.replace(/\D/g,'').substring(0,10);
-        }
+        Geocode.fromLatLng(props.state.latitude, props.state.longitude).then(
+            response => {
+                var neighborhoods = []
+                for (var i = 0; i < Math.min(5, response.results.length); i++) {
+                    const results = response.results[i]['address_components'];
+                    for (var j = 0; j < results.length; j++) {
+                        const types = results[j].types;
+                        if (types.includes('neighborhood') || types.includes('locality')) {
+                            const currNeighborhoodName = results[j]['long_name'];
+                            if (neighborhoods.includes(currNeighborhoodName) === false) {
+                                neighborhoods.push(currNeighborhoodName);
+                            }
+                        }
+                
+                    }
+                }
+                const selectedTimes = extractTrueObj(availabilityChecked);
+                const selectedTasks = extractTrueObj(taskChecked)
+                var phoneString = '';
+                if (phoneNumber.length > 0) {
+                    phoneString = phoneNumber.replace(/\D/g,'').substring(0,10);
+                }
 
-        var associationID = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['_id'] : "";
-        var associationName = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['name'] : "";
+                var associationID = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['_id'] : "";
+                var associationName = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['name'] : "";
 
-        let form = {
-            'user': {
-                'first_name': fields.first_name,
-                'last_name': fields.last_name,
-                'email': fields.email,
-                'password': fields.password,
-                'availability': false,
-                'location': {
-                    'type': 'Point',
-                    'coordinates': [props.state.longitude, props.state.latitude]
-                },
-                'offer': {
-                    'details': fields.details
-                },
-                'association': associationID, 
-                'association_name': associationName,
-                'languages': selectedLanguages,
-                'times_available': selectedTimes,
-                'phone': phoneString
-            }
-        };
+                let form = {
+                    'user': {
+                        'first_name': fields.first_name,
+                        'last_name': fields.last_name,
+                        'email': fields.email,
+                        'password': fields.password,
+                        'availability': false,
+                        'location': {
+                            'type': 'Point',
+                            'coordinates': [props.state.longitude, props.state.latitude]
+                        },
+                        'offer': {
+                            'details': fields.details,
+                            'tasks': selectedTasks,
+                            'neighborhoods': neighborhoods
+                        },
+                        'association': associationID, 
+                        'association_name': associationName,
+                        'languages': ['English'],
+                        'times_available': selectedTimes,
+                        'phone': phoneString
+                    }
+                };
 
-        fetch('/api/users/', {
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-                    // console.log("Registration successful");
-                    setJustRegistered(true);
+                console.log(form)
+                fetch('/api/users/', {
+                    method: 'post',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(form)
+                }).then((response) => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            setJustRegistered(true);
+                        });
+                    } else {
+                        console.log(response);
+                        setShowToast(true);
+                        setToastMessage('Email already used/exists');
+                    }
+                }).catch((e) => {
+                    console.log(e);
+                    setShowToast(true);
+                    setToastMessage('Register unsuccessful');
                 });
-            } else {
-                console.log(response);
-                setShowToast(true);
-                setToastMessage('Email already used/exists');
-            }
-        }).catch((e) => {
-            console.log(e);
-            setShowToast(true);
-            setToastMessage('Register unsuccessful');
-        });
+            }).catch((e) => {
+                    console.log(e);
+                    setShowToast(true);
+                    setToastMessage('Register unsuccessful');
+            });
     }
 
     if (justRegistered === false) {
@@ -322,10 +362,14 @@ export default function NewRegister(props, switchToLogin) {
                         <Modal.Title>Tell us more about you!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h5 className="titleHeadings" style = {{marginTop: '18px', marginBottom: '4px'}}>
+                        {/* <h5 className="titleHeadings" style = {{marginTop: '18px', marginBottom: '4px'}}>
                             What languages do you speak?
                         </h5>
-                        <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
+                        <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/> */}
+                        <h5 className="titleHeadings" style = {{marginTop: '18px', marginBottom: '4px'}}>
+                            What resources can you offer?
+                        </h5>
+                        <NewLanguages languages={tasks} languageChecked={taskChecked} setLanguageChecked={setTaskChecked}/>
                         <h5 className="titleHeadings" style = {{marginTop: '24px', marginBottom: '4px'}}>
                             Can you drive?
                         </h5>
