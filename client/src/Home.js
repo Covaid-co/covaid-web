@@ -336,7 +336,7 @@ class Home extends Component {
     Cookie.remove('longitude');
     Cookie.remove('zipcode');
     Cookie.remove('neighborhood');
-    this.setState({isLoaded: false, searchedLocation: ''});
+    this.setState({isLoaded: false, searchedLocation: '', currentAssoc: {}});
     this.getMyLocation();
   }
 
@@ -359,6 +359,7 @@ class Home extends Component {
           Cookie.remove('neighborhood');
           this.setState({isLoaded: false});
           this.setNeighborhood(lat, lng, '');
+          this.setState({currentAssoc: {}})
         },
         error => {
           alert("Invalid address");
