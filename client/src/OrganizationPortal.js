@@ -182,17 +182,17 @@ export default function OrganiationPortal(props) {
 							<h1 id="jumboHeading">Welcome back, </h1>
 							<h1 id="jumboHeading">{association.name}</h1>
 							<p id="jumboText">This is your organization portal, a place for you to manage volunteers and requests in your area</p>
-							<Button id="homeButtons">
+							{/* <Button id="homeButtons">
 								View List of 154 Volunteers
 							</Button>{' '}
 							<Button id="homeButtons">
 								Add/View Organization Admins
-							</Button>
-							{/* <Button variant="outline-danger" id='logoutButton' onClick={logout} style={{width: '10%'}}>
+							</Button> */}
+							<Button variant="outline-danger" id='logoutButton' onClick={logout} style={{width: '10%'}}>
 								<font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
 									Logout
 								</font>
-                    		</Button> */}
+                    		</Button>
 						</Col>
 					</Row>
 				</Container>
