@@ -19,6 +19,9 @@ let AssociationSchema = new Schema({
         },
         required: false
     },
+    radius: {
+        type: Number
+    },
     usesSpreadsheet: {type: Boolean, required: true},
     spreadsheetID: {type: String, required: false},
 });
