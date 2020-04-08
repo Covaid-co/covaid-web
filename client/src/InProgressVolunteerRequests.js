@@ -4,7 +4,7 @@ import FormControl from 'react-bootstrap/FormControl'
 import Badge from 'react-bootstrap/Badge'
 import ListGroup from 'react-bootstrap/ListGroup'
 
-import PendingRequestInfo from './PendingRequestInfo'
+import InProgressRequestInfo from './InProgressRequestInfo'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function InProgressVolunteerRequests(props) {
@@ -15,33 +15,9 @@ export default function InProgressVolunteerRequests(props) {
     const [currRequest, setCurrRequest] = useState({});
 
     useEffect(() => {
-        var url = "/api/request/allAcceptedRequestsInVolunteer?";
-        let params = {
-            'volunteerID': props.user._id
-        }
-        let query = Object.keys(params)
-             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-             .join('&');
-        url += query;
-
-        console.log(url)
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-                    setRequests(data)
-                    // console.log(data)
-                    setFilteredRequests(data)
-                });
-            } else {
-                console.log("Error")
-            }
-        }).catch((e) => {
-            console.log(e)
-        });
-    }, [props.user_id])
+        setRequests(props.acceptedRequests);
+        setFilteredRequests(props.acceptedRequests)
+    }, [props.acceptedRequests])
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
@@ -50,15 +26,18 @@ export default function InProgressVolunteerRequests(props) {
         }
 
         var filtered = requests.filter(p => {
-            var emailMatch = String(p.requester_email).startsWith(query)
             for (var i = 0; i < p.resource_request.length; i++) {
                 if (String(p.resource_request[i]).toLowerCase().startsWith(query)) {
                     return true
                 }
             }
-            return emailMatch
+            return false
         });
         setFilteredRequests(filtered)
+    }
+
+    const completeARequest = () => {
+        props.completeAnInProgressRequest(currRequest);
     }
 
     return (
@@ -81,7 +60,7 @@ export default function InProgressVolunteerRequests(props) {
                     <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true)}}>
                         <div >
                             <h5 className="volunteer-name">
-                                Someone needs your support!
+                                {request.requester_first}
                             </h5>
                         </div>
                         <div>
@@ -95,7 +74,7 @@ export default function InProgressVolunteerRequests(props) {
                     </ListGroup.Item>);
                     })}
             </ListGroup>
-            <PendingRequestInfo modalOpen={modalOpen} setModalOpen={setModalOpen} currRequest={currRequest} />
+            <InProgressRequestInfo modalOpen={modalOpen} setModalOpen={setModalOpen} currRequest={currRequest} completeARequest={completeARequest}/>
         </>
     )
 }

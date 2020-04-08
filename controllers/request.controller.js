@@ -155,7 +155,8 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
             "status": {
                 "current_status": "incomplete",
                 "volunteer": ""
-            }
+            },
+            "volunteer_status": ""
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -171,8 +172,8 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
         {$set: {
             "status": {
                 "current_status": "complete",
-                // "volunteer": volunteer_id
-            }
+            },
+            "volunteer_status": "completed"
         }
     }, function (err, request) {
         if (err) return next(err);

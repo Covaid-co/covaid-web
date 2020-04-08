@@ -12,9 +12,6 @@ import './VolunteerPage.css'
 
 import fetch_a from './util/fetch_auth'
 
-// Create context object
-export const VolunteerPortalContext = React.createContext();
-
 export default function VolunteerPortal(props) {
 
 	const [tabNum, setTabNum] = useState(1);
@@ -25,20 +22,7 @@ export default function VolunteerPortal(props) {
 
 	const [pendingRequestNum, setPendingRequestNum] = useState('')
 
-	const fetchUser = () => {
-		fetch_a('token', '/api/users/current')
-		  .then((response) => response.json())
-		  .then((user) => {
-			//   console.log(user)
-				setUser(user)
-				setFoundUser(true)
-		  })
-		  .catch((error) => {
-			console.error(error);
-		  });
-	  }
-
-	  const fetchPendingRequests = (id) => {
+	const fetchPendingRequests = (id) => {
 		var url = "/api/request/allPendingRequestsInVolunteer?";
         let params = {
             'volunteerID': id
@@ -54,7 +38,8 @@ export default function VolunteerPortal(props) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    setPendingRequests(data)
+					setPendingRequests(data)
+					setPendingRequestNum(data.length)
                 });
             } else {
                 console.log("Error")
@@ -67,7 +52,7 @@ export default function VolunteerPortal(props) {
 	  const fetchAcceptedRequests = (id) => {
 		var url = "/api/request/allAcceptedRequestsInVolunteer?";
         let params = {
-            'volunteerID': props.user._id
+            'volunteerID': id
         }
         let query = Object.keys(params)
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
@@ -81,7 +66,7 @@ export default function VolunteerPortal(props) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    setAcceptedRequests(data)
+					setAcceptedRequests(data)
                     // console.log(data)
                     // setFilteredRequests(data)
                 });
@@ -93,6 +78,21 @@ export default function VolunteerPortal(props) {
         });
 	  }
 
+	const fetchUser = () => {
+		fetch_a('token', '/api/users/current')
+		  .then((response) => response.json())
+		  .then((user) => {
+			//   console.log(user)
+				setUser(user)
+				setFoundUser(true)
+				fetchPendingRequests(user._id);
+				fetchAcceptedRequests(user._id)
+		  })
+		  .catch((error) => {
+			console.error(error);
+		  });
+	  }
+
 	  const returnToHome = () => {
 		var url = window.location.href; 
 		url = url.substring(0, url.length - 'volunteerPortal'.length)
@@ -100,8 +100,19 @@ export default function VolunteerPortal(props) {
 	  }
 
 	const moveRequestFromPendingToInProgress = (request) => {
-		console.log("Moving to in-progress")
-		
+		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
+		setPendingRequestNum(pendingRequestNum-1);
+		setAcceptedRequests(acceptedRequests.concat(request))
+		setTabNum(3)
+	}
+	const rejectAPendingRequest = (request) => {
+		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
+		setPendingRequestNum(pendingRequestNum-1);
+	}
+
+	const completeAnInProgressRequest = (request) => {
+		setAcceptedRequests(acceptedRequests.filter(acceptedRequest => acceptedRequest._id !== request._id))
+		setTabNum(1)
 	}
 
 	useEffect(() => {
@@ -139,7 +150,7 @@ export default function VolunteerPortal(props) {
 									Pending Requests
 									<div class="notificationBadge">{pendingRequestNum}</div>
 								</Button>
-								<Button id={tabNum==3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>Current Requests</Button>
+								<Button id={tabNum==3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>In-Progress Requests</Button>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 								style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
@@ -147,11 +158,17 @@ export default function VolunteerPortal(props) {
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
 								style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
-								<PendingVolunteerRequests user={user} setPendingRequestNum={setPendingRequestNum}/>
+								<PendingVolunteerRequests user={user} 
+									pendingRequests={pendingRequests} 
+									moveRequestFromPendingToInProgress={moveRequestFromPendingToInProgress} 
+									rejectAPendingRequest={rejectAPendingRequest} />
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
 								style={tabNum==3 ? {'display': 'block'} : {'display': 'none'}}>
-								<InProgressVolunteerRequests user={user} />
+								<InProgressVolunteerRequests 
+									user={user} 
+									acceptedRequests={acceptedRequests} 
+									completeAnInProgressRequest={completeAnInProgressRequest}/>
 							</Container>
 							</Col>
 						<Col ></Col>

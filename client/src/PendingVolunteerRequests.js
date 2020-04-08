@@ -14,39 +14,10 @@ export default function PendingVolunteerRequests(props) {
     const [modalOpen, setModalOpen] = useState(false);
     const [currRequest, setCurrRequest] = useState({});
 
-    const fetchRequests = (id) => {
-        var url = "/api/request/allPendingRequestsInVolunteer?";
-        let params = {
-            'volunteerID': id
-        }
-        let query = Object.keys(params)
-             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-             .join('&');
-        url += query;
-
-        console.log(url)
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-                    setRequests(data)
-                    // console.log(data)
-                    setFilteredRequests(data)
-                    props.setPendingRequestNum(data.length)
-                });
-            } else {
-                console.log("Error")
-            }
-        }).catch((e) => {
-            console.log(e)
-        });
-    }
-
     useEffect(() => {
-        fetchRequests(props.user._id)
-    }, [props.user._id])
+        setRequests(props.pendingRequests);
+        setFilteredRequests(props.pendingRequests)
+    }, [props.pendingRequests])
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
@@ -55,20 +26,22 @@ export default function PendingVolunteerRequests(props) {
         }
 
         var filtered = requests.filter(p => {
-            var emailMatch = String(p.requester_email).startsWith(query)
             for (var i = 0; i < p.resource_request.length; i++) {
                 if (String(p.resource_request[i]).toLowerCase().startsWith(query)) {
                     return true
                 }
             }
-            return emailMatch
+            return false
         });
         setFilteredRequests(filtered)
     }
 
     const acceptRequest = () => {
-        props.moveRequestFromPendingToInProgress()
-        fetchRequests(props.user_id)
+        props.moveRequestFromPendingToInProgress(currRequest)
+    }
+
+    const rejectRequest = () => {
+        props.rejectAPendingRequest(currRequest)
     }
 
     return (
@@ -105,7 +78,7 @@ export default function PendingVolunteerRequests(props) {
                     </ListGroup.Item>);
                     })}
             </ListGroup>
-            <PendingRequestInfo modalOpen={modalOpen} setModalOpen={setModalOpen} currRequest={currRequest} />
+            <PendingRequestInfo modalOpen={modalOpen} setModalOpen={setModalOpen} currRequest={currRequest} acceptRequest={acceptRequest} rejectRequest={rejectRequest}/>
         </>
     )
 }
