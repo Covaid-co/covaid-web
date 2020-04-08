@@ -10,6 +10,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import VolunteerDetails from './VolunteerDetails'
 import { useFormFields } from "./libs/hooksLib";
+import { formatName } from './OrganizationHelpers'
 
 export default function RequestDetails(props) {
 
@@ -121,27 +122,38 @@ export default function RequestDetails(props) {
     const modeButton = () => {
         if (props.mode === 1) {
             return <>
-                        <Button id="nextPage" onClick={topMatch}>Find a volunteer for {props.currRequest.requester_first}!</Button>
-                        <Button variant="link"
+                        <Button id="nextPage" onClick={topMatch}>Match a volunteer</Button>
+                        {/* <Button variant="link"
                                 style={{color: 'black', width: '100%', fontSize: 14}} 
                                 id="covid-resources"
                                 onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
                             <u>Request has been completed</u>
-                        </Button>
+                        </Button> */}
+                        <Row>
+                            <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+                                <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
+                                    Mark Complete
+                                </Button>
+                            </Col>
+                            <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
+                                <Button onClick={() => {setDeleteModal(true)}} id='remove-request'>Remove Request</Button>
+                            </Col>
+                        </Row>
                     </>;
         } else if (props.mode === 2) {
             return (<>
                     <Button id="nextPage" 
-                            style={{marginTop: 15, height: 35}}
                             onClick={() => setVolunteerDetailsModal(true)}>
                             View Volunteers's Information
                     </Button>
-                    <Row style={{marginTop: 15}}>
-                        <Col xs={6} style = {{padding: 0, paddingLeft: 15}}>
-                            <Button onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false)}} id='leftCarButtonPressed' style={{backgroundColor: '#dc3545', borderColor: '#dc3545', height: 50}}>Unmatch Volunteer</Button>
+                    <Row>
+                        <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+                            <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false);}}>
+                                Mark Complete
+                            </Button>
                         </Col>
-                        <Col xs={6} style = {{padding: 0, paddingRight: 15}}>
-                            <Button onClick={() => {setConfirmCompleteModal(true); props.setRequestDetailsModal(false);}} id='rightCarButtonPressed' style={{backgroundColor: '#28a745', borderColor: '#28a745', height: 50}}>Complete Request</Button>
+                        <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
+                            <Button onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false)}} id='remove-request'>Unmatch Request</Button>
                         </Col>
                     </Row>
                     <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
@@ -150,11 +162,16 @@ export default function RequestDetails(props) {
                                     currRequest={props.currRequest}/>
                 </>);
         } else {
-            return (<Button id="nextPage"
-                        onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false)}}
-                        style={{backgroundColor: '#dc3545', borderColor: '#dc3545'}}>
-                        Unmatch Request Volunteer
-                    </Button>);
+            return (<Row>
+                        <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+                            <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false);}}>
+                                Update complete status
+                            </Button>
+                        </Col>
+                        <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
+                            <Button onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false)}} id='remove-request'>Unmatch Request</Button>
+                        </Col>
+                    </Row>);
         }
     }
 
@@ -179,10 +196,7 @@ export default function RequestDetails(props) {
         });
     }
 
-    const setNotes = async e => {
-        e.preventDefault();
-        e.stopPropagation();
-
+    const setNotes = () =>{
         let form = {
             'request_id': props.currRequest._id,
             'note': fields.email2
@@ -194,15 +208,20 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                setNotesModal(false);
-                props.setCurrRequest(prev => ({
-                    ...prev,
-                    'note': fields.email2
-                }));
+                if (props.requests) {
+                    var dup = [...props.requests];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup[i].note = fields.email2;
+                        }
+                    }
+                    props.setRequests(dup);
+                }
             } else {
                 alert("unable to attach");
             }
         }).catch((e) => {
+            console.log(e);
             alert('could not attach');
         });
     }
@@ -213,61 +232,71 @@ export default function RequestDetails(props) {
         setReason(result);
     }
 
-    const changeCompleteStatus = () => {
-        var result = <></>;
-        if (props.mode == 3) {
-            result = (<Button variant="link"
-                        style={{color: 'black', width: '100%', fontSize: 14}} 
-                        id="covid-resources"
-                        onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
-                    <u>Update complete status</u>
-                    </Button>);
-        }
-        return result;
-    }
+    // const changeCompleteStatus = () => {
+    //     var result = <></>;
+    //     if (props.mode == 3) {
+    //         result = (<Button variant="link"
+    //                     style={{color: 'black', width: '100%', fontSize: 14}} 
+    //                     id="covid-resources"
+    //                     onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
+    //                 <u>Update complete status</u>
+    //                 </Button>);
+    //     }
+    //     return result;
+    // }
 
     return (
         <>
-            <Modal show={props.requestDetailsModal} onHide={() => props.setRequestDetailsModal(false)} style = {{marginTop: 0, paddingBottom: 50}}>
+            <Modal show={props.requestDetailsModal} onHide={() => {props.setRequestDetailsModal(false); setNotes();}} style = {{marginTop: 0, paddingBottom: 50, zoom: '90%'}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Request Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    {/* {changeCompleteStatus()} */}
+                    {/* <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5> */}
+                    <p id="name-details">{formatName(props.currRequest.requester_first, props.currRequest.requester_last)}</p>
+                    <p id="request-info">Location: <a target="_blank" href={mapsURL}>Click here</a></p>
+                    {props.currRequest.requester_email ? <p id="request-info">{props.currRequest.requester_email}</p> : <></>}
+                    {props.currRequest.requester_phone ? <p id="request-info">{props.currRequest.requester_phone}</p> : <></>}
+                    <p id="request-info" style={{marginTop: 14}}>Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
+                    <p id="request-info">Payment: {options[props.currRequest.payment]}</p>
+                    <p id="request-info">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
+                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
+                    <p id="request-info"> {props.currRequest.details}</p>
+                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Needed by:</h5>
+                    <p id="request-info">{props.currRequest.time} of {props.currRequest.date}</p>
+                    {modeButton()}
+                    {/* <Button id="request-delete"
+                        onClick={() => {setDeleteModal(true)}}>
+                        Delete Request
+                    </Button> */}
+                    <Col xs={12}>
+                        <p id="requestCall" style={{marginTop: -5, marginBottom: 16}}>&nbsp;</p>
+                    </Col>
                     <Form onSubmit={assignVolunteer} style={{marginBottom: 12}}>
                         <InputGroup controlid="assignee">
                             <FormControl
-                                placeholder="Assignee for Request" 
+                                placeholder="Who's tracking this request?" 
                                 aria-label="Assignee for Request"
                                 aria-describedby="basic-addon2"
                                 value={assignee}
                                 onChange={e => setAssignee(e.target.value)}
                             />
                             <InputGroup.Append>
-                                <Button variant="outline-secondary" type="submit">Set Assignee</Button>
+                                <Button variant="outline-secondary" type="submit">Set tracker</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Form>
-                    {changeCompleteStatus()}
-                    <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5>
-                    <p id="request-info">Name: {props.currRequest.requester_first} {props.currRequest.requester_last}</p>
-                    <p id="request-info">Email: {props.currRequest.requester_email}</p>
-                    <p id="request-info">Phone: {props.currRequest.requester_phone}</p>
-                    <p id="request-info">Needed by: {props.currRequest.time} of {props.currRequest.date}</p>
-                    <p id="request-info">Payment: {options[props.currRequest.payment]}</p>
-                    <p id="request-info">Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
-                    <p id="request-info">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
-                    <p id="request-info">Location: <a target="_blank" href={mapsURL}>Click here</a></p>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
-                    <p id="request-info"> {props.currRequest.details}</p>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>
-                        Notes: <Button onClick={()=>{setNotesModal(true)}} id="add-notes">+</Button>
-                    </h5>
-                    <p id="request-info">{props.currRequest.note ? props.currRequest.note : 'No notes entered'}</p>
-                    {modeButton()}
-                    <Button id="request-delete"
-                        onClick={() => {setDeleteModal(true)}}>
-                        Delete Request
-                    </Button>
+                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
+                    <Form>
+                        <Form.Group controlId="email2" bssize="large">
+                            <Form.Control as="textarea" 
+                                        rows="6"
+                                        placeholder="Details about this request"
+                                        value={fields.email2 ? fields.email2 : ''} 
+                                        onChange={handleFieldChange}/>
+                        </Form.Group>
+                    </Form>
                 </Modal.Body>
             </Modal>
 

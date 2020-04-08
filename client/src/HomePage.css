@@ -81,52 +81,6 @@
   vertical-align: middle;
 }
 
-.task-info-requests {
-  height: 25px;
-  border-radius: 40px;
-  background: #194bd3;
-  color: white;
-  font-size: 13px;
-  font-family: "SF Text";
-  font-weight: bold;
-  border: 1px solid #314CCE;
-  box-sizing: border-box;
-  margin-top: 4px;
-
-  margin: 4px 8px 4px 0px;
-  padding-bottom: 0;
-  padding-top: 6px;
-  display: inline-block;
-
-  flex: none;
-  order: 0;
-  align-self: flex-start;
-  vertical-align: middle;
-}
-
-.assignee-info {
-  height: 25px;
-  border-radius: 40px;
-  background: #6c757d;
-  color: white;
-  font-size: 13px;
-  font-family: "SF Text";
-  font-weight: bold;
-  border: 1px solid #6c757d;
-  box-sizing: border-box;
-  margin-left: 5px !important;
-
-  margin: 4px 8px 4px 0px;
-  padding-bottom: 0;
-  padding-top: 6px;
-  display: inline-block;
-
-  flex: none;
-  order: 0;
-  align-self: flex-start;
-  vertical-align: middle;
-}
-
 #jumboContainer {
   margin-left: 7%;
   margin-right: 5%;

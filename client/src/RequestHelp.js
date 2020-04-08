@@ -223,7 +223,7 @@ export default function RequestHelp(props) {
                     <Row>
                         <Col xs={12}>
                             <Form.Group controlId="first" bssize="large">
-                                <Form.Control value={fields.first} onChange={handleFieldChange} placeholder="First Name" />
+                                <Form.Control value={fields.first} onChange={handleFieldChange} placeholder="Name" />
                             </Form.Group>
                         </Col>
                        

@@ -6,12 +6,11 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Navbar from 'react-bootstrap/Navbar'
 import UnmatchedRequests from './UnmatchedRequests'
-import CompletedRequests from './CompletedRequests'
-import MatchedRequests from './MatchedRequests'
-import VolunteerList from './VolunteerList';
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
 import Maps from './Maps'
+import VolunteersModal from './VolunteersModal';
+import { sortFn } from './OrganizationHelpers'
 import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
@@ -23,6 +22,7 @@ export default function OrganiationPortal(props) {
 	const [association, setAssociation] = useState({});
 	const [gotAssociation, setGotAssociation] = useState(false)
 	const [volunteers, setVolunteers] = useState([]);
+	const [volunteersModal, setVolunteersModal] = useState(false);
 
 	const [unmatched, setUnmatched] = useState([]);
 	const [matched, setMatched] = useState([]);
@@ -94,8 +94,15 @@ export default function OrganiationPortal(props) {
 					if (response.ok) {
 						response.json().then(data => {
 							var resVolunteer = data.map((volunteer) => {
-								return {'latitude': volunteer.latlong[1], 'longitude': volunteer.latlong[0]}
+								volunteer.latitude = volunteer.latlong[1];
+								volunteer.longitude = volunteer.latlong[0];
+								return volunteer
 							})
+							resVolunteer.sort(function(a, b) {
+								const x = String(a.first_name.toLowerCase())
+            					const y = String(b.first_name.toLowerCase())
+								return sortFn(x, y, false);
+							});
 							setVolunteers(resVolunteer);
 						});
 					} else {
@@ -153,9 +160,9 @@ export default function OrganiationPortal(props) {
 	var map2 = <></>
 
 	if (gotAssociation) {
-		map1 = <Maps show={currTabNumber === 5} requests={unmatched} association={association}>
+		map1 = <Maps show={currTabNumber === 4} requests={unmatched} association={association}>
 				</Maps>
-		map2 = <Maps show={currTabNumber === 6} requests={volunteers} association={association}>
+		map2 = <Maps show={currTabNumber === 5} requests={volunteers} association={association}>
 				</Maps>
 	}
 
@@ -173,7 +180,7 @@ export default function OrganiationPortal(props) {
 				
 			</Navbar.Collapse>
 		</Navbar>
-		<div>
+		<div style ={{zoom: '95%'}}>
 			<Jumbotron fluid id="jumbo-volunteer">
 				<Container id="jumbo-container-volunteer">
 					<Row>
@@ -183,12 +190,12 @@ export default function OrganiationPortal(props) {
 							<h1 id="jumboHeading">Welcome back, </h1>
 							<h1 id="jumboHeading">{association.name}</h1>
 							<p id="jumboText">This is your organization portal, a place for you to manage volunteers and requests in your area</p>
-							<Button id="homeButtons">
-								View List of 154 Volunteers
+							<Button id="homeButtons" onClick={()=>{setVolunteersModal(true)}}>
+								View List of {volunteers.length} Volunteers
 							</Button>{' '}
-							<Button id="homeButtons">
+							{/* <Button id="homeButtons">
 								Add/View Organization Admins
-							</Button>
+							</Button> */}
 							{/* <Button variant="outline-danger" id='logoutButton' onClick={logout} style={{width: '10%'}}>
 								<font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
 									Logout
@@ -199,54 +206,52 @@ export default function OrganiationPortal(props) {
 				</Container>
 			</Jumbotron>
 			<Container id="volunteer-info">
-					<Row className="justify-content-md-center">
-						<Col></Col>
-							<Col lg={8} md={10} sm={12}>
-								<Container style={{padding: 0,  marginLeft: 0}}>
-									<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched</Button>
-									<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched</Button>
-									<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed</Button>
-									<Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Volunteers</Button>
-									<Button id={tabID(5)} onClick={() => {setCurrTab(5)}}>Request Map</Button>
-									<Button id={tabID(6)} onClick={() => {setCurrTab(6)}}>Volunteer Map</Button>
-								</Container>
-								<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-									style={displayTab(1)}>
-									<UnmatchedRequests state={props.state} 
-													   association={association}
-													   requests={unmatched}
-													   mode={1}/>
-								</Container>
-								<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-									style={displayTab(2)}>
-									<UnmatchedRequests state={props.state} 
-													   association={association}
-													   requests={matched}
-													   mode={2}/>
-								</Container>
-								<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-									style={displayTab(3)}>
-									<UnmatchedRequests state={props.state} 
-													   association={association}
-													   requests={completed}
-													   mode={3}/>
-								</Container>
-								<Container className="shadow mb-5 bg-white rounded" id="request-view"
-									style={displayTab(4)}>
-									<VolunteerList state={props.state} association={association}/>
-								</Container>
-								<Container className="shadow mb-5 bg-white rounded" id="request-view"
-									style={displayTab(5)}>
-									{map1}
-								</Container>
-								<Container className="shadow mb-5 bg-white rounded" id="request-view"
-									style={displayTab(6)}>
-									{map2}
-								</Container>
-							</Col>
-						<Col ></Col>
-					</Row>
+				<Row className="justify-content-md-center">
+					<Col></Col>
+						<Col lg={8} md={10} sm={12}>
+							<Container style={{padding: 0,  marginLeft: 0}}>
+								<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched</Button>
+								<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched</Button>
+								<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed</Button>
+								<Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Request Map</Button>
+								<Button id={tabID(5)} onClick={() => {setCurrTab(5)}}>Volunteer Map</Button>
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+								style={displayTab(1)}>
+								<UnmatchedRequests association={association}
+													requests={unmatched}
+													setRequests={setUnmatched}
+													mode={1}/>
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+								style={displayTab(2)}>
+								<UnmatchedRequests association={association}
+													requests={matched}
+													setRequests={setMatched}
+													mode={2}/>
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+								style={displayTab(3)}>
+								<UnmatchedRequests association={association}
+													requests={completed}
+													setRequests={setCompleted}
+													mode={3}/>
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="request-view"
+								style={displayTab(4)}>
+								{map1}
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="request-view"
+								style={displayTab(5)}>
+								{map2}
+							</Container>
+						</Col>
+					<Col></Col>
+				</Row>
 			</Container>
+			<VolunteersModal volunteersModal={volunteersModal}
+							 setVolunteersModal={setVolunteersModal}
+							 volunteers={volunteers}/>
 		</div>
 
 		<OrgLogin showLogin={showLogin} handleHideLogin={handleHideLogin} login={login} />

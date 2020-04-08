@@ -35,7 +35,6 @@ export default function BestMatches(props) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    // console.log(data);
                     setVolunteers(data);
                 });
             } else {

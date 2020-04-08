@@ -18,7 +18,7 @@ export default function VolunteerDetails(props) {
 
     if ((props.currRequest && props.currRequest.status.volunteer === "") || props.currRequest && props.currRequest.status.volunteer === null) {
         return (
-            <Modal  id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
+            <Modal id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
                 <Modal.Header closeButton>
                     <Modal.Title>{props.currRequest.manual_match.name}</Modal.Title>
                 </Modal.Header>
@@ -33,7 +33,12 @@ export default function VolunteerDetails(props) {
         )
     }
     return (
-        <Modal  id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
+        <Modal id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => {
+                props.setVolunteerDetailsModal(false);
+                if (props.setVolunteersModal) {
+                    props.setVolunteersModal(true);
+                }
+            }} style = {{marginTop: 40}}>
             <Modal.Header closeButton>
                 <Modal.Title>{props.currVolunteer.first_name} {props.currVolunteer.last_name}</Modal.Title>
             </Modal.Header>

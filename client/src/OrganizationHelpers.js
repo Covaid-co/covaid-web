@@ -68,9 +68,17 @@ const capitalize = (s) => {
 }
 
 
-export const formatName = (request) => {
-    var first = request.requester_first;
-    first = capitalize(String(first.toLowerCase()));
-    var last = request.requester_last ? capitalize(String(request.requester_last.toLowerCase())) : "";
+export const formatName = (first, last) => {
+    var first = first !== undefined ? capitalize(String(first.toLowerCase())) : "";
+    var last = last !== undefined ? capitalize(String(last.toLowerCase())) : "";
+    if (first !== undefined && last === "") {
+        const split = first.split(' ');
+        if (split.length > 1) {
+            first = split[0];
+            split.shift();
+            last = split.join(' ');
+            last = capitalize(String(last.toLowerCase()));
+        }
+    }
     return first + ' ' + last;
 }

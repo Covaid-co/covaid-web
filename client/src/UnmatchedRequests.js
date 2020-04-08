@@ -124,7 +124,7 @@ export default function UnmatchedRequests(props) {
                                 }}>
                                 <div >
                                     <h5 className="volunteer-name">
-                                        {formatName(request)}
+                                        {formatName(request.requester_first, request.requester_last)}
                                     </h5>
                                     <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
                                 </div>
@@ -144,8 +144,9 @@ export default function UnmatchedRequests(props) {
                             setRequestDetailsModal={setRequestDetailsModal} 
                             currRequest={currRequest}
                             association={props.association}
-                            setCurrRequest={setCurrRequest}
                             currVolunteer={currVolunteer}
+                            setRequests={props.setRequests}
+                            requests={props.requests}
                             mode={props.mode}/>
         </>
     );
