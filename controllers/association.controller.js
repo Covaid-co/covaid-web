@@ -162,19 +162,6 @@ exports.assoc_by_lat_long = asyncWrapper(async (req, res) => {
         }
     }
     res.send(relevantAssociations)
-
-    // Association.find({
-    //           'location': 
-    //             { $geoWithin: 
-    //               { $centerSphere: 
-    //                 [[ latitude, longitude], 
-    //                   10 / 3963.2] 
-    //               }
-    //             }
-    // }).then(function (associations) {
-    //     res.send(associations)
-    //   }
-    // )
 });
 
 exports.current = function (req, res) {
