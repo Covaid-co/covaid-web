@@ -11,12 +11,17 @@ export default function VolunteerDetailsMatching(props) {
         const volunteer_id = props.currVolunteer._id;
         const volunteer_email = props.currVolunteer.email
         const assoc_id = props.currRequest.association
+        const volunteer_name = props.currVolunteer.first_name
+        var first_name = volunteer_name;
+        first_name = first_name.toLowerCase();
+        first_name = first_name[0].toUpperCase() + first_name.slice(1);
 
         let form = {
             'request_id': requester_id,
             'volunteer_id': volunteer_id,
             'volunteer_email': volunteer_email,
-            'association': assoc_id
+            'association': assoc_id,
+            'volunteer_name': first_name
         };
 
         fetch('/api/request/attachVolunteerToRequest', {

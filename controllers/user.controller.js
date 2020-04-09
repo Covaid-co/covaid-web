@@ -143,41 +143,28 @@ exports.register = function (req, res) {
             addUserToSpreadsheet(finalUser, userID, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4') 
           }
 
-          var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                  user: 'covaidco@gmail.com',
-                  pass: 'supportyourcity_covaid_1?'
-            }
-          });
-          var userID = result._id;
-    
           var mode = "localhost:3000";
           if (process.env.PROD) {
               mode = "covaid.co"
           }
     
-          var message = "Click here to verify: " + "http://" + mode + "/verify?ID=" + userID;
+          var message = "http://" + mode + "/verify?ID=" + userID;
 
           // if user association is baltimore, send google forms link
           if (user.association == '5e8439ad9ad8d24834c8edbe') {
-            message = "Verify your account here: https://forms.gle/aTxAbGVC49ff18R1A . You will be contacted within 24 hours once your account is verified!"
+            message = "https://forms.gle/aTxAbGVC49ff18R1A"
           }
-          var mailOptions = {
-            from: 'covaidco@gmail.com',
-            to: user.email,
-            subject: 'Covaid -- Verify your email',
-            text: message
-          };
-    
-          transporter.sendMail(mailOptions, function(error, info){
-              if (error) {
-                  console.log(error);
-              } else {
-                  console.log('Email sent: ' + info.response);
-              }
-          });
-    
+
+          var data = {
+            //sender's and receiver's email
+            sender: "Covaid@covaid.co",
+            receiver: user.email,
+            link: message,
+            templateName: "verification",
+         };
+
+        emailer.sendVerificationEmail(data)
+
         return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
         });
       } else {
@@ -217,13 +204,18 @@ exports.registerMaster = function (req, res) {
       finalUser.verified = false;
       finalUser.agreedToTerms = true;
       finalUser.availability = true;
+      // console.log(finalUser)
       
       finalUser.save(function(err, result) {
-        var userID = result._id;
+        if (result) {
+          var userID = result._id;
+          return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
+        }
         if (err) {    
+          console.log(err)
           return res.status(422).send(err);
         }
-        return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
+        res.sendStatus(500)
       });
     } else {
       return res.status(403).json({

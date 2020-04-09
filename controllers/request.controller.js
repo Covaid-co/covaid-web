@@ -9,6 +9,7 @@ const {GoogleSpreadsheet }= require('google-spreadsheet')
 const config = require("../config/client_secret").config
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
+const emailer = require('../util/emailer')
 
 async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
     var creds;
@@ -131,6 +132,7 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const volunteer_id = req.body.volunteer_id
     const assoc_id = req.body.association
     const volunteer_email = req.body.volunteer_email
+    const volunteer_name = req.body.volunteer_name
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "status": {
@@ -145,7 +147,14 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
             Association.findById(request.association, function (err, assoc) {
                 if (err) res.sendStatus(403)
                 var associationEmail = assoc.email;
-                sendEmail(request, volunteer_email, associationEmail)
+                var data = {
+                    //sender's and receiver's email
+                    sender: "Covaid@covaid.co",
+                    receiver: volunteer_email,
+                    name: volunteer_name,
+                    templateName: "volunteer_notification",
+                };
+                emailer.sendNotificationEmail(data)
                 }
             )
         }
@@ -267,9 +276,11 @@ exports.createARequest = asyncWrapper(async (req, res) => {
     request.time_posted = new Date(); 
     var volunteers;
     var associationEmail = 'covaidco@gmail.com'
+    var assocName = 'Covaid'
     if (request.association){
         var assoc = await Association.findById(request.association)
         associationEmail = assoc.email;
+        assocName = assoc.name
     }
     if (!req.body.volunteer) {
         // General requests
@@ -281,7 +292,16 @@ exports.createARequest = asyncWrapper(async (req, res) => {
 
         var dbResult = await request.save()
 
-        sendEmail(request, associationEmail, associationEmail)
+        var data = {
+            //sender's and receiver's email
+            sender: "Covaid@covaid.co",
+            receiver: associationEmail,
+            name: assocName,
+            templateName: "org_notification",
+         };
+
+        emailer.sendNotificationEmail(data)
+        // sendEmail(request, associationEmail, associationEmail)
 
         if (request.association == "5e843ab29ad8d24834c8edbf") {
             // PITT
@@ -312,10 +332,21 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         if (associationEmail === "covaidco@gmail.com") {
             sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
         } else {
-            sendEmail(request, req.body.volunteer.email, associationEmail)
+            var first_name = req.body.volunteer.first_name;
+            first_name = first_name.toLowerCase();
+            first_name = first_name[0].toUpperCase() + first_name.slice(1);
+            var data = {
+                //sender's and receiver's email
+                sender: "Covaid@covaid.co",
+                receiver: req.body.volunteer.email,
+                name: first_name,
+                templateName: "volunteer_notification",
+             };
+
+            emailer.sendNotificationEmail(data)
+            // sendEmail(request, req.body.volunteer.email, associationEmail)
         }
     } 
-
     res.status(200).json({
         volunteers: volunteers 
     });
