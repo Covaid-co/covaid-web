@@ -10,7 +10,9 @@ import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
 import Maps from './Maps'
 import VolunteersModal from './VolunteersModal';
+import AdminModal from './AdminModal';
 import { sortFn } from './OrganizationHelpers'
+import { generateURL } from './Helpers'
 import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
@@ -23,6 +25,8 @@ export default function OrganiationPortal(props) {
 	const [gotAssociation, setGotAssociation] = useState(false)
 	const [volunteers, setVolunteers] = useState([]);
 	const [volunteersModal, setVolunteersModal] = useState(false);
+	const [adminModal, setAdminModal] = useState(false);
+	// const [assocAdmins, setAssocAdmins] = useState([]);
 
 	const [unmatched, setUnmatched] = useState([]);
 	const [matched, setMatched] = useState([]);
@@ -35,14 +39,10 @@ export default function OrganiationPortal(props) {
 				setAssociation(association_response);
 				setGotAssociation(true)
 
-				var url = "/api/request/allRequestsInAssoc?";
 				let params = {
 					'association': association_response._id
 				}
-				let query = Object.keys(params)
-					.map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-					.join('&');
-				url += query;
+				var url = generateURL( "/api/request/allRequestsInAssoc?", params)
 
 				fetch(url, {
 					method: 'get',
@@ -66,7 +66,6 @@ export default function OrganiationPortal(props) {
 									unMatchedArr.push(data[i]);
 								}
 							}
-							// console.log(unMatchedArr);
 							setUnmatched(unMatchedArr);
 							setMatched(matchedArr);
 							setCompleted(completedArr);
@@ -78,15 +77,11 @@ export default function OrganiationPortal(props) {
 					console.log(e)
 				});
 
-				var url = "/api/users/allFromAssoc?";
 				params = {
 					'association': association_response._id
 				}
-				query = Object.keys(params)
-					 .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-					 .join('&');
-				url += query;
-		
+				url = generateURL("/api/users/allFromAssoc?", params)
+
 				fetch(url, {
 					method: 'get',
 					headers: {'Content-Type': 'application/json'},
@@ -190,12 +185,12 @@ export default function OrganiationPortal(props) {
 							<h1 id="jumboHeading">Welcome back, </h1>
 							<h1 id="jumboHeading">{association.name}</h1>
 							<p id="jumboText">This is your organization portal, a place for you to manage volunteers and requests in your area</p>
+							<Button id="homeButtons" onClick={()=>{setAdminModal(true)}}>
+								Manage Organization Admins
+							</Button>{' '}
 							<Button id="homeButtons" onClick={()=>{setVolunteersModal(true)}}>
 								View List of {volunteers.length} Volunteers
-							</Button>{' '}
-							{/* <Button id="homeButtons">
-								Add/View Organization Admins
-							</Button> */}
+							</Button>
 							<Button variant="outline-danger" id='logoutButton' onClick={logout} style={{marginTop: 10, marginLeft: 10}}>
 								<font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
 									Logout
@@ -252,6 +247,10 @@ export default function OrganiationPortal(props) {
 			<VolunteersModal volunteersModal={volunteersModal}
 							 setVolunteersModal={setVolunteersModal}
 							 volunteers={volunteers}/>
+			<AdminModal adminModal={adminModal}
+						setAdminModal={setAdminModal}
+						association={association}
+						setAssociation={setAssociation}/>
 		</div>
 
 		<OrgLogin showLogin={showLogin} handleHideLogin={handleHideLogin} login={login} />

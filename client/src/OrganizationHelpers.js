@@ -69,8 +69,8 @@ const capitalize = (s) => {
 
 
 export const formatName = (first, last) => {
-    var first = first !== undefined ? capitalize(String(first.toLowerCase())) : "";
-    var last = last !== undefined ? capitalize(String(last.toLowerCase())) : "";
+    first = first !== undefined ? capitalize(String(first.toLowerCase())) : "";
+    last = last !== undefined ? capitalize(String(last.toLowerCase())) : "";
     if (first !== undefined && last === "") {
         const split = first.split(' ');
         if (split.length > 1) {

@@ -14,7 +14,6 @@ export default function VolunteersModal(props) {
     const [filteredRequests, setFilteredRequests] = useState([]);
 
     useEffect(() => {
-        console.log(props.volunteers)
         setFilteredRequests(props.volunteers);
     }, [props.volunteers]);
 

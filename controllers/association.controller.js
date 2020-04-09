@@ -26,6 +26,21 @@ exports.update_association = function (req, res) {
   });
 };
 
+exports.add_admin = function (req, res) {
+  const id = req.body.associationID;
+  const email = req.body.email;
+  const name = req.body.name;
+  Association.findByIdAndUpdate(id, 
+    {$push: {'admins': {'email': email, 'name': name}}}, function (err) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send('Admin added');
+      }
+    }
+  );
+};
+
 function validateEmailAccessibility(email){
   return Association.findOne({email: email}).then(function(result){
     return result === null;

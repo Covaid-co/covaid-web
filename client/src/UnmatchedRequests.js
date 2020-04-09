@@ -16,19 +16,16 @@ export default function UnmatchedRequests(props) {
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [name, setName] = useState(false);
     const [need, setNeed] = useState(false);
+    const [foundQuery, setQuery] = useState('');
     
     useEffect(() => {
-        var temp = JSON.parse(JSON.stringify(props.requests));
-        temp.sort(function(a, b) {
-            const x = new Date(a.date);
-            const y = new Date(b.date);
-            return sortFn(x, y, true);
-        });
-        setFilteredRequests(temp);
+        const filteredRequests = filterReq(foundQuery, props.requests);
+        setFilteredRequests(filteredRequests);
     }, [props.requests]);
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
+        setQuery(query);
         const filteredRequests = filterReq(query, props.requests);
         setFilteredRequests(filteredRequests);
     }
@@ -59,8 +56,7 @@ export default function UnmatchedRequests(props) {
             headers: {'Content-Type': 'application/json'},
         }).then((response) => {
             if (response.ok) {
-                response.json().then(data => {
-                    // console.log(data);
+            response.json().then(data => {
                     if (data.length > 0) {
                         setCurrVolunteer(data[0]);
                     }
@@ -75,7 +71,7 @@ export default function UnmatchedRequests(props) {
 
     const resourceCompleteBadge = (request) => {
         var result = <></>;
-        if (props.mode == 3) {
+        if (props.mode === 3) {
             result = <Badge className='task-info-requests' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
                         {request.status.reason ? request.status.reason : "Volunteer Completed"}
                     </Badge>                      
@@ -132,7 +128,7 @@ export default function UnmatchedRequests(props) {
                                     {resourceCompleteBadge(request)}
                                 </div>
                                 <div style={{display: 'inline-block', width: '100%'}}>
-                                    <p style={{float: 'left', marginBottom: 0}}>Assignee: 
+                                    <p style={{float: 'left', marginBottom: 0}}>Tracking: 
                                     {request.assignee ? <Badge key={i} className='assignee-info'>{request.assignee}</Badge> : " No one assigned"}</p>
                                 </div>
                             </ListGroup.Item>);

@@ -15,7 +15,7 @@ import { formatName } from './OrganizationHelpers'
 export default function RequestDetails(props) {
 
     const [topMatchesModal, setTopMatchesModal] = useState(false);
-    const [assignee, setAssignee] = useState('');
+    const [assignee, setAssignee] = useState('No one assigned');
     const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
     const [notesModal, setNotesModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -23,6 +23,7 @@ export default function RequestDetails(props) {
     const [confirmCompleteModal, setConfirmCompleteModal] = useState(false);
     const [reason, setReason] = useState('');
     const [mapsURL, setMapsURL] = useState('');
+    const [adminList, setAdminList] = useState([]);
     const options = ['Call ahead to store and pay (Best option)',
                      'Have volunteer pay and reimburse when delivered',
                      'N/A']
@@ -31,14 +32,32 @@ export default function RequestDetails(props) {
         email2: ""
     });
 
+    const updateAdminList = () => {
+        if (props.association.admins) {
+            const currAdminList = props.association.admins;
+            var adminNames = currAdminList.map((admin) => {
+                return admin['name'];
+            })
+            adminNames.push('No one assigned')
+            if (props.currRequest.assignee) {
+                if (adminNames.includes(props.currRequest.assignee) === false) {
+                    adminNames.push(props.currRequest.assignee);
+                }
+                setAssignee(props.currRequest.assignee);
+            }
+            setAdminList(adminNames);
+        }
+    }
+
     useEffect(() => {
-        setAssignee(props.currRequest.assignee ? props.currRequest.assignee : '');
+        setAssignee('No one assigned')
         var tempURL = "https://www.google.com/maps/@";
         tempURL += props.currRequest.latitude + ',';
         tempURL += props.currRequest.longitude + ',15z';
         setMapsURL(tempURL);
-        fields.email2 = props.currRequest.note
-    }, [props.currRequest]);
+        fields.email2 = props.currRequest.note;
+        updateAdminList()
+    }, [props.currRequest, props.association]);
 
 
     const topMatch = () => {
@@ -58,10 +77,18 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                console.log("attached");
+                if (props.requests) {
+                    var dup = [...props.requests];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup.splice(i, 1);
+                        }
+                    }
+                    props.setRequests(dup);
+                }
                 setTopMatchesModal(false);
+                setUnmatchModal(false);
                 props.setRequestDetailsModal(false);
-                window.location.reload();
             } else {
                 alert("unable to attach");
             }
@@ -86,7 +113,17 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                window.location.reload();
+                if (props.requests) {
+                    var dup = [...props.requests];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup.splice(i, 1);
+                        }
+                    }
+                    props.setRequests(dup);
+                }
+                setConfirmCompleteModal(false);
+                props.setRequestDetailsModal(false);
             } else {
                 alert("unable to attach");
             }
@@ -95,12 +132,12 @@ export default function RequestDetails(props) {
         });
     }
 
-    const assignVolunteer = () => {
+    const setAdmin = (assignString) => {
         const requester_id = props.currRequest._id;
 
         let form = {
             'request_id': requester_id,
-            'assignee': assignee
+            'assignee': assignString
         };
 
         fetch('/api/request/set_assignee', {
@@ -109,8 +146,15 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                console.log("attached");
-                window.location.reload();
+                if (props.requests) {
+                    var dup = [...props.requests];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup[i].assignee = assignString;
+                        }
+                    }
+                    props.setRequests(dup);
+                }
             } else {
                 alert("unable to attach");
             }
@@ -123,12 +167,6 @@ export default function RequestDetails(props) {
         if (props.mode === 1) {
             return <>
                         <Button id="nextPage" onClick={topMatch}>Match a volunteer</Button>
-                        {/* <Button variant="link"
-                                style={{color: 'black', width: '100%', fontSize: 14}} 
-                                id="covid-resources"
-                                onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
-                            <u>Request has been completed</u>
-                        </Button> */}
                         <Row>
                             <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
                                 <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
@@ -187,7 +225,17 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                window.location.reload();
+                if (props.requests) {
+                    var dup = [...props.requests];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup.splice(i, 1);
+                        }
+                    }
+                    props.setRequests(dup);
+                }
+                setDeleteModal(false);
+                props.setRequestDetailsModal(false);
             } else {
                 alert("unable to attach");
             }
@@ -226,34 +274,64 @@ export default function RequestDetails(props) {
         });
     }
 
+    const changeAssignee = (e) => {
+        e.persist();
+        setAssignee(e.target.value);
+        setAdmin(e.target.value);
+    }
+
     const handleChangeReasons = (event) => {
         event.persist();
         var result = event.target.value;
         setReason(result);
     }
 
-    // const changeCompleteStatus = () => {
-    //     var result = <></>;
-    //     if (props.mode == 3) {
-    //         result = (<Button variant="link"
-    //                     style={{color: 'black', width: '100%', fontSize: 14}} 
-    //                     id="covid-resources"
-    //                     onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false)}}>
-    //                 <u>Update complete status</u>
-    //                 </Button>);
-    //     }
-    //     return result;
-    // }
+    const modeString = () => {
+        if (props.mode == 1) {
+            return "Unmatched";
+        } else if (props.mode == 2) {
+            return "Matched";
+        } else {
+            return "Completed";
+        }
+    }
 
     return (
         <>
-            <Modal show={props.requestDetailsModal} onHide={() => {props.setRequestDetailsModal(false); setNotes();}} style = {{marginTop: 0, paddingBottom: 50, zoom: '90%'}}>
+            {/* <Modal show={props.requestDetailsModal} 
+                   onHide={() => {props.setRequestDetailsModal(false); setNotes();}} 
+                   style = {{marginTop: 0, paddingBottom: 50, zoom: '90%'}}>
+                <Modal.Body>
+                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 13, marginBottom: 5}}>Who's tracking this request:</h5>
+                    <Form>
+                        <Form.Group controlId="tracking">
+                            <Form.Control as="select" style = {{fontSize: 15}} value={assignee} onChange={changeAssignee}>
+                                {adminList.length > 0 ? adminList.map((admin) => {
+                                    return <option style={{textIndent: 10}}>{admin}</option>;
+                                }) : <></>}
+                            </Form.Control>
+                        </Form.Group>
+                    </Form>
+                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
+                    <Form>
+                        <Form.Group controlId="email2" bssize="large">
+                            <Form.Control as="textarea" 
+                                        rows="5"
+                                        placeholder="Details about this request"
+                                        value={fields.email2 ? fields.email2 : ''} 
+                                        onChange={handleFieldChange}/>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+            </Modal> */}
+
+            <Modal show={props.requestDetailsModal} 
+                   onHide={() => {props.setRequestDetailsModal(false); setNotes();}} 
+                   style = {{marginTop: 10, paddingBottom: 50, zoom: '90%'}}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Request Details</Modal.Title>
+                    <Modal.Title>Request Details ({modeString()})</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/* {changeCompleteStatus()} */}
-                    {/* <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5> */}
                     <p id="name-details">{formatName(props.currRequest.requester_first, props.currRequest.requester_last)}</p>
                     <p id="request-info">Location: <a target="_blank" href={mapsURL}>Click here</a></p>
                     {props.currRequest.requester_email ? <p id="request-info">{props.currRequest.requester_email}</p> : <></>}
@@ -266,32 +344,24 @@ export default function RequestDetails(props) {
                     <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Needed by:</h5>
                     <p id="request-info">{props.currRequest.time} of {props.currRequest.date}</p>
                     {modeButton()}
-                    {/* <Button id="request-delete"
-                        onClick={() => {setDeleteModal(true)}}>
-                        Delete Request
-                    </Button> */}
                     <Col xs={12}>
                         <p id="requestCall" style={{marginTop: -5, marginBottom: 16}}>&nbsp;</p>
                     </Col>
-                    <Form onSubmit={assignVolunteer} style={{marginBottom: 12}}>
-                        <InputGroup controlid="assignee">
-                            <FormControl
-                                placeholder="Who's tracking this request?" 
-                                aria-label="Assignee for Request"
-                                aria-describedby="basic-addon2"
-                                value={assignee}
-                                onChange={e => setAssignee(e.target.value)}
-                            />
-                            <InputGroup.Append>
-                                <Button variant="outline-secondary" type="submit">Set tracker</Button>
-                            </InputGroup.Append>
-                        </InputGroup>
+                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 13, marginBottom: 5}}>Who's tracking this request:</h5>
+                    <Form>
+                        <Form.Group controlId="tracking">
+                            <Form.Control as="select" style = {{fontSize: 15}} value={assignee} onChange={changeAssignee}>
+                                {adminList.length > 0 ? adminList.map((admin) => {
+                                    return <option style={{textIndent: 10}}>{admin}</option>;
+                                }) : <></>}
+                            </Form.Control>
+                        </Form.Group>
                     </Form>
                     <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
                     <Form>
                         <Form.Group controlId="email2" bssize="large">
                             <Form.Control as="textarea" 
-                                        rows="6"
+                                        rows="5"
                                         placeholder="Details about this request"
                                         value={fields.email2 ? fields.email2 : ''} 
                                         onChange={handleFieldChange}/>
