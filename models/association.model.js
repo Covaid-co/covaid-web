@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 let AssociationSchema = new Schema({
     name: {type: String, required: true},
     resources: {type: [String], required: true},
+    links: {type: [String], required: false},
     city: {type: String, required: true},
     email: {type: String, required: true},
     hash: {type: String, required: true},

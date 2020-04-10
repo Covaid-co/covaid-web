@@ -4,6 +4,21 @@ const asyncWrapper = require('../util/asyncWrapper');
 var jwt = require('jwt-simple');
 const emailer =  require("../util/emailer");
 
+exports.add_resource_link = function (req, res) {
+  var newLink = req.body.link;
+  console.log(newLink)
+  Association.findByIdAndUpdate(
+    req.params.id, 
+    {$push: {links: newLink}},
+    {safe: true, upsert: true},
+    function (err, doc) {
+    if (err) return next(err)
+    
+    res.send(newLink);
+  }
+  )
+}
+
 exports.association_details = function (req, res) {
     Association.findById(req.query.associationID, function (err, association) {
         if (err) return res.send(err);
