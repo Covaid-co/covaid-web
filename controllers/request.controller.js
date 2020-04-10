@@ -247,11 +247,10 @@ exports.setManualVolunteer = asyncWrapper(async (req, res) => {
             },
             "status": {
                 "current_status": "in_progress",
-                "volunteer": ""
+                "volunteer": "manual"
             }
         }
     }, function (err, request) {
-        console.log(err);
         if (err) return next(err);
         res.send('Request updated.');
     });

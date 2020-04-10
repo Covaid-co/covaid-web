@@ -83,7 +83,8 @@ UsersSchema.methods.toJSON = function() {
         },
         association: this.association,
         association_name: this.association_name,
-        languages: this.languages
+        languages: this.languages,
+        preVerified: this.preVerified
     };
 };
 

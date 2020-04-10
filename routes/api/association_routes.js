@@ -10,7 +10,8 @@ router.get('/current', auth.required, association_controller.current);
 router.post('/create', association_controller.create_association);
 router.post('/login', auth.optional, association_controller.login);
 router.get('/get_assoc/lat_long', association_controller.assoc_by_lat_long);
-router.put('/update', association_controller.update_association)
+router.put('/update', association_controller.update_association);
+router.put('/admins', association_controller.add_admin);
 
 router.put('/:id/addLinks', association_controller.add_resource_link)
 

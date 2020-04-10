@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -7,12 +7,11 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Toast from 'react-bootstrap/Toast'
 import { useFormFields } from "./libs/hooksLib";
-
+import { validateEmail, moveFromToArr } from './Helpers';
 import PhoneNumber from './PhoneNumber'
 
 export default function ManualVolunteerMatching(props) {
 
-    
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [fields, handleFieldChange] = useFormFields({
@@ -54,7 +53,6 @@ export default function ManualVolunteerMatching(props) {
     const matchVolunteer = async e => {
         e.preventDefault();
         e.stopPropagation();
-        
         if (checkFirstPageInput() === false) {
             return;
         }
@@ -75,9 +73,19 @@ export default function ManualVolunteerMatching(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                // console.log("attached");
-                window.location.reload();
-            } else {
+                const newRequest = {
+                    ...props.currRequest,
+                    'status': {
+                        'current_status': 'in_progress',
+                        'volunteer': 'manual'
+                    }
+                }
+                props.setCurrRequest(newRequest);
+                moveFromToArr(newRequest, props.unmatched, props.setUnmatched, props.matched, props.setMatched);
+                props.setTopMatchesModal(false);
+                props.setRequestDetailsModal(false);
+                props.setManualModal(false);
+            } else { 
                 alert("unable to attach");
             }
         }).catch((e) => {
@@ -85,21 +93,14 @@ export default function ManualVolunteerMatching(props) {
         });
     }
 
-    function validateEmail(email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    }
-
     return (
         <Modal id="volunteer-details-matching" show={props.manualModal} onHide={() => props.setManualModal(false)} style = {{marginTop: 80}}>
             <Modal.Header closeButton>
                 <Modal.Title>Manual Volunteer Entry</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{paddingLeft: 24}}>
                 <Form onSubmit={matchVolunteer}>
-                    <p id="createAccountText">
-                        Enter volunteer information for manual matching
-                    </p>
+                    <p id="request-info" style={{marginBottom: 10}}>Enter volunteer information for manual matching</p>
                     <Row>
                         <Col xs={12}>
                             <Form.Group controlId="email1" bssize="large">
@@ -112,7 +113,7 @@ export default function ManualVolunteerMatching(props) {
                             </Form.Group>
                         </Col>
                         <Col xs={12}>
-                            <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber}/>
+                            <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder="Phone"/>
                         </Col>
                         <Col xs={12}>
                             <Form.Group controlId="details" bssize="large">
@@ -133,22 +134,7 @@ export default function ManualVolunteerMatching(props) {
                         style={{marginBottom: 70}}>
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
-                    {/* <p id="request-info">Availabile to help: {props.currVolunteer.availability ? 'yes':'no'}</p>
-                    <p id="request-info">Email: {props.currVolunteer.email}</p>
-                    <p id="request-info">Phone: {props.currVolunteer.phone}</p>
-                    <p id="request-info">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}
-                    </p>
-                    <p id="request-info">Languages: {props.currVolunteer.languages}</p>
-                    <p id="request-info">Has car: 
-                        {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' yes': ' no') : ""}
-                    </p>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Tasks:</h5>
-                    {props.currVolunteer.offer ? props.currVolunteer.offer.tasks.map((task, i) => {
-                        return <Badge key={i} className='task-info'>{task}</Badge>
-                    }) : ""}
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
-                    <p id="request-info"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p> */}
-                    <Button id="nextPage" type="submit">Manually match with volunteer</Button>
+                    <Button id="nextPage" type="submit" style={{marginTop: 8}}>Manually match with volunteer</Button>
                 </Form>
             </Modal.Body>
         </Modal>

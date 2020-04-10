@@ -66,8 +66,8 @@ export default function OrgLogin(props) {
                 response.json().then(data => {
                     console.log("Login successful")
                     Cookie.set("org_token", data.user.token);
-                    props.handleHideLogin()
-                    props.login()
+                    props.setShowLogin(false);
+                    props.login();
                 });
             } else {
                 alert('Incorrect Login!')

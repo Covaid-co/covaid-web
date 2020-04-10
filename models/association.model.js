@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
+var adminSchema = new Schema({ name: String, email: String }, { noId: true });
+
 let AssociationSchema = new Schema({
     name: {type: String, required: true},
     resources: {type: [String], required: true},
@@ -20,9 +22,8 @@ let AssociationSchema = new Schema({
         },
         required: false
     },
-    radius: {
-        type: Number
-    },
+    radius: {type: Number},
+    admins: [adminSchema],
     usesSpreadsheet: {type: Boolean, required: true},
     spreadsheetID: {type: String, required: false},
 });
