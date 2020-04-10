@@ -140,7 +140,6 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
-        console.log(assoc_id)
         if (assoc_id === "5e8439ad9ad8d24834c8edbe") {
             sendEmail(request, volunteer_email, 'bmoremutualaid@gmail.com')
         }
@@ -234,11 +233,10 @@ exports.setManualVolunteer = asyncWrapper(async (req, res) => {
             },
             "status": {
                 "current_status": "in_progress",
-                "volunteer": ""
+                "volunteer": "manual"
             }
         }
     }, function (err, request) {
-        console.log(err);
         if (err) return next(err);
         res.send('Request updated.');
     });

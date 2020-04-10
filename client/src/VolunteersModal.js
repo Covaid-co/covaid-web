@@ -72,7 +72,8 @@ export default function VolunteersModal(props) {
                 <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
                                   setVolunteerDetailsModal={setVolunteerDetailsModal}
                                   setVolunteersModal={props.setVolunteersModal}
-                                  currVolunteer={currVolunteer}/>
+                                  currVolunteer={currVolunteer}
+                                  preVerify={props.preVerify}/>
             </Modal.Body>
         </Modal>
     );

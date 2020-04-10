@@ -26,8 +26,7 @@ export default function Availability(props) {
                 style={{color: '#7F7F7F', fontSize: 14}}
                 label=""
                 checked={props.switchSelected}
-                onChange={handleChangeAvailability}
-            />
+                onChange={handleChangeAvailability}/>
         </Form.Group>
     );
     

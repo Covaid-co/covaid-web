@@ -15,12 +15,12 @@
 }
 
 input {
-    border-radius: 8px !important;
+    border-radius: 8px;
 }
 
-/* .list-group {
-    font-family: "SF Text";
-} */
+#filter-requests {
+    border-radius: 8px;
+}
 
 #mark-complete {
     width: 100%;
@@ -98,4 +98,33 @@ input {
     order: 0;
     align-self: flex-start;
     vertical-align: middle;
-  }
+}
+
+.request-count {
+    font-size: 14px;
+    height: 20px;
+    position: absolute;
+    top: 0px;
+    margin-left: 94px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+    background: red;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.request-count-1 {
+    margin-left: 94px;
+}
+
+.request-count-2 {
+    margin-left: 76px;
+}
+
+.request-count-3 {
+    margin-left: 94px;
+    background: #28a745;
+}

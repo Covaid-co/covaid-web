@@ -5,7 +5,6 @@ import './App.css'
 import './Home.css'
 import HelpfulLinks from './HelpfulLinks';
 import VolunteerBadge from './components/VolunteerBadge';
-import VolunteerPortal from './VolunteerPortal'
 import AboutUs from './AboutUs'
 import HowItWorks from './HowItWorks'
 import Feedback from './Feedback'
@@ -419,7 +418,7 @@ class Home extends Component {
       }
     } else {
       if (collapsed === false) {
-        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%'}}>
+        rightNav = <Form inline style ={{display: 'block', marginRight: '5%'}}>
                     <Button variant="outline-light" id = 'login-button'onClick={this.handleShowLogin}>
                       Sign In
                     </Button>
@@ -496,7 +495,6 @@ class Home extends Component {
     }
 
     if (this.state.volunteerPortal) {
-      const userID = this.state.currentUser._id
       const route = 'volunteerPortal'
       return <Redirect to={route} />
     }

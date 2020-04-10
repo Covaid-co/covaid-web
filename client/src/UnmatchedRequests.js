@@ -6,7 +6,8 @@ import Badge from 'react-bootstrap/Badge'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from  'react-bootstrap/Dropdown'
-import { sortFn, sortReq, filterReq, formatName } from './OrganizationHelpers'
+import { sortReq, filterReq, formatName } from './OrganizationHelpers';
+import { generateURL } from './Helpers';
 
 export default function UnmatchedRequests(props) {
 
@@ -17,7 +18,7 @@ export default function UnmatchedRequests(props) {
     const [name, setName] = useState(false);
     const [need, setNeed] = useState(false);
     const [foundQuery, setQuery] = useState('');
-    
+
     useEffect(() => {
         const filteredRequests = filterReq(foundQuery, props.requests);
         setFilteredRequests(filteredRequests);
@@ -41,15 +42,13 @@ export default function UnmatchedRequests(props) {
     }
 
     const findUser = (request) => {
-        var url = "/api/users/user?";
-        let params = {
-            'id': request.status.volunteer
+        console.log(request)
+        if (request.status.volunteer === undefined || request.status.volunteer === 'manual') {
+            setCurrVolunteer({});
+            return;
         }
-        let query = Object.keys(params)
-             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-             .join('&');
-        url += query;
-        console.log(url)
+        let params = {'id': request.status.volunteer}
+        const url = generateURL( "/api/users/user?", params);
 
         fetch(url, {
             method: 'get',
@@ -83,13 +82,21 @@ export default function UnmatchedRequests(props) {
         return result;
     }
 
+    const clickRequest = (request) => {
+        setCurrRequest({...request}); 
+        setRequestDetailsModal(true);
+        if (props.mode === 2) {
+            findUser(request); 
+        }
+    }
+
     return (
         <>
             <Row>
                 <Col xs={8}>
                     <Form>
-                        <Form.Group controlId="zip" bssize="large" style={{marginTop: 10}}>
-                            <Form.Control placeholder="Search by First/Last name, Assignee or task" onChange={filterRequests}/>
+                        <Form.Group bssize="large" style={{marginTop: 10}}>
+                            <Form.Control id="filter-requests" placeholder="Search by First/Last name, Assignee or task" onChange={filterRequests}/>
                         </Form.Group>
                     </Form>
                 </Col>
@@ -111,27 +118,19 @@ export default function UnmatchedRequests(props) {
                     <ListGroup variant="flush">
                         {filteredRequests.map((request, i) => {
                             return (
-                            <ListGroup.Item key={i} action onClick={() => {
-                                    setCurrRequest({...request}); 
-                                    setRequestDetailsModal(true);
-                                    if (props.mode === 2) {
-                                        findUser(request); 
-                                    }
-                                }}>
-                                <div >
-                                    <h5 className="volunteer-name">
-                                        {formatName(request.requester_first, request.requester_last)}
-                                    </h5>
-                                    <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
-                                </div>
-                                <div>
-                                    {resourceCompleteBadge(request)}
-                                </div>
-                                <div style={{display: 'inline-block', width: '100%'}}>
-                                    <p style={{float: 'left', marginBottom: 0}}>Tracking: 
-                                    {request.assignee ? <Badge key={i} className='assignee-info'>{request.assignee}</Badge> : " No one assigned"}</p>
-                                </div>
-                            </ListGroup.Item>);
+                                <ListGroup.Item key={i} action onClick={() => {clickRequest(request)}}>
+                                    <div >
+                                        <h5 className="volunteer-name">
+                                            {formatName(request.requester_first, request.requester_last)}
+                                        </h5>
+                                        <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
+                                    </div>
+                                    <div>{resourceCompleteBadge(request)}</div>
+                                    <div style={{display: 'inline-block', width: '100%'}}>
+                                        <p style={{float: 'left', marginBottom: 0}}>Tracking: 
+                                        {request.assignee ? <Badge key={i} className='assignee-info'>{request.assignee}</Badge> : " No one assigned"}</p>
+                                    </div>
+                                </ListGroup.Item>);
                             })}
                     </ListGroup>
                 </Col>
@@ -139,11 +138,19 @@ export default function UnmatchedRequests(props) {
             <RequestDetails requestDetailsModal={requestDetailsModal} 
                             setRequestDetailsModal={setRequestDetailsModal} 
                             currRequest={currRequest}
+                            setCurrRequest={setCurrRequest}
                             association={props.association}
                             currVolunteer={currVolunteer}
                             setRequests={props.setRequests}
                             requests={props.requests}
-                            mode={props.mode}/>
+                            unmatched={props.unmatched}
+                            matched={props.matched}
+                            completed={props.completed}
+                            setUnmatched={props.setUnmatched}
+                            setMatched={props.setMatched}
+                            setCompleted={props.setCompleted}
+                            mode={props.mode}
+                            volunteers={props.volunteers}/>
         </>
     );
 }
