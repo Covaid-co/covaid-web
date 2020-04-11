@@ -11,8 +11,9 @@ export default function VolunteerDetails(props) {
 
     const [mapURL, setMapURL] = useState('');
     const [verified, setVerified] = useState(true);
+    const [prevNote, setPrevNote] = useState('');
     const [fields, handleFieldChange] = useFormFields({
-        email3: ""
+        email5: ""
     });
 
     useEffect(() => {
@@ -21,11 +22,38 @@ export default function VolunteerDetails(props) {
             setMapURL(tempURL);
             setVerified(props.currVolunteer.preVerified);
         }
+        if (props.currVolunteer.note) {
+            fields.email5 = props.currVolunteer.note;
+            setPrevNote(props.currVolunteer.note);
+        } else {
+            fields.email5 = '';
+        }
     }, [props.currVolunteer])
 
     const handleChangeVerify = (event) => {
         event.persist();
         setVerified(!verified);
+        if (Object.keys(props.currVolunteer).length === 0) {
+            return;
+        }
+        let form = {
+            'user_id': props.currVolunteer._id,
+            'preVerified': !verified
+        };
+
+        fetch('/api/users/update_verify', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => {
+            if (response.ok) {
+                console.log("updated verify status");
+            } else {
+                alert("unable to attach");
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
     };
 
     const matchVolunteer = () => {
@@ -67,6 +95,31 @@ export default function VolunteerDetails(props) {
         });
     }
 
+    // Not currently updating all other states
+    const setNotes = () =>{
+        if (Object.keys(props.currVolunteer).length === 0 || prevNote === fields.email5) {
+            return;
+        }
+        let form = {
+            'user_id': props.currVolunteer._id,
+            'note': fields.email5
+        };
+
+        fetch('/api/users/set_notes', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => {
+            if (response.ok) {
+                console.log("updated_note");
+            } else {
+                alert("unable to attach");
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    }
+
     const displaySwitch = () => {
         return (<Form style = {{position: "absolute", marginLeft: 10, top: 11, display: 'inline-block'}}>
                     <Form.Group controlId="preverify" bssize="large" style = {{marginBottom: 0, marginTop: 2}}>
@@ -85,6 +138,7 @@ export default function VolunteerDetails(props) {
         return (
             <Modal id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => {
                     props.setVolunteerDetailsModal(false);
+                    setNotes();
                     if (props.setVolunteersModal) {
                         props.setVolunteersModal(true);
                     }
@@ -119,11 +173,11 @@ export default function VolunteerDetails(props) {
                     <p id="request-info"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
                     <h5 className="titleHeadings" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
                     <Form>
-                        <Form.Group controlId="email3" bssize="large">
+                        <Form.Group controlId="email5" bssize="large">
                             <Form.Control as="textarea" 
                                         rows="3"
                                         placeholder="Details about this volunteer"
-                                        value={fields.email3 ? fields.email3 : ''} 
+                                        value={fields.email5 ? fields.email5 : ''} 
                                         onChange={handleFieldChange}/>
                         </Form.Group>
                     </Form>

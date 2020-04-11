@@ -128,6 +128,7 @@ exports.register = function (req, res) {
         finalUser.verified = false;
         finalUser.agreedToTerms = true;
         finalUser.availability = true;
+        finalUser.notes = '';
 
         finalUser.save(function(err, result) {
           if (err) {    
@@ -315,6 +316,32 @@ async function updatePreVerified() {
     })
 }
 
+exports.set_notes = (req, res) => {
+  const user_id = req.body.user_id;
+  const note = req.body.note;
+  Users.findByIdAndUpdate(user_id, 
+      {$set: {
+          "note": note
+      }
+  }, function (err, request) {
+      if (err) return next(err);
+      res.send('User updated.');
+  });
+};
+
+exports.update_verify = (req, res) => {
+  const user_id = req.body.user_id;
+  const preVerified = req.body.preVerified;
+  Users.findByIdAndUpdate(user_id, 
+      {$set: {
+          "preVerified": preVerified
+      }
+  }, function (err, request) {
+      if (err) return next(err);
+      res.send('User updated.');
+  });
+};
+
 exports.all_users_of_an_association = function (req, res) {
   var assoc = req.query.association;
   if (assoc !== '5e88cf8a6ea53ef574d1b80c') {
@@ -357,7 +384,6 @@ exports.find_user = function (req, res) {
 }
 
 exports.all_users = function (req, res) {
-  // updatePreVerified()
   Users.find({'availability': true,
               'preVerified': true,
               'location': 
@@ -368,14 +394,13 @@ exports.all_users = function (req, res) {
                   }
                 }
     }).then(function (users) {
-    // console.log(users);
-    for (var i = 0; i < users.length; i++) {
-      const coords = users[i].location.coordinates;
-      const distance = calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
-      users[i]['distance'] = distance;
-    }
-    users.sort(function(a, b){return a['distance'] - b['distance']});
-    res.send(users);
+      for (var i = 0; i < users.length; i++) {
+        const coords = users[i].location.coordinates;
+        const distance = calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
+        users[i]['distance'] = distance;
+      }
+      users.sort(function(a, b){return a['distance'] - b['distance']});
+      res.send(users);
   });
 }
 

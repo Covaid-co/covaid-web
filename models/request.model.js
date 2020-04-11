@@ -15,11 +15,12 @@ let RequestSchema = new Schema({
     payment: Number,
     details: String,
     time: String,
-    time_posted: String,
+    time_posted: Date,
     date: String,
     note: String,
     assignee: String,
     delete: Boolean,
+    last_modified: Date,
     manual_match: {
         name: String,
         email: String,

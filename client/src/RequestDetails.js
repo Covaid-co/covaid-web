@@ -49,6 +49,7 @@ export default function RequestDetails(props) {
     }
 
     useEffect(() => {
+        console.log(props.currRequest);
         setAssignee('No one assigned');
         if (props.currRequest.latitude) {
             const tempURL = generateMapsURL(props.currRequest.latitude, props.currRequest.longitude);
