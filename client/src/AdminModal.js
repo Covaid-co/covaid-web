@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
@@ -18,10 +18,8 @@ export default function AdminModal(props) {
 
     const newHandleSubmit = async e => {
         e.preventDefault();
-
-        const ID = props.association._id;
         let form = {
-            'associationID': ID,
+            'associationID': props.association._id,
             'email': fields.email3,
             'name': fields.name3
         };
@@ -80,7 +78,7 @@ export default function AdminModal(props) {
                             <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>
                         </Col>
                         <Col xs={12}  style={{textAlign: 'center'}}>
-                            <a href="#" style={{color: '#314CCE'}} onClick={() => {setAddAdmin(true); props.setAdminModal(false)}}>Add an Admin +</a>
+                            <Button variant="link" style={{color: '#314CCE'}} onClick={() => {setAddAdmin(true); props.setAdminModal(false)}}>Add an Admin +</Button>
                         </Col>
                     </Row>
                 </Modal.Body>

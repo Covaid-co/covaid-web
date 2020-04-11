@@ -224,6 +224,10 @@
   padding-top: 7px;
 }
 
+#volunteer-details-matching{
+  margin-top: 10px;
+}
+
 @media (min-width: 576px) {
   #volunteer-details-matching.modal-dialog{
     max-width: 700px;

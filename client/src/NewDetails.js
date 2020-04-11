@@ -8,7 +8,7 @@ export default function NewDetails(props) {
 
     return (
         <>
-            <h5 className="titleHeadings" style = {{marginTop: '26px', marginBottom: '8px'}}>
+            <h5 className="titleHeadings" style = {{marginTop: '24px', marginBottom: 0}}>
                 Details about request
             </h5>
             <p id="locationInfo">Use as much detail as you feel comfortable sharing, no judgements here</p>

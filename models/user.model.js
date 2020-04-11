@@ -15,6 +15,7 @@ let UsersSchema = new Schema({
     preVerified: {type: Boolean},
     verified: {type: Boolean},
     agreedToTerms: {type: Boolean},
+    note: {type: String},
     offer: {
         tasks: [String],
         neighborhoods: [String],
@@ -84,7 +85,8 @@ UsersSchema.methods.toJSON = function() {
         association: this.association,
         association_name: this.association_name,
         languages: this.languages,
-        preVerified: this.preVerified
+        preVerified: this.preVerified,
+        note: this.note
     };
 };
 

@@ -115,7 +115,6 @@ exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
 
 exports.acceptRequest = asyncWrapper(async (req, res) => {
     const req_id = req.query.ID
-
     var request = await Requests.findByIdAndUpdate(req_id, 
         {
             $set: {
@@ -144,7 +143,8 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
                 "current_status": "in_progress",
                 "volunteer": volunteer_id
             }, 
-            "volunteer_status": 'pending'
+            "volunteer_status": 'pending',
+            "last_modified": new Date()
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -177,7 +177,8 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
                 "current_status": "incomplete",
                 "volunteer": ""
             },
-            "volunteer_status": ""
+            "volunteer_status": "",
+            "last_modified": new Date()
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -188,14 +189,14 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
 })
 
 exports.completeARequest = asyncWrapper(async (req, res) => {
-    const request_id = req.body.request_id
-    const reason = req.body.reason
-    console.log(reason)
+    const request_id = req.body.request_id;
+    const reason = req.body.reason;
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "status.current_status": "complete",
             "status.reason": reason,
-            "volunteer_status": "completed"
+            "volunteer_status": "completed",
+            "last_modified": new Date()
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -209,7 +210,8 @@ exports.setAssignee = asyncWrapper(async (req, res) => {
     const assignee = req.body.assignee;
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
-            "assignee": assignee
+            "assignee": assignee,
+            "last_modified": new Date()
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -222,7 +224,8 @@ exports.setNotes = asyncWrapper(async (req, res) => {
     const note = req.body.note;
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
-            "note": note
+            "note": note,
+            "last_modified": new Date()
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -230,11 +233,13 @@ exports.setNotes = asyncWrapper(async (req, res) => {
     });
 });
 
+
 exports.setDelete = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
-            "delete": true
+            "delete": true,
+            "last_modified": new Date()
         }
     }, function (err, request) {
         if (err) return next(err);
@@ -246,6 +251,7 @@ exports.setManualVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
+            "last_modified": new Date(),
             'manual_match': {
                 "name": req.body.name,
                 "email": req.body.email,
@@ -266,8 +272,6 @@ exports.setManualVolunteer = asyncWrapper(async (req, res) => {
 exports.handle_old_request = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
     request.completed = false;
-    
-    
     request.save().then(result => {
         res.status(201).json({
             message: "Request Created", //

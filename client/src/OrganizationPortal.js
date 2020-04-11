@@ -288,12 +288,12 @@ export default function OrganiationPortal() {
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
 								style={displayTab(4)}>
-								{Object.keys(association).length == 0 ? <></> : 
+								{Object.keys(association).length === 0 ? <></> : 
 									<Maps show={currTabNumber === 4} requests={allRequests} association={association}></Maps>}
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
 								style={displayTab(5)}>
-								{Object.keys(association).length == 0 ? <></> : 
+								{Object.keys(association).length === 0 ? <></> : 
 									<Maps show={currTabNumber === 5} requests={volunteers} association={association}></Maps>}
 							</Container>
 						</Col>

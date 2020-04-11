@@ -17,11 +17,15 @@ export default function UnmatchedRequests(props) {
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [name, setName] = useState(false);
     const [need, setNeed] = useState(false);
+    const [updated, setUpdated] = useState(true);
+    const [posted, setPosted] = useState(true);
     const [foundQuery, setQuery] = useState('');
+    const [lastPressed, setLastPressed] = useState('Time Posted');
 
     useEffect(() => {
         const filteredRequests = filterReq(foundQuery, props.requests);
-        setFilteredRequests(filteredRequests);
+        const sorted = sortReq('posted', filteredRequests, false, false, false, true)
+        setFilteredRequests(sorted);
     }, [props.requests]);
 
     const filterRequests = (e) => {
@@ -32,11 +36,19 @@ export default function UnmatchedRequests(props) {
     }
 
     const sortRequests = (type) => {
-        const sortedRequests = sortReq(type, filteredRequests, name, need);
+        const sortedRequests = sortReq(type, filteredRequests, name, need, updated, posted);
         if (type === 'name') {
+            setLastPressed('Name')
             setName(!name);
-        } else {
+        } else if (type === 'need') {
+            setLastPressed('Needed By')
             setNeed(!need);
+        } else if (type === 'updated') {
+            setLastPressed('Last Updated')
+            setUpdated(!updated);
+        } else {
+            setLastPressed('Time Posted')
+            setPosted(!posted);
         }
         setFilteredRequests(sortedRequests);
     }
@@ -103,11 +115,13 @@ export default function UnmatchedRequests(props) {
                 <Col xs={4}>
                 <Dropdown drop='up'>
                     <Dropdown.Toggle id="dropdown-basic" className='dropdown-sort'>
-                        Sort
+                        Sort ({lastPressed})
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{width: '100%'}}>
                         <Dropdown.Item onClick={()=>sortRequests('name')}>Name</Dropdown.Item>
                         <Dropdown.Item onClick={()=>sortRequests('need')}>Needed By</Dropdown.Item>
+                        <Dropdown.Item onClick={()=>sortRequests('updated')}>Last Updated</Dropdown.Item>
+                        <Dropdown.Item onClick={()=>sortRequests('posted')}>Time Posted</Dropdown.Item>
                     </Dropdown.Menu>
                     </Dropdown>
                 </Col>

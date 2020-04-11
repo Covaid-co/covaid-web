@@ -3,31 +3,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
+import Badge from 'react-bootstrap/Badge'
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import VolunteerDetails from './VolunteerDetails'
+import { filterVolunteers } from './OrganizationHelpers';
 
 export default function VolunteersModal(props) {
 
     const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
     const [currVolunteer, setCurrVolunteer] = useState({});
-    const [filteredRequests, setFilteredRequests] = useState([]);
+    const [filteredVolunteers, setFilteredVolunteers] = useState([]);
 
     useEffect(() => {
-        setFilteredRequests(props.volunteers);
+        console.log(props.volunteers)
+        setFilteredVolunteers(props.volunteers);
     }, [props.volunteers]);
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
-        var filtered = JSON.parse(JSON.stringify(props.volunteers));
-        if (!(!query || query === "")) {
-            filtered = filtered.filter(volunteer => {
-                var firstNameMatch = String(volunteer.first_name.toLowerCase()).startsWith(query);
-                var lastNameMatch = volunteer.last_name ? String(volunteer.last_name.toLowerCase()).startsWith(query) : false;
-                return firstNameMatch || lastNameMatch;
-            });
-        }
-        setFilteredRequests(filtered);
+        const filteredVolunteers = filterVolunteers(query, props.volunteers);
+        setFilteredVolunteers(filteredVolunteers);
     }
 
     return (
@@ -40,7 +36,7 @@ export default function VolunteersModal(props) {
                     <Col xs={12}>
                         <Form>
                             <Form.Group controlId="zip" bssize="large">
-                                <Form.Control placeholder="Search for a volunteer" onChange={filterRequests}/>
+                                <Form.Control placeholder="Search for a volunteer, tasks, or location" onChange={filterRequests}/>
                             </Form.Group>
                         </Form>
                     </Col>
@@ -49,7 +45,7 @@ export default function VolunteersModal(props) {
                     </Col>
                     <Col xs={12}>
                         <ListGroup variant="flush">
-                            {filteredRequests.map((volunteer, i) => {
+                            {filteredVolunteers.map((volunteer, i) => {
                                 return (
                                 <ListGroup.Item key={i} action onClick={() => {
                                         setCurrVolunteer({...volunteer}); 
@@ -60,6 +56,11 @@ export default function VolunteersModal(props) {
                                         <h5 className="volunteer-name">
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
+                                    </div>
+                                    <div>
+                                        {volunteer.offer.tasks.map((task, i) => {
+                                            return <Badge key={i} className='task-info'>{task}</Badge>
+                                        })}
                                     </div>
                                     <p style={{float: 'left', marginBottom: 0, marginTop: -2}}>
                                         {volunteer.offer.neighborhoods.join(', ')}
