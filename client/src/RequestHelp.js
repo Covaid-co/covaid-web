@@ -147,6 +147,8 @@ export default function RequestHelp(props) {
             }
         });
 
+        var assoc_id = (props.state.currentAssoc._id && props.state.currentAssoc._id.length > 0) ? props.state.currentAssoc._id : "5e88cf8a6ea53ef574d1b80c";
+
         let form = {
             'requester_first': fields.first,
             'requester_phone': phoneNumber,
@@ -155,7 +157,7 @@ export default function RequestHelp(props) {
             'payment': selectedPayment,
             'resource_request': resource_request,
             'languages': languages,
-            'association': props.state.currentAssoc._id,
+            'association': assoc_id,
             'time': time,
             'date': date,
             'latitude': props.state.latitude,

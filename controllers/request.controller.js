@@ -69,12 +69,7 @@ exports.update_completed = function (req, res) {
 
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
     const assoc = req.query.association
-    if (assoc === '5e88cf8a6ea53ef574d1b80c') {
-        var requests = await Requests.find({'$or': [{'association': assoc}, {'association': {"$exists": false}}], 
-                                            '$or': [{'delete': false}, {'delete': {"$exists": false}}]});
-        res.send(requests);
-        return;
-    }
+
     var requests = await Requests.find({
         'association': assoc,
         '$or': [{'delete': false}, {'delete': {"$exists": false}}]
