@@ -148,6 +148,7 @@ export default function YourOffer(props) {
                         .join('&');
                     url += query;
 
+                    console.log(url)
                     const response = await fetch(url);
                     response.json().then((data) => {
                         setIsLoading(false);

@@ -233,7 +233,7 @@ export default function NewRegister(props, switchToLogin) {
                     phoneString = phoneNumber.replace(/\D/g,'').substring(0,10);
                 }
 
-                var associationID = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['_id'] : "5e84f1c005eaeb0017f1103d";
+                var associationID = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['_id'] : "5e88cf8a6ea53ef574d1b80c";
                 var associationName = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['name'] : "Covaid";
 
                 let form = {
