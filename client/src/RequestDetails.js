@@ -19,7 +19,7 @@ export default function RequestDetails(props) {
     const [deleteModal, setDeleteModal] = useState(false);
     const [unmatchModal, setUnmatchModal] = useState(false);
     const [confirmCompleteModal, setConfirmCompleteModal] = useState(false);
-    const [reason, setReason] = useState('');
+    const [reason, setReason] = useState('Volunteer Completed');
     const [mapsURL, setMapsURL] = useState('');
     const [adminList, setAdminList] = useState([]);
     const [prevNote, setPrevNote] = useState('');

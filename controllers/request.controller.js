@@ -182,12 +182,11 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
 exports.completeARequest = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     const reason = req.body.reason
+    console.log(reason)
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
-            "status": {
-                "current_status": "complete",
-                "reason": reason
-            },
+            "status.current_status": "complete",
+            "status.reason": reason,
             "volunteer_status": "completed"
         }
     }, function (err, request) {
