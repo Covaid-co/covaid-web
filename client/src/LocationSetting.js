@@ -49,8 +49,9 @@ export default function LocationSetting(props) {
                         <a style={{marginTop: -8, float: 'right', color: '#797979'}} className="volunteer-location">
                             This city is supported by:<br/> 
                             {props.associations.map((association, i) => {                
-                                return <p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
+                                return <a key={i} href={association.homepage} target="_blank" rel="noopener noreferrer" style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</a>   
                             })}
+                            <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> 
                         </a>
                     </Col>
                 </Row>
@@ -61,7 +62,7 @@ export default function LocationSetting(props) {
                             This city is supported by:<br/> 
                             
                             {props.associations.map((association, i) => {                
-                                return <><a key={i} href={association.homepage} target="_blank" style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</a><br /> </>
+                                return <><a key={i} href={association.homepage} target="_blank" rel="noopener noreferrer" style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</a><br /> </>
                             })}
                             <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> <br />
                         </a>
@@ -77,8 +78,9 @@ export default function LocationSetting(props) {
                         <a style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
                             This city is supported by:<br/> 
                             {props.associations.map((association, i) => {                
-                                return <p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
+                                return <p key={i} href={association.homepage} target="_blank" rel="noopener noreferrer" style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
                             })}
+                            <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> 
                         </a>
                     </Col>
                 </Row>
