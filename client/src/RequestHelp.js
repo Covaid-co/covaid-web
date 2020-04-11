@@ -46,6 +46,8 @@ export default function RequestHelp(props) {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
 
+    const [pendingSubmit, setPendingSubmit] = useState(false)
+
     useEffect(() => {
         var url = "/api/association/get_assoc/lat_long?";
         setMode(props.requestHelpMode)
@@ -130,6 +132,7 @@ export default function RequestHelp(props) {
         if (checkSecondPageInput() === false) {
             return;
         }
+        setPendingSubmit(true)
 
         var resource_request = []
         Object.keys(resources).forEach(function(key) {
@@ -144,6 +147,8 @@ export default function RequestHelp(props) {
             }
         });
 
+        var assoc_id = (props.state.currentAssoc._id && props.state.currentAssoc._id.length > 0) ? props.state.currentAssoc._id : "5e88cf8a6ea53ef574d1b80c";
+
         let form = {
             'requester_first': fields.first,
             'requester_phone': phoneNumber,
@@ -152,7 +157,7 @@ export default function RequestHelp(props) {
             'payment': selectedPayment,
             'resource_request': resource_request,
             'languages': languages,
-            'association': props.state.currentAssoc._id,
+            'association': assoc_id,
             'time': time,
             'date': date,
             'latitude': props.state.latitude,
@@ -170,6 +175,7 @@ export default function RequestHelp(props) {
             if (response.ok) {
                 console.log("Request successfully created");
                 setCompleted(true);
+                setPendingSubmit(false)
                 fields.details = '';
                 fields.phone = '';
                 fields.email = '';
@@ -273,7 +279,7 @@ export default function RequestHelp(props) {
                         {paymentAgreement}
                         <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
                         {agreement}
-                        <Button id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
+                        <Button disabled={pendingSubmit} id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
                         <p id="pageNumber">Page 2 of 2</p>
                         <Toast
                             show={showToast}

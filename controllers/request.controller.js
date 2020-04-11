@@ -69,12 +69,7 @@ exports.update_completed = function (req, res) {
 
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
     const assoc = req.query.association
-    if (assoc === '5e88cf8a6ea53ef574d1b80c') {
-        var requests = await Requests.find({'$or': [{'association': assoc}, {'association': {"$exists": false}}], 
-                                            '$or': [{'delete': false}, {'delete': {"$exists": false}}]});
-        res.send(requests);
-        return;
-    }
+
     var requests = await Requests.find({
         'association': assoc,
         '$or': [{'delete': false}, {'delete': {"$exists": false}}]
@@ -182,12 +177,11 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
 exports.completeARequest = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     const reason = req.body.reason
+    console.log(reason)
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
-            "status": {
-                "current_status": "complete",
-                "reason": reason
-            },
+            "status.current_status": "complete",
+            "status.reason": reason,
             "volunteer_status": "completed"
         }
     }, function (err, request) {
@@ -295,7 +289,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             //sender's and receiver's email
             sender: "Covaid@covaid.co",
             receiver: associationEmail,
-            name: assocName,
+            name: request.requester_first,
             templateName: "org_notification",
          };
 

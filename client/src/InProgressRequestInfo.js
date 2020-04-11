@@ -22,11 +22,9 @@ export default function InProgressRequestInfo(props) {
 
     const reject = () => {
         const requester_id = props.currRequest._id;
-        const volunteer_id = props.currRequest.status.volunteer;
 
         let form = {
             'request_id': requester_id,
-            'volunteer_id': volunteer_id
         };
 
         fetch('/api/request/removeVolunteerFromRequest', {
@@ -48,9 +46,12 @@ export default function InProgressRequestInfo(props) {
 
     const accept = () => {
         const requester_id = props.currRequest._id;
+        const volunteer_id = props.currRequest.status.volunteer;
 
         let form = {
             'request_id': requester_id,
+            'volunteer_id': volunteer_id,
+            'reason': 'Volunteer Completed'
         };
 
         fetch('/api/request/completeRequest', {
