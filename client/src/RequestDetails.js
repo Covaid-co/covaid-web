@@ -67,7 +67,10 @@ export default function RequestDetails(props) {
     }
 
     const unMatch = () => {
-        let form = {'request_id': props.currRequest._id};
+        let form = {
+            'request_id': props.currRequest._id,
+            'assoc_id': props.association._id
+        };
         fetch('/api/request/removeVolunteerFromRequest', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
@@ -100,7 +103,8 @@ export default function RequestDetails(props) {
 
         let form = {
             'request_id': props.currRequest._id,
-            'reason': reason
+            'reason': reason,
+            'assoc_id': props.association._id
         };
 
         fetch('/api/request/completeRequest', {

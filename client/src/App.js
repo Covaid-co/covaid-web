@@ -1,4 +1,5 @@
 import React from 'react';
+import {ToastProvider} from 'react-toast-notifications'
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,6 +18,7 @@ import VolunteerPortal from './VolunteerPortal'
 function App() {
 
   return (
+    <ToastProvider>
   	<Router>
         <Switch>
           <Route exact path="/completeOffer" component={CompleteOffer}/>
@@ -31,6 +33,7 @@ function App() {
           <Route path="*" component={Home}/>
         </Switch>
     </Router>
+    </ToastProvider>
   );
 }
 

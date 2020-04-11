@@ -27,7 +27,8 @@ export default function PendingRequestInfo(props) {
 
         let form = {
             'request_id': requester_id,
-            'volunteer_id': volunteer_id
+            'volunteer_id': volunteer_id,
+            'assoc_id': props.currRequest.association
         };
 
         fetch('/api/request/removeVolunteerFromRequest', {

@@ -5,12 +5,21 @@ const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
 const Association = require('../models/association.model')
 const asyncWrapper = require('../util/asyncWrapper');
+const Pusher = require('pusher');
 const {GoogleSpreadsheet }= require('google-spreadsheet')
 const config = require("../config/client_secret").config
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
 const emailer = require('../util/emailer')
 require('dotenv').config();
+
+const pusher = new Pusher({
+    appId: process.env.PUSHER_APP_ID,
+    key: process.env.PUSHER_APP_KEY,
+    secret: process.env.PUSHER_APP_SECRET,
+    cluster: process.env.PUSHER_APP_CLUSTER,
+    encrypted: true
+});
 
 async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
     var creds;
@@ -151,6 +160,7 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
                     templateName: "volunteer_notification",
                 };
                 emailer.sendNotificationEmail(data)
+                pusher.trigger(req.body.volunteer_id, 'direct-match', request_id)
                 }
             )
         }
@@ -160,6 +170,7 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
 
 exports.removeVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
+    const assoc_id = req.body.assoc_id
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "status": {
@@ -170,6 +181,7 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
+        pusher.trigger(assoc_id, 'general', request_id)
         res.send('Request updated.');
     });
 
@@ -187,7 +199,7 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
-       
+        pusher.trigger(req.body.assoc_id, 'complete', request_id)
         res.send('Request updated.');
     });
 })
@@ -295,6 +307,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
          };
 
         emailer.sendNotificationEmail(data)
+        pusher.trigger(request.association, 'general', dbResult._id)
         // sendEmail(request, associationEmail, associationEmail)
 
         if (request.association == "5e843ab29ad8d24834c8edbf") {
@@ -317,34 +330,38 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             "volunteer": req.body.volunteer._id
         }
         request.volunteer_status = "pending"
-    }
-    var result = await request.save()
-    if (request.association == "5e843ab29ad8d24834c8edbf") {
-        // PITT
-        await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-    } else {
-        if (associationEmail === "covaidco@gmail.com") {
-            sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
-        } else {
-            var first_name = req.body.volunteer.first_name;
-            first_name = first_name.toLowerCase();
-            first_name = first_name[0].toUpperCase() + first_name.slice(1);
-            var data = {
-                //sender's and receiver's email
-                sender: "Covaid@covaid.co",
-                receiver: req.body.volunteer.email,
-                name: first_name,
-                templateName: "volunteer_notification",
-             };
 
-            emailer.sendNotificationEmail(data)
-            // sendEmail(request, req.body.volunteer.email, associationEmail)
-        }
-    } 
-    res.status(200).json({
-        volunteers: volunteers 
-    });
-    return
+        var result = await request.save()
+
+        pusher.trigger(req.body.volunteer._id, 'direct-match', result._id)
+
+        if (request.association == "5e843ab29ad8d24834c8edbf") {
+            // PITT
+            await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
+        } else {
+            if (associationEmail === "covaidco@gmail.com") {
+                sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
+            } else {
+                var first_name = req.body.volunteer.first_name;
+                first_name = first_name.toLowerCase();
+                first_name = first_name[0].toUpperCase() + first_name.slice(1);
+                var data = {
+                    //sender's and receiver's email
+                    sender: "Covaid@covaid.co",
+                    receiver: req.body.volunteer.email,
+                    name: first_name,
+                    templateName: "volunteer_notification",
+                };
+
+                emailer.sendNotificationEmail(data)
+                // sendEmail(request, req.body.volunteer.email, associationEmail)
+            }
+        } 
+        res.status(200).json({
+            volunteers: volunteers 
+        });
+        return
+    }
 });
 
 var rad = function(x) {

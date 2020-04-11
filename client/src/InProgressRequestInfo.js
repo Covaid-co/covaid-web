@@ -25,6 +25,7 @@ export default function InProgressRequestInfo(props) {
 
         let form = {
             'request_id': requester_id,
+            'assoc_id': props.currRequest.association
         };
 
         fetch('/api/request/removeVolunteerFromRequest', {
@@ -47,11 +48,13 @@ export default function InProgressRequestInfo(props) {
     const accept = () => {
         const requester_id = props.currRequest._id;
         const volunteer_id = props.currRequest.status.volunteer;
+        const assoc_id = props.currRequest.association
 
         let form = {
             'request_id': requester_id,
             'volunteer_id': volunteer_id,
-            'reason': 'Volunteer Completed'
+            'reason': 'Volunteer Completed',
+            'assoc_id': assoc_id
         };
 
         fetch('/api/request/completeRequest', {

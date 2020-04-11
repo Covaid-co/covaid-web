@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Pusher from 'pusher-js';
+import { useToasts } from 'react-toast-notifications'
 import YourOffer from './YourOffer'
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
@@ -21,6 +23,8 @@ export default function VolunteerPortal(props) {
 	const [acceptedRequests, setAcceptedRequests] = useState([])
 
 	const [pendingRequestNum, setPendingRequestNum] = useState('')
+
+	const { addToast } = useToasts()
 
 	const fetchPendingRequests = (id) => {
 		var url = "/api/request/allPendingRequestsInVolunteer?";
@@ -67,8 +71,6 @@ export default function VolunteerPortal(props) {
             if (response.ok) {
                 response.json().then(data => {
 					setAcceptedRequests(data)
-                    // console.log(data)
-                    // setFilteredRequests(data)
                 });
             } else {
                 console.log("Error")
@@ -85,6 +87,25 @@ export default function VolunteerPortal(props) {
 			//   console.log(user)
 				setUser(user)
 				setFoundUser(true)
+
+				var pusher = new Pusher('ed72954a8d404950e3c8', {
+					cluster: 'us2',
+					forceTLS: true
+				  });
+			  
+				  var channel = pusher.subscribe(user._id);
+				  channel.bind('direct-match', function(data) {
+					console.log(data)
+					fetchPendingRequests(user._id);
+					addToast("You have a new pending request!",
+						{
+							appearance: 'info',
+							autoDismiss: true
+						}
+					)
+				  });
+
+
 				fetchPendingRequests(user._id);
 				fetchAcceptedRequests(user._id)
 		  })
@@ -116,7 +137,7 @@ export default function VolunteerPortal(props) {
 	}
 
 	useEffect(() => {
-		fetchUser()
+		fetchUser();
 	}, []);
 
 	

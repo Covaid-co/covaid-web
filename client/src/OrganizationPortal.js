@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Pusher from 'pusher-js';
+import { useToasts } from 'react-toast-notifications'
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
@@ -19,6 +21,8 @@ import fetch_a from './util/fetch_auth';
 
 export default function OrganiationPortal() {
 
+	const { addToast } = useToasts()
+
 	const [currTabNumber, setCurrTab] = useState(1); 
 	const [showLogin, setShowLogin] = useState(false); 
 	const [association, setAssociation] = useState({});
@@ -31,53 +35,82 @@ export default function OrganiationPortal() {
 	const [matched, setMatched] = useState([]);
 	const [completed, setCompleted] = useState([]);
 
+	const fetch_requests = (id) => {
+			let params = {'association': id}
+			var url = generateURL( "/api/request/allRequestsInAssoc?", params);
+
+			// Get all request types for an association
+			fetch(url, {
+				method: 'get',
+				headers: {'Content-Type': 'application/json'},
+			}).then((response) => {
+				if (response.ok) {
+					response.json().then(data => {
+						setAllRequests(data);
+						var unMatchedArr = [];
+						var matchedArr = [];
+						var completedArr = [];
+						for (var i = 0; i < data.length; i++) {
+							if (data[i].status) {
+								if (data[i].status.current_status === 'in_progress') {
+									matchedArr.push(data[i]);
+								} else if (data[i].status.current_status === 'incomplete' || data[i].status.current_status === 'pending') {
+									unMatchedArr.push(data[i]);
+								} else {
+									completedArr.push(data[i]);
+								}
+							} else {
+								unMatchedArr.push(data[i]);
+							}
+						}
+						setUnmatched(unMatchedArr);
+						setMatched(matchedArr);
+						setCompleted(completedArr);
+					});
+				} else {
+					console.log("Error");
+				}
+			}).catch((e) => {
+				console.log(e);
+			});
+
+	}
+
 	function login() {
 		// Get association from login
 		fetch_a('org_token', '/api/association/current')
 			.then((response) => response.json())
 			.then((association_response) => {
 				setAssociation(association_response);
-
-				let params = {'association': association_response._id}
-				var url = generateURL( "/api/request/allRequestsInAssoc?", params);
-
-				// Get all request types for an association
-				fetch(url, {
-					method: 'get',
-					headers: {'Content-Type': 'application/json'},
-				}).then((response) => {
-					if (response.ok) {
-						response.json().then(data => {
-							setAllRequests(data);
-							var unMatchedArr = [];
-							var matchedArr = [];
-							var completedArr = [];
-							for (var i = 0; i < data.length; i++) {
-								if (data[i].status) {
-									if (data[i].status.current_status === 'in_progress') {
-										matchedArr.push(data[i]);
-									} else if (data[i].status.current_status === 'incomplete' || data[i].status.current_status === 'pending') {
-										unMatchedArr.push(data[i]);
-									} else {
-										completedArr.push(data[i]);
-									}
-								} else {
-									unMatchedArr.push(data[i]);
-								}
-							}
-							setUnmatched(unMatchedArr);
-							setMatched(matchedArr);
-							setCompleted(completedArr);
-						});
-					} else {
-						console.log("Error");
-					}
-				}).catch((e) => {
-					console.log(e);
+				var pusher = new Pusher('ed72954a8d404950e3c8', {
+					cluster: 'us2',
+					forceTLS: true
+				  });
+				var channel = pusher.subscribe(association_response._id);
+				channel.bind('general', function(data) {
+					fetch_requests(association_response._id)
+					addToast("New unmatched request!",
+						{
+							appearance: 'info',
+							autoDismiss: true
+						}
+					)
+				});
+				channel.bind('complete', function(data) {
+					fetch_requests(association_response._id)
+					addToast("Someone completed a request!",
+						{
+							appearance: 'success',
+							autoDismiss: true
+						}
+					)
 				});
 
+				fetch_requests(association_response._id)
+				
 				// Get all volunteers for an association
-				url = generateURL("/api/users/allFromAssoc?", params);
+				let params = {'association': association_response._id}
+				var url = generateURL("/api/users/allFromAssoc?", params);
 				fetch(url, {
 					method: 'get',
 					headers: {'Content-Type': 'application/json'},
@@ -117,6 +150,29 @@ export default function OrganiationPortal() {
 			login();
 		} else {
 			setShowLogin(true);
+			var pusher = new Pusher('ed72954a8d404950e3c8', {
+				cluster: 'us2',
+				forceTLS: true
+			  });
+			var channel = pusher.subscribe(association._id);
+			channel.bind('general', function(data) {
+				fetch_requests(association._id)
+				addToast("New unmatched request!",
+					{
+						appearance: 'info',
+						autoDismiss: true
+					}
+				)
+			});
+			channel.bind('complete', function(data) {
+				fetch_requests(association._id)
+				addToast("Someone completed a request!",
+					{
+						appearance: 'success',
+						autoDismiss: true
+					}
+				)
+			});
 		}
 	}, []);
 
