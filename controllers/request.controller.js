@@ -10,6 +10,7 @@ const config = require("../config/client_secret").config
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
 const emailer = require('../util/emailer')
+require('dotenv').config();
 
 async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
     var creds;
