@@ -294,7 +294,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             //sender's and receiver's email
             sender: "Covaid@covaid.co",
             receiver: associationEmail,
-            name: assocName,
+            name: request.requester_first,
             templateName: "org_notification",
          };
 
