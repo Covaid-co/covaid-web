@@ -154,7 +154,7 @@ export default function OrganiationPortal() {
 				cluster: 'us2',
 				forceTLS: true
 			  });
-			var channel = pusher.subscribe(association._id);
+			var channel = pusher.subscribe(association._id ? association._id : "");
 			channel.bind('general', function(data) {
 				fetch_requests(association._id)
 				addToast("New unmatched request!",
