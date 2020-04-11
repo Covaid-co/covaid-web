@@ -4,12 +4,16 @@ import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useFormFields } from "./libs/hooksLib";
 import { generateMapsURL, moveFromToArr } from './Helpers';
 
 export default function VolunteerDetails(props) {
 
     const [mapURL, setMapURL] = useState('');
     const [verified, setVerified] = useState(true);
+    const [fields, handleFieldChange] = useFormFields({
+        email3: ""
+    });
 
     useEffect(() => {
         if (props.currVolunteer.latlong) {
@@ -91,8 +95,14 @@ export default function VolunteerDetails(props) {
                 <Modal.Body style={{padding: 24, paddingTop: 10}}>
                     <div id="name-details">{props.currVolunteer.first_name} {props.currVolunteer.last_name} 
                         {props.currVolunteer.availability ? 
-                            <Badge aria-describedby='tooltip-bottom' variant="success" id='volunteerBadge' style={{marginLeft: 8, marginTop: -4}}>Available</Badge>
-                          : <Badge aria-describedby='tooltip-bottom' variant="success" id='volunteerBadge' style={{marginLeft: 8, marginTop: -4, backgroundColor: '#dc3545'}}>Not Available</Badge>}
+                            <Badge aria-describedby='tooltip-bottom' variant="success" 
+                                   id='volunteerBadge' style={{marginLeft: 8, marginTop: -4}}>
+                                Available
+                            </Badge>
+                          : <Badge aria-describedby='tooltip-bottom' variant="success" 
+                                   id='volunteerBadge' style={{marginLeft: 8, marginTop: -4, backgroundColor: '#dc3545'}}>
+                                Not Available
+                            </Badge>}
                         {displaySwitch()}
                     </div>
                     <p id="request-info" style={{marginTop: 5}}>Location: <a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
@@ -107,6 +117,16 @@ export default function VolunteerDetails(props) {
                     }) : ""}
                     <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
                     <p id="request-info"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
+                    <h5 className="titleHeadings" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
+                    <Form>
+                        <Form.Group controlId="email3" bssize="large">
+                            <Form.Control as="textarea" 
+                                        rows="3"
+                                        placeholder="Details about this volunteer"
+                                        value={fields.email3 ? fields.email3 : ''} 
+                                        onChange={handleFieldChange}/>
+                        </Form.Group>
+                    </Form>
                     {props.matching ? <Button id="nextPage" onClick={matchVolunteer}>Match with {props.currVolunteer.first_name}</Button> : <></>}
                 </Modal.Body>
             </Modal>

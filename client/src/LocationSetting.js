@@ -14,7 +14,6 @@ export default function LocationSetting(props) {
     const handleSubmit = async e => {
         e.preventDefault();
         e.stopPropagation();
-        // console.log(locationString)
         props.handleLocationChange(locationString);
         props.locationSubmit(e, locationString);
     }
@@ -25,7 +24,7 @@ export default function LocationSetting(props) {
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col lg={4} md={6} sm={6} xs={12}>
-                        <InputGroup controlId="locationString" className="mb-3">
+                        <InputGroup controlid="locationString" className="mb-3">
                             <FormControl
                                 placeholder="City or Zip" 
                                 aria-label="City or Zip"
@@ -46,25 +45,25 @@ export default function LocationSetting(props) {
                         </Button>
                     </Col>
                     <Col md={6} sm={6} id="city-support-text-tablet">
-                        <a style={{marginTop: -8, float: 'right', color: '#797979'}} className="volunteer-location">
+                        <div style={{marginTop: -8, float: 'right', color: '#797979'}} className="volunteer-location">
                             This city is supported by:<br/> 
                             {props.associations.map((association, i) => {                
-                                return <p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
+                                return <div key={i}><p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p><br /></div>
                             })}
-                        </a>
+                            <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> <br />
+                        </div>
                     </Col>
                 </Row>
                 <Row id="web-separate">
                     <Col lg={4} md={6} sm={6} xs={12}>
                         <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
-                        <a style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
+                        <div style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
                             This city is supported by:<br/> 
-                            
                             {props.associations.map((association, i) => {                
-                                return <><p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p><br /> </>
+                                return <div key={i}><p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p><br /></div>
                             })}
                             <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> <br />
-                        </a>
+                        </div>
                     </Col>
                 </Row>
                 <Row id="mobile-tablet-separate">
@@ -77,7 +76,7 @@ export default function LocationSetting(props) {
                         <a style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
                             This city is supported by:<br/> 
                             {props.associations.map((association, i) => {                
-                                return <p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p>   
+                                return <div key={i}><p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p><br /></div>
                             })}
                         </a>
                     </Col>

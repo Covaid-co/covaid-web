@@ -7,7 +7,7 @@ import Modal from 'react-bootstrap/Modal'
 export default function OfferDetails(props) {
 
     return (
-        <Modal show={props.modalOfferOpen} onHide={() => props.setModalOfferOpen(false)} style = {{marginTop: 80}}>
+        <Modal show={props.modalOfferOpen} onHide={() => props.setModalOfferOpen(false)} style = {{marginTop: 20}}>
             <Modal.Header closeButton>
                 <Modal.Title>{props.modalInfo.first_name}'s Offer</Modal.Title>
             </Modal.Header>

@@ -281,7 +281,7 @@ export default function NewRegister(props, switchToLogin) {
     if (justRegistered === false) {
         if (pageNum === 1) {
             return (
-                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); clearFields();}} id='showRequestModal'>
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); clearFields();}} id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title>Create a new account</Modal.Title>
                     </Modal.Header>
@@ -355,18 +355,14 @@ export default function NewRegister(props, switchToLogin) {
                     </Modal.Body>
                 </Modal>
             );
-        } else if (pageNum == 2){
+        } else if (pageNum === 2){
             return (
-                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); setPageNum(1);}} id='showRequestModal'>
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); setPageNum(1);}} id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title>Tell us more about you!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {/* <h5 className="titleHeadings" style = {{marginTop: '18px', marginBottom: '4px'}}>
-                            What languages do you speak?
-                        </h5>
-                        <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/> */}
-                        <h5 className="titleHeadings" style = {{marginTop: '18px', marginBottom: '4px'}}>
+                        <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: '4px'}}>
                             What resources can you offer?
                         </h5>
                         <NewLanguages languages={tasks} languageChecked={taskChecked} setLanguageChecked={setTaskChecked}/>
@@ -395,18 +391,17 @@ export default function NewRegister(props, switchToLogin) {
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
                     </Modal.Body>
-                    <Modal.Footer></Modal.Footer>
                 </Modal>
             )
         } else {
             return (
-                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); clearFields();}} id='showRequestModal'>
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); clearFields();}} id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title>Almost Done!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={newHandleSubmit}>
-                            <h5 className="titleHeadings" style = {{marginTop: '10px', marginBottom: '4px'}}>
+                            <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: '4px'}}>
                                 Health
                             </h5>
                             <p id="createAccountText" style={{marginBottom: 20}}>
@@ -443,7 +438,6 @@ export default function NewRegister(props, switchToLogin) {
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
                     </Modal.Body>
-                    <Modal.Footer></Modal.Footer>
                 </Modal>
             )
         }

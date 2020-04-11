@@ -25,7 +25,7 @@ export default function RequestHelp(props) {
 
     const [mode, setMode] = useState(props.requestHelpMode);
 
-    const languages = ['English', 'Chinese', 'French', 'Spanish', 'Other'];
+    const languages = ['English', 'Spanish', 'Chinese', 'French', 'Other'];
     const defaultResources = ['Food/Groceries', 'Medication', 'Emotional Support', 'Donate', 'Academic/Professional', 'Misc.'];
     const [resources, setResources] = useState(
         {'Food/Groceries': false, 
@@ -209,7 +209,7 @@ export default function RequestHelp(props) {
 
     if (firstPage) {
         return (
-            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal' style={{marginTop: 10}}>
+            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                 <Modal.Header closeButton>
             <Modal.Title>Submit a {general}request</Modal.Title>
                 </Modal.Header>
@@ -251,18 +251,17 @@ export default function RequestHelp(props) {
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
                 </Modal.Body>
-                <Modal.Footer></Modal.Footer>
             </Modal>
         )
     } else {
         if (completed === false) {
             return (
-                <Modal show={props.state.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal">
+                <Modal show={props.state.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal" style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title>Almost Done!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h5 className="titleHeadings" style = {{marginTop: '8px', marginBottom: '4px'}}>
+                        <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: 0}}>
                             What language do you speak?
                         </h5>
                         <p id="locationInfo">
@@ -285,7 +284,6 @@ export default function RequestHelp(props) {
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
                     </Modal.Body>
-                    <Modal.Footer></Modal.Footer>
                 </Modal>
             )
         } else {
