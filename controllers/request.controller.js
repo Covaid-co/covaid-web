@@ -157,6 +157,7 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
                     sender: "Covaid@covaid.co",
                     receiver: volunteer_email,
                     name: volunteer_name,
+                    assoc: associationEmail,
                     templateName: "volunteer_notification",
                 };
                 emailer.sendNotificationEmail(data)
@@ -307,6 +308,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             sender: "Covaid@covaid.co",
             receiver: associationEmail,
             name: request.requester_first,
+            assoc: assocName,
             templateName: "org_notification",
          };
 
@@ -354,6 +356,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
                     sender: "Covaid@covaid.co",
                     receiver: req.body.volunteer.email,
                     name: first_name,
+                    assoc: associationEmail,
                     templateName: "volunteer_notification",
                 };
 

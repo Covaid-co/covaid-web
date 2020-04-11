@@ -17,6 +17,7 @@ exports.sendNotificationEmail = (data) => {
         //extract the custom fields 
         dynamic_template_data: {
             name: data.name,
+            assoc: data.assoc
         }
     };
 
