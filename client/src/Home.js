@@ -449,7 +449,7 @@ class Home extends Component {
     if (isLoggedIn) {
       portalText = <p id="jumboText">Manage your offer of help from the volunteer portal</p>
       volunteerButton =  <Button onClick={() => this.setState({volunteerPortal: true})} id="homeButtons" >
-        Create/update your offer
+        Volunteer portal
       </Button>
     }
     

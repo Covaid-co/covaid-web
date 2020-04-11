@@ -8,6 +8,7 @@ var adminSchema = new Schema({ name: String, email: String }, { noId: true });
 
 let AssociationSchema = new Schema({
     name: {type: String, required: true},
+    homepage: {type: String, required: false},
     resources: {type: [String], required: true},
     links: {type: [String], required: false},
     city: {type: String, required: true},
