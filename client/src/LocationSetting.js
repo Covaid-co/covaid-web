@@ -61,7 +61,7 @@ export default function LocationSetting(props) {
                             This city is supported by:<br/> 
                             
                             {props.associations.map((association, i) => {                
-                                return <><p key={i} style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</p><br /> </>
+                                return <><a key={i} href={association.homepage} target="_blank" style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</a><br /> </>
                             })}
                             <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> <br />
                         </a>
