@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Badge from 'react-bootstrap/Badge'
+import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import VolunteerDetails from './VolunteerDetails'
@@ -35,13 +36,18 @@ export default function VolunteersModal(props) {
                 <Row>
                     <Col xs={12}>
                         <Form>
-                            <Form.Group controlId="zip" bssize="large">
+                            <div>
+                                {props.association.resources ? props.association.resources.map((task, i) => {
+                                    return <Button style={{paddingTop: 2}} key={i} className='resource-button'>{task}</Button>
+                                }) : <></>}
+                            </div>
+                            <Form.Group controlId="zip" bssize="large" style={{marginTop: 10}}>
                                 <Form.Control placeholder="Search for a volunteer, tasks, or location" onChange={filterRequests}/>
                             </Form.Group>
                         </Form>
                     </Col>
                     <Col xs={12}>
-                        <p id="requestCall" style={{marginTop: 10, marginBottom: 0}}></p>
+                        <p id="requestCall" style={{marginTop: 0, marginBottom: 0}}>&nbsp;</p>
                     </Col>
                     <Col xs={12}>
                         <ListGroup variant="flush">

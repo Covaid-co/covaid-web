@@ -303,6 +303,7 @@ export default function OrganiationPortal() {
 			<VolunteersModal volunteersModal={volunteersModal}
 							 setVolunteersModal={setVolunteersModal}
 							 volunteers={volunteers}
+							 association={association}
 							 preVerify={true}/>
 			<AdminModal adminModal={adminModal}
 						setAdminModal={setAdminModal}
