@@ -89,7 +89,7 @@ export default function OrganiationPortal() {
 				var channel = pusher.subscribe(association_response._id);
 				channel.bind('general', function(data) {
 					fetch_requests(association_response._id)
-					addToast("New unmatched request!",
+					addToast(data,
 						{
 							appearance: 'info',
 							autoDismiss: true
@@ -157,7 +157,7 @@ export default function OrganiationPortal() {
 			var channel = pusher.subscribe(association._id ? association._id : "");
 			channel.bind('general', function(data) {
 				fetch_requests(association._id)
-				addToast("New unmatched request!",
+				addToast(data,
 					{
 						appearance: 'info',
 						autoDismiss: true

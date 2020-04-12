@@ -138,6 +138,28 @@ export default function VolunteerDetails(props) {
                 </Form>);
     }
 
+    const volunteer_status_info = () => {
+        if (props.currRequest.volunteer_status === 'pending') {
+            return (
+                <>
+                <Badge aria-describedby='tooltip-bottom' variant="warning" 
+                                   id='volunteerBadge' style={{marginLeft: 8, marginTop: 5}}>
+                                Pending
+                            </Badge>
+                </>
+            );
+        } else if (props.currRequest.volunteer_status === 'accepted'){
+            return (
+                <>
+                <Badge aria-describedby='tooltip-bottom' variant="success" 
+                                   id='volunteerBadge' style={{marginLeft: 8, marginTop: 5}}>
+                                In progress
+                            </Badge>
+                </>
+            );
+        }
+    }
+
     if (Object.keys(props.currVolunteer).length > 0) {
         return (
             <Modal id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => {
@@ -161,7 +183,11 @@ export default function VolunteerDetails(props) {
                                    id='volunteerBadge' style={{marginLeft: 8, marginTop: -4, backgroundColor: '#dc3545'}}>
                                 Not Available
                             </Badge>}
+
                         {displaySwitch()}
+                    </div>
+                    <div>
+                    {volunteer_status_info()}
                     </div>
                     <p id="request-info" style={{marginTop: 5}}>Location: <a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
                     <p id="request-info">{props.currVolunteer.email}</p>

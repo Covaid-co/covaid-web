@@ -97,7 +97,7 @@ export default function VolunteerPortal(props) {
 				  channel.bind('direct-match', function(data) {
 					console.log(data)
 					fetchPendingRequests(user._id);
-					addToast("You have a new pending request!",
+					addToast(data,
 						{
 							appearance: 'info',
 							autoDismiss: true

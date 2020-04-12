@@ -144,6 +144,7 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
                 "volunteer": volunteer_id
             }, 
             "volunteer_status": 'pending',
+            "pending_time": new Date(),
             "last_modified": new Date()
         }
     }, function (err, request) {
@@ -183,7 +184,7 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
-        pusher.trigger(assoc_id, 'general', request_id)
+        pusher.trigger(assoc_id, 'general', 'A volunteer has been unmatched from a request!')
         res.send('Request updated.');
     });
 
@@ -313,7 +314,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
          };
 
         emailer.sendNotificationEmail(data)
-        pusher.trigger(request.association, 'general', dbResult._id)
+        pusher.trigger(request.association, 'general', "You have a new unmatched request!")
         // sendEmail(request, associationEmail, associationEmail)
 
         if (request.association == "5e843ab29ad8d24834c8edbf") {
@@ -336,10 +337,11 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             "volunteer": req.body.volunteer._id
         }
         request.volunteer_status = "pending"
+        request.pending_time = new Date()
 
         var result = await request.save()
 
-        pusher.trigger(req.body.volunteer._id, 'direct-match', result._id)
+        pusher.trigger(req.body.volunteer._id, 'direct-match', 'You have a new pending request!')
 
         if (request.association == "5e843ab29ad8d24834c8edbf") {
             // PITT
