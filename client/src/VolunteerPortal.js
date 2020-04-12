@@ -153,7 +153,7 @@ export default function VolunteerPortal(props) {
 							</Col>
 							<Col>
 								<h1 id="jumboHeading">Welcome back, {user.first_name}!</h1>
-								<p id="jumboText">This is your volunteer portal, a place for you to manage your offer below</p>
+								<p id="jumboText">This is your volunteer portal, a place for you to manage your offer and handle requests</p>
 								<Button onClick={() => returnToHome()} id="homeButtons" >
 									Return to home
 								</Button>
@@ -166,12 +166,12 @@ export default function VolunteerPortal(props) {
 						<Col></Col>
 						<Col lg={6} md={8} sm={10}>
 							<Container style={{padding: 0, marginLeft: 0}}> 
-								<Button id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your Offer</Button>
+								<Button id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your offer</Button>
 								<Button style={{"position": "relative"}}id={tabNum==2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
-									Pending Requests
+									Pending
 									<div class="notificationBadge">{pendingRequestNum}</div>
 								</Button>
-								<Button id={tabNum==3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>In-Progress Requests</Button>
+								<Button id={tabNum==3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>Active</Button>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 								style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>

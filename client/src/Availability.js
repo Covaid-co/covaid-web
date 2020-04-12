@@ -16,10 +16,10 @@ export default function Availability(props) {
         <Form.Group controlId="phone" bssize="large" style = {{marginBottom: 0, marginTop: 20}}>
             <Form.Label style = {{marginBottom: -10, color: "black"}}>
                 <h5 className="volunteerName" style={{marginTop: 8}}>
-                    Availability
+                    Visibility
                 </h5>
             </Form.Label>
-            <p style={{fontSize: 15}}  id="locationInfo">Switch on whether you are available to offer support.</p>
+            <p style={{fontSize: 15}}  id="locationInfo">Switch on your offer's public visibility</p>
             <Form.Check 
                 type="switch"
                 id="custom-switch"
