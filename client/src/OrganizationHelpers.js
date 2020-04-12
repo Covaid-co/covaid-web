@@ -72,11 +72,11 @@ export const filterVolunteers = (query, volunteers) => {
             var lastNameMatch = volunteer.last_name ? String(volunteer.last_name.toLowerCase()).startsWith(query) : false;
             var emailMatch = String(volunteer.email.toLowerCase()).startsWith(query);
             var phoneMatch = volunteer.phone ? String(volunteer.phone.toLowerCase()).startsWith(query) : false;
-            for (var i = 0; i < volunteer.offer.tasks.length; i++) {
-                if (String(volunteer.offer.tasks[i]).toLowerCase().startsWith(query)) {
-                    return true;
-                }
-            }
+            // for (var i = 0; i < volunteer.offer.tasks.length; i++) {
+            //     if (String(volunteer.offer.tasks[i]).toLowerCase().startsWith(query)) {
+            //         return true;
+            //     }
+            // }
             for (var i = 0; i < volunteer.offer.neighborhoods.length; i++) {
                 if (String(volunteer.offer.neighborhoods[i]).toLowerCase().startsWith(query)) {
                     return true;

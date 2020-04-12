@@ -93,6 +93,7 @@ export default function NewOffers(props) {
                         className='justfiy-content-center'
                         style = {{paddingTop: 15, marginTop: 50}}
                         postsPerPage={postsPerPage}
+                        currPage={currentPage}
                         totalPosts={displayedVolunteers.length}
                         paginate={paginate}
                     />
