@@ -1,20 +1,17 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+var AssociationResources = require('./association-resources.modal').schema;
 
 const Schema = mongoose.Schema;
 
 var adminSchema = new Schema({ name: String, email: String }, { noId: true });
-var associationResourceLinksSchema = new Schema({
-    name: {type: String, required: true},
-    url: {type: String, required: false}
-})
 
 let AssociationSchema = new Schema({
     name: {type: String, required: true},
     homepage: {type: String, required: false},
     resources: {type: [String], required: true},
-    links: {type: [associationResourceLinksSchema], required: false},
+    links: {type: [AssociationResources], required: false},
     city: {type: String, required: true},
     email: {type: String, required: true},
     hash: {type: String, required: true},

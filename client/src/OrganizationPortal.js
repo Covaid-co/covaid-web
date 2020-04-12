@@ -84,6 +84,7 @@ export default function OrganiationPortal() {
 			.then((response) => response.json())
 			.then((association_response) => {
 				setAssociation(association_response);
+				console.log(association_response);
 				var pusher = new Pusher('ed72954a8d404950e3c8', {
 					cluster: 'us2',
 					forceTLS: true

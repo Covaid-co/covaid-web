@@ -10,6 +10,7 @@ export function useFormFields(initialState) {
         ...fields,
         [event.target.id]: event.target.value
       });
-    }
+    },
+    setValues
   ];
 }

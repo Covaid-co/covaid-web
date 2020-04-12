@@ -1,21 +1,25 @@
 const Association = require('../models/association.model');
+const AssociationResources = require('../models/association-resources.modal');
 const passport = require('passport');
 const asyncWrapper = require('../util/asyncWrapper');
 var jwt = require('jwt-simple');
 const emailer =  require("../util/emailer");
 
 exports.add_resource_link = function (req, res) {
-  var newLink = req.body.link;
-  console.log(newLink)
-  Association.findByIdAndUpdate(
-    req.params.id, 
-    {$push: {links: newLink}},
-    {safe: true, upsert: true},
+  const id = req.body.associationID;
+  var link = req.body.link;
+  var name = req.body.name;
+  console.log(req.body);
+  let newResources = new AssociationResources({'link': link, 'name': name});
+  console.log(newResources)
+  Association.findByIdAndUpdate(id, {$push: {'links': newResources}}, {safe: true, upsert: true},
     function (err, doc) {
-    if (err) return next(err)
-    
-    res.send(newLink);
-  }
+      if (err) {
+        console.log(err);
+        return;
+      }
+      res.send('Resource added');
+    }
   )
 }
 

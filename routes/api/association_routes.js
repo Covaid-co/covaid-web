@@ -13,7 +13,7 @@ router.get('/get_assoc/lat_long', association_controller.assoc_by_lat_long);
 router.put('/update', association_controller.update_association);
 router.put('/admins', association_controller.add_admin);
 
-router.put('/:id/addLinks', association_controller.add_resource_link)
+router.put('/addLink', association_controller.add_resource_link)
 
 router.post('/emailpasswordresetlink', association_controller.emailPasswordResetLink)
 router.get('/verifyresetlink/:id/:token', association_controller.verifyPasswordResetLink)
