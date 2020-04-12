@@ -525,11 +525,12 @@ class Home extends Component {
 
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
+                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} 
+                          style={this.state.toggled === false ? {marginLeft: '10%'} : {}} onClick={() => this.handleShowModal(2)}>
+                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'} style={{textDecoration: 'underline'}}>FAQs</p>
+                </Nav.Link>
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(1)} >
                   <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>About us</p>
-                </Nav.Link>
-                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(2)}>
-                  <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>How it works</p>
                 </Nav.Link>
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navBorder'} onClick={() => this.handleShowModal(3)}>
                   <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
@@ -544,7 +545,7 @@ class Home extends Component {
           {pageContent}
       </div>
 
-      <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 50}} id="general-modal">
+      <Modal size={this.state.modalType === 2 ? "lg" : "md"} show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 10, paddingBottom: 50}} id="general-modal">
         {modal}
       </Modal>
 

@@ -51,7 +51,7 @@ export default function Main(props) {
 
     return (
         <>
-        <CovaidNavbar setShowLogin={setShowLogin} setShowRegistration={setShowRegistration}/>
+          <CovaidNavbar setShowLogin={setShowLogin} setShowRegistration={setShowRegistration}/>
           <Jumbotron fluid id="jumbo">
             <Container id="jumboContainer">
               <Row>

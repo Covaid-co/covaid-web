@@ -67,15 +67,83 @@ input {
   
     margin: 4px 8px 4px 0px;
     padding-bottom: 0;
-    padding-top: 4px;
+    padding-top: 6px;
     display: inline-block;
   
     flex: none;
     order: 0;
     align-self: flex-start;
     vertical-align: middle;
-  }
+}
 
+.pending-task {
+    float: right;
+    height: 25px;
+    border-radius: 40px;
+    background: transparent;
+    color: #DB9327;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #DB9327;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-left: 8px !important;
+    padding-bottom: 0;
+    padding-top: 6px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
+
+.in-progress-task {
+    float: right;
+    height: 25px;
+    border-radius: 40px;
+    background: transparent;
+    color: #8A8A8A;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #8A8A8A;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-left: 8px !important;
+    padding-bottom: 0;
+    padding-top: 6px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
+
+.no-match-task {
+    float: right;
+    height: 25px;
+    border-radius: 40px;
+    background: transparent;
+    color: #dc3545;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #dc3545;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-left: 8px !important;
+    padding-bottom: 0;
+    padding-top: 6px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
 
 .assignee-info {
     height: 25px;
@@ -91,7 +159,7 @@ input {
   
     /* margin: 4px 8px 4px 0px; */
     padding-bottom: 0;
-    padding-top: 4px;
+    padding-top: 5px;
     display: inline-block;
   
     flex: none;
