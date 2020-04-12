@@ -54,6 +54,7 @@ class Home extends Component {
       showLocation: false,
       showFeedback: false,
       showModal: false,
+      showResourceModal: false,
       modalType: '',
       cookieSet: false,
       searchedLocation: '',
@@ -76,6 +77,8 @@ class Home extends Component {
     this.handleShowLocation = this.handleShowLocation.bind(this);
     this.handleHideModal = this.handleHideModal.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
+    this.handleHideResourceModal = this.handleHideResourceModal.bind(this);
+    this.handleShowResourceModal = this.handleShowResourceModal.bind(this);
     this.handleHidePrompt = this.handleHidePrompt.bind(this);
     this.getMyLocation = this.getMyLocation.bind(this)
     this.logout = this.logout.bind(this);
@@ -134,6 +137,14 @@ class Home extends Component {
   
   handleHideModal() {
     this.setState({showModal: false});
+  }
+
+  handleShowResourceModal() {
+    this.setState({showResourceModal: true})
+  }
+
+  handleHideResourceModal() {
+    this.setState({showResourceModal: false})
   }
 
   componentDidMount() {
@@ -457,6 +468,7 @@ class Home extends Component {
       pageContent = <HomePage state={this.state} 
                               setState={this.setState}
                               handleShowModal={this.handleShowModal} 
+                              handleShowResourceModal={this.handleShowResourceModal}
                               handleHideRequestHelp={this.handleHideRequestHelp}
                               handleShowRegistration={this.handleShowRegistration}
                               handleHideLogin={this.handleHideLogin}
@@ -481,11 +493,6 @@ class Home extends Component {
         break;
       case 3:
         modal = <Feedback handleHide={this.handleHideModal}/>
-        break;
-      case 4:
-        modal = <>
-          <Modal.Body style={{paddingTop: 10}}><HelpfulLinks associationName={this.state.currentAssoc.name} associationLinks={this.state.currentAssoc.links} /></Modal.Body>
-          </>
         break;
       default:
         modal = <></>
@@ -539,6 +546,10 @@ class Home extends Component {
 
       <Modal show={this.state.showModal} onHide={this.handleHideModal} style = {{marginTop: 50}} id="general-modal">
         {modal}
+      </Modal>
+
+      <Modal show={this.state.showResourceModal} onHide={this.handleHideResourceModal} style = {{marginTop: 50}} id="transparentModal">
+        <Modal.Body style={{paddingTop: 10}}><HelpfulLinks associationName={this.state.currentAssoc.name} associationLinks={this.state.currentAssoc.links} /></Modal.Body>
       </Modal>
     </>);
   }

@@ -49,7 +49,7 @@ export default function HomePage(props) {
                   <br />
                   <Button variant="link" 
                           id="covid-resources" 
-                          onClick={() => props.handleShowModal(4)}>
+                          onClick={() => props.handleShowResourceModal()}>
                       <u>View COVID-19 Resources</u>
                   </Button>
                 </Col>

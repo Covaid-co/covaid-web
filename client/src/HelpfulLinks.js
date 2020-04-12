@@ -88,12 +88,12 @@ export default function HelpfulLinks(props) {
             return (
                 <></>
             );
-        }
+        } 
     }
 
     return (
         <>
-        <Tabs>
+        {/* <Tabs>
             <TabList>
                 {associationTab()}
                 <Tab style={{"fontSize": 14}}>General resources</Tab>
@@ -113,7 +113,44 @@ export default function HelpfulLinks(props) {
                     })}
                 </ListGroup>
             </TabPanel>
-        </Tabs>
+        </Tabs> */}
+
+                <Container id="volunteer-info">
+					<Row className="justify-content-md-center">
+						<Col lg={12} md={12} sm={12}>
+							<Container style={{padding: 0, marginLeft: 0}}> 
+								<Button id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Baltimore specific</Button>
+								<Button style={{"position": "relative"}}id={tabNum==2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
+									General
+								</Button>
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+								style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
+								{defaultLinks.map((link, i) => {                
+                                return <ListGroup.Item key={i} style = {{fontSize: 12}}>
+                                        <Row>
+                                            <Col><a target="_blank" 
+                                                    href={link.link}
+                                                    rel="noopener noreferrer">{link.name}</a></Col>
+                                        </Row>
+                                    </ListGroup.Item>      
+                                })}
+							</Container>
+							<Container className="shadow mb-5 bg-white rounded" id="request-view"
+								style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
+								{defaultLinks.map((link, i) => {                
+                                return <ListGroup.Item key={i} style = {{fontSize: 12}}>
+                                        <Row>
+                                            <Col><a target="_blank" 
+                                                    href={link.link}
+                                                    rel="noopener noreferrer">{link.name}</a></Col>
+                                        </Row>
+                                    </ListGroup.Item>      
+                                })}
+							</Container>
+						</Col>
+					</Row>
+				</Container>
         </>
     );
 }
