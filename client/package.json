@@ -24,6 +24,7 @@
     "react-router-sitemap": "^1.2.0",
     "react-scripts": "3.0.0",
     "react-switch": "^5.0.1",
+    "react-tabs": "^3.1.0",
     "react-toast-notifications": "^2.4.0",
     "styled-components": "^5.0.1"
   },

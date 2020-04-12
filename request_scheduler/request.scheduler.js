@@ -13,7 +13,7 @@ const pusher = new Pusher({
 const Requests = require('../models/request.model');
  
 exports.request_scheduler = function() {
-        cron.schedule("0 0 */6 * * *", function() {
+        cron.schedule("0 0 */1 * * *", function() {
             updateAllExpiredRequests()
     })
 };
