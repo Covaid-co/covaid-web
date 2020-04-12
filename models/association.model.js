@@ -5,12 +5,16 @@ const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 var adminSchema = new Schema({ name: String, email: String }, { noId: true });
+var associationResourceLinksSchema = new Schema({
+    name: {type: String, required: true},
+    url: {type: String, required: false}
+})
 
 let AssociationSchema = new Schema({
     name: {type: String, required: true},
     homepage: {type: String, required: false},
     resources: {type: [String], required: true},
-    links: {type: [String], required: false},
+    links: {type: [associationResourceLinksSchema], required: false},
     city: {type: String, required: true},
     email: {type: String, required: true},
     hash: {type: String, required: true},
