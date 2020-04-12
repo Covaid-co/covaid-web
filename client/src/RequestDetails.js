@@ -202,12 +202,14 @@ export default function RequestDetails(props) {
                             </Col>
                         </Row>
                     </>;
-        } else if (props.mode === 2) {
+        } else {
             return (<>
-                    <Button id="nextPage" 
-                            onClick={() => setVolunteerDetailsModal(true)}>
-                            View Volunteers's Information
-                    </Button>
+                    {Object.keys(props.currVolunteer).length > 0 ? 
+                        <Button id="nextPage" 
+                                onClick={() => setVolunteerDetailsModal(true)}>
+                                View Volunteers's Information
+                        </Button>
+                        : <></>}
                     <Row style={{marginBottom: 10}}>
                         <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
                             <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
@@ -224,17 +226,6 @@ export default function RequestDetails(props) {
                                     currRequest={props.currRequest}
                                     matching={false}/>
                 </>);
-        } else {
-            return (<Row style={{marginBottom: 10}}>
-                        <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
-                            <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false);}}>
-                                Update complete status
-                            </Button>
-                        </Col>
-                        <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
-                            <Button onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false); setNotes();}} id='remove-request'>Unmatch Request</Button>
-                        </Col>
-                    </Row>);
         }
     }
 

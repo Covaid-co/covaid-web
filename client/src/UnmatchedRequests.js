@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from  'react-bootstrap/Dropdown'
 import { sortReq, filterReq, formatName } from './OrganizationHelpers';
-import { generateURL } from './Helpers';
+import { generateURL, convertTime } from './Helpers';
 
 export default function UnmatchedRequests(props) {
 
@@ -20,11 +20,12 @@ export default function UnmatchedRequests(props) {
     const [updated, setUpdated] = useState(true);
     const [posted, setPosted] = useState(true);
     const [foundQuery, setQuery] = useState('');
-    const [lastPressed, setLastPressed] = useState('Time Posted');
+    const [lastPressed, setLastPressed] = useState('Last Updated');
 
     useEffect(() => {
+        console.log(props.requests);
         const filteredRequests = filterReq(foundQuery, props.requests);
-        const sorted = sortReq('posted', filteredRequests, false, false, false, true)
+        const sorted = sortReq('updated', filteredRequests, false, false, true, false)
         setFilteredRequests(sorted);
     }, [props.requests]);
 
@@ -38,23 +39,32 @@ export default function UnmatchedRequests(props) {
     const sortRequests = (type) => {
         const sortedRequests = sortReq(type, filteredRequests, name, need, updated, posted);
         if (type === 'name') {
-            setLastPressed('Name')
+            setLastPressed('Name');
             setName(!name);
         } else if (type === 'need') {
-            setLastPressed('Needed By')
+            setLastPressed('Needed By');
             setNeed(!need);
         } else if (type === 'updated') {
-            setLastPressed('Last Updated')
-            setUpdated(!updated);
+            setLastPressed('Last Updated');
+            if (lastPressed != 'Last Updated') {
+                sortReq(type, filteredRequests, name, need, true, posted);
+                setUpdated(true);
+            } else {
+                setUpdated(!updated);
+            }
         } else {
-            setLastPressed('Time Posted')
-            setPosted(!posted);
+            setLastPressed('Time Posted');
+            if (lastPressed != 'Time Posted') {
+                sortReq(type, filteredRequests, name, need, updated, true);
+                setPosted(true);
+            } else {
+                setPosted(!posted);
+            }
         }
         setFilteredRequests(sortedRequests);
     }
 
     const findUser = (request) => {
-        console.log(request)
         if (request.status.volunteer === undefined || request.status.volunteer === 'manual') {
             setCurrVolunteer({});
             return;
@@ -67,7 +77,7 @@ export default function UnmatchedRequests(props) {
             headers: {'Content-Type': 'application/json'},
         }).then((response) => {
             if (response.ok) {
-            response.json().then(data => {
+                response.json().then(data => {
                     if (data.length > 0) {
                         setCurrVolunteer(data[0]);
                     }
@@ -97,8 +107,40 @@ export default function UnmatchedRequests(props) {
     const clickRequest = (request) => {
         setCurrRequest({...request}); 
         setRequestDetailsModal(true);
-        if (props.mode === 2) {
+        if (props.mode === 2 || props.mode === 3) {
             findUser(request); 
+        }
+    }
+
+    const sortInfo = (request) => {
+        if (lastPressed == 'Last Updated') {
+            if (request.last_modified) {
+                const formatted = convertTime(request.last_modified);
+                return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Last Updated: {formatted}</p>
+            } else {
+                return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Unread</p>
+            }
+        } else if (lastPressed == 'Time Posted') {
+            if (request.time_posted) {
+                const formatted = convertTime(request.time_posted);
+                return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Time Posted: {formatted}</p>
+            } else {
+                return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>No Time</p>
+            }
+        } else {
+            return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
+        }
+    }
+
+    const requestStatus = (request) => {
+        if (request.volunteer_status === 'pending') {
+            return <Badge className='pending-task'>Pending</Badge>;
+        } else if (request.volunteer_status === 'accepted') {
+            return <Badge className='in-progress-task'>In Progress</Badge>;
+        } else if (props.mode === 2) {
+            return <Badge className='no-match-task'>No Match</Badge>;
+        } else {
+            return <></>;
         }
     }
 
@@ -136,10 +178,11 @@ export default function UnmatchedRequests(props) {
                                     <div >
                                         <h5 className="volunteer-name">
                                             {formatName(request.requester_first, request.requester_last)}
+                                            {/* {requestStatus(request)} */}
                                         </h5>
-                                        <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
+                                        {sortInfo(request)}
                                     </div>
-                                    <div>{resourceCompleteBadge(request)}</div>
+                                    <div>{resourceCompleteBadge(request)} {requestStatus(request)}</div>
                                     <div style={{display: 'inline-block', width: '100%'}}>
                                         <p style={{float: 'left', marginBottom: 0}}>Tracking: 
                                         {request.assignee ? <Badge key={i} className='assignee-info'>{request.assignee}</Badge> : " No one assigned"}</p>

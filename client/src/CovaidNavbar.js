@@ -103,7 +103,7 @@ export default function CovaidNavbar(props) {
                   {rightNav}
             </Navbar.Collapse>
           </Navbar>
-          <Modal show={showNavModal} onHide={hideModal} style = {{marginTop: 50}} id="general-modal">
+          <Modal size={navModalType === 2 ? "lg" : "sm"} show={showNavModal} onHide={hideModal} style = {{marginTop: 50}} id="general-modal">
             {modal}
           </Modal>
           </>
