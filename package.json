@@ -24,6 +24,7 @@
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.5",
     "morgan": "^1.9.1",
+    "node-cron": "^2.0.3",
     "nodemailer": "^6.4.6",
     "nodemon": "^1.19.2",
     "passport": "^0.4.1",

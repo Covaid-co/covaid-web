@@ -44,6 +44,18 @@ export default function PendingVolunteerRequests(props) {
         props.rejectAPendingRequest(currRequest)
     }
 
+    const calculateRemainingTime = (pendingTime) => {
+        var pendingTimeDate = new Date(pendingTime);
+        var currentTime = new Date();
+
+        var diff = currentTime - pendingTimeDate;
+        diff = diff / 60 / 60 / 1000;
+
+        var remainingTime = 48 - diff
+
+        return Math.round(remainingTime)
+    }
+
     return (
         <>
             <ListGroup variant="flush">
@@ -60,12 +72,15 @@ export default function PendingVolunteerRequests(props) {
             </ListGroup>
             <ListGroup variant="flush">
                 {filteredRequests.map((request, i) => {
+                    
                     return (
                     <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true)}}>
                         <div >
                             <h5 className="volunteer-name">
                                 Someone needs your support!
                             </h5>
+                        <p style={{float: 'right', marginBottom: 0}}>Expires in {
+                            calculateRemainingTime(request.pending_time)} hours</p>
                         </div>
                         <div>
                         {request.resource_request.map((task, i) => {
@@ -74,6 +89,7 @@ export default function PendingVolunteerRequests(props) {
                         </div>
                         <div style={{display: 'inline-block', width: '100%'}}>
                             <p style={{float: 'left', marginBottom: 0}}>Needed by: {request.date}</p>
+
                         </div>
                     </ListGroup.Item>);
                     })}
