@@ -484,10 +484,7 @@ class Home extends Component {
         break;
       case 4:
         modal = <>
-         <Modal.Header closeButton>
-                <Modal.Title>Useful Resources in the Midst of COVID-19</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{paddingTop: 0}}><HelpfulLinks associationName={this.state.currentAssoc.name}/></Modal.Body>
+          <Modal.Body style={{paddingTop: 10}}><HelpfulLinks associationName={this.state.currentAssoc.name} associationLinks={this.state.currentAssoc.links} /></Modal.Body>
           </>
         break;
       default:
