@@ -128,3 +128,65 @@ input {
     margin-left: 94px;
     background: #28a745;
 }
+
+#resource-button {
+    height: 25px;
+    border-radius: 40px;
+    background: white;
+    color: #194bd3;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #314CCE;
+    box-sizing: border-box;
+  
+    margin: 4px 8px 4px 0px;
+    padding-bottom: 0;
+    padding-top: 2px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
+
+#resource-button:hover {
+    background: #194bd3;
+    color: white;
+}
+
+#resource-button-selected {
+    background: #194bd3;
+    color: white;
+    height: 25px;
+    border-radius: 40px;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #314CCE;
+    box-sizing: border-box;
+  
+    margin: 4px 8px 4px 0px;
+    padding-bottom: 0;
+    padding-top: 2px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #314CCE;
+    border-color: #314CCE;
+}
+
+#resources-link {
+    color: white;
+    text-decoration: underline;
+    margin-top: 10px;
+}

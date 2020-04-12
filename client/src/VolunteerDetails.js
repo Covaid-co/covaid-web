@@ -139,24 +139,24 @@ export default function VolunteerDetails(props) {
     }
 
     const volunteer_status_info = () => {
-        if (props.currRequest.volunteer_status === 'pending') {
-            return (
-                <>
-                <Badge aria-describedby='tooltip-bottom' variant="warning" 
-                                   id='volunteerBadge' style={{marginLeft: 8, marginTop: 5}}>
-                                Pending
-                            </Badge>
-                </>
-            );
-        } else if (props.currRequest.volunteer_status === 'accepted'){
-            return (
-                <>
-                <Badge aria-describedby='tooltip-bottom' variant="success" 
-                                   id='volunteerBadge' style={{marginLeft: 8, marginTop: 5}}>
-                                In progress
-                            </Badge>
-                </>
-            );
+        if (props.currRequest) {
+            if (props.currRequest.volunteer_status === 'pending') {
+                return (
+                    <Badge aria-describedby='tooltip-bottom' variant="warning" 
+                                       id='volunteerBadge' style={{marginLeft: 8, marginTop: 5}}>
+                        Pending
+                    </Badge>
+                );
+            } else if (props.currRequest.volunteer_status === 'accepted'){
+                return (
+                    <Badge aria-describedby='tooltip-bottom' variant="success" 
+                                       id='volunteerBadge' style={{marginLeft: 8, marginTop: 5}}>
+                        In progress
+                    </Badge>
+                );
+            }
+        } else {
+            return <></>;
         }
     }
 

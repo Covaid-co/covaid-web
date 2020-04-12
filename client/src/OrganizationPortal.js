@@ -13,6 +13,7 @@ import Cookie from 'js-cookie'
 import Maps from './Maps'
 import VolunteersModal from './VolunteersModal';
 import AdminModal from './AdminModal';
+import OrgResourcesModal from './OrgResourcesModal';
 import { sortFn } from './OrganizationHelpers'
 import { generateURL } from './Helpers'
 import './OrganizationPage.css'
@@ -29,6 +30,7 @@ export default function OrganiationPortal() {
 	const [volunteers, setVolunteers] = useState([]);
 	const [volunteersModal, setVolunteersModal] = useState(false);
 	const [adminModal, setAdminModal] = useState(false);
+	const [resourceModal, setResourceModal] = useState(false);
 
 	const [allRequests, setAllRequests] = useState([]);
 	const [unmatched, setUnmatched] = useState([]);
@@ -82,6 +84,7 @@ export default function OrganiationPortal() {
 			.then((response) => response.json())
 			.then((association_response) => {
 				setAssociation(association_response);
+				console.log(association_response);
 				var pusher = new Pusher('ed72954a8d404950e3c8', {
 					cluster: 'us2',
 					forceTLS: true
@@ -215,7 +218,7 @@ export default function OrganiationPortal() {
 			</Navbar.Collapse>
 		</Navbar>
 		<div style ={{zoom: '95%'}}>
-			<Jumbotron fluid id="jumbo-volunteer">
+			<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 30}}>
 				<Container id="jumbo-container-volunteer">
 					<Row>
 						<Col lg={2} md={1} sm={0}></Col>
@@ -228,6 +231,9 @@ export default function OrganiationPortal() {
 							</Button>{' '}
 							<Button id="homeButtons" onClick={()=>{setVolunteersModal(true)}}>
 								View List of {volunteers.length} Volunteers
+							</Button><br/>
+							<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
+								+ Add a link to community resources page
 							</Button>
 						</Col>
 					</Row>
@@ -303,11 +309,16 @@ export default function OrganiationPortal() {
 			<VolunteersModal volunteersModal={volunteersModal}
 							 setVolunteersModal={setVolunteersModal}
 							 volunteers={volunteers}
+							 association={association}
 							 preVerify={true}/>
 			<AdminModal adminModal={adminModal}
 						setAdminModal={setAdminModal}
 						association={association}
 						setAssociation={setAssociation}/>
+			<OrgResourcesModal resourceModal={resourceModal}
+							setResourceModal={setResourceModal}
+							association={association}
+							setAssociation={setAssociation}/>
 		</div>
 		<OrgLogin showLogin={showLogin} setShowLogin={setShowLogin} login={login} />
 	</>
