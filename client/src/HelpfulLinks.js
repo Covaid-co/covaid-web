@@ -1,11 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-export default function HelpfulLinks() {
+export default function HelpfulLinks(props) {
+
+    useEffect(() => {
+        console.log(props.associationName)
+    }, [props.associationName])
 
     const links = [
         ['https://coronavirus.jhu.edu/map.html', 'Live COVID-19 Statistics'],

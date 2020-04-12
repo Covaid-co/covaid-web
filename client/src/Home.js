@@ -487,7 +487,7 @@ class Home extends Component {
          <Modal.Header closeButton>
                 <Modal.Title>Useful Resources in the Midst of COVID-19</Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{paddingTop: 0}}><HelpfulLinks /></Modal.Body>
+          <Modal.Body style={{paddingTop: 0}}><HelpfulLinks associationName={this.state.currentAssoc.name}/></Modal.Body>
           </>
         break;
       default:
