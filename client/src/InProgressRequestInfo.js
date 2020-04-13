@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal' 
-import fetch_a from './util/fetch_auth'
 
 export default function InProgressRequestInfo(props) {
 
@@ -95,7 +94,7 @@ export default function InProgressRequestInfo(props) {
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Needed by:</h5>
                 <p id="request-info">{props.currRequest.time} of {props.currRequest.date}</p>
                 <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Location:</h5>
-                <p id="request-info"><a target="_blank" href={mapURL}>Click here</a></p>
+                <p id="request-info"><a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
                 <Row style={{marginTop: 15}}>
                         <Col xs={6} style = {{padding: 0, paddingLeft: 15}}>
                             <Button onClick={reject} id='leftCarButtonPressed' style={{backgroundColor: '#dc3545', borderColor: '#dc3545', height: 50}}>Cancel this request</Button>

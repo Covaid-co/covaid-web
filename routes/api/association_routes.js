@@ -14,6 +14,7 @@ router.put('/update', association_controller.update_association);
 router.put('/admins', association_controller.add_admin);
 
 router.put('/addLink', association_controller.add_resource_link)
+router.delete('/:id/deletelink', association_controller.delete_resource_link)
 
 router.post('/emailpasswordresetlink', association_controller.emailPasswordResetLink)
 router.get('/verifyresetlink/:id/:token', association_controller.verifyPasswordResetLink)

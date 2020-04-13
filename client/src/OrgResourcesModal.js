@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { useFormFields } from "./libs/hooksLib";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
@@ -7,6 +7,9 @@ import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Toast from 'react-bootstrap/Toast'
+
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function OrgResourcesModal(props) {
 
@@ -70,18 +73,47 @@ export default function OrgResourcesModal(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
+                response.json().then(data => {
+                    var currLinks = [...props.association.links];
+                    currLinks.push({'_id': data, 'link': fields.resourceLink, 'name': fields.resourceName});
+                    props.setAssociation({
+                        ...props.association,
+                        'links': currLinks
+                    })
+                    setToastMessage('Submitted!');
+                    setShowToast(true);
+                    setFields({
+                        resourceName: "",
+                        resourceLink: ""
+                    })
+                });
+            } else {
+                alert("Unable to upload");
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    }
+
+    const deleteResource = (id) => {
+        console.log(id)
+        let form = {
+            'id': props.association._id
+        }
+        fetch('/api/association/' + id + '/deletelink', {
+            method: 'delete',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => {
+            if (response.ok) {
                 var currLinks = [...props.association.links];
-                currLinks.push({'link': fields.resourceLink, 'name': fields.resourceName});
+                currLinks = currLinks.filter(currLink => currLink._id !== id);
                 props.setAssociation({
                     ...props.association,
                     'links': currLinks
                 })
-                setToastMessage('Submitted!');
+                setToastMessage('Deleted!');
                 setShowToast(true);
-                setFields({
-                    resourceName: "",
-                    resourceLink: ""
-                })
             } else {
                 alert("unable to attach");
             }
@@ -100,10 +132,10 @@ export default function OrgResourcesModal(props) {
                     <Col xs={12}>
                         <Form>
                             <Form.Group controlId="resourceName" bssize="large" style={{marginTop: 0}}>
-                                <Form.Control placeholder="Name of Resource" value={fields.resourceName} onChange={handleFieldChange}/>
+                                <Form.Control placeholder="Name of resource" value={fields.resourceName} onChange={handleFieldChange}/>
                             </Form.Group>
                             <Form.Group controlId="resourceLink" bssize="large" style={{marginTop: 5}}>
-                                <Form.Control placeholder="Resource Link" value={fields.resourceLink} onChange={handleFieldChange}/>
+                                <Form.Control placeholder="Resource link (https://www.example.com) " value={fields.resourceLink} onChange={handleFieldChange}/>
                             </Form.Group>
                             <Button style={{marginTop: 5}} id="createAccount" onClick={()=>submitResource()}>Submit Resource</Button>
                         </Form>
@@ -112,7 +144,15 @@ export default function OrgResourcesModal(props) {
                         <Modal.Title style={{fontSize: 22, marginTop: 20}}>Current Resources</Modal.Title>
                         <p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p>
                         {props.association.links ? props.association.links.map((resource,i) => {
-                            return <a target="_blank" rel="noopener noreferrer" key={i} href={resource.link} style={{color: '#314CCE'}}>{resource.name} <i className="fa fa-refresh"></i><br/></a>
+                            return (
+                            <>
+                                <a target="_blank" rel="noopener noreferrer" key={i} href={resource.link} style={{color: '#314CCE'}}>{resource.name}</a> 
+                                <Button style={{backgroundColor: "Transparent", border: "none"}} onClick={() => deleteResource(resource._id)}>
+                                    <FontAwesomeIcon style={{color: "red"}} icon={faTimes} /> 
+                                </Button>
+                                <br />
+                            </>
+                            )
                         }) : <></>}
                     </Col>
                 </Row>

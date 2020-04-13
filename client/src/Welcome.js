@@ -1,7 +1,5 @@
 import React from "react";
 import { Redirect } from 'react-router-dom';
-import Spinner from 'react-bootstrap/Spinner';
-const queryString = require('query-string');
 
 export default function Welcome(props) {
     return (

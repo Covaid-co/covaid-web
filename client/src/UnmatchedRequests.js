@@ -23,7 +23,6 @@ export default function UnmatchedRequests(props) {
     const [lastPressed, setLastPressed] = useState('Last Updated');
 
     useEffect(() => {
-        console.log(props.requests);
         const filteredRequests = filterReq(foundQuery, props.requests);
         const sorted = sortReq('updated', filteredRequests, false, false, true, false)
         setFilteredRequests(sorted);
@@ -46,7 +45,7 @@ export default function UnmatchedRequests(props) {
             setNeed(!need);
         } else if (type === 'updated') {
             setLastPressed('Last Updated');
-            if (lastPressed != 'Last Updated') {
+            if (lastPressed !== 'Last Updated') {
                 sortReq(type, filteredRequests, name, need, true, posted);
                 setUpdated(true);
             } else {
@@ -54,7 +53,7 @@ export default function UnmatchedRequests(props) {
             }
         } else {
             setLastPressed('Time Posted');
-            if (lastPressed != 'Time Posted') {
+            if (lastPressed !== 'Time Posted') {
                 sortReq(type, filteredRequests, name, need, updated, true);
                 setPosted(true);
             } else {
@@ -113,14 +112,14 @@ export default function UnmatchedRequests(props) {
     }
 
     const sortInfo = (request) => {
-        if (lastPressed == 'Last Updated') {
+        if (lastPressed === 'Last Updated') {
             if (request.last_modified) {
                 const formatted = convertTime(request.last_modified);
                 return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Last Updated: {formatted}</p>
             } else {
                 return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Unread</p>
             }
-        } else if (lastPressed == 'Time Posted') {
+        } else if (lastPressed === 'Time Posted') {
             if (request.time_posted) {
                 const formatted = convertTime(request.time_posted);
                 return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Time Posted: {formatted}</p>

@@ -15,7 +15,7 @@ export default function NewOffers(props) {
     const [resources, setResources] = useState([]);
     const [taskSelect, setTaskSelect] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(4);
+    const [postsPerPage] = useState(4);
 
     const [modalOfferOpen, setModalOfferOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState({

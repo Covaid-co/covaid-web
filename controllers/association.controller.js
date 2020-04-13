@@ -11,14 +11,32 @@ exports.add_resource_link = function (req, res) {
   var name = req.body.name;
   console.log(req.body);
   let newResources = new AssociationResources({'link': link, 'name': name});
-  console.log(newResources)
   Association.findByIdAndUpdate(id, {$push: {'links': newResources}}, {safe: true, upsert: true},
     function (err, doc) {
       if (err) {
         console.log(err);
         return;
       }
-      res.send('Resource added');
+      res.send(newResources._id);
+    }
+  )
+}
+
+exports.delete_resource_link = function(req, res) {
+  var resource_id = req.params.id;
+  var association_id = req.body.id;
+
+  Association.update(
+    {_id: association_id},
+    {
+      $pull: {
+        links: {
+          _id: resource_id
+        }
+      }
+    }, function(err, result) {
+      if (err) return res.send(err)
+      res.send(result)
     }
   )
 }

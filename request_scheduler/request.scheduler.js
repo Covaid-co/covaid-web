@@ -7,7 +7,7 @@ const pusher = new Pusher({
     key: process.env.PUSHER_APP_KEY,
     secret: process.env.PUSHER_APP_SECRET,
     cluster: process.env.PUSHER_APP_CLUSTER,
-    encrypted: true
+    useTLS: true
 });
 
 const Requests = require('../models/request.model');

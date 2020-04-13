@@ -233,7 +233,7 @@ export default function OrganiationPortal() {
 								View List of {volunteers.length} Volunteers
 							</Button><br/>
 							<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
-								+ Add a link to community resources page
+								+ Add a link to your community's resources
 							</Button>
 						</Col>
 					</Row>

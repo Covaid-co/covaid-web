@@ -166,26 +166,26 @@ export default function VolunteerPortal(props) {
 						<Col></Col>
 						<Col lg={6} md={8} sm={10}>
 							<Container style={{padding: 0, marginLeft: 0}}> 
-								<Button id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your offer</Button>
-								<Button style={{"position": "relative"}}id={tabNum==2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
+								<Button id={tabNum===1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your offer</Button>
+								<Button style={{"position": "relative"}}id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
 									Pending
 									<div class="notificationBadge">{pendingRequestNum}</div>
 								</Button>
-								<Button id={tabNum==3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>Active</Button>
+								<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>Active</Button>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-								style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
+								style={tabNum===1 ? {'display': 'block'} : {'display': 'none'}}>
 								<YourOffer latitude = {user.latlong[1]} longitude = {user.latlong[0]}/>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
-								style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
+								style={tabNum===2 ? {'display': 'block'} : {'display': 'none'}}>
 								<PendingVolunteerRequests user={user} 
 									pendingRequests={pendingRequests} 
 									moveRequestFromPendingToInProgress={moveRequestFromPendingToInProgress} 
 									rejectAPendingRequest={rejectAPendingRequest} />
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
-								style={tabNum==3 ? {'display': 'block'} : {'display': 'none'}}>
+								style={tabNum===3 ? {'display': 'block'} : {'display': 'none'}}>
 								<InProgressVolunteerRequests 
 									user={user} 
 									acceptedRequests={acceptedRequests} 
