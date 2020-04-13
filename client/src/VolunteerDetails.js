@@ -140,10 +140,12 @@ export default function VolunteerDetails(props) {
 
 
     const requestStatus = () => {
-        if (props.currRequest.volunteer_status === 'pending') {
-            return <Badge className='pending-task'>Pending</Badge>;
-        } else if (props.currRequest.volunteer_status === 'accepted') {
-            return <Badge className='in-progress-task'>In Progress (Matched)</Badge>;
+        if (props.currRequest) {
+            if (props.currRequest.volunteer_status === 'pending') {
+                return <Badge className='pending-task'>Pending</Badge>;
+            } else if (props.currRequest.volunteer_status === 'accepted') {
+                return <Badge className='in-progress-task'>In Progress (Matched)</Badge>;
+            }     
         } else {
             return <></>;
         }

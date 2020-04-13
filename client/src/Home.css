@@ -69,7 +69,7 @@
 @font-face {
   font-family: "SF Text";
   font-weight: 700;
-  src: url("https://sf.abarba.me/SF-UI-Text-Bold.otf");
+  src: url("./fonts/SF-UI-Text-Bold.otf");
 }
 
 /** Bold Italic */
@@ -114,7 +114,7 @@
 @font-face {
   font-family: "SF Text";
   font-weight: 500;
-  src: url("https://sf.abarba.me/SF-UI-Text-Medium.otf");
+  src: url("./fonts/SF-UI-Text-Medium.otf");
 }
 
 /** Medium Italic */
@@ -129,7 +129,7 @@
 @font-face {
   font-family: "SF Text";
   font-weight: 400;
-  src: url("https://sf.abarba.me/SF-UI-Text-Regular.otf");
+  src: url("./fonts/SF-UI-Text-Regular.otf");
 }
 
 /** Regular Italic */
