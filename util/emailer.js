@@ -6,7 +6,8 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 templates = {
     volunteer_notification: 'd-0df61c70d30f407ea78c577d69ccd07e',
     org_notification: 'd-f43176afdac34a18aaffee5d6945dbc1',
-    verification: 'd-454bd90ee0b74df19746bf2ec664cedc'
+    verification: 'd-454bd90ee0b74df19746bf2ec664cedc',
+    admin_notification: 'd-6c2dcfa1d8734e3293837804b1496ed5'
 };
 
 exports.sendNotificationEmail = (data) => {
@@ -18,7 +19,8 @@ exports.sendNotificationEmail = (data) => {
         //extract the custom fields 
         dynamic_template_data: {
             name: data.name,
-            assoc: data.assoc
+            assoc: data.assoc,
+            action: data.action
         }
     };
 

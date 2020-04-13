@@ -84,7 +84,8 @@ export default function VolunteerDetails(props) {
                     'status': {
                         'current_status': 'in_progress',
                         'volunteer': volunteer_id
-                    }
+                    },
+                    'volunteer_status': 'pending'
                 }
                 props.setCurrRequest(newRequest);
                 moveFromToArr(newRequest, props.unmatched, props.setUnmatched, props.matched, props.setMatched);

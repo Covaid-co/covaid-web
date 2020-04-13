@@ -122,6 +122,27 @@ exports.acceptRequest = asyncWrapper(async (req, res) => {
             }
         })
     if (request) {
+
+        var assoc = await Association.findOne({
+            '_id': request.association
+        });
+
+        for (var i = 0; i < assoc.admins.length; i++) {
+            var admin = assoc.admins[i];
+            if (admin.name === request.assignee) {
+                console.log(admin.email)
+                var data = {
+                    //sender's and receiver's email
+                    sender: "Covaid@covaid.co",
+                    receiver: admin.email,
+                    name: request.requester_first,
+                    action: 'accepted',
+                    templateName: "admin_notification",
+                };
+                emailer.sendNotificationEmail(data)
+                break;
+            }
+        }
         res.sendStatus(200)
         return
     } else {
@@ -184,6 +205,26 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
+        Association.findOne({
+            '_id': request.association
+        }, function (err, assoc) {
+            if (err) return next(err)
+            for (var i = 0; i < assoc.admins.length; i++) {
+                var admin = assoc.admins[i];
+                if (admin.name === request.assignee) {
+                    var data = {
+                        //sender's and receiver's email
+                        sender: "Covaid@covaid.co",
+                        receiver: admin.email,
+                        name: request.requester_first,
+                        action: 'rejected',
+                        templateName: "admin_notification",
+                    };
+                    emailer.sendNotificationEmail(data)
+                    break;
+                }
+            }
+        });
         pusher.trigger(assoc_id, 'general', 'A volunteer has been unmatched from a request!')
         res.send('Request updated.');
     });
