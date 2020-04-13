@@ -549,8 +549,8 @@ class Home extends Component {
         {modal}
       </Modal>
 
-      <Modal show={this.state.showResourceModal} onHide={this.handleHideResourceModal} style = {{marginTop: 50}} id="transparentModal">
-        <Modal.Body style={{paddingTop: 10}}><HelpfulLinks associationName={this.state.currentAssoc.name} associationLinks={this.state.currentAssoc.links} /></Modal.Body>
+      <Modal size={"lg"} show={this.state.showResourceModal} onHide={this.handleHideResourceModal} style = {{marginTop: 50}} id="general-modal">
+        <HelpfulLinks associationCity={this.state.currentAssoc.city} associationLinks={this.state.currentAssoc.links} />
       </Modal>
     </>);
   }
