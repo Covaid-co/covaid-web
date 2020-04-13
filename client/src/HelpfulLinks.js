@@ -29,32 +29,24 @@ export default function HelpfulLinks(props) {
             link: 'https://www.cdc.gov/coronavirus/2019-nCoV/index.html'
         },
         {
-            name: 'WHO',
-            link: 'https://www.who.int/emergencies/diseases/novel-coronavirus-2019'
+            name: 'FAQ',
+            link: 'https://faq.coronavirus.gov/'
+        },
+        {
+            name: 'Unemployment',
+            link: 'https://www.usa.gov/unemployment'
+        },
+        {
+            name: 'FindHelp',
+            link: 'https://findhelp.org/'
+        },
+        {
+            name: 'State',
+            link: 'https://www.usa.gov/state-health'
         },
         {
             name: 'Mutual Aid Hub',
             link: 'https://www.mutualaidhub.org'
-        },
-        {
-            name: 'Mental health in the face of uncertainty',
-            link: 'https://afsp.org/taking-care-of-your-mental-health-in-the-face-of-uncertainty/'
-        },
-        {
-            name: 'EPA List of disinfectants that kill coronavirus',
-            link: 'https://www.epa.gov/pesticide-registration/list-n-disinfectants-use-against-sars-cov-2'
-        },
-        {
-            name: 'Online support groups',
-            link: 'https://www.healingjustice.org/podcast/corona'
-        },
-        {
-            name: 'Live COVID-19 Statistics',
-            link: 'https://coronavirus.jhu.edu/map.html'
-        },
-        {
-            name: 'COVID-19 Prevention Information',
-            link: 'https://docs.google.com/document/d/1y5ST-wUZ6ASh-j6pQ7zmdwEsJIHI0MjtL97aGb7awmM/edit?fbclid=IwAR17xA1fmLUY9faEhPFS5l5JyKN76vynIY-5SZh6e8Iz6Uqa69vAXdKeQcs'
         }
     ]
 
