@@ -1,3 +1,10 @@
+import Cookie from 'js-cookie'
+
+export const removeCookies = (cookies) => {
+    for (var i = 0; i < cookies.length; i++) {
+        Cookie.remove(cookies[i]);
+    }
+}
 
 export const generateURL = (baseURL, params) => {
     let query = Object.keys(params)
@@ -142,3 +149,14 @@ const formatDate = (date, format, utc) => {
 
     return format;
 };
+
+
+export const extractTrueObj = (obj) => {
+    var result = [];
+    for (const p in obj) {
+        if (obj[p]) {
+            result.push(p);
+        }
+    }
+    return result;
+}

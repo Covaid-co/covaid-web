@@ -42,8 +42,8 @@ export default function SelectionForm(props) {
                                         }}
                                         value = {props.currentAssoc ? props.currentAssoc['name'] : "No Association"}
                                         style = {{fontSize: 15}}>
-                                {props.associations.map((assoc) => {
-                                    return <option style={{textIndent: 10}}>{assoc['name']}</option>;
+                                {props.associations.map((assoc, i) => {
+                                    return <option key={i} style={{textIndent: 10}}>{assoc['name']}</option>;
                                 })}
                             </Form.Control>
                         </Form.Group>

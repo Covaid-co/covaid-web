@@ -15,6 +15,7 @@ import NewLanguages from './NewLanguages';
 import PhoneNumber from './PhoneNumber';
 import NewHasCar from './NewHasCar';
 import Details from './Details'
+import { validateEmail, extractTrueObj } from './Helpers';
 
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
@@ -35,16 +36,17 @@ export default function NewRegister(props, switchToLogin) {
         email: "",
         password: "",
         confirmPassword: "", 
-        details: ""
+        details: "",
+        pronouns: ""
     });
 
-    const languages = ['English', 'Spanish', 'Mandarin', 'Cantonese', 'Other (Specify in details)'];
-    const [tasks, setTasks] = useState(['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.']);
+    const defaultList = ['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.'];
+    const [tasks, setTasks] = useState(defaultList);
     const availability = ['Morning', 'Afternoon', 'Evening', 'Weekdays', 'Weekends'];
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [languageChecked, setLanguageChecked] = useState({});
     const [taskChecked, setTaskChecked] = useState({});
     const [availabilityChecked, setAvailabilityChecked] = useState({});
+    const [neighborhoodsChecked, setNeighborhoodsChecked] = useState({});
     const [pageNum, setPageNum] = useState(1);
     const [hasCar, setHasCar] = useState(false);
     const [justRegistered, setJustRegistered] = useState(false);
@@ -64,7 +66,7 @@ export default function NewRegister(props, switchToLogin) {
 
     useEffect(() => {
         if (props.state.currentAssoc.resources) {
-            setTasks(props.state.currentAssoc.resources)
+            setTasks(props.state.currentAssoc.resources);
             var termsList = [
                 'I have not traveled out-of-country in the past 14 days',
                 'I am not exhibiting any symptoms of COVID-19 (cough, fever, etc.)',
@@ -73,14 +75,17 @@ export default function NewRegister(props, switchToLogin) {
                 'I will take take every CDC-provided safety precaution',
                 'I understand that ' + props.state.currentAssoc.name + ' and Covaid are strictly volunteer groups established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during my services as a volunteer.'
             ]
-            setTermSentences(termsList)
+            setTermSentences(termsList);
+        } else {
+            setTasks(defaultList);
+        }
+
+        if (props.state.neighborhoods && Object.keys(props.state.neighborhoods).length === 0) {
+            for (var i = 0; i < props.state.neighborhoods.length; i++) {
+                setNeighborhoodsChecked[props.state.neighborhoods[i]] = false;
+            }
         }
     }, [props.state.currentAssoc])
-
-    function validateEmail(email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    }
 
     const handleTermChange = (event, task) => { 
         setCurrentTerms(prev => ({ 
@@ -90,103 +95,79 @@ export default function NewRegister(props, switchToLogin) {
     }
 
     const checkFirstPageInput = () => {
-        if (fields.first_name.length === 0) {
-            setShowToast(true);
-            setToastMessage('Enter a first name');
-            return false;
-        }
-
-        if (fields.last_name.length === 0) {
-            setShowToast(true);
-            setToastMessage('Enter a last name');
-            return false;
-        }
-
+        var valid = true;
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
-        if (phoneOnlyDigits.length !== 0 && phoneOnlyDigits.length !== 10) {
-            setShowToast(true);
+        if (fields.first_name.length === 0) {
+            setToastMessage('Enter a first name');
+            valid = false;
+        } else if (fields.last_name.length === 0) {
+            setToastMessage('Enter a last name');
+            valid = false;
+        } else if (phoneOnlyDigits.length !== 10) {
             setToastMessage('Enter a valid phone number');
-            return false;
-        }
-
-        if (fields.email.length === 0 || 
+            valid = false;
+        } else if (fields.email.length === 0 || 
             validateEmail(fields.email) === false) {
-            setShowToast(true);
             setToastMessage('Enter a valid email');
-            return false;
-        }
-        
-        if (fields.password.length === 0) {
-            setShowToast(true);
+            valid = false;
+        } else if (fields.password.length === 0) {
             setToastMessage('Set a password');
-            return false;
-        }
-
-        if (fields.password !== fields.confirmPassword) {
-            setShowToast(true);
+            valid = false;
+        } else if (fields.password !== fields.confirmPassword) {
             setToastMessage('Passwords not the same');
-            return false;
+            valid = false;
         }
 
-        return true;
-    }
-
-    const extractTrueObj = (obj) => {
-        var result = [];
-        for (const p in obj) {
-            if (obj[p]) {
-                result.push(p);
-            }
+        if (valid === false) {
+            setShowToast(true);
         }
-        return result;
+        return valid;
     }
 
     const checkSecondPageInput = () => {
+        var valid = true;
         if (Object.values(taskChecked).every(v => v === false)) {
-            setShowToast(true);
             setToastMessage('No task selected');
-            return false;
-        }
-
-        // if (Object.values(languageChecked).every(v => v === false)) {
-        //     setShowToast(true);
-        //     setToastMessage('No language selected');
-        //     return false;
-        // }
-
-        if (Object.values(availabilityChecked).every(v => v === false)) {
-            setShowToast(true);
+            valid = false;
+        } else if (Object.values(availabilityChecked).every(v => v === false)) {
             setToastMessage('No availability selected');
-            return false;
+            valid = false;
+        } else if (fields.details.length === 0) {
+            setToastMessage('Please enter some details');
+            valid = false;
         }
 
-        if (fields.details.length === 0) {
+        if (valid === false) {
             setShowToast(true);
-            setToastMessage('Please enter some details');
-            return false;
         }
-        return true;
+        return valid;
     }
 
     const checkThirdPageInput = () => {
+        var valid = true;
+        if (Object.values(neighborhoodsChecked).every(v => v === false)) {
+            setToastMessage('No neighborhood selected');
+            valid = false;
+        }
+
         for (const term in currentTerms) {
             if (currentTerms[term] === false) {
-                setShowToast(true);
                 setToastMessage('Must agree to all choices');
-                return false;
+                valid = false;
             }
         }
         
         if (captcha === false) {
-            setShowToast(true);
             setToastMessage('Captcha not checked');
-            return false;
+            valid = false;
         }
 
-        return true;
+        if (valid === false) {
+            setShowToast(true);
+        }
+        return valid;
     }
 
-    // Check whether to go to second page
     const goToSecondPage = () => {
         if (checkFirstPageInput()) {
             setPageNum(2);
@@ -195,13 +176,8 @@ export default function NewRegister(props, switchToLogin) {
 
     const goToThirdPage = () => {
         if (checkSecondPageInput()) {
-            setPageNum(3)
+            setPageNum(3);
         }
-    }
-
-    const clearFields = () => {
-        
-        setPageNum(1)
     }
 
     const newHandleSubmit = async e => {
@@ -210,87 +186,65 @@ export default function NewRegister(props, switchToLogin) {
             return;
         }
 
-        Geocode.fromLatLng(props.state.latitude, props.state.longitude).then(
-            response => {
-                var neighborhoods = []
-                for (var i = 0; i < Math.min(5, response.results.length); i++) {
-                    const results = response.results[i]['address_components'];
-                    for (var j = 0; j < results.length; j++) {
-                        const types = results[j].types;
-                        if (types.includes('neighborhood') || types.includes('locality')) {
-                            const currNeighborhoodName = results[j]['long_name'];
-                            if (neighborhoods.includes(currNeighborhoodName) === false) {
-                                neighborhoods.push(currNeighborhoodName);
-                            }
-                        }
-                
-                    }
-                }
-                const selectedTimes = extractTrueObj(availabilityChecked);
-                const selectedTasks = extractTrueObj(taskChecked)
-                var phoneString = '';
-                if (phoneNumber.length > 0) {
-                    phoneString = phoneNumber.replace(/\D/g,'').substring(0,10);
-                }
+        const selectedTimes = extractTrueObj(availabilityChecked);
+        const selectedTasks = extractTrueObj(taskChecked);
+        const selectedNeighborhoods = extractTrueObj(neighborhoodsChecked);
 
-                var associationID = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['_id'] : "5e88cf8a6ea53ef574d1b80c";
-                var associationName = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['name'] : "Covaid";
+        var phoneString = phoneNumber.replace(/\D/g,'').substring(0,10);
+        var associationID = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['_id'] : "5e88cf8a6ea53ef574d1b80c";
+        var associationName = (Object.keys(props.state.currentAssoc).length !== 0) ? props.state.currentAssoc['name'] : "Covaid";
 
-                let form = {
-                    'user': {
-                        'first_name': fields.first_name,
-                        'last_name': fields.last_name,
-                        'email': fields.email,
-                        'password': fields.password,
-                        'availability': false,
-                        'location': {
-                            'type': 'Point',
-                            'coordinates': [props.state.longitude, props.state.latitude]
-                        },
-                        'offer': {
-                            'details': fields.details,
-                            'tasks': selectedTasks,
-                            'neighborhoods': neighborhoods
-                        },
-                        'association': associationID, 
-                        'association_name': associationName,
-                        'languages': ['English'],
-                        'times_available': selectedTimes,
-                        'phone': phoneString
-                    }
-                };
+        let form = {
+            'user': {
+                'first_name': fields.first_name,
+                'last_name': fields.last_name,
+                'email': fields.email,
+                'password': fields.password,
+                'pronouns': fields.pronouns,
+                'availability': true,
+                'location': {
+                    'type': 'Point',
+                    'coordinates': [props.state.longitude, props.state.latitude]
+                },
+                'offer': {
+                    'details': fields.details,
+                    'tasks': selectedTasks,
+                    'neighborhoods': selectedNeighborhoods,
+                    'state': props.state.state,
+                    'timesAvailable': selectedTimes,
+                },
+                'association': associationID, 
+                'association_name': associationName,
+                'languages': ['English'],
+                'phone': phoneString,
+            }
+        };
+        console.log(form);
 
-                console.log(form)
-                fetch('/api/users/', {
-                    method: 'post',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(form)
-                }).then((response) => {
-                    if (response.ok) {
-                        response.json().then(data => {
-                            setJustRegistered(true);
-                        });
-                    } else {
-                        console.log(response);
-                        setShowToast(true);
-                        setToastMessage('Email already used/exists');
-                    }
-                }).catch((e) => {
-                    console.log(e);
-                    setShowToast(true);
-                    setToastMessage('Register unsuccessful');
+        fetch('/api/users/', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+                    setJustRegistered(true);
                 });
-            }).catch((e) => {
-                    console.log(e);
-                    setShowToast(true);
-                    setToastMessage('Register unsuccessful');
-            });
+            } else {
+                setShowToast(true);
+                setToastMessage('Email already used/exists');
+            }
+        }).catch((e) => {
+            console.log(e);
+            setShowToast(true);
+            setToastMessage('Register unsuccessful');
+        });
     }
 
     if (justRegistered === false) {
         if (pageNum === 1) {
             return (
-                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); clearFields();}} id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); setPageNum(1);}} id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title>Create a new account</Modal.Title>
                     </Modal.Header>
@@ -317,11 +271,11 @@ export default function NewRegister(props, switchToLogin) {
                             </Col>
                             <Col xs={12}>
                                 <Form.Group controlId="pronouns" bssize="large">
-                                    <Form.Control placeholder="Preferred Pronouns (Optional)" />
+                                    <Form.Control value={fields.pronouns} onChange={handleFieldChange} placeholder="Preferred Pronouns (Optional)" />
                                 </Form.Group>
                             </Col>
                             <Col xs={12}>
-                                <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder={"Phone (Optional)"} />
+                                <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder={"Phone"} />
                             </Col>
                             <Col xs={12}>
                                 <Form.Group controlId="email" bssize="large">
@@ -383,7 +337,6 @@ export default function NewRegister(props, switchToLogin) {
                             What is your general availability?
                         </h5>
                         <NewLanguages languages={availability} languageChecked={availabilityChecked} setLanguageChecked={setAvailabilityChecked}/>
-                        <SelectionForm associations={props.state.associations} setState={props.setState} currentAssoc={props.state.currentAssoc}/>
                         <Details fields={fields.details} 
                                     handleFieldChange={handleFieldChange}/>
 
@@ -404,13 +357,23 @@ export default function NewRegister(props, switchToLogin) {
             )
         } else {
             return (
-                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); clearFields();}} id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
+                <Modal show={props.state.showRegistration} onHide={() => {props.handleHideRegistration(); setPageNum(1);}} id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title>Almost Done!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={newHandleSubmit}>
-                            <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: '4px'}}>
+                            <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: 4}}>
+                                Select your neighborhoods
+                            </h5>
+                            <p id="createAccountText" style={{marginBottom: 4}}>
+                                If your neighborhood is not listed, change your location before registering
+                            </p>
+                            <NewLanguages languages={props.state.neighborhoods} 
+                                          languageChecked={neighborhoodsChecked} 
+                                          setLanguageChecked={setNeighborhoodsChecked}/>
+                            <SelectionForm associations={props.state.associations} setState={props.setState} currentAssoc={props.state.currentAssoc}/>
+                            <h5 className="titleHeadings" style = {{marginTop: 20, marginBottom: 4}}>
                                 Health
                             </h5>
                             <p id="createAccountText" style={{marginBottom: 20}}>
@@ -420,14 +383,14 @@ export default function NewRegister(props, switchToLogin) {
                             </p>
                             <Row>
                                 <Col md={12}>
-                                {terms.map((term) => {
-                                    return <Form.Check key={term} 
-                                                    type = "checkbox" 
-                                                    label = {termSentences[term]}
-                                                    onChange = {(evt) => { handleTermChange(evt, term) }}
-                                                    checked = {currentTerms[term]} 
-                                                    style = {{fontSize: 12, marginTop: 2}}/>
-                                })}
+                                    {terms.map((term) => {
+                                        return <Form.Check key={term} 
+                                                        type = "checkbox" 
+                                                        label = {termSentences[term]}
+                                                        onChange = {(evt) => { handleTermChange(evt, term) }}
+                                                        checked = {currentTerms[term]} 
+                                                        style = {{fontSize: 12, marginTop: 2}}/>
+                                    })}
                                 </Col>
                             </Row>
                             <ReCAPTCHA
@@ -452,7 +415,7 @@ export default function NewRegister(props, switchToLogin) {
         }
     } else {
         return (
-            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); clearFields(); props.handleHideRegistration();}}>
+            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); setPageNum(1); props.handleHideRegistration();}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Check your email for a verification link!</Modal.Title>
                 </Modal.Header>
@@ -460,9 +423,8 @@ export default function NewRegister(props, switchToLogin) {
                     <p id="locationInfo">
                         Once verified, you will be able to post an offer to support your community directly from your volunteer portal.
                     </p>
-                    <Button id="nextPage" onClick={() => {setJustRegistered(false); clearFields(); props.handleHideRegistration();}}>Return to home</Button>
+                    <Button id="nextPage" onClick={() => {setJustRegistered(false); setPageNum(1); props.handleHideRegistration();}}>Return to home</Button>
                 </Modal.Body>
-                <Modal.Footer></Modal.Footer>
             </Modal>
         );
     }

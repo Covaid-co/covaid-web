@@ -15,13 +15,15 @@ let UsersSchema = new Schema({
     preVerified: {type: Boolean},
     verified: {type: Boolean},
     agreedToTerms: {type: Boolean},
+    pronouns: {type: String},
     note: {type: String},
     offer: {
         tasks: [String],
         neighborhoods: [String],
         details: String,
         car: {type: Boolean, requried: true},
-        timesAvailable: [String]
+        timesAvailable: [String],
+        state: [String]
     },
     location: {
         type: { type: String },
@@ -80,13 +82,15 @@ UsersSchema.methods.toJSON = function() {
             tasks: this.offer.tasks,
             details: this.offer.details,
             car: this.offer.car,
-            timesAvailable: this.offer.timesAvailable
+            timesAvailable: this.offer.timesAvailable,
+            state: this.state
         },
         association: this.association,
         association_name: this.association_name,
         languages: this.languages,
         preVerified: this.preVerified,
-        note: this.note
+        note: this.note,
+        pronouns: this.pronouns,
     };
 };
 

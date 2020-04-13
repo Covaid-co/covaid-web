@@ -9,6 +9,7 @@ import AboutUs from './AboutUs'
 import HowItWorks from './HowItWorks'
 import Feedback from './Feedback'
 import HomePage from './HomePage'
+import { generateURL, removeCookies } from './Helpers';
 
 import fetch_a from './util/fetch_auth';
 
@@ -33,12 +34,9 @@ class Home extends Component {
       latitude: '',
       longitude: '',
       zipCode: '',
-      currentNeighborhood: '',
+      state: [],
+      neighborhoods: [],
       locality: '',
-      nonCookieLat: '',
-      nonCookieLong: '',
-      nonCookieZip: '',
-      nonCookieNeighborhood: '',
       promptChangeZip: false,
       isLoaded: false,
       isLoggedIn: false,
@@ -87,7 +85,6 @@ class Home extends Component {
     this.handleHideLogin = this.handleHideLogin.bind(this);
     this.handleShowRegistration = this.handleShowRegistration.bind(this);
     this.handleHideRegistration = this.handleHideRegistration.bind(this);
-    this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
     this.handleShowRequestHelp = this.handleShowRequestHelp.bind(this);
     this.handleHideRequestHelp = this.handleHideRequestHelp.bind(this);
     this.findAssociations = this.findAssociations.bind(this)
@@ -185,18 +182,6 @@ class Home extends Component {
       });
   }
 
-  updateNeighborhood(shouldUpdate) {
-    if (shouldUpdate) {
-      this.setState({
-        latitude: this.state.nonCookieLat,
-        longitude: this.state.nonCookieLong,
-        currentNeighborhood: this.state.nonCookieNeighborhood,
-        zipCode: this.state.nonCookieZip
-      });
-    }
-    this.handleHidePrompt();
-  }
-
   setNeighborhood(latitude, longitude, zipCode) {
     if (this.state.isLoaded) {
       return;
@@ -204,36 +189,39 @@ class Home extends Component {
 
     Geocode.fromLatLng(latitude, longitude).then(
       response => {
-        var foundNeighborhood = '';
+        var foundNeighborhoods = [];
+        var foundState = [];
         var foundZipCode = '';
         var prevLocality = '';
         var locality = '';
 
         this.findAssociations(latitude, longitude, this);
-        for (var i = 0; i < Math.min(4, response.results.length); i++) {
+        for (var i = 0; i < Math.min(5, response.results.length); i++) {
           const results = response.results[i]['address_components'];
           for (var j = 0; j < results.length; j++) {
             const types = results[j].types;
-            // find neighborhood from current location
-
             if (types.includes('neighborhood') || types.includes('locality')) {
-              if (foundNeighborhood === '') {
-                foundNeighborhood = results[j]['long_name'];
+              const currNeighborhoodName = results[j]['long_name'];
+              if (foundNeighborhoods.includes(currNeighborhoodName) === false) {
+                foundNeighborhoods.push(currNeighborhoodName);
               }
             }
-            // find zip code from current location
+
             if (types.includes('postal_code')) {
               if (foundZipCode === '') {
                 foundZipCode = results[j]['long_name'];
               }
             }
-            
+
             for (var k = 0; k < types.length; k++) {
               const type = types[k];
               if (type.includes('administrative_area_level')) {
                 if (locality === '') {
                   locality = prevLocality;
                 }
+              }
+              if (foundState.length === 0 && type === "administrative_area_level_1") {
+                foundState = [results[j]['long_name'], results[j]['short_name']];
               }
             }
             prevLocality = results[j]['long_name'];
@@ -249,15 +237,17 @@ class Home extends Component {
         Cookie.set('latitude', latitude, { expires: date });
         Cookie.set('longitude', longitude, { expires: date });
         Cookie.set('zipcode', foundZipCode, { expires: date });
-        Cookie.set('neighborhood', foundNeighborhood, { expires: date });
-        Cookie.set('locality', locality, { expires: date })
+        Cookie.set('neighborhoods', foundNeighborhoods, { expires: date });
+        Cookie.set('locality', locality, { expires: date });
+        Cookie.set('state', foundState, { expires: date });
         this.setState({
           isLoaded: true,
           latitude: latitude,
           longitude: longitude,
-          currentNeighborhood: foundNeighborhood,
+          neighborhoods: foundNeighborhoods,
           zipCode: foundZipCode,
-          locality: locality
+          locality: locality,
+          state: foundState
         });
       },
       error => {
@@ -268,26 +258,18 @@ class Home extends Component {
 
   // Set association objects
   findAssociations(lat, long, currentComponent) {
-    var url = "/api/association/get_assoc/lat_long?";
-    let params = {
-        'latitude': lat,
-        'longitude': long
-    }
-    let query = Object.keys(params)
-          .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-          .join('&');
-    url += query;
-
+    let params = {'latitude': lat, 'longitude': long}
+    const url = generateURL("/api/association/get_assoc/lat_long?", params);
     async function fetchData() {
-        const response = await fetch(url);
-        response.json().then((data) => {
-            currentComponent.setState({associations: data});
-            if (data.length > 0) {
-              currentComponent.setState({currentAssoc: data[0]})
-            } else {
-              currentComponent.setState({currentAssoc: {}})
-            }
-        });
+      const response = await fetch(url);
+      response.json().then((data) => {
+        currentComponent.setState({associations: data});
+        if (data.length > 0) {
+          currentComponent.setState({currentAssoc: data[0]})
+        } else {
+          currentComponent.setState({currentAssoc: {}})
+        }
+      });
     }
     fetchData();
   }
@@ -296,25 +278,22 @@ class Home extends Component {
   // lat and long will be updated once geolocation is working
   getMyLocation() {
     let currentComponent = this;
-    // If cookie is set, keep that lat and long with associated zip code
-    if (Cookie.get('latitude') 
-        && Cookie.get('longitude')
-        && Cookie.get('zipcode')
-        && Cookie.get('neighborhood')
-        && Cookie.get('locality')) {
-      const lat = Cookie.get('latitude');
-      const long = Cookie.get('longitude');
-      const zip = Cookie.get('zipcode');
-      const neighborhood = Cookie.get('neighborhood');
-      const locality = Cookie.get('locality');
+    const lat = Cookie.get('latitude');
+    const long = Cookie.get('longitude');
+    const zip = Cookie.get('zipcode');
+    const neighborhoods = Cookie.get('neighborhoods');
+    const locality = Cookie.get('locality');
+    const foundState = Cookie.get('state');
+    if (lat && long && zip && neighborhoods && locality && foundState) {
       this.setState({
         cookieSet: true,
         isLoaded: true,
         latitude: lat,
         longitude: long,
-        currentNeighborhood: neighborhood,
+        neighborhoods: JSON.parse(neighborhoods),
         locality: locality,
-        zipCode: zip
+        zipCode: zip,
+        state: JSON.parse(foundState)
       });
       this.findAssociations(lat, long, currentComponent);
       return;
@@ -326,14 +305,12 @@ class Home extends Component {
     const location = window.navigator && window.navigator.geolocation;
     if (location) {
       location.getCurrentPosition((position) => {
-        // Use actual current lat long to find zip and neighborhood
         this.setNeighborhood(position.coords.latitude, position.coords.longitude, '');
         this.findAssociations(position.coords.latitude, position.coords.longitude, currentComponent);
       }, (error) => {
-        
+        console.log(error);
       });
     }
-
   }
 
   logout() {
@@ -342,53 +319,32 @@ class Home extends Component {
   }
 
   refreshLocation() {
-    Cookie.remove('latitude');
-    Cookie.remove('longitude');
-    Cookie.remove('zipcode');
-    Cookie.remove('neighborhood');
+    const cookieNames = ['latitude', 'longitude', 'zipcode', 'neighborhoods', 'locality', 'state'];
+    removeCookies(cookieNames);
     this.setState({isLoaded: false, searchedLocation: '', currentAssoc: {}});
     this.getMyLocation();
   }
 
   handleLocationChange = (location) => {
-      this.setState({
-          searchedLocation: location
-      })
+    this.setState({
+      searchedLocation: location
+    })
   }
 
   onLocationSubmit = (e, location) => {
-      e.preventDefault();
-      this.handleHideLocation();
-      this.setState({searchedLocation: ''});
-      Geocode.fromAddress(location).then(
-        response => {
-          const { lat, lng } = response.results[0].geometry.location;
-          Cookie.remove('latitude');
-          Cookie.remove('longitude');
-          Cookie.remove('zipcode');
-          Cookie.remove('neighborhood');
-          this.setState({isLoaded: false});
-          this.setNeighborhood(lat, lng, '');
-          this.setState({currentAssoc: {}})
-        },
-        error => {
-          alert("Invalid address");
-        }
-      );
-  }
-
-  setLatLongFromZip(event, zipCode) {
-    event.preventDefault();
-    event.stopPropagation();
-    return Geocode.fromAddress(zipCode).then(
+    e.preventDefault();
+    this.handleHideLocation();
+    this.setState({searchedLocation: ''});
+    Geocode.fromAddress(location).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-        this.setNeighborhood(lat, lng, zipCode);
-        return true;
-      },
-      error => {
-        console.error(error);
-        return false;
+        const cookieNames = ['latitude', 'longitude', 'zipcode', 'neighborhoods', 'locality', 'state'];
+        removeCookies(cookieNames);
+        this.setState({isLoaded: false});
+        this.setNeighborhood(lat, lng, '');
+        this.setState({currentAssoc: {}});
+      }, (error) => {
+        alert("Invalid address");
       }
     );
   }
@@ -454,7 +410,6 @@ class Home extends Component {
     }
 
     var portalText = <></>
-
     var volunteerButton = <></>
 
     if (isLoggedIn) {
@@ -480,7 +435,6 @@ class Home extends Component {
                               clickOnUser={this.clickOnUser}
                               volunteerButton={volunteerButton}
                               refreshLocation={this.refreshLocation}
-                              setLatLong={this.setLatLongFromZip}
                               portalText={portalText}/>
 
     var modal = <></>

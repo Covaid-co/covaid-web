@@ -131,9 +131,9 @@ exports.register = function (req, res) {
         finalUser.notes = '';
 
         finalUser.save(function(err, result) {
-          if (err) {    
+          if (err) {
             return res.status(422).send(err);
-          } 
+          }
 
           var userID = result._id;
           if (user.association == "5e843ab29ad8d24834c8edbf") {

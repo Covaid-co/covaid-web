@@ -41,7 +41,7 @@ export default function HomePage(props) {
           <Jumbotron fluid id="jumbo">
             <Container id="jumboContainer">
               <Row>
-                <Col md={6} id="jumbo-text">
+                <Col md={6} id="jumbo-text" style={{height: 500}}>
                   <h1 id="jumboHeading">Mutual-aid for COVID-19</h1>
                   <p id="jumboText">Covaid connects community volunteers with those who need support</p>
                   {helpButton}{' '}
@@ -75,18 +75,25 @@ export default function HomePage(props) {
           <GetLocation state={props.state}
                        setLatLong={props.setLatLong}/>
           <Container id="location-container">
-              <LocationSetting state={props.state} 
-                               setState={props.setState} 
-                               handleLocationChange={props.handleLocationChange} 
-                               locationSubmit={props.onLocationSubmit}
-                               refreshLocation={props.refreshLocation}
-                               associations={props.state.associations} />
+            <LocationSetting state={props.state} 
+                              setState={props.setState} 
+                              handleLocationChange={props.handleLocationChange} 
+                              locationSubmit={props.onLocationSubmit}
+                              refreshLocation={props.refreshLocation}
+                              associations={props.state.associations} />
+            <form id="web-separate" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style={{position: 'absolute', marginTop: 5}}>
+              <input type="hidden" name="cmd" value="_donations" />
+              <input type="hidden" name="business" value="covaidco@gmail.com" />
+              <input type="hidden" name="item_name" value="Provide aid during the COVID-19 pandemic" />
+              <input type="hidden" name="currency_code" value="USD" />
+              <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+              <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+            </form>
           </Container>
           <Container id="jumboContainer" className="mobile-bulletin-container">
             <Col xs={12} id="mobile-bulletin">
               <p className='location-text' style={{color: 'black', float: 'left', width: '100%', fontSize: "5vw"}}>
                 See who's helping near {props.state.locality}<br/> 
-                
               </p>
               <p className="volunteer-info" style={{color: 'black', float: 'left', fontWeight: 'normal', fontSize: "3vw"}}>Click an offer below for more info</p>
               <NewOffers state={props.state} 
@@ -94,7 +101,7 @@ export default function HomePage(props) {
                         clickOnUser={props.clickOnUser}/>
               {cantFindLink}
             </Col>
-          </Container>    
+          </Container>
         </div>
     );
 }
