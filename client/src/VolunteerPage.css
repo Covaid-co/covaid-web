@@ -153,6 +153,15 @@
   box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
 }
 
+#map-view {
+  padding: 1rem;
+  margin-right: 0px;
+  margin-left: 0px;
+  max-width: 1500px;
+  border-radius: 16px 16px 16px 16px !important;
+  box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
+}
+
 #request-status {
   height: 25px;
   border-radius: 40px;
