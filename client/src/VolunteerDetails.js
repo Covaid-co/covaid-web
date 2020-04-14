@@ -73,6 +73,7 @@ export default function VolunteerDetails(props) {
             'volunteer_name': first_name,
             'association': assoc_id
         };
+
         fetch('/api/request/attachVolunteerToRequest', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
@@ -84,7 +85,8 @@ export default function VolunteerDetails(props) {
                     'status': {
                         'current_status': 'in_progress',
                         'volunteer': volunteer_id
-                    }
+                    },
+                    'volunteer_status': 'pending'
                 }
                 props.setCurrRequest(newRequest);
                 moveFromToArr(newRequest, props.unmatched, props.setUnmatched, props.matched, props.setMatched);

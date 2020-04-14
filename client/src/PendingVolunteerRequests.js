@@ -51,7 +51,7 @@ export default function PendingVolunteerRequests(props) {
         var diff = currentTime - pendingTimeDate;
         diff = diff / 60 / 60 / 1000;
 
-        var remainingTime = 48 - diff
+        var remainingTime = 24 - diff
 
         return Math.round(remainingTime)
     }

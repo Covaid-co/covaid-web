@@ -109,6 +109,7 @@ exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     var requests = await Requests.find({
         'status.volunteer': id,
         'volunteer_status': 'accepted',
+        'pending_time': new Date()
     })
     res.send(requests)
 })
@@ -122,6 +123,27 @@ exports.acceptRequest = asyncWrapper(async (req, res) => {
             }
         })
     if (request) {
+
+        var assoc = await Association.findOne({
+            '_id': request.association
+        });
+
+        for (var i = 0; i < assoc.admins.length; i++) {
+            var admin = assoc.admins[i];
+            if (admin.name === request.assignee) {
+                console.log(admin.email)
+                var data = {
+                    //sender's and receiver's email
+                    sender: "Covaid@covaid.co",
+                    receiver: admin.email,
+                    name: request.requester_first,
+                    action: 'accepted',
+                    templateName: "admin_notification",
+                };
+                emailer.sendNotificationEmail(data)
+                break;
+            }
+        }
         res.sendStatus(200)
         return
     } else {
@@ -184,6 +206,40 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
         }
     }, function (err, request) {
         if (err) return next(err);
+        Association.findOne({
+            '_id': request.association
+        }, function (err, assoc) {
+            if (err) return next(err)
+            var foundAdmin = false
+            for (var i = 0; i < assoc.admins.length; i++) {
+                var admin = assoc.admins[i];
+                if (admin.name === request.assignee) {
+                    var data = {
+                        //sender's and receiver's email
+                        sender: "Covaid@covaid.co",
+                        receiver: admin.email,
+                        name: request.requester_first,
+                        action: 'rejected',
+                        templateName: "admin_notification",
+                    };
+                    emailer.sendNotificationEmail(data)
+                    foundAdmin = true
+                    break;
+                }
+            }
+            if (!foundAdmin) {
+                var data = {
+                    //sender's and receiver's email
+                    sender: "Covaid@covaid.co",
+                    receiver: assoc.email,
+                    name: request.requester_first,
+                    assoc: assoc.name,
+                    templateName: "org_notification",
+                 };
+        
+                emailer.sendNotificationEmail(data)
+            }
+        });
         pusher.trigger(assoc_id, 'general', 'A volunteer has been unmatched from a request!')
         res.send('Request updated.');
     });
@@ -339,33 +395,22 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         request.volunteer_status = "pending"
         request.pending_time = new Date()
 
-        var result = await request.save()
-
         pusher.trigger(req.body.volunteer._id, 'direct-match', 'You have a new pending request!')
 
-        if (request.association == "5e843ab29ad8d24834c8edbf") {
-            // PITT
-            await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-        } else {
-            if (associationEmail === "covaidco@gmail.com") {
-                sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
-            } else {
-                var first_name = req.body.volunteer.first_name;
-                first_name = first_name.toLowerCase();
-                first_name = first_name[0].toUpperCase() + first_name.slice(1);
-                var data = {
-                    //sender's and receiver's email
-                    sender: "Covaid@covaid.co",
-                    receiver: req.body.volunteer.email,
-                    name: first_name,
-                    assoc: associationEmail,
-                    templateName: "volunteer_notification",
-                };
+        var first_name = req.body.volunteer.first_name;
+        first_name = first_name.toLowerCase();
+        first_name = first_name[0].toUpperCase() + first_name.slice(1);
+        var data = {
+            //sender's and receiver's email
+            sender: "Covaid@covaid.co",
+            receiver: req.body.volunteer.email,
+            name: first_name,
+            assoc: associationEmail,
+            templateName: "volunteer_notification",
+        };
 
-                emailer.sendNotificationEmail(data)
-                // sendEmail(request, req.body.volunteer.email, associationEmail)
-            }
-        } 
+            emailer.sendNotificationEmail(data)
+            // sendEmail(request, req.body.volunteer.email, associationEmail)
         res.status(200).json({
             volunteers: volunteers 
         });

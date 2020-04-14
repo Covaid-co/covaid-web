@@ -95,9 +95,8 @@ export default function VolunteerPortal(props) {
 			  
 				  var channel = pusher.subscribe(user._id);
 				  channel.bind('direct-match', function(data) {
-					console.log(data)
 					fetchPendingRequests(user._id);
-					addToast(data,
+					addToast('You have a new pending request!',
 						{
 							appearance: 'info',
 							autoDismiss: true

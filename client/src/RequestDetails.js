@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
+import Toast from 'react-bootstrap/Toast'
 import BestMatches from './BestMatches'
 import Col from 'react-bootstrap/Col'
 import VolunteerDetails from './VolunteerDetails'
@@ -23,6 +24,8 @@ export default function RequestDetails(props) {
     const [mapsURL, setMapsURL] = useState('');
     const [adminList, setAdminList] = useState([]);
     const [prevNote, setPrevNote] = useState('');
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
     const options = ['Call ahead to store and pay (Best option)',
                      'Have volunteer pay and reimburse when delivered',
                      'N/A']
@@ -61,9 +64,15 @@ export default function RequestDetails(props) {
 
 
     const topMatch = () => {
-        props.setRequestDetailsModal(false);
-        setTopMatchesModal(true);
-        setNotes();
+        if (props.currRequest.assignee && props.currRequest.assignee !== '' && props.currRequest.assignee !== 'No one assigned') {
+            props.setRequestDetailsModal(false);
+            setTopMatchesModal(true);
+            setNotes();
+        } else {
+            console.log("TOAST!")
+            setShowToast(true);
+            setToastMessage('Please assign an admin to track this request');
+        }
     }
 
     const unMatch = () => {
@@ -136,6 +145,7 @@ export default function RequestDetails(props) {
                     for (var i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i] = newRequest;
+                            break;
                         }
                     }
                     props.setRequests(dup);
@@ -170,6 +180,7 @@ export default function RequestDetails(props) {
                     for (var i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i].assignee = assignString;
+                            break;
                         }
                     }
                     props.setRequests(dup);
@@ -201,6 +212,20 @@ export default function RequestDetails(props) {
                                 <Button onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}} id='remove-request'>Remove Request</Button>
                             </Col>
                         </Row>
+                        <Toast
+                            show={showToast}
+                            delay={2000}
+                            onClose={() => setShowToast(false)}
+                            autohide
+                            style={{
+                                position: 'absolute',
+                                bottom: 120,
+                                right: 0,
+                                marginBottom: 27,
+                                marginRight: 10
+                            }}>
+                            <Toast.Body>{toastMessage}</Toast.Body>
+                        </Toast>    
                     </>;
         } else {
             return (<>
@@ -270,6 +295,7 @@ export default function RequestDetails(props) {
                     for (var i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i].note = fields.email2;
+                            break;
                         }
                     }
                     props.setRequests(dup);
