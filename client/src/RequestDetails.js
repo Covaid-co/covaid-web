@@ -69,7 +69,6 @@ export default function RequestDetails(props) {
             setTopMatchesModal(true);
             setNotes();
         } else {
-            console.log("TOAST!")
             setShowToast(true);
             setToastMessage('Please assign an admin to track this request');
         }
