@@ -42,7 +42,7 @@ export default function BestMatches(props) {
             <Modal.Body>
                 <Row style={{marginTop: -9}}>
                     <Col xs={12}>
-                        <Button id="nextPage" onClick={()=>{setManualModal(true)}} style={{marginTop: 0}}>Manually Enter Volunteer</Button>;
+                        <Button id="nextPage" onClick={()=>{setManualModal(true)}} style={{marginTop: 0}}>Manually Enter Volunteer</Button>
                         <Form>
                             <Form.Group controlId="zip" bssize="large" style={{marginTop: 10}}>
                                 <Form.Control placeholder="Search for a volunteer"/>

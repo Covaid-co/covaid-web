@@ -64,7 +64,7 @@ export default function RequestDetails(props) {
 
 
     const topMatch = () => {
-        if (props.currRequest.assignee !== 'No one assigned') {
+        if (props.currRequest.assignee && props.currRequest.assignee !== '' && props.currRequest.assignee !== 'No one assigned') {
             props.setRequestDetailsModal(false);
             setTopMatchesModal(true);
             setNotes();

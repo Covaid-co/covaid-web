@@ -109,6 +109,7 @@ exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     var requests = await Requests.find({
         'status.volunteer': id,
         'volunteer_status': 'accepted',
+        'pending_time': new Date()
     })
     res.send(requests)
 })
@@ -209,6 +210,7 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
             '_id': request.association
         }, function (err, assoc) {
             if (err) return next(err)
+            var foundAdmin = false
             for (var i = 0; i < assoc.admins.length; i++) {
                 var admin = assoc.admins[i];
                 if (admin.name === request.assignee) {
@@ -221,8 +223,21 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
                         templateName: "admin_notification",
                     };
                     emailer.sendNotificationEmail(data)
+                    foundAdmin = true
                     break;
                 }
+            }
+            if (!foundAdmin) {
+                var data = {
+                    //sender's and receiver's email
+                    sender: "Covaid@covaid.co",
+                    receiver: assoc.email,
+                    name: request.requester_first,
+                    assoc: assoc.name,
+                    templateName: "org_notification",
+                 };
+        
+                emailer.sendNotificationEmail(data)
             }
         });
         pusher.trigger(assoc_id, 'general', 'A volunteer has been unmatched from a request!')

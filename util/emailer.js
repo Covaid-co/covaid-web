@@ -7,7 +7,8 @@ templates = {
     volunteer_notification: 'd-0df61c70d30f407ea78c577d69ccd07e',
     org_notification: 'd-f43176afdac34a18aaffee5d6945dbc1',
     verification: 'd-454bd90ee0b74df19746bf2ec664cedc',
-    admin_notification: 'd-6c2dcfa1d8734e3293837804b1496ed5'
+    admin_notification: 'd-6c2dcfa1d8734e3293837804b1496ed5',
+    pending_notification: 'd-1a6056febc214315bb3c12e1da3674b9'
 };
 
 exports.sendNotificationEmail = (data) => {
@@ -29,7 +30,7 @@ exports.sendNotificationEmail = (data) => {
         if (error) {
             console.log(error);
         } else {
-            console.log("That's wassup!");
+            console.log("Email sent!");
         }
       });
 }
