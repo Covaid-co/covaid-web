@@ -73,6 +73,7 @@ export default function VolunteerDetails(props) {
             'volunteer_name': first_name,
             'association': assoc_id
         };
+
         fetch('/api/request/attachVolunteerToRequest', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},

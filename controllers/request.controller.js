@@ -403,25 +403,21 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             // PITT
             await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
         } else {
-            if (associationEmail === "covaidco@gmail.com") {
-                sendEmail(request, 'covaidco@gmail.com', 'covaidco@gmail.com')
-            } else {
-                var first_name = req.body.volunteer.first_name;
-                first_name = first_name.toLowerCase();
-                first_name = first_name[0].toUpperCase() + first_name.slice(1);
-                var data = {
-                    //sender's and receiver's email
-                    sender: "Covaid@covaid.co",
-                    receiver: req.body.volunteer.email,
-                    name: first_name,
-                    assoc: associationEmail,
-                    templateName: "volunteer_notification",
-                };
+            var first_name = req.body.volunteer.first_name;
+            first_name = first_name.toLowerCase();
+            first_name = first_name[0].toUpperCase() + first_name.slice(1);
+            var data = {
+                //sender's and receiver's email
+                sender: "Covaid@covaid.co",
+                receiver: req.body.volunteer.email,
+                name: first_name,
+                assoc: associationEmail,
+                templateName: "volunteer_notification",
+            };
 
-                emailer.sendNotificationEmail(data)
-                // sendEmail(request, req.body.volunteer.email, associationEmail)
-            }
-        } 
+            emailer.sendNotificationEmail(data)
+            // sendEmail(request, req.body.volunteer.email, associationEmail)
+        }
         res.status(200).json({
             volunteers: volunteers 
         });
