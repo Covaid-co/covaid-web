@@ -153,17 +153,17 @@ export default function UnmatchedRequests(props) {
                         </Form.Group>
                     </Form>
                 </Col>
-                <Col xs={4}>
-                <Dropdown drop='up'>
-                    <Dropdown.Toggle id="dropdown-basic" className='dropdown-sort'>
-                        Sort ({lastPressed})
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{width: '100%'}}>
-                        <Dropdown.Item onClick={()=>sortRequests('name')}>Name</Dropdown.Item>
-                        <Dropdown.Item onClick={()=>sortRequests('need')}>Needed By</Dropdown.Item>
-                        <Dropdown.Item onClick={()=>sortRequests('updated')}>Last Updated</Dropdown.Item>
-                        <Dropdown.Item onClick={()=>sortRequests('posted')}>Time Posted</Dropdown.Item>
-                    </Dropdown.Menu>
+                <Col xs={4} style={{paddingLeft: 0}}>
+                    <Dropdown drop='up'>
+                        <Dropdown.Toggle id="dropdown-basic" className='dropdown-sort'>
+                            Sort ({lastPressed})
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{width: '100%'}}>
+                            <Dropdown.Item onClick={()=>sortRequests('name')}>Name</Dropdown.Item>
+                            <Dropdown.Item onClick={()=>sortRequests('need')}>Needed By</Dropdown.Item>
+                            <Dropdown.Item onClick={()=>sortRequests('updated')}>Last Updated</Dropdown.Item>
+                            <Dropdown.Item onClick={()=>sortRequests('posted')}>Time Posted</Dropdown.Item>
+                        </Dropdown.Menu>
                     </Dropdown>
                 </Col>
                 <Col xs={12}>

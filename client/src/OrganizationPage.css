@@ -258,3 +258,123 @@ input {
     text-decoration: underline;
     margin-top: 10px;
 }
+
+#map-title{
+    font-family: 'SF Pro Display';
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 5px;
+    display: inline;
+}
+
+#volunteer-not-selected {
+    height: 25px;
+    border-radius: 40px;
+    background: white;
+    color: #194bd3;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #314CCE;
+    box-sizing: border-box;
+    float: right;
+    margin-top: 6px !important;
+  
+    margin: 4px 8px 4px 0px;
+    padding-bottom: 0;
+    padding-top: 1px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
+
+#requester-not-selected {
+    height: 25px;
+    border-radius: 40px;
+    background: white;
+    color: #DB4B4B;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #DB4B4B;
+    box-sizing: border-box;
+    float: right;
+    margin-top: 6px !important;
+  
+    margin: 4px 8px 4px 0px;
+    padding-bottom: 0;
+    padding-top: 1px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
+
+#volunteer-not-selected:hover {
+    color: white;
+    background: #194bd3;
+}
+
+#requester-not-selected:hover {
+    color: white;
+    background: #DB4B4B;
+    border: 1px solid #DB4B4B;
+}
+
+#volunteer-selected {
+    height: 25px;
+    border-radius: 40px;
+    background: #194bd3;
+    color: white;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #314CCE;
+    box-sizing: border-box;
+    float: right;
+    margin-top: 6px !important;
+  
+    margin: 4px 8px 4px 0px;
+    padding-bottom: 0;
+    padding-top: 1px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
+
+#requester-selected {
+    height: 25px;
+    border-radius: 40px;
+    background: #DB4B4B;
+    color: white;
+    font-size: 13px;
+    font-family: "SF Text";
+    font-weight: bold;
+    border: 1px solid #DB4B4B;
+    box-sizing: border-box;
+    float: right;
+    margin-top: 6px !important;
+  
+    margin: 4px 8px 4px 0px;
+    padding-bottom: 0;
+    padding-top: 1px;
+    display: inline-block;
+  
+    flex: none;
+    order: 0;
+    align-self: flex-start;
+    vertical-align: middle;
+}
+/* 
+.mapboxgl-popup-close-button {
+    border-radius: 32px;
+    display: none;
+} */
