@@ -395,29 +395,22 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         request.volunteer_status = "pending"
         request.pending_time = new Date()
 
-        var result = await request.save()
-
         pusher.trigger(req.body.volunteer._id, 'direct-match', 'You have a new pending request!')
 
-        if (request.association == "5e843ab29ad8d24834c8edbf") {
-            // PITT
-            await addRequestToSpreadsheet(request, result._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-        } else {
-            var first_name = req.body.volunteer.first_name;
-            first_name = first_name.toLowerCase();
-            first_name = first_name[0].toUpperCase() + first_name.slice(1);
-            var data = {
-                //sender's and receiver's email
-                sender: "Covaid@covaid.co",
-                receiver: req.body.volunteer.email,
-                name: first_name,
-                assoc: associationEmail,
-                templateName: "volunteer_notification",
-            };
+        var first_name = req.body.volunteer.first_name;
+        first_name = first_name.toLowerCase();
+        first_name = first_name[0].toUpperCase() + first_name.slice(1);
+        var data = {
+            //sender's and receiver's email
+            sender: "Covaid@covaid.co",
+            receiver: req.body.volunteer.email,
+            name: first_name,
+            assoc: associationEmail,
+            templateName: "volunteer_notification",
+        };
 
             emailer.sendNotificationEmail(data)
             // sendEmail(request, req.body.volunteer.email, associationEmail)
-        }
         res.status(200).json({
             volunteers: volunteers 
         });
