@@ -33,6 +33,11 @@ export const sortReq = (type, filteredRequests, name, need, updated, posted) => 
             return sortFn(x, y, need);
         });
     } else if (type === 'updated') {
+        for (var i = 0; i < temp.length; i++) {
+            if (!temp[i].last_modified && temp[i].time_posted) {
+                temp[i].last_modified = temp[i].time_posted;
+            }
+        }
         temp.sort(function(a, b) {
             var x = new Date();
             x.setFullYear(2000);

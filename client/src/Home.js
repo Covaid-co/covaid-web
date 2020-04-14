@@ -89,6 +89,7 @@ class Home extends Component {
     this.handleHideRequestHelp = this.handleHideRequestHelp.bind(this);
     this.findAssociations = this.findAssociations.bind(this)
     this.toggleNavBar = this.toggleNavBar.bind(this);
+    this.setLatLongFromZip = this.setLatLongFromZip.bind(this);
   }
 
   handleHideRequestHelp() {
@@ -159,6 +160,22 @@ class Home extends Component {
       .then((res) => {
         this.setState({totalVolunteers: res.count});
       });
+  }
+
+  setLatLongFromZip(event, zipCode) {
+    event.preventDefault();
+    event.stopPropagation();
+    return Geocode.fromAddress(zipCode).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.setNeighborhood(lat, lng, zipCode);
+        return true;
+      },
+      error => {
+        console.error(error);
+        return false;
+      }
+    );
   }
 
   update = () => {
@@ -435,6 +452,7 @@ class Home extends Component {
                               clickOnUser={this.clickOnUser}
                               volunteerButton={volunteerButton}
                               refreshLocation={this.refreshLocation}
+                              setLatLong={this.setLatLongFromZip}
                               portalText={portalText}/>
 
     var modal = <></>
@@ -503,7 +521,7 @@ class Home extends Component {
         {modal}
       </Modal>
 
-      <Modal size={"lg"} show={this.state.showResourceModal} onHide={this.handleHideResourceModal} style = {{marginTop: 50}} id="general-modal">
+      <Modal size={"lg"} show={this.state.showResourceModal} onHide={this.handleHideResourceModal} style = {{marginTop: 10, paddingBottom: 50}} id="general-modal">
         <HelpfulLinks associationCity={this.state.currentAssoc.city} associationLinks={this.state.currentAssoc.links} />
       </Modal>
     </>);

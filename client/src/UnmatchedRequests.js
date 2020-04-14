@@ -24,7 +24,7 @@ export default function UnmatchedRequests(props) {
 
     useEffect(() => {
         const filteredRequests = filterReq(foundQuery, props.requests);
-        const sorted = sortReq('updated', filteredRequests, false, false, true, false)
+        const sorted = sortReq('updated', filteredRequests, false, false, true, false);
         setFilteredRequests(sorted);
     }, [props.requests]);
 

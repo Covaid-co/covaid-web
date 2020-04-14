@@ -119,7 +119,7 @@ export default function HelpfulLinks(props) {
                                                 showGraphic={true}
                                                 maxLine={2}
                                                 minLine={1}
-                                                style={{display: "inlineBlock"}}
+                                                className='react-link'
                                                 url={link.link}
                                                 />
                                         </div>
