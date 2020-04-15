@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {render} from 'react-dom';
-import MapGL, {Popup, NavigationControl, FullscreenControl, ScaleControl}  from 'react-map-gl';
+import React, { useState, useEffect } from 'react';
+import MapGL, { Popup, NavigationControl, FullscreenControl }  from 'react-map-gl';
 import Pins from './pins';
 import InfoMarker from './InfoMarker'
 
@@ -10,12 +9,22 @@ export default function NewMap(props) {
     const [viewport, setViewport] = useState({
         latitude: 38.7528233,
         longitude: -98.1970437,
-        zoom: 3,
+        zoom: 2.8,
         bearing: 0,
         pitch: 0
     });
-
     const [popupInfo, setPopupInfo] = useState(null);
+
+    useEffect(() => {
+        if (props.association.name && props.association.name !== "Covaid") {
+            setViewport({
+                ...viewport,
+                latitude: props.association.location.coordinates[0],
+                longitude: props.association.location.coordinates[1],
+                zoom: 9
+            })
+        }
+    }, [props.association])
     
     const fullscreenControlStyle = {
         position: 'absolute',
@@ -41,17 +50,17 @@ export default function NewMap(props) {
             {...viewport}
             width="100%"
             height="450px"
-            // height="100vh"
             mapStyle="mapbox://styles/mapbox/light-v9"
             onViewportChange={setViewport}
             mapboxApiAccessToken={MAPBOX_TOKEN}>
             <Pins requests={props.requests} volunteers={props.volunteers} onClick={onClickMarker}
-                  requesterMap={props.requesterMap} volunteerMap={props.volunteerMap}/>
+                  requesterMap={props.requesterMap} volunteerMap={props.volunteerMap} mode={props.mode}
+                  unmatched={props.unmatched} matched={props.matched} completed={props.completed}/>
             <div style={navStyle}>
-                <NavigationControl />
+                <NavigationControl/>
             </div>
             <div style={fullscreenControlStyle}>
-                <FullscreenControl />
+                <FullscreenControl/>
             </div>
             {popupInfo && (
                 <Popup
@@ -59,10 +68,14 @@ export default function NewMap(props) {
                     anchor="top"
                     longitude={popupInfo.longitude}
                     latitude={popupInfo.latitude}
-                    // closeOnClick={true}
-                    // closeOnMove={true}
+                    closeOnClick={false}
                     onClose={() => setPopupInfo(null)}>
-                    <InfoMarker info={popupInfo} style={{color: 'black'}}/>
+                    <InfoMarker info={popupInfo} style={{color: 'black'}} 
+                                setVolunteerDetailsModal={props.setVolunteerDetailsModal} 
+                                setCurrVolunteer={props.setCurrVolunteer}
+                                setRequestDetailsModal={props.setRequestDetailsModal} 
+                            	setCurrRequest={props.setCurrRequest}
+                                setPopupInfo = {setPopupInfo}/>
                 </Popup>
             )}
         </MapGL>

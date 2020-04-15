@@ -10,7 +10,7 @@ const SIZE = 20;
 // Important for perf: the markers never change, avoid rerender when the map viewport changes
 export default class Pins extends PureComponent {
   render() {
-    const {onClick} = this.props;
+    const {onClick, mode} = this.props;
 
     var volunteerMarkers = this.props.volunteers.map((request, index) => {
         return <Marker key={`volunteer-${index}`} longitude={request.longitude} latitude={request.latitude}>
@@ -29,14 +29,25 @@ export default class Pins extends PureComponent {
                     </svg>
                 </Marker>
     })
-    var requesterMarkers = this.props.requests.map((request, index) => {
+    var realRequests = [];
+    var color = '#DB4B4B';
+    if (mode === 1) {
+        realRequests = this.props.unmatched;
+    } else if (mode === 2) {
+        realRequests = this.props.matched;
+        color = '#db9327';
+    } else if (mode === 3) {
+        realRequests = this.props.completed;
+        color = '#28a745';
+    }
+    var requesterMarkers = realRequests.map((request, index) => {
         return  <Marker key={`requester-${index}`} longitude={request.longitude} latitude={request.latitude}>
                     <svg
                     height={SIZE}
                     viewBox="0 0 24 24"
                     style={{
                         cursor: 'pointer',
-                        fill: '#d00',
+                        fill: color,
                         stroke: 'none',
                         transform: `translate(${-SIZE / 2}px,${-SIZE}px)`
                     }}
@@ -56,23 +67,5 @@ export default class Pins extends PureComponent {
         return volunteerMarkers;
     }
     return <></>;
-
-    // return requests.map((request, index) => (
-    //   <Marker key={`marker-${index}`} longitude={request.longitude} latitude={request.latitude}>
-    //     <svg
-    //       height={SIZE}
-    //       viewBox="0 0 24 24"
-    //       style={{
-    //         cursor: 'pointer',
-    //         fill: '#d00',
-    //         stroke: 'none',
-    //         transform: `translate(${-SIZE / 2}px,${-SIZE}px)`
-    //       }}
-    //       onClick={() => onClick(request)}
-    //     >
-    //       <path d={ICON} />
-    //     </svg>
-    //   </Marker>
-    // ));
   }
 }

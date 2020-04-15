@@ -161,7 +161,7 @@ export default function VolunteerDetails(props) {
                     if (props.setVolunteersModal) {
                         props.setVolunteersModal(true);
                     }
-                }} style = {{marginTop: 40}}>
+                }} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Volunteer Information</Modal.Title>
                 </Modal.Header>

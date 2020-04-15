@@ -260,7 +260,7 @@ input {
 }
 
 #map-title{
-    font-family: 'SF Pro Display';
+    font-family: 'SF Display';
     font-size: 24px;
     font-weight: bold;
     margin-top: 5px;
@@ -314,7 +314,7 @@ input {
     align-self: flex-start;
     vertical-align: middle;
 }
-
+/* 
 #volunteer-not-selected:hover {
     color: white;
     background: #194bd3;
@@ -324,7 +324,7 @@ input {
     color: white;
     background: #DB4B4B;
     border: 1px solid #DB4B4B;
-}
+} */
 
 #volunteer-selected {
     height: 25px;

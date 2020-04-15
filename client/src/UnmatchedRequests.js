@@ -14,7 +14,7 @@ export default function UnmatchedRequests(props) {
     const [filteredRequests, setFilteredRequests] = useState([]);
     const [requestDetailsModal, setRequestDetailsModal] = useState(false);
     const [currRequest, setCurrRequest] = useState({});
-    const [currVolunteer, setCurrVolunteer] = useState({});
+    // const [currVolunteer, setCurrVolunteer] = useState({});
     const [name, setName] = useState(false);
     const [need, setNeed] = useState(false);
     const [updated, setUpdated] = useState(true);
@@ -63,31 +63,31 @@ export default function UnmatchedRequests(props) {
         setFilteredRequests(sortedRequests);
     }
 
-    const findUser = (request) => {
-        if (request.status.volunteer === undefined || request.status.volunteer === 'manual') {
-            setCurrVolunteer({});
-            return;
-        }
-        let params = {'id': request.status.volunteer}
-        const url = generateURL( "/api/users/user?", params);
+    // const findUser = (request) => {
+    //     if (request.status.volunteer === undefined || request.status.volunteer === 'manual') {
+    //         setCurrVolunteer({});
+    //         return;
+    //     }
+    //     let params = {'id': request.status.volunteer}
+    //     const url = generateURL( "/api/users/user?", params);
 
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-                    if (data.length > 0) {
-                        setCurrVolunteer(data[0]);
-                    }
-                });
-            } else {
-                console.log(response);
-            }
-        }).catch((e) => {
-            console.log(e);
-        });
-    }
+    //     fetch(url, {
+    //         method: 'get',
+    //         headers: {'Content-Type': 'application/json'},
+    //     }).then((response) => {
+    //         if (response.ok) {
+    //             response.json().then(data => {
+    //                 if (data.length > 0) {
+    //                     setCurrVolunteer(data[0]);
+    //                 }
+    //             });
+    //         } else {
+    //             console.log(response);
+    //         }
+    //     }).catch((e) => {
+    //         console.log(e);
+    //     });
+    // }
 
     const resourceCompleteBadge = (request) => {
         var result = <></>;
@@ -106,9 +106,9 @@ export default function UnmatchedRequests(props) {
     const clickRequest = (request) => {
         setCurrRequest({...request}); 
         setRequestDetailsModal(true);
-        if (props.mode === 2 || props.mode === 3) {
-            findUser(request); 
-        }
+        // if (props.mode === 2 || props.mode === 3) {
+        //     findUser(request); 
+        // }
     }
 
     const sortInfo = (request) => {
@@ -196,9 +196,9 @@ export default function UnmatchedRequests(props) {
                             currRequest={currRequest}
                             setCurrRequest={setCurrRequest}
                             association={props.association}
-                            currVolunteer={currVolunteer}
+                            // currVolunteer={currVolunteer}
                             setRequests={props.setRequests}
-                            requests={props.requests}
+                            // requests={props.requests}
                             unmatched={props.unmatched}
                             matched={props.matched}
                             completed={props.completed}
