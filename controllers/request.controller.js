@@ -373,13 +373,13 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         pusher.trigger(request.association, 'general', "You have a new unmatched request!")
         // sendEmail(request, associationEmail, associationEmail)
 
-        if (request.association == "5e843ab29ad8d24834c8edbf") {
-            // PITT
-            await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-        } else if (request.association == "5e8439ad9ad8d24834c8edbe") {
-            // BALTIMORE
-            await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
-        }
+        // if (request.association == "5e843ab29ad8d24834c8edbf") {
+        //     // PITT
+        //     await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
+        // } else if (request.association == "5e8439ad9ad8d24834c8edbe") {
+        //     // BALTIMORE
+        //     await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
+        // }
 
         res.status(200).json({
             volunteers: volunteers 
@@ -396,6 +396,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         request.pending_time = new Date()
 
         pusher.trigger(req.body.volunteer._id, 'direct-match', 'You have a new pending request!')
+        await request.save();
 
         var first_name = req.body.volunteer.first_name;
         first_name = first_name.toLowerCase();

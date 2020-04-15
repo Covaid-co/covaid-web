@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Pusher from 'pusher-js';
 import { useToasts } from 'react-toast-notifications'
+import AccountInfo from './AccountInfo'
 import YourOffer from './YourOffer'
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
@@ -84,7 +85,6 @@ export default function VolunteerPortal(props) {
 		fetch_a('token', '/api/users/current')
 		  .then((response) => response.json())
 		  .then((user) => {
-			//   console.log(user)
 				setUser(user)
 				setFoundUser(true)
 
@@ -162,19 +162,18 @@ export default function VolunteerPortal(props) {
 				</Jumbotron>
 				<Container id="volunteer-info">
 					<Row className="justify-content-md-center">
-						<Col></Col>
-						<Col lg={6} md={8} sm={10}>
+						<Col lg={8} md={8} sm={10}>
 							<Container style={{padding: 0, marginLeft: 0}}> 
 								<Button id={tabNum===1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your offer</Button>
 								<Button style={{"position": "relative"}}id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
 									Pending
-									<div class="notificationBadge">{pendingRequestNum}</div>
+									<div className="notificationBadge">{pendingRequestNum}</div>
 								</Button>
 								<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>Active</Button>
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
 								style={tabNum===1 ? {'display': 'block'} : {'display': 'none'}}>
-								<YourOffer latitude = {user.latlong[1]} longitude = {user.latlong[0]}/>
+								<YourOffer user={user} />
 							</Container>
 							<Container className="shadow mb-5 bg-white rounded" id="request-view"
 								style={tabNum===2 ? {'display': 'block'} : {'display': 'none'}}>
@@ -190,8 +189,13 @@ export default function VolunteerPortal(props) {
 									acceptedRequests={acceptedRequests} 
 									completeAnInProgressRequest={completeAnInProgressRequest}/>
 							</Container>
-							</Col>
-						<Col ></Col>
+						</Col>
+						<Col lg={4} md={8} sm={10}>
+							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+								style={{'display': 'block'}}>
+								<AccountInfo user={user}/>
+							</Container>
+						</Col>
 					</Row>
 				</Container>
 			</>

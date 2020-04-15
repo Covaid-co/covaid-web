@@ -21,7 +21,7 @@ export default function NewMap(props) {
                 ...viewport,
                 latitude: props.association.location.coordinates[0],
                 longitude: props.association.location.coordinates[1],
-                zoom: 9
+                zoom: 10
             })
         }
     }, [props.association])
