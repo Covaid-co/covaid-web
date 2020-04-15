@@ -87,11 +87,11 @@ export default function CovaidNavbar(props) {
 
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
+                <Nav.Link className={toggled ? 'navBorderToggled': 'navBorder'} onClick={() => showModal(2)}>
+                  <p id={toggled ? 'navLinkToggled': 'navLink'} style={{textDecoration: 'underline'}}>FAQs</p>
+                </Nav.Link>
                 <Nav.Link className={toggled ? 'navBorderToggled': 'navBorder'} onClick={() => showModal(1)}>
                   <p id={toggled ? 'navLinkToggled': 'navLink'}>About us</p>
-                </Nav.Link>
-                <Nav.Link className={toggled ? 'navBorderToggled': 'navBorder'} onClick={() => showModal(2)}>
-                  <p id={toggled ? 'navLinkToggled': 'navLink'}>How it works</p>
                 </Nav.Link>
                 <Nav.Link className={toggled ? 'navBorderToggled': 'navBorder'} onClick={() => showModal(3)}>
                   <p id={toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
@@ -103,7 +103,7 @@ export default function CovaidNavbar(props) {
                   {rightNav}
             </Navbar.Collapse>
           </Navbar>
-          <Modal size={navModalType === 2 ? "lg" : "sm"} show={showNavModal} onHide={hideModal} style = {{marginTop: 50}} id="general-modal">
+          <Modal size={navModalType === 2 ? "lg" : "md"} show={showNavModal} onHide={hideModal} style = {{marginTop: 50}} id="general-modal">
             {modal}
           </Modal>
           </>
