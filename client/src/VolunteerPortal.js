@@ -162,18 +162,12 @@ export default function VolunteerPortal(props) {
 				</Jumbotron>
 				<Container id="volunteer-info">
 					<Row className="justify-content-md-center">
-						<Col lg={4} md={8} sm={10}>
-							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-								style={{'display': 'block'}}>
-								<AccountInfo user={user}/>
-							</Container>
-						</Col>
 						<Col lg={8} md={8} sm={10}>
 							<Container style={{padding: 0, marginLeft: 0}}> 
 								<Button id={tabNum===1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>Your offer</Button>
 								<Button style={{"position": "relative"}}id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
 									Pending
-									<div class="notificationBadge">{pendingRequestNum}</div>
+									<div className="notificationBadge">{pendingRequestNum}</div>
 								</Button>
 								<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>Active</Button>
 							</Container>
@@ -194,6 +188,12 @@ export default function VolunteerPortal(props) {
 									user={user} 
 									acceptedRequests={acceptedRequests} 
 									completeAnInProgressRequest={completeAnInProgressRequest}/>
+							</Container>
+						</Col>
+						<Col lg={4} md={8} sm={10}>
+							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+								style={{'display': 'block'}}>
+								<AccountInfo user={user}/>
 							</Container>
 						</Col>
 					</Row>

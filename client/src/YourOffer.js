@@ -99,8 +99,7 @@ export default function YourOffer(props) {
         return result;
     }
 
-    const handleUpdate = async e => {
-        e.preventDefault();
+    const handleUpdate = (publish) => {
         if (checkInputs() === false) {
             return;
         }
@@ -110,10 +109,9 @@ export default function YourOffer(props) {
         let form = {
             'offer.tasks': resourceList,
             'offer.details': fields.details,
-            'availability': availability,
+            'availability': publish,
         };
 
-        console.log(form)
 
         fetch_a('token', '/api/users/update', {
             method: 'put',
@@ -131,11 +129,20 @@ export default function YourOffer(props) {
         });
     };
 
+    var visibleText = <></>
+    var publishButton = <></>
+    if (availability) {
+        visibleText = <h5 style={{fontFamily: "SF Text", fontStyle: "normal", fontWeight: "bold", fontSize: "20", color: "#45A03D"}}>*Your offer is currently live and on the community bulletin</h5>
+        publishButton = <Button id="nextPage" style={{backgroundColor: "#AE2F2F", borderColor: "#AE2F2F"}} onClick={() => handleUpdate(false)}>Unpublish your offer</Button>
+    } else {
+        visibleText = <h5 style={{fontFamily: "SF Text", fontStyle: "normal", fontWeight: "bold", fontSize: "20", color: "#AE2F2F"}}>*Your offer is currently inactive</h5> 
+        publishButton = <Button id="nextPage" onClick={() => handleUpdate(true)} >Publish your offer</Button>  
+    }
+
     if (isLoading) {
         return <div>Loading ... </div>;
     } else {
         return (
-            
                 <Row >
                     <Col>
                         <Toast
@@ -149,24 +156,24 @@ export default function YourOffer(props) {
                             </Toast.Header>
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
-                        <Alert style={{marginTop: 10, marginBottom: 0}} variant={'danger'}>
+                        <Alert style={{marginTop: 10, marginBottom: 20}} variant={'danger'}>
                             If you are showing any symptoms or have traveled in the past 2 weeks, please refrain from marking yourself as available.
                         </Alert>
                         <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
-                            <Availability availableText={availableText}
+                            {/* <Availability availableText={availableText}
                                           setAvailableText={setAvailableText}
                                           switchSelected={switchSelected}
                                           setSwitchSelected={setSwitchSelected}
-                                          setAvailability={setAvailability}/>
+                                          setAvailability={setAvailability}/> */}
+
+                            {visibleText}
                             <h5 className="volunteerName">What can you help with?</h5>
                             <NewLanguages languages={defaultResources}
                                        languageChecked={resources} 
                                        setLanguageChecked={setResources}/>
                             <Details fields={fields.details} 
                                      handleFieldChange={handleFieldChange}/>
-                            <Button id="nextPage" type="submit" >
-                                Update your offer
-                            </Button>
+                            {publishButton}
                         </Form>
                     </Col>
                 </Row>

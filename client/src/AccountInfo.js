@@ -4,6 +4,8 @@ import Modal from "react-bootstrap/Modal"
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import EditAccountInfoModal from "./EditAccountInfoModal"
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function AccountInfo(props) {
 
     const [isLoaded, setIsLoaded] = useState(false)
@@ -11,7 +13,6 @@ export default function AccountInfo(props) {
     const [showEditModal, setShowEditModal] = useState(false)
 
     useEffect(() => {
-        console.log(props.user)
         setIsLoaded(true)
         setUser(props.user)
     }, [props.user])
@@ -40,7 +41,7 @@ export default function AccountInfo(props) {
             </div>
             <div style={{marginTop: 0, marginBottom: 20}}>
                 {assocName}
-                <h5 className="volunteerName" style={{marginTop: 0, marginBottom: 10, fontWeight: "normal"}}><b>Location:</b> {user.offer.neighborhoods.join(", ")}</h5>
+                <h5 className="volunteerName" style={{marginTop: 0, marginBottom: 10, fontWeight: "normal"}}><b>Location:</b> {user.offer.neighborhoods.join(", ")} <FontAwesomeIcon style={{color: "red"}} icon={faMapMarkerAlt} /> </h5>
             </div>
             <div style={{marginTop: 0, marginBottom: 20}}>
                 <h5 className="volunteerName" style={{marginTop: 0, marginBottom: 10, fontWeight: "normal"}}><b>Languages:</b> {user.languages.join(", ")}</h5>
@@ -49,7 +50,7 @@ export default function AccountInfo(props) {
             </div>
             <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>
             <Button onClick={() => {setShowEditModal(true);}} style={{margin: "auto", display: "block"}}variant="link">Edit Info</Button>
-            <Modal size={"md"} show={showEditModal} onHide={() => {setShowEditModal(false);}}  style = {{marginTop: 10, paddingBottom: 50}} id="general-modal">
+            <Modal size={"lg"} show={showEditModal} onHide={() => {setShowEditModal(false);}}  style = {{marginTop: 10, paddingBottom: 50}} id="general-modal">
                 <EditAccountInfoModal user={user} />
             </Modal>
             </Col>
