@@ -10,9 +10,11 @@ import Col from 'react-bootstrap/Col'
 import VolunteerDetails from './VolunteerDetails'
 import { useFormFields } from "./libs/hooksLib";
 import { formatName } from './OrganizationHelpers'
-import { generateMapsURL, moveFromToArr } from './Helpers';
+import { generateURL, generateMapsURL, moveFromToArr } from './Helpers';
 
 export default function RequestDetails(props) {
+
+    const [currVolunteer, setCurrVolunteer] = useState({});
 
     const [topMatchesModal, setTopMatchesModal] = useState(false);
     const [assignee, setAssignee] = useState('No one assigned');
@@ -60,8 +62,37 @@ export default function RequestDetails(props) {
         fields.email2 = props.currRequest.note;
         setPrevNote(props.currRequest.note);
         updateAdminList();
+        if (props.currRequest.status && (props.mode === 2 || props.mode === 3)) {
+            findUser(props.currRequest);
+        }
     }, [props.currRequest, props.association]);
 
+
+    const findUser = (request) => {
+        if (request.status.volunteer === undefined || request.status.volunteer === 'manual') {
+            setCurrVolunteer({});
+            return;
+        }
+        let params = {'id': request.status.volunteer}
+        const url = generateURL( "/api/users/user?", params);
+
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+                    if (data.length > 0) {
+                        setCurrVolunteer(data[0]);
+                    }
+                });
+            } else {
+                console.log(response);
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    }
 
     const topMatch = () => {
         if (props.currRequest.assignee && props.currRequest.assignee !== '' && props.currRequest.assignee !== 'No one assigned') {
@@ -93,7 +124,11 @@ export default function RequestDetails(props) {
                     }
                 }
                 props.setCurrRequest(newRequest);
-                moveFromToArr(newRequest, props.requests, props.setRequests, props.unmatched, props.setUnmatched);
+                if (props.mode === 2) {
+                    moveFromToArr(newRequest, props.matched, props.setMatched, props.unmatched, props.setUnmatched);
+                } else if (props.mode === 3) {
+                    moveFromToArr(newRequest, props.completed, props.setCompleted, props.unmatched, props.setUnmatched);
+                }
                 setTopMatchesModal(false);
                 setUnmatchModal(false);
                 props.setRequestDetailsModal(false);
@@ -140,16 +175,18 @@ export default function RequestDetails(props) {
                 }
                 props.setCurrRequest(newRequest);
                 if (props.mode === 3) {
-                    var dup = [...props.requests];
+                    var dup = [...props.completed];
                     for (var i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i] = newRequest;
                             break;
                         }
                     }
-                    props.setRequests(dup);
-                } else {
-                    moveFromToArr(newRequest, props.requests, props.setRequests, props.completed, props.setCompleted);
+                    props.setCompleted(dup);
+                } else if (props.mode === 2) {
+                    moveFromToArr(newRequest, props.matched, props.setMatched, props.completed, props.setCompleted);
+                } else if (props.mode === 1) {
+                    moveFromToArr(newRequest, props.unmatched, props.setUnmatched, props.completed, props.setCompleted);
                 }
                 setConfirmCompleteModal(false);
                 props.setRequestDetailsModal(false);
@@ -174,21 +211,39 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                if (props.requests) {
-                    var dup = [...props.requests];
+                if (props.mode === 3) {
+                    var dup = [...props.completed];
                     for (var i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i].assignee = assignString;
                             break;
                         }
                     }
-                    props.setRequests(dup);
-                    var newRequest = {
-                        ...props.currRequest,
-                        'assignee': assignString
+                    props.setCompleted(dup);
+                } else if (props.mode === 2) {
+                    var dup = [...props.matched];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup[i].assignee = assignString;
+                            break;
+                        }
                     }
-                    props.setCurrRequest(newRequest);
+                    props.setMatched(dup);
+                } else if (props.mode === 1) {
+                    var dup = [...props.unmatched];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup[i].assignee = assignString;
+                            break;
+                        }
+                    }
+                    props.setUnmatched(dup);
                 }
+                var newRequest = {
+                    ...props.currRequest,
+                    'assignee': assignString
+                }
+                props.setCurrRequest(newRequest);
             } else {
                 alert("unable to attach");
             }
@@ -228,7 +283,7 @@ export default function RequestDetails(props) {
                     </>;
         } else {
             return (<>
-                    {Object.keys(props.currVolunteer).length > 0 ? 
+                    {Object.keys(currVolunteer).length > 0 ? 
                         <Button id="nextPage" 
                                 onClick={() => setVolunteerDetailsModal(true)}>
                                 View Volunteers's Information
@@ -246,7 +301,7 @@ export default function RequestDetails(props) {
                     </Row>
                     <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
                                     setVolunteerDetailsModal={setVolunteerDetailsModal}
-                                    currVolunteer={props.currVolunteer}
+                                    currVolunteer={currVolunteer}
                                     currRequest={props.currRequest}
                                     matching={false}/>
                 </>);
@@ -263,7 +318,13 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                moveFromToArr(props.currRequest, props.requests, props.setRequests, [{'x': 'x'}], ()=>{});
+                if (props.mode === 3) {
+                    moveFromToArr(props.currRequest, props.completed, props.setCompleted, [{'x': 'x'}], ()=>{});
+                } else if (props.mode === 2) {
+                    moveFromToArr(props.currRequest, props.matched, props.setMatched, [{'x': 'x'}], ()=>{});
+                } else if (props.mode === 1) {
+                    moveFromToArr(props.currRequest, props.unmatched, props.setUnmatched, [{'x': 'x'}], ()=>{});
+                }
                 setDeleteModal(false);
                 props.setRequestDetailsModal(false);
             } else {
@@ -289,20 +350,33 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                if (props.requests) {
-                    var dup = [...props.requests];
+                if (props.mode === 3) {
+                    var dup = [...props.completed];
                     for (var i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i].note = fields.email2;
                             break;
                         }
                     }
-                    props.setRequests(dup);
-                    var newRequest = {
-                        ...props.currRequest,
-                        'note': fields.email2
+                    props.setCompleted(dup);
+                } else if (props.mode === 2) {
+                    var dup = [...props.matched];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup[i].note = fields.email2;
+                            break;
+                        }
                     }
-                    props.setCurrRequest(newRequest);
+                    props.setMatched(dup);
+                } else if (props.mode === 1) {
+                    var dup = [...props.unmatched];
+                    for (var i = 0; i < dup.length; i++) {
+                        if (props.currRequest._id === dup[i]._id) {
+                            dup[i].note = fields.email2;
+                            break;
+                        }
+                    }
+                    props.setUnmatched(dup);
                 }
             } else {
                 alert("unable to attach");

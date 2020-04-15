@@ -11,6 +11,9 @@ import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
 import Maps from './Maps'
+import RequestDetails from './RequestDetails';
+import VolunteerDetails from './VolunteerDetails';
+import NewMap from './NewMap'
 import VolunteersModal from './VolunteersModal';
 import AdminModal from './AdminModal';
 import OrgResourcesModal from './OrgResourcesModal';
@@ -36,6 +39,14 @@ export default function OrganiationPortal() {
 	const [unmatched, setUnmatched] = useState([]);
 	const [matched, setMatched] = useState([]);
 	const [completed, setCompleted] = useState([]);
+
+	const [requesterMap, setRequesterMap] = useState(true);
+	const [volunteerMap, setVolunteerMap] = useState(false);
+
+	const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
+	const [requestDetailsModal, setRequestDetailsModal] = useState(false);
+	const [currVolunteer, setCurrVolunteer] = useState({});
+	const [currRequest, setCurrRequest] = useState({});
 
 	const fetch_requests = (id) => {
 			let params = {'association': id}
@@ -181,9 +192,6 @@ export default function OrganiationPortal() {
 
 	const displayTab = (tabNumber) => {
 		if (tabNumber === currTabNumber) {
-			if (tabNumber === 5 || tabNumber === 6) {
-				return {'display': 'block', 'paddingBottom': 600};
-			}
 			return {'display': 'block'};
 		} else {
 			return {'display': 'none'};
@@ -241,69 +249,76 @@ export default function OrganiationPortal() {
 			</Jumbotron>
 			<Container id="volunteer-info" style={{maxWidth: 2000}}>
 				<Row className="justify-content-md-center">
-					<Col></Col>
-						<Col lg={8} md={10} sm={12}>
-							<Container style={{padding: 0,  marginLeft: 0}}>
-								<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched {displayCount(1, unmatched)}</Button>
-								<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched {displayCount(2, matched)}</Button>
-								<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed {displayCount(3, completed)}</Button>
-								<Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Request Map</Button>
-								<Button id={tabID(5)} onClick={() => {setCurrTab(5)}}>Volunteer Map</Button>
-							</Container>
-							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-								style={displayTab(1)}>
-								<UnmatchedRequests association={association}
-													requests={unmatched}
-													unmatched={unmatched}
-													matched={matched}
-													completed={completed}
-													setRequests={setUnmatched}
-													setUnmatched={setUnmatched}
-													setMatched={setMatched}
-													setCompleted={setCompleted}
-													volunteers={volunteers}
-													mode={1}/>
-							</Container>
-							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-								style={displayTab(2)}>
-								<UnmatchedRequests association={association}
-													requests={matched}
-													unmatched={unmatched}
-													matched={matched}
-													completed={completed}
-													setRequests={setMatched}
-													setUnmatched={setUnmatched}
-													setMatched={setMatched}
-													setCompleted={setCompleted}
-													volunteers={volunteers}
-													mode={2}/>
-							</Container>
-							<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-								style={displayTab(3)}>
-								<UnmatchedRequests association={association}
-													requests={completed}
-													unmatched={unmatched}
-													matched={matched}
-													completed={completed}
-													setRequests={setCompleted}
-													setUnmatched={setUnmatched}
-													setMatched={setMatched}
-													setCompleted={setCompleted}
-													volunteers={volunteers}
-													mode={3}/>
-							</Container>
-							<Container className="shadow mb-5 bg-white rounded" id="request-view"
-								style={displayTab(4)}>
-								{Object.keys(association).length === 0 ? <></> : 
-									<Maps show={currTabNumber === 4} requests={allRequests} association={association}></Maps>}
-							</Container>
-							<Container className="shadow mb-5 bg-white rounded" id="request-view"
-								style={displayTab(5)}>
-								{Object.keys(association).length === 0 ? <></> : 
-									<Maps show={currTabNumber === 5} requests={volunteers} association={association}></Maps>}
-							</Container>
-						</Col>
-					<Col></Col>
+					<Col lg={6} md={12} sm={12}>
+						<Container style={{padding: 0,  marginLeft: 0}}>
+							<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched {displayCount(1, unmatched)}</Button>
+							<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched {displayCount(2, matched)}</Button>
+							<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed {displayCount(3, completed)}</Button>
+						</Container>
+						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+							style={displayTab(1)}>
+							<UnmatchedRequests association={association}
+												requests={unmatched}
+												unmatched={unmatched}
+												matched={matched}
+												completed={completed}
+												setRequests={setUnmatched}
+												setUnmatched={setUnmatched}
+												setMatched={setMatched}
+												setCompleted={setCompleted}
+												volunteers={volunteers}
+												mode={1}/>
+						</Container>
+						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+							style={displayTab(2)}>
+							<UnmatchedRequests association={association}
+												requests={matched}
+												unmatched={unmatched}
+												matched={matched}
+												completed={completed}
+												setRequests={setMatched}
+												setUnmatched={setUnmatched}
+												setMatched={setMatched}
+												setCompleted={setCompleted}
+												volunteers={volunteers}
+												mode={2}/>
+						</Container>
+						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
+							style={displayTab(3)}>
+							<UnmatchedRequests association={association}
+												requests={completed}
+												unmatched={unmatched}
+												matched={matched}
+												completed={completed}
+												setRequests={setCompleted}
+												setUnmatched={setUnmatched}
+												setMatched={setMatched}
+												setCompleted={setCompleted}
+												volunteers={volunteers}
+												mode={3}/>
+						</Container>
+					</Col>
+					<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
+						<Container className="shadow mb-5 bg-white rounded" id="map-view" style={{'display': 'block'}}>
+							<Col xs={12} style={{color: 'black', marginBottom: 10}}>
+								<p id="map-title">Volunteer/Requester Map</p>
+								<Button id={!volunteerMap ? "volunteer-not-selected" : "volunteer-selected"} onClick={() => setVolunteerMap(!volunteerMap)}>
+									Volunteer
+								</Button>
+								<Button id={!requesterMap ? "requester-not-selected" : "requester-selected"} onClick={() => setRequesterMap(!requesterMap)}>
+									Requester
+								</Button>
+							</Col>
+							<NewMap requests={allRequests} volunteers={volunteers} mode={currTabNumber}
+									unmatched={unmatched} matched={matched} completed={completed}
+									requesterMap={requesterMap} volunteerMap={volunteerMap}
+									volunteerDetailModal={volunteerDetailModal} association={association}
+									setVolunteerDetailsModal={setVolunteerDetailsModal}
+									currVolunteer={currVolunteer} setCurrVolunteer={setCurrVolunteer}
+									requestDetailsModal={requestDetailsModal} setRequestDetailsModal={setRequestDetailsModal} 
+                            		currRequest={currRequest} setCurrRequest={setCurrRequest}/>
+						</Container>
+					</Col>
 				</Row>
 			</Container>
 			<VolunteersModal volunteersModal={volunteersModal}
@@ -319,8 +334,25 @@ export default function OrganiationPortal() {
 							setResourceModal={setResourceModal}
 							association={association}
 							setAssociation={setAssociation}/>
+		<VolunteerDetails volunteerDetailModal={volunteerDetailModal}
+					setVolunteerDetailsModal={setVolunteerDetailsModal}
+					currVolunteer={currVolunteer}/>
+		<RequestDetails requestDetailsModal={requestDetailsModal} 
+                            setRequestDetailsModal={setRequestDetailsModal} 
+                            currRequest={currRequest}
+                            setCurrRequest={setCurrRequest}
+                            association={association}
+                            unmatched={unmatched}
+                            matched={matched}
+                            completed={completed}
+                            setUnmatched={setUnmatched}
+                            setMatched={setMatched}
+                            setCompleted={setCompleted}
+                            mode={currTabNumber}
+                            volunteers={volunteers}/>
 		</div>
 		<OrgLogin showLogin={showLogin} setShowLogin={setShowLogin} login={login} />
+		
 	</>
 	);
 }

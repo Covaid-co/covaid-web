@@ -152,6 +152,13 @@ html, body {
   background-color: white;
 }
 
+.suggestion {
+  background-color: #f1f1f1;
+  color: gray;
+  font-size: 80%;
+  padding: 0.25em 0.7em;
+}
+
 /* @media (max-width:767px){
   .smallPage { display: grid !important; }
   .bigPage { display: none !important; }

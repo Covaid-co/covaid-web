@@ -415,10 +415,11 @@ exports.update = function (req, res) {
 
   if (req.body.association == "5e843ab29ad8d24834c8edbf") {
     // PITT
-    updateUserInSpreadsheet(id, req.body, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-  } else if (req.body.association == "5e8439ad9ad8d24834c8edbe") {
-    // BALTI
-    updateUserInSpreadsheet(id, req.body, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4') 
+    try {
+      updateUserInSpreadsheet(id, req.body, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
+    } catch (err) {
+      console.log(error)
+    }
   }
   
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {

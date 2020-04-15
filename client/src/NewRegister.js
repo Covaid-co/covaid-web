@@ -211,6 +211,7 @@ export default function NewRegister(props, switchToLogin) {
                     'tasks': selectedTasks,
                     'neighborhoods': selectedNeighborhoods,
                     'state': props.state.state,
+                    'car': hasCar,
                     'timesAvailable': selectedTimes,
                 },
                 'association': associationID, 
@@ -364,10 +365,10 @@ export default function NewRegister(props, switchToLogin) {
                     <Modal.Body>
                         <Form onSubmit={newHandleSubmit}>
                             <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: 4}}>
-                                Select your neighborhoods
+                                Here are your closest neighborhoods
                             </h5>
                             <p id="createAccountText" style={{marginBottom: 4}}>
-                                If your neighborhood is not listed, change your location before registering
+                                If these neighborhoods seem unfamiliar, please change your location before registering
                             </p>
                             <NewLanguages languages={props.state.neighborhoods} 
                                           languageChecked={neighborhoodsChecked} 
