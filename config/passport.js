@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
-const Users = mongoose.model('Users');
+const Users = mongoose.model('User');
 const Association = mongoose.model('Association');
 
 passport.use('userLocal', new LocalStrategy({

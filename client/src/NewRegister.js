@@ -220,7 +220,6 @@ export default function NewRegister(props, switchToLogin) {
                 'phone': phoneString,
             }
         };
-        console.log(form);
 
         fetch('/api/users/', {
             method: 'post',
