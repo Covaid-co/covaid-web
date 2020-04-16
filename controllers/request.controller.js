@@ -108,8 +108,7 @@ exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     const id = req.query.volunteerID
     var requests = await Requests.find({
         'status.volunteer': id,
-        'volunteer_status': 'accepted',
-        'pending_time': new Date()
+        'volunteer_status': 'accepted'
     })
     res.send(requests)
 })
@@ -119,7 +118,8 @@ exports.acceptRequest = asyncWrapper(async (req, res) => {
     var request = await Requests.findByIdAndUpdate(req_id, 
         {
             $set: {
-                volunteer_status: 'accepted'
+                volunteer_status: 'accepted',
+                'pending_time': new Date()
             }
         })
     if (request) {
