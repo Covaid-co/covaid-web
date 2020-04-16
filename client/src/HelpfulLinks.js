@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
+import { defaultLinks } from './constants'
 
 export default function HelpfulLinks(props) {
 
@@ -22,33 +23,6 @@ export default function HelpfulLinks(props) {
             setAssociationLinks(props.associationLinks)
         }
     }, [props.associationCity, props.associationLinks])
-
-    const defaultLinks = [
-        {
-            name: 'CDC',
-            link: 'https://www.cdc.gov/coronavirus/2019-nCoV/index.html'
-        },
-        {
-            name: 'FAQ',
-            link: 'https://faq.coronavirus.gov/'
-        },
-        {
-            name: 'Unemployment',
-            link: 'https://www.usa.gov/unemployment'
-        },
-        {
-            name: 'FindHelp',
-            link: 'https://findhelp.org/'
-        },
-        {
-            name: 'State',
-            link: 'https://www.usa.gov/state-health'
-        },
-        {
-            name: 'Mutual Aid Hub',
-            link: 'https://www.mutualaidhub.org'
-        }
-    ]
 
     const associationTab = () => {
         if (associationExists && associationLinks.length > 0) {
@@ -67,18 +41,21 @@ export default function HelpfulLinks(props) {
             return(
                 <Container className="shadow mb-5 bg-white rounded" id="requester-tab" 
                 style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
-                    {associationLinks.map((link, i) => {                
+                    {associationLinks.map((link, i) => {               
+                        var tempLink = link.link;
+                        if (tempLink.substring(0, 7) !== 'http://' || tempLink.substring(0, 8) !== 'https://') {
+                            tempLink = 'http://' + tempLink;
+                        }
                         return (
-                            <div style={{marginBottom: 20, textAlign: "center"}}>
-                            <ReactTinyLink
-                                cardSize="small"
-                                showGraphic={true}
-                                maxLine={2}
-                                minLine={1}
-                                style={{display: "inlineBlock"}}
-                                url={link.link}
-                                />
-                                </div>
+                            <div key={i} style={{marginBottom: 20, textAlign: "center"}}>
+                                <ReactTinyLink
+                                    cardSize="small"
+                                    showGraphic={true}
+                                    maxLine={2}
+                                    minLine={1}
+                                    style={{display: "inlineBlock"}}
+                                    url={tempLink}/>
+                            </div>
                         )  
                     })}
                 </Container>
@@ -113,15 +90,14 @@ export default function HelpfulLinks(props) {
                                         style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
                                 {defaultLinks.map((link, i) => {                
                                     return (
-                                        <div style={{marginBottom: 20, textAlign: "center"}}>
+                                        <div key={i} style={{marginBottom: 20, textAlign: "center"}}>
                                             <ReactTinyLink
                                                 cardSize="small"
                                                 showGraphic={true}
                                                 maxLine={2}
                                                 minLine={1}
                                                 className='react-link'
-                                                url={link.link}
-                                                />
+                                                url={link.link}/>
                                         </div>
                                     )  
                                 })}
