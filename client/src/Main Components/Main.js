@@ -108,7 +108,6 @@ export default function Main(props) {
           <Container id="location-container">
               <LocationSetting state={props.state} 
                                setState={props.setState} 
-                               handleLocationChange={props.handleLocationChange} 
                                locationSubmit={props.onLocationSubmit}
                                refreshLocation={props.refreshLocation}
                                associations={props.state.associations} />
@@ -123,8 +122,7 @@ export default function Main(props) {
               <NewOffers latitude={currentLocation.latitude} longitude={currentLocation.longitude} />
               {cantFindLink}
               {/* <NewOffers state={props.state} 
-                        handleShowRequestHelp={props.handleShowRequestHelp}
-                        clickOnUser={props.clickOnUser}/>
+                        handleShowRequestHelp={props.handleShowRequestHelp}/>
               {cantFindLink} */}
             </Col>
           </Container>    

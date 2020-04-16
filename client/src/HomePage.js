@@ -18,22 +18,21 @@ export default function HomePage(props) {
     const [mode, setMode] = useState('');
     const [modalInfo, setModalInfo] = useState({});
 
-    function updateRequestHelpMode(mode, modalInfo) {
-      props.handleShowRequestHelp()
-      setMode(mode)
-      setModalInfo(modalInfo)
-    }
-
-
-    var helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons" >
+    var helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="homeButtons">
                       Request support
                     </Button>
-    var cantFindLink = <></>
-
-    
+    var cantFindLink = <></>;
     if (props.state.currentAssoc.name === "Baltimore Mutual Aid") {
-      helpButton = <></>
-      cantFindLink = <Button variant="link" onClick={() => updateRequestHelpMode('general')} id="general-request-link">Can't find what you're looking for? Click here.</Button>
+      helpButton = <></>;
+      cantFindLink = <Button variant="link" onClick={() => updateRequestHelpMode('general')} id="general-request-link">
+                      Can't find what you're looking for? Click here.
+                    </Button>
+    }
+
+    function updateRequestHelpMode(mode, modalInfo) {
+      props.handleShowRequestHelp()
+      setMode(mode);
+      setModalInfo(modalInfo);
     }
 
     return (
@@ -56,9 +55,7 @@ export default function HomePage(props) {
                 <Col md={6} id="community-bulletin">
                   <p className='location-text'>See who's helping near {props.state.locality}</p>
                   <p className="volunteer-info">Click a volunteer's offer below for more info</p>
-                  <NewOffers state={props.state} 
-                            handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}
-                            clickOnUser={props.clickOnUser}/>
+                  <NewOffers state={props.state} handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}/>
                   {cantFindLink}
                 </Col>
               </Row>
@@ -76,8 +73,7 @@ export default function HomePage(props) {
                        setLatLong={props.setLatLong}/>
           <Container id="location-container">
             <LocationSetting state={props.state} 
-                              setState={props.setState} 
-                              handleLocationChange={props.handleLocationChange} 
+                              setState={props.setState}
                               locationSubmit={props.onLocationSubmit}
                               refreshLocation={props.refreshLocation}
                               associations={props.state.associations} />
@@ -96,9 +92,7 @@ export default function HomePage(props) {
                 See who's helping near {props.state.locality}<br/> 
               </p>
               <p className="volunteer-info" style={{color: 'black', float: 'left', fontWeight: 'normal', fontSize: "3vw"}}>Click an offer below for more info</p>
-              <NewOffers state={props.state} 
-                        handleShowRequestHelp={props.handleShowRequestHelp}
-                        clickOnUser={props.clickOnUser}/>
+              <NewOffers state={props.state} handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}/>
               {cantFindLink}
             </Col>
           </Container>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Pagination from './CommunityBulletinComponents/Pagination'
 import Offer from './CommunityBulletinComponents/Offer'
@@ -7,6 +6,8 @@ import Container from 'react-bootstrap/Container'
 
 import NewFilterButton from './NewFilterButton'
 import OfferDetails from './OfferDetails'
+import { generateURL } from './Helpers'
+import { defaultResources } from './constants'
 
 export default function NewOffers(props) {
 
@@ -15,7 +16,7 @@ export default function NewOffers(props) {
     const [resources, setResources] = useState([]);
     const [taskSelect, setTaskSelect] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(4);
+    const volunteersPerPage = 4;
 
     const [modalOfferOpen, setModalOfferOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState({
@@ -30,27 +31,24 @@ export default function NewOffers(props) {
     });
 
     useEffect(() => {
+        setCurrentPage(1);
         if (Object.keys(props.state.currentAssoc).length > 0) {
             setResources(props.state.currentAssoc.resources);
         } else {
-            setResources(['Food/Groceries', 'Medication', 'Emotional Support', 'Donate', 'Academic/Professional', 'Misc.']);
+            setResources(defaultResources);
         }
-        var url = "/api/users/all?";
-        let params = {
-            'latitude': props.state.latitude,
-            'longitude': props.state.longitude
-        }
-        let query = Object.keys(params)
-             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-             .join('&');
-        url += query;
 
+        let params = {'latitude': props.state.latitude, 'longitude': props.state.longitude}
+        var url = generateURL("/api/users/all?", params);
         async function fetchData() {
             const response = await fetch(url);
             response.json().then((data) => {
                 setVolunteers(data.slice(0, Math.min(data.length, 20)));
-                setDisplayedVolunteers(data.slice(0, Math.min(data.length, 20)));
+                setDisplayedVolunteers(data.slice(0, volunteersPerPage));
             });
+        }
+        if (props.state.latitude && props.state.longitude){
+            fetchData();
         }
 
         for (var i = 0; i < resources.length; i++) {
@@ -60,17 +58,15 @@ export default function NewOffers(props) {
                 [taskName]: false,
             }));
         }
-        if (props.state.latitude && props.state.longitude){
-            fetchData();
-        }
     }, [props.state.currentAssoc, props.state.latitude, props.state.longitude]);
 
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentDisplayedUsers = displayedVolunteers.slice(indexOfFirstPost, indexOfLastPost)
-
-    const paginate = pageNumber => setCurrentPage(pageNumber);
-
+    const paginatePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        const lastIndex = pageNumber * volunteersPerPage;
+        const firstIndex = lastIndex - volunteersPerPage;
+        const slicedVolunteers = volunteers.slice(firstIndex, lastIndex);
+        setDisplayedVolunteers(slicedVolunteers);
+    }
 
     return (
         <>
@@ -85,18 +81,16 @@ export default function NewOffers(props) {
                              volunteers={volunteers}/>
             <Container className="shadow mb-5 bg-white rounded" id="offerContainer">
                 <ListGroup variant="flush">
-                    <Offer displayedVolunteers={currentDisplayedUsers}
+                    <Offer displayedVolunteers={displayedVolunteers}
                             setModalInfo={setModalInfo}
-                            setModalOfferOpen={setModalOfferOpen} 
-                    />
+                            setModalOfferOpen={setModalOfferOpen} />
                     <Pagination
                         className='justfiy-content-center'
                         style = {{paddingTop: 15, marginTop: 50}}
-                        postsPerPage={postsPerPage}
+                        postsPerPage={volunteersPerPage}
                         currPage={currentPage}
-                        totalPosts={displayedVolunteers.length}
-                        paginate={paginate}
-                    />
+                        totalPosts={volunteers.length}
+                        paginate={paginatePage}/>
                 </ListGroup>
                 
             </Container>

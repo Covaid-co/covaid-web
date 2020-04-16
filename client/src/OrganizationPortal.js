@@ -10,7 +10,6 @@ import Navbar from 'react-bootstrap/Navbar'
 import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
-import Maps from './Maps'
 import RequestDetails from './RequestDetails';
 import VolunteerDetails from './VolunteerDetails';
 import NewMap from './NewMap'
