@@ -9,7 +9,7 @@ passport.use('userLocal', new LocalStrategy({
   usernameField: 'user[email]',
   passwordField: 'user[password]',
 }, (email, password, done) => {
-  Users.findOne({ email })
+  Users.findOne({ "email" : { $regex : new RegExp(email, "i") } })
     .then((user) => {
       if(!user || !user.validatePassword(password)) {
         return done(null, false, { errors: { 'email or password': 'is invalid' } });
