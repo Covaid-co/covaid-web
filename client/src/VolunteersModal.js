@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import VolunteerDetails from './VolunteerDetails'
 import { filterVolunteers } from './OrganizationHelpers';
+import { extractTrueObj } from './Helpers';
 import Pagination from './CommunityBulletinComponents/Pagination'
 
 export default function VolunteersModal(props) {
@@ -49,12 +50,7 @@ export default function VolunteersModal(props) {
         }
         setResourcesSelected(newResource);
 
-        const selectedResourcees = [];
-        for (const resourceFound in newResource) {
-            if (newResource[resourceFound]) {
-                selectedResourcees.push(resourceFound);
-            }
-        }
+        const selectedResourcees = extractTrueObj(newResource);
         if (selectedResourcees.length === 0) {
             setFilteredVolunteers(props.volunteers);
             setDisplayedVolunteers(props.volunteers.slice(0, volunteersPerPage));
@@ -108,10 +104,8 @@ export default function VolunteersModal(props) {
                             {displayedVolunteers.map((volunteer, i) => {
                                 return (
                                 <ListGroup.Item key={i} action onClick={() => {
-                                        setCurrVolunteer({...volunteer}); 
-                                        setVolunteerDetailsModal(true);
-                                        // props.setVolunteersModal(false);
-                                    }}>
+                                            setCurrVolunteer({...volunteer}); 
+                                            setVolunteerDetailsModal(true);}}>
                                     <div >
                                         <h5 className="volunteer-name">
                                             {volunteer.first_name} {volunteer.last_name}
@@ -138,8 +132,7 @@ export default function VolunteersModal(props) {
                             postsPerPage={volunteersPerPage}
                             currPage={currentPage}
                             totalPosts={Math.min(volunteersPerPage * 10, filteredVolunteers.length)}
-                            paginate={paginatePage}
-                        />
+                            paginate={paginatePage}/>
                     </Col>
                 </Row>
                 <VolunteerDetails volunteerDetailModal={volunteerDetailModal}

@@ -10,6 +10,7 @@ import HowItWorks from './HowItWorks'
 import Feedback from './Feedback'
 import HomePage from './HomePage'
 import { generateURL, removeCookies } from './Helpers';
+import { cookieNames } from './constants';
 
 import fetch_a from './util/fetch_auth';
 
@@ -20,7 +21,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Geocode from "react-geocode";
 import Badge from 'react-bootstrap/Badge'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import Cookie from 'js-cookie'
 
@@ -49,13 +50,11 @@ class Home extends Component {
       showRegistration: false,
       showWorks: false,
       showAbout: false,
-      showLocation: false,
       showFeedback: false,
       showModal: false,
       showResourceModal: false,
       modalType: '',
       cookieSet: false,
-      searchedLocation: '',
       currentState: '',
       width: 0,
       totalVolunteers: 0,
@@ -66,13 +65,12 @@ class Home extends Component {
       associations: [],
       currentAssoc: {},
       volunteerPortal: false,
-      toggled: false
+      toggled: false,
+      invalidAddressModal: false
     }
 
     window.addEventListener("resize", this.update);
-
-    this.handleHideLocation = this.handleHideLocation.bind(this);
-    this.handleShowLocation = this.handleShowLocation.bind(this);
+  
     this.handleHideModal = this.handleHideModal.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleHideResourceModal = this.handleHideResourceModal.bind(this);
@@ -98,14 +96,6 @@ class Home extends Component {
 
   handleShowRequestHelp() {
     this.setState({showRequestHelp: true});
-  }
-
-  handleShowLocation() {
-    this.setState({showLocation: true});
-  }
-
-  handleHideLocation() {
-    this.setState({showLocation: false});
   }
     
   handleHidePrompt() {
@@ -336,32 +326,25 @@ class Home extends Component {
   }
 
   refreshLocation() {
-    const cookieNames = ['latitude', 'longitude', 'zipcode', 'neighborhoods', 'locality', 'state'];
     removeCookies(cookieNames);
-    this.setState({isLoaded: false, searchedLocation: '', currentAssoc: {}});
+    this.setState({isLoaded: false, currentAssoc: {}});
     this.getMyLocation();
   }
 
-  handleLocationChange = (location) => {
-    this.setState({
-      searchedLocation: location
-    })
-  }
-
-  onLocationSubmit = (e, location) => {
+  onLocationSubmit = (e, locationString) => {
     e.preventDefault();
-    this.handleHideLocation();
-    this.setState({searchedLocation: ''});
-    Geocode.fromAddress(location).then(
+    if (locationString === "") {
+      return;
+    }
+    Geocode.fromAddress(locationString).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-        const cookieNames = ['latitude', 'longitude', 'zipcode', 'neighborhoods', 'locality', 'state'];
         removeCookies(cookieNames);
         this.setState({isLoaded: false});
         this.setNeighborhood(lat, lng, '');
         this.setState({currentAssoc: {}});
-      }, (error) => {
-        alert("Invalid address");
+      }, () => {
+        this.setState({invalidAddressModal: true})
       }
     );
   }
@@ -445,11 +428,9 @@ class Home extends Component {
                               handleShowRegistration={this.handleShowRegistration}
                               handleHideLogin={this.handleHideLogin}
                               handleHideRegistration={this.handleHideRegistration}
-                              handleLocationChange={this.handleLocationChange}
                               onLocationSubmit={this.onLocationSubmit}
                               handleShowRequestHelp={this.handleShowRequestHelp}
                               requestHelpMode={this.requestHelpMode}
-                              clickOnUser={this.clickOnUser}
                               volunteerButton={volunteerButton}
                               refreshLocation={this.refreshLocation}
                               setLatLong={this.setLatLongFromZip}
@@ -521,7 +502,16 @@ class Home extends Component {
         {modal}
       </Modal>
 
-      <Modal size={"lg"} show={this.state.showResourceModal} onHide={this.handleHideResourceModal} style = {{marginTop: 10, paddingBottom: 50}} id="general-modal">
+      <Modal size="sm" centered show={this.state.invalidAddressModal} onHide={() => {this.setState({invalidAddressModal: false})}}>
+        <Modal.Header closeButton>
+          <Modal.Title>Invalid Address</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Please enter a valid city or zip code</p>
+        </Modal.Body>
+      </Modal>
+
+      <Modal size="lg" show={this.state.showResourceModal} onHide={this.handleHideResourceModal} style = {{marginTop: 10, paddingBottom: 50}} id="general-modal">
         <HelpfulLinks associationCity={this.state.currentAssoc.city} associationLinks={this.state.currentAssoc.links} />
       </Modal>
     </>);

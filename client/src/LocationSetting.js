@@ -11,17 +11,28 @@ export default function LocationSetting(props) {
 
     const [locationString, setLocationString] = useState('');
 
-    const handleSubmit = async e => {
-        e.preventDefault();
-        e.stopPropagation();
-        props.handleLocationChange(locationString);
-        props.locationSubmit(e, locationString);
+    const citySupportedBy = (screen) => {
+        var float = "left";
+        if (screen === 'tablet') {
+            float = "right";
+        }
+        return <div style={{marginTop: -8, float: float, color: '#797979'}}className="volunteer-location">
+                    This city is supported by:<br/> 
+                    {props.associations.map((association, i) => {                
+                        return <div key={i}>
+                                    <a href={association.homepage} target="_blank" rel="noopener noreferrer" 
+                                        style={{float: 'left', color: '#194bd3'}} className="volunteer-location">
+                                        {association.name}</a><br /> 
+                                </div>
+                    })}
+                    <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> 
+                </div>
     }
 
     return (
         <>
             <h1 id="enter-location">Enter your location</h1>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={(e) => {props.locationSubmit(e, locationString); setLocationString('')}}>
                 <Row>
                     <Col lg={4} md={6} sm={6} xs={12}>
                         <InputGroup controlid="locationString" className="mb-3">
@@ -30,8 +41,7 @@ export default function LocationSetting(props) {
                                 aria-label="City or Zip"
                                 aria-describedby="basic-addon2"
                                 value={locationString}
-                                onChange={e => setLocationString(e.target.value)}
-                            />
+                                onChange={e => setLocationString(e.target.value)}/>
                             <InputGroup.Append>
                                 <Button variant="outline-secondary" type="submit">Search</Button>
                             </InputGroup.Append>
@@ -45,25 +55,13 @@ export default function LocationSetting(props) {
                         </Button>
                     </Col>
                     <Col md={6} sm={6} id="city-support-text-tablet">
-                        <div style={{marginTop: -8, float: 'right', color: '#797979'}} className="volunteer-location">
-                            This city is supported by:<br/> 
-                            {props.associations.map((association, i) => {                
-                                return <><a key={i} href={association.homepage} target="_blank" rel="noopener noreferrer" style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</a><br /></>
-                            })}
-                            <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> 
-                        </div>
+                        {citySupportedBy('tablet')}
                     </Col>
                 </Row>
                 <Row id="web-separate">
                     <Col lg={4} md={6} sm={6} xs={12}>
                         <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
-                        <div style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
-                            This city is supported by:<br/> 
-                            {props.associations.map((association, i) => {                
-                                return <><a key={i} href={association.homepage} target="_blank" rel="noopener noreferrer" style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}</a><br /> </>
-                            })}
-                            <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> <br />
-                        </div>
+                        {citySupportedBy('web')}
                     </Col>
                 </Row>
                 <Row id="mobile-tablet-separate">
@@ -73,13 +71,7 @@ export default function LocationSetting(props) {
                 </Row>
                 <Row id="mobile-org">
                     <Col md={12}>
-                        <div style={{marginTop: -8, float: 'left', color: '#797979'}}className="volunteer-location">
-                            This city is supported by:<br/> 
-                            {props.associations.map((association, i) => {                
-                                return <><a key={i} href={association.homepage} target="_blank" rel="noopener noreferrer" style={{float: 'left', color: '#194bd3'}} className="volunteer-location">{association.name}{association.name}</a><br /></>
-                            })}
-                            <p style={{float: 'left', color: '#194bd3'}} className="volunteer-location">Covaid.co</p> 
-                        </div>
+                        {citySupportedBy()}
                     </Col>
                 </Row>
             </Form>

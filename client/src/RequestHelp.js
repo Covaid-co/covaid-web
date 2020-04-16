@@ -13,6 +13,8 @@ import NeededBy from './NeededBy';
 import NewPaymentMethod from './NewPaymentMethod';
 import NewDetails from './NewDetails';
 import PhoneNumber from './PhoneNumber';
+import { defaultResources, languages } from './constants'
+import { validateEmail, extractTrueObj } from './Helpers';
 
 export default function RequestHelp(props) {
 
@@ -23,85 +25,75 @@ export default function RequestHelp(props) {
         phone: ""
     });
 
-    const [mode, setMode] = useState(props.requestHelpMode);
-
-    const languages = ['English', 'Spanish', 'Chinese', 'French', 'Other'];
-    const defaultResources = ['Food/Groceries', 'Medication', 'Emotional Support', 'Donate', 'Academic/Professional', 'Misc.'];
-    const [resources, setResources] = useState(
-        {'Food/Groceries': false, 
+    const [resources, setResources] = useState({
+        'Food/Groceries': false, 
         'Medication': false, 
         'Emotional Support': false, 
         'Donate': false, 
         'Academic/Professional': false,
         'Misc.': false
-        }
-    );
+    });
+
     const [phoneNumber, setPhoneNumber] = useState('');
     const [languageChecked, setLanguageChecked] = useState({});
     const [firstPage, setFirstPage] = useState(true);
     const [completed, setCompleted] = useState(false);
     const [selectedPayment, setSelectedIndex] = useState(0);
-    const [time, setTime] = useState('Morning')
+    const [time, setTime] = useState('Morning');
     const [date, setDate] = useState(new Date(Date.now()).toLocaleString().split(',')[0])
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-
-    const [pendingSubmit, setPendingSubmit] = useState(false)
+    const [pendingSubmit, setPendingSubmit] = useState(false);
 
     useEffect(() => {
-        var url = "/api/association/get_assoc/lat_long?";
-        setMode(props.requestHelpMode)
-        setLanguageChecked({})
-        let params = {
-            'latitude': props.state.latitude,
-            'longitude': props.state.longitude,
-        }
-        let query = Object.keys(params)
-                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-                .join('&');
-        url += query;
-
+        setLanguageChecked({});
         function fetchResources() {
-            var resourcesFromAssoc;
+            var resourcesFromAssoc = defaultResources;
             if (props.requestHelpMode === "bulletin") {
-                resourcesFromAssoc = props.volunteer.offer.tasks
+                resourcesFromAssoc = props.volunteer.offer.tasks;
             } else {
-                var data = props.state.associations
-                resourcesFromAssoc = defaultResources
+                var data = props.state.associations;
                 if (data[0]) {
-                    resourcesFromAssoc = data[0].resources
+                    resourcesFromAssoc = data[0].resources;
                 }
             }
             var tempAssoc = {}
             for (var i = 0; i < resourcesFromAssoc.length; i++) {
-                tempAssoc[resourcesFromAssoc[i]] = false
+                tempAssoc[resourcesFromAssoc[i]] = false;
             }
-            setResources(tempAssoc)
+            setResources(tempAssoc);
         }
-        fetchResources();
+
+        if (props.volunteer) {
+            fetchResources();
+        }
     }, [props.requestHelpMode, props.volunteer]);
 
 
     const checkFirstPageInput = () => {
-        if (fields.first.length === 0) {
-            setShowToast(true);
-            setToastMessage('Enter a first name');
-            return false;
-        }
-
+        var valid = true;
         const phoneOnlyDigits = phoneNumber.replace(/\D/g,'').substring(0,10);
-        if (phoneOnlyDigits.length === 0 && fields.email.length === 0) {
-            setShowToast(true);
+        if (fields.first.length === 0) {
+            setToastMessage('Enter a first name');
+            valid = false;
+        } else if (phoneOnlyDigits.length === 0 && fields.email.length === 0) {
             setToastMessage('Enter contact information');
-            return false;
+            valid = false;
+        } else if (phoneOnlyDigits.length !== 0 && phoneOnlyDigits.length !== 10) {
+            setToastMessage('Enter a valid phone number');
+            valid = false;
+        } else if (validateEmail(fields.email) === false) {
+            setToastMessage('Enter a valid email');
+            valid = false;
+        } else if (Object.values(resources).every(v => v === false)) {
+            setToastMessage('No task selected');
+            valid = false;
         }
 
-        if (Object.values(resources).every(v => v === false)) {
+        if (valid === false) {
             setShowToast(true);
-            setToastMessage('No task selected');
-            return false;
         }
-        return true;
+        return valid;
     }
 
     const goToSecondPage = () => {
@@ -122,10 +114,8 @@ export default function RequestHelp(props) {
             setToastMessage('Enter details about your request');
             return false;
         }
-
         return true;
     }
-    
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -134,20 +124,11 @@ export default function RequestHelp(props) {
         }
         setPendingSubmit(true)
 
-        var resource_request = []
-        Object.keys(resources).forEach(function(key) {
-            if (resources[key]) {
-                resource_request.push(key)
-            }
-        }); 
-        var languages = []
-        Object.keys(languageChecked).forEach(function(key) {
-            if (languageChecked[key]) {
-                languages.push(key)
-            }
-        });
+        const resource_request = extractTrueObj(resources);
+        const languages = extractTrueObj(languageChecked);
 
-        var assoc_id = (props.state.currentAssoc._id && props.state.currentAssoc._id.length > 0) ? props.state.currentAssoc._id : "5e88cf8a6ea53ef574d1b80c";
+        var assoc_id = (props.state.currentAssoc._id && props.state.currentAssoc._id.length > 0) 
+                        ? props.state.currentAssoc._id : "5e88cf8a6ea53ef574d1b80c";
 
         let form = {
             'requester_first': fields.first,
@@ -213,6 +194,14 @@ export default function RequestHelp(props) {
                             </p>
     }
 
+    const requestHeaderText = () => {
+        var chosenText = 'After submitting a general request for support, we will attempt to match you with the best volunteer in your area.'
+        if (props.requestHelpMode === 'bulletin') {
+            chosenText = 'After submitting a direct request, your volunteer will reach out to you shortly! If you have any problems, please contact covaidco@gmail.com'
+        }
+        return chosenText;
+    }
+
     if (firstPage) {
         return (
             <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
@@ -220,11 +209,11 @@ export default function RequestHelp(props) {
             <Modal.Title>Submit a {general}request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p id="requestCall" style={{marginBottom: 10, paddingBottom: 10}}>
-                        After submitting a general request for support, we will attempt to match you with the best volunteer in your area.<br/>
-                        <font style={{fontStyle: 'italic'}}> For those who would rather call in a request, 
-                        please call <br /><span id="phoneNumber">(401) 526-8243</span>. </font>
+                    <p id="requestCall" style={{marginBottom: 0, paddingBottom: 0, borderBottom: '0px solid'}}>
+                        {requestHeaderText()}
                     </p>
+                    <p id="requestCalling"> For those who would rather call in a request, 
+                        please call <br /><span id="phoneNumber">(401) 526-8243</span></p>
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>
                         <Col xs={12}>
@@ -232,7 +221,6 @@ export default function RequestHelp(props) {
                                 <Form.Control value={fields.first} onChange={handleFieldChange} placeholder="Name" />
                             </Form.Group>
                         </Col>
-                       
                         <Col xs={12}>
                             <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder={"Phone"}/>
                         </Col>
@@ -241,8 +229,8 @@ export default function RequestHelp(props) {
                                 <Form.Control value={fields.email} onChange={handleFieldChange} placeholder="Email" />
                             </Form.Group>
                             <p id="locationInfo">
-                            Please enter either an email or a phone number.
-                        </p>
+                                Please enter either an email or a phone number.
+                            </p>
                         </Col>
                     </Row>
                     <NewTasks resources={resources} setResources={setResources}/>
@@ -303,9 +291,10 @@ export default function RequestHelp(props) {
                             Your request has been saved and you should receive an email soon 
                             from a matched volunteer who can support you.
                         </p>
-                        <Button id="nextPage" onClick={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}}>Return to home</Button>
+                        <Button id="nextPage" onClick={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}}>
+                            Return to home
+                        </Button>
                     </Modal.Body>
-                    <Modal.Footer></Modal.Footer>
                 </Modal>
             )
         }
