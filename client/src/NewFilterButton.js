@@ -33,7 +33,7 @@ export default function NewFilterButton(props) {
         <Dropdown drop = 'up' show={dropdownOpen} alignRight
                   onToggle={dropdownToggle} style={{textAlign: 'right'}}>
             <Dropdown.Toggle size = 'sm' variant="secondary" id="filterButton">
-                <strong>Community Bulletin</strong>
+                <strong>Filters</strong>
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 {props.resources.map((task, i) => {

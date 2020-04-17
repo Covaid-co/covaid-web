@@ -24,7 +24,7 @@
   padding-left: 10px;
 }
 
-#filterButton {
+/* #filterButton {
   z-index: 10;
   border-radius: 8px 8px 0px 0px;
   background-color: rgba(255,255,255, 1);
@@ -37,7 +37,7 @@
   padding-bottom: 5px;
   padding-left: 20px;
   margin-top: 10px;
-}
+} */
 
 .volunteer-location {
   font-family: "SF Text";
@@ -46,7 +46,7 @@
   margin-top: 0px;
 }
 
-#volunteer-mobile {
+/* #volunteer-mobile {
   font-family: "SF Text";
   font-weight: bold;
   height: 24px;
@@ -57,7 +57,7 @@
   padding-top: 7px;
   padding-bottom: 0px !important;
   margin-top: 0px;
-}
+} */
 
 .task-info {
   height: 25px;
@@ -81,13 +81,13 @@
   vertical-align: middle;
 }
 
-#jumboContainer {
-  margin-left: 7%;
+/* #jumboContainer {
+  margin-left: 5%;
   margin-right: 5%;
   height: 240px;
-  padding-top: 22px;
+  padding-top: 0px;
   max-width: 1500px;
-}
+} */
 
 #location-container {
   margin-left: 7%;
@@ -104,6 +104,10 @@
 
 #mobile-org {
   display: none;
+}
+
+#jumbo {
+  margin-bottom: 90px;
 }
 
 @media (max-width:1150px){ 
@@ -153,6 +157,8 @@
 @media (max-width:768px){ 
   #jumboContainer {
     height: 260px;
+    margin-left: 6%;
+    margin-right: 6%;
   }
 
   #community-bulletin {
@@ -268,11 +274,6 @@
   display: none;
 }
 
-#jumbo-text {
-  margin-top: 10px;
-  padding-right: 35px;
-}
-
 .location-text {
   font-family: "SF Text";
   font-weight: bold;
@@ -310,20 +311,20 @@
   font-size: 20px;
   color: black;
 }
-
+/* 
 #covid-resources {
   color: white;
   font-family: "SF Text";
   margin-top: 10px;
   padding-left: 0px;
-}
-
+} */
+/* 
 #refresh-location {
   color: #314CCE;
   font-family: "SF Text";
   margin-top: -17px;
   padding-left: 0px;
-}
+} */
 
 #requester-tab {
   padding: 1rem;

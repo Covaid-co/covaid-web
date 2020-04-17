@@ -180,16 +180,19 @@ input {
     background: red;
     color: white;
     display: flex;
+    font-weight: bold;
     justify-content: center;
     align-items: center;
 }
 
 .request-count-1 {
     margin-left: 94px;
+    background: #DB4B4B;
 }
 
 .request-count-2 {
     margin-left: 76px;
+    background: #db9327;
 }
 
 .request-count-3 {
@@ -249,8 +252,8 @@ input {
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #314CCE;
-    border-color: #314CCE;
+    background-color: #2670FF;
+    border-color: #2670FF;
 }
 
 #resources-link {

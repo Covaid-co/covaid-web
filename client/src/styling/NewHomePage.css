@@ -1,0 +1,329 @@
+@font-face {
+    font-family: "Montserrat";
+    font-weight: 400;
+    src: url("../fonts/Montserrat/Montserrat-Regular.ttf");
+}
+  
+@font-face {
+    font-family: "Montserrat";
+    font-weight: bold;
+    src: url("../fonts/Montserrat/Montserrat-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-weight: 400;
+    src: url("../fonts/inter/Inter-Regular-slnt=0.ttf");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-weight: 600;
+    src: url("../fonts/inter/Inter-SemiBold-slnt=0.ttf");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-weight: bold;
+    src: url("../fonts/inter/Inter-Bold-slnt=0.ttf");
+}
+
+
+#jumbo-text {
+    margin-top: 10px;
+    padding-right: 80px;
+}
+
+#jumboContainer {
+    margin-left: 7%;
+    margin-right: 7%;
+    height: 240px;
+    padding-top: 0px;
+    max-width: 1500px;
+}
+  
+
+@media (max-width:768px){ 
+    #jumbo-text {
+        padding-right: 20px;
+    }
+}
+
+@media (max-width:578px){ 
+    #jumbo-text {
+        margin-top: 10px;
+        padding-right: 0px;
+    }  
+}
+
+
+#home-heading {
+    font-family: "Montserrat";
+    font-size: 48px;
+    margin-bottom: 10px;
+    margin-top: 30px;
+    font-weight: bold;
+    color: black;
+}
+
+#home-subheading {
+    font-family: "Inter";
+    font-size: 20px;
+    margin-top: 0px;
+    margin-bottom: 24px;
+    padding-right: 50px;
+    color: #7F7F7F;
+}
+
+#request-button {
+    font-family: 'Inter';
+    font-weight: 600;
+    border-radius: 12px;
+    background-color: #2670FF;
+    height: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#underlined-link {
+    font-family: 'Inter';
+    margin-top: 10px;
+    padding-left: 0px;
+    color: #4B81EC;
+    margin-bottom: 30px;
+}
+
+#location-text {
+    font-family: "Montserrat";
+    font-weight: bold;
+    color: black;
+    font-size: 24px;
+    margin-bottom: 0px;
+}
+
+#small-header {
+    font-family: "Montserrat";
+    font-weight: bold;
+    color: black;
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+#regular-text {
+    font-family: "Inter";
+    font-size: 16px;
+    color: #7F7F7F;
+}
+
+#volunteer-info {
+    font-family: "Inter";
+    font-size: 16px;
+    margin-top: -5px;
+    margin-bottom: -30px;
+    color: #7F7F7F;
+}
+
+#volunteer-name {
+    font-family: "Montserrat";
+    font-weight: bold;
+    font-size: 16px;
+    color: black;
+    display: inline;
+}
+
+#association-name {
+    font-family: "Inter";
+    padding-left: 5px;
+    font-size: 13px;
+    color: #2670FF;
+    display: inline;
+    font-weight: 300;
+    margin-left: 5px;
+}
+
+#volunteer-location {
+    font-family: "Inter";
+    color: #7F7F7F;
+    margin-bottom: 5px;
+    margin-top: 0px;
+}
+
+#task-info {
+    height: 23px;
+    border-radius: 40px;
+    background: #2670FF;
+    color: white;
+    font-size: 13px;
+    font-family: "Inter";
+    font-weight: bold;
+    margin: 0px 8px 4px 0px;
+}
+
+#navbar-brand {
+    color: #2670FF;
+    font-family: 'Baloo Chettan 2';
+    font-weight: 600;
+    margin-left: 5%;
+    font-size: 34px;
+    margin-right: 30px;
+    padding-top: 0px;
+    margin-top: -3px;
+}
+
+.navbar-element {
+    margin-left: 20px;
+}
+
+#navLink {
+    font-family: "Inter";
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+    color: rgb(109, 109, 109);
+    margin-top: 18px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+.navbar-border-element {
+    margin-top: 11px;
+    margin-left: 5px;
+    margin-right: -10px;
+}
+
+#navLinkBorder {
+    font-family: "Inter";
+    border-radius: 8px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
+    color: rgb(109, 109, 109);
+    text-decoration: underline; 
+}
+
+#volunteerBadge {
+    font-family: "Inter";
+    height: 27px;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    padding-top: 7.5px;
+    margin-top: 14px;
+    margin-left: 10px;
+    color: white;
+    background-color: #2670FF;
+}
+
+#volunteer-mobile {
+    font-family: "Inter";
+    height: 27px;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    padding-top: 7.5px;
+    margin-top: 14px;
+    margin-left: 10px;
+    color: white;
+    margin-right: 15px;
+    background-color: #2670FF;
+}
+
+.navBorderToggled.nav-link {
+    border: 1px solid rgb(237, 237, 237);
+    margin-bottom: 5px;
+    border-radius: 0.25rem !important;
+    height: 52px;
+}
+
+#login-button {
+    border-radius: 8px;
+    background-color: transparent;
+    border-color: transparent;
+    font-family: "Inter";
+    font-size: 14px;
+    height: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: -3px;
+    color: rgb(109, 109, 109);
+}
+
+#register-button {
+    border-radius: 8px;
+    border-color: rgb(109, 109, 109);
+    color: rgb(109, 109, 109);
+    font-family: "Inter";
+    font-size: 14px;
+    height: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: -4px;
+    padding-top: 7px;
+}
+
+#register-button:hover{
+    color: white;
+    background-color: #2670FF;
+    border-color: transparent;
+}
+
+.navbar-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(25, 75, 211, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.navbar-light .navbar-toggler {
+    border-color: #194bd3;
+}
+
+#newOfferContainer{
+    max-width: 1500px;
+    padding: 1rem;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-bottom: 60px;
+    border-radius: 16px 16px 16px 16px !important;
+    border: 1px solid #CECECE;
+}
+
+#filterButton {
+    border-radius: 20px;
+    background-color: rgba(255,255,255, 1);
+    color: #2670FF;
+    font-family: "Inter";
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    height: 36px;
+    border: 1px solid #CECECE;
+}
+
+#change-location {
+    color: #2670FF;
+    border: transparent;
+    text-decoration: underline; 
+    font-weight: bold;
+}
+
+#large-button {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 49px;
+    font-family: "Inter";
+    font-weight: 600;
+    font-size: 16px;
+    background-color: #2670FF;
+    border-radius: 8px;
+}
+
+#refresh-location {
+    color: #4B81EC;
+    font-family: "Inter";
+    margin-top: 10px;
+    padding-left: 0px;
+    text-align: center;
+    padding-right: 0px;
+}

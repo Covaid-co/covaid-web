@@ -183,7 +183,7 @@
   margin-top: 10px;
 }
 
-#login-button {
+/* #login-button {
   border-radius: 8px;
   background-color: transparent;
   border-color: transparent;
@@ -194,9 +194,9 @@
   padding-left: 15px;
   padding-right: 15px;
   margin-top: 10px;
-}
+} */
 
-#register-button {
+/* #register-button {
   border-radius: 8px;
   background-color: transparent;
   border-color: white;
@@ -208,7 +208,7 @@
   padding-right: 15px;
   margin-top: 10px;
   padding-top: 7px;
-}
+} */
 
 #request-help-button {
   border-radius: 8px;
@@ -247,15 +247,15 @@
 #modal-topmatches {
   padding-bottom: 40px !important;
 }
-
+/* 
 #register-button:hover{
   color: #194bd3 !important;
   background-color: white;
-}
+} */
 
-#login-button:hover{
+/* #login-button:hover{
   color: white !important;
-}
+} */
 
 #homeButtons:hover{
   color: #194bd3 !important;
@@ -432,13 +432,13 @@ textarea.form-control {
   margin-right: 20px;
 } */
 
-.navbar-toggler-icon {
+/* .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-}
+} */
 
-.navbar-light .navbar-toggler {
+/* .navbar-light .navbar-toggler {
   border-color: transparent;
-}
+} */
 
 .pagination {
   margin-top: 25px;
@@ -449,7 +449,7 @@ textarea.form-control {
   font-family: "SF Text";
 }
 
-#volunteerBadge {
+/* #volunteerBadge {
   font-family: "SF Text";
   font-weight: bold;
   height: 24px;
@@ -460,7 +460,7 @@ textarea.form-control {
   padding-top: 7px;
   padding-bottom: 0px !important;
   margin-top: 11px;
-}
+} */
 
 #transparentModal {
   background-color: rgba(212, 46, 46, 0) !important;

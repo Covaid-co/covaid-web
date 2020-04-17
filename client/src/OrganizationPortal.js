@@ -119,7 +119,8 @@ export default function OrganiationPortal() {
 					)
 				});
 
-				fetch_requests(association_response._id)
+				// All requests for an association
+				fetch_requests(association_response._id);
 				
 				// Get all volunteers for an association
 				let params = {'association': association_response._id}
@@ -198,11 +199,12 @@ export default function OrganiationPortal() {
 	}
 
 	const displayCount = (tabNumber, arr) => {
-		if (tabNumber === currTabNumber) {
-			return <div className={"request-count request-count-" + tabNumber}>{arr.length}</div>
-		} else {
-			return <></>;
-		}
+		return <div className={"request-count request-count-" + tabNumber}>{arr.length}</div>
+		// if (tabNumber === currTabNumber) {
+		// 	return <div className={"request-count request-count-" + tabNumber}>{arr.length}</div>
+		// } else {
+		// 	return <></>;
+		// }
 	}
 
 	const tabID = (tabNumber) => {

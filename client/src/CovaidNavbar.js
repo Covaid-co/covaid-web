@@ -6,9 +6,9 @@ import Badge from 'react-bootstrap/Badge'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import VolunteerBadge from './components/VolunteerBadge'
-import AboutUs from './AboutUs'
-import HowItWorks from './HowItWorks'
-import Feedback from './Feedback'
+import AboutUs from './information_modals/AboutUs'
+import HowItWorks from './information_modals/HowItWorks'
+import Feedback from './information_modals/Feedback'
 
 
 export default function CovaidNavbar(props) {

@@ -1,37 +1,38 @@
 import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Toast from 'react-bootstrap/Toast'
 
-export default function GetLocation(props) {
+export default function NewLocationSetting(props) {
 
     const [locationString, setLocationString] = useState('');
     const [showInvalid, setShowInvalid] = useState(false);
 
     const handleSubmit = (e) => {
-        props.onLocationSubmit(e, locationString).then((res) => {
+        props.locationSubmit(e, locationString).then((res) => {
+            setLocationString('');
             if (res === false) {
                 setShowInvalid(true);
+            } else {
+                props.hideModal();
             }
         });
     };
 
     return (
-        <Modal show={!props.state.isLoaded} style = {{marginTop: 90}} onHide={() => {}}>
+        <Modal size="sm" show={props.showModal} style={{marginTop: 60}} onHide={props.hideModal}>
             <Modal.Header>
-                <Modal.Title id="small-header">Looking for your location...</Modal.Title>
-                <Spinner animation="border" role="status" style = {{textAlign: 'right', color: "black"}}></Spinner>
+                <Modal.Title id="small-header">Change your location</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p id="regular-text">Depending on server speeds, this make take a bit. If you’d like, you can input your current city/zip code.</p>
-                <Form onSubmit={handleSubmit}>
+                <p id="regular-text">Please input desired city or zip code.</p>
+                <Form onSubmit={handleSubmit} style={{textAlign: 'center'}}>
                     <Row>
                         <Col xs={12}>
-                            <Form.Group controlId="zip123" bssize="large">
+                            <Form.Group controlId="set-location" bssize="large">
                                 <Form.Control 
                                     placeholder="City/Zipcode"
                                     value={locationString} 
@@ -40,16 +41,16 @@ export default function GetLocation(props) {
                             </Form.Group>
                         </Col>
                     </Row>
-                    <Button style={{marginTop: 5}} id="large-button" type="submit">Enter Location</Button>
+                    <Button style={{marginTop: 5}} id="large-button" type="submit">Change Location</Button>
+                    <Button variant="link" id="refresh-location" onClick={props.refreshLocation}>
+                        <u>Revert to Original Location 
+                            <i className="fa fa-refresh" style={{marginLeft: 10}} aria-hidden="true"></i>
+                        </u>
+                    </Button>
                 </Form>
             </Modal.Body>
-            <Toast
-                show={showInvalid}
-                delay={3000}
-                onClose={() => setShowInvalid(false)}
-                autohide
-                id='toastError'
-                style={{marginBottom: 75, marginRight: 18}}>
+            <Toast show={showInvalid} delay={2000} onClose={() => setShowInvalid(false)} autohide
+                id='toastError' style={{marginBottom: -50, marginRight: 0}}>
                 <Toast.Body>Invalid city/zipcode</Toast.Body>
             </Toast>
         </Modal>

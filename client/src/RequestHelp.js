@@ -202,6 +202,14 @@ export default function RequestHelp(props) {
         return chosenText;
     }
 
+    const foundPhoneNumber = () => {
+        var res = '(401) 526-8243';
+        if (props.state.currentAssoc.name === "Pittsburgh Mutual Aid") {
+            res = '(412) 301-6127';
+        }
+        return res;
+    }
+
     if (firstPage) {
         return (
             <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
@@ -213,7 +221,7 @@ export default function RequestHelp(props) {
                         {requestHeaderText()}
                     </p>
                     <p id="requestCalling"> For those who would rather call in a request, 
-                        please call <br /><span id="phoneNumber">(401) 526-8243</span></p>
+                        please call <br /><span id="phoneNumber">{foundPhoneNumber()}</span></p>
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>
                         <Col xs={12}>

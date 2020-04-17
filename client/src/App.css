@@ -34,20 +34,20 @@ html, body {
   }
 }
 
-#nav1 .navbar-toggler-icon{
+/* #nav1 .navbar-toggler-icon{
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-}
+} */
 
-.navbar-toggler .navbar-toggler-icon {
+/* .navbar-toggler .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(25, 75, 211, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-}
+} */
 /* 
 .navbar-light .navbar-toggler {
   border-color: white;
 } */
 
 
-#navLink {
+/* #navLink {
   font-family: "SF Text";
   color: white;
   font-weight: 500;
@@ -57,7 +57,7 @@ html, body {
   margin-bottom: 5px;
   margin-right: 14px;
   padding: 0px;
-}
+} */
 
 #navLinkToggled {
   font-family: "SF Text";
@@ -69,29 +69,29 @@ html, body {
 }
 
 
-.home.navbar-brand {
+/* .home.navbar-brand {
   font-family: 'Baloo Chettan 2';
   color: white;
   font-weight: 600;
   margin-left: 5%;
   font-size: 34px;
   margin-right: 30px;
-}
+} */
 
-.customNav {
+/* .customNav {
   background-color: #194bd3;
 }
 
 .customNavToggled {
   background-color: white !important;
-}
+} */
 
-.navBorderToggled.nav-link {
+/* .navBorderToggled.nav-link {
   border: 1px solid rgb(237, 237, 237);
   margin-bottom: 5px;
   border-radius: 0.25rem !important;
   height: 52px;
-}
+} */
 
 .smallPage {
   display: none !important;

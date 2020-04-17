@@ -7,21 +7,25 @@ const Offer = ({ displayedVolunteers, setModalInfo, setModalOfferOpen }) => {
     return (
         <>
             {displayedVolunteers.map((user, i) => {
-                            return (<ListGroup.Item key={i} action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
-                                <div >
-                                    <h5 className="volunteer-name">
-                                        {user.first_name}
-                                    </h5>
-                                    <h5 className="association-name">{user.association_name === '' || user.association_name === 'Covaid' ? '' : user.association_name}</h5>
-                                </div>
-                                <p className="volunteer-location">{user.offer.neighborhoods.join(', ')}</p>
-                                <div>
-                                    {user.offer.tasks.map((task, i) => {
-                                        return <Badge key={i} className='task-info'>{task}</Badge>
-                                    })}
-                                </div>
-                            </ListGroup.Item>);
+                return (<ListGroup.Item key={i} action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
+                    <div >
+                        <h5 id="volunteer-name">
+                            {user.first_name}
+                        </h5>
+                        <h5 id="association-name">
+                            {user.association_name === '' || user.association_name === 'Covaid' ? '' : user.association_name}
+                        </h5>
+                    </div>
+                    <p id="volunteer-location">
+                        {user.offer.neighborhoods.join(', ')}
+                    </p>
+                    <div>
+                        {user.offer.tasks.map((task, i) => {
+                            return <Badge key={i} id='task-info'>{task}</Badge>
                         })}
+                    </div>
+                </ListGroup.Item>);
+            })}
             {displayedVolunteers.length === 0 ? 
                 <div>
                     <p id="no-offers">

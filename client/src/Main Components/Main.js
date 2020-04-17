@@ -11,7 +11,7 @@ import NewLogin from '../NewLogin'
 import NewRegister from '../NewRegister'
 import GetLocation from '../GetLocation'
 
-import getMyLocation from '../location_tools/getMyLocation'
+import getMyLocation from '../location_tools/LocationHelpers'
 
 import '../HomePage.css'
 
