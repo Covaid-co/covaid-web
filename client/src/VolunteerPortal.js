@@ -151,9 +151,9 @@ export default function VolunteerPortal(props) {
 							<Col lg={2} md={1} sm={0}>
 							</Col>
 							<Col>
-								<h1 id="jumboHeading">Welcome back, {user.first_name}!</h1>
-								<p id="jumboText">This is your volunteer portal, a place for you to manage your offer and handle requests</p>
-								<Button onClick={() => returnToHome()} id="homeButtons" >
+								<h1 id="home-heading" style={{color: 'white', marginTop: 0}}>Welcome back, {user.first_name}!</h1>
+								<p id="home-subheading" style={{color: 'white'}}>This is your volunteer portal, a place for you to manage your offer and handle requests</p>
+								<Button onClick={() => returnToHome()} id="medium-button" >
 									Return to home
 								</Button>
 							</Col>

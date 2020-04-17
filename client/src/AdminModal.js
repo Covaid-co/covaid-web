@@ -53,7 +53,7 @@ export default function AdminModal(props) {
         <>
             <Modal size="sm" show={props.adminModal} onHide={() => props.setAdminModal(false)} style = {{marginTop: 50, paddingBottom: 40}}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Current Admins</Modal.Title>
+                    <Modal.Title id="small-header" style={{marginLeft: 5}}>Current Admins</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{paddingTop: 0}}>
                     <Row>
@@ -62,14 +62,8 @@ export default function AdminModal(props) {
                                 {props.association.admins ? props.association.admins.map((admin, i) => {
                                     return (
                                     <ListGroup.Item key={i}>
-                                        <div >
-                                            <h5 className="volunteer-name">
-                                                {admin.name}
-                                            </h5>
-                                        </div>
-                                        <p style={{float: 'left', marginBottom: 0, marginTop: -2}}>
-                                            {admin.email}
-                                        </p>
+                                        <h5 id="volunteer-name">{admin.name}</h5>
+                                        <p id="regular-text" style={{marginBottom: 0}}>{admin.email}</p>
                                     </ListGroup.Item>);
                                 }) : <></>}
                             </ListGroup>
@@ -77,7 +71,7 @@ export default function AdminModal(props) {
                         <Col xs={12}>
                             <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>
                         </Col>
-                        <Col xs={12}  style={{textAlign: 'center'}}>
+                        <Col xs={12} style={{textAlign: 'center'}}>
                             <Button variant="link" style={{color: '#314CCE'}} onClick={() => {setAddAdmin(true); props.setAdminModal(false)}}>Add an Admin +</Button>
                         </Col>
                     </Row>
@@ -86,7 +80,7 @@ export default function AdminModal(props) {
             
             <Modal centered size="sm" show={addAdmin} onHide={() => {setAddAdmin(false); props.setAdminModal(true)}}>
                 <Modal.Header closeButton style={{borderBottom: '0px solid'}}>
-                    <Modal.Title>Add an Admin</Modal.Title>
+                    <Modal.Title id="small-header" style={{marginLeft: 5}}>Add an Admin</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{paddingTop: 0}}>
                     <Row>
@@ -98,7 +92,7 @@ export default function AdminModal(props) {
                                 <Form.Group controlId="email3" bssize="large" style={{marginTop: 5}}>
                                     <Form.Control value={fields.email3} placeholder="Email" onChange={handleFieldChange} />
                                 </Form.Group>
-                                <Button type="submit" id="nextPage" style={{marginTop: 0}}>Add Admin</Button>
+                                <Button type="submit" id="large-button" style={{marginTop: 0}}>Add Admin</Button>
                             </Form>
                         </Col>
                     </Row>

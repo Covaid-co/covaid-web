@@ -7,12 +7,11 @@ import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 import { useFormFields } from "./libs/hooksLib";
 
-import NewLanguages from './NewLanguages';
-import NewTasks from './NewTasks';
 import NeededBy from './NeededBy';
 import NewPaymentMethod from './NewPaymentMethod';
 import NewDetails from './NewDetails';
 import PhoneNumber from './PhoneNumber';
+import CheckForm from './CheckForm';
 import { defaultResources, languages } from './constants'
 import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';
 
@@ -46,7 +45,7 @@ export default function RequestHelp(props) {
     const [pendingSubmit, setPendingSubmit] = useState(false);
 
     useEffect(() => {
-        setLanguageChecked({});
+        setLanguageChecked(setFalseObj(languages));
         function fetchResources() {
             var resourcesFromAssoc = defaultResources;
             if (props.volunteer && props.requestHelpMode === "bulletin") {
@@ -57,7 +56,6 @@ export default function RequestHelp(props) {
             var tempAssoc = setFalseObj(resourcesFromAssoc);
             setResources(tempAssoc);
         }
-
         fetchResources();
     }, [props.requestHelpMode, props.volunteer, props.state.currentAssoc]);
 
@@ -177,11 +175,16 @@ export default function RequestHelp(props) {
         agreement = <>
                     <Form.Check
                         type = "checkbox" 
-                        label = "This match program is being organized by private citizens for the benefit of those in our community. By completing the sign up form to be matched, you agree to accept all risk and responsibility and further hold any facilitator associated with Baltimore Mutual Aid Network and/or Covaid.co harmless. For any additional questions, please contact bmoremutualaid@gmail.com."
+                        id="regular-text"
+                        label = "This match program is being organized by private citizens for the 
+                            benefit of those in our community. By completing the sign up form to be 
+                            matched, you agree to accept all risk and responsibility and further 
+                            hold any facilitator associated with Baltimore Mutual Aid Network and/or 
+                            Covaid.co harmless. For any additional questions, please contact bmoremutualaid@gmail.com."
                         style = {{fontSize: 12, marginTop: 2}}/>
 
                     </>
-        paymentAgreement = <p id="locationInfo">
+        paymentAgreement = <p id="regular-text" style = {{fontSize: 14}}>
             Baltimore Mutual Aid is not able to provide financial assistance at this time. Any purchases made by volunteers must be reimbursed.
                             </p>
     }
@@ -214,7 +217,7 @@ export default function RequestHelp(props) {
                     </p>
                     <p id="request-calling"> For those who would rather call in a request, 
                         please call <br /><span id="phoneNumber">{foundPhoneNumber()}</span></p>
-                    <h5 className="titleHeadings">Personal Information</h5>
+                    <h5 id="regular-text-bold">Personal Information</h5>
                     <Row>
                         <Col xs={12}>
                             <Form.Group controlId="first" bssize="large">
@@ -233,7 +236,8 @@ export default function RequestHelp(props) {
                             </p>
                         </Col>
                     </Row>
-                    <NewTasks resources={resources} setResources={setResources}/>
+                    <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>What support do you need?</h5>
+                    <CheckForm obj={resources} setObj={setResources}/>
                     <Button id="large-button" style={{marginTop: 15}} onClick={goToSecondPage}>Next</Button>
                     <p id="pagenum-text">Page 1 of 2</p>
                     <Toast show={showToast} delay={3000} onClose={() => setShowToast(false)} autohide id='toastError'>
@@ -250,13 +254,11 @@ export default function RequestHelp(props) {
                         <Modal.Title id="small-header">Almost Done!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: 0}}>
-                            What language do you speak?
-                        </h5>
-                        <p id="locationInfo">
+                        <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 0}}>What language do you speak?</h5>
+                        <p id="regular-text" style={{marginBottom: 0}}>
                             If language not listed, please mention in details section below
                         </p>
-                        <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
+                        <CheckForm obj={languageChecked} setObj={setLanguageChecked}/>
                         <NeededBy setTime={setTime} setDate={setDate}/>
                         {payment}
                         {paymentAgreement}
@@ -282,7 +284,7 @@ export default function RequestHelp(props) {
                         <Modal.Title>Your request has been sent!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p id="locationInfo">
+                        <p id="regular-text" style={{marginBottom: 5}}>
                             Your request has been saved and you should receive an email soon 
                             from a matched volunteer who can support you.
                         </p>

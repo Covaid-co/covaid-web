@@ -8,20 +8,20 @@ export default function NewDetails(props) {
 
     return (
         <>
-            <h5 className="titleHeadings" style = {{marginTop: '24px', marginBottom: 0}}>
+            <h5 id="regular-text-bold" style = {{marginTop: '24px', marginBottom: 0}}>
                 Details about request
             </h5>
-            <p id="locationInfo">Use as much detail as you feel comfortable sharing, no judgements here</p>
+            <p style={{fontSize: 14, marginBottom: 0}} id="regular-text">
+                Use as much detail as you feel comfortable sharing, no judgements here
+            </p>
             <Row >
                 <Col xs={12}>
                     <Form.Group controlId="details">
-                        <Form.Control as="textarea" 
-                                        rows="3" 
+                        <Form.Control as="textarea" rows="3" 
                                         placeholder="Example: 'I'm quarantined and need groceries for the week. Can they can be dropped
                                         off at 123 Main street?'"
                                         value={props.fields.details} 
-                                        onChange={props.handleFieldChange}
-                                        />
+                                        onChange={props.handleFieldChange}/>
                     </Form.Group>
                 </Col>
             </Row>

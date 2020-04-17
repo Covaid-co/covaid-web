@@ -202,7 +202,7 @@ export default function VolunteerDetails(props) {
                                         onChange={handleFieldChange}/>
                         </Form.Group>
                     </Form>
-                    {props.matching ? <Button id="nextPage" onClick={matchVolunteer}>Match with {props.currVolunteer.first_name}</Button> : <></>}
+                    {props.matching ? <Button id="large-button" onClick={matchVolunteer}>Match with {props.currVolunteer.first_name}</Button> : <></>}
                 </Modal.Body>
             </Modal>
         );

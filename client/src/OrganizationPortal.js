@@ -232,13 +232,13 @@ export default function OrganiationPortal() {
 					<Row>
 						<Col lg={2} md={1} sm={0}></Col>
 						<Col>
-							<h1 id="jumboHeading">Welcome back, </h1>
-							<h1 id="jumboHeading">{association.name}</h1>
-							<p id="jumboText">This is your organization portal, a place for you to manage volunteers and requests in your area</p>
-							<Button id="homeButtons" onClick={()=>{setAdminModal(true)}}>
+							<h1 id="home-heading" style={{color: 'white', marginTop: 0}}>Welcome back, </h1>
+							<h1 id="home-heading"  style={{color: 'white', marginTop: 0}}>{association.name}</h1>
+							<p id="home-subheading" style={{color: 'white'}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
+							<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
 								Manage Organization
 							</Button>{' '}
-							<Button id="homeButtons" onClick={()=>{setVolunteersModal(true)}}>
+							<Button id="medium-button" onClick={()=>{setVolunteersModal(true)}}>
 								View List of {volunteers.length} Volunteers
 							</Button><br/>
 							<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>

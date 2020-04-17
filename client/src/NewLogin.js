@@ -15,7 +15,7 @@ export default function NewLogin(props) {
         password: "",
     });
 
-    const [mode, setMode] = useState(true)
+    const [mode, setMode] = useState(true);
 
     function validateForm() {
         return fields.email.length > 0 && fields.password.length > 0;
@@ -57,9 +57,9 @@ export default function NewLogin(props) {
         .catch((e) => {
             alert('Seems to be some issues on our end, please try again later.')
         });
-      };
+    };
 
-      const handleSubmitForgot = async e => {
+    const handleSubmitForgot = async e => {
         e.preventDefault();
         let form = {
             'email': fields.email,
@@ -80,75 +80,77 @@ export default function NewLogin(props) {
         .catch((e) => {
             alert('Error')
         });
-      };
+    };
 
-        if (mode) {
-            return (
-                <Modal size='sm' show={props.showModal} onHide={props.hideModal} style={{marginTop: 110}}>
-                    <Modal.Header closeButton>
-                        <Modal.Title id="small-header">Volunteer Login</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={handleSubmit}>
-                            <Row>
-                                <Col xs={12}>
-                                    <Form.Group controlId="email" bssize="large">
-                                        <Form.Control 
-                                            type="email"
-                                            placeholder="Email"
-                                            value={fields.email}
-                                            onChange={handleFieldChange}
-                                        />
-        
-                                    </Form.Group>
-                                </Col>
-                                <Col xs={12}>
-                                    <Form.Group controlId="password" bssize="large">
-                                        <Form.Control 
-                                            placeholder="Password"
-                                            value={fields.password}
-                                            onChange={handleFieldChange}
-                                            type="password"
-                                        />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Button style={{marginTop: 10}} id="large-button" disabled={!validateForm()} type="submit">
-                                Sign In
-                            </Button>
-                            <p id="or">---------</p>
-                            <Button id="large-button-empty" onClick={() => {setMode(!mode);}}>Reset your password</Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-            )
-        } else {
-            return (
-                <Modal show={props.showLogin} size='sm' onHide={props.handleHideLogin} style={{marginTop: 110}}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Reset your password</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={handleSubmitForgot}>
-                            <Row>
-                                <Col xs={12}>
-                                    <Form.Group controlId="email" bssize="large">
-                                        <Form.Control 
-                                            type="email"
-                                            placeholder="Enter your email"
-                                            value={fields.email}
-                                            onChange={handleFieldChange}
-                                        />
+    if (mode) {
+        return (
+            <Modal size='sm' show={props.showModal} onHide={props.hideModal} style={{marginTop: 110}}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="small-header">Volunteer Login</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleSubmit}>
+                        <Row>
+                            <Col xs={12}>
+                                <Form.Group controlId="email" bssize="large">
+                                    <Form.Control 
+                                        type="email"
+                                        placeholder="Email"
+                                        value={fields.email}
+                                        onChange={handleFieldChange}
+                                    />
+    
+                                </Form.Group>
+                            </Col>
+                            <Col xs={12}>
+                                <Form.Group controlId="password" bssize="large">
+                                    <Form.Control 
+                                        placeholder="Password"
+                                        value={fields.password}
+                                        onChange={handleFieldChange}
+                                        type="password"
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Button style={{marginTop: 10}} id="large-button" disabled={!validateForm()} type="submit">
+                            Sign In
+                        </Button>
+                        <p id="or">---------</p>
+                        <Button id="large-button-empty" onClick={() => {setMode(!mode);}}>Reset your password</Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        )
+    } else {
+        return (
+            <Modal show={props.showModal} dialogClassName="location-set-modal" onHide={props.hideModal} style={{marginTop: 110}}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="small-header">Reset your password</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleSubmitForgot}>
+                        <Row>
+                            <Col xs={12}>
+                                <Form.Group controlId="email" bssize="large">
+                                    <Form.Control 
+                                        type="email"
+                                        placeholder="Enter your email"
+                                        value={fields.email}
+                                        onChange={handleFieldChange}
+                                    />
 
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Button style={{marginTop: 10}} id="nextPage" disabled={!validateForgotForm()} type="submit">Send me a password reset link</Button>
-                            <p id="or">---------</p>
-                            <Button id="createAccount" onClick={() => {setMode(!mode);}}>Back to login</Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-            )
-        }
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Button style={{marginTop: 10}} id="large-button" disabled={!validateForgotForm()} type="submit">
+                            Send me a password reset link
+                        </Button>
+                        <p id="or">---------</p>
+                        <Button id="large-button-empty" onClick={() => setMode(!mode)}>Back to login</Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        )
+    }
 }

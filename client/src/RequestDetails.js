@@ -255,38 +255,37 @@ export default function RequestDetails(props) {
     const modeButton = () => {
         if (props.mode === 1) {
             return <>
-                        <Button id="nextPage" onClick={topMatch}>Match a volunteer</Button>
-                        <Row style={{marginBottom: 10}}>
-                            <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
-                                <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
-                                    Mark Complete
-                                </Button>
-                            </Col>
-                            <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
-                                <Button onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}} id='remove-request'>Remove Request</Button>
-                            </Col>
-                        </Row>
-                        <Toast
-                            show={showToast}
-                            delay={2000}
-                            onClose={() => setShowToast(false)}
-                            autohide
-                            style={{
-                                position: 'absolute',
-                                bottom: 120,
-                                right: 0,
-                                marginBottom: 27,
-                                marginRight: 10
-                            }}>
-                            <Toast.Body>{toastMessage}</Toast.Body>
-                        </Toast>    
-                    </>;
+                    <Button id="large-button" style={{marginTop: 15}} onClick={topMatch}>Match a volunteer</Button>
+                    <Row style={{marginBottom: 10}}>
+                        <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+                            <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
+                                Mark Complete
+                            </Button>
+                        </Col>
+                        <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
+                            <Button onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}} id='remove-request'>Remove Request</Button>
+                        </Col>
+                    </Row>
+                    <Toast
+                        show={showToast}
+                        delay={2000}
+                        onClose={() => setShowToast(false)}
+                        autohide
+                        style={{
+                            position: 'absolute',
+                            bottom: 120,
+                            right: 0,
+                            marginBottom: 27,
+                            marginRight: 10
+                        }}>
+                        <Toast.Body>{toastMessage}</Toast.Body>
+                    </Toast>    
+                </>;
         } else {
             return (<>
                     {Object.keys(currVolunteer).length > 0 ? 
-                        <Button id="nextPage" 
-                                onClick={() => setVolunteerDetailsModal(true)}>
-                                View Volunteers's Information
+                        <Button id="large-button" style={{marginTop: 15}} onClick={() => setVolunteerDetailsModal(true)}>
+                            View Volunteers's Information
                         </Button>
                         : <></>}
                     <Row style={{marginBottom: 10}}>
@@ -492,14 +491,13 @@ export default function RequestDetails(props) {
                 </Modal.Body>
             </Modal>
 
-            <Modal size="sm" id="notes-modal" show={confirmCompleteModal} onHide={() => {setConfirmCompleteModal(false); props.setRequestDetailsModal(true);}}>
+            <Modal dialogClassName="location-set-modal" show={confirmCompleteModal} 
+                   onHide={() => {setConfirmCompleteModal(false); props.setRequestDetailsModal(true);}}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Completing the request</Modal.Title>
+                    <Modal.Title id="small-header">Completing a request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p id="createAccountText">
-                        Reason the request is complete
-                    </p>
+                    <p id="regular-text" stlye={{marginBottom: 5}}>Reason the request is complete</p>
                     <Form onSubmit={completeRequest}>
                         <Form.Group controlId="time" onChange={handleChangeReasons}>
                             <Form.Control as="select">
@@ -510,7 +508,7 @@ export default function RequestDetails(props) {
                                 <option>Referred for support</option>
                             </Form.Control>
                         </Form.Group>
-                        <Button id="nextPage" type='submit'>Complete Request</Button>
+                        <Button id="large-button" style={{marginTop: 5}} type='submit'>Complete Request</Button>
                     </Form>
                 </Modal.Body>
             </Modal>

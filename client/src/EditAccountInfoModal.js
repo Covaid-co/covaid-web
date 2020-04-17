@@ -337,7 +337,7 @@ export default function EditAccountInfoModal(props) {
                     <Modal.Title>Update your account information</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Container id="volunteer-info" style={{maxWidth: 2000, marginLeft: 0, marginRight: 0, color: 'black'}}>
+                    <Container id="volunteer-info" style={{maxWidth: 2000, marginBottom: 10, marginLeft: 0, marginRight: 0, color: 'black'}}>
                     <Row>
                     <Col>
                     <Form>
@@ -382,7 +382,7 @@ export default function EditAccountInfoModal(props) {
                                         onChange={handleFieldChange}/>
                             </Col>
                         </Form.Group>
-                        <h5 className="volunteerName">Current zipcode</h5>
+                        <h5 id="regular-text-bold" style={{marginBottom: 5}}>Current zipcode</h5>
                         <InputGroup controlid="locationString" className="mb-3">
                             <Form.Control
                                     placeholder="Zip code"
@@ -393,21 +393,22 @@ export default function EditAccountInfoModal(props) {
                                 <Button variant="outline-secondary" onClick={updateLocation}>Update</Button>
                             </InputGroup.Append>
                         </InputGroup>
-                        <h5 className="volunteerName">What languages do you speak?</h5>
+                        <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>What languages do you speak?</h5>
                         <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
-                        <h5 className="volunteerName" style={{marginBottom: 5}}>Can you drive?</h5>
+                        <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>Can you drive?</h5>
                         <NewCar hasCar={hasCar} 
                                 setHasCar={setHasCar}/>
-                        <h5 className="volunteerName">What is your general availability?</h5>
+                        <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>What is your general availability?</h5>
                         <NewLanguages languages={timeNames} languageChecked={times} setLanguageChecked={setTimes}/>
 
                         <div style={showChangeAssocModal ? {'display': 'block'} : {'display': 'none'}}>
-                            <h5 className="volunteerName">Your location has changed, please update your tasks here!</h5>
+                            <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>Your location has changed, please update your tasks here!</h5>
                             <NewLanguages languages={defaultResources} languageChecked={resources} setLanguageChecked={setResources}/>
                         </div>
-
-                        <p id="requestCall" style={{marginTop: 10, marginBottom: 10}}></p>
-                        <Button onClick={handleSubmit} style={{margin: "auto", display: "block", borderColor: "#194bd3", color: "white", backgroundColor: "#194bd3", fontSize: 13, fontFamily: "SF Text", fontWeight: "bold"}}>Update your info</Button>
+                        <Row>
+                            <Button onClick={handleSubmit} id="request-button" style={{width: '100%', marginTop: 20}}>Update your info</Button>
+                        </Row>
+                        {/* <Button onClick={handleSubmit} id="request-button">Update your info</Button> */}
                     </Form>
                     </Col> 
                     </Row>

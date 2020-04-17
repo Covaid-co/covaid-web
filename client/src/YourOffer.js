@@ -9,9 +9,10 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
 import Alert from 'react-bootstrap/Alert'
-import NewLanguages from './NewLanguages';
 import Details from './Details';
-import Availability from './Availability';
+import { generateURL } from './Helpers'
+import { defaultResources } from './constants';
+import CheckForm from './CheckForm';
 
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
@@ -22,45 +23,32 @@ export default function YourOffer(props) {
         details: ""
     });
 
-    const [availableText, setAvailableText] = useState('');
-    const [switchSelected, setSwitchSelected] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
     const [availability, setAvailability] = useState(false);
     const [resources, setResources] = useState({});
-    const [defaultResources, setDefaultResources] = useState(['Food/Groceries', 'Medication', 'Donate', 'Emotional Support', 'Academic/Professional', 'Misc.']);
 
     useEffect(() => {
         fields.details = props.user.offer.details;
-        setSwitchSelected(props.user.availability);
         setAvailability(props.user.availability);
         async function getResources() {
-            var url = "/api/association/get_assoc/?";
             if (!props.user.association) {
                 setCurrentUserObject(props.user.offer.tasks, defaultResources, setResources);
                 setIsLoading(false);
                 return;
             }
-            let params = {
-                'associationID': props.user.association
-            }
-            let query = Object.keys(params)
-                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-                .join('&');
-            url += query;
-
+            let params = {'associationID': props.user.association}
+            var url = generateURL("/api/association/get_assoc/?", params);
             const response = await fetch(url);
             response.json().then((data) => {
-                setIsLoading(false);
-                setDefaultResources(data.resources)
                 setCurrentUserObject(props.user.offer.tasks, data.resources, setResources);
+                setIsLoading(false);
             });
         }
         getResources();
     }, [props.user]);
-
 
     const setCurrentUserObject = (userList, fullList, setFunction) => {
         for (var i = 0; i < fullList.length; i++) {
@@ -132,11 +120,13 @@ export default function YourOffer(props) {
     var visibleText = <></>
     var publishButton = <></>
     if (availability) {
-        visibleText = <h5 style={{fontFamily: "SF Text", fontStyle: "normal", fontWeight: "bold", fontSize: "20", color: "#45A03D"}}>*Your offer is currently live and on the community bulletin</h5>
-        publishButton = <Button id="nextPage" style={{backgroundColor: "#AE2F2F", borderColor: "#AE2F2F"}} onClick={() => handleUpdate(false)}>Unpublish your offer</Button>
+        visibleText = <h5 id="medium-text" style={{color: "#45A03D"}}>
+            *Your offer is currently live and on the community bulletin</h5>
+        publishButton = <Button id="large-button" style={{backgroundColor: "#AE2F2F", borderColor: "#AE2F2F", marginTop: 10}} onClick={() => handleUpdate(false)}>Unpublish your offer</Button>
     } else {
-        visibleText = <h5 style={{fontFamily: "SF Text", fontStyle: "normal", fontWeight: "bold", fontSize: "20", color: "#AE2F2F"}}>*Your offer is currently inactive</h5> 
-        publishButton = <Button id="nextPage" onClick={() => handleUpdate(true)} >Publish your offer</Button>  
+        visibleText = <h5 id="medium-text" style={{color: "#AE2F2F"}}>
+            *Your offer is currently inactive</h5> 
+        publishButton = <Button id="large-button" style={{marginTop: 10}} onClick={() => handleUpdate(true)} >Publish your offer</Button>  
     }
 
     if (isLoading) {
@@ -156,23 +146,14 @@ export default function YourOffer(props) {
                             </Toast.Header>
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
-                        <Alert style={{marginTop: 10, marginBottom: 20}} variant={'danger'}>
+                        <Alert style={{marginTop: 10, marginBottom: 20, color: '#721c24'}} variant={'danger'} id="regular-text">
                             If you are showing any symptoms or have traveled in the past 2 weeks, please refrain from marking yourself as available.
                         </Alert>
                         <Form onSubmit={handleUpdate} style = {{textAlign: "left"}}>
-                            {/* <Availability availableText={availableText}
-                                          setAvailableText={setAvailableText}
-                                          switchSelected={switchSelected}
-                                          setSwitchSelected={setSwitchSelected}
-                                          setAvailability={setAvailability}/> */}
-
                             {visibleText}
-                            <h5 className="volunteerName">What can you help with?</h5>
-                            <NewLanguages languages={defaultResources}
-                                       languageChecked={resources} 
-                                       setLanguageChecked={setResources}/>
-                            <Details fields={fields.details} 
-                                     handleFieldChange={handleFieldChange}/>
+                            <h5 id="regular-text-bold" style={{marginBottom: 5}}>What can you help with?</h5>
+                            <CheckForm obj={resources} setObj={setResources}/>
+                            <Details fields={fields.details} handleFieldChange={handleFieldChange}/>
                             {publishButton}
                         </Form>
                     </Col>

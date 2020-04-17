@@ -28,7 +28,7 @@ const Offer = ({ displayedVolunteers, setModalInfo, setModalOfferOpen }) => {
             })}
             {displayedVolunteers.length === 0 ? 
                 <div>
-                    <p id="no-offers">
+                    <p id="regular-text" style={{color: 'black'}}>
                         <strong style={{fontSize: 18}}>There seems to be no offers in your area. <br/></strong> 
                         Use the <strong>Request support</strong> button and we will match you with a volunteer in your area!
                     </p>

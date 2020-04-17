@@ -14,7 +14,7 @@ import GetLocation from './GetLocation';
 import AboutUs from './information_modals/AboutUs'
 import HowItWorks from './information_modals/HowItWorks'
 import HelpfulLinks from './information_modals/HelpfulLinks';
-// import Feedback from './information_modals/Feedback'
+import Feedback from './information_modals/Feedback'
 import NewLocationSetting from './location_tools/NewLocationSetting';
 import { generateURL } from './Helpers'
 import { defaultResources } from './constants'
@@ -95,6 +95,9 @@ export default function HomePage(props) {
                                   hideModal={props.handleHideModal}
                                   associationCity={props.state.currentAssoc.city}
                                   associationLinks={props.state.currentAssoc.links}/>;
+        } else if  (props.state.modalType === 4) {
+            modal = <Feedback showModal={props.state.showModal} 
+                              hideModal={props.handleHideModal}/>;
         } else if (props.state.modalType === 5) {
             modal = <NewLocationSetting locationSubmit={props.onLocationSubmit}
                                         refreshLocation={props.refreshLocation}

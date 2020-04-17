@@ -196,7 +196,7 @@ class Home extends Component {
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => this.handleShowModal(2)}>
                   <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
                 </Nav.Link>
-                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-element'}>
+                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => this.handleShowModal(4)}>
                   <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
                 </Nav.Link>
                 <Nav.Link className="volunteer-badge-web">

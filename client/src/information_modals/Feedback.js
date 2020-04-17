@@ -8,7 +8,9 @@ export default function Feedback(props) {
     return (
         <Modal show={props.showModal} style={{marginTop: 60}} onHide={props.hideModal}>
 			<Modal.Header closeButton>
-				<Modal.Title>Let us know if you have any feedback!</Modal.Title>
+				<Modal.Title id="small-header">
+					Let us know if you have any feedback!
+				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form 
@@ -17,7 +19,7 @@ export default function Feedback(props) {
 					rel="noopener noreferrer"
 					method="POST"
 					onSubmit={props.handleHide}
-					style={{marginTop: "10px", marginBottom: "30px", display: "block", whiteSpace: 'nowrap'}}>
+					style={{marginTop: 0, marginBottom: 10, display: "block", whiteSpace: 'nowrap'}}>
 					<FormControl
 						type="text" 
 						name="entry.1347491217"
@@ -31,7 +33,7 @@ export default function Feedback(props) {
 						name="entry.1354002737"
 						placeholder="Feedback"
 						className="mr-sm-2" />
-					<Button type="submit" id="nextPage" variant="success" style={{marginTop: 15}} >Submit</Button>
+					<Button type="submit" id="large-button" variant="success" style={{marginTop: 15}} >Submit</Button>
 				</Form>
 			</Modal.Body>
 		</Modal>
