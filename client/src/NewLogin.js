@@ -41,7 +41,6 @@ export default function NewLogin(props) {
         .then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-                    // console.log("Login successful")
                     Cookie.set("token", data.user.token);
                     var url = window.location.href; 
                     url += "volunteerPortal"
@@ -85,9 +84,9 @@ export default function NewLogin(props) {
 
         if (mode) {
             return (
-                <Modal show={props.showLogin} size='sm' onHide={props.handleHideLogin} style={{marginTop: 110}}>
+                <Modal size='sm' show={props.showModal} onHide={props.hideModal} style={{marginTop: 110}}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Volunteer Login</Modal.Title>
+                        <Modal.Title id="small-header">Volunteer Login</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={handleSubmit}>
@@ -114,9 +113,11 @@ export default function NewLogin(props) {
                                     </Form.Group>
                                 </Col>
                             </Row>
-                            <Button style={{marginTop: 10}} id="nextPage" disabled={!validateForm()} type="submit">Sign In</Button>
+                            <Button style={{marginTop: 10}} id="large-button" disabled={!validateForm()} type="submit">
+                                Sign In
+                            </Button>
                             <p id="or">---------</p>
-                            <Button id="createAccount" onClick={() => {setMode(!mode);}}>Reset your password</Button>
+                            <Button id="large-button-empty" onClick={() => {setMode(!mode);}}>Reset your password</Button>
                         </Form>
                     </Modal.Body>
                 </Modal>

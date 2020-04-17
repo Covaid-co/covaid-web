@@ -5,10 +5,8 @@ import Button from 'react-bootstrap/Button'
 import FormControl from 'react-bootstrap/FormControl'
 
 export default function Feedback(props) {
-
-
     return (
-        <>
+        <Modal show={props.showModal} style={{marginTop: 60}} onHide={props.hideModal}>
 			<Modal.Header closeButton>
 				<Modal.Title>Let us know if you have any feedback!</Modal.Title>
 			</Modal.Header>
@@ -36,6 +34,6 @@ export default function Feedback(props) {
 					<Button type="submit" id="nextPage" variant="success" style={{marginTop: 15}} >Submit</Button>
 				</Form>
 			</Modal.Body>
-		</>
+		</Modal>
     );
 }

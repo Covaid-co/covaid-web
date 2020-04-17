@@ -150,7 +150,6 @@ const formatDate = (date, format, utc) => {
     return format;
 };
 
-
 export const extractTrueObj = (obj) => {
     var result = [];
     for (const p in obj) {
@@ -160,3 +159,11 @@ export const extractTrueObj = (obj) => {
     }
     return result;
 }
+
+export const setFalseObj = (names) => {
+    var res = {}
+    for (var i = 0; i < names.length; i++) {
+        res[names[i]] = false;
+    }
+    return res;
+} 

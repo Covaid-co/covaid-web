@@ -15,49 +15,11 @@ html, body {
   height: 100%;
 }
 
-.location {
-  color: red
-}
-
-.BottomHalf {
-  position: absolute;
-  height: 100%; 
-  width: 100%;
-  z-index: -10;
-  bottom: 35%;
-  background: #194bd3;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
-/* #nav1 .navbar-toggler-icon{
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-} */
-
-/* .navbar-toggler .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(25, 75, 211, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-} */
-/* 
-.navbar-light .navbar-toggler {
-  border-color: white;
-} */
-
-
-/* #navLink {
-  font-family: "SF Text";
-  color: white;
-  font-weight: 500;
-  font-size: 15px;
-  white-space: nowrap;
-  margin-top: 12px;
-  margin-bottom: 5px;
-  margin-right: 14px;
-  padding: 0px;
-} */
 
 #navLinkToggled {
   font-family: "SF Text";
@@ -68,62 +30,13 @@ html, body {
   margin-top: 7px;
 }
 
-
-/* .home.navbar-brand {
-  font-family: 'Baloo Chettan 2';
-  color: white;
-  font-weight: 600;
-  margin-left: 5%;
-  font-size: 34px;
-  margin-right: 30px;
-} */
-
-/* .customNav {
-  background-color: #194bd3;
-}
-
-.customNavToggled {
-  background-color: white !important;
-} */
-
-/* .navBorderToggled.nav-link {
-  border: 1px solid rgb(237, 237, 237);
-  margin-bottom: 5px;
-  border-radius: 0.25rem !important;
-  height: 52px;
-} */
-
 .smallPage {
   display: none !important;
-}
-
-#howHelpButton:hover #help{
-  color: #194bd3 !important;
 }
 
 .form-check-input {
   position: absolute;
   margin-top: .2rem;
-}
-
-#name {
-  color: white;
-  font-weight: 600;
-  font-family: "SF Text";
-  margin-right: 10px;
-  font-size: 15px;
-  position: relative;
-  top: 3px;
-}
-
-#nameToggled {
-  color: #194bd3;
-  /* margin-right: -20px; */
-  font-size: 13px;
-}
-
-#logoutButton:hover #logout {
-  color: white !important;
 }
 
 #loginButton {
@@ -159,63 +72,6 @@ html, body {
   padding: 0.25em 0.7em;
 }
 
-/* @media (max-width:767px){
-  .smallPage { display: grid !important; }
-  .bigPage { display: none !important; }
-  #getStarted {
-    margin-right: 0 !important;
-    display: grid !important;
-  }
-  .customNav {
-    background-color: white !important;
-  }
-  
-  #home {
-    color: #194bd3 !important;
-    margin-left: 0 !important;
-  }
-
-  .nav-link {
-    border: 1px solid rgb(237, 237, 237);
-    margin-bottom: 5px;
-    border-radius: 0.25rem !important;
-  }
-
-  .blackCustom {
-    color: #262626;
-  }
-
-  #name {
-    color: #194bd3 !important;
-    margin-right: 0 !important;
-  }
-
-  .BottomHalf {
-    bottom: 20%;
-  }
-  
-  .navbar-light .navbar-nav .nav-link {
-    color: #194bd3 !important;
-  }
-
-  #logout {
-    color:#dc3545 !important;
-  }
-
-  #logoutButton:hover #logout {
-    color: white !important;
-  }
-
-  #help {
-    color:#194bd3 !important;
-  }
-
-  .btn-outline-light {
-    border-color: #194bd3 !important;
-  }
-} */
-
-
 .pagination {
   display: flex;
   justify-content: center;
@@ -223,12 +79,6 @@ html, body {
 
 .pagination li {
   display: block;
-}
-
-@media (max-width:490px){
-  .BottomHalf {
-    bottom: 5% !important;
-  }
 }
 
 .App-header {
@@ -247,7 +97,6 @@ html, body {
   color: #61dafb;
 }
 
-
 .nav-item.nav-link.active {
   color: #1652F0 !important;
 }
@@ -255,37 +104,6 @@ html, body {
 .nav-item.nav-link {
   color: white !important;
 }
-
-.toggleButton.btn.btn-outline-primary:hover {
-  background-color:white !important;
-  color: #1652F0 !important;
-  border: 0.5px solid #DADDE1;
-  text-decoration: none;
-}
-
-.toggleButton.btn.active.btn-outline-primary {
-  background-color: #007bff !important;
-  border: 0.5px solid #DADDE1;
-  color: white !important;
-}
-
-#whiteText {
-  color: white !important;
-  font-weight: 600;
-  font-size: 13;
-}
-
-/* #uncontrolled-tab-example-tab-your-offer {
-  color: white;
-}
-
-#uncontrolled-tab-example-tab-links {
-  color: white;
-}
-
-#uncontrolled-tab-example-tab-offers {
-  color: white;
-} */
 
 @keyframes App-logo-spin {
   from {

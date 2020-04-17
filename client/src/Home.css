@@ -411,12 +411,12 @@ textarea.form-control {
   border-radius: 8px;
 }
 
-#pageNumber {
+/* #pageNumber {
   text-align: center;
   margin-top: 15px;
   font-family: "SF Text";
   color: #7F7F7F;
-}
+} */
 
 /* Home Page / navbar */
 
@@ -491,7 +491,7 @@ textarea.form-control {
   margin-bottom: 0px;
   color: #7F7F7F;
 }
-
+/* 
 #createAccount {
   width: 100%;
   margin-left: auto;
@@ -503,21 +503,21 @@ textarea.form-control {
   border-color: #194bd3;
   color: #194bd3;
   border-radius: 8px;
-}
+} */
 
-#createAccountText {
+/* #createAccountText {
   font-family: "SF Text";
   font-size: 14px;
   color: #7F7F7F;
   margin-bottom: 5px;
-}
+} */
 
-#contactInfoText {
+/* #contactInfoText {
   font-family: "SF Text";
   font-size: 14px;
   color: #7F7F7F;
   font-style: italic;
-}
+} */
 
 #never {
   font-family: "SF Text";

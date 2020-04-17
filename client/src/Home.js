@@ -3,7 +3,6 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
 import Geocode from "react-geocode";
 import Badge from 'react-bootstrap/Badge'
 import fetch_a from './util/fetch_auth';
@@ -13,10 +12,9 @@ import './App.css'
 import './Home.css'
 import './styling/NewHomePage.css';
 
-import HelpfulLinks from './HelpfulLinks';
 import HomePage from './HomePage'
 
-import { Redirect } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import { findAssociations, getMyLocation, setNeighborhood } from './location_tools/LocationHelpers'
 import { removeCookies } from './Helpers';
 import { cookieNames } from './constants';
@@ -41,64 +39,22 @@ class Home extends Component {
       first_name: '',
       last_name: '',
       currentUser: undefined,
-      currentUserAvailability: false,
-      showLogin: false,
-      showRegistration: false,
       showModal: false,
-      showResourceModal: false,
       modalType: '',
-      currentState: '',
       width: 0,
       totalVolunteers: 0,
       justVerified: false,
-      currentClickedUser: '',
-      showRequestHelp: false,
-      requestHelpMode: '',
       associations: [],
       currentAssoc: {},
-      volunteerPortal: false,
-      toggled: false,
+      toggled: false
     }
 
     window.addEventListener("resize", this.update);
   
     this.handleHideModal = this.handleHideModal.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
-    this.handleHideResourceModal = this.handleHideResourceModal.bind(this);
-    this.handleShowResourceModal = this.handleShowResourceModal.bind(this);
     this.logout = this.logout.bind(this);
     this.refreshLocation = this.refreshLocation.bind(this);
-    this.handleShowLogin = this.handleShowLogin.bind(this);
-    this.handleHideLogin = this.handleHideLogin.bind(this);
-    this.handleShowRegistration = this.handleShowRegistration.bind(this);
-    this.handleHideRegistration = this.handleHideRegistration.bind(this);
-    this.handleShowRequestHelp = this.handleShowRequestHelp.bind(this);
-    this.handleHideRequestHelp = this.handleHideRequestHelp.bind(this);
-    this.toggleNavBar = this.toggleNavBar.bind(this);
-  }
-
-  handleHideRequestHelp() {
-    this.setState({showRequestHelp: false});
-  }
-
-  handleShowRequestHelp() {
-    this.setState({showRequestHelp: true});
-  }
-
-  handleShowLogin() {
-    this.setState({showLogin: true});
-  }
-
-  handleHideLogin() {
-    this.setState({showLogin: false})
-  }
-
-  handleShowRegistration() {
-    this.setState({showRegistration: true});
-  }
-
-  handleHideRegistration() {
-    this.setState({showRegistration: false});
   }
 
   handleShowModal(modalType) {
@@ -110,17 +66,9 @@ class Home extends Component {
     this.setState({showModal: false});
   }
 
-  handleShowResourceModal() {
-    this.setState({showResourceModal: true})
-  }
-
-  handleHideResourceModal() {
-    this.setState({showResourceModal: false})
-  }
-
   componentDidMount() {
     if (this.props.location.verified) {
-      this.setState({showLogin: true});
+      this.handleShowModal(6);
       this.setState({justVerified: true});
     }
     getMyLocation(this);
@@ -182,86 +130,54 @@ class Home extends Component {
     );
   }
 
-  toggleNavBar(e) {
-    this.setState({toggled: e});
-  }
-
   render() {
-		var collapsed = false
-		if (this.state.width <= 767) {
-			collapsed = true;
-		}
-
-    const { isLoggedIn } = this.state;
-
     var rightNav;
-    if (isLoggedIn) {
+    if (this.state.isLoggedIn) {
       if (this.state.toggled) {
         rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
                     <Button variant="outline-danger" id='logoutButton' onClick={this.logout} style={{width: '100%'}}>
-                      <font id = "logout" style = {{color: '#dc3545', fontWeight: 600, fontSize: 13}}>
-                        Logout
-                      </font>
+                      Logout
                     </Button>
                   </Form>;
       } else {
         rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%'}}>
-                    {!collapsed ? <span id="name">
-                      Hello, {this.state.first_name}
-                    </span> : <></>}
+                    {(this.state.width > 767) ? <span id="hello-name">Hello, {this.state.first_name}</span> : <></>}
                     <Button variant="outline-danger" id='logoutButton' onClick={this.logout}>
-                      <font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 15}}>
-                        Logout
-                      </font>
+                      Logout
                     </Button>
                   </Form>;
       }
     } else {
-      if (collapsed === false) {
+      if (this.state.width > 767) {
         rightNav = <Form inline style ={{display: 'block', marginRight: '5%'}}>
-                      <Button variant="outline-light" id='login-button'onClick={this.handleShowLogin}>
+                      <Button variant="outline-light" id='login-button' onClick={() => this.handleShowModal(6)}>
                         Sign In
                       </Button>
-                      <Button variant="outline-light" id='register-button' onClick={this.handleShowRegistration}>
+                      <Button variant="outline-light" id='register-button' onClick={() => this.handleShowModal(7)}>
                         Volunteer Registration
                       </Button>
                     </Form>
       } else {
         rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
-                    <Button variant="outline-light" id='loginButton' onClick={this.handleShowLogin} style={{width: '100%'}}>
+                    <Button variant="outline-light" id='loginButton' onClick={() => this.handleShowModal(6)} style={{width: '100%'}}>
                       <font id = "login">
                         Volunteer Login
                       </font>
                     </Button>
-                    <Button variant="outline-light" id='register-button-mobile' onClick={this.handleShowRegistration}>
+                    <Button variant="outline-light" id='register-button-mobile' onClick={() => this.handleShowModal(7)}>
                         Volunteer Registration
                     </Button>
                   </Form>;
       }
     }
 
-    var portalText = <></>
-    var volunteerButton = <></>
-
-    if (isLoggedIn) {
-      portalText = <p id="jumboText">Manage your offer of help from the volunteer portal</p>
-      volunteerButton =  <Button onClick={() => this.setState({volunteerPortal: true})} id="homeButtons" >
-        Volunteer portal
-      </Button>
-    }
-
-    if (this.state.volunteerPortal) {
-      const route = 'volunteerPortal'
-      return <Redirect to={route} />
-    }
-    
     return (
       <>
         <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
         <div className="App">
-          <Navbar collapseOnSelect onToggle={this.toggleNavBar} variant="light" expand="md" id="custom-navbar">
+          <Navbar collapseOnSelect onToggle={(e) => this.setState({toggled: e})} variant="light" expand="md" id="custom-navbar">
             <Navbar.Brand href = {window.location.protocol + '//' + window.location.host} id="navbar-brand">
               covaid
             </Navbar.Brand>
@@ -274,10 +190,10 @@ class Home extends Component {
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => this.handleShowModal(1)}>
                   <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>About us</p>
                 </Nav.Link>
-                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-border-element'} onClick={() => this.handleShowModal(1)}>
+                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-border-element'}>
                   <p id={this.state.toggled ? 'navLinkToggled': 'navLinkBorder'}>Organizations</p>
                 </Nav.Link>
-                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-element'}>
+                <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => this.handleShowModal(2)}>
                   <p id={this.state.toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
                 </Nav.Link>
                 <Nav.Link className={this.state.toggled ? 'navBorderToggled': 'navbar-element'}>
@@ -292,26 +208,14 @@ class Home extends Component {
           </Navbar>
           <HomePage state={this.state} 
                     setState={this.setState}
+                    setVolunteerPortal={() => this.props.history.push('/volunteerPortal')}
                     handleShowModal={this.handleShowModal} 
-                    handleShowResourceModal={this.handleShowResourceModal}
-                    handleHideRequestHelp={this.handleHideRequestHelp}
-                    handleShowRegistration={this.handleShowRegistration}
-                    handleHideLogin={this.handleHideLogin}
-                    handleHideRegistration={this.handleHideRegistration}
                     onLocationSubmit={this.onLocationSubmit}
-                    handleShowRequestHelp={this.handleShowRequestHelp}
-                    requestHelpMode={this.requestHelpMode}
-                    volunteerButton={volunteerButton}
                     refreshLocation={this.refreshLocation}
-                    handleHideModal={this.handleHideModal}
-                    portalText={portalText}/>
+                    handleHideModal={this.handleHideModal}/>
       </div>
-
-      <Modal size="lg" show={this.state.showResourceModal} onHide={this.handleHideResourceModal} style = {{marginTop: 10, paddingBottom: 50}} id="general-modal">
-        <HelpfulLinks associationCity={this.state.currentAssoc.city} associationLinks={this.state.currentAssoc.links} />
-      </Modal>
     </>);
   }
 }
 
-export default Home;
+export default withRouter(Home);

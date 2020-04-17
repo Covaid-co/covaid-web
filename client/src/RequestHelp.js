@@ -14,7 +14,7 @@ import NewPaymentMethod from './NewPaymentMethod';
 import NewDetails from './NewDetails';
 import PhoneNumber from './PhoneNumber';
 import { defaultResources, languages } from './constants'
-import { validateEmail, extractTrueObj } from './Helpers';
+import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';
 
 export default function RequestHelp(props) {
 
@@ -49,25 +49,17 @@ export default function RequestHelp(props) {
         setLanguageChecked({});
         function fetchResources() {
             var resourcesFromAssoc = defaultResources;
-            if (props.requestHelpMode === "bulletin") {
+            if (props.volunteer && props.requestHelpMode === "bulletin") {
                 resourcesFromAssoc = props.volunteer.offer.tasks;
-            } else {
-                var data = props.state.associations;
-                if (data[0]) {
-                    resourcesFromAssoc = data[0].resources;
-                }
+            } else if (Object.keys(props.state.currentAssoc).length > 0) {
+                resourcesFromAssoc = props.state.currentAssoc.resources;
             }
-            var tempAssoc = {}
-            for (var i = 0; i < resourcesFromAssoc.length; i++) {
-                tempAssoc[resourcesFromAssoc[i]] = false;
-            }
+            var tempAssoc = setFalseObj(resourcesFromAssoc);
             setResources(tempAssoc);
         }
 
-        if (props.volunteer) {
-            fetchResources();
-        }
-    }, [props.requestHelpMode, props.volunteer]);
+        fetchResources();
+    }, [props.requestHelpMode, props.volunteer, props.state.currentAssoc]);
 
 
     const checkFirstPageInput = () => {
@@ -212,15 +204,15 @@ export default function RequestHelp(props) {
 
     if (firstPage) {
         return (
-            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
+            <Modal show={props.showModal} onHide={props.hideModal} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                 <Modal.Header closeButton>
-            <Modal.Title>Submit a {general}request</Modal.Title>
+                    <Modal.Title id="small-header">Submit a {general}request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p id="requestCall" style={{marginBottom: 0, paddingBottom: 0, borderBottom: '0px solid'}}>
+                    <p id="regular-text" style={{marginBottom: 0, paddingBottom: 0, borderBottom: '0px solid'}}>
                         {requestHeaderText()}
                     </p>
-                    <p id="requestCalling"> For those who would rather call in a request, 
+                    <p id="request-calling"> For those who would rather call in a request, 
                         please call <br /><span id="phoneNumber">{foundPhoneNumber()}</span></p>
                     <h5 className="titleHeadings">Personal Information</h5>
                     <Row>
@@ -236,20 +228,15 @@ export default function RequestHelp(props) {
                             <Form.Group controlId="email" bssize="large">
                                 <Form.Control value={fields.email} onChange={handleFieldChange} placeholder="Email" />
                             </Form.Group>
-                            <p id="locationInfo">
+                            <p id="regular-text" style={{fontStyle: 'italic', marginTop: 0, fontSize: 14}}>
                                 Please enter either an email or a phone number.
                             </p>
                         </Col>
                     </Row>
                     <NewTasks resources={resources} setResources={setResources}/>
-                    <Button id="nextPage" onClick={goToSecondPage}>Next</Button>
-                    <p id="pageNumber">Page 1 of 2</p>
-                    <Toast
-                        show={showToast}
-                        delay={3000}
-                        onClose={() => setShowToast(false)}
-                        autohide
-                        id='toastError'>
+                    <Button id="large-button" style={{marginTop: 15}} onClick={goToSecondPage}>Next</Button>
+                    <p id="pagenum-text">Page 1 of 2</p>
+                    <Toast show={showToast} delay={3000} onClose={() => setShowToast(false)} autohide id='toastError'>
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
                 </Modal.Body>
@@ -258,9 +245,9 @@ export default function RequestHelp(props) {
     } else {
         if (completed === false) {
             return (
-                <Modal show={props.state.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal" style={{marginTop: 10, paddingBottom: 20}}>
+                <Modal show={props.showModal} onHide={() => {props.hideModal(); setFirstPage(true);}} id="showRequestModal" style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Almost Done!</Modal.Title>
+                        <Modal.Title id="small-header">Almost Done!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: 0}}>
@@ -275,8 +262,8 @@ export default function RequestHelp(props) {
                         {paymentAgreement}
                         <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
                         {agreement}
-                        <Button disabled={pendingSubmit} id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
-                        <p id="pageNumber">Page 2 of 2</p>
+                        <Button disabled={pendingSubmit} id="large-button" style={{marginTop: 15}} onClick={handleSubmit}>Submit a Request</Button>
+                        <p id="pagenum-text">Page 2 of 2</p>
                         <Toast
                             show={showToast}
                             delay={3000}
@@ -290,7 +277,7 @@ export default function RequestHelp(props) {
             )
         } else {
             return (
-                <Modal show={completed} onHide={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal">
+                <Modal show={completed} onHide={() => {setCompleted(false); props.hideModal(); setFirstPage(true);}} id="showRequestModal">
                     <Modal.Header closeButton>
                         <Modal.Title>Your request has been sent!</Modal.Title>
                     </Modal.Header>
@@ -299,7 +286,7 @@ export default function RequestHelp(props) {
                             Your request has been saved and you should receive an email soon 
                             from a matched volunteer who can support you.
                         </p>
-                        <Button id="nextPage" onClick={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}}>
+                        <Button id="large-button" style={{marginTop: 15}} onClick={() => {setCompleted(false); props.hideModal(); setFirstPage(true);}}>
                             Return to home
                         </Button>
                     </Modal.Body>

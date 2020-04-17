@@ -10,16 +10,15 @@ export default function HowItWorks(props) {
     const [requester, setRequester] = useState(true);
 
     return (
-        <>
+        <Modal size="lg" show={props.showModal} style={{marginTop: 10}} onHide={props.hideModal}>
             <Modal.Header closeButton>
-                <Modal.Title>Frequently asked questions</Modal.Title>
+                <Modal.Title id="small-header">Frequently asked questions</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Container id="volunteer-info" style={{maxWidth: 2000, marginLeft: 0, marginRight: 0, color: 'black'}}>
                     <Row>
                         <Col xs="12">
-                            <h5>What is Covaid?</h5>
-                            <p>Covaid is a nationwide mutual aid platform founded to provide volunteer support during the COVID-19 outbreak.
+                            <p id="regular-text">Covaid is a nationwide mutual aid platform founded to provide volunteer support during the COVID-19 outbreak.
                                We strive to be a resource primarily for those who are most impacted by the pandemic, such as the elderly and immunocompromised.</p>
                         </Col>
                         <Col xs="12">
@@ -87,6 +86,6 @@ export default function HowItWorks(props) {
                     </Row>
                 </Container>
             </Modal.Body>
-        </>
+        </Modal>
     );
 }

@@ -23,7 +23,7 @@ export default function NewLocationSetting(props) {
     };
 
     return (
-        <Modal size="sm" show={props.showModal} style={{marginTop: 60}} onHide={props.hideModal}>
+        <Modal dialogClassName="location-set-modal" show={props.showModal} style={{marginTop: 60}} onHide={props.hideModal}>
             <Modal.Header>
                 <Modal.Title id="small-header">Change your location</Modal.Title>
             </Modal.Header>

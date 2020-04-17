@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
-import { defaultLinks } from './constants'
+import { defaultLinks } from '../constants'
 
 export default function HelpfulLinks(props) {
 
@@ -68,23 +68,26 @@ export default function HelpfulLinks(props) {
     }
 
     return (
-        <>
-         <Modal.Header closeButton>
-                <Modal.Title>Useful resources</Modal.Title>
+        <Modal size="lg" show={props.showModal} onHide={props.hideModal} style={{marginTop: 10}}>
+            <Modal.Header closeButton>
+                <Modal.Title id="small-header">Useful resources</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Container id="volunteer-info" style={{maxWidth: 2000, marginLeft: 0, marginRight: 0, color: 'black'}}>
                     <Row>
                         <Col xs="12">
-                            <p>Below are curated resources sampled from national, state, and local goverments and health organizations. These links contain COVID-19 best practices, live statistics, and other useful resources to help through the pandemic. If you know of any other resources that you think would be useful, please let us know at covaidco@gmail.com.</p>
+                            <p id="regular-text">Below are curated resources sampled from national, state, and local goverments 
+                                and health organizations. These links contain COVID-19 best practices, live statistics, and other 
+                                useful resources to help through the pandemic. If you know of any other resources that you think 
+                                would be useful, please let us know at covaidco@gmail.com.</p>
                         </Col>
                         <Col xs="12">
-							<Container style={{padding: 0,  marginLeft: 0}}>
-								<Button style={{"position": "relative"}}id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>
-									General
-								</Button>
+                            <Container style={{padding: 0,  marginLeft: 0}}>
+                                <Button style={{"position": "relative"}}id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>
+                                    General
+                                </Button>
                                 {associationTab()}
-							</Container>
+                            </Container>
                             {associationResourceList()}
                             <Container className="shadow mb-5 bg-white rounded" id="requester-tab" 
                                         style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
@@ -101,11 +104,11 @@ export default function HelpfulLinks(props) {
                                         </div>
                                     )  
                                 })}
-							</Container>
+                            </Container>
                         </Col>
                     </Row>
                 </Container>
             </Modal.Body>
-        </>
+        </Modal>
     );
 }

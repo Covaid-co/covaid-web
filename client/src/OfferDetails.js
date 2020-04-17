@@ -9,20 +9,20 @@ export default function OfferDetails(props) {
     return (
         <Modal show={props.modalOfferOpen} onHide={() => props.setModalOfferOpen(false)} style = {{marginTop: 20}}>
             <Modal.Header closeButton>
-                <Modal.Title>{props.modalInfo.first_name}'s Offer</Modal.Title>
+                <Modal.Title id="small-header">{props.modalInfo.first_name}'s Offer</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <h5 className="titleHeadings" style={{marginBottom: 0}}>Neighborhoods:</h5>
-                <p id="locationInfo">
-                    {props.modalInfo.offer.neighborhoods.join(', ')}
-                </p>
-                <h5 className="titleHeadings" style={{marginBottom: 0, marginTop: 16}}>Tasks:</h5>
+                <p id="regular-text">{props.modalInfo.offer.neighborhoods.join(', ')}</p>
+                <h5 className="titleHeadings" style={{marginBottom: 5, marginTop: 16}}>Tasks:</h5>
                 {props.modalInfo.offer.tasks.map((task, i) => {
-                    return <Badge key={i} className='task-info'>{task}</Badge>
+                    return <Badge key={i} id='task-info'>{task}</Badge>
                 })}
                 <h5 className="titleHeadings" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
-                <p id="locationInfo">{props.modalInfo.offer.details}</p>
-                <Button id="nextPage" onClick={() => {props.setModalOfferOpen(false); props.handleShowRequestHelp();}}>Request Help!</Button>
+                <p id="regular-text">{props.modalInfo.offer.details}</p>
+                <Button id="large-button" style={{marginTop: 15}} onClick={() => {props.setModalOfferOpen(false); props.handleShowRequestHelp();}}>
+                    Request Help!
+                </Button>
             </Modal.Body>
             <Modal.Footer>
                 <p style={{fontStyle: "italic"}}>
