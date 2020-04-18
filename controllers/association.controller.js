@@ -3,7 +3,7 @@ const AssociationResources = require('../models/association-resources.modal');
 const passport = require('passport');
 const asyncWrapper = require('../util/asyncWrapper');
 var jwt = require('jwt-simple');
-const emailer =  require("../util/emailer");
+// const emailer =  require("../util/emailer");
 
 exports.add_resource_link = function (req, res) {
   const id = req.body.associationID;
