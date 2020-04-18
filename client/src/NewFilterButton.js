@@ -29,9 +29,16 @@ export default function NewFilterButton(props) {
         }
     }
 
+    const mobileStyling = () => {
+        if (props.mobile) {
+            return {width: 5, marginLeft: 'auto', marginRight: 90}
+        }
+        return {}
+    }
+
     return (
-        <Dropdown drop = 'up' show={dropdownOpen} alignRight
-                  onToggle={dropdownToggle} style={{textAlign: 'right'}}>
+        <Dropdown drop = 'up' show={dropdownOpen} alignRight className="mobileDrop"
+                  onToggle={dropdownToggle} style={mobileStyling()}>
             <Dropdown.Toggle size = 'sm' variant="secondary" id="filterButton">
                 <strong>Filters</strong>
             </Dropdown.Toggle>

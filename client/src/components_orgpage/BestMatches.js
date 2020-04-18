@@ -6,8 +6,8 @@ import Modal from 'react-bootstrap/Modal'
 import Badge from 'react-bootstrap/Badge'
 import ListGroup from 'react-bootstrap/ListGroup'
 import VolunteerDetails from './VolunteerDetails'
-import { calcDistance } from './Helpers';
-import Pagination from './CommunityBulletinComponents/Pagination'
+import { calcDistance } from '../Helpers';
+import Pagination from '../CommunityBulletinComponents/Pagination'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function BestMatches(props) {
@@ -56,10 +56,9 @@ export default function BestMatches(props) {
     }
     
     return (
-        <Modal show={props.topMatchesModal} size="lg" 
-        onHide={() => props.setTopMatchesModal(false)} style = {{marginTop: 30, paddingBottom: 40}}>
+        <Modal show={props.topMatchesModal} size="lg" onHide={() => props.setTopMatchesModal(false)} style = {{marginTop: 40, paddingBottom: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title> {props.currRequest.requester_first}'s Top Matches</Modal.Title>
+                <Modal.Title id="small-header">{props.currRequest.requester_first}'s Top Matches</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row style={{marginTop: -9}}>
@@ -67,11 +66,17 @@ export default function BestMatches(props) {
                         <ListGroup variant="flush" onClick={() => {setVolunteerDetailsModal(true)}}>
                             {displayedVolunteers.map((volunteer, i) => {
                                 return (
-                                <ListGroup.Item key={i} action onClick={() => {setCurrVolunteer({...volunteer}); setVolunteerDetailsModal(true)}}>
+                                <ListGroup.Item key={i} action onClick={() => {setCurrVolunteer({...volunteer});  setVolunteerDetailsModal(true)}}>
                                     <div >
-                                        <h5 className="volunteer-name">
+                                        <h5 id="volunteer-name" style={{marginBottom: 0}}>
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
+                                    </div>
+                                    <div>
+                                        <p id="volunteer-location">{volunteer.offer.neighborhoods.join(', ')}</p>
+                                        <p id="volunteer-location" style={{float: 'right', marginTop: -25, marginRight: 10}}>
+                                            {distance(volunteer)} miles
+                                        </p>
                                     </div>
                                     <div>
                                         {volunteer.offer.tasks.length === 0 ? 
@@ -80,19 +85,11 @@ export default function BestMatches(props) {
                                             </Badge> 
                                             : volunteer.offer.tasks.map((task, i) => {
                                                 if (props.currRequest && props.currRequest.resource_request.length > 0 && props.currRequest.resource_request.indexOf(task) !== -1) {
-                                                    return <Badge key={i} style={{background: '#4CA846', border: '1px solid #4CA846'}} className='task-info'>{task}</Badge>
+                                                    return <Badge key={i} style={{background: '#4CA846'}} id='task-info'>{task}</Badge>
                                                 } else {
-                                                    return <Badge key={i} style={{background: '#6C757D', border: '1px solid #6C757D'}} className='task-info'>{task}</Badge>
+                                                    return <Badge key={i} style={{background: '#6C757D'}} id='task-info'>{task}</Badge>
                                                 }
                                         })}
-                                    </div>
-                                    <div>
-                                        <p style={{float: 'left', marginBottom: 0, marginTop: 2}}>
-                                            {volunteer.offer.neighborhoods.join(', ')}
-                                        </p>
-                                        <p style={{float: 'right', marginBottom: 0, marginTop: 2, marginRight: 10}}>
-                                            {distance(volunteer)} miles
-                                        </p>
                                     </div>
                                 </ListGroup.Item>);
                             })}
@@ -103,8 +100,7 @@ export default function BestMatches(props) {
                             postsPerPage={volunteersPerPage}
                             currPage={currentPage}
                             totalPosts={Math.min(volunteersPerPage * 10, sortedVolunteers.length)}
-                            paginate={paginatePage}
-                        />
+                            paginate={paginatePage}/>
                     </Col>
                 </Row>
                 <VolunteerDetails volunteerDetailModal={volunteerDetailModal}

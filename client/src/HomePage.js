@@ -5,16 +5,16 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import CitySupport from './CitySupport';
+import CitySupport from './components_homepage/CitySupport';
 import NewOffers from './NewOffers';
 import NewRegister from './NewRegister';
 import NewLogin from './NewLogin';
 import RequestHelp from './RequestHelp';
 import GetLocation from './GetLocation';
-import AboutUs from './information_modals/AboutUs'
-import HowItWorks from './information_modals/HowItWorks'
-import HelpfulLinks from './information_modals/HelpfulLinks';
-import Feedback from './information_modals/Feedback'
+import AboutUs from './components_modals/AboutUs'
+import HowItWorks from './components_modals/HowItWorks'
+import HelpfulLinks from './components_modals/HelpfulLinks';
+import Feedback from './components_modals/Feedback'
 import NewLocationSetting from './location_tools/NewLocationSetting';
 import { generateURL } from './Helpers'
 import { defaultResources } from './constants'
@@ -96,16 +96,14 @@ export default function HomePage(props) {
                                   associationCity={props.state.currentAssoc.city}
                                   associationLinks={props.state.currentAssoc.links}/>;
         } else if  (props.state.modalType === 4) {
-            modal = <Feedback showModal={props.state.showModal} 
-                              hideModal={props.handleHideModal}/>;
+            modal = <Feedback showModal={props.state.showModal} hideModal={props.handleHideModal}/>;
         } else if (props.state.modalType === 5) {
             modal = <NewLocationSetting locationSubmit={props.onLocationSubmit}
                                         refreshLocation={props.refreshLocation}
                                         showModal={props.state.showModal} 
                                         hideModal={props.handleHideModal}/>
         } else if (props.state.modalType === 6) {
-            modal = <NewLogin showModal={props.state.showModal} 
-                              hideModal={props.handleHideModal}/>
+            modal = <NewLogin showModal={props.state.showModal} hideModal={props.handleHideModal}/>
         } else if (props.state.modalType === 7) {
             modal = <NewRegister showModal={props.state.showModal} 
                                  hideModal={props.handleHideModal}
@@ -141,36 +139,28 @@ export default function HomePage(props) {
                                 <button id="change-location" onClick={() => props.handleShowModal(5)}> {props.state.locality}</button>
                             </p>
                             <p id="volunteer-info">Click an offer below for more info</p>
-                            <NewOffers volunteers={volunteers} state={props.state} resources={resources}
+                            <NewOffers volunteers={volunteers} state={props.state} resources={resources} mobile={false}
                                         handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}/>
                             {cantFindLink}
                         </Col>
                     </Row>
                 </Container>
             </Jumbotron>
-          <GetLocation state={props.state}
-                       onLocationSubmit={props.onLocationSubmit}
-                       hideModal={props.handleHideModal}/>
-          <Container id="location-container">
-            <CitySupport state={props.state} associations={props.state.associations}/>
-            {/* <form id="web-separate" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style={{position: 'absolute', marginTop: 5}}>
-              <input type="hidden" name="cmd" value="_donations" />
-              <input type="hidden" name="business" value="covaidco@gmail.com" />
-              <input type="hidden" name="item_name" value="Provide aid during the COVID-19 pandemic" />
-              <input type="hidden" name="currency_code" value="USD" />
-              <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-              <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-            </form> */}
-          </Container>
-          <Container id="jumboContainer" className="mobile-bulletin-container">
+            <GetLocation state={props.state}
+                        onLocationSubmit={props.onLocationSubmit}
+                        hideModal={props.handleHideModal}/>
+            <Container id="location-container">
+                <CitySupport state={props.state} associations={props.state.associations}/>
+            </Container>
+            <Container id="jumboContainer" className="mobile-bulletin-container">
                 <Col xs={12} id="mobile-bulletin">
-                    <p className='location-text' style={{color: 'black', float: 'left', width: '100%', fontSize: "5vw"}}>
-                        See who's helping near {props.state.locality}<br/> 
+                    <p id='location-text' style={{color: 'black', float: 'left', width: '100%', fontSize: "5vw"}}>Volunteers around 
+                        <button id="change-location" onClick={() => props.handleShowModal(5)}> {props.state.locality}</button>
                     </p>
-                    <p className="volunteer-info" style={{color: 'black', float: 'left', fontWeight: 'normal', fontSize: "3vw"}}>
+                    <p id="volunteer-info" style={{color: 'black', float: 'left', width: '100%', fontSize: "3vw"}}>
                         Click an offer below for more info
                     </p>
-                    <NewOffers volunteers={volunteers} state={props.state} resources={resources}
+                    <NewOffers volunteers={volunteers} state={props.state} resources={resources} mobile={true}
                                 handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}/>
                     {cantFindLink}
                 </Col>

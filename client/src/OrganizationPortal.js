@@ -10,11 +10,12 @@ import Navbar from 'react-bootstrap/Navbar'
 import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
-import RequestDetails from './RequestDetails';
-import VolunteerDetails from './VolunteerDetails';
-import NewMap from './NewMap'
-import VolunteersModal from './VolunteersModal';
-import AdminModal from './AdminModal';
+
+import RequestDetails from './components_orgpage/RequestDetails';
+import VolunteerDetails from './components_orgpage/VolunteerDetails';
+import NewMap from './components_orgpage/NewMap'
+import VolunteersModal from './components_orgpage/VolunteersModal';
+import AdminModal from './components_orgpage/AdminModal';
 import OrgResourcesModal from './OrgResourcesModal';
 import { sortFn } from './OrganizationHelpers'
 import { generateURL } from './Helpers'
@@ -25,7 +26,6 @@ import fetch_a from './util/fetch_auth';
 export default function OrganiationPortal() {
 
 	const { addToast } = useToasts()
-
 	const [currTabNumber, setCurrTab] = useState(1); 
 	const [showLogin, setShowLogin] = useState(false); 
 	const [association, setAssociation] = useState({});
@@ -33,15 +33,12 @@ export default function OrganiationPortal() {
 	const [volunteersModal, setVolunteersModal] = useState(false);
 	const [adminModal, setAdminModal] = useState(false);
 	const [resourceModal, setResourceModal] = useState(false);
-
 	const [allRequests, setAllRequests] = useState([]);
 	const [unmatched, setUnmatched] = useState([]);
 	const [matched, setMatched] = useState([]);
 	const [completed, setCompleted] = useState([]);
-
 	const [requesterMap, setRequesterMap] = useState(true);
 	const [volunteerMap, setVolunteerMap] = useState(false);
-
 	const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
 	const [requestDetailsModal, setRequestDetailsModal] = useState(false);
 	const [currVolunteer, setCurrVolunteer] = useState({});
@@ -192,19 +189,14 @@ export default function OrganiationPortal() {
 
 	const displayTab = (tabNumber) => {
 		if (tabNumber === currTabNumber) {
-			return {'display': 'block'};
+			return {'display': 'block', paddingLeft: 15, paddingTop: 15};
 		} else {
-			return {'display': 'none'};
+			return {'display': 'none', paddingLeft: 15, paddingTop: 15};
 		}
 	}
 
 	const displayCount = (tabNumber, arr) => {
 		return <div className={"request-count request-count-" + tabNumber}>{arr.length}</div>
-		// if (tabNumber === currTabNumber) {
-		// 	return <div className={"request-count request-count-" + tabNumber}>{arr.length}</div>
-		// } else {
-		// 	return <></>;
-		// }
 	}
 
 	const tabID = (tabNumber) => {
@@ -228,7 +220,7 @@ export default function OrganiationPortal() {
 		</Navbar>
 		<div style ={{zoom: '95%'}}>
 			<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 30}}>
-				<Container id="jumbo-container-volunteer">
+				<Container style={{maxWidth: 1500}}>
 					<Row>
 						<Col lg={2} md={1} sm={0}></Col>
 						<Col>
@@ -335,25 +327,24 @@ export default function OrganiationPortal() {
 							setResourceModal={setResourceModal}
 							association={association}
 							setAssociation={setAssociation}/>
-		<VolunteerDetails volunteerDetailModal={volunteerDetailModal}
-					setVolunteerDetailsModal={setVolunteerDetailsModal}
-					currVolunteer={currVolunteer}/>
-		<RequestDetails requestDetailsModal={requestDetailsModal} 
-                            setRequestDetailsModal={setRequestDetailsModal} 
-                            currRequest={currRequest}
-                            setCurrRequest={setCurrRequest}
-                            association={association}
-                            unmatched={unmatched}
-                            matched={matched}
-                            completed={completed}
-                            setUnmatched={setUnmatched}
-                            setMatched={setMatched}
-                            setCompleted={setCompleted}
-                            mode={currTabNumber}
-                            volunteers={volunteers}/>
+			<VolunteerDetails volunteerDetailModal={volunteerDetailModal}
+						setVolunteerDetailsModal={setVolunteerDetailsModal}
+						currVolunteer={currVolunteer}/>
+			<RequestDetails requestDetailsModal={requestDetailsModal} 
+								setRequestDetailsModal={setRequestDetailsModal} 
+								currRequest={currRequest}
+								setCurrRequest={setCurrRequest}
+								association={association}
+								unmatched={unmatched}
+								matched={matched}
+								completed={completed}
+								setUnmatched={setUnmatched}
+								setMatched={setMatched}
+								setCompleted={setCompleted}
+								mode={currTabNumber}
+								volunteers={volunteers}/>
 		</div>
 		<OrgLogin showLogin={showLogin} setShowLogin={setShowLogin} login={login} />
-		
 	</>
 	);
 }

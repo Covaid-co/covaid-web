@@ -22,7 +22,7 @@ html, body {
 }
 
 #navLinkToggled {
-  font-family: "SF Text";
+  font-family: "Inter";
   color: black;
   font-weight: 500;
   font-size: 14px;
@@ -30,17 +30,9 @@ html, body {
   margin-top: 7px;
 }
 
-.smallPage {
-  display: none !important;
-}
-
 .form-check-input {
   position: absolute;
   margin-top: .2rem;
-}
-
-#loginButton {
-  height: 52px;
 }
 
 #login {
@@ -91,10 +83,6 @@ html, body {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 .nav-item.nav-link.active {

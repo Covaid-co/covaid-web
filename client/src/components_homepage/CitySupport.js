@@ -38,7 +38,7 @@ export default function CitySupport(props) {
             </Row>
             <Row id="mobile-tablet-separate">
                 <Col lg={12} md={12}>
-                    <p id="requestCall" style={{marginTop: 20, marginBottom: 10}}></p>
+                    <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
                 </Col>
             </Row>
             <Row id="mobile-org">

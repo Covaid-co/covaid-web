@@ -17,9 +17,14 @@ export default function AccountInfo(props) {
         setUser(props.user)
     }, [props.user])
 
-    var assocName = <></>
-    if (user.association && user.association.length > 0) {
-        assocName = <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}><b>Mutual Aid Group:</b> {user.association_name}</h5>
+    const getAssocName = () => {
+        var assocName = <></>
+        if (user.association && user.association.length > 0) {
+            assocName = <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
+                            <b>Mutual Aid Group:</b> {user.association_name}
+                        </h5>
+        }
+        return assocName;
     }
 
     var phoneNum = <></>
@@ -32,8 +37,8 @@ export default function AccountInfo(props) {
             <Row>
                 <Col>
                     <h3 id="small-header">Your Profile</h3>
-                    <p id="requestCall" style={{marginTop: 0, marginBottom: 20}}></p>
-                    <div style={{marginTop: 0, marginBottom: 20}}>
+                    <p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p>
+                    <div style={{marginTop: 0, marginBottom: 30}}>
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
                             <b>Name:</b> {user.first_name + " " + user.last_name}
                         </h5>
@@ -42,13 +47,13 @@ export default function AccountInfo(props) {
                             <b>Email:</b> {user.email}
                         </h5>
                     </div>
-                    <div style={{marginTop: 0, marginBottom: 20}}>
-                        {assocName}
+                    <div style={{marginTop: 0, marginBottom: 30}}>
+                        {getAssocName()}
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
                             <b>Location:</b> {user.offer.neighborhoods.join(", ")} <FontAwesomeIcon style={{color: "red"}} icon={faMapMarkerAlt} /> 
                         </h5>
                     </div>
-                    <div style={{marginTop: 0, marginBottom: 20}}>
+                    <div style={{marginTop: 0, marginBottom: 30}}>
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
                             <b>Languages:</b> {user.languages.join(", ")}
                         </h5>
@@ -60,7 +65,10 @@ export default function AccountInfo(props) {
                         </h5>
                     </div>
                     <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>
-                    <Button onClick={() => {setShowEditModal(true);}} style={{margin: "auto", display: "block"}}variant="link">Edit Info</Button>
+                    <Button id="regular-text" onClick={() => {setShowEditModal(true);}} 
+                        style={{margin: "auto", display: "block", color: '#2670FF'}}variant="link">
+                        Edit Info
+                    </Button>
                     <Modal size={"lg"} show={showEditModal} onHide={() => {setShowEditModal(false);}}  style = {{marginTop: 10, paddingBottom: 50}}>
                         <EditAccountInfoModal user={user} />
                     </Modal>

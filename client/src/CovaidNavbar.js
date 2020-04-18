@@ -2,110 +2,104 @@ import React, {useState, useEffect } from "react";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
-import Badge from 'react-bootstrap/Badge'
-import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import VolunteerBadge from './components/VolunteerBadge'
-import AboutUs from './information_modals/AboutUs'
-import HowItWorks from './information_modals/HowItWorks'
-import Feedback from './information_modals/Feedback'
-
+import Badge from 'react-bootstrap/Badge'
+import Cookie from 'js-cookie'
 
 export default function CovaidNavbar(props) {
-
     const [toggled, setToggled] = useState(false);
     const [totalVolunteers, setTotalVolunteers] = useState(0);
-
-    const [showNavModal, setShowNavModal] = useState(false)
-    const [navModalType, setShowNavModalType] = useState(0)
-  
-    const showModal = (modalType) => {
-        setShowNavModalType(modalType)
-        setShowNavModal(true)
-    }
-  
-    const hideModal = () => {
-      setShowNavModal(false)
-      setShowNavModalType(0)
-    }
-  
-    var modal = <></>
-    switch(navModalType) {
-      case 1:
-        modal = <AboutUs />
-        break;
-      case 2:
-        modal = <HowItWorks />
-        break;
-      case 3:
-        modal = <Feedback handleHide={hideModal}/>
-        break;
-      default:
-        modal = <></>
-    }
-
-    const toggleNavBar = (e) => {
-        setToggled(e);
-    }
-
-    var rightNav = <></>
-    if(!props.isLoggedIn) {
-        rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%'}}>
-        <Button variant="outline-light" id = 'login-button' onClick={() => props.setShowLogin(true)}>
-          Sign In
-        </Button>
-        <Button variant="outline-light" id = 'register-button' onClick={() => props.setShowRegistration(true)}>
-          Volunteer Registration
-        </Button>
-      </Form>
-    }
+    const [width, setWidth] = useState(window.innerWidth);
+    window.addEventListener("resize", () => {
+        setWidth(window.innerWidth);
+        if (window.innerWidth > 767) {
+            setToggled(false);
+        }
+    });
 
     useEffect(() => { 
-      fetch('/api/users/totalUsers')
-      .then((res) => res.json())
+        fetch('/api/users/totalUsers')
+        .then((res) => res.json())
         .then((res) => {
-          setTotalVolunteers(res.count)
+            setTotalVolunteers(res.count);
         });
-   }, []);
+    }, []);
+
+    const logout = () => {
+        Cookie.remove('token');
+        window.open(window.location.protocol + '//' + window.location.host, '_self');
+    }
+
+    var rightNav;
+    if (props.isLoggedIn) {
+        if (toggled) {
+            rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
+                        <Button variant="outline-danger" id='logoutButton' onClick={logout} style={{width: '100%'}}>
+                            Logout
+                        </Button>
+                    </Form>;
+        } else {
+            rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%', marginBottom: 3}}>
+                        {(width > 767) ? <span id="hello-name">Hello, {props.first_name}</span> : <></>}
+                        <Button variant="outline-danger" id='logoutButton' onClick={logout}>
+                            Logout
+                        </Button>
+                    </Form>;
+        }
+    } else {
+        if (width > 767) {
+            rightNav = <Form inline style ={{display: 'block', marginRight: '5%', marginBottom: 3}}>
+                            <Button variant="outline-light" id='login-button' onClick={() => props.handleShowModal(6)}>
+                                Sign In
+                            </Button>
+                            <Button variant="outline-light" id='register-button' onClick={() => props.handleShowModal(7)}>
+                                Volunteer Registration
+                            </Button>
+                        </Form>
+        } else {
+            rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
+                            <Button variant="outline-light" id='loginButton' 
+                                onClick={() => props.handleShowModal(6)} style={{width: '100%', height: '52'}}>
+                                <font id = "login">
+                                    Volunteer Login
+                                </font>
+                            </Button>
+                            <Button variant="outline-light" id='register-button-mobile' onClick={() => props.handleShowModal(7)}>
+                                Volunteer Registration
+                            </Button>
+                        </Form>;
+        }
+    }
 
     return(
-      <>
-      <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
-        <Navbar collapseOnSelect 
-                  onToggle={toggleNavBar}
-                  variant="light" 
-                  expand="md"
-                  className = {toggled ? 'customNavToggled': 'customNav'}>
-            <Navbar.Brand className={'home'} href = {window.location.protocol + '//' + window.location.host}
-              style={toggled ? {'color': '#194bd3'} : {'color': 'white'}}>
-              covaid
+        <Navbar collapseOnSelect onToggle={(e) => setToggled(e)} variant="light" expand="md" id="custom-navbar">
+            <Navbar.Brand href = {window.location.protocol + '//' + window.location.host} id="navbar-brand">
+                covaid
             </Navbar.Brand>
             <Form inline className="volunteer-badge-mobile">
-              <Badge aria-describedby='tooltip-bottom' variant="success" id='volunteer-mobile'>{totalVolunteers} Volunteers</Badge>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" id={toggled ? 'toggledNav1': 'nav1'}/>
+                <Badge aria-describedby='tooltip-bottom' id='volunteer-mobile'>{totalVolunteers} Volunteers</Badge>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" id={toggled ? 'toggledNav1': 'nav1'}/>
             </Form>
-
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link className={toggled ? 'navBorderToggled': 'navBorder'} onClick={() => showModal(2)}>
-                  <p id={toggled ? 'navLinkToggled': 'navLink'} style={{textDecoration: 'underline'}}>FAQs</p>
-                </Nav.Link>
-                <Nav.Link className={toggled ? 'navBorderToggled': 'navBorder'} onClick={() => showModal(1)}>
-                  <p id={toggled ? 'navLinkToggled': 'navLink'}>About us</p>
-                </Nav.Link>
-                <Nav.Link className={toggled ? 'navBorderToggled': 'navBorder'} onClick={() => showModal(3)}>
-                  <p id={toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
-                </Nav.Link>
-                <Nav.Link className="volunteer-badge-web">
-                  <VolunteerBadge totalVolunteers={totalVolunteers}/>
-                </Nav.Link>
-              </Nav>
-                  {rightNav}
+                <Nav className="mr-auto">
+                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(1)}>
+                        <p id={toggled ? 'navLinkToggled': 'navLink'}>About us</p>
+                    </Nav.Link>
+                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-border-element'}>
+                        <p id={toggled ? 'navLinkToggled': 'navLinkBorder'}>Organizations</p>
+                    </Nav.Link>
+                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(2)}>
+                        <p id={toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
+                    </Nav.Link>
+                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(4)}>
+                        <p id={toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
+                    </Nav.Link>
+                    <Nav.Link className="volunteer-badge-web">
+                        <Badge aria-describedby='tooltip-bottom' id='volunteerBadge'>{totalVolunteers} Volunteers</Badge>
+                    </Nav.Link>
+                </Nav>
+                {rightNav}
             </Navbar.Collapse>
-          </Navbar>
-          <Modal size={navModalType === 2 ? "lg" : "md"} show={showNavModal} onHide={hideModal} style = {{marginTop: 50}}>
-            {modal}
-          </Modal>
-          </>
+        </Navbar>
     );
 }

@@ -7,10 +7,11 @@ import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
+
 import VolunteerDetails from './VolunteerDetails'
-import { filterVolunteers } from './OrganizationHelpers';
-import { extractTrueObj } from './Helpers';
-import Pagination from './CommunityBulletinComponents/Pagination'
+import { filterVolunteers } from '../OrganizationHelpers';
+import { extractTrueObj } from '../Helpers';
+import Pagination from '../CommunityBulletinComponents/Pagination'
 
 export default function VolunteersModal(props) {
 
@@ -75,9 +76,9 @@ export default function VolunteersModal(props) {
     }
 
     return (
-        <Modal show={props.volunteersModal} onHide={() => props.setVolunteersModal(false)} style = {{marginTop: 10, paddingBottom: 40}}>
+        <Modal show={props.volunteersModal} onHide={() => props.setVolunteersModal(false)} style={{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title>All Volunteers</Modal.Title>
+                <Modal.Title id="small-header">All Volunteers</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row>
@@ -86,7 +87,7 @@ export default function VolunteersModal(props) {
                             <div style={{marginTop: -5}}>
                                 {Object.keys(resourcesSelected).map((resource, i) => {
                                     return <Button style={{paddingTop: 2}} key={i} onClick = {() => handleChangeResource(resource)}
-                                                   id={resourcesSelected[resource] ? 'resource-button-selected' : 'resource-button'}>
+                                                   id={resourcesSelected[resource] ? 'selected' : 'notSelected'}>
                                                 {resource}
                                             </Button>
                                 })}
@@ -106,23 +107,21 @@ export default function VolunteersModal(props) {
                                 <ListGroup.Item key={i} action onClick={() => {
                                             setCurrVolunteer({...volunteer}); 
                                             setVolunteerDetailsModal(true);}}>
-                                    <div >
-                                        <h5 className="volunteer-name">
+                                    <div>
+                                        <h5 id="volunteer-name">
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
                                     </div>
+                                    <p id="volunteer-location">{volunteer.offer.neighborhoods.join(', ')}</p>
                                     <div>
                                         {volunteer.offer.tasks.length === 0 ? 
-                                            <Badge className='task-info' style={{background: '#AE2F2F', border: '1px solid #AE2F2F'}}>
+                                            <Badge id='task-info' style={{background: '#AE2F2F', border: '1px solid #AE2F2F'}}>
                                                 No tasks entered
                                             </Badge> 
                                             : volunteer.offer.tasks.map((task, i) => {
-                                            return <Badge key={i} className='task-info'>{task}</Badge>
+                                            return <Badge key={i} id='task-info'>{task}</Badge>
                                         })}
                                     </div>
-                                    <p style={{float: 'left', marginBottom: 0, marginTop: -2}}>
-                                        {volunteer.offer.neighborhoods.join(', ')}
-                                    </p>
                                 </ListGroup.Item>);
                             })}
                         </ListGroup>

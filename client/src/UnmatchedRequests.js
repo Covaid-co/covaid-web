@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
-import RequestDetails from './RequestDetails'
+import RequestDetails from './components_orgpage/RequestDetails'
 import Form from 'react-bootstrap/Form'
 import Badge from 'react-bootstrap/Badge'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from  'react-bootstrap/Dropdown'
 import { sortReq, filterReq, formatName } from './OrganizationHelpers';
-import { generateURL, convertTime } from './Helpers';
+import { convertTime } from './Helpers';
 
 export default function UnmatchedRequests(props) {
 
     const [filteredRequests, setFilteredRequests] = useState([]);
     const [requestDetailsModal, setRequestDetailsModal] = useState(false);
     const [currRequest, setCurrRequest] = useState({});
-    // const [currVolunteer, setCurrVolunteer] = useState({});
     const [name, setName] = useState(false);
     const [need, setNeed] = useState(false);
     const [updated, setUpdated] = useState(true);
@@ -63,41 +62,15 @@ export default function UnmatchedRequests(props) {
         setFilteredRequests(sortedRequests);
     }
 
-    // const findUser = (request) => {
-    //     if (request.status.volunteer === undefined || request.status.volunteer === 'manual') {
-    //         setCurrVolunteer({});
-    //         return;
-    //     }
-    //     let params = {'id': request.status.volunteer}
-    //     const url = generateURL( "/api/users/user?", params);
-
-    //     fetch(url, {
-    //         method: 'get',
-    //         headers: {'Content-Type': 'application/json'},
-    //     }).then((response) => {
-    //         if (response.ok) {
-    //             response.json().then(data => {
-    //                 if (data.length > 0) {
-    //                     setCurrVolunteer(data[0]);
-    //                 }
-    //             });
-    //         } else {
-    //             console.log(response);
-    //         }
-    //     }).catch((e) => {
-    //         console.log(e);
-    //     });
-    // }
-
     const resourceCompleteBadge = (request) => {
         var result = <></>;
         if (props.mode === 3) {
-            result = <Badge className='task-info-requests' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
+            result = <Badge id='task-info' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
                         {request.status.reason ? request.status.reason : "Volunteer Completed"}
                     </Badge>                      
         } else {
             result = request.resource_request.map((task, i) => {
-                return <Badge key={i} className='task-info-requests'>{task}</Badge>
+                return <Badge key={i} id='task-info'>{task}</Badge>
             })
         }
         return result;
@@ -106,16 +79,13 @@ export default function UnmatchedRequests(props) {
     const clickRequest = (request) => {
         setCurrRequest({...request}); 
         setRequestDetailsModal(true);
-        // if (props.mode === 2 || props.mode === 3) {
-        //     findUser(request); 
-        // }
     }
 
     const sortInfo = (request) => {
         if (lastPressed === 'Last Updated') {
             if (request.last_modified) {
                 const formatted = convertTime(request.last_modified);
-                return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Last Updated: {formatted}</p>
+                return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Last Updated: {formatted}</p>
             } else {
                 return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Unread</p>
             }
@@ -175,16 +145,17 @@ export default function UnmatchedRequests(props) {
                             return (
                                 <ListGroup.Item key={i} action onClick={() => {clickRequest(request)}}>
                                     <div >
-                                        <h5 className="volunteer-name">
+                                        <h5 id="volunteer-name">
                                             {formatName(request.requester_first, request.requester_last)}
-                                            {/* {requestStatus(request)} */}
                                         </h5>
                                         {sortInfo(request)}
                                     </div>
                                     <div>{resourceCompleteBadge(request)} {requestStatus(request)}</div>
-                                    <div style={{display: 'inline-block', width: '100%'}}>
+                                    <div style={{display: 'inline-block', width: '100%', marginTop: 3, fontFamily: 'Inter'}}>
                                         <p style={{float: 'left', marginBottom: 0}}>Tracking: 
-                                        {request.assignee ? <Badge key={i} className='assignee-info'>{request.assignee}</Badge> : " No one assigned"}</p>
+                                        {request.assignee ? 
+                                        <Badge key={i} id='task-info' style={{background: '#6c757d', border: '1px solid #6c757d', paddingTop: 4, marginLeft: 5}}>
+                                            {request.assignee}</Badge> : " No one assigned"}</p>
                                     </div>
                                 </ListGroup.Item>);
                             })}
@@ -196,9 +167,7 @@ export default function UnmatchedRequests(props) {
                             currRequest={currRequest}
                             setCurrRequest={setCurrRequest}
                             association={props.association}
-                            // currVolunteer={currVolunteer}
                             setRequests={props.setRequests}
-                            // requests={props.requests}
                             unmatched={props.unmatched}
                             matched={props.matched}
                             completed={props.completed}

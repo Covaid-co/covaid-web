@@ -59,7 +59,7 @@ export default function PendingVolunteerRequests(props) {
     return (
         <>
             <ListGroup variant="flush">
-                    <ListGroup.Item>
+                <ListGroup.Item>
                     <InputGroup>
                         <FormControl
                         placeholder="Search through requests"
@@ -68,11 +68,10 @@ export default function PendingVolunteerRequests(props) {
                         onChange={filterRequests}
                         />
                     </InputGroup>
-                    </ListGroup.Item>
+                </ListGroup.Item>
             </ListGroup>
             <ListGroup variant="flush">
                 {filteredRequests.map((request, i) => {
-                    
                     return (
                     <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true)}}>
                         <div >

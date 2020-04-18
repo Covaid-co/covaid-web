@@ -9,14 +9,13 @@ import Form from 'react-bootstrap/Form'
 import Toast from 'react-bootstrap/Toast'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
-import fetch_a from './util/fetch_auth';
+import fetch_a from '../util/fetch_auth';
 
+import {useFormFields} from '../libs/hooksLib'
+import { generateURL, validateEmail, extractTrueObj } from '../Helpers';
 
-import {useFormFields} from './libs/hooksLib'
-import { generateURL, validateEmail, extractTrueObj } from './Helpers';
-
-import NewLanguages from './NewLanguages'
-import NewCar from './NewHasCar'
+import CheckForm from '../CheckForm';
+import NewCar from '../NewHasCar'
 
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
@@ -394,16 +393,16 @@ export default function EditAccountInfoModal(props) {
                             </InputGroup.Append>
                         </InputGroup>
                         <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>What languages do you speak?</h5>
-                        <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
+                        <CheckForm obj={languageChecked} setObj={setLanguageChecked}/>
                         <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>Can you drive?</h5>
                         <NewCar hasCar={hasCar} 
                                 setHasCar={setHasCar}/>
                         <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>What is your general availability?</h5>
-                        <NewLanguages languages={timeNames} languageChecked={times} setLanguageChecked={setTimes}/>
+                        <CheckForm obj={times} setObj={setTimes}/>
 
                         <div style={showChangeAssocModal ? {'display': 'block'} : {'display': 'none'}}>
                             <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>Your location has changed, please update your tasks here!</h5>
-                            <NewLanguages languages={defaultResources} languageChecked={resources} setLanguageChecked={setResources}/>
+                            <CheckForm obj={resources} setObj={setResources}/>
                         </div>
                         <Row>
                             <Button onClick={handleSubmit} id="request-button" style={{width: '100%', marginTop: 20}}>Update your info</Button>

@@ -26,3 +26,13 @@ export const defaultLinks = [
         link: 'https://www.mutualaidhub.org'
     }
 ]
+export const toastTime = 3000;
+export const paymentOptions = ['Call ahead to store and pay (Best option)', 'Have volunteer pay and reimburse when delivered', 'N/A'];
+export const defaultTerms = [
+    'I have not traveled out-of-country in the past 14 days',
+    'I am not exhibiting any symptoms of COVID-19 (cough, fever, etc.)',
+    'I have not come in contact with a sick person in the past 14 days',
+    'I have been practicing social distancing -- staying indoors, avoiding crowds, staying 6 feet away from other people if you have to go outside',
+    'I will take take every CDC-provided safety precaution',
+    'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
+];

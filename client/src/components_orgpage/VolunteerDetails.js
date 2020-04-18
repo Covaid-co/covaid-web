@@ -4,8 +4,8 @@ import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useFormFields } from "./libs/hooksLib";
-import { generateMapsURL, moveFromToArr } from './Helpers';
+import { useFormFields } from "../libs/hooksLib";
+import { generateMapsURL, moveFromToArr } from '../Helpers';
 
 export default function VolunteerDetails(props) {
 
@@ -155,44 +155,46 @@ export default function VolunteerDetails(props) {
 
     if (Object.keys(props.currVolunteer).length > 0) {
         return (
-            <Modal id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => {
+            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
+                    console.log(props.matching);
                     props.setVolunteerDetailsModal(false);
                     setNotes();
                     if (props.setVolunteersModal) {
                         props.setVolunteersModal(true);
                     }
+                    if (props.matching) {
+                        console.log("rip")
+                        props.setTopMatchesModal(true);
+                    }
                 }} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Volunteer Information</Modal.Title>
+                    <Modal.Title id="small-header">Volunteer Information</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{padding: 24, paddingTop: 10}}>
                     <div id="name-details">{props.currVolunteer.first_name} {props.currVolunteer.last_name} 
                         {props.currVolunteer.availability ? 
-                            <Badge aria-describedby='tooltip-bottom' variant="success" 
-                                   id='volunteerBadge' style={{marginLeft: 8, marginTop: -4}}>
+                            <Badge aria-describedby='tooltip-bottom' id='task-info' style={{marginLeft: 8, marginTop: 0, backgroundColor: '#28a745'}}>
                                 Available
                             </Badge>
-                          : <Badge aria-describedby='tooltip-bottom' variant="success" 
-                                   id='volunteerBadge' style={{marginLeft: 8, marginTop: -4, backgroundColor: '#dc3545'}}>
+                          : <Badge aria-describedby='tooltip-bottom' id='task-info' style={{marginLeft: 8, marginTop: -4, backgroundColor: '#dc3545'}}>
                                 Not Available
                             </Badge>}
-
                         {displaySwitch()}
                         {requestStatus()}
                     </div>
-                    <p id="request-info" style={{marginTop: 5}}>Location: <a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
-                    <p id="request-info">{props.currVolunteer.email}</p>
-                    <p id="request-info">{props.currVolunteer.phone}</p>
-                    <p id="request-info" style={{marginTop: 14}}>Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ""}</p>
-                    <p id="request-info">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}</p>
-                    <p id="request-info">Driver: {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}</p>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Tasks:</h5>
+                    <p id="regular-text-nomargin" style={{marginTop: 5}}>Location: <a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
+                    <p id="regular-text-nomargin">{props.currVolunteer.email}</p>
+                    <p id="regular-text-nomargin">{props.currVolunteer.phone}</p>
+                    <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ""}</p>
+                    <p id="regular-text-nomargin">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}</p>
+                    <p id="regular-text-nomargin">Driver: {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Tasks:</h5>
                     {props.currVolunteer.offer ? props.currVolunteer.offer.tasks.map((task, i) => {
-                        return <Badge key={i} className='task-info'>{task}</Badge>
+                        return <Badge key={i} id='task-info'>{task}</Badge>
                     }) : ""}
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
-                    <p id="request-info"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
-                    <h5 className="titleHeadings" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
+                    <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
+                    <p id="regular-text-nomargin"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
                     <Form>
                         <Form.Group controlId="email5" bssize="large">
                             <Form.Control as="textarea" 
@@ -224,22 +226,22 @@ export default function VolunteerDetails(props) {
         );
     } else if (props.currRequest && props.currRequest.status.volunteer === "manual" && props.currRequest.manual_match) {
         return (
-            <Modal id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
+            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
                 <Modal.Header closeButton>
                     <Modal.Title>{props.currRequest.manual_match.name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h5 className="titleHeadings" style={{marginBottom: 3}}>Information</h5>
-                    <p id="request-info">Email: {props.currRequest.manual_match.email}</p>
-                    <p id="request-info">Phone: {props.currRequest.manual_match.phone}</p>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
-                    <p id="request-info"> {props.currRequest.manual_match.details}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 3}}>Information</h5>
+                    <p id="regular-text-nomargin">Email: {props.currRequest.manual_match.email}</p>
+                    <p id="regular-text-nomargin">Phone: {props.currRequest.manual_match.phone}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
+                    <p id="regular-text-nomargin"> {props.currRequest.manual_match.details}</p>
                 </Modal.Body>
             </Modal>
         )
     } else {
         return (
-            <Modal id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => {
+            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
                     props.setVolunteerDetailsModal(false);
                     if (props.setVolunteersModal) {
                         props.setVolunteersModal(true);

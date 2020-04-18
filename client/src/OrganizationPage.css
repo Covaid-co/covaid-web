@@ -22,58 +22,11 @@ input {
     border-radius: 8px;
 }
 
-#mark-complete {
-    width: 100%;
-    margin-right: 10px;
-    margin-top: 8px;
-    height: 49px;
-    font-family: "SF Text";
-    background-color: transparent;
-    border-color: #28a745;
-    color: #28a745;
-    border-radius: 8px;
-}
-
-#remove-request {
-    width: 100%;
-    margin-right: 10px;
-    margin-top: 8px;
-    height: 49px;
-    font-family: "SF Text";
-    background-color: transparent;
-    border-color: #AE2F2F;
-    color: #AE2F2F;
-    border-radius: 8px;
-}
-
 #name-details {
-    font-family: "SF Display";
+    font-family: "Inter";
     font-weight: bold;
     font-size: 20px;
-    margin-bottom: -5px;
-}
-
-.task-info-requests {
-    height: 25px;
-    border-radius: 40px;
-    background: #194bd3;
-    color: white;
-    font-size: 13px;
-    font-family: "SF Text";
-    font-weight: bold;
-    border: 1px solid #314CCE;
-    box-sizing: border-box;
-    margin-top: 4px;
-  
-    margin: 4px 8px 4px 0px;
-    padding-bottom: 0;
-    padding-top: 6px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
+    margin-bottom: -3px;
 }
 
 .pending-task {
@@ -145,7 +98,7 @@ input {
     vertical-align: middle;
 }
 
-.assignee-info {
+#assignee-info {
     height: 25px;
     border-radius: 40px;
     background: #6c757d;
@@ -183,6 +136,7 @@ input {
     font-weight: bold;
     justify-content: center;
     align-items: center;
+    /* margin-top: -8px; */
 }
 
 .request-count-1 {
@@ -190,13 +144,23 @@ input {
     background: #DB4B4B;
 }
 
+.request-pending-count {
+    margin-left: 67px;
+    background: #DB4B4B;
+}
+
+.request-active-count {
+    background: #45A03D;
+    margin-left: 55px;
+}
+
 .request-count-2 {
-    margin-left: 76px;
+    margin-left: 72px;
     background: #db9327;
 }
 
 .request-count-3 {
-    margin-left: 94px;
+    margin-left: 90px;
     background: #28a745;
 }
 

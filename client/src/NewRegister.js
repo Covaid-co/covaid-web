@@ -14,9 +14,9 @@ import SelectionForm from './SelectionForm';
 import CheckForm from './CheckForm';
 import PhoneNumber from './PhoneNumber';
 import NewHasCar from './NewHasCar';
-import Details from './Details'
+import Details from './components_homepage/Details'
 import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';
-import { defaultResources, availability } from './constants';
+import { defaultResources, availability, defaultTerms } from './constants';
 
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
@@ -53,14 +53,7 @@ export default function NewRegister(props) {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const terms = [0, 1, 2, 3, 4, 5];
-    const [termSentences, setTermSentences] = useState([
-        'I have not traveled out-of-country in the past 14 days',
-        'I am not exhibiting any symptoms of COVID-19 (cough, fever, etc.)',
-        'I have not come in contact with a sick person in the past 14 days',
-        'I have been practicing social distancing -- staying indoors, avoiding crowds, staying 6 feet away from other people if you have to go outside',
-        'I will take take every CDC-provided safety precaution',
-        'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
-    ]);
+    const [termSentences, setTermSentences] = useState(defaultTerms);
 
     useEffect(() => {
         if (props.state.currentAssoc.resources) {
@@ -76,12 +69,11 @@ export default function NewRegister(props) {
             ]
             setTermSentences(termsList);
         } else {
-            var tempResources = setFalseObj(defaultResources);
-            setTaskChecked(tempResources);
+            setTaskChecked(setFalseObj(defaultResources));
         }
         setAvailabilityChecked(setFalseObj(availability));
         setNeighborhoodsChecked(setFalseObj(props.state.neighborhoods));
-    }, [props.state.currentAssoc])
+    }, [props.state.currentAssoc, props.state.neighborhoods])
 
     const handleTermChange = (event, task) => { 
         setCurrentTerms(prev => ({ 

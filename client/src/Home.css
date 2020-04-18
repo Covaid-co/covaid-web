@@ -1,22 +1,3 @@
-#volunteer-details-matching{
-  margin-top: 10px;
-}
-
-@media (min-width: 576px) {
-  #volunteer-details-matching.modal-dialog{
-    max-width: 700px;
-  }
-}
-
-#volunteer-details-matching .modal-content{
-  border-radius: 16px 16px 16px 16px !important;
-  box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
-}
-
-#modal-topmatches {
-  padding-bottom: 40px !important;
-}
-
 .modal-open .modal {
   margin-top: 40px;
 }
@@ -61,11 +42,6 @@
   border-bottom: 1px solid #dee2e6;
 }
 
-#phoneNumber {
-  font-weight: bold;
-  color: #314CCE;
-}
-
 .titleHeadings {
   font-family: "SF Text";
   font-weight: bold;
@@ -84,7 +60,7 @@ input {
 /* Home Page / navbar */
 
 .jumbotron {
-  background-color: #194bd3;
+  background-color: white;
 }
 
 .container {
@@ -110,7 +86,7 @@ input {
 }
 
 #yourOffer {
-  padding: 1rem;
+  padding: 2rem;
   margin-right: 0px;
   margin-left: 0px;
   max-width: 1500px;

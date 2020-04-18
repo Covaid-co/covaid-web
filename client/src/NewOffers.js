@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Pagination from './CommunityBulletinComponents/Pagination'
-import Offer from './CommunityBulletinComponents/Offer'
+import Offer from './components_homepage/Offer'
 import Container from 'react-bootstrap/Container'
 
 import NewFilterButton from './NewFilterButton'
-import OfferDetails from './OfferDetails'
+import OfferDetails from './components_homepage/OfferDetails'
+import { setFalseObj } from './Helpers';
 
 export default function NewOffers(props) {
 
@@ -29,12 +30,7 @@ export default function NewOffers(props) {
     useEffect(() => {
         setCurrentPage(1);
         setDisplayedVolunteers(props.volunteers.slice(0, volunteersPerPage));
-        var newTasks = {};
-        for (var i = 0; i < props.resources.length; i++) {
-            const taskName = props.resources[i];
-            newTasks[taskName] = false;
-        }
-        setTaskSelect(newTasks);
+        setTaskSelect(setFalseObj(props.resources));
     }, [props.resources, props.volunteers]);
 
     const paginatePage = (pageNumber) => {
@@ -55,7 +51,8 @@ export default function NewOffers(props) {
                              taskSelect={taskSelect} 
                              setTaskSelect={setTaskSelect} 
                              setDisplayedVolunteers={setDisplayedVolunteers}
-                             volunteers={props.volunteers}/>
+                             volunteers={props.volunteers}
+                             mobile={props.mobile}/>
             <Container id="newOfferContainer">
                 <ListGroup variant="flush">
                     <Offer displayedVolunteers={displayedVolunteers}

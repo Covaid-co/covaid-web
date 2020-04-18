@@ -7,12 +7,12 @@ import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 import { useFormFields } from "./libs/hooksLib";
 
-import NeededBy from './NeededBy';
+import NeededBy from './components_homepage/NeededBy';
 import NewPaymentMethod from './NewPaymentMethod';
-import NewDetails from './NewDetails';
+import NewDetails from './components_homepage/NewDetails';
 import PhoneNumber from './PhoneNumber';
 import CheckForm from './CheckForm';
-import { defaultResources, languages } from './constants'
+import { defaultResources, languages, toastTime } from './constants'
 import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';
 
 export default function RequestHelp(props) {
@@ -240,7 +240,7 @@ export default function RequestHelp(props) {
                     <CheckForm obj={resources} setObj={setResources}/>
                     <Button id="large-button" style={{marginTop: 15}} onClick={goToSecondPage}>Next</Button>
                     <p id="pagenum-text">Page 1 of 2</p>
-                    <Toast show={showToast} delay={3000} onClose={() => setShowToast(false)} autohide id='toastError'>
+                    <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
                 </Modal.Body>
@@ -266,12 +266,7 @@ export default function RequestHelp(props) {
                         {agreement}
                         <Button disabled={pendingSubmit} id="large-button" style={{marginTop: 15}} onClick={handleSubmit}>Submit a Request</Button>
                         <p id="pagenum-text">Page 2 of 2</p>
-                        <Toast
-                            show={showToast}
-                            delay={3000}
-                            onClose={() => setShowToast(false)}
-                            autohide
-                            id='toastError'>
+                        <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
                     </Modal.Body>

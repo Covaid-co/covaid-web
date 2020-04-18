@@ -8,14 +8,14 @@ import Toast from 'react-bootstrap/Toast'
 import BestMatches from './BestMatches'
 import Col from 'react-bootstrap/Col'
 import VolunteerDetails from './VolunteerDetails'
-import { useFormFields } from "./libs/hooksLib";
-import { formatName } from './OrganizationHelpers'
-import { generateURL, generateMapsURL, moveFromToArr } from './Helpers';
+import { useFormFields } from "../libs/hooksLib";
+import { formatName } from '../OrganizationHelpers'
+import { toastTime, paymentOptions } from '../constants';
+import { generateURL, generateMapsURL, moveFromToArr } from '../Helpers';
 
 export default function RequestDetails(props) {
 
     const [currVolunteer, setCurrVolunteer] = useState({});
-
     const [topMatchesModal, setTopMatchesModal] = useState(false);
     const [assignee, setAssignee] = useState('No one assigned');
     const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
@@ -28,10 +28,6 @@ export default function RequestDetails(props) {
     const [prevNote, setPrevNote] = useState('');
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-    const options = ['Call ahead to store and pay (Best option)',
-                     'Have volunteer pay and reimburse when delivered',
-                     'N/A']
-
     const [fields, handleFieldChange] = useFormFields({
         email2: ""
     });
@@ -75,7 +71,6 @@ export default function RequestDetails(props) {
         }
         let params = {'id': request.status.volunteer}
         const url = generateURL( "/api/users/user?", params);
-
         fetch(url, {
             method: 'get',
             headers: {'Content-Type': 'application/json'},
@@ -211,9 +206,11 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
+                var dup;
+                var i = 0;
                 if (props.mode === 3) {
-                    var dup = [...props.completed];
-                    for (var i = 0; i < dup.length; i++) {
+                    dup = [...props.completed];
+                    for (i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i].assignee = assignString;
                             break;
@@ -221,8 +218,8 @@ export default function RequestDetails(props) {
                     }
                     props.setCompleted(dup);
                 } else if (props.mode === 2) {
-                    var dup = [...props.matched];
-                    for (var i = 0; i < dup.length; i++) {
+                    dup = [...props.matched];
+                    for (i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i].assignee = assignString;
                             break;
@@ -230,8 +227,8 @@ export default function RequestDetails(props) {
                     }
                     props.setMatched(dup);
                 } else if (props.mode === 1) {
-                    var dup = [...props.unmatched];
-                    for (var i = 0; i < dup.length; i++) {
+                    dup = [...props.unmatched];
+                    for (i = 0; i < dup.length; i++) {
                         if (props.currRequest._id === dup[i]._id) {
                             dup[i].assignee = assignString;
                             break;
@@ -253,31 +250,25 @@ export default function RequestDetails(props) {
     }
 
     const modeButton = () => {
+        const completeButton = <Button id="large-button-empty" style={{borderColor: '#28a745', color: '#28a745'}} 
+                                        onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
+                                    Mark Complete
+                                </Button>
         if (props.mode === 1) {
             return <>
                     <Button id="large-button" style={{marginTop: 15}} onClick={topMatch}>Match a volunteer</Button>
                     <Row style={{marginBottom: 10}}>
                         <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
-                            <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
-                                Mark Complete
-                            </Button>
+                            {completeButton}
                         </Col>
                         <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
-                            <Button onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}} id='remove-request'>Remove Request</Button>
+                            <Button id='large-button-empty'style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
+                                    onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
+                                Remove Request
+                            </Button>
                         </Col>
                     </Row>
-                    <Toast
-                        show={showToast}
-                        delay={2000}
-                        onClose={() => setShowToast(false)}
-                        autohide
-                        style={{
-                            position: 'absolute',
-                            bottom: 120,
-                            right: 0,
-                            marginBottom: 27,
-                            marginRight: 10
-                        }}>
+                    <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id="toastError">
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>    
                 </>;
@@ -290,12 +281,13 @@ export default function RequestDetails(props) {
                         : <></>}
                     <Row style={{marginBottom: 10}}>
                         <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
-                            <Button id="mark-complete" onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
-                                Mark Complete
-                            </Button>
+                            {completeButton}
                         </Col>
                         <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
-                            <Button onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false); setNotes();}} id='remove-request'>Unmatch Request</Button>
+                            <Button id='large-button-empty'style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
+                                    onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false); setNotes();}}>
+                                Unmatch Request
+                            </Button>
                         </Col>
                     </Row>
                     <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
@@ -413,7 +405,7 @@ export default function RequestDetails(props) {
                    onHide={() => {props.setRequestDetailsModal(false); setNotes();}} 
                    style = {{marginTop: 10, paddingBottom: 50, zoom: '90%'}}>
                 <Modal.Body>
-                    <h5 className="titleHeadings" style={{marginTop: 0, marginBottom: 5}}>Who's tracking this request:</h5>
+                    <h5 id="regular-text-bold" style={{marginTop: 0, marginBottom: 5}}>Who's tracking this request:</h5>
                     <Form>
                         <Form.Group controlId="tracking">
                             <Form.Control as="select" style = {{fontSize: 15}} value={assignee} onChange={changeAssignee}>
@@ -423,7 +415,7 @@ export default function RequestDetails(props) {
                             </Form.Control>
                         </Form.Group>
                     </Form>
-                    <h5 className="titleHeadings" style={{marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
+                    <h5 id="regular-text-bold" style={{marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
                     <Form>
                         <Form.Group controlId="email2" bssize="large">
                             <Form.Control as="textarea" 
@@ -433,61 +425,44 @@ export default function RequestDetails(props) {
                                         onChange={handleFieldChange}/>
                         </Form.Group>
                     </Form>
-                    <Modal.Title style={{fontSize: 28, marginTop: 20}}>Request Details ({modeString()})</Modal.Title>
+                    <Modal.Title id="small-header" style={{marginTop: 20}}>Request Details ({modeString()})</Modal.Title>
                     <Col xs={12} style={{padding: 0}}><p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p></Col>
                     <p id="name-details">{formatName(props.currRequest.requester_first, props.currRequest.requester_last)}</p>
-                    <p id="request-info">Location: <a target="_blank" rel="noopener noreferrer" href={mapsURL}>Click here</a></p>
-                    {props.currRequest.requester_email ? <p id="request-info">{props.currRequest.requester_email}</p> : <></>}
-                    {props.currRequest.requester_phone ? <p id="request-info">{props.currRequest.requester_phone}</p> : <></>}
-                    <p id="request-info" style={{marginTop: 14}}>Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
-                    <p id="request-info">Payment: {options[props.currRequest.payment]}</p>
-                    <p id="request-info">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
-                    <p id="request-info"> {props.currRequest.details}</p>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 16}}>Needed by:</h5>
-                    <p id="request-info">{props.currRequest.time} of {props.currRequest.date}</p>
+                    <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapsURL}>Click here</a></p>
+                    {props.currRequest.requester_email ? <p id="regular-text-nomargin">{props.currRequest.requester_email}</p> : <></>}
+                    {props.currRequest.requester_phone ? <p id="regular-text-nomargin">{props.currRequest.requester_phone}</p> : <></>}
+                    <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
+                    <p id="regular-text-nomargin">Payment: {paymentOptions[props.currRequest.payment]}</p>
+                    <p id="regular-text-nomargin">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
+                    <p id="regular-text-nomargin"> {props.currRequest.details}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Needed by:</h5>
+                    <p id="regular-text-nomargin">{props.currRequest.time} of {props.currRequest.date}</p>
                     {modeButton()}
-                    {/* <Col xs={12}><p id="requestCall" style={{marginTop: -5, marginBottom: 16}}>&nbsp;</p></Col>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 13, marginBottom: 5}}>Who's tracking this request:</h5>
-                    <Form>
-                        <Form.Group controlId="tracking">
-                            <Form.Control as="select" style = {{fontSize: 15}} value={assignee} onChange={changeAssignee}>
-                                {adminList.length > 0 ? adminList.map((admin, i) => {
-                                    return <option key={i} style={{textIndent: 10}}>{admin}</option>;
-                                }) : <></>}
-                            </Form.Control>
-                        </Form.Group>
-                    </Form>
-                    <h5 className="titleHeadings" style={{marginBottom: 3, marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
-                    <Form>
-                        <Form.Group controlId="email2" bssize="large">
-                            <Form.Control as="textarea" 
-                                        rows="5"
-                                        placeholder="Details about this request"
-                                        value={fields.email2 ? fields.email2 : ''} 
-                                        onChange={handleFieldChange}/>
-                        </Form.Group>
-                    </Form> */}
                 </Modal.Body>
             </Modal>
 
-            <Modal size="sm" id="notes-modal" show={deleteModal} onHide={() => {setDeleteModal(false); props.setRequestDetailsModal(true);}}>
+            <Modal size="sm" show={deleteModal} onHide={() => {setDeleteModal(false); props.setRequestDetailsModal(true);}}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Delete Request from {props.currRequest.requester_first}</Modal.Title>
+                    <Modal.Title id="small-header">Delete Request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p id="createAccountText">Are you sure you want to delete this request?</p>
-                    <Button id="request-delete" onClick={deleteRequest}>Delete Request</Button>
+                    <p id="regular-text">Are you sure you want to delete this request?</p>
+                    <Button id="large-button" style={{backgroundColor: '#DB4B4B', border: '1px solid #DB4B4B'}} onClick={deleteRequest}>
+                        Delete Request
+                    </Button>
                 </Modal.Body>
             </Modal>
 
-            <Modal size="sm" id="notes-modal" show={unmatchModal} onHide={() => {setUnmatchModal(false); props.setRequestDetailsModal(true);}}>
+            <Modal size="sm" show={unmatchModal} onHide={() => {setUnmatchModal(false); props.setRequestDetailsModal(true);}}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Unmatch Request</Modal.Title>
+                    <Modal.Title id="small-header">Unmatch Request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p id="createAccountText">Are you sure you want to unmatch this request?</p>
-                    <Button id="request-delete" onClick={unMatch}>Unmatch Request</Button>
+                    <p id="regular-text">Are you sure you want to unmatch this request?</p>
+                    <Button id="large-button" style={{backgroundColor: '#DB4B4B', border: '1px solid #DB4B4B'}} onClick={unMatch}>
+                        Unmatch Request
+                    </Button>
                 </Modal.Body>
             </Modal>
 
@@ -508,7 +483,9 @@ export default function RequestDetails(props) {
                                 <option>Referred for support</option>
                             </Form.Control>
                         </Form.Group>
-                        <Button id="large-button" style={{marginTop: 5}} type='submit'>Complete Request</Button>
+                        <Button id="large-button" style={{backgroundColor: '#28a745', border: '1px solid #28a745'}}>
+                            Complete Request
+                        </Button>
                     </Form>
                 </Modal.Body>
             </Modal>

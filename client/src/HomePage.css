@@ -12,28 +12,6 @@
   padding-left: 10px;
 }
 
-.task-info {
-  height: 25px;
-  border-radius: 40px;
-  background: #194bd3;
-  color: white;
-  font-size: 13px;
-  font-family: "SF Text";
-  font-weight: bold;
-  border: 1px solid #314CCE;
-  box-sizing: border-box;
-
-  margin: 4px 8px 4px 0px;
-  padding-bottom: 0;
-  padding-top: 6px;
-  display: inline-block;
-
-  flex: none;
-  order: 0;
-  align-self: flex-start;
-  vertical-align: middle;
-}
-
 #location-container {
   margin-left: 7%;
   max-width: 1200px;

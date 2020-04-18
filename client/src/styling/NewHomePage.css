@@ -184,7 +184,7 @@
     font-size: 13px;
     font-family: "Inter";
     font-weight: bold;
-    margin: 0px 8px 0px 0px;
+    margin: 4px 6px 0px 0px;
 }
 
 #navbar-brand {
@@ -313,7 +313,7 @@
     margin-left: 0px;
     margin-top: 0px;
     margin-bottom: 60px;
-    border-radius: 16px 16px 16px 16px !important;
+    border-radius: 10px;
     border: 1px solid #CECECE;
 }
 
@@ -495,17 +495,11 @@ textarea.form-control {
     color: #7F7F7F;
 }
 
-#medium-text {
-    font-family: 'Inter';
-    font-size: 20;
-    font-weight: bold;
-}
-
 .dropdown-item {
     height: 29px;
     background: transparent;
     color: #2670FF;
-    font-family: "SF Text";
+    font-family: "Inter";
     font-weight: normal;
 }
   
@@ -535,8 +529,8 @@ textarea.form-control {
     margin-bottom: 130px;
     margin-right: 10px;
     font-family: 'Inter';
+    color: black;
 }
-
 
 #leftCarButton {
     font-family: "Inter";
@@ -591,4 +585,15 @@ textarea.form-control {
     color: white;
     font-family: "Inter";
     border-radius: 0px 8px 8px 0px;
+}
+
+.mobileDrop.dropup {
+    width: 5px;
+    margin-left: auto;
+    margin-right: 91px;
+}
+
+#phoneNumber {
+    font-weight: bold;
+    color: #2670FF;
 }
