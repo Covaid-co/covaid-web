@@ -2,15 +2,15 @@
     margin-top: 10px;
     width: 100%;
     background-color: transparent;
-    border-color: #314CCE;
-    color: #314CCE;
+    border-color: #2670FF;
+    color: #2670FF;
     border-radius: 8px;
     font-weight: 700;
-    font-family: "SF Text";
+    font-family: "Inter";
 }
 
 .dropdown-sort:hover {
-    background-color: #314CCE;
+    background-color: #2670FF;
     color: white;
 }
 
@@ -36,11 +36,11 @@ input {
     background: transparent;
     color: #DB9327;
     font-size: 13px;
-    font-family: "SF Text";
+    font-family: "Inter";
     font-weight: bold;
     border: 1px solid #DB9327;
     box-sizing: border-box;
-    margin-top: 10px;
+    margin-top: 6px;
     margin-left: 8px !important;
     padding-bottom: 0;
     padding-top: 6px;
@@ -59,11 +59,11 @@ input {
     background: transparent;
     color: #8A8A8A;
     font-size: 13px;
-    font-family: "SF Text";
+    font-family: "Inter";
     font-weight: bold;
     border: 1px solid #8A8A8A;
     box-sizing: border-box;
-    margin-top: 10px;
+    margin-top: 6px;
     margin-left: 8px !important;
     padding-bottom: 0;
     padding-top: 6px;
@@ -82,11 +82,11 @@ input {
     background: transparent;
     color: #dc3545;
     font-size: 13px;
-    font-family: "SF Text";
+    font-family: "Inter";
     font-weight: bold;
     border: 1px solid #dc3545;
     box-sizing: border-box;
-    margin-top: 10px;
+    margin-top: 6px;
     margin-left: 8px !important;
     padding-bottom: 0;
     padding-top: 6px;
@@ -221,13 +221,14 @@ input {
 }
 
 #resources-link {
-    color: white;
+    color: #2670FF;
+    font-family: 'Inter';
     text-decoration: underline;
     margin-top: 10px;
 }
 
 #map-title{
-    font-family: 'SF Display';
+    font-family: 'Inter';
     font-size: 24px;
     font-weight: bold;
     margin-top: 5px;
@@ -235,110 +236,76 @@ input {
 }
 
 #volunteer-not-selected {
-    height: 25px;
+    height: 23px;
     border-radius: 40px;
     background: white;
-    color: #194bd3;
+    border: 1px solid #2670FF;
+    color: #2670FF;
+    padding-top: 2px;
     font-size: 13px;
-    font-family: "SF Text";
+    font-family: "Inter";
     font-weight: bold;
-    border: 1px solid #314CCE;
-    box-sizing: border-box;
+    margin: 4px 8px 4px 0px;
     float: right;
     margin-top: 6px !important;
-  
-    margin: 4px 8px 4px 0px;
     padding-bottom: 0;
     padding-top: 1px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
+    display: inline-block
 }
 
 #requester-not-selected {
-    height: 25px;
+    height: 23px;
     border-radius: 40px;
     background: white;
-    color: #DB4B4B;
-    font-size: 13px;
-    font-family: "SF Text";
-    font-weight: bold;
     border: 1px solid #DB4B4B;
-    box-sizing: border-box;
+    color: #DB4B4B;
+    padding-top: 2px;
+    font-size: 13px;
+    font-family: "Inter";
+    font-weight: bold;
+    margin: 4px 8px 4px 0px;
     float: right;
     margin-top: 6px !important;
-  
-    margin: 4px 8px 4px 0px;
     padding-bottom: 0;
     padding-top: 1px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
-}
-/* 
-#volunteer-not-selected:hover {
-    color: white;
-    background: #194bd3;
+    display: inline-block
 }
 
-#requester-not-selected:hover {
-    color: white;
-    background: #DB4B4B;
-    border: 1px solid #DB4B4B;
-} */
 
 #volunteer-selected {
-    height: 25px;
+    height: 23px;
     border-radius: 40px;
-    background: #194bd3;
+    background: #2670FF;
+    border: 1px solid #2670FF;
     color: white;
+    padding-top: 2px;
     font-size: 13px;
-    font-family: "SF Text";
+    font-family: "Inter";
     font-weight: bold;
-    border: 1px solid #314CCE;
-    box-sizing: border-box;
+    margin: 4px 8px 4px 0px;
     float: right;
     margin-top: 6px !important;
-  
-    margin: 4px 8px 4px 0px;
     padding-bottom: 0;
     padding-top: 1px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
+    display: inline-block
 }
 
 #requester-selected {
-    height: 25px;
+    height: 23px;
     border-radius: 40px;
     background: #DB4B4B;
-    color: white;
-    font-size: 13px;
-    font-family: "SF Text";
-    font-weight: bold;
     border: 1px solid #DB4B4B;
-    box-sizing: border-box;
+    color: white;
+    padding-top: 2px;
+    font-size: 13px;
+    font-family: "Inter";
+    font-weight: bold;
+    margin: 4px 8px 4px 0px;
     float: right;
     margin-top: 6px !important;
-  
-    margin: 4px 8px 4px 0px;
     padding-bottom: 0;
     padding-top: 1px;
     display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
 }
 /* 
 .mapboxgl-popup-close-button {

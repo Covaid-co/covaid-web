@@ -26,7 +26,11 @@ export default function CovaidNavbar(props) {
     }, []);
 
     const logout = () => {
-        Cookie.remove('token');
+        if (props.orgPortal) {
+            Cookie.remove('org_token');
+        } else {
+            Cookie.remove('token');
+        }
         window.open(window.location.protocol + '//' + window.location.host, '_self');
     }
 
@@ -71,7 +75,34 @@ export default function CovaidNavbar(props) {
         }
     }
 
-    return(
+    if (props.orgPortal) {
+        return (
+            <Navbar collapseOnSelect onToggle={(e) => setToggled(e)} variant="light" expand="md" id="custom-navbar">
+                <Navbar.Brand href = {window.location.protocol + '//' + window.location.host} id="navbar-brand" style={{marginTop: 12}}>
+                    covaid
+                </Navbar.Brand>
+                <Form inline className="volunteer-badge-mobile">
+                    <Badge aria-describedby='tooltip-bottom' id='volunteer-mobile'>{props.totalVolunteers} Volunteers</Badge>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" id={toggled ? 'toggledNav1': 'nav1'}/>
+                </Form>
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                        <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(1)}>
+                            <p id={toggled ? 'navLinkToggled': 'navLink'}>About us</p>
+                        </Nav.Link>
+                        <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(4)}>
+                            <p id={toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
+                        </Nav.Link>
+                        <Nav.Link className="volunteer-badge-web">
+                            <Badge aria-describedby='tooltip-bottom' id='volunteerBadge'>{props.totalVolunteers} Volunteers</Badge>
+                        </Nav.Link>
+                    </Nav>
+                    {rightNav}
+                </Navbar.Collapse>
+            </Navbar>
+        )
+    }
+    return (
         <Navbar collapseOnSelect onToggle={(e) => setToggled(e)} variant="light" expand="md" id="custom-navbar">
             <Navbar.Brand href = {window.location.protocol + '//' + window.location.host} id="navbar-brand">
                 covaid

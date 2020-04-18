@@ -65,7 +65,7 @@ export default function HomePage(props) {
     }
 
     const supportButton = () => {
-        var helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="request-button">
+        var helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="request-button" >
                             Request support
                         </Button>
         if (props.state.currentAssoc.name === "Baltimore Mutual Aid") {
@@ -152,7 +152,10 @@ export default function HomePage(props) {
             <Container id="location-container">
                 <CitySupport state={props.state} associations={props.state.associations}/>
             </Container>
-            <Container id="jumboContainer" className="mobile-bulletin-container">
+            <Container id="jumboContainer" className={props.state.isLoggedIn ? "mobile-loggged-container" : "mobile-bulletin-container"}>
+                    <Col lg={12} md={12}>
+                        <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
+                    </Col>
                 <Col xs={12} id="mobile-bulletin">
                     <p id='location-text' style={{color: 'black', float: 'left', width: '100%', fontSize: "5vw"}}>Volunteers around 
                         <button id="change-location" onClick={() => props.handleShowModal(5)}> {props.state.locality}</button>

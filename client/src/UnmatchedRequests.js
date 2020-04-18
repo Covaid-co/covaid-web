@@ -87,17 +87,17 @@ export default function UnmatchedRequests(props) {
                 const formatted = convertTime(request.last_modified);
                 return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Last Updated: {formatted}</p>
             } else {
-                return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Unread</p>
+                return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Unread</p>
             }
         } else if (lastPressed === 'Time Posted') {
             if (request.time_posted) {
                 const formatted = convertTime(request.time_posted);
-                return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Time Posted: {formatted}</p>
+                return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Time Posted: {formatted}</p>
             } else {
-                return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>No Time</p>
+                return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>No Time</p>
             }
         } else {
-            return <p style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
+            return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
         }
     }
 
@@ -153,9 +153,8 @@ export default function UnmatchedRequests(props) {
                                     <div>{resourceCompleteBadge(request)} {requestStatus(request)}</div>
                                     <div style={{display: 'inline-block', width: '100%', marginTop: 3, fontFamily: 'Inter'}}>
                                         <p style={{float: 'left', marginBottom: 0}}>Tracking: 
-                                        {request.assignee ? 
                                         <Badge key={i} id='task-info' style={{background: '#6c757d', border: '1px solid #6c757d', paddingTop: 4, marginLeft: 5}}>
-                                            {request.assignee}</Badge> : " No one assigned"}</p>
+                                        {request.assignee ? request.assignee : "No one assigned"}</Badge></p>
                                     </div>
                                 </ListGroup.Item>);
                             })}

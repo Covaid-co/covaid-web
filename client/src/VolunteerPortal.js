@@ -161,11 +161,11 @@ export default function VolunteerPortal(props) {
 								Your Offer
 							</Button>
 							<Button id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
-								Pending
+								Pending ({pendingRequests.length})
 								{/* <div className={"request-count request-pending-count"}>{pendingRequests.length}</div> */}
 							</Button>
 							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
-								Active
+								Active ({acceptedRequests.length})
 								{/* <div className={"request-count request-active-count"}>{acceptedRequests.length}</div> */}
 							</Button>
 						</Container>

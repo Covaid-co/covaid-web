@@ -72,7 +72,7 @@ export default function HelpfulLinks(props) {
             <Modal.Header closeButton>
                 <Modal.Title id="small-header">Useful resources</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{paddingLeft: 5, paddingRight: 0}}>
                 <Container id="volunteer-info" style={{maxWidth: 2000, marginLeft: 0, marginRight: 0, color: 'black'}}>
                     <Row>
                         <Col xs="12">

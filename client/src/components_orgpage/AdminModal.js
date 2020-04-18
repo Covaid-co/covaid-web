@@ -51,7 +51,7 @@ export default function AdminModal(props) {
 
     return (
         <>
-            <Modal size="sm" show={props.adminModal} onHide={() => props.setAdminModal(false)} style = {{marginTop: 50, paddingBottom: 40}}>
+            <Modal size="sm" show={props.adminModal} onHide={() => props.setAdminModal(false)} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
                     <Modal.Title id="small-header" style={{marginLeft: 5}}>Current Admins</Modal.Title>
                 </Modal.Header>
@@ -72,7 +72,9 @@ export default function AdminModal(props) {
                             <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>
                         </Col>
                         <Col xs={12} style={{textAlign: 'center'}}>
-                            <Button variant="link" style={{color: '#314CCE'}} onClick={() => {setAddAdmin(true); props.setAdminModal(false)}}>Add an Admin +</Button>
+                            <Button id="regular-text" variant="link" style={{color: '#314CCE'}} onClick={() => {setAddAdmin(true); props.setAdminModal(false)}}>
+                                Add an Admin +
+                            </Button>
                         </Col>
                     </Row>
                 </Modal.Body>

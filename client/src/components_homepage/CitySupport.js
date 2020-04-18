@@ -36,11 +36,11 @@ export default function CitySupport(props) {
                     {citySupportedBy('web')}
                 </Col>
             </Row>
-            <Row id="mobile-tablet-separate">
+            {/* <Row id="mobile-tablet-separate">
                 <Col lg={12} md={12}>
                     <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
                 </Col>
-            </Row>
+            </Row> */}
             <Row id="mobile-org">
                 <Col md={12}>
                     {citySupportedBy()}

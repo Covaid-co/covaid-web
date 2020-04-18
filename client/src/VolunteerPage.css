@@ -24,6 +24,24 @@
 
 #tab-button {
     z-index: 8;
+    border-radius: 40px;
+    background-color: transparent;
+    border: 1px solid #CECECE !important;
+    color: #7F7F7F;
+    font-family: "Inter";
+    height: 36px;
+    font-size: 16px;
+    padding-right: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 30px;
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+#tab-button-temp {
+    z-index: 8;
     border-radius: 0px;
     background-color: transparent;
     border-top: 1px solid #CECECE !important;
@@ -68,24 +86,6 @@
 
 #volunteer-info {
   max-width: 1500px;
-}
-
-#request-view {
-  padding: 1rem;
-  margin-right: 0px;
-  margin-left: 0px;
-  max-width: 1500px;
-  border-radius: 0px 16px 16px 16px !important;
-  box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
-}
-
-#map-view {
-  padding: 1rem;
-  margin-right: 0px;
-  margin-left: 0px;
-  max-width: 1500px;
-  border-radius: 16px 16px 16px 16px !important;
-  box-shadow: 0px -1px 30px -8px rgba(0, 0, 0, 0.4) !important;
 }
 
 #regular-text-nomargin {

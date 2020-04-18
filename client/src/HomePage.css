@@ -34,10 +34,6 @@
     height: 290px;
     margin-left: 5%;
   }
-
-  #location-container {
-    margin-left: 5%;
-  }
 }
 
 @media (max-width:1000px){ 
@@ -47,7 +43,7 @@
   }
 
   #location-container {
-    margin-left: 4%;
+    margin-top: 160px;
   }
 }
 
@@ -58,7 +54,11 @@
   }
   
   #location-container {
-    margin-left: 3%;
+    margin-top: 210px;
+  }
+
+  #jumbo {
+    margin-top: -20px;
   }
 }
 
@@ -69,6 +69,7 @@
   }
 
   #location-container {
+    margin-top: 230px;
     margin-left: 2%;
   }
 }
@@ -78,6 +79,11 @@
     height: 260px;
     margin-left: 6%;
     margin-right: 6%;
+    margin-top: 30px;
+  }
+
+  #location-container {
+    margin-top: -60px;
   }
 
   #community-bulletin {
@@ -94,6 +100,10 @@
   }
 
   .mobile-bulletin-container {
+    display: block !important;
+  }
+
+  .mobile-loggged-container {
     display: block !important;
   }
 
@@ -116,14 +126,18 @@
 
 
 @media (min-width:578px){ 
-.mobile-bulletin-container {
-  padding-top: 0px !important;
-}
+  .mobile-bulletin-container {
+    padding-top: 0px !important;
+  }
 }
 
 @media (max-width:578px){ 
   #jumboContainer {
     height: 320px;
+  }
+
+  #location-container {
+    margin-top: 0px;
   }
 
   #city-support-text-tablet { 
@@ -136,10 +150,29 @@
 
   .mobile-bulletin-container {
     padding-top: 0px !important;
+    margin-top: 0px !important;
   }
 
   #jumbo {
     padding-top: 30px;
+  }
+}
+
+@media (max-width: 460px) {
+  .mobile-bulletin-container {
+    /* padding-top: 0px !important; */
+    margin-top: 50px !important;
+  }
+}
+
+@media (max-width: 416px) {
+  .mobile-bulletin-container {
+    /* padding-top: 0px !important; */
+    margin-top: 50px !important;
+  }
+
+  .mobile-loggged-container {
+    margin-top: 80px !important;
   }
 }
 
@@ -150,6 +183,15 @@
 
   #jumbo {
     padding-top: 1px;
+  }
+
+  .mobile-bulletin-container {
+    /* padding-top: 0px !important; */
+    margin-top: 140px !important;
+  }
+
+  .mobile-loggged-container {
+    margin-top: 180px !important;
   }
 }
 
@@ -182,6 +224,10 @@
 }
 
 .mobile-bulletin-container {
+  display: none;
+}
+
+.mobile-loggged-container {
   display: none;
 }
 
