@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-// const EmailService = require('./email.service');
-
+const EmailService = require('./util/email.service');
+// const Spreads
 const UserRepository = require('../repositories/user.repository');
 
 exports.register_user = async function (user) {
