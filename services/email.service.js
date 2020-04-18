@@ -17,7 +17,7 @@ exports.sendWelcomeEmail = (user) => {
         mode = "covaid.co"
     }
 
-    var link = "http://" + mode + "/verify?ID=" + userID;
+    var link = "http://" + mode + "/verify?ID=" + user._id;
 
     // if user association is Baltimore, send google forms link
     if (user.association == '5e8439ad9ad8d24834c8edbe') {
@@ -40,25 +40,6 @@ exports.sendWelcomeEmail = (user) => {
             console.log("That's wassup!");
         }
     });
-}
-
-exports.sendVerificationEmail = (data) => {
-    const msg = {
-        to: data.receiver,
-        from: data.sender,
-        templateId: templates[data.templateName],
-        dynamic_template_data: {
-            link: data.link,
-        }
-    };
-
-    sgMail.send(msg, (error, result) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("That's wassup!");
-        }
-      });
 }
 
 exports.sendNotificationEmail = (data) => {
@@ -84,6 +65,28 @@ exports.sendNotificationEmail = (data) => {
         }
       });
 }
+
+
+
+// exports.sendVerificationEmail = (data) => {
+//     const msg = {
+//         to: data.receiver,
+//         from: data.sender,
+//         templateId: templates[data.templateName],
+//         dynamic_template_data: {
+//             link: data.link,
+//         }
+//     };
+
+//     sgMail.send(msg, (error, result) => {
+//         if (error) {
+//             console.log(error);
+//         } else {
+//             console.log("That's wassup!");
+//         }
+//       });
+// }
+
 
 exports.sendPasswordLink = (email, userID, token) => {
     var nodemailer = require('nodemailer');

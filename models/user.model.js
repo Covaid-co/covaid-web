@@ -25,11 +25,12 @@ var passwordSchema = new Schema({
 
 var locationSchema = new Schema({ 
     location: {
-        type: { type: String },
+        type: { type: String, required: true },
         coordinates: {
             type: [Number],
-            index: "2dsphere"
-        },
+            index: "2dsphere",
+            required: true
+        }
     },
     neighborhoods: {type: [String], required: false},
     state: {type: [String], required: false},

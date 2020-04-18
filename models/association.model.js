@@ -1,33 +1,37 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-var AssociationResources = require('./association-resources.modal').schema;
+var associationResourcesSchema = require('./association-resources.model').schema;
+var adminSchema = require('./association-admin.model').schema;
 
 const Schema = mongoose.Schema;
 
-var adminSchema = new Schema({ name: String, email: String }, { noId: true });
+var locationSchema = new Schema({ 
+    city: {type: String, required: true},
+    location: {
+        type: { type: String, required: true },
+        coordinates: {
+            type: [Number],
+            index: "2dsphere",
+            required: true
+        }
+    },
+    radius: {type: Number, required: true}
+}, { noId: true });
 
 let AssociationSchema = new Schema({
     name: {type: String, required: true},
+    email: {type: String, required: true},
     homepage: {type: String, required: false},
     resources: {type: [String], required: true},
-    links: {type: [AssociationResources], required: false},
-    city: {type: String, required: true},
-    email: {type: String, required: true},
-    hash: {type: String, required: true},
-    salt: {type: String, required: true},
-    location: {
-        type: { type: String },
-        coordinates: {
-            type: [Number],
-            index: "2dsphere"
-        },
-        required: false
+    links: {type: [associationResourcesSchema], required: false},
+    locationInfo: { type: locationSchema, required: true},
+    password: {
+        hash: {type: String, required: true},
+        salt: {type: String, required: true}
     },
-    radius: {type: Number},
-    admins: [adminSchema],
-    usesSpreadsheet: {type: Boolean, required: true},
-    spreadsheetID: {type: String, required: false},
+    admins: {type: [adminSchema], required: false},
+    created_on: {type: Date, required: true}
 });
 
 AssociationSchema.methods.setPassword = function(password) {

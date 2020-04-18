@@ -11,11 +11,12 @@ var requesterInfoSchema = new Schema({
 
 var locationSchema = new Schema({ 
     location: {
-        type: { type: String },
+        type: { type: String, required: true },
         coordinates: {
             type: [Number],
-            index: "2dsphere"
-        },
+            index: "2dsphere",
+            required: true
+        }
     },
     association: {type: String, required: true},
 }, { noId: true });

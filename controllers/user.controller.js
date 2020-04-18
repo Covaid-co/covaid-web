@@ -24,7 +24,7 @@ exports.handleRegisterRequest = asyncWrapper(async (req, res) => {
     if (!user.password) {
         return res.status(422).json({
             errors: {
-                email: 'is required',
+                password: 'is required',
             },
         });
     }
@@ -78,7 +78,7 @@ exports.handleGetCurrentUser = function (req, res) {
 			if (user.length === 0) {
 				return res.sendStatus(400);
 			}
-			return res.json(user[0].toJSON());
+			return res.json(user[0]);
 		})
 };
 

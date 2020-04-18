@@ -6,6 +6,7 @@ const RequestRepository = require('../repositories/request.repository');
 // matchedInProgress request -> if admin notify admin, else notify assoc
 // completed request -> notify assoc, if admin notify admin
 
+// TODO -> EmailService and PushNotificationService
 
 exports.getQueriedRequests = async function(query, limit) {
     try {

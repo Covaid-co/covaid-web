@@ -4,7 +4,6 @@
 // const Requests = require('../models/request.model');
 // const Users = require('../models/user.model');
 // const Association = require('../models/association.model')
-const asyncWrapper = require('../util/asyncWrapper');
 // const Pusher = require('pusher');
 // const {GoogleSpreadsheet }= require('google-spreadsheet')
 // const config = require("../config/client_secret").config
@@ -12,6 +11,7 @@ const asyncWrapper = require('../util/asyncWrapper');
 // var compiledTemplate = Hogan.compile(template)
 // const emailer = require('../util/emailer')
 // require('dotenv').config();
+const asyncWrapper = require('../util/asyncWrapper');
 
 const RequestService = require('../services/request.service');
 
