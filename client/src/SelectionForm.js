@@ -22,17 +22,16 @@ export default function SelectionForm(props) {
     } else {
         return (
             <>
-                <h5 className="titleHeadings" style = {{marginTop: '24px', marginBottom: '4px'}}>
+                <h5 id="regular-text-bold"  style = {{marginTop: '24px', marginBottom: 5}}>
                     Please choose an organization
                 </h5>
-                <p id="createAccountText" style={{marginBottom: 5}}>
+                <p id="regular-text" style={{marginBottom: 5, fontSize: 14}}>
                     Choose a nearby supporting organization to help manage your mutual aid efforts.
                 </p>
                 <Row>
                     <Col xs={12}>
                         <Form.Group controlId="payment" bssize="large">
-                            <Form.Control as="select"
-                                        id="orgSelect"
+                            <Form.Control as="select" style={{textIndent: 5}}
                                         onChange={(e) => {
                                             e.persist();
                                             const foundAssoc = findCurrAssoc(e.target.value);

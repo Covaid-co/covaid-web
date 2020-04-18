@@ -10,11 +10,13 @@ import Navbar from 'react-bootstrap/Navbar'
 import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
-import RequestDetails from './RequestDetails';
-import VolunteerDetails from './VolunteerDetails';
-import NewMap from './NewMap'
-import VolunteersModal from './VolunteersModal';
-import AdminModal from './AdminModal';
+import CovaidNavbar from './CovaidNavbar'
+
+import RequestDetails from './components_orgpage/RequestDetails';
+import VolunteerDetails from './components_orgpage/VolunteerDetails';
+import NewMap from './components_orgpage/NewMap'
+import VolunteersModal from './components_orgpage/VolunteersModal';
+import AdminModal from './components_orgpage/AdminModal';
 import OrgResourcesModal from './OrgResourcesModal';
 import { sortFn } from './OrganizationHelpers'
 import { generateURL } from './Helpers'
@@ -25,7 +27,6 @@ import fetch_a from './util/fetch_auth';
 export default function OrganiationPortal() {
 
 	const { addToast } = useToasts()
-
 	const [currTabNumber, setCurrTab] = useState(1); 
 	const [showLogin, setShowLogin] = useState(false); 
 	const [association, setAssociation] = useState({});
@@ -33,15 +34,12 @@ export default function OrganiationPortal() {
 	const [volunteersModal, setVolunteersModal] = useState(false);
 	const [adminModal, setAdminModal] = useState(false);
 	const [resourceModal, setResourceModal] = useState(false);
-
 	const [allRequests, setAllRequests] = useState([]);
 	const [unmatched, setUnmatched] = useState([]);
 	const [matched, setMatched] = useState([]);
 	const [completed, setCompleted] = useState([]);
-
 	const [requesterMap, setRequesterMap] = useState(true);
 	const [volunteerMap, setVolunteerMap] = useState(false);
-
 	const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
 	const [requestDetailsModal, setRequestDetailsModal] = useState(false);
 	const [currVolunteer, setCurrVolunteer] = useState({});
@@ -119,7 +117,8 @@ export default function OrganiationPortal() {
 					)
 				});
 
-				fetch_requests(association_response._id)
+				// All requests for an association
+				fetch_requests(association_response._id);
 				
 				// Get all volunteers for an association
 				let params = {'association': association_response._id}
@@ -151,11 +150,6 @@ export default function OrganiationPortal() {
 			}).catch((error) => {
 				console.error(error);
 			});
-	}
-
-	const logout = () => {
-		Cookie.remove('org_token');
-		window.location.reload(false);
 	}
 
 	useEffect(() => {
@@ -191,18 +185,14 @@ export default function OrganiationPortal() {
 
 	const displayTab = (tabNumber) => {
 		if (tabNumber === currTabNumber) {
-			return {'display': 'block'};
+			return {'display': 'block', paddingLeft: 15, paddingTop: 15};
 		} else {
-			return {'display': 'none'};
+			return {'display': 'none', paddingLeft: 15, paddingTop: 15};
 		}
 	}
 
 	const displayCount = (tabNumber, arr) => {
-		if (tabNumber === currTabNumber) {
-			return <div className={"request-count request-count-" + tabNumber}>{arr.length}</div>
-		} else {
-			return <></>;
-		}
+		return <div className={"request-count request-count-" + tabNumber}>{arr.length}</div>
 	}
 
 	const tabID = (tabNumber) => {
@@ -210,34 +200,20 @@ export default function OrganiationPortal() {
 	}
 
 	return (<>
-		<link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
-		<Navbar collapseOnSelect variant="light" expand="md" className = 'customNav'>
-			<Navbar.Brand className={'home'} href = {window.location.protocol + '//' + window.location.host}
-				style={{'color': 'white'}}>
-				covaid
-			</Navbar.Brand>
-			<Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-				<Button variant="outline-danger" id='logoutButton' onClick={logout} style={{marginTop: 10, marginRight: '10%'}}>
-					<font id = "logout" style = {{color: 'white', fontWeight: 600, fontSize: 13}}>
-						Logout
-					</font>
-				</Button>
-			</Navbar.Collapse>
-		</Navbar>
+		<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} orgPortal={true} first_name={association.name} handleShowModal={() => {}}/>
 		<div style ={{zoom: '95%'}}>
-			<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 30}}>
-				<Container id="jumbo-container-volunteer">
+			<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
+				<Container style={{maxWidth: 1500}}>
 					<Row>
-						<Col lg={2} md={1} sm={0}></Col>
+						<Col lg={1} md={1} sm={0}></Col>
 						<Col>
-							<h1 id="jumboHeading">Welcome back, </h1>
-							<h1 id="jumboHeading">{association.name}</h1>
-							<p id="jumboText">This is your organization portal, a place for you to manage volunteers and requests in your area</p>
-							<Button id="homeButtons" onClick={()=>{setAdminModal(true)}}>
+							<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {association.name}</h1>
+							<p id="regular-text">This is your organization portal, a place for you to manage volunteers and requests in your area</p>
+							<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
 								Manage Organization
 							</Button>{' '}
-							<Button id="homeButtons" onClick={()=>{setVolunteersModal(true)}}>
-								View List of {volunteers.length} Volunteers
+							<Button id="medium-button" onClick={()=>{setVolunteersModal(true)}}>
+								View List Volunteers
 							</Button><br/>
 							<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
 								+ Add a link to your community's resources
@@ -250,12 +226,14 @@ export default function OrganiationPortal() {
 				<Row className="justify-content-md-center">
 					<Col lg={6} md={12} sm={12}>
 						<Container style={{padding: 0,  marginLeft: 0}}>
-							<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched {displayCount(1, unmatched)}</Button>
+							{/* <Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched {displayCount(1, unmatched)}</Button>
 							<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched {displayCount(2, matched)}</Button>
-							<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed {displayCount(3, completed)}</Button>
+							<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed {displayCount(3, completed)}</Button> */}
+							<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched ({unmatched.length})</Button>
+							<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched ({matched.length})</Button>
+							<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed ({completed.length})</Button>
 						</Container>
-						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-							style={displayTab(1)}>
+						<Container id="newOfferContainer" style={displayTab(1)}>
 							<UnmatchedRequests association={association}
 												requests={unmatched}
 												unmatched={unmatched}
@@ -268,8 +246,7 @@ export default function OrganiationPortal() {
 												volunteers={volunteers}
 												mode={1}/>
 						</Container>
-						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-							style={displayTab(2)}>
+						<Container id="newOfferContainer" style={displayTab(2)}>
 							<UnmatchedRequests association={association}
 												requests={matched}
 												unmatched={unmatched}
@@ -282,8 +259,7 @@ export default function OrganiationPortal() {
 												volunteers={volunteers}
 												mode={2}/>
 						</Container>
-						<Container className="shadow mb-5 bg-white rounded" id="yourOffer"
-							style={displayTab(3)}>
+						<Container id="newOfferContainer" style={displayTab(3)}>
 							<UnmatchedRequests association={association}
 												requests={completed}
 												unmatched={unmatched}
@@ -298,7 +274,7 @@ export default function OrganiationPortal() {
 						</Container>
 					</Col>
 					<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
-						<Container className="shadow mb-5 bg-white rounded" id="map-view" style={{'display': 'block'}}>
+						<Container id="newOfferContainer" style={{'display': 'block'}}>
 							<Col xs={12} style={{color: 'black', marginBottom: 10}}>
 								<p id="map-title">Volunteer/Requester Map</p>
 								<Button id={!volunteerMap ? "volunteer-not-selected" : "volunteer-selected"} onClick={() => setVolunteerMap(!volunteerMap)}>
@@ -333,25 +309,24 @@ export default function OrganiationPortal() {
 							setResourceModal={setResourceModal}
 							association={association}
 							setAssociation={setAssociation}/>
-		<VolunteerDetails volunteerDetailModal={volunteerDetailModal}
-					setVolunteerDetailsModal={setVolunteerDetailsModal}
-					currVolunteer={currVolunteer}/>
-		<RequestDetails requestDetailsModal={requestDetailsModal} 
-                            setRequestDetailsModal={setRequestDetailsModal} 
-                            currRequest={currRequest}
-                            setCurrRequest={setCurrRequest}
-                            association={association}
-                            unmatched={unmatched}
-                            matched={matched}
-                            completed={completed}
-                            setUnmatched={setUnmatched}
-                            setMatched={setMatched}
-                            setCompleted={setCompleted}
-                            mode={currTabNumber}
-                            volunteers={volunteers}/>
+			<VolunteerDetails volunteerDetailModal={volunteerDetailModal}
+						setVolunteerDetailsModal={setVolunteerDetailsModal}
+						currVolunteer={currVolunteer}/>
+			<RequestDetails requestDetailsModal={requestDetailsModal} 
+								setRequestDetailsModal={setRequestDetailsModal} 
+								currRequest={currRequest}
+								setCurrRequest={setCurrRequest}
+								association={association}
+								unmatched={unmatched}
+								matched={matched}
+								completed={completed}
+								setUnmatched={setUnmatched}
+								setMatched={setMatched}
+								setCompleted={setCompleted}
+								mode={currTabNumber}
+								volunteers={volunteers}/>
 		</div>
 		<OrgLogin showLogin={showLogin} setShowLogin={setShowLogin} login={login} />
-		
 	</>
 	);
 }

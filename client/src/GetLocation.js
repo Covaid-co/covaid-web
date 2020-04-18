@@ -9,45 +9,43 @@ import Toast from 'react-bootstrap/Toast'
 
 export default function GetLocation(props) {
 
-    const [zipCode, setZipCode] = useState('');
+    const [locationString, setLocationString] = useState('');
     const [showInvalid, setShowInvalid] = useState(false);
 
-    const handleChangeZip = (value) => {
-        setZipCode(value);
-    }
-
     const handleSubmit = (e) => {
-        props.setLatLong(e, zipCode).then((res) => {
-            setShowInvalid(true);
+        props.onLocationSubmit(e, locationString).then((res) => {
+            if (res === false) {
+                setShowInvalid(true);
+            }
         });
     };
 
     return (
-        <Modal show={!props.state.isLoaded} style = {{marginTop: 60}}>
+        <Modal show={!props.state.isLoaded} style = {{marginTop: 90}} onHide={() => {}}>
             <Modal.Header>
-                <Modal.Title>Looking for your location...</Modal.Title>
+                <Modal.Title id="small-header">Looking for your location...</Modal.Title>
                 <Spinner animation="border" role="status" style = {{textAlign: 'right', color: "black"}}></Spinner>
             </Modal.Header>
             <Modal.Body>
-                <p>Depending on server speeds, this make take a bit. If you’d like, you can input your current city/zip code.</p>
+                <p id="regular-text">Depending on server speeds, this make take a bit. If you’d like, you can input your current city/zip code.</p>
                 <Form onSubmit={handleSubmit}>
                     <Row>
                         <Col xs={12}>
-                            <Form.Group controlId="zip" bssize="large">
+                            <Form.Group controlId="zip123" bssize="large">
                                 <Form.Control 
                                     placeholder="City/Zipcode"
-                                    value={zipCode} 
-                                    onChange={(event) => {handleChangeZip(event.target.value)}}
+                                    value={locationString} 
+                                    onChange={(e) => setLocationString(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
                     </Row>
-                    <Button style={{marginTop: 10}} id="nextPage" type="submit">Enter Page</Button>
+                    <Button style={{marginTop: 5}} id="large-button" type="submit">Enter Location</Button>
                 </Form>
             </Modal.Body>
             <Toast
-                show={false}
-                delay={300000}
+                show={showInvalid}
+                delay={3000}
                 onClose={() => setShowInvalid(false)}
                 autohide
                 id='toastError'

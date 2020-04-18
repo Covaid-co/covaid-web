@@ -7,14 +7,13 @@ import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 import { useFormFields } from "./libs/hooksLib";
 
-import NewLanguages from './NewLanguages';
-import NewTasks from './NewTasks';
-import NeededBy from './NeededBy';
+import NeededBy from './components_homepage/NeededBy';
 import NewPaymentMethod from './NewPaymentMethod';
-import NewDetails from './NewDetails';
+import NewDetails from './components_homepage/NewDetails';
 import PhoneNumber from './PhoneNumber';
-import { defaultResources, languages } from './constants'
-import { validateEmail, extractTrueObj } from './Helpers';
+import CheckForm from './CheckForm';
+import { defaultResources, languages, toastTime } from './constants'
+import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';
 
 export default function RequestHelp(props) {
 
@@ -46,28 +45,19 @@ export default function RequestHelp(props) {
     const [pendingSubmit, setPendingSubmit] = useState(false);
 
     useEffect(() => {
-        setLanguageChecked({});
+        setLanguageChecked(setFalseObj(languages));
         function fetchResources() {
             var resourcesFromAssoc = defaultResources;
-            if (props.requestHelpMode === "bulletin") {
+            if (props.volunteer && props.requestHelpMode === "bulletin") {
                 resourcesFromAssoc = props.volunteer.offer.tasks;
-            } else {
-                var data = props.state.associations;
-                if (data[0]) {
-                    resourcesFromAssoc = data[0].resources;
-                }
+            } else if (Object.keys(props.state.currentAssoc).length > 0) {
+                resourcesFromAssoc = props.state.currentAssoc.resources;
             }
-            var tempAssoc = {}
-            for (var i = 0; i < resourcesFromAssoc.length; i++) {
-                tempAssoc[resourcesFromAssoc[i]] = false;
-            }
+            var tempAssoc = setFalseObj(resourcesFromAssoc);
             setResources(tempAssoc);
         }
-
-        if (props.volunteer) {
-            fetchResources();
-        }
-    }, [props.requestHelpMode, props.volunteer]);
+        fetchResources();
+    }, [props.requestHelpMode, props.volunteer, props.state.currentAssoc]);
 
 
     const checkFirstPageInput = () => {
@@ -185,11 +175,16 @@ export default function RequestHelp(props) {
         agreement = <>
                     <Form.Check
                         type = "checkbox" 
-                        label = "This match program is being organized by private citizens for the benefit of those in our community. By completing the sign up form to be matched, you agree to accept all risk and responsibility and further hold any facilitator associated with Baltimore Mutual Aid Network and/or Covaid.co harmless. For any additional questions, please contact bmoremutualaid@gmail.com."
+                        id="regular-text"
+                        label = "This match program is being organized by private citizens for the 
+                            benefit of those in our community. By completing the sign up form to be 
+                            matched, you agree to accept all risk and responsibility and further 
+                            hold any facilitator associated with Baltimore Mutual Aid Network and/or 
+                            Covaid.co harmless. For any additional questions, please contact bmoremutualaid@gmail.com."
                         style = {{fontSize: 12, marginTop: 2}}/>
 
                     </>
-        paymentAgreement = <p id="locationInfo">
+        paymentAgreement = <p id="regular-text" style = {{fontSize: 14}}>
             Baltimore Mutual Aid is not able to provide financial assistance at this time. Any purchases made by volunteers must be reimbursed.
                             </p>
     }
@@ -202,19 +197,27 @@ export default function RequestHelp(props) {
         return chosenText;
     }
 
+    const foundPhoneNumber = () => {
+        var res = '(401) 526-8243';
+        if (props.state.currentAssoc.name === "Pittsburgh Mutual Aid") {
+            res = '(412) 301-6127';
+        }
+        return res;
+    }
+
     if (firstPage) {
         return (
-            <Modal show={props.state.showRequestHelp} onHide={props.hideRequestHelp} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
+            <Modal show={props.showModal} onHide={props.hideModal} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                 <Modal.Header closeButton>
-            <Modal.Title>Submit a {general}request</Modal.Title>
+                    <Modal.Title id="small-header">Submit a {general}request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p id="requestCall" style={{marginBottom: 0, paddingBottom: 0, borderBottom: '0px solid'}}>
+                    <p id="regular-text" style={{marginBottom: 0, paddingBottom: 0, borderBottom: '0px solid'}}>
                         {requestHeaderText()}
                     </p>
-                    <p id="requestCalling"> For those who would rather call in a request, 
-                        please call <br /><span id="phoneNumber">(401) 526-8243</span></p>
-                    <h5 className="titleHeadings">Personal Information</h5>
+                    <p id="request-calling"> For those who would rather call in a request, 
+                        please call <br /><span id="phoneNumber">{foundPhoneNumber()}</span></p>
+                    <h5 id="regular-text-bold">Personal Information</h5>
                     <Row>
                         <Col xs={12}>
                             <Form.Group controlId="first" bssize="large">
@@ -228,20 +231,16 @@ export default function RequestHelp(props) {
                             <Form.Group controlId="email" bssize="large">
                                 <Form.Control value={fields.email} onChange={handleFieldChange} placeholder="Email" />
                             </Form.Group>
-                            <p id="locationInfo">
+                            <p id="regular-text" style={{fontStyle: 'italic', marginTop: 0, fontSize: 14}}>
                                 Please enter either an email or a phone number.
                             </p>
                         </Col>
                     </Row>
-                    <NewTasks resources={resources} setResources={setResources}/>
-                    <Button id="nextPage" onClick={goToSecondPage}>Next</Button>
-                    <p id="pageNumber">Page 1 of 2</p>
-                    <Toast
-                        show={showToast}
-                        delay={3000}
-                        onClose={() => setShowToast(false)}
-                        autohide
-                        id='toastError'>
+                    <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>What support do you need?</h5>
+                    <CheckForm obj={resources} setObj={setResources}/>
+                    <Button id="large-button" style={{marginTop: 15}} onClick={goToSecondPage}>Next</Button>
+                    <p id="pagenum-text">Page 1 of 2</p>
+                    <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
                 </Modal.Body>
@@ -250,31 +249,24 @@ export default function RequestHelp(props) {
     } else {
         if (completed === false) {
             return (
-                <Modal show={props.state.showRequestHelp} onHide={() => {props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal" style={{marginTop: 10, paddingBottom: 20}}>
+                <Modal show={props.showModal} onHide={() => {props.hideModal(); setFirstPage(true);}} id="showRequestModal" style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Almost Done!</Modal.Title>
+                        <Modal.Title id="small-header">Almost Done!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h5 className="titleHeadings" style = {{marginTop: 0, marginBottom: 0}}>
-                            What language do you speak?
-                        </h5>
-                        <p id="locationInfo">
+                        <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 0}}>What language do you speak?</h5>
+                        <p id="regular-text" style={{marginBottom: 0}}>
                             If language not listed, please mention in details section below
                         </p>
-                        <NewLanguages languages={languages} languageChecked={languageChecked} setLanguageChecked={setLanguageChecked}/>
+                        <CheckForm obj={languageChecked} setObj={setLanguageChecked}/>
                         <NeededBy setTime={setTime} setDate={setDate}/>
                         {payment}
                         {paymentAgreement}
                         <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
                         {agreement}
-                        <Button disabled={pendingSubmit} id="nextPage" onClick={handleSubmit}>Submit a Request</Button>
-                        <p id="pageNumber">Page 2 of 2</p>
-                        <Toast
-                            show={showToast}
-                            delay={3000}
-                            onClose={() => setShowToast(false)}
-                            autohide
-                            id='toastError'>
+                        <Button disabled={pendingSubmit} id="large-button" style={{marginTop: 15}} onClick={handleSubmit}>Submit a Request</Button>
+                        <p id="pagenum-text">Page 2 of 2</p>
+                        <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
                             <Toast.Body>{toastMessage}</Toast.Body>
                         </Toast>
                     </Modal.Body>
@@ -282,16 +274,16 @@ export default function RequestHelp(props) {
             )
         } else {
             return (
-                <Modal show={completed} onHide={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}} id="showRequestModal">
+                <Modal show={completed} onHide={() => {setCompleted(false); props.hideModal(); setFirstPage(true);}} id="showRequestModal">
                     <Modal.Header closeButton>
                         <Modal.Title>Your request has been sent!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p id="locationInfo">
+                        <p id="regular-text" style={{marginBottom: 5}}>
                             Your request has been saved and you should receive an email soon 
                             from a matched volunteer who can support you.
                         </p>
-                        <Button id="nextPage" onClick={() => {setCompleted(false); props.hideRequestHelp(); setFirstPage(true);}}>
+                        <Button id="large-button" style={{marginTop: 15}} onClick={() => {setCompleted(false); props.hideModal(); setFirstPage(true);}}>
                             Return to home
                         </Button>
                     </Modal.Body>

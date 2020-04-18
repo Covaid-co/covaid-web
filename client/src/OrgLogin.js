@@ -82,7 +82,9 @@ export default function OrgLogin(props) {
         return (
             <Modal show={props.showLogin} size='sm' style={{marginTop: 110}}>
                 <Modal.Header>
-                    <Modal.Title>Login to your portal</Modal.Title>
+                    <Modal.Title id="small-header" style={{marginLeft: 5}}>
+                        Login to your portal
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
@@ -109,9 +111,9 @@ export default function OrgLogin(props) {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button style={{marginTop: 10}} id="nextPage" disabled={!validateForm()} type="submit">Sign In</Button>
+                        <Button style={{marginTop: 10}} id="large-button" disabled={!validateForm()} type="submit">Sign In</Button>
                         <p id="or">---------</p>
-                        <Button id="createAccount" onClick={() => {setMode(!mode);}}>Reset your password</Button>
+                        <Button id="large-button-empty" onClick={() => {setMode(!mode);}}>Reset your password</Button>
                     </Form>
                 </Modal.Body>
             </Modal>
@@ -119,30 +121,32 @@ export default function OrgLogin(props) {
     } else {
         return (
             <Modal show={props.showLogin} size='sm' style={{marginTop: 110}}>
-                        <Modal.Header>
-                            <Modal.Title>Reset your password</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form onSubmit={handleSubmitForgot}>
-                                <Row>
-                                    <Col xs={12}>
-                                        <Form.Group controlId="email" bssize="large">
-                                            <Form.Control 
-                                                type="email"
-                                                placeholder="Enter your email"
-                                                value={fields.email}
-                                                onChange={handleFieldChange}
-                                            />
+                    <Modal.Header>
+                        <Modal.Title id="small-header" style={{marginLeft: 5}}>Reset your password</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onSubmit={handleSubmitForgot}>
+                            <Row>
+                                <Col xs={12}>
+                                    <Form.Group controlId="email" bssize="large">
+                                        <Form.Control 
+                                            type="email"
+                                            placeholder="Enter your email"
+                                            value={fields.email}
+                                            onChange={handleFieldChange}
+                                        />
 
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                                <Button style={{marginTop: 10}} id="nextPage" disabled={!validateForgotForm()} type="submit">Send me a password reset link</Button>
-                                <p id="or">---------</p>
-                                <Button id="createAccount" onClick={() => {setMode(!mode);}}>Back to login</Button>
-                            </Form>
-                        </Modal.Body>
-                    </Modal>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Button style={{marginTop: 10}} id="large-button" disabled={!validateForgotForm()} type="submit">
+                                Send me a password reset link
+                            </Button>
+                            <p id="or">---------</p>
+                            <Button id="large-button-empty" onClick={() => {setMode(!mode);}}>Back to login</Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
         )
     }
 }

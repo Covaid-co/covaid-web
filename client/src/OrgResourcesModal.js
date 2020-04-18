@@ -137,7 +137,7 @@ export default function OrgResourcesModal(props) {
                             <Form.Group controlId="resourceLink" bssize="large" style={{marginTop: 5}}>
                                 <Form.Control placeholder="Resource link (https://www.example.com) " value={fields.resourceLink} onChange={handleFieldChange}/>
                             </Form.Group>
-                            <Button style={{marginTop: 5}} id="createAccount" onClick={()=>submitResource()}>Submit Resource</Button>
+                            <Button style={{marginTop: 5}} id="large-button-empty" onClick={()=>submitResource()}>Submit Resource</Button>
                         </Form>
                     </Col>
                     <Col xs={12}>
@@ -146,7 +146,9 @@ export default function OrgResourcesModal(props) {
                         {props.association.links ? props.association.links.map((resource,i) => {
                             return (
                             <>
-                                <a target="_blank" rel="noopener noreferrer" key={i} href={resource.link} style={{color: '#314CCE'}}>{resource.name}</a> 
+                                <a target="_blank" id="regular-text" rel="noopener noreferrer" key={i} href={resource.link} style={{color: '#2670FF'}}>
+                                    {resource.name}
+                                </a> 
                                 <Button style={{backgroundColor: "Transparent", border: "none"}} onClick={() => deleteResource(resource._id)}>
                                     <FontAwesomeIcon style={{color: "red"}} icon={faTimes} /> 
                                 </Button>
@@ -157,12 +159,7 @@ export default function OrgResourcesModal(props) {
                     </Col>
                 </Row>
             </Modal.Body>
-            <Toast
-                show={showToast}
-                delay={3000}
-                onClose={() => setShowToast(false)}
-                autohide
-                id='toastError'>
+            <Toast show={showToast} delay={3000} onClose={() => setShowToast(false)} autohide id='toastError'>
                 <Toast.Body>{toastMessage}</Toast.Body>
             </Toast>
         </Modal>

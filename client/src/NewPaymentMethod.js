@@ -13,7 +13,7 @@ export default function NewPaymentMethod(props) {
 
     return (
         <>
-            <h5 className="titleHeadings" style = {{marginTop: '26px', marginBottom: '8px'}}>
+            <h5 id="regular-text-bold" style = {{marginTop: '26px', marginBottom: 5}}>
                 Payment method (if necessary)
             </h5>
             <Row >

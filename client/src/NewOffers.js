@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Pagination from './CommunityBulletinComponents/Pagination'
-import Offer from './CommunityBulletinComponents/Offer'
+import Offer from './components_homepage/Offer'
 import Container from 'react-bootstrap/Container'
 
 import NewFilterButton from './NewFilterButton'
-import OfferDetails from './OfferDetails'
-import { generateURL } from './Helpers'
-import { defaultResources } from './constants'
+import OfferDetails from './components_homepage/OfferDetails'
+import { setFalseObj } from './Helpers';
 
 export default function NewOffers(props) {
 
-    const [volunteers, setVolunteers] = useState([]);
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
-    const [resources, setResources] = useState([]);
     const [taskSelect, setTaskSelect] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const volunteersPerPage = 4;
@@ -32,39 +29,15 @@ export default function NewOffers(props) {
 
     useEffect(() => {
         setCurrentPage(1);
-        if (Object.keys(props.state.currentAssoc).length > 0) {
-            setResources(props.state.currentAssoc.resources);
-        } else {
-            setResources(defaultResources);
-        }
-
-        let params = {'latitude': props.state.latitude, 'longitude': props.state.longitude}
-        var url = generateURL("/api/users/all?", params);
-        async function fetchData() {
-            const response = await fetch(url);
-            response.json().then((data) => {
-                setVolunteers(data.slice(0, Math.min(data.length, 20)));
-                setDisplayedVolunteers(data.slice(0, volunteersPerPage));
-            });
-        }
-        if (props.state.latitude && props.state.longitude){
-            fetchData();
-        }
-
-        for (var i = 0; i < resources.length; i++) {
-            const taskName = resources[i];
-            setTaskSelect(prev => ({ 
-                ...prev,
-                [taskName]: false,
-            }));
-        }
-    }, [props.state.currentAssoc, props.state.latitude, props.state.longitude]);
+        setDisplayedVolunteers(props.volunteers.slice(0, volunteersPerPage));
+        setTaskSelect(setFalseObj(props.resources));
+    }, [props.resources, props.volunteers]);
 
     const paginatePage = (pageNumber) => {
         setCurrentPage(pageNumber);
         const lastIndex = pageNumber * volunteersPerPage;
         const firstIndex = lastIndex - volunteersPerPage;
-        const slicedVolunteers = volunteers.slice(firstIndex, lastIndex);
+        const slicedVolunteers = props.volunteers.slice(firstIndex, lastIndex);
         setDisplayedVolunteers(slicedVolunteers);
     }
 
@@ -74,12 +47,13 @@ export default function NewOffers(props) {
                           setModalOfferOpen={setModalOfferOpen} 
                           modalInfo={modalInfo}
                           handleShowRequestHelp={() => props.handleShowRequestHelp(modalInfo)}/>
-            <NewFilterButton resources={resources}
+            <NewFilterButton resources={props.resources}
                              taskSelect={taskSelect} 
                              setTaskSelect={setTaskSelect} 
                              setDisplayedVolunteers={setDisplayedVolunteers}
-                             volunteers={volunteers}/>
-            <Container className="shadow mb-5 bg-white rounded" id="offerContainer">
+                             volunteers={props.volunteers}
+                             mobile={props.mobile}/>
+            <Container id="newOfferContainer">
                 <ListGroup variant="flush">
                     <Offer displayedVolunteers={displayedVolunteers}
                             setModalInfo={setModalInfo}
@@ -89,7 +63,7 @@ export default function NewOffers(props) {
                         style = {{paddingTop: 15, marginTop: 50}}
                         postsPerPage={volunteersPerPage}
                         currPage={currentPage}
-                        totalPosts={volunteers.length}
+                        totalPosts={props.volunteers.length}
                         paginate={paginatePage}/>
                 </ListGroup>
                 
