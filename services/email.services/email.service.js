@@ -11,6 +11,37 @@ templates = {
     pending_notification: 'd-1a6056febc214315bb3c12e1da3674b9'
 };
 
+exports.sendWelcomeEmail = (user) => {
+    var mode = "localhost:3000";
+    if (process.env.PROD) {
+        mode = "covaid.co"
+    }
+
+    var link = "http://" + mode + "/verify?ID=" + userID;
+
+    // if user association is Baltimore, send google forms link
+    if (user.association == '5e8439ad9ad8d24834c8edbe') {
+        link = "https://forms.gle/aTxAbGVC49ff18R1A"
+    }
+
+    const msg = {
+        to: user.email,
+        from: 'Covaid@covaid.co',
+        templateId: templates.verification,
+        dynamic_template_data: {
+            link: link,
+        }
+    }
+
+    sgMail.send(msg, (error, result) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("That's wassup!");
+        }
+    });
+}
+
 exports.sendVerificationEmail = (data) => {
     const msg = {
         to: data.receiver,

@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const EmailService = require('./util/email.service');
+const EmailService = require('./email.services/email.service');
 // const Spreads
 const UserRepository = require('../repositories/user.repository');
 
@@ -14,7 +14,7 @@ exports.register_user = async function (user) {
             var new_user = await UserRepository.createUser(user);
             // TO-DO 
             // Add to spreadsheet
-            // Send welcome email
+            EmailService.sendWelcomeEmail(user);
             return new_user;
         } else {
             throw new Error('Email already exists');
