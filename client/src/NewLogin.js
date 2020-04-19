@@ -86,7 +86,7 @@ export default function NewLogin(props) {
         return (
             <Modal size='sm' show={props.showModal} onHide={props.hideModal} style={{marginTop: 110}}>
                 <Modal.Header closeButton>
-                    <Modal.Title id="small-header">Volunteer Login</Modal.Title>
+                    <Modal.Title>Volunteer Login</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
@@ -97,9 +97,7 @@ export default function NewLogin(props) {
                                         type="email"
                                         placeholder="Email"
                                         value={fields.email}
-                                        onChange={handleFieldChange}
-                                    />
-    
+                                        onChange={handleFieldChange}/>
                                 </Form.Group>
                             </Col>
                             <Col xs={12}>
@@ -108,15 +106,13 @@ export default function NewLogin(props) {
                                         placeholder="Password"
                                         value={fields.password}
                                         onChange={handleFieldChange}
-                                        type="password"
-                                    />
+                                        type="password"/>
                                 </Form.Group>
                             </Col>
                         </Row>
                         <Button style={{marginTop: 10}} id="large-button" disabled={!validateForm()} type="submit">
                             Sign In
                         </Button>
-                        <p id="or">---------</p>
                         <Button id="large-button-empty" onClick={() => {setMode(!mode);}}>Reset your password</Button>
                     </Form>
                 </Modal.Body>

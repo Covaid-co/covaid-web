@@ -118,7 +118,7 @@ export default function UnmatchedRequests(props) {
             <Row>
                 <Col xs={8}>
                     <Form>
-                        <Form.Group bssize="large" style={{marginTop: 10}}>
+                        <Form.Group bssize="large">
                             <Form.Control id="filter-requests" placeholder="Search by First/Last name, Assignee or task" onChange={filterRequests}/>
                         </Form.Group>
                     </Form>
@@ -137,7 +137,7 @@ export default function UnmatchedRequests(props) {
                     </Dropdown>
                 </Col>
                 <Col xs={12}>
-                    <p id="requestCall" style={{marginTop: 10, marginBottom: 0}}></p>
+                    <p id="requestCall" style={{marginTop: 5, marginBottom: 0}}></p>
                 </Col>
                 <Col xs={12}>
                     <ListGroup variant="flush">

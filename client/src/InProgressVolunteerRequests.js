@@ -59,7 +59,7 @@ export default function InProgressVolunteerRequests(props) {
                     return (
                     <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true)}}>
                         <div >
-                            <h5 className="volunteer-name">
+                            <h5 id="volunteer-name">
                                 {request.requester_first}
                             </h5>
                         </div>

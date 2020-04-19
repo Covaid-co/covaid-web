@@ -8,7 +8,7 @@ import Toast from 'react-bootstrap/Toast'
 import { useFormFields } from "./libs/hooksLib";
 
 import NeededBy from './components_homepage/NeededBy';
-import NewPaymentMethod from './NewPaymentMethod';
+import NewPaymentMethod from './components_homepage/NewPaymentMethod';
 import NewDetails from './components_homepage/NewDetails';
 import PhoneNumber from './PhoneNumber';
 import CheckForm from './CheckForm';

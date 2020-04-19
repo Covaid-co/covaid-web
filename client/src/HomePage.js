@@ -10,7 +10,7 @@ import NewOffers from './NewOffers';
 import NewRegister from './NewRegister';
 import NewLogin from './NewLogin';
 import RequestHelp from './RequestHelp';
-import GetLocation from './GetLocation';
+import GetLocation from './components_homepage/GetLocation';
 import AboutUs from './components_modals/AboutUs'
 import HowItWorks from './components_modals/HowItWorks'
 import HelpfulLinks from './components_modals/HelpfulLinks';
@@ -75,7 +75,7 @@ export default function HomePage(props) {
     }
 
     const volunteerButton = () => {
-        var volButton = <Button onClick={props.setVolunteerPortal} id="request-button">
+        var volButton = <Button onClick={props.setVolunteerPortal} id="request-button" style={{marginRight: 15}}>
                             Volunteer portal
                         </Button>
         if (!props.state.isLoggedIn) {
@@ -121,10 +121,10 @@ export default function HomePage(props) {
 
     return (
         <div>
-            <Jumbotron fluid id="jumbo" style={{backgroundColor: 'white'}}>
+            <Jumbotron fluid id="jumbo">
                 <Container id="jumboContainer">
                     <Row>
-                        <Col md={6} id="jumbo-text" style={{height: 500}}>
+                        <Col md={6} id="jumbo-text">
                             <h1 id="home-heading">Mutual-aid for COVID-19</h1>
                             <p id="home-subheading">Covaid connects community volunteers with those who need support</p>
                             {supportButton()}{' '}
@@ -149,14 +149,12 @@ export default function HomePage(props) {
             <GetLocation state={props.state}
                         onLocationSubmit={props.onLocationSubmit}
                         hideModal={props.handleHideModal}/>
-            <Container id="location-container">
+            <Container id={props.state.isLoggedIn ? "location-container-logged" : "location-container"}>
                 <CitySupport state={props.state} associations={props.state.associations}/>
             </Container>
-            <Container id="jumboContainer" className={props.state.isLoggedIn ? "mobile-loggged-container" : "mobile-bulletin-container"}>
-                    <Col lg={12} md={12}>
-                        <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
-                    </Col>
+            <Container id="jumboContainer" className={"mobile-bulletin-container"}>
                 <Col xs={12} id="mobile-bulletin">
+                    <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
                     <p id='location-text' style={{color: 'black', float: 'left', width: '100%', fontSize: "5vw"}}>Volunteers around 
                         <button id="change-location" onClick={() => props.handleShowModal(5)}> {props.state.locality}</button>
                     </p>

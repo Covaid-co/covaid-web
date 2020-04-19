@@ -39,15 +39,14 @@ export default function HelpfulLinks(props) {
     const associationResourceList = () => {
         if (associationExists && associationLinks.length > 0) {
             return(
-                <Container className="shadow mb-5 bg-white rounded" id="requester-tab" 
-                style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
+                <Container id="requester-tab" style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
                     {associationLinks.map((link, i) => {               
                         var tempLink = link.link;
                         if (tempLink.substring(0, 7) !== 'http://' || tempLink.substring(0, 8) !== 'https://') {
                             tempLink = 'http://' + tempLink;
                         }
                         return (
-                            <div key={i} style={{marginBottom: 20, textAlign: "center"}}>
+                            <div key={i} style={{marginBottom: 10, textAlign: "center"}}>
                                 <ReactTinyLink
                                     cardSize="small"
                                     showGraphic={true}
@@ -76,7 +75,7 @@ export default function HelpfulLinks(props) {
                 <Container id="volunteer-info" style={{maxWidth: 2000, marginLeft: 0, marginRight: 0, color: 'black'}}>
                     <Row>
                         <Col xs="12">
-                            <p id="regular-text">Below are curated resources sampled from national, state, and local goverments 
+                            <p id="regular-text" style={{marginTop: 10, marginBottom: 25}}>Below are curated resources sampled from national, state, and local goverments 
                                 and health organizations. These links contain COVID-19 best practices, live statistics, and other 
                                 useful resources to help through the pandemic. If you know of any other resources that you think 
                                 would be useful, please let us know at covaidco@gmail.com.</p>
@@ -89,11 +88,10 @@ export default function HelpfulLinks(props) {
                                 {associationTab()}
                             </Container>
                             {associationResourceList()}
-                            <Container className="shadow mb-5 bg-white rounded" id="requester-tab" 
-                                        style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
+                            <Container id="requester-tab" style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
                                 {defaultLinks.map((link, i) => {                
                                     return (
-                                        <div key={i} style={{marginBottom: 20, textAlign: "center"}}>
+                                        <div key={i} style={{marginBottom: 10, textAlign: "center"}}>
                                             <ReactTinyLink
                                                 cardSize="small"
                                                 showGraphic={true}
@@ -102,7 +100,7 @@ export default function HelpfulLinks(props) {
                                                 className='react-link'
                                                 url={link.link}/>
                                         </div>
-                                    )  
+                                    )
                                 })}
                             </Container>
                         </Col>

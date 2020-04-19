@@ -35,28 +35,6 @@ html, body {
   margin-top: .2rem;
 }
 
-#login {
-  color: #194bd3;
-  font-weight: 600;
-  font-size: 16px;
-  font-family: "SF Text", sans-serif;
-}
-
-#register-button-mobile {
-  height: 52px;
-  width: 100%;
-  background-color: #194bd3;
-  color: white;
-  font-family: "SF Text", sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-}
-
-#register-button-mobile:hover {
-  color: #194bd3;
-  background-color: white;
-}
-
 .suggestion {
   background-color: #f1f1f1;
   color: gray;

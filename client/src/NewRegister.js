@@ -13,7 +13,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import SelectionForm from './SelectionForm';
 import CheckForm from './CheckForm';
 import PhoneNumber from './PhoneNumber';
-import NewHasCar from './NewHasCar';
+import NewHasCar from './components_homepage/NewHasCar';
 import Details from './components_homepage/Details'
 import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';
 import { defaultResources, availability, defaultTerms } from './constants';

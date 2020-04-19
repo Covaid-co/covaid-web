@@ -29,37 +29,6 @@
 }
 
 
-#jumbo-text {
-    margin-top: 10px;
-    padding-right: 80px;
-}
-
-#jumboContainer {
-    margin-left: 7%;
-    margin-right: 7%;
-    height: 240px;
-    padding-top: 0px;
-    max-width: 1500px;
-}
-
-#jumbo {
-    margin-bottom: 90px;
-}
-  
-@media (max-width:768px){ 
-    #jumbo-text {
-        padding-right: 20px;
-    }
-}
-
-@media (max-width:578px){ 
-    #jumbo-text {
-        margin-top: 10px;
-        padding-right: 0px;
-    }  
-}
-
-
 #home-heading {
     font-family: "Montserrat";
     font-size: 48px;
@@ -100,6 +69,7 @@
     height: 40px;
     padding-left: 15px;
     padding-right: 15px;
+    border-radius: 8px;
 }
 
 #medium-button:hover {
@@ -236,7 +206,7 @@
     padding-right: 10px;
     font-size: 14px;
     color: rgb(109, 109, 109);
-    text-decoration: underline; 
+    /* text-decoration: underline;  */
 }
 
 #volunteerBadge {
@@ -283,27 +253,26 @@
     padding-left: 15px;
     padding-right: 15px;
     margin-top: -3px;
-    color: rgb(109, 109, 109);
+    color: #2670FF;
 }
 
 #register-button {
     border-radius: 8px;
-    border-color: rgb(109, 109, 109);
-    color: rgb(109, 109, 109);
+    border-color: #2670FF;
+    color: #2670FF;
     font-family: "Inter";
     font-size: 14px;
-    height: 40px;
+    height: 32px;
     padding-left: 15px;
     padding-right: 15px;
     margin-top: -4px;
-    padding-top: 7px;
+    padding-top: 5px;
 }
 
 #register-button:hover{
     color: white;
     background-color: #2670FF;
     border-color: transparent;
-    font-weight: bold;
 }
 
 .navbar-toggler .navbar-toggler-icon {
@@ -342,6 +311,7 @@
     border: transparent;
     text-decoration: underline; 
     font-weight: bold;
+    background: transparent;
 }
 
 #large-button {
@@ -399,7 +369,7 @@
     max-width: 1500px;
     color: black;
     font-family: 'Inter';
-    padding-top: 16px;
+    padding-top: 8px;
     padding-bottom: 30px;
 }
 
@@ -492,14 +462,6 @@ textarea.form-control {
 .page-link {
     color: #2670FF;
     font-family: "Inter";
-}
-
-#or {
-    letter-spacing: -2px;
-    text-align: center;
-    margin-top: 6px;
-    margin-bottom: 0px;
-    color: #7F7F7F;
 }
 
 .dropdown-item {

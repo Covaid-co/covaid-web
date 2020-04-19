@@ -1,20 +1,5 @@
-.volunteer-name {
-  font-family: "SF Text";
-  font-weight: bold;
-  margin-top: 4px;
-  margin-bottom: 0px;
-  font-size: 16px;
-  color: black;
-  display: inline;
-}
-
 .list-group-flush .list-group-item {
-  padding-left: 10px;
-}
-
-#location-container {
-  margin-left: 7%;
-  max-width: 1200px;
+    padding-left: 10px;
 }
 
 #city-support-text-tablet { 
@@ -25,174 +10,232 @@
   display: none;
 }
 
-#mobile-org {
-  display: none;
+#jumbo-text {
+    margin-top: 10px;
+    padding-right: 80px;
 }
 
-@media (max-width:1150px){ 
-  #jumboContainer {
+#jumbo {
+    margin-bottom: 60px;
+}
+
+#jumboContainer {
+    margin-left: 7%;
+    margin-right: 7%;
+    max-width: 1500px;
     height: 290px;
-    margin-left: 5%;
-  }
+}
+
+#location-container {
+    margin-left: 7%;
+    max-width: 1200px;
+    margin-top: 50px;
+}
+
+#location-container-logged {
+    margin-left: 7%;
+    max-width: 1200px;
+    margin-top: 50px;
+}
+
+
+@media (max-width:1150px){ 
+    #jumboContainer {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    
+    #location-container {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: 70px;
+    }
+
+    #location-container-logged {
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: 70px;
+    }
 }
 
 @media (max-width:1000px){ 
-  #jumboContainer {
-    margin-left: 4%;
-    margin-right: 4%;
-  }
+    #jumboContainer {
+        margin-left: 4%;
+        margin-right: 4%;
+    }
+    
+    #location-container {
+        margin-left: 4%;
+        margin-right: 4%;
+    }
 
-  #location-container {
-    margin-top: 160px;
-  }
+    #location-container-logged {
+        margin-left: 4%;
+        margin-right: 4%;
+    }
 }
 
-@media (max-width:900px){ 
-  #jumboContainer {
-    margin-left: 3%;
-    margin-right: 3%;
-  }
-  
-  #location-container {
-    margin-top: 210px;
-  }
+@media (max-width:960px) {
+    #location-container-logged {
+        margin-top: 110px;
+    }
+}
 
-  #jumbo {
-    margin-top: -20px;
-  }
+
+@media (max-width:900px){ 
+    #jumboContainer {
+        margin-left: 3%;
+        margin-right: 3%;
+    }
+    
+    #location-container {
+        margin-left: 3%;
+        margin-right: 3%;
+    }
+
+    #location-container-logged {
+        margin-left: 3%;
+        margin-right: 3%;
+        margin-top: 120px;
+    }
 }
 
 @media (max-width:800px){ 
-  #jumboContainer {
-    margin-left: 2%;
-    margin-right: 2%;
-  }
+    #jumboContainer {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
 
-  #location-container {
-    margin-top: 230px;
-    margin-left: 2%;
-  }
+    #location-container {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+
+    #location-container-logged {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
 }
 
-@media (max-width:768px){ 
-  #jumboContainer {
-    height: 260px;
-    margin-left: 6%;
-    margin-right: 6%;
-    margin-top: 30px;
-  }
+@media (max-width:768px) {
+    #jumbo {
+        margin-bottom: 0px;
+    }
 
-  #location-container {
-    margin-top: -60px;
-  }
+    #jumbo-text {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
 
-  #community-bulletin {
-    display: none;
-  }
+    #jumboContainer {
+        height: 260px;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+
+    #location-container {
+        margin-top: 0px;
+    }
+
+    #location-container-logged {
+        margin-top: 0px;
+    }
+
+    #community-bulletin {
+        display: none;
+    }
 
 
-  .volunteer-badge-web {
-    display: none;
-  }
+    .volunteer-badge-web {
+        display: none;
+    }
 
-  .volunteer-badge-mobile {
-    display: block !important;
-  }
+    .volunteer-badge-mobile {
+        display: block !important;
+    }
 
-  .mobile-bulletin-container {
-    display: block !important;
-  }
+    .mobile-bulletin-container {
+        display: block !important;
+    }
 
-  .mobile-loggged-container {
-    display: block !important;
-  }
+    .mobile-loggged-container {
+        display: block !important;
+    }
 
-  #city-support-text-tablet { 
-    display: block;
-  }
+    #city-support-text-tablet { 
+        display: block;
+    }
 
-  #mobile-tablet-separate {
-    display: block;
-  }
+    #mobile-tablet-separate {
+        display: block;
+    }
 
-  #web-separate {
-    display: none;
-  }
+    #web-separate {
+        display: none;
+    }
 
-  #jumbo {
-    padding-top: 30px;
-  }
+    #jumbo {
+        padding-top: 10px;
+    }
 }
 
-
-@media (min-width:578px){ 
-  .mobile-bulletin-container {
-    padding-top: 0px !important;
-  }
+@media (max-width:605px){ 
+    #location-container-logged {
+        margin-top: 50px;
+    }
 }
+
 
 @media (max-width:578px){ 
-  #jumboContainer {
-    height: 320px;
-  }
+    #jumbo-text {
+        margin-top: 10px;
+        padding-right: 30px;
+    }  
 
-  #location-container {
-    margin-top: 0px;
-  }
+    #jumboContainer {
+        height: 320px;
+    }
 
-  #city-support-text-tablet { 
-    display: none;
-  }
+    #location-container {
+        margin-top: 30px;
+    }
 
-  #mobile-org {
-    display: none;
-  }
-
-  .mobile-bulletin-container {
-    padding-top: 0px !important;
-    margin-top: 0px !important;
-  }
-
-  #jumbo {
-    padding-top: 30px;
-  }
+    #location-container-logged {
+        margin-top: 10px;
+    }
 }
 
 @media (max-width: 460px) {
-  .mobile-bulletin-container {
-    /* padding-top: 0px !important; */
-    margin-top: 50px !important;
-  }
+    #location-container {
+        margin-top: 50px;
+    }
+
+    #location-container-logged {
+        margin-top: 50px;
+        max-width: 1200px;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
 }
 
 @media (max-width: 416px) {
-  .mobile-bulletin-container {
-    /* padding-top: 0px !important; */
-    margin-top: 50px !important;
-  }
+    #location-container {
+        margin-top: 60px;
+    }
 
-  .mobile-loggged-container {
-    margin-top: 80px !important;
-  }
+    #location-container-logged {
+        margin-top: 110px;
+    }
 }
 
 @media (max-width:345px){ 
-  #jumboContainer {
-    height: 360px;
-  }
+    #jumboContainer {
+        height: 360px;
+    }
 
-  #jumbo {
-    padding-top: 1px;
-  }
-
-  .mobile-bulletin-container {
-    /* padding-top: 0px !important; */
-    margin-top: 140px !important;
-  }
-
-  .mobile-loggged-container {
-    margin-top: 180px !important;
-  }
+    #location-container {
+        margin-top: 70px;
+    }
 }
 
 @media (max-width:345px){ 
@@ -218,7 +261,6 @@
 }
 
 #mobile-bulletin {
-  margin-top: -2px;
   padding-right: 0px;
   padding-left: 0px;
 }
@@ -227,46 +269,14 @@
   display: none;
 }
 
-.mobile-loggged-container {
-  display: none;
-}
-
-.location-text {
-  font-family: "SF Text";
-  font-weight: bold;
-  font-size: 24px;
-  margin-bottom: 0px;
-}
-
-.volunteer-info {
-  font-family: "SF Text";
-  font-size: 16px;
-  margin-top: -5px;
-  margin-bottom: 0px;
-}
-
 #general-request-link {
-  font-family: "SF Text";
+  font-family: "Inter";
   font-size: 16px;
   float: right;
-  color: #314CCE;
+  color: #2670FF;
   margin-top: -30px;
   margin-right: 20px;
   margin-bottom: 40px;
-}
-
-#enter-location {
-  font-family: "SF Text";
-  font-weight: bold;
-  font-size: 20px;
-  color: black;
-}
-
-#enter-location {
-  font-family: "SF Text";
-  font-weight: bold;
-  font-size: 20px;
-  color: black;
 }
 
 .bfifxy {

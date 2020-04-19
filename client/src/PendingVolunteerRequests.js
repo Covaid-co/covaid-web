@@ -75,7 +75,7 @@ export default function PendingVolunteerRequests(props) {
                     return (
                     <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true)}}>
                         <div >
-                            <h5 className="volunteer-name">
+                            <h5 id="volunteer-name">
                                 Someone needs your support!
                             </h5>
                         <p style={{float: 'right', marginBottom: 0}}>Expires in {

@@ -19,20 +19,19 @@ export default class InfoMarker extends PureComponent {
     // volunteer
     if (info.first_name) {
       return (
-        <div style={{color: 'black', fontFamily: 'SF Text'}}>
+        <div>
           <p id="regular-text" style={{marginRight: 15, marginBottom: 0, fontWeight: 'bold'}}>{info.first_name}</p>
           <div>
-            <a onClick={() => viewVolunteer(info)} id="regular-text" style={{fontWeight: 'bold', color: '#314CCE'}}>View Volunteer</a>
+            <a onClick={() => viewVolunteer(info)} id="regular-text" style={{fontWeight: 'bold', color: '#2670FF'}}>View Volunteer</a>
           </div>
         </div>
       );
     } else {
       return (
-        <div style={{color: 'black', fontFamily: 'SF Text'}}>
+        <div>
           <p id="regular-text" style={{marginRight: 15, marginBottom: 0, fontWeight: 'bold'}}>{info.requester_first}</p>
-          {/* <p style={{marginRight: 15, color: '#7F7F7F'}}>Tasks: {info.offer.tasks.join(', ')}</p> */}
           <div>
-            <a onClick={() => viewRequest(info)} id="regular-text" style={{fontWeight: 'bold', color: '#314CCE'}}>View Request</a>
+            <a onClick={() => viewRequest(info)} id="regular-text" style={{fontWeight: 'bold', color: '#2670FF'}}>View Request</a>
           </div>
         </div>
       );

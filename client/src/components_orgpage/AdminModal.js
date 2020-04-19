@@ -53,7 +53,7 @@ export default function AdminModal(props) {
         <>
             <Modal size="sm" show={props.adminModal} onHide={() => props.setAdminModal(false)} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
-                    <Modal.Title id="small-header" style={{marginLeft: 5}}>Current Admins</Modal.Title>
+                    <Modal.Title style={{marginLeft: 5}}>Current Admins</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{paddingTop: 0}}>
                     <Row>

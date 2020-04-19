@@ -5,7 +5,7 @@
 .modal-content {
   border-radius: 8px;
   border: transparent;
-  font-family: "SF Text";
+  font-family: "Inter";
 }
 
 .modal-header {
@@ -29,7 +29,7 @@
 .modal-title {
   font-weight: bold;
   font-size: 24px;
-  font-family: "SF Display", sans-serif;
+  font-family: "Montserrat";
 }
 
 .modal-backdrop {
@@ -37,19 +37,18 @@
 }
 
 #requestCall {
-  font-family: "SF Text";
   font-size: 16px;
   border-bottom: 1px solid #dee2e6;
 }
 
 .titleHeadings {
-  font-family: "SF Text";
+  font-family: "Inter";
   font-weight: bold;
   font-size: 16px;
 }
 
 input {
-  font-family: "SF Text";
+  font-family: "Inter";
   color: #7F7F7F;
 }
 
@@ -68,15 +67,15 @@ input {
   margin-left: 5%;
   margin-right: 5%;
   text-align: left;
-  font-family: "SF Display";
-  color: white;
+  font-family: "Inter";
+  color: black;
 }
 
 /* login/register */
 
 .form-check-label {
   font-size: 13px;
-  font-family: "SF Text";
+  font-family: "Inter";
 }
 
 /* offer related */

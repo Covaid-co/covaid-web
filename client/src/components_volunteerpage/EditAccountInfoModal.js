@@ -15,7 +15,7 @@ import {useFormFields} from '../libs/hooksLib'
 import { generateURL, validateEmail, extractTrueObj } from '../Helpers';
 
 import CheckForm from '../CheckForm';
-import NewCar from '../NewHasCar'
+import NewCar from '../components_homepage/NewHasCar'
 
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");

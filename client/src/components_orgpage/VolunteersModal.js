@@ -78,7 +78,7 @@ export default function VolunteersModal(props) {
     return (
         <Modal show={props.volunteersModal} onHide={() => props.setVolunteersModal(false)} style={{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title id="small-header">All Volunteers</Modal.Title>
+                <Modal.Title>All Volunteers</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row>

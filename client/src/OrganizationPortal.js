@@ -6,7 +6,6 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Navbar from 'react-bootstrap/Navbar'
 import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
@@ -20,6 +19,7 @@ import AdminModal from './components_orgpage/AdminModal';
 import OrgResourcesModal from './OrgResourcesModal';
 import { sortFn } from './OrganizationHelpers'
 import { generateURL } from './Helpers'
+import orgImg from './assets/org.png'
 import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
@@ -191,14 +191,15 @@ export default function OrganiationPortal() {
 		}
 	}
 
-	const displayCount = (tabNumber, arr) => {
-		return <div className={"request-count request-count-" + tabNumber}>{arr.length}</div>
-	}
-
 	const tabID = (tabNumber) => {
 		return (tabNumber === currTabNumber) ? 'tab-button-selected' : 'tab-button';
 	}
 
+	if (showLogin === true) {
+		return (
+			<OrgLogin login={login} setShowLogin={setShowLogin}/>
+		)
+	}
 	return (<>
 		<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} orgPortal={true} first_name={association.name} handleShowModal={() => {}}/>
 		<div style ={{zoom: '95%'}}>
@@ -208,12 +209,12 @@ export default function OrganiationPortal() {
 						<Col lg={1} md={1} sm={0}></Col>
 						<Col>
 							<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {association.name}</h1>
-							<p id="regular-text">This is your organization portal, a place for you to manage volunteers and requests in your area</p>
+							<p id="regular-text" style={{marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
 							<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
 								Manage Organization
 							</Button>{' '}
 							<Button id="medium-button" onClick={()=>{setVolunteersModal(true)}}>
-								View List Volunteers
+								View Volunteers
 							</Button><br/>
 							<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
 								+ Add a link to your community's resources
@@ -222,13 +223,10 @@ export default function OrganiationPortal() {
 					</Row>
 				</Container>
 			</Jumbotron>
-			<Container id="volunteer-info" style={{maxWidth: 2000}}>
+			<Container style={{maxWidth: 2000}}>
 				<Row className="justify-content-md-center">
 					<Col lg={6} md={12} sm={12}>
 						<Container style={{padding: 0,  marginLeft: 0}}>
-							{/* <Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched {displayCount(1, unmatched)}</Button>
-							<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched {displayCount(2, matched)}</Button>
-							<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed {displayCount(3, completed)}</Button> */}
 							<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched ({unmatched.length})</Button>
 							<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched ({matched.length})</Button>
 							<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed ({completed.length})</Button>
@@ -275,8 +273,8 @@ export default function OrganiationPortal() {
 					</Col>
 					<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
 						<Container id="newOfferContainer" style={{'display': 'block'}}>
-							<Col xs={12} style={{color: 'black', marginBottom: 10}}>
-								<p id="map-title">Volunteer/Requester Map</p>
+							<Col xs={12} style={{padding: 0, marginBottom: 10}}>
+								<p id="small-header" style={{display: 'inline'}}>Volunteer/Requester Map</p>
 								<Button id={!volunteerMap ? "volunteer-not-selected" : "volunteer-selected"} onClick={() => setVolunteerMap(!volunteerMap)}>
 									Volunteer
 								</Button>

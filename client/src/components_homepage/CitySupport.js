@@ -7,9 +7,6 @@ export default function CitySupport(props) {
 
     const citySupportedBy = (screen) => {
         var float = "left";
-        if (screen === 'tablet') {
-            float = "right";
-        }
         return <div style={{float: float}}>
                     <p id="regular-text" style={{marginBottom: 0}}>This city is supported by:</p>
                     {props.associations.map((association, i) => {                
@@ -25,25 +22,21 @@ export default function CitySupport(props) {
 
     return (
         <>
-            <Row>
-                <Col md={6} sm={6} id="city-support-text-tablet">
+            <Row id="city-support-text-tablet">
+                <Col lg={12} md={12}>
+                    <p id="requestCall" style={{marginBottom: 15}}></p>
+                </Col>
+                <Col md={12} sm={12} style={{overflow: 'hidden'}}>
                     {citySupportedBy('tablet')}
                 </Col>
             </Row>
             <Row id="web-separate">
-                <Col lg={4} md={6} sm={6} xs={12}>
-                    <p id="requestCall" style={{marginBottom: 40}}></p>
+                <Col lg={4} md={4}>
+                    <p id="requestCall" style={{marginBottom: 15}}></p>
+                </Col>
+                <Col lg={12} md={12} sm={12} xs={12}>
+                    {/* <p id="requestCall" style={{marginBottom: 20}}></p> */}
                     {citySupportedBy('web')}
-                </Col>
-            </Row>
-            {/* <Row id="mobile-tablet-separate">
-                <Col lg={12} md={12}>
-                    <p id="requestCall" style={{marginTop: 20, marginBottom: 20}}></p>
-                </Col>
-            </Row> */}
-            <Row id="mobile-org">
-                <Col md={12}>
-                    {citySupportedBy()}
                 </Col>
             </Row>
         </>

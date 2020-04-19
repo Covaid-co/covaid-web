@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
 export default function NewHasCar(props) {
-
     return (
         <Row>
             <Col xs={6} style = {{padding: 0, paddingLeft: 15}}>
