@@ -18,6 +18,7 @@ let RequestSchema = new Schema({
     time_posted: Date,
     date: String,
     note: String,
+    adminMessage: String,
     assignee: String,
     delete: Boolean,
     last_modified: Date,
@@ -33,7 +34,8 @@ let RequestSchema = new Schema({
         reason: String
     },
     volunteer_status: String,
-    pending_time: Date
+    pending_time: Date,
+    completed_date: Date
 });
 
 module.exports = mongoose.model('Requests', RequestSchema);

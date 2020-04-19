@@ -113,6 +113,15 @@ exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     res.send(requests)
 })
 
+exports.getAllCompletedRequestsInVolunteer = asyncWrapper(async (req, res) => {
+    const id = req.query.volunteerID
+    var requests = await Requests.find({
+        'status.volunteer': id,
+        'volunteer_status': 'completed'
+    })
+    res.send(requests)
+})
+
 exports.acceptRequest = asyncWrapper(async (req, res) => {
     const req_id = req.query.ID
     var request = await Requests.findByIdAndUpdate(req_id, 
@@ -159,6 +168,7 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const assoc_id = req.body.association
     const volunteer_email = req.body.volunteer_email
     const volunteer_name = req.body.volunteer_name
+    const adminMessage = req.body.adminDetails
     Requests.findByIdAndUpdate(request_id, 
         {$set: {
             "status": {
@@ -166,6 +176,7 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
                 "volunteer": volunteer_id
             }, 
             "volunteer_status": 'pending',
+            "adminMessage": adminMessage,
             "pending_time": new Date(),
             "last_modified": new Date()
         }
@@ -201,6 +212,7 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
                 "current_status": "incomplete",
                 "volunteer": ""
             },
+            "adminMessage": "",
             "volunteer_status": "",
             "last_modified": new Date()
         }
@@ -254,7 +266,8 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
             "status.current_status": "complete",
             "status.reason": reason,
             "volunteer_status": "completed",
-            "last_modified": new Date()
+            "last_modified": new Date(),
+            "completed_date": new Date()
         }
     }, function (err, request) {
         if (err) return next(err);

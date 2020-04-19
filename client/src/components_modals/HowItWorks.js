@@ -51,7 +51,7 @@ export default function HowItWorks(props) {
 							</Container>
     
                             <Container id="requester-tab" style={requester ? {'display': 'none'} : {'display': 'block'}}>
-                                <h5 style={{marginBottom: 3}}>How do I sign up to volunteer?</h5>
+                                <h5  id="header" style={{marginBottom: 3}}>How do I sign up to volunteer?</h5>
                                 <p style={{fontSize: 14, marginTop: 0, marginLeft: 14}}>
                                     1. From the homepage, click Volunteer Registration.<br/>
                                     2. Complete all three pages of information. Please be as specific as possible 
@@ -61,22 +61,22 @@ export default function HowItWorks(props) {
                                     active volunteer, you can remove yourself from the Community Bulletin with the toggle switch. <br/>
                                     4. That’s it! Whenever someone needs your help, you’ll receive an email, text, or call from us.
                                 </p>
-                                <h5 style={{marginBottom: 3, marginTop: 18}}>Where is Covaid active?</h5>
+                                <h5  id="header" style={{marginBottom: 3, marginTop: 18}}>Where is Covaid active?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>Our platform is active nationwide, but our ability to serve 
                                     people in a certain area is entirely dependent on the presence of volunteers. If we’re low on 
                                     volunteers in your area, please consider signing up and encouraging your friends to join as well!</p>
-                                <h5 style={{marginBottom: 3, marginTop: 18}}>What tasks can volunteers help with?</h5>
+                                <h5  id="header" style={{marginBottom: 3, marginTop: 18}}>What tasks can volunteers help with?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>Most volunteers choose to help with grocery shopping, 
                                     medication pick-up, or similar daily chores. However, volunteers are encouraged to list other 
                                     tasks they may be able to help with as well, such as online tutoring for children learning from 
                                     home, navigation of social services during the pandemic, and more.</p>
-                                <h5 style={{marginBottom: 3, marginTop: 18}}>How does payment work?</h5>
+                                <h5  id="header" style={{marginBottom: 3, marginTop: 18}}>How does payment work?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>Requesters can either call the store ahead of time to 
                                     pre-pay for the items (recommended), or the volunteer can pay for the items and be reimbursed 
                                     by the requester at the time of delivery. Please note that it is entirely up to the volunteer 
                                     and requester to decide on a payment plan prior to the volunteer making a purchase, as 
                                     Covaid cannot be held liable for financial loss.</p>
-                                <h5 style={{marginBottom: 3, marginTop: 18}}>I’m a mutual aid organizer. Can I partner with you?</h5>
+                                <h5  id="header" style={{marginBottom: 3, marginTop: 18}}>I’m a mutual aid organizer. Can I partner with you?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>We’re always looking to partner with other mutual aid groups!
                                      Please reach out to us at covaidco@gmail.com.</p>
 							</Container>

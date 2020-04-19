@@ -9,8 +9,8 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import PendingVolunteerRequests from './PendingVolunteerRequests';
-import InProgressVolunteerRequests from './InProgressVolunteerRequests';
+import PendingVolunteerRequests from './components_volunteerpage/PendingVolunteerRequests';
+import CompletedVolunteerRequests from './components_volunteerpage/CompletedVolunteerRequests';
 import AboutUs from './components_modals/AboutUs'
 import HowItWorks from './components_modals/HowItWorks'
 import Feedback from './components_modals/Feedback'
@@ -27,6 +27,7 @@ export default function VolunteerPortal(props) {
 	const [foundUser, setFoundUser] = useState(false);
 	const [pendingRequests, setPendingRequests] = useState([]);
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
+	const [completedRequests, setCompletedRequests] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState(0);
 	const { addToast } = useToasts();
@@ -69,6 +70,25 @@ export default function VolunteerPortal(props) {
         });
 	}
 
+	const fetchCompletedRequests = (id) => {
+		let params = {'volunteerID': id}
+		var url = generateURL( "/api/request/allCompletedRequestsInVolunteer?", params);
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+					setCompletedRequests(data)
+                });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+	}
+
 	const fetchUser = () => {
 		fetch_a('token', '/api/users/current')
 			.then((response) => response.json())
@@ -93,6 +113,7 @@ export default function VolunteerPortal(props) {
 				});
 				fetchPendingRequests(user._id);
 				fetchAcceptedRequests(user._id);
+				fetchCompletedRequests(user._id);
 		})
 		.catch((error) => {
 			console.error(error);
@@ -106,15 +127,16 @@ export default function VolunteerPortal(props) {
 	const moveRequestFromPendingToInProgress = (request) => {
 		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
 		setAcceptedRequests(acceptedRequests.concat(request))
-		setTabNum(3)
 	}
 	const rejectAPendingRequest = (request) => {
 		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
 	}
 
 	const completeAnInProgressRequest = (request) => {
+		request.completed_date = Date.now()
 		setAcceptedRequests(acceptedRequests.filter(acceptedRequest => acceptedRequest._id !== request._id))
-		setTabNum(1)
+		setCompletedRequests(completedRequests.concat(request))
+		setTabNum(3);
 	}
 
 	useEffect(() => {
@@ -161,11 +183,11 @@ export default function VolunteerPortal(props) {
 								Your Offer
 							</Button>
 							<Button id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
-								Pending ({pendingRequests.length})
+								Pending ({pendingRequests.length}) / Active ({acceptedRequests.length})
 								{/* <div className={"request-count request-pending-count"}>{pendingRequests.length}</div> */}
 							</Button>
 							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
-								Active ({acceptedRequests.length})
+								Completed ({completedRequests.length})
 								{/* <div className={"request-count request-active-count"}>{acceptedRequests.length}</div> */}
 							</Button>
 						</Container>
@@ -176,16 +198,16 @@ export default function VolunteerPortal(props) {
 						<Container id="newOfferContainer"
 							style={tabNum===2 ? {'display': 'block'} : {'display': 'none'}}>
 							<PendingVolunteerRequests user={user} 
-								pendingRequests={pendingRequests} 
+								pendingRequests={pendingRequests}
+								acceptedRequests={acceptedRequests} 
 								moveRequestFromPendingToInProgress={moveRequestFromPendingToInProgress} 
-								rejectAPendingRequest={rejectAPendingRequest} />
+								rejectAPendingRequest={rejectAPendingRequest} 
+								completeAnInProgressRequest={completeAnInProgressRequest} />
 						</Container>
 						<Container id="newOfferContainer"
 							style={tabNum===3 ? {'display': 'block'} : {'display': 'none'}}>
-							<InProgressVolunteerRequests 
-								user={user} 
-								acceptedRequests={acceptedRequests} 
-								completeAnInProgressRequest={completeAnInProgressRequest}/>
+							<CompletedVolunteerRequests user={user} 
+								completedRequests={completedRequests} />
 						</Container>
 					</Col>
 					<Col lg={4} md={8} sm={10}>

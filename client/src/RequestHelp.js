@@ -69,11 +69,8 @@ export default function RequestHelp(props) {
         } else if (phoneOnlyDigits.length === 0 && fields.email.length === 0) {
             setToastMessage('Enter contact information');
             valid = false;
-        } else if (phoneOnlyDigits.length !== 0 && phoneOnlyDigits.length !== 10) {
-            setToastMessage('Enter a valid phone number');
-            valid = false;
-        } else if (validateEmail(fields.email) === false) {
-            setToastMessage('Enter a valid email');
+        } else if (phoneOnlyDigits.length !== 0 && phoneOnlyDigits.length !== 10 && validateEmail(fields.email) === false) {
+            setToastMessage('Enter a valid contact information');
             valid = false;
         } else if (Object.values(resources).every(v => v === false)) {
             setToastMessage('No task selected');
@@ -89,6 +86,7 @@ export default function RequestHelp(props) {
     const goToSecondPage = () => {
         if (checkFirstPageInput()) {
             setFirstPage(false);
+            setShowToast(false)
         }
     }
 

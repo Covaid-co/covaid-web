@@ -26,7 +26,7 @@ export const defaultLinks = [
         link: 'https://www.mutualaidhub.org'
     }
 ]
-export const toastTime = 3000;
+export const toastTime = 2000;
 export const paymentOptions = ['Call ahead to store and pay (Best option)', 'Have volunteer pay and reimburse when delivered', 'N/A'];
 export const defaultTerms = [
     'I have not traveled out-of-country in the past 14 days',
