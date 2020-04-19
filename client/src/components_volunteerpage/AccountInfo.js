@@ -19,9 +19,9 @@ export default function AccountInfo(props) {
 
     const getAssocName = () => {
         var assocName = <></>
-        if (user.association && user.association.length > 0) {
+        if (user.location_info.association && user.location_info.association.length > 0) {
             assocName = <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Mutual Aid Group:</b> {user.association_name}
+                            <b>Mutual Aid Group:</b> {user.location_info.association_name}
                         </h5>
         }
         return assocName;
@@ -29,7 +29,7 @@ export default function AccountInfo(props) {
 
     var phoneNum = <></>
     if (user.phone && user.phone.length > 0) {
-        phoneNum = <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}><b>Phone:</b> {user.phone}</h5>
+        phoneNum = <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}><b>Phone:</b> {user.personal_info.phone}</h5>
     }
 
     if (isLoaded) {
@@ -40,7 +40,7 @@ export default function AccountInfo(props) {
                     <p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p>
                     <div style={{marginTop: 0, marginBottom: 30}}>
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Name:</b> {user.first_name + " " + user.last_name}
+                            <b>Name:</b> {user.personal_info.first_name + " " + user.personal_info.last_name}
                         </h5>
                         {phoneNum}
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
@@ -50,18 +50,18 @@ export default function AccountInfo(props) {
                     <div style={{marginTop: 0, marginBottom: 30}}>
                         {getAssocName()}
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Location:</b> {user.offer.neighborhoods.join(", ")} <FontAwesomeIcon style={{color: "red"}} icon={faMapMarkerAlt} /> 
+                            <b>Location:</b> {user.location_info.neighborhoods.join(", ")} <FontAwesomeIcon style={{color: "red"}} icon={faMapMarkerAlt} /> 
                         </h5>
                     </div>
                     <div style={{marginTop: 0, marginBottom: 30}}>
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Languages:</b> {user.languages.join(", ")}
+                            <b>Languages:</b> {user.personal_info.languages.join(", ")}
                         </h5>
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Car:</b> {user.offer.car ? "Yes" : "No"}
+                            <b>Car:</b> {user.personal_info.car ? "Yes" : "No"}
                         </h5>
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Availability:</b> {user.offer.timesAvailable.join(", ")}
+                            <b>Availability:</b> {user.personal_info.timesAvailable.join(", ")}
                         </h5>
                     </div>
                     <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>

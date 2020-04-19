@@ -10,14 +10,14 @@ const Offer = ({ displayedVolunteers, setModalInfo, setModalOfferOpen }) => {
                 return (<ListGroup.Item key={i} action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
                     <div >
                         <h5 id="volunteer-name">
-                            {user.first_name}
+                            {user.personal_info.first_name}
                         </h5>
                         <h5 id="association-name">
-                            {user.association_name === '' || user.association_name === 'Covaid' ? '' : user.association_name}
+                            {user.location_info.association_name === '' || user.location_info.association_name === 'Covaid' ? '' : user.location_info.association_name}
                         </h5>
                     </div>
                     <p id="volunteer-location">
-                        {user.offer.neighborhoods.join(', ')}
+                        {user.location_info.neighborhoods.join(', ')}
                     </p>
                     <div>
                         {user.offer.tasks.map((task, i) => {

@@ -46,8 +46,8 @@ export default function OrganiationPortal() {
 	const [currRequest, setCurrRequest] = useState({});
 
 	const fetch_requests = (id) => {
-			let params = {'association': id}
-			var url = generateURL( "/api/request/allRequestsInAssoc?", params);
+			let params = {'locationInfo.association': id}
+			var url = generateURL( "/api/requests/?", params);
 
 			// Get all request types for an association
 			fetch(url, {
@@ -61,17 +61,25 @@ export default function OrganiationPortal() {
 						var matchedArr = [];
 						var completedArr = [];
 						for (var i = 0; i < data.length; i++) {
-							if (data[i].status) {
-								if (data[i].status.current_status === 'in_progress') {
-									matchedArr.push(data[i]);
-								} else if (data[i].status.current_status === 'incomplete' || data[i].status.current_status === 'pending') {
-									unMatchedArr.push(data[i]);
-								} else {
-									completedArr.push(data[i]);
-								}
-							} else {
+							if (data[i].requestStatus.currentStatus === 'unmatched') {
 								unMatchedArr.push(data[i]);
+							} else if (data[i].requestStatus.currentStatus === 'matchedPending' || data[i].requestStatus.currentStatus === 'matchedInProgress') {
+								matchedArr.push(data[i]);
+							} else if (data[i].requestStatus.currentStatus === 'complete') {
+								completedArr.push(data[i]);
 							}
+
+							// if (data[i].status) {
+							// 	if (data[i].status.current_status === 'in_progress') {
+							// 		matchedArr.push(data[i]);
+							// 	} else if (data[i].status.current_status === 'incomplete' || data[i].status.current_status === 'pending') {
+							// 		unMatchedArr.push(data[i]);
+							// 	} else {
+							// 		completedArr.push(data[i]);
+							// 	}
+							// } else {
+							// 	unMatchedArr.push(data[i]);
+							// }
 						}
 						setUnmatched(unMatchedArr);
 						setMatched(matchedArr);
@@ -92,7 +100,6 @@ export default function OrganiationPortal() {
 			.then((response) => response.json())
 			.then((association_response) => {
 				setAssociation(association_response);
-				console.log(association_response);
 				var pusher = new Pusher('ed72954a8d404950e3c8', {
 					cluster: 'us2',
 					forceTLS: true
@@ -121,8 +128,8 @@ export default function OrganiationPortal() {
 				fetch_requests(association_response._id);
 				
 				// Get all volunteers for an association
-				let params = {'association': association_response._id}
-				var url = generateURL("/api/users/allFromAssoc?", params);
+				let params = {'location_info.association': association_response._id}
+				var url = generateURL("/api/users/?", params);
 				fetch(url, {
 					method: 'get',
 					headers: {'Content-Type': 'application/json'},
@@ -284,14 +291,14 @@ export default function OrganiationPortal() {
 									Requester
 								</Button>
 							</Col>
-							<NewMap requests={allRequests} volunteers={volunteers} mode={currTabNumber}
+							{/* <NewMap requests={allRequests} volunteers={volunteers} mode={currTabNumber}
 									unmatched={unmatched} matched={matched} completed={completed}
 									requesterMap={requesterMap} volunteerMap={volunteerMap}
 									volunteerDetailModal={volunteerDetailModal} association={association}
 									setVolunteerDetailsModal={setVolunteerDetailsModal}
 									currVolunteer={currVolunteer} setCurrVolunteer={setCurrVolunteer}
 									requestDetailsModal={requestDetailsModal} setRequestDetailsModal={setRequestDetailsModal} 
-                            		currRequest={currRequest} setCurrRequest={setCurrRequest}/>
+                            		currRequest={currRequest} setCurrRequest={setCurrRequest}/> */}
 						</Container>
 					</Col>
 				</Row>

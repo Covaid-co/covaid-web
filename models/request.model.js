@@ -46,7 +46,7 @@ let RequestSchema = new Schema({
     requesterInfo: {type: requesterInfoSchema, required: true},
     locationInfo: {type: locationSchema, required: true},
     requestInfo: {type: requestInfoSchema, required: true},
-    adminInfo: {type: adminInfoSchema, required: false},
+    adminInfo: {type: adminInfoSchema, required: true},
     requestStatus: {type: requestStatusSchema, required: true},
     time_posted: Date,
     last_modified: Date

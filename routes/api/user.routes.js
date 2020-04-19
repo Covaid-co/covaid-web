@@ -10,6 +10,7 @@ router.post('/login', auth.optional, user_controller.handleLoginRequest);
 // Get current user
 router.get('/current', auth.required, user_controller.handleGetCurrentUser);
 router.get('/', user_controller.handleGetUsers);
+router.get('/byLocation',  user_controller.handleGetUsersGivenLocation);
 
 // Update user info
 router.put('/update', user_controller.handleUpdateInfo);

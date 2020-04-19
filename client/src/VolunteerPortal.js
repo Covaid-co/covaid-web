@@ -32,47 +32,48 @@ export default function VolunteerPortal(props) {
 	const { addToast } = useToasts();
 
 	const fetchPendingRequests = (id) => {
-        let params = {'volunteerID': id}
-		var url = generateURL( "/api/request/allPendingRequestsInVolunteer?", params);
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-					setPendingRequests(data)
-                });
-            } else {
-                console.log("Error");
-            }
-        }).catch((e) => {
-            console.log(e)
-        });
+        // let params = {'volunteerID': id}
+		// var url = generateURL( "/api/request/allPendingRequestsInVolunteer?", params);
+        // fetch(url, {
+        //     method: 'get',
+        //     headers: {'Content-Type': 'application/json'},
+        // }).then((response) => {
+        //     if (response.ok) {
+        //         response.json().then(data => {
+		// 			setPendingRequests(data)
+        //         });
+        //     } else {
+        //         console.log("Error");
+        //     }
+        // }).catch((e) => {
+        //     console.log(e)
+        // });
 	  }
 
 	const fetchAcceptedRequests = (id) => {
-        let params = {'volunteerID': id}
-		var url = generateURL( "/api/request/allAcceptedRequestsInVolunteer?", params);
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-					setAcceptedRequests(data)
-                });
-            } else {
-                console.log("Error")
-            }
-        }).catch((e) => {
-            console.log(e)
-        });
+        // let params = {'volunteerID': id}
+		// var url = generateURL( "/api/request/allAcceptedRequestsInVolunteer?", params);
+        // fetch(url, {
+        //     method: 'get',
+        //     headers: {'Content-Type': 'application/json'},
+        // }).then((response) => {
+        //     if (response.ok) {
+        //         response.json().then(data => {
+		// 			setAcceptedRequests(data)
+        //         });
+        //     } else {
+        //         console.log("Error")
+        //     }
+        // }).catch((e) => {
+        //     console.log(e)
+        // });
 	}
 
 	const fetchUser = () => {
 		fetch_a('token', '/api/users/current')
 			.then((response) => response.json())
 			.then((user) => {
+				console.log(user)
 				setUser(user)
 				setFoundUser(true)
 
@@ -136,17 +137,21 @@ export default function VolunteerPortal(props) {
             modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)}/>;
         }
         return modal;
-    }
+	}
+	
+	if (!foundUser) {
+		return <></>
+	}
 	
 	return (
 		<> 
-			<CovaidNavbar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
+			<CovaidNavbar isLoggedIn={true} first_name={user.personal_info.first_name} handleShowModal={handleShowModal}/>
 			<Jumbotron fluid id="jumbo-volunteer">
 				<Container style={{maxWidth: 1500}}>
 					<Row>
 						<Col lg={2} md={1} sm={0}></Col>
 						<Col>
-							<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {user.first_name}!</h1>
+							<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {user.personal_info.first_name}!</h1>
 							<p id="regular-text">This is your volunteer portal, a place for you to manage your offer and handle requests</p>
 						</Col>
 					</Row>

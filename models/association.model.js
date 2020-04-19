@@ -22,15 +22,15 @@ var locationSchema = new Schema({
 let AssociationSchema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
-    homepage: {type: String, required: false},
+    homepage: {type: String, required: true},
     resources: {type: [String], required: true},
-    links: {type: [associationResourcesSchema], required: false},
+    links: {type: [associationResourcesSchema], required: true},
     locationInfo: { type: locationSchema, required: true},
     password: {
         hash: {type: String, required: true},
         salt: {type: String, required: true}
     },
-    admins: {type: [adminSchema], required: false},
+    admins: {type: [adminSchema], required: true},
     created_on: {type: Date, required: true}
 });
 

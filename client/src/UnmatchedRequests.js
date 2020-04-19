@@ -66,10 +66,10 @@ export default function UnmatchedRequests(props) {
         var result = <></>;
         if (props.mode === 3) {
             result = <Badge id='task-info' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
-                        {request.status.reason ? request.status.reason : "Volunteer Completed"}
+                        {request.requestStatus.completion_reason ? request.requestStatus.completion_reason : "Volunteer Completed"}
                     </Badge>                      
         } else {
-            result = request.resource_request.map((task, i) => {
+            result = request.requestInfo.resource_request.map((task, i) => {
                 return <Badge key={i} id='task-info'>{task}</Badge>
             })
         }
@@ -97,14 +97,14 @@ export default function UnmatchedRequests(props) {
                 return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>No Time</p>
             }
         } else {
-            return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
+            return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.requestInfo.date}</p>
         }
     }
 
     const requestStatus = (request) => {
-        if (request.volunteer_status === 'pending') {
+        if (request.requestStatus.currentStatus === 'matchedPending') {
             return <Badge className='pending-task'>Pending</Badge>;
-        } else if (request.volunteer_status === 'accepted') {
+        } else if (request.requestStatus.currentStatus === 'matchedInProgress') {
             return <Badge className='in-progress-task'>In Progress</Badge>;
         } else if (props.mode === 2) {
             return <Badge className='no-match-task'>No Match</Badge>;
@@ -146,7 +146,8 @@ export default function UnmatchedRequests(props) {
                                 <ListGroup.Item key={i} action onClick={() => {clickRequest(request)}}>
                                     <div >
                                         <h5 id="volunteer-name">
-                                            {formatName(request.requester_first, request.requester_last)}
+                                            {request.requesterInfo.requester_name}
+                                            {/* {formatName(request.requester_first, request.requester_last)} */}
                                         </h5>
                                         {sortInfo(request)}
                                     </div>
@@ -154,7 +155,7 @@ export default function UnmatchedRequests(props) {
                                     <div style={{display: 'inline-block', width: '100%', marginTop: 3, fontFamily: 'Inter'}}>
                                         <p style={{float: 'left', marginBottom: 0}}>Tracking: 
                                         <Badge key={i} id='task-info' style={{background: '#6c757d', border: '1px solid #6c757d', paddingTop: 4, marginLeft: 5}}>
-                                        {request.assignee ? request.assignee : "No one assigned"}</Badge></p>
+                                        {request.adminInfo ? (request.adminInfo.assignee ?  request.adminInfo.assignee : "No one assigned") : "No one assigned"}</Badge></p>
                                     </div>
                                 </ListGroup.Item>);
                             })}

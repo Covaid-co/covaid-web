@@ -86,9 +86,28 @@ exports.handleGetCurrentUser = function (req, res) {
  * Get all users given a query and a limit
  */
 exports.handleGetUsers = asyncWrapper(async (req, res) => {
-	const { body: { query, limit } } = req;
+
+	const query = req.query;
+	const limit = null;
+	
 	try {
 		let users = await UserService.get_users(query, limit);
+		return res.json(users);
+	} catch (e) {
+		return res.sendStatus(400);
+	}
+});
+
+/**
+ * Get all users given a latitude, longitude, and radius
+ */
+exports.handleGetUsersGivenLocation = asyncWrapper(async (req, res) => {
+	const latitude = req.query.latitude;
+	const longitude = req.query.longitude;
+	const radius = req.query.radius;
+	const limit = req.query.limit;
+	try {
+		let users = await UserService.get_users_with_location(latitude, longitude, radius, limit);
 		return res.json(users);
 	} catch (e) {
 		return res.sendStatus(400);

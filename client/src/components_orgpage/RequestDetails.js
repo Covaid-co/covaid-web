@@ -39,7 +39,7 @@ export default function RequestDetails(props) {
                 return admin['name'];
             })
             adminNames.push('No one assigned')
-            if (props.currRequest.assignee) {
+            if (props.currRequest.adminInfoassignee) {
                 if (adminNames.includes(props.currRequest.assignee) === false) {
                     adminNames.push(props.currRequest.assignee);
                 }
@@ -90,7 +90,7 @@ export default function RequestDetails(props) {
     }
 
     const topMatch = () => {
-        if (props.currRequest.assignee && props.currRequest.assignee !== '' && props.currRequest.assignee !== 'No one assigned') {
+        if (props.currRequest.adminInfo && props.currRequest.adminInfo.assignee && props.currRequest.adminInfo.assignee !== '' && props.currRequest.adminInfo.assignee !== 'No one assigned') {
             props.setRequestDetailsModal(false);
             setTopMatchesModal(true);
             setNotes();

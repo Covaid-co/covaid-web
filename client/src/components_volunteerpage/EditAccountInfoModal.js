@@ -71,7 +71,7 @@ export default function EditAccountInfoModal(props) {
     }
 
     function getZip(location) {
-        var latlng = {lat: parseFloat(location[1]), lng: parseFloat(location[0])};
+        var latlng = {lat: parseFloat(location[0]), lng: parseFloat(location[1])};
         var latitude = latlng.lat;
         var longitude = latlng.lng;
 
@@ -149,19 +149,19 @@ export default function EditAccountInfoModal(props) {
             const response_assoc = await fetch(url);
             const data = await response_assoc.json();
             setZipUpdated(true)
-            if (user.association !== '' && data.length === 0) {
+            if (user.location_info.association !== '' && data.length === 0) {
                 setNeighborhoods(new_neighborhoods)
                 setFoundState(foundState)
                 handleNoAssociations()
-            } else if (data.length > 0 && user.association !== data[0]['_id']) {
+            } else if (data.length > 0 && user.location_info.association !== data[0]['_id']) {
                 setNeighborhoods(new_neighborhoods)
                 setFoundState(foundState)
                 handleNewAssociation(data[0])
             } else {
-                setNeighborhoods(props.user.offer.neighborhoods)
-                setFoundState(props.user.offer.state)
-                setAssociation(user.association)
-                setAssociationName(user.association_name)
+                setNeighborhoods(props.user.location_info.neighborhoods)
+                setFoundState(props.user.location_info.state)
+                setAssociation(user.location_info.association)
+                setAssociationName(user.location_info.association_name)
                 setShowChangeAssocModal(false)
                 setCurrentUserObject(props.user.offer.tasks, defaultResources, setResources);
             }
@@ -281,25 +281,25 @@ export default function EditAccountInfoModal(props) {
     useEffect(() => {
         setIsLoaded(true)
         setUser(props.user)
-        fields.first_name = props.user.first_name
-        fields.last_name = props.user.last_name
+        fields.first_name = props.user.personal_info.first_name
+        fields.last_name = props.user.personal_info.last_name
         fields.email = props.user.email
-        fields.phone = props.user.phone
-        getZip(props.user.latlong)
-        setAssociation(props.user.association)
-        setAssociationName(props.user.association_name)
+        fields.phone = props.user.personal_info.phone
+        getZip(props.user.location_info.location)
+        setAssociation(props.user.location_info.association)
+        setAssociationName(props.user.location_info.association_name)
         setHasCar(props.user.offer.car)
-        setCurrentUserObject(props.user.offer.timesAvailable, timeNames, setTimes);
-        setCurrentUserObject(props.user.languages, languages, setLanguageChecked)
+        setCurrentUserObject(props.user.personal_info.timesAvailable, timeNames, setTimes);
+        setCurrentUserObject(props.user.personal_info.languages, languages, setLanguageChecked)
 
         async function getResources() {
             var url = "/api/association/get_assoc/?";
-            if (!props.user.association) {
+            if (!props.user.location_info.association) {
                 setCurrentUserObject(props.user.offer.tasks, defaultResources, setResources);
                 return;
             }
             let params = {
-                'associationID': props.user.association
+                'associationID': props.user.location_info.association
             }
             let query = Object.keys(params)
                 .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
@@ -321,9 +321,9 @@ export default function EditAccountInfoModal(props) {
         if (initialZip !== zip) {
             await handleChangedZip();
         } else {
-            setNeighborhoods(props.user.offer.neighborhoods)
-            setAssociation(user.association)
-            setAssociationName(user.association_name)
+            setNeighborhoods(props.user.location_info.neighborhoods)
+            setAssociation(user.location_info.association)
+            setAssociationName(user.location_info.association_name)
             setShowChangeAssocModal(false)
             setCurrentUserObject(props.user.offer.tasks, defaultResources, setResources);
         }

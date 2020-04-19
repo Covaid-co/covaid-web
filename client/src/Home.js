@@ -73,8 +73,8 @@ class Home extends Component {
 		.then((user) => {
 			this.setState({ currentUser: user });
 			this.setState({ isLoggedIn: true });
-			this.setState({ first_name: user.first_name });
-			this.setState({ last_name: user.last_name });
+			this.setState({ first_name: user.personal_info.first_name });
+			this.setState({ last_name: user.personal_info.last_name });
 		})
 		.catch((error) => {
 			console.error(error);

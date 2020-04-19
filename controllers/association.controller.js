@@ -85,7 +85,8 @@ exports.handleGetAssociations = asyncWrapper(async (req, res) => {
 });
 
 exports.handleGetAssociationsGivenLatitudeLongitude = asyncWrapper(async (req, res) => {
-	const { body: { latitude, longitude } } = req;
+	const latitude = req.query.latitude;
+	const longitude = req.query.longitude;
 	try {
 		let associations = await AssociationService.get_associations_by_location(latitude, longitude);
 		return res.json(associations);

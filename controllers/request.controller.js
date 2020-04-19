@@ -34,11 +34,14 @@ exports.handleCreateRequest = asyncWrapper(async (req, res) => {
  * Get all requests given a query and limit
  */
 exports.handleGetRequests = asyncWrapper(async (req, res) => {
-    const { body: { query, limit } } = req;
+	// const { body: { query, limit } } = req;
+	const query = req.query;
+	const limit = null;
 	try {
         let requests = await RequestService.getQueriedRequests(query, limit);
 		return res.json(requests);
 	} catch (e) {
+		console.log(e);
 		return res.sendStatus(400);
 	}
 });

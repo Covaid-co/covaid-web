@@ -20,7 +20,7 @@ exports.sendWelcomeEmail = (user) => {
     var link = "http://" + mode + "/verify?ID=" + user._id;
 
     // if user association is Baltimore, send google forms link
-    if (user.association == '5e8439ad9ad8d24834c8edbe') {
+    if (user.location_info.association == '5e8439ad9ad8d24834c8edbe') {
         link = "https://forms.gle/aTxAbGVC49ff18R1A"
     }
 

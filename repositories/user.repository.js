@@ -19,6 +19,25 @@ exports.readUser = async function (query, limit) {
     }
 }
 
+exports.findUsersInLocationRange = async function (latitude, longitude, radius, limit) {
+    try {
+        var users = await User.find({'offer.availability': true,
+                      'logistics.verified': true,
+                      'location_info.location': 
+                        { 
+                          $geoWithin: 
+                            { $centerSphere: 
+                                [[ latitude, longitude], 
+                                radius / 3963.2] 
+                            }
+                        }
+                    }).limit(20)
+        return users;
+    } catch (e) {
+        throw Error('Error while querying Users');
+    }
+}
+
 exports.updateUser = async function(_id, updates) {
     try {
         await User.updateOne({_id: _id}, {

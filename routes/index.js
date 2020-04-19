@@ -13,7 +13,7 @@ const association_routes = require('./api/association_routes')
 
 router.use('/users', user_routes);
 router.use('/requests', request_routes);
-router.use('/associations', association_routes);
+router.use('/association', association_routes);
 
 module.exports = app => {
 	app.use('/api', router);

@@ -92,6 +92,7 @@ describe("/api/users", function() {
                                 })
                             .then((res) => {
                                 const found_user = res.body[0];
+                                console.log(found_user)
                                 expect(found_user._id).to.equal(_id);
                                 done();
                             })

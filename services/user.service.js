@@ -58,6 +58,14 @@ exports.get_users = async function(query, limit) {
     }
 }
 
+exports.get_users_with_location = async function(latitude, longitude, radius, limit) {
+    try {
+        return await UserRepository.findUsersInLocationRange(latitude, longitude, radius, limit);
+    } catch (e) {
+        throw e;
+    }
+}
+
 exports.update_user = async function(_id, updates) {
     try {
         await UserRepository.updateUser(_id, updates);

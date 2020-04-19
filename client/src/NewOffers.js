@@ -17,12 +17,16 @@ export default function NewOffers(props) {
 
     const [modalOfferOpen, setModalOfferOpen] = useState(false);
     const [modalInfo, setModalInfo] = useState({
-        'first_name': '',
-        'last_name': '',
+        'personal_info': {
+            'first_name': '',
+            'last_name': '',
+        },
         'email': '',
         'offer': {
             'tasks': [''],
             'details': '',
+        },
+        'location_info': {
             'neighborhoods': ['']
         }
     });
