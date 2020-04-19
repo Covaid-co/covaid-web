@@ -89,7 +89,7 @@ exports.handleGetUsers = asyncWrapper(async (req, res) => {
 
 	const query = req.query;
 	const limit = null;
-	
+
 	try {
 		let users = await UserService.get_users(query, limit);
 		return res.json(users);

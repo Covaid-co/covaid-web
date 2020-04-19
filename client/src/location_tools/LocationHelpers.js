@@ -6,7 +6,7 @@ Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 export const findAssociations = (lat, long, currentComponent) => {
     let params = {'latitude': lat, 'longitude': long};
-    const url = generateURL("/api/associations/byLatitudeLongitude?", params);
+    const url = generateURL("/api/association/byLatitudeLongitude?", params);
     async function fetchData() {
         const response = await fetch(url);
         response.json().then((data) => {

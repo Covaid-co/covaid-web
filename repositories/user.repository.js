@@ -32,6 +32,7 @@ exports.findUsersInLocationRange = async function (latitude, longitude, radius, 
                             }
                         }
                     }).limit(20)
+
         return users;
     } catch (e) {
         throw Error('Error while querying Users');

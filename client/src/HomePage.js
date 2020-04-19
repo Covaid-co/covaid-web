@@ -48,7 +48,9 @@ export default function HomePage(props) {
         var url = generateURL("/api/users/byLocation?", params);
         async function fetchData() {
             const response = await fetch(url);
+            console.log("HELLO")
             response.json().then((users) => {
+                console.log(users)
                 for (var i = 0; i < users.length; i++) {
                     const coords = users[i].location_info.location.coordinates;
                     const distance = calcDistance(props.state.latitude, props.state.longitude, coords[0], coords[1]);
