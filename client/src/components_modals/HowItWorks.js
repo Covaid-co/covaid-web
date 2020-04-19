@@ -18,7 +18,7 @@ export default function HowItWorks(props) {
                 <Container id="volunteer-info" style={{maxWidth: 2000, marginLeft: 0, marginRight: 0, color: 'black'}}>
                     <Row>
                         <Col xs="12">
-                            <p id="regular-text">Covaid is a nationwide mutual aid platform founded to provide volunteer support during the COVID-19 outbreak.
+                            <p id="regular-text" style={{marginTop: 10}}>Covaid is a nationwide mutual aid platform founded to provide volunteer support during the COVID-19 outbreak.
                                We strive to be a resource primarily for those who are most impacted by the pandemic, such as the elderly and immunocompromised.</p>
                         </Col>
                         <Col xs="12">
@@ -26,33 +26,31 @@ export default function HowItWorks(props) {
 								<Button id={requester ? 'tab-button-selected' : 'tab-button'} onClick={()=>setRequester(true)}>Requester</Button>
 								<Button id={!requester ? 'tab-button-selected' : 'tab-button'} onClick={()=>setRequester(false)}>Volunteer</Button>
 							</Container>
-                            <Container className="shadow mb-5 bg-white rounded" id="requester-tab" 
-                                        style={requester ? {'display': 'block'} : {'display': 'none'}}>
-                                <h5 style={{marginBottom: 3}}>How can I get help?</h5>
+                            <Container id="requester-tab" style={requester ? {'display': 'block'} : {'display': 'none'}}>
+                                <h5 id="header" style={{marginBottom: 3}}>How can I get help?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>Our purpose is to help with essential day-to-day tasks such as grocery delivery, 
                                     medication pick-up, and more. Please consult your local Community Bulletin 
                                     to see how volunteers in your area are able to help.</p>
-                                <h5 style={{marginBottom: 3, marginTop: 18}}>Where is Covaid active?</h5>
+                                <h5 id="header" style={{marginBottom: 3, marginTop: 18}}>Where is Covaid active?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>Our platform is active nationwide; however, we are 
                                     only able best match your request if you are in an area where there are volunteers.</p>
-                                <h5 style={{marginBottom: 3, marginTop: 18}}>What if there are no volunteers in my area?</h5>
+                                <h5 id="header" style={{marginBottom: 3, marginTop: 18}}>What if there are no volunteers in my area?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>If your Community Bulletin does not show any volunteers, or if 
                                     none of the volunteers listed in your area match your needs, we would be happy to suggest local resources 
                                     instead. If interested, please email covaidco@gmail.com with your name, zip code, and how we can help 
                                     (finding financial assistance, donated food, etc.).</p>
-                                <h5 style={{marginBottom: 3, marginTop: 18}}>Is Covaid free to use?</h5>
+                                <h5 id="header" style={{marginBottom: 3, marginTop: 18}}>Is Covaid free to use?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>Yes! However, while delivery is free, you must pay for the 
                                     items the volunteer delivers. If you are in need of donated food/supplies, please contact us 
                                     at covaidco@gmail.com and we will do our best to find donations in your area.</p>
-                                <h5 style={{marginBottom: 3, marginTop: 18}}>Can you help cover the cost of food/supplies that are delivered?</h5>
+                                <h5 id="header" style={{marginBottom: 3, marginTop: 18}}>Can you help cover the cost of food/supplies that are delivered?</h5>
                                 <p style={{fontSize: 14, marginTop: 0}}>Unfortunately, Covaid is currently unable to cover the cost 
                                     of food or supplies; we are simply built to help with delivery so those at risk for complications 
                                     from COVID-19 can remain at home. If you are in need of donated food/supplies, please contact us 
                                     at covaidco@gmail.com and we will do our best to find local food banks and other resources.</p>
 							</Container>
     
-                            <Container className="shadow mb-5 bg-white rounded" id="requester-tab" 
-                                        style={requester ? {'display': 'none'} : {'display': 'block'}}>
+                            <Container id="requester-tab" style={requester ? {'display': 'none'} : {'display': 'block'}}>
                                 <h5 style={{marginBottom: 3}}>How do I sign up to volunteer?</h5>
                                 <p style={{fontSize: 14, marginTop: 0, marginLeft: 14}}>
                                     1. From the homepage, click Volunteer Registration.<br/>
