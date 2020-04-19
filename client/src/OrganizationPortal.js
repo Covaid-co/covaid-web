@@ -61,12 +61,14 @@ export default function OrganiationPortal() {
 						var matchedArr = [];
 						var completedArr = [];
 						for (var i = 0; i < data.length; i++) {
-							if (data[i].requestStatus.currentStatus === 'unmatched') {
+							if (data[i].requestStatus.current_status === 'unmatched') {
 								unMatchedArr.push(data[i]);
-							} else if (data[i].requestStatus.currentStatus === 'matchedPending' || data[i].requestStatus.currentStatus === 'matchedInProgress') {
+							} else if (data[i].requestStatus.current_status === 'matchedPending' || data[i].requestStatus.current_status === 'matchedInProgress') {
 								matchedArr.push(data[i]);
-							} else if (data[i].requestStatus.currentStatus === 'complete') {
+							} else if (data[i].requestStatus.current_status === 'complete') {
 								completedArr.push(data[i]);
+							} else {
+								console.log(data[i].requestStatus.current_status)
 							}
 
 							// if (data[i].status) {

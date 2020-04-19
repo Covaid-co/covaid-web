@@ -102,9 +102,9 @@ export default function UnmatchedRequests(props) {
     }
 
     const requestStatus = (request) => {
-        if (request.requestStatus.currentStatus === 'matchedPending') {
+        if (request.requestStatus.current_status === 'matchedPending') {
             return <Badge className='pending-task'>Pending</Badge>;
-        } else if (request.requestStatus.currentStatus === 'matchedInProgress') {
+        } else if (request.requestStatus.current_status === 'matchedInProgress') {
             return <Badge className='in-progress-task'>In Progress</Badge>;
         } else if (props.mode === 2) {
             return <Badge className='no-match-task'>No Match</Badge>;

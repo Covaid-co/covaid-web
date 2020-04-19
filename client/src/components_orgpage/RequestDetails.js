@@ -39,11 +39,11 @@ export default function RequestDetails(props) {
                 return admin['name'];
             })
             adminNames.push('No one assigned')
-            if (props.currRequest.adminInfoassignee) {
-                if (adminNames.includes(props.currRequest.assignee) === false) {
-                    adminNames.push(props.currRequest.assignee);
+            if (props.currRequest.adminInfo.assignee) {
+                if (adminNames.includes(props.currRequest.adminInfo.assignee) === false) {
+                    adminNames.push(props.currRequest.adminInfo.assignee);
                 }
-                setAssignee(props.currRequest.assignee);
+                setAssignee(props.currRequest.adminInfo.assignee);
             }
             setAdminList(adminNames);
         }
@@ -51,26 +51,28 @@ export default function RequestDetails(props) {
 
     useEffect(() => {
         setAssignee('No one assigned');
-        if (props.currRequest.latitude) {
-            const tempURL = generateMapsURL(props.currRequest.latitude, props.currRequest.longitude);
-            setMapsURL(tempURL);
-        }
-        fields.email2 = props.currRequest.note;
-        setPrevNote(props.currRequest.note);
-        updateAdminList();
-        if (props.currRequest.status && (props.mode === 2 || props.mode === 3)) {
-            findUser(props.currRequest);
+        if (props.currRequest.locationInfo) {
+            if (props.currRequest.locationInfo.location.coordinates[0]) {
+                const tempURL = generateMapsURL(props.currRequest.locationInfo.location.coordinates[0], props.currRequest.locationInfo.location.coordinates[1]);
+                setMapsURL(tempURL);
+            }
+            fields.email2 = props.currRequest.adminInfo.note;
+            setPrevNote(props.currRequest.adminInfo.note);
+            updateAdminList();
+            if (props.currRequest.requestStatus && (props.mode === 2 || props.mode === 3)) {
+                findUser(props.currRequest);
+            }
         }
     }, [props.currRequest, props.association]);
 
 
     const findUser = (request) => {
-        if (request.status.volunteer === undefined || request.status.volunteer === 'manual') {
+        if (request.requestStatus.volunteer_id === undefined || request.requestStatus.volunteer_id === ''  || request.status.volunteer === 'manual') {
             setCurrVolunteer({});
             return;
         }
-        let params = {'id': request.status.volunteer}
-        const url = generateURL( "/api/users/user?", params);
+        let params = {'id': request.requestStatus.volunteer_id }
+        const url = generateURL( "/api/users/?", params);
         fetch(url, {
             method: 'get',
             headers: {'Content-Type': 'application/json'},
@@ -101,38 +103,38 @@ export default function RequestDetails(props) {
     }
 
     const unMatch = () => {
-        let form = {
-            'request_id': props.currRequest._id,
-            'assoc_id': props.association._id
-        };
-        fetch('/api/request/removeVolunteerFromRequest', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                const newRequest = {
-                    ...props.currRequest,
-                    'status': {
-                        'current_status': 'incomplete',
-                        'volunteer': ''
-                    }
-                }
-                props.setCurrRequest(newRequest);
-                if (props.mode === 2) {
-                    moveFromToArr(newRequest, props.matched, props.setMatched, props.unmatched, props.setUnmatched);
-                } else if (props.mode === 3) {
-                    moveFromToArr(newRequest, props.completed, props.setCompleted, props.unmatched, props.setUnmatched);
-                }
-                setTopMatchesModal(false);
-                setUnmatchModal(false);
-                props.setRequestDetailsModal(false);
-            } else {
-                alert("unable to attach");
-            }
-        }).catch((e) => {
-            console.log(e);
-        });
+        // let form = {
+        //     'request_id': props.currRequest._id,
+        //     'assoc_id': props.association._id
+        // };
+        // fetch('/api/request/removeVolunteerFromRequest', {
+        //     method: 'put',
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify(form)
+        // }).then((response) => {
+        //     if (response.ok) {
+        //         const newRequest = {
+        //             ...props.currRequest,
+        //             'status': {
+        //                 'current_status': 'incomplete',
+        //                 'volunteer': ''
+        //             }
+        //         }
+        //         props.setCurrRequest(newRequest);
+        //         if (props.mode === 2) {
+        //             moveFromToArr(newRequest, props.matched, props.setMatched, props.unmatched, props.setUnmatched);
+        //         } else if (props.mode === 3) {
+        //             moveFromToArr(newRequest, props.completed, props.setCompleted, props.unmatched, props.setUnmatched);
+        //         }
+        //         setTopMatchesModal(false);
+        //         setUnmatchModal(false);
+        //         props.setRequestDetailsModal(false);
+        //     } else {
+        //         alert("unable to attach");
+        //     }
+        // }).catch((e) => {
+        //     console.log(e);
+        // });
     }
 
     const completeRequest = async e => {
@@ -145,52 +147,52 @@ export default function RequestDetails(props) {
             'assoc_id': props.association._id
         };
 
-        fetch('/api/request/completeRequest', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                var newRequest = {
-                    ...props.currRequest,
-                    'status': {
-                        'current_status': 'complete',
-                        "reason": reason
-                    }
-                }
-                if (props.currRequest.status) {
-                    newRequest = {
-                        ...props.currRequest,
-                        'status': {
-                            ...props.currRequest.status,
-                            'current_status': 'complete',
-                            "reason": reason
-                        }
-                    }
-                }
-                props.setCurrRequest(newRequest);
-                if (props.mode === 3) {
-                    var dup = [...props.completed];
-                    for (var i = 0; i < dup.length; i++) {
-                        if (props.currRequest._id === dup[i]._id) {
-                            dup[i] = newRequest;
-                            break;
-                        }
-                    }
-                    props.setCompleted(dup);
-                } else if (props.mode === 2) {
-                    moveFromToArr(newRequest, props.matched, props.setMatched, props.completed, props.setCompleted);
-                } else if (props.mode === 1) {
-                    moveFromToArr(newRequest, props.unmatched, props.setUnmatched, props.completed, props.setCompleted);
-                }
-                setConfirmCompleteModal(false);
-                props.setRequestDetailsModal(false);
-            } else {
-                alert("unable to attach");
-            }
-        }).catch((e) => {
-            console.log(e);
-        });
+        // fetch('/api/request/completeRequest', {
+        //     method: 'put',
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify(form)
+        // }).then((response) => {
+        //     if (response.ok) {
+        //         var newRequest = {
+        //             ...props.currRequest,
+        //             'status': {
+        //                 'current_status': 'complete',
+        //                 "reason": reason
+        //             }
+        //         }
+        //         if (props.currRequest.status) {
+        //             newRequest = {
+        //                 ...props.currRequest,
+        //                 'status': {
+        //                     ...props.currRequest.status,
+        //                     'current_status': 'complete',
+        //                     "reason": reason
+        //                 }
+        //             }
+        //         }
+        //         props.setCurrRequest(newRequest);
+        //         if (props.mode === 3) {
+        //             var dup = [...props.completed];
+        //             for (var i = 0; i < dup.length; i++) {
+        //                 if (props.currRequest._id === dup[i]._id) {
+        //                     dup[i] = newRequest;
+        //                     break;
+        //                 }
+        //             }
+        //             props.setCompleted(dup);
+        //         } else if (props.mode === 2) {
+        //             moveFromToArr(newRequest, props.matched, props.setMatched, props.completed, props.setCompleted);
+        //         } else if (props.mode === 1) {
+        //             moveFromToArr(newRequest, props.unmatched, props.setUnmatched, props.completed, props.setCompleted);
+        //         }
+        //         setConfirmCompleteModal(false);
+        //         props.setRequestDetailsModal(false);
+        //     } else {
+        //         alert("unable to attach");
+        //     }
+        // }).catch((e) => {
+        //     console.log(e);
+        // });
     }
 
     const setAdmin = (assignString) => {
@@ -399,6 +401,10 @@ export default function RequestDetails(props) {
         }
     }
 
+    if (!props.currRequest.requesterInfo) {
+        return <></>
+    }
+
     return (
         <>
             <Modal show={props.requestDetailsModal} 
@@ -427,17 +433,17 @@ export default function RequestDetails(props) {
                     </Form>
                     <Modal.Title id="small-header" style={{marginTop: 20}}>Request Details ({modeString()})</Modal.Title>
                     <Col xs={12} style={{padding: 0}}><p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p></Col>
-                    <p id="name-details">{formatName(props.currRequest.requester_first, props.currRequest.requester_last)}</p>
+                    <p id="name-details">{props.currRequest.requesterInfo.requester_name}</p>
                     <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapsURL}>Click here</a></p>
-                    {props.currRequest.requester_email ? <p id="regular-text-nomargin">{props.currRequest.requester_email}</p> : <></>}
-                    {props.currRequest.requester_phone ? <p id="regular-text-nomargin">{props.currRequest.requester_phone}</p> : <></>}
-                    <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
-                    <p id="regular-text-nomargin">Payment: {paymentOptions[props.currRequest.payment]}</p>
-                    <p id="regular-text-nomargin">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
+                    {props.currRequest.requester_email ? <p id="regular-text-nomargin">{props.currRequest.requesterInfo.requester_email}</p> : <></>}
+                    {props.currRequest.requester_phone ? <p id="regular-text-nomargin">{props.currRequest.requesterInfo.requester_phone}</p> : <></>}
+                    <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currRequest.requesterInfo.languages ? props.currRequest.languages.requesterInfo.join(', ') : ''}</p>
+                    <p id="regular-text-nomargin">Payment: {paymentOptions[props.currRequest.requestInfo.payment]}</p>
+                    <p id="regular-text-nomargin">Needs: {props.currRequest.requestInfo.resource_request ? props.currRequest.requestInfo.resource_request.join(', ') : ''}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
-                    <p id="regular-text-nomargin"> {props.currRequest.details}</p>
+                    <p id="regular-text-nomargin"> {props.currRequest.requestInfo.details}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Needed by:</h5>
-                    <p id="regular-text-nomargin">{props.currRequest.time} of {props.currRequest.date}</p>
+                    <p id="regular-text-nomargin">{props.currRequest.requestInfo.time} of {props.currRequest.requestInfo.date}</p>
                     {modeButton()}
                 </Modal.Body>
             </Modal>
