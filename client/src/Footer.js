@@ -43,12 +43,11 @@ export default function Footer(props) {
                     <p id="regular-text" style={{color: '#7B7B7B', fontWeight: 'bold'}}>Current Partners</p>
                     <p id="regular-text" style={{marginBottom: 0}}>Pittsburgh Mutual Aid</p>
                     <p id="regular-text" style={{marginBottom: 0}}>Delaware Mutual Aid</p>
-                    <p id="regular-text" style={{marginBottom: 0}}>Indianapolis Mutual Aid</p>
+                    <p id="regular-text" style={{marginBottom: 0}}>Indy COVID-19 Neighbor Response Team</p>
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 20, paddingTop: 78}}>
                     <p id="regular-text" style={{marginBottom: 0}}>Baltimore Mutual Aid</p>
-                    <p id="regular-text" style={{marginBottom: 0}}>Athens Mutual Aid</p>
-                    <p id="regular-text" style={{marginBottom: 0}}>Charlotte Mutual Aid</p>
+                    <p id="regular-text" style={{marginBottom: 0}}>Greater Charlotte Area Mutual Aid</p>
                 </Col>
             </Row>
             {getCurrentModal()}
