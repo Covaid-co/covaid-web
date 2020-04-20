@@ -43,8 +43,6 @@ export default function HelpfulLinks(props) {
                     {associationLinks.map((link, i) => {               
                         var tempLink = link.link;
                         if (tempLink.substring(0, 7) !== 'http://' || tempLink.substring(0, 8) !== 'https://') {
-                            console.log(tempLink.substring(0, 7))
-                            console.log(tempLink.substring(0, 8))
                             if (tempLink.substring(0, 7) === 'http://') {
                                 tempLink = "https://" + tempLink.substring(7);
                             } else if (tempLink.substring(0, 8) === 'https://') {
