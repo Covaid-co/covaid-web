@@ -1,9 +1,24 @@
 .App {
   text-align: center;
+  flex: 1 0 auto;
+  /* padding: 10px; */
+}
+
+.footer {
+  flex-shrink: 0;
+  text-align: center;
+  background-color: transparent;
+  color: black;
+  margin-top: 160px;
+  height: 180px;
+  border-top: 1px solid #dee2e6; 
 }
 
 #root {
   zoom: 90%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .App-logo {

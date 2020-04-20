@@ -97,9 +97,9 @@ export default function CovaidNavbar(props) {
                         <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(2)}>
                             <p id={toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
                         </Nav.Link>
-                        <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(4)}>
+                        {/* <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(4)}>
                             <p id={toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
-                        </Nav.Link>
+                        </Nav.Link> */}
                         {props.totalVolunteers === 0 ? <></> : 
                         <Nav.Link className="volunteer-badge-web">
                             <Badge aria-describedby='tooltip-bottom' id='volunteerBadge'>{props.totalVolunteers} Volunteers</Badge>
@@ -133,9 +133,9 @@ export default function CovaidNavbar(props) {
                     <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(2)}>
                         <p id={toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
                     </Nav.Link>
-                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(4)}>
+                    {/* <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(4)}>
                         <p id={toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
-                    </Nav.Link>
+                    </Nav.Link> */}
                     <Nav.Link className="volunteer-badge-web">
                         <Badge aria-describedby='tooltip-bottom' id='volunteerBadge'>{totalVolunteers} Volunteers</Badge>
                     </Nav.Link>

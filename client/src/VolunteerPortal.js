@@ -16,6 +16,7 @@ import HowItWorks from './components_modals/HowItWorks'
 import Feedback from './components_modals/Feedback'
 import { generateURL } from './Helpers';
 import CovaidNavbar from './CovaidNavbar'
+import VolunteerLogin from './VolunteerLogin'
 import './VolunteerPage.css'
 import fetch_a from './util/fetch_auth'
 
@@ -120,10 +121,6 @@ export default function VolunteerPortal(props) {
 		});
 	}
 
-	const returnToHome = () => {
-		window.open(window.location.protocol + '//' + window.location.host, '_self');
-	}
-
 	const moveRequestFromPendingToInProgress = (request) => {
 		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
 		setAcceptedRequests(acceptedRequests.concat(request))
@@ -161,6 +158,10 @@ export default function VolunteerPortal(props) {
         return modal;
     }
 	
+	if (!props.location.loggedIn && foundUser === false) {
+		return <VolunteerLogin/>
+	}
+
 	return (
 		<> 
 			<CovaidNavbar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
@@ -185,11 +186,9 @@ export default function VolunteerPortal(props) {
 							</Button>
 							<Button id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
 								Pending ({pendingRequests.length}) / Active ({acceptedRequests.length})
-								{/* <div className={"request-count request-pending-count"}>{pendingRequests.length}</div> */}
 							</Button>
 							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
 								Completed ({completedRequests.length})
-								{/* <div className={"request-count request-active-count"}>{acceptedRequests.length}</div> */}
 							</Button>
 						</Container>
 						<Container id="newOfferContainer"

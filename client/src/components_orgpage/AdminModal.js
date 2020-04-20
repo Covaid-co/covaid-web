@@ -72,7 +72,8 @@ export default function AdminModal(props) {
                             <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>
                         </Col>
                         <Col xs={12} style={{textAlign: 'center'}}>
-                            <Button id="regular-text" variant="link" style={{color: '#314CCE'}} onClick={() => {setAddAdmin(true); props.setAdminModal(false)}}>
+                            <Button id="regular-text" variant="link" style={{color: '#2670FF'}} 
+                                onClick={() => {setAddAdmin(true); props.setAdminModal(false)}}>
                                 Add an Admin +
                             </Button>
                         </Col>

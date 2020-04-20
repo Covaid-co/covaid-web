@@ -53,14 +53,14 @@ export default function AccountInfo(props) {
                             <b>Location:</b> {user.offer.neighborhoods.join(", ")} <FontAwesomeIcon style={{color: "red"}} icon={faMapMarkerAlt} /> 
                         </h5>
                     </div>
-                    <div style={{marginTop: 0, marginBottom: 30}}>
+                    <div style={{marginTop: 0, marginBottom: 10}}>
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
                             <b>Languages:</b> {user.languages.join(", ")}
                         </h5>
                         <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
                             <b>Car:</b> {user.offer.car ? "Yes" : "No"}
                         </h5>
-                        <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
+                        <h5 id="regular-text" style={{marginTop: 0, marginBottom: 0, color: 'black'}}>
                             <b>Availability:</b> {user.offer.timesAvailable.join(", ")}
                         </h5>
                     </div>

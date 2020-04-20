@@ -4,11 +4,11 @@ export const cookieNames = ['latitude', 'longitude', 'zipcode', 'neighborhoods',
 export const availability = ['Morning', 'Afternoon', 'Evening', 'Weekdays', 'Weekends'];
 export const defaultLinks = [
     {
+        name: 'Mutual Aid Hub',
+        link: 'https://www.mutualaidhub.org'
+    }, {
         name: 'CDC',
         link: 'https://www.cdc.gov/coronavirus/2019-nCoV/index.html'
-    }, {
-        name: 'FAQ',
-        link: 'https://faq.coronavirus.gov/'
     }, {
         name: 'Call to Connect',
         link: 'https://www.calltoconnect.org/'
@@ -21,9 +21,6 @@ export const defaultLinks = [
     }, {
         name: 'State',
         link: 'https://www.usa.gov/state-health'
-    }, {
-        name: 'Mutual Aid Hub',
-        link: 'https://www.mutualaidhub.org'
     }
 ]
 export const toastTime = 2000;

@@ -166,6 +166,10 @@ export default function HomePage(props) {
                     {cantFindLink}
                 </Col>
             </Container>
+
+            {/* <Container id="footer">
+                Footer
+            </Container> */}
             {getCurrentModal()}
         </div>
     );

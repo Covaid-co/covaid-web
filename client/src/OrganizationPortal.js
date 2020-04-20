@@ -19,7 +19,6 @@ import AdminModal from './components_orgpage/AdminModal';
 import OrgResourcesModal from './OrgResourcesModal';
 import { sortFn } from './OrganizationHelpers'
 import { generateURL } from './Helpers'
-import orgImg from './assets/org.png'
 import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
@@ -324,7 +323,6 @@ export default function OrganiationPortal() {
 								mode={currTabNumber}
 								volunteers={volunteers}/>
 		</div>
-		<OrgLogin showLogin={showLogin} setShowLogin={setShowLogin} login={login} />
 	</>
 	);
 }
