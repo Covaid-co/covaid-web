@@ -41,7 +41,6 @@ export default function Footer(props) {
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 100, paddingTop: 39}}>
                     <p id="regular-text" style={{color: '#7B7B7B', fontWeight: 'bold'}}>Current Partners</p>
-                    <p id="regular-text" style={{marginBottom: 0}}>Pittsburgh Mutual Aid</p>
                     <p id="regular-text" style={{marginBottom: 0}}>Delaware Mutual Aid</p>
                     <p id="regular-text" style={{marginBottom: 0}}>Indy COVID-19 Neighbor Response Team</p>
                 </Col>
