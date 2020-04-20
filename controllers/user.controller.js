@@ -82,6 +82,13 @@ async function addUserToSpreadsheet(user, ID, spreadsheetID) {
     Email: user.email, 
     Phone: user.phone,
     Languages: user.languages.join(", "),
+    Neighborhood: user.offer.neighborhoods.join(", "),
+    Details: user.offer.details,
+    Resource: user.offer.tasks.join(", "),
+    Car: user.offer.car.toString(),
+    TimeOfAvailability: user.offer.timesAvailable.join(", "),
+    Phone: user.phone,
+    AvailabilityStatus: user.availability.toString(),
     Agreement: true
   });
 
@@ -413,15 +420,6 @@ exports.total_users = function (req, res) {
 exports.update = function (req, res) {
   const id = req.token.id;
 
-  if (req.body.association == "5e843ab29ad8d24834c8edbf") {
-    // PITT
-    try {
-      updateUserInSpreadsheet(id, req.body, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-    } catch (err) {
-      console.log(error)
-    }
-  }
-  
   Users.findByIdAndUpdate(id, {$set: req.body}, function (err, offer) {
     if (err) return next(err);
     
