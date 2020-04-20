@@ -85,7 +85,7 @@ export default function YourOffer(props) {
         }).then((response) => {
             if (response.ok) {
                 console.log("Offer successfully created");
-                window.location.reload(true);
+                setAvailability(!availability)
             } else {
                 console.log("Offer not successful");
             }

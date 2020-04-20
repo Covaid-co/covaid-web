@@ -64,7 +64,7 @@ export default function AccountInfo(props) {
                             <b>Availability:</b> {user.offer.timesAvailable.join(", ")}
                         </h5>
                     </div>
-                    <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>
+                    <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}>&nbsp;</p>
                     <Button id="regular-text" onClick={() => {setShowEditModal(true);}} 
                         style={{margin: "auto", display: "block", color: '#2670FF'}}variant="link">
                         Edit Info

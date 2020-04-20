@@ -29,7 +29,7 @@ export default function RequestDetails(props) {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [fields, handleFieldChange] = useFormFields({
-        email2: ""
+        email2: "",
     });
 
     const updateAdminList = () => {
@@ -284,7 +284,7 @@ export default function RequestDetails(props) {
                             {completeButton}
                         </Col>
                         <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
-                            <Button id='large-button-empty'style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
+                            <Button id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
                                     onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false); setNotes();}}>
                                 Unmatch Request
                             </Button>
@@ -420,7 +420,7 @@ export default function RequestDetails(props) {
                         <Form.Group controlId="email2" bssize="large">
                             <Form.Control as="textarea" 
                                         rows="3"
-                                        placeholder="Details about this request"
+                                        placeholder="Internal notes about this request"
                                         value={fields.email2 ? fields.email2 : ''} 
                                         onChange={handleFieldChange}/>
                         </Form.Group>

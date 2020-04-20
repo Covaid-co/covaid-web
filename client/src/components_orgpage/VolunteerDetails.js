@@ -13,7 +13,8 @@ export default function VolunteerDetails(props) {
     const [verified, setVerified] = useState(true);
     const [prevNote, setPrevNote] = useState('');
     const [fields, handleFieldChange] = useFormFields({
-        email5: ""
+        email5: "",
+        adminDetails: ''
     });
 
     useEffect(() => {
@@ -71,7 +72,8 @@ export default function VolunteerDetails(props) {
             'volunteer_id': volunteer_id,
             'volunteer_email': volunteer_email,
             'volunteer_name': first_name,
-            'association': assoc_id
+            'association': assoc_id,
+            'adminDetails': fields.adminDetails
         };
 
         fetch('/api/request/attachVolunteerToRequest', {
@@ -188,22 +190,38 @@ export default function VolunteerDetails(props) {
                     <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ""}</p>
                     <p id="regular-text-nomargin">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}</p>
                     <p id="regular-text-nomargin">Driver: {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
+                    <Form>
+                        <Form.Group controlId="email5" bssize="large">
+                            <Form.Control as="textarea" 
+                                        rows="2"
+                                        placeholder="Details about this volunteer"
+                                        value={fields.email5 ? fields.email5 : ''} 
+                                        onChange={handleFieldChange}/>
+                        </Form.Group>
+                    </Form>
                     <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Tasks:</h5>
                     {props.currVolunteer.offer ? props.currVolunteer.offer.tasks.map((task, i) => {
                         return <Badge key={i} id='task-info'>{task}</Badge>
                     }) : ""}
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
-                    <h5 id="regular-text-bold" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
-                    <Form>
-                        <Form.Group controlId="email5" bssize="large">
-                            <Form.Control as="textarea" 
-                                        rows="3"
-                                        placeholder="Details about this volunteer"
-                                        value={fields.email5 ? fields.email5 : ''} 
-                                        onChange={handleFieldChange}/>
-                        </Form.Group>
-                    </Form>
+                    <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Share any relevant information with volunteer (optional):</h5>
+                    {props.matching ? 
+                        <>
+                            <Form>
+                                <Form.Group controlId="adminDetails" bssize="large">
+                                    <Form.Control as="textarea" 
+                                                rows="3"
+                                                placeholder="Message to volunteer"
+                                                value={fields.adminDetails ? fields.adminDetails : ''} 
+                                                onChange={handleFieldChange}/>
+                                </Form.Group>
+                            </Form>
+                        </>
+                        :
+                        <></>
+                    }
                     {props.matching ? <Button id="large-button" onClick={matchVolunteer}>Match with {props.currVolunteer.first_name}</Button> : <></>}
                 </Modal.Body>
             </Modal>

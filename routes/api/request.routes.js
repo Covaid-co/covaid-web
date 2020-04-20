@@ -11,6 +11,7 @@ router.post('/handle_request', request_controller.handle_old_request);
 router.get('/allRequestsInVolunteer', request_controller.getAllRequestsInVolunteer);
 router.get('/allPendingRequestsInVolunteer', request_controller.getAllPendingRequestsInVolunteer);
 router.get('/allAcceptedRequestsInVolunteer', request_controller.getAllAcceptedRequestsInVolunteer);
+router.get('/allCompletedRequestsInVolunteer', request_controller.getAllCompletedRequestsInVolunteer);
 
 router.put('/attachVolunteerToRequest', request_controller.attachVolunteer);
 router.put('/removeVolunteerFromRequest', request_controller.removeVolunteer);
