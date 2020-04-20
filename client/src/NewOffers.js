@@ -34,6 +34,7 @@ export default function NewOffers(props) {
     }, [props.resources, props.volunteers]);
 
     const paginatePage = (pageNumber) => {
+        console.log("HELLO")
         setCurrentPage(pageNumber);
         const lastIndex = pageNumber * volunteersPerPage;
         const firstIndex = lastIndex - volunteersPerPage;

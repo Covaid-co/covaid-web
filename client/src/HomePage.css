@@ -281,6 +281,11 @@
   padding-left: 10px;
 }
 
+.pagination {
+    z-index: 1000;
+    position: relative
+}
+
 #mobile-bulletin {
   padding-right: 0px;
   padding-left: 0px;
