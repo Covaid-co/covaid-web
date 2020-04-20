@@ -4,6 +4,7 @@ import { useFormFields } from "../libs/hooksLib";
 import fetch_a from '../util/fetch_auth';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
@@ -21,6 +22,9 @@ export default function YourOffer(props) {
     const [toastMessage, setToastMessage] = useState('');
     const [availability, setAvailability] = useState(false);
     const [resources, setResources] = useState({});
+    const [isPublish, setIsPublish] = useState(false);
+    const [isUnPublish, setIsUnPublish] = useState(false);
+    const [isUpdate, setIsUpdate] = useState(false);
 
     useEffect(() => {
         fields.details = props.user.offer.details;
@@ -66,10 +70,22 @@ export default function YourOffer(props) {
         return true;
     }
 
-    const handleUpdate = (publish) => {
+
+    function stateChange(setter, publish) {
+        setTimeout(function () {
+            console.log("Offer successfully created");
+            setAvailability(publish)
+            setter(false);
+        }, 750);
+    }
+    
+
+    const handleUpdate = (publish, setter) => {
         if (checkInputs() === false) {
             return;
         }
+
+        setter(true);
 
         var resourceList = extractTrueObj(resources);
         let form = {
@@ -84,8 +100,7 @@ export default function YourOffer(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                console.log("Offer successfully created");
-                setAvailability(!availability)
+                stateChange(setter, publish)
             } else {
                 console.log("Offer not successful");
             }
@@ -96,14 +111,22 @@ export default function YourOffer(props) {
 
     var visibleText = <></>
     var publishButton = <></>
+    var updateButton = <></>
+
+    var updateText = "Update changes"
+    var publishText = "Publish your offer"
+    var unpublishText = "Unpublish your offer"
+    var spinnerComponent = <Spinner animation="border" />
+
     if (availability) {
         visibleText = <h5 id="volunteer-offer-status" style={{color: "#45A03D"}}>
             *Your offer is currently live and on the community bulletin</h5>
-        publishButton = <Button id="large-button-empty" style={{color: "#AE2F2F", borderColor: "#AE2F2F", marginTop: 20}} onClick={() => handleUpdate(false)}>Unpublish your offer</Button>
+        publishButton = <Button id="large-button-empty" style={{color: "#AE2F2F", borderColor: "#AE2F2F", marginTop: 5}} onClick={() => handleUpdate(false, setIsUnPublish)}>{isUnPublish ? spinnerComponent : unpublishText}</Button>
+        updateButton =  <Button id="large-button" style={{marginTop: 20}} onClick={() => handleUpdate(true, setIsUpdate)} >{isUpdate ? spinnerComponent : updateText}</Button>
     } else {
         visibleText = <h5 id="volunteer-offer-status" style={{color: "#AE2F2F"}}>
             *Your offer is currently inactive</h5> 
-        publishButton = <Button id="large-button" style={{marginTop: 20}} onClick={() => handleUpdate(true)} >Publish your offer</Button>  
+        publishButton = <Button id="large-button" style={{marginTop: 20}} onClick={() => handleUpdate(true, setIsPublish)} >{isPublish ? spinnerComponent : publishText}</Button>  
     }
 
     return (
@@ -121,6 +144,7 @@ export default function YourOffer(props) {
                     <h5 id="regular-text-bold" style={{marginBottom: 5}}>What can you help with?</h5>
                     <CheckForm obj={resources} setObj={setResources}/>
                     <Details fields={fields.details} handleFieldChange={handleFieldChange}/>
+                    {updateButton}
                     {publishButton}
                 </Form>
             </Col>

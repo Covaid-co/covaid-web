@@ -204,7 +204,7 @@ export default function EditAccountInfoModal(props) {
             valid = false;
         }
         if (zip !== initialZip && !zipUpdated) {
-            setToastMessage('Update your zipcode first')
+            setToastMessage('Click the Update Zipcode button')
             valid = false;
         }
 
@@ -389,7 +389,7 @@ export default function EditAccountInfoModal(props) {
                                     value={zip}
                                 />
                             <InputGroup.Append>
-                                <Button variant="outline-secondary" onClick={updateLocation}>Update</Button>
+                                <Button variant="outline-secondary" onClick={updateLocation}>Update Zipcode</Button>
                             </InputGroup.Append>
                         </InputGroup>
                         <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 20}}>What languages do you speak?</h5>

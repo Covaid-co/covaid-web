@@ -258,14 +258,14 @@ export default function RequestDetails(props) {
             return <>
                     <Button id="large-button" style={{marginTop: 15}} onClick={topMatch}>Match a volunteer</Button>
                     <Row style={{marginBottom: 10}}>
-                        <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
-                            {completeButton}
-                        </Col>
                         <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
                             <Button id='large-button-empty'style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
                                     onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
                                 Remove Request
                             </Button>
+                        </Col>
+                        <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+                            {completeButton}
                         </Col>
                     </Row>
                     <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id="toastError">
@@ -280,14 +280,14 @@ export default function RequestDetails(props) {
                         </Button>
                         : <></>}
                     <Row style={{marginBottom: 10}}>
-                        <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
-                            {completeButton}
-                        </Col>
                         <Col xs={6} style = {{padding: 0, paddingRight: 15, paddingLeft: 4}}>
                             <Button id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
                                     onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false); setNotes();}}>
                                 Unmatch Request
                             </Button>
+                            <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+                                {completeButton}
+                            </Col>
                         </Col>
                     </Row>
                     <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
