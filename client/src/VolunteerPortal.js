@@ -159,7 +159,8 @@ export default function VolunteerPortal(props) {
         return modal;
     }
 	
-	if (!Cookie.get("token")) {
+
+	if (!props.location.loggedIn && foundUser === false) {
 		return <VolunteerLogin/>
 	}
 
