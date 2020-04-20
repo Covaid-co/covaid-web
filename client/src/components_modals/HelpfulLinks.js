@@ -43,13 +43,20 @@ export default function HelpfulLinks(props) {
                     {associationLinks.map((link, i) => {               
                         var tempLink = link.link;
                         if (tempLink.substring(0, 7) !== 'http://' || tempLink.substring(0, 8) !== 'https://') {
-                            tempLink = 'http://' + tempLink;
+                            if (tempLink.substring(0, 7) === 'http://') {
+                                tempLink = "https://" + tempLink.substring(7);
+                            } else if (tempLink.substring(0, 8) === 'https://') {
+                                tempLink = "https://" + tempLink.substring(8);
+                            } else {
+                                tempLink = "https://" + tempLink;
+                            }
                         }
                         return (
                             <div key={i} style={{marginBottom: 10, textAlign: "center"}}>
                                 <ReactTinyLink
                                     cardSize="small"
-                                    showGraphic={true}
+                                    showGraphic={false}
+                                    header={link.name}
                                     maxLine={2}
                                     minLine={1}
                                     style={{display: "inlineBlock"}}
