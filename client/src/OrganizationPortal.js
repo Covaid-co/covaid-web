@@ -227,7 +227,7 @@ export default function OrganiationPortal() {
 				</Jumbotron>
 				<Container style={{maxWidth: 2000}}>
 					<Row className="justify-content-md-center">
-						<Col lg={6} md={12} sm={12}>
+						<Col lg={6} md={12} sm={12} style={{marginTop: -44}}>
 							<Container style={{padding: 0,  marginLeft: 0}}>
 								<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched ({unmatched.length})</Button>
 								<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched ({matched.length})</Button>

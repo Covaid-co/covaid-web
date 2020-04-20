@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
 import Badge from 'react-bootstrap/Badge'
 import ListGroup from 'react-bootstrap/ListGroup'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 import RequestInfo from './RequestInfo'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function CompletedVolunteerRequests(props) {
 
@@ -39,11 +42,20 @@ export default function CompletedVolunteerRequests(props) {
                                     <b>{request.requester_first}</b>
                                 </h5>
                             </div>
-                            <div>
-                            {request.resource_request.map((task, i) => {
-                                    return <Badge key={i} id='task-info'>{task}</Badge>
-                                })}
-                            </div>
+                            <Row>
+                                <Col lg={10} md={8} sm={6}>
+                                    <div>
+                                    {request.resource_request.map((task, i) => {
+                                            return <Badge key={i} id='task-info'>{task}</Badge>
+                                        })}
+                                    </div>
+                                </Col>
+                                <Col lg={1} md={1} sm={1} id='check'>
+                                    <div>
+                                        <FontAwesomeIcon style={{color: "#28a745"}} icon={faCheck} /> 
+                                    </div>
+                                </Col>
+                            </Row>
                             <div style={{display: 'inline-block', width: '100%', marginTop: 10}}>
                                 <p style={{float: 'left', marginBottom: 0}} id="regular-text">Completed on: {request.completed_date ? completedDate.toLocaleDateString('en-US') : "N/A"}</p>
                             </div>

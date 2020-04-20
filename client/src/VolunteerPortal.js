@@ -18,6 +18,7 @@ import { generateURL } from './Helpers';
 import CovaidNavbar from './CovaidNavbar'
 import VolunteerLogin from './VolunteerLogin'
 import './VolunteerPage.css'
+import Cookie from 'js-cookie'
 import fetch_a from './util/fetch_auth'
 
 
@@ -158,13 +159,14 @@ export default function VolunteerPortal(props) {
         return modal;
     }
 	
-	if (!props.location.loggedIn && foundUser === false) {
+	if (!Cookie.get("token")) {
 		return <VolunteerLogin/>
 	}
 
 	return (
 		<div className="App">
 			<CovaidNavbar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
+			<div id="bgImage"></div>
 			<Jumbotron fluid id="jumbo-volunteer">
 				<Container style={{maxWidth: 1500}}>
 					<Row>
@@ -177,15 +179,16 @@ export default function VolunteerPortal(props) {
 				</Container>
 			</Jumbotron>
 			<Container id="volunteer-info">
+				<Row lg={1}></Row>
 				<Row className="justify-content-md-center">
 					<Col lg={1}></Col>
-					<Col lg={6} md={8} sm={10}>
+					<Col lg={6} md={8} sm={10} style={{marginTop: -44}}>
 						<Container style={{padding: 0, marginLeft: 0}}> 
 							<Button id={tabNum===1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>
 								Your Offer
 							</Button>
 							<Button id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
-								Pending ({pendingRequests.length}) / Active ({acceptedRequests.length})
+								Pending ({pendingRequests.length}) / Active({acceptedRequests.length})
 							</Button>
 							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
 								Completed ({completedRequests.length})
@@ -212,7 +215,7 @@ export default function VolunteerPortal(props) {
 					</Col>
 					<Col lg={4} md={8} sm={10}>
 						<Container id="newOfferContainer"
-							style={{'display': 'block', marginTop: 41}}>
+							style={{'display': 'block', marginTop: 10}}>
 							{foundUser ? <AccountInfo user={user}/> : <></>}
 						</Container>
 					</Col>
