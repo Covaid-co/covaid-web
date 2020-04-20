@@ -10,6 +10,7 @@ import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
 import CovaidNavbar from './CovaidNavbar'
+import Footer from './Footer'
 
 import RequestDetails from './components_orgpage/RequestDetails';
 import VolunteerDetails from './components_orgpage/VolunteerDetails';
@@ -195,13 +196,14 @@ export default function OrganiationPortal() {
 	}
 
 	if (showLogin === true) {
-		return (
+		return ([
 			<div className="App">
 				<OrgLogin login={login} setShowLogin={setShowLogin}/>
-			</div>
+			</div>,
+			<Footer key="2" handleShowModal={() => {}}/>]
 		)
 	}
-	return (
+	return ([
 		<div className="App">
 			<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} orgPortal={true} first_name={association.name} handleShowModal={() => {}}/>
 			<div style ={{zoom: '95%'}}>
@@ -326,6 +328,7 @@ export default function OrganiationPortal() {
 									mode={currTabNumber}
 									volunteers={volunteers}/>
 			</div>
-		</div>
+		</div>,
+		<Footer key="2" handleShowModal={() => {}}/>]
 	);
 }
