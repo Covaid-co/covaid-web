@@ -163,7 +163,7 @@ export default function VolunteerPortal(props) {
 	}
 
 	return (
-		<> 
+		<div className="App">
 			<CovaidNavbar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
 			<Jumbotron fluid id="jumbo-volunteer">
 				<Container style={{maxWidth: 1500}}>
@@ -220,6 +220,6 @@ export default function VolunteerPortal(props) {
 				</Row>
 			</Container>
 			{getCurrentModal()}
-		</>
+		</div>
 	);
 }

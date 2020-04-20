@@ -196,133 +196,136 @@ export default function OrganiationPortal() {
 
 	if (showLogin === true) {
 		return (
-			<OrgLogin login={login} setShowLogin={setShowLogin}/>
+			<div className="App">
+				<OrgLogin login={login} setShowLogin={setShowLogin}/>
+			</div>
 		)
 	}
-	return (<>
-		<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} orgPortal={true} first_name={association.name} handleShowModal={() => {}}/>
-		<div style ={{zoom: '95%'}}>
-			<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
-				<Container style={{maxWidth: 1500}}>
-					<Row>
-						<Col lg={1} md={1} sm={0}></Col>
-						<Col>
-							<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {association.name}</h1>
-							<p id="regular-text" style={{marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
-							<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
-								Manage Organization
-							</Button>{' '}
-							<Button id="medium-button" onClick={()=>{setVolunteersModal(true)}}>
-								View Volunteers
-							</Button><br/>
-							<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
-								+ Add a link to your community's resources
-							</Button>
+	return (
+		<div className="App">
+			<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} orgPortal={true} first_name={association.name} handleShowModal={() => {}}/>
+			<div style ={{zoom: '95%'}}>
+				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
+					<Container style={{maxWidth: 1500}}>
+						<Row>
+							<Col lg={1} md={1} sm={0}></Col>
+							<Col>
+								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {association.name}</h1>
+								<p id="regular-text" style={{marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
+								<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
+									Manage Organization
+								</Button>{' '}
+								<Button id="medium-button" onClick={()=>{setVolunteersModal(true)}}>
+									View Volunteers
+								</Button><br/>
+								<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
+									+ Add a link to your community's resources
+								</Button>
+							</Col>
+						</Row>
+					</Container>
+				</Jumbotron>
+				<Container style={{maxWidth: 2000}}>
+					<Row className="justify-content-md-center">
+						<Col lg={6} md={12} sm={12}>
+							<Container style={{padding: 0,  marginLeft: 0}}>
+								<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched ({unmatched.length})</Button>
+								<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched ({matched.length})</Button>
+								<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed ({completed.length})</Button>
+							</Container>
+							<Container id="newOfferContainer" style={displayTab(1)}>
+								<UnmatchedRequests association={association}
+													requests={unmatched}
+													unmatched={unmatched}
+													matched={matched}
+													completed={completed}
+													setRequests={setUnmatched}
+													setUnmatched={setUnmatched}
+													setMatched={setMatched}
+													setCompleted={setCompleted}
+													volunteers={volunteers}
+													mode={1}/>
+							</Container>
+							<Container id="newOfferContainer" style={displayTab(2)}>
+								<UnmatchedRequests association={association}
+													requests={matched}
+													unmatched={unmatched}
+													matched={matched}
+													completed={completed}
+													setRequests={setMatched}
+													setUnmatched={setUnmatched}
+													setMatched={setMatched}
+													setCompleted={setCompleted}
+													volunteers={volunteers}
+													mode={2}/>
+							</Container>
+							<Container id="newOfferContainer" style={displayTab(3)}>
+								<UnmatchedRequests association={association}
+													requests={completed}
+													unmatched={unmatched}
+													matched={matched}
+													completed={completed}
+													setRequests={setCompleted}
+													setUnmatched={setUnmatched}
+													setMatched={setMatched}
+													setCompleted={setCompleted}
+													volunteers={volunteers}
+													mode={3}/>
+							</Container>
+						</Col>
+						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
+							<Container id="newOfferContainer" style={{'display': 'block'}}>
+								<Col xs={12} style={{padding: 0, marginBottom: 10}}>
+									<p id="small-header" style={{display: 'inline'}}>Volunteer/Requester Map</p>
+									<Button id={!volunteerMap ? "volunteer-not-selected" : "volunteer-selected"} onClick={() => setVolunteerMap(!volunteerMap)}>
+										Volunteer
+									</Button>
+									<Button id={!requesterMap ? "requester-not-selected" : "requester-selected"} onClick={() => setRequesterMap(!requesterMap)}>
+										Requester
+									</Button>
+								</Col>
+								<NewMap requests={allRequests} volunteers={volunteers} mode={currTabNumber}
+										unmatched={unmatched} matched={matched} completed={completed}
+										requesterMap={requesterMap} volunteerMap={volunteerMap}
+										volunteerDetailModal={volunteerDetailModal} association={association}
+										setVolunteerDetailsModal={setVolunteerDetailsModal}
+										currVolunteer={currVolunteer} setCurrVolunteer={setCurrVolunteer}
+										requestDetailsModal={requestDetailsModal} setRequestDetailsModal={setRequestDetailsModal} 
+										currRequest={currRequest} setCurrRequest={setCurrRequest}/>
+							</Container>
 						</Col>
 					</Row>
 				</Container>
-			</Jumbotron>
-			<Container style={{maxWidth: 2000}}>
-				<Row className="justify-content-md-center">
-					<Col lg={6} md={12} sm={12}>
-						<Container style={{padding: 0,  marginLeft: 0}}>
-							<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched ({unmatched.length})</Button>
-							<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched ({matched.length})</Button>
-							<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed ({completed.length})</Button>
-						</Container>
-						<Container id="newOfferContainer" style={displayTab(1)}>
-							<UnmatchedRequests association={association}
-												requests={unmatched}
-												unmatched={unmatched}
-												matched={matched}
-												completed={completed}
-												setRequests={setUnmatched}
-												setUnmatched={setUnmatched}
-												setMatched={setMatched}
-												setCompleted={setCompleted}
-												volunteers={volunteers}
-												mode={1}/>
-						</Container>
-						<Container id="newOfferContainer" style={displayTab(2)}>
-							<UnmatchedRequests association={association}
-												requests={matched}
-												unmatched={unmatched}
-												matched={matched}
-												completed={completed}
-												setRequests={setMatched}
-												setUnmatched={setUnmatched}
-												setMatched={setMatched}
-												setCompleted={setCompleted}
-												volunteers={volunteers}
-												mode={2}/>
-						</Container>
-						<Container id="newOfferContainer" style={displayTab(3)}>
-							<UnmatchedRequests association={association}
-												requests={completed}
-												unmatched={unmatched}
-												matched={matched}
-												completed={completed}
-												setRequests={setCompleted}
-												setUnmatched={setUnmatched}
-												setMatched={setMatched}
-												setCompleted={setCompleted}
-												volunteers={volunteers}
-												mode={3}/>
-						</Container>
-					</Col>
-					<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
-						<Container id="newOfferContainer" style={{'display': 'block'}}>
-							<Col xs={12} style={{padding: 0, marginBottom: 10}}>
-								<p id="small-header" style={{display: 'inline'}}>Volunteer/Requester Map</p>
-								<Button id={!volunteerMap ? "volunteer-not-selected" : "volunteer-selected"} onClick={() => setVolunteerMap(!volunteerMap)}>
-									Volunteer
-								</Button>
-								<Button id={!requesterMap ? "requester-not-selected" : "requester-selected"} onClick={() => setRequesterMap(!requesterMap)}>
-									Requester
-								</Button>
-							</Col>
-							<NewMap requests={allRequests} volunteers={volunteers} mode={currTabNumber}
-									unmatched={unmatched} matched={matched} completed={completed}
-									requesterMap={requesterMap} volunteerMap={volunteerMap}
-									volunteerDetailModal={volunteerDetailModal} association={association}
-									setVolunteerDetailsModal={setVolunteerDetailsModal}
-									currVolunteer={currVolunteer} setCurrVolunteer={setCurrVolunteer}
-									requestDetailsModal={requestDetailsModal} setRequestDetailsModal={setRequestDetailsModal} 
-                            		currRequest={currRequest} setCurrRequest={setCurrRequest}/>
-						</Container>
-					</Col>
-				</Row>
-			</Container>
-			<VolunteersModal volunteersModal={volunteersModal}
-							 setVolunteersModal={setVolunteersModal}
-							 volunteers={volunteers}
-							 association={association}
-							 preVerify={true}/>
-			<AdminModal adminModal={adminModal}
-						setAdminModal={setAdminModal}
-						association={association}
-						setAssociation={setAssociation}/>
-			<OrgResourcesModal resourceModal={resourceModal}
-							setResourceModal={setResourceModal}
+				<VolunteersModal volunteersModal={volunteersModal}
+								setVolunteersModal={setVolunteersModal}
+								volunteers={volunteers}
+								association={association}
+								preVerify={true}/>
+				<AdminModal adminModal={adminModal}
+							setAdminModal={setAdminModal}
 							association={association}
 							setAssociation={setAssociation}/>
-			<VolunteerDetails volunteerDetailModal={volunteerDetailModal}
-						setVolunteerDetailsModal={setVolunteerDetailsModal}
-						currVolunteer={currVolunteer}/>
-			<RequestDetails requestDetailsModal={requestDetailsModal} 
-								setRequestDetailsModal={setRequestDetailsModal} 
-								currRequest={currRequest}
-								setCurrRequest={setCurrRequest}
+				<OrgResourcesModal resourceModal={resourceModal}
+								setResourceModal={setResourceModal}
 								association={association}
-								unmatched={unmatched}
-								matched={matched}
-								completed={completed}
-								setUnmatched={setUnmatched}
-								setMatched={setMatched}
-								setCompleted={setCompleted}
-								mode={currTabNumber}
-								volunteers={volunteers}/>
+								setAssociation={setAssociation}/>
+				<VolunteerDetails volunteerDetailModal={volunteerDetailModal}
+							setVolunteerDetailsModal={setVolunteerDetailsModal}
+							currVolunteer={currVolunteer}/>
+				<RequestDetails requestDetailsModal={requestDetailsModal} 
+									setRequestDetailsModal={setRequestDetailsModal} 
+									currRequest={currRequest}
+									setCurrRequest={setCurrRequest}
+									association={association}
+									unmatched={unmatched}
+									matched={matched}
+									completed={completed}
+									setUnmatched={setUnmatched}
+									setMatched={setMatched}
+									setCompleted={setCompleted}
+									mode={currTabNumber}
+									volunteers={volunteers}/>
+			</div>
 		</div>
-	</>
 	);
 }

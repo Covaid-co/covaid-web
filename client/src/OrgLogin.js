@@ -128,7 +128,7 @@ export default function OrgLogin(props) {
                     </Form>
                 </Col>
                 <Col md={6} style={{paddingLeft: 50}}>
-                    <img src={orgImg} style={{width: 480, marginTop: 50}}></img>
+                    <img id="org-image" src={orgImg} style={{width: 480, marginTop: 50}}></img>
                 </Col>
             </Row>
         </Container>

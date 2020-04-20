@@ -118,6 +118,15 @@
 }
 
 @media (max-width:768px) {
+    #login-container {
+        padding-left: 50px !important;
+        padding-right: 100px;
+    }
+
+    #org-image {
+        display: none;
+    }
+
     .footer {
         display: none;
     }
@@ -183,7 +192,11 @@
     }
 }
 
-@media (max-width:605px){ 
+@media (max-width:605px){
+    #login-container {
+        padding-left: 30px !important;
+    }
+
     #location-container-logged {
         margin-top: 50px;
     }
@@ -191,6 +204,10 @@
 
 
 @media (max-width:578px){ 
+    #login-container {
+        padding-left: 20px !important;
+    }
+
     #jumbo-text {
         margin-top: 10px;
         padding-right: 30px;
@@ -267,6 +284,7 @@
 #mobile-bulletin {
   padding-right: 0px;
   padding-left: 0px;
+  padding-bottom: 20px;
 }
 
 .mobile-bulletin-container {

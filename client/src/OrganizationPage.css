@@ -29,7 +29,8 @@ input {
 }
 
 #login-container {
-    padding: 100px;
+    padding-left: 100px;
+    padding-top: 50px;
     padding-top: 60px;
 }
 
