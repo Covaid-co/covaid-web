@@ -130,6 +130,7 @@ export default function VolunteerPortal(props) {
 	}
 	const rejectAPendingRequest = (request) => {
 		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
+		setAcceptedRequests(acceptedRequests.filter(acceptedRequest => acceptedRequest._id !== request._id));
 	}
 
 	const completeAnInProgressRequest = (request) => {

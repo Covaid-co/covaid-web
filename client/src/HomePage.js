@@ -125,7 +125,7 @@ export default function HomePage(props) {
                 <Container id="jumboContainer">
                     <Row>
                         <Col md={6} id="jumbo-text">
-                            <h1 id="home-heading">Mutual-aid for COVID-19</h1>
+                            <h1 id="home-heading">Mutual-aid for COVID&#8209;19</h1>
                             <p id="home-subheading">Covaid connects community volunteers with those who need support</p>
                             {supportButton()}{' '}
                             {volunteerButton()}

@@ -98,7 +98,7 @@ export default function RequestInfo(props) {
             <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
                 <Button onClick={showReject} id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}}>Reject this request</Button>
             </Col>
-            <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+            <Col xs={6} style = {{padding: 0, paddingLeft: 4, paddingRight: 15}}>
                 <Button onClick={accept} id='large-button-empty' style={{borderColor: '#28a745', color: '#28a745'}}>Accept this request</Button>
             </Col>
         </Row>
@@ -108,7 +108,7 @@ export default function RequestInfo(props) {
                     <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
                         <Button onClick={showReject} id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}}>Cancel this request</Button>
                     </Col>
-                    <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+                    <Col xs={6} style = {{padding: 0, paddingLeft: 4, paddingRight: 15}}>
                         <Button onClick={showComplete} id='large-button-empty' style={{borderColor: '#28a745', color: '#28a745'}}>Complete this request</Button>
                     </Col>
                 </Row>

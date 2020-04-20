@@ -206,9 +206,9 @@ export default function VolunteerDetails(props) {
                     }) : ""}
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
-                    <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Share any relevant information with volunteer (optional):</h5>
                     {props.matching ? 
                         <>
+                            <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Share any relevant information with volunteer (optional):</h5>
                             <Form>
                                 <Form.Group controlId="adminDetails" bssize="large">
                                     <Form.Control as="textarea" 
