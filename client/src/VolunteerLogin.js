@@ -112,7 +112,7 @@ export default function OrgLogin(props) {
             <Row>
                 <Col md={6} id="login-container">
                     <h1 id="home-heading">Covaid for Volunteers</h1>
-                    <p id="home-subheading" style={{fontSize: 16}}>Manage your offer and handle requests through covaid!</p>
+                    <p id="home-subheading" style={{fontSize: 16}}>Manage your offer and handle requests through Covaid</p>
                     <Form onSubmit={handleSubmit}>
                         <Row>
                             <Col xs={12}>
