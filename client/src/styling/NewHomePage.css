@@ -464,6 +464,11 @@ textarea.form-control {
     font-family: "Inter";
 }
 
+.page-item.active .page-link {
+    background-color: #2670FF;
+    border-color: #2670FF;
+}
+
 .dropdown-item {
     height: 29px;
     background: transparent;

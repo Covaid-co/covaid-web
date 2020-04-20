@@ -111,20 +111,20 @@ class Home extends Component {
 	render() {
 		return (
 			[
-			<div className="App">
-				<CovaidNavbar isLoggedIn={this.state.isLoggedIn} first_name={this.state.first_name} handleShowModal={this.handleShowModal}/>
-				<HomePage state={this.state} 
-							setState={this.setState}
-							setVolunteerPortal={() => this.props.history.push({
-								pathname: '/volunteerPortal',
-								loggedIn: true
-							})}
-							handleShowModal={this.handleShowModal} 
-							onLocationSubmit={this.onLocationSubmit}
-							refreshLocation={this.refreshLocation}
-							handleHideModal={this.handleHideModal}/>
-			</div>,
-			<Footer key="2" handleShowModal={this.handleShowModal}/>
+				<div className="App">
+					<CovaidNavbar isLoggedIn={this.state.isLoggedIn} first_name={this.state.first_name} handleShowModal={this.handleShowModal}/>
+					<HomePage state={this.state} 
+								setState={this.setState}
+								setVolunteerPortal={() => this.props.history.push({
+									pathname: '/volunteerPortal',
+									loggedIn: true
+								})}
+								handleShowModal={this.handleShowModal} 
+								onLocationSubmit={this.onLocationSubmit}
+								refreshLocation={this.refreshLocation}
+								handleHideModal={this.handleHideModal}/>
+				</div>,
+				<Footer key="2" handleShowModal={this.handleShowModal}/>
 			]
 		)}
 }
