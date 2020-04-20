@@ -192,3 +192,13 @@ input {
     padding-top: 1px;
     display: inline-block;
 }
+
+#default-checkbox {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 4px;
+}

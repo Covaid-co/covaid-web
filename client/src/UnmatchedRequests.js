@@ -140,7 +140,7 @@ export default function UnmatchedRequests(props) {
                     <p id="requestCall" style={{marginTop: 5, marginBottom: 0}}></p>
                 </Col>
                 <Col xs={12}>
-                    <ListGroup variant="flush">
+                    <ListGroup variant="flush" style={{overflowY: "scroll", height: 441}}>
                         {filteredRequests.map((request, i) => {
                             return (
                                 <ListGroup.Item key={i} action onClick={() => {clickRequest(request)}}>

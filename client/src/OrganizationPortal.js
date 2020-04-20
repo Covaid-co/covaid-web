@@ -17,6 +17,7 @@ import VolunteerDetails from './components_orgpage/VolunteerDetails';
 import NewMap from './components_orgpage/NewMap'
 import VolunteersModal from './components_orgpage/VolunteersModal';
 import AdminModal from './components_orgpage/AdminModal';
+import BeaconCreation from './components_orgpage/BeaconCreation';
 import OrgResourcesModal from './OrgResourcesModal';
 import { sortFn } from './OrganizationHelpers'
 import { generateURL } from './Helpers'
@@ -33,6 +34,7 @@ export default function OrganiationPortal() {
 	const [volunteers, setVolunteers] = useState([]);
 	const [volunteersModal, setVolunteersModal] = useState(false);
 	const [adminModal, setAdminModal] = useState(false);
+	const [beaconModal, setBeaconModal] = useState(false);
 	const [resourceModal, setResourceModal] = useState(false);
 	const [allRequests, setAllRequests] = useState([]);
 	const [unmatched, setUnmatched] = useState([]);
@@ -212,13 +214,16 @@ export default function OrganiationPortal() {
 						<Row>
 							<Col lg={1} md={1} sm={0}></Col>
 							<Col>
-								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {association.name}</h1>
+								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {association.name}!</h1>
 								<p id="regular-text" style={{marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
 								<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
 									Manage Organization
 								</Button>{' '}
 								<Button id="medium-button" onClick={()=>{setVolunteersModal(true)}}>
 									View Volunteers
+								</Button>{' '}
+								<Button id="medium-button" onClick={()=>{setBeaconModal(true)}}>
+									Create a beacon
 								</Button><br/>
 								<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
 									+ Add a link to your community's resources
@@ -234,6 +239,7 @@ export default function OrganiationPortal() {
 								<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched ({unmatched.length})</Button>
 								<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched ({matched.length})</Button>
 								<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed ({completed.length})</Button>
+								<Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Beacons</Button>
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(1)}>
 								<UnmatchedRequests association={association}
@@ -273,6 +279,9 @@ export default function OrganiationPortal() {
 													setCompleted={setCompleted}
 													volunteers={volunteers}
 													mode={3}/>
+							</Container>
+							<Container id="newOfferContainer" style={displayTab(4)}>
+								
 							</Container>
 						</Col>
 						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
@@ -327,6 +336,10 @@ export default function OrganiationPortal() {
 									setCompleted={setCompleted}
 									mode={currTabNumber}
 									volunteers={volunteers}/>
+				<BeaconCreation beaconModal={beaconModal}
+							setBeaconModal={setBeaconModal}
+							association={association}
+							volunteers={volunteers} />
 			</div>
 		</div>,
 		<Footer key="2" handleShowModal={() => {}}/>]
