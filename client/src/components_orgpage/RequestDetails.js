@@ -285,10 +285,10 @@ export default function RequestDetails(props) {
                                     onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false); setNotes();}}>
                                 Unmatch Request
                             </Button>
-                            <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
+                        </Col>
+                        <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
                                 {completeButton}
                             </Col>
-                        </Col>
                     </Row>
                     <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
                                     setVolunteerDetailsModal={setVolunteerDetailsModal}
