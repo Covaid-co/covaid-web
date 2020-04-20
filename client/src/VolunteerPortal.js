@@ -189,7 +189,7 @@ export default function VolunteerPortal(props) {
 								Your Offer
 							</Button>
 							<Button id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
-								Pending ({pendingRequests.length}) / Active({acceptedRequests.length})
+								Pending ({pendingRequests.length}) / Active ({acceptedRequests.length})
 							</Button>
 							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
 								Completed ({completedRequests.length})
