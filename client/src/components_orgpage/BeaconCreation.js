@@ -21,6 +21,9 @@ export default function BeaconCreation(props) {
     const [page, setPage] = useState(1);
     const [foundVolunteers, setFoundVolunteers] = useState([]);
     const [checkboxChecked, setCheckboxChecked] = useState({});
+    const [fields, handleFieldChange] = useFormFields({
+        message: ""
+    });
 
     useEffect(() => {
         if (props.association.resources) {
@@ -70,6 +73,25 @@ export default function BeaconCreation(props) {
 
     const sendBeacon = () => {
         console.log(checkboxChecked)
+        var volunteers = [];
+        for (var key in checkboxChecked) {
+            if (checkboxChecked.hasOwnProperty(key)) {
+                if (checkboxChecked[key]) {
+                    volunteers.push(key);
+                }
+            }
+        }
+
+        let form = {
+            'volunteers': volunteers,
+            'message': fields.message
+        }
+
+        console.log(form)
+        setPage(1); 
+        setTaskChecked(props.association ? setFalseObj(props.association.resources) : setFalseObj(defaultResources));
+        setHasCar(false);
+        // props.setBeaconModal(false)
     }
 
     if (page === 1) {
@@ -117,7 +139,7 @@ export default function BeaconCreation(props) {
                                     <h5 id="regular-text-bold" style = {{marginTop: 10, marginBottom: 5}}>
                                         Found {foundVolunteers.length} volunteers
                                     </h5>
-                                    <ListGroup variant="flush" style={{overflowY: "scroll", height: 250}}>
+                                    <ListGroup variant="flush" style={{overflowY: "scroll", height: 350}}>
                                         {foundVolunteers.map((volunteer, i) => {
                                             return (
                                             <ListGroup.Item key={i}>
@@ -153,10 +175,12 @@ export default function BeaconCreation(props) {
                             <Row>
                                 <Col>
                                     <Form>
-                                        <Form.Group controlId="beaconDetails" bssize="large" style={{marginTop: 10}}>
+                                        <Form.Group controlId="message" bssize="large" style={{marginTop: 10}}>
                                             <Form.Control as="textarea" 
                                                         rows="3"
-                                                        placeholder="Beacon message"
+                                                        value={fields.message}
+                                                        onChange={handleFieldChange}
+                                                        placeholder='Beacon message: \"412 Food Rescue is handing out food at 3pm on Sunday. If you have a car and can help, let us know!'
                                                     />
                                         </Form.Group>
                                     </Form>
