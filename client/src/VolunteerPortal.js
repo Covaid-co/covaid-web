@@ -16,11 +16,11 @@ import HowItWorks from './components_modals/HowItWorks'
 import Feedback from './components_modals/Feedback'
 import { generateURL } from './Helpers';
 import CovaidNavbar from './CovaidNavbar'
-import VolunteerLogin from './VolunteerLogin'
+import VolunteerLogin from './components_volunteerpage/VolunteerLogin'
 import Beacons from './Beacons'
 import './VolunteerPage.css'
-import Cookie from 'js-cookie'
 import fetch_a from './util/fetch_auth'
+import Footer from './components/Footer'
 
 
 export default function VolunteerPortal(props) {
@@ -183,7 +183,7 @@ export default function VolunteerPortal(props) {
 		return <VolunteerLogin/>
 	}
 
-	return (
+	return (<>
 		<div className="App">
 			<CovaidNavbar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
 			<div id="bgImage"></div>
@@ -251,5 +251,7 @@ export default function VolunteerPortal(props) {
 			</Container>
 			{getCurrentModal()}
 		</div>
+		<Footer key="2" handleShowModal={handleShowModal}/>
+		</>
 	);
 }

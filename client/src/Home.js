@@ -3,13 +3,10 @@ import { withRouter } from 'react-router-dom'
 import Geocode from "react-geocode";
 import fetch_a from './util/fetch_auth';
 import Cookie from 'js-cookie'
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Navbar from 'react-bootstrap/Navbar'
 
 import HomePage from './HomePage'
 import CovaidNavbar from './CovaidNavbar'
-import Footer from './Footer'
+import Footer from './components/Footer'
 import { findAssociations, getMyLocation, setNeighborhood } from './location_tools/LocationHelpers'
 import { removeCookies } from './Helpers';
 import { cookieNames } from './constants';
@@ -20,7 +17,6 @@ import './Home.css'
 import './styling/NewHomePage.css';
 
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
-
 
 
 class Home extends Component {
@@ -111,7 +107,7 @@ class Home extends Component {
 	render() {
 		return (
 			[
-				<div className="App">
+				<div className="App" style={{height: '100%'}}>
 					<CovaidNavbar isLoggedIn={this.state.isLoggedIn} first_name={this.state.first_name} handleShowModal={this.handleShowModal}/>
 					<HomePage state={this.state} 
 								setState={this.setState}

@@ -14,7 +14,7 @@ import fetch_a from '../util/fetch_auth';
 import {useFormFields} from '../libs/hooksLib'
 import { generateURL, validateEmail, extractTrueObj } from '../Helpers';
 
-import CheckForm from '../CheckForm';
+import CheckForm from '../components/CheckForm';
 import NewCar from '../components_homepage/NewHasCar'
 
 import Geocode from "react-geocode";

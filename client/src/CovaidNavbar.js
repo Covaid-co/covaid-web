@@ -73,43 +73,6 @@ export default function CovaidNavbar(props) {
         }
     }
 
-    if (props.orgPortal) {
-        return (
-            <Navbar collapseOnSelect onToggle={(e) => setToggled(e)} variant="light" expand="md" id="custom-navbar">
-                <Navbar.Brand href = {window.location.protocol + '//' + window.location.host} id="navbar-brand" style={(width < 767) ? {marginTop: 12} : {}}>
-                    covaid
-                </Navbar.Brand>
-                <Form inline className="volunteer-badge-mobile">
-                    {props.totalVolunteers === 0 ? <></> : 
-                        <Badge aria-describedby='tooltip-bottom' id='volunteer-mobile'>{totalVolunteers} Volunteers</Badge>
-                    }
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" id={toggled ? 'toggledNav1': 'nav1'}/>
-                </Form>
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
-                        <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(1)}>
-                            <p id={toggled ? 'navLinkToggled': 'navLink'}>About us</p>
-                        </Nav.Link>
-                        <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-border-element'}
-                            href = {window.location.protocol + '//' + window.location.host + '/organizationPortal'}>
-                            <p id={toggled ? 'navLinkToggled': 'navLinkBorder'}>Organizations</p>
-                        </Nav.Link>
-                        <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(2)}>
-                            <p id={toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
-                        </Nav.Link>
-                        {/* <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(4)}>
-                            <p id={toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
-                        </Nav.Link> */}
-                        {props.totalVolunteers === 0 ? <></> : 
-                        <Nav.Link className="volunteer-badge-web">
-                            <Badge aria-describedby='tooltip-bottom' id='volunteerBadge'>{props.totalVolunteers} Volunteers</Badge>
-                        </Nav.Link>}
-                    </Nav>
-                    {props.totalVolunteers === 0 ? <></> : rightNav}
-                </Navbar.Collapse>
-            </Navbar>
-        )
-    }
     return (
         <Navbar collapseOnSelect onToggle={(e) => setToggled(e)} variant="light" expand="md" id="custom-navbar">
             <Navbar.Brand href = {window.location.protocol + '//' + window.location.host} id="navbar-brand" style={(width < 767) ? {marginTop: 12} : {}}>
@@ -133,11 +96,11 @@ export default function CovaidNavbar(props) {
                     <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(2)}>
                         <p id={toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
                     </Nav.Link>
-                    {/* <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(4)}>
-                        <p id={toggled ? 'navLinkToggled': 'navLink'}>Feedback</p>
-                    </Nav.Link> */}
                     <Nav.Link className="volunteer-badge-web">
-                        <Badge aria-describedby='tooltip-bottom' id='volunteerBadge'>{totalVolunteers} Volunteers</Badge>
+                        {(props.totalVolunteers === 0 || totalVolunteers === 0) ? <></> :
+                        <Badge aria-describedby='tooltip-bottom' id='volunteerBadge'>{
+                            props.orgPortal ? props.totalVolunteers : totalVolunteers
+                        } Volunteers</Badge>}
                     </Nav.Link>
                 </Nav>
                 {rightNav}

@@ -17,7 +17,7 @@ import { useFormFields } from "../libs/hooksLib";
 
 import { setFalseObj } from '../Helpers';
 import { defaultResources } from '../constants';
-import CheckForm from '../CheckForm'
+import CheckForm from '../components/CheckForm'
 import NewHasCar from '../components_homepage/NewHasCar'
 import VolunteerDetails from './VolunteerDetails'
 

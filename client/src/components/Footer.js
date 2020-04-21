@@ -3,8 +3,8 @@ import Navbar from 'react-bootstrap/Navbar'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
-import HowItWorks from './components_modals/HowItWorks'
-import Feedback from './components_modals/Feedback'
+import HowItWorks from '../components_modals/HowItWorks'
+import Feedback from '../components_modals/Feedback'
 
 export default function Footer(props) {
 
@@ -31,7 +31,7 @@ export default function Footer(props) {
                             covaid
                         </Navbar.Brand>
                     </Navbar>
-                    <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://github.com/debanik1997/corona-aid">Github</a><br/>
+                    {/* <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://github.com/debanik1997/corona-aid">Github</a><br/> */}
                     <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/covaidco">Facebook</a><br/>
                     <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/covaidmutualaid/">Instagram</a><br/>
                 </Col>

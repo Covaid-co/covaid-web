@@ -126,6 +126,7 @@
     margin-top: -5px;
     margin-bottom: -30px;
     color: #7F7F7F;
+    max-width: 1500px;
 }
 
 #volunteer-name {
@@ -174,6 +175,10 @@
     margin-right: 30px;
     padding-top: 0px;
     margin-top: -3px;
+}
+
+#home {
+    font-family: 'Baloo Chettan 2';
 }
 
 .navbar-element {
@@ -292,6 +297,7 @@
     margin-bottom: 60px;
     border-radius: 10px;
     border: 1px solid #CECECE;
+    background-color: white;
 }
 
 #filterButton {

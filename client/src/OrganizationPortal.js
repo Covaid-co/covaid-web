@@ -10,7 +10,7 @@ import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
 import CovaidNavbar from './CovaidNavbar'
-import Footer from './Footer'
+import Footer from './components/Footer'
 
 import RequestDetails from './components_orgpage/RequestDetails';
 import VolunteerDetails from './components_orgpage/VolunteerDetails';
@@ -219,11 +219,10 @@ export default function OrganiationPortal() {
 	}
 
 	if (showLogin === true) {
-		return ([
+		return (
 			<div className="App">
 				<OrgLogin login={login} setShowLogin={setShowLogin}/>
-			</div>,
-			<Footer key="2" handleShowModal={() => {}}/>]
+			</div>
 		)
 	}
 	return ([
