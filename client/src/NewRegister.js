@@ -10,8 +10,8 @@ import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
 import ReCAPTCHA from "react-google-recaptcha";
 
-import SelectionForm from './SelectionForm';
-import CheckForm from './CheckForm';
+import SelectionForm from './components/SelectionForm';
+import CheckForm from './components/CheckForm';
 import PhoneNumber from './PhoneNumber';
 import NewHasCar from './components_homepage/NewHasCar';
 import Details from './components_homepage/Details'
@@ -358,6 +358,10 @@ export default function NewRegister(props) {
                                 If these neighborhoods seem unfamiliar, please change your location before registering
                             </p>
                             <CheckForm obj={neighborhoodsChecked} setObj={setNeighborhoodsChecked}/>
+                            <h5 id="regular-text-bold"  style = {{marginTop: '24px', marginBottom: 5}}>Please choose an organization</h5>
+                            <p id="regular-text" style={{marginBottom: 5, fontSize: 14}}>
+                                Choose a nearby supporting organization to help manage your mutual aid efforts.
+                            </p>
                             <SelectionForm associations={props.state.associations} setState={props.setState} currentAssoc={props.state.currentAssoc}/>
                             <h5 id="regular-text-bold" style = {{marginTop: 20, marginBottom: 4}}>
                                 Health

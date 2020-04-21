@@ -1,19 +1,19 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useFormFields } from "./libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
 
-import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import Cookie from 'js-cookie'
-import orgImg from './assets/org.png'
-import CovaidNavbar from './CovaidNavbar'
-import AboutUs from './components_modals/AboutUs'
-import HowItWorks from './components_modals/HowItWorks'
-import Feedback from './components_modals/Feedback'
+import orgImg from '../assets/org.png'
+import CovaidNavbar from '../CovaidNavbar'
+import AboutUs from '../components_modals/AboutUs'
+import HowItWorks from '../components_modals/HowItWorks'
+import Feedback from '../components_modals/Feedback'
+import Footer from '../components/Footer'
 
 export default function OrgLogin(props) {
     const [fields, handleFieldChange] = useFormFields({
@@ -135,6 +135,7 @@ export default function OrgLogin(props) {
             </Row>
             </Container>
             {getCurrentModal()}
+            <Footer key="2" handleShowModal={() => {}}/>
         </>
     )
 }

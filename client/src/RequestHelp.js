@@ -11,7 +11,7 @@ import NeededBy from './components_homepage/NeededBy';
 import NewPaymentMethod from './components_homepage/NewPaymentMethod';
 import NewDetails from './components_homepage/NewDetails';
 import PhoneNumber from './PhoneNumber';
-import CheckForm from './CheckForm';
+import CheckForm from './components/CheckForm';
 import { defaultResources, languages, toastTime } from './constants'
 import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';
 
