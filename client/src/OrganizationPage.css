@@ -194,7 +194,6 @@ input {
 }
 
 #default-checkbox {
-    position: absolute;
     width: 19px;
     height: 19px;
 
@@ -202,3 +201,4 @@ input {
     box-sizing: border-box;
     border-radius: 4px;
 }
+

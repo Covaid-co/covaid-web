@@ -17,6 +17,7 @@ import Feedback from './components_modals/Feedback'
 import { generateURL } from './Helpers';
 import CovaidNavbar from './CovaidNavbar'
 import VolunteerLogin from './VolunteerLogin'
+import Beacons from './Beacons'
 import './VolunteerPage.css'
 import Cookie from 'js-cookie'
 import fetch_a from './util/fetch_auth'
@@ -30,6 +31,7 @@ export default function VolunteerPortal(props) {
 	const [pendingRequests, setPendingRequests] = useState([]);
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
 	const [completedRequests, setCompletedRequests] = useState([]);
+	const [beacons, setBeacons] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState(0);
 	const { addToast } = useToasts();
@@ -91,6 +93,22 @@ export default function VolunteerPortal(props) {
         });
 	}
 
+	const fetchBeacons = () => {
+		fetch_a('token', '/api/beacon/user', {
+            method: 'get',
+        }).then((response) => {
+			if (response.ok) {
+				response.json().then(data => {
+					setBeacons(data);
+				});
+			} else {
+				console.log("Error");
+			}
+		}).catch((e) => {
+			console.log(e);
+		});
+	}
+
 	const fetchUser = () => {
 		fetch_a('token', '/api/users/current')
 			.then((response) => response.json())
@@ -116,6 +134,7 @@ export default function VolunteerPortal(props) {
 				fetchPendingRequests(user._id);
 				fetchAcceptedRequests(user._id);
 				fetchCompletedRequests(user._id);
+				fetchBeacons();
 		})
 		.catch((error) => {
 			console.error(error);
@@ -194,6 +213,9 @@ export default function VolunteerPortal(props) {
 							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
 								Completed ({completedRequests.length})
 							</Button>
+							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(4)}}>
+								Beacons ({beacons.length})
+							</Button>
 						</Container>
 						<Container id="newOfferContainer"
 							style={tabNum===1 ? {'display': 'block'} : {'display': 'none'}}>
@@ -212,6 +234,10 @@ export default function VolunteerPortal(props) {
 							style={tabNum===3 ? {'display': 'block'} : {'display': 'none'}}>
 							<CompletedVolunteerRequests user={user} 
 								completedRequests={completedRequests} />
+						</Container>
+						<Container id="newOfferContainer"
+							style={tabNum===4 ? {'display': 'block'} : {'display': 'none'}}>
+								<Beacons beacons={beacons}/>
 						</Container>
 					</Col>
 					<Col lg={4} md={8} sm={10}>

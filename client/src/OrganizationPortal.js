@@ -14,6 +14,7 @@ import Footer from './Footer'
 
 import RequestDetails from './components_orgpage/RequestDetails';
 import VolunteerDetails from './components_orgpage/VolunteerDetails';
+import Beacons from './Beacons';
 import NewMap from './components_orgpage/NewMap'
 import VolunteersModal from './components_orgpage/VolunteersModal';
 import AdminModal from './components_orgpage/AdminModal';
@@ -40,12 +41,30 @@ export default function OrganiationPortal() {
 	const [unmatched, setUnmatched] = useState([]);
 	const [matched, setMatched] = useState([]);
 	const [completed, setCompleted] = useState([]);
+	const [beacons, setBeacons] = useState([]);
 	const [requesterMap, setRequesterMap] = useState(true);
 	const [volunteerMap, setVolunteerMap] = useState(false);
 	const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
 	const [requestDetailsModal, setRequestDetailsModal] = useState(false);
 	const [currVolunteer, setCurrVolunteer] = useState({});
 	const [currRequest, setCurrRequest] = useState({});
+
+	const fetchBeacons = () => {
+		// Get all request types for an association
+		fetch_a('org_token', '/api/beacon/', {
+            method: 'get',
+        }).then((response) => {
+			if (response.ok) {
+				response.json().then(data => {
+					setBeacons(data);
+				});
+			} else {
+				console.log("Error");
+			}
+		}).catch((e) => {
+			console.log(e);
+		});
+	}
 
 	const fetch_requests = (id) => {
 			let params = {'association': id}
@@ -85,7 +104,6 @@ export default function OrganiationPortal() {
 			}).catch((e) => {
 				console.log(e);
 			});
-
 	}
 
 	function login() {
@@ -121,6 +139,9 @@ export default function OrganiationPortal() {
 
 				// All requests for an association
 				fetch_requests(association_response._id);
+
+				// All beacons
+				fetchBeacons();
 				
 				// Get all volunteers for an association
 				let params = {'association': association_response._id}
@@ -239,7 +260,7 @@ export default function OrganiationPortal() {
 								<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched ({unmatched.length})</Button>
 								<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched ({matched.length})</Button>
 								<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed ({completed.length})</Button>
-								<Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Beacons</Button>
+								<Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Beacons ({beacons.length})</Button>
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(1)}>
 								<UnmatchedRequests association={association}
@@ -281,7 +302,7 @@ export default function OrganiationPortal() {
 													mode={3}/>
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(4)}>
-								
+								<Beacons beacons={beacons}/>
 							</Container>
 						</Col>
 						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
