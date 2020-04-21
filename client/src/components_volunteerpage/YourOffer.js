@@ -13,7 +13,7 @@ import Details from '../components_homepage/Details';
 
 import { generateURL, extractTrueObj } from '../Helpers'
 import { defaultResources, toastTime } from '../constants';
-import CheckForm from '../CheckForm';
+import CheckForm from '../components/CheckForm';
 
 
 export default function YourOffer(props) {

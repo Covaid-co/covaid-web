@@ -14,6 +14,8 @@ import CovaidNavbar from './CovaidNavbar'
 import AboutUs from './components_modals/AboutUs'
 import HowItWorks from './components_modals/HowItWorks'
 import Feedback from './components_modals/Feedback'
+import Footer from './components/Footer';
+import NewLogin from './NewLogin';
 
 export default function OrgLogin(props) {
     const [fields, handleFieldChange] = useFormFields({
@@ -95,6 +97,8 @@ export default function OrgLogin(props) {
             modal = <HowItWorks showModal={showModal} hideModal={() => setShowModal(false)}/>;
         } else if  (modalType === 4) {
             modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)}/>;
+        } else if (modalType === 6) {
+            modal = <NewLogin showModal={showModal} hideModal={() => setShowModal(false)}/>
         }
         return modal;
     }
@@ -133,8 +137,8 @@ export default function OrgLogin(props) {
             </Row>
         </Container>
         {getCurrentModal()}
-    </>
-    )
+        <Footer key="2" handleShowModal={handleShowModal}/>
+    </>)
 
       if (mode) {
         return (

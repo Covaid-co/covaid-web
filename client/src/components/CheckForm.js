@@ -11,9 +11,12 @@ export default function CheckForm(props) {
         }));
     }
 
+    const sortedObj = Object.keys(props.obj);
+    sortedObj.sort();
+
     return (
         <>
-            {Object.keys(props.obj).map((key) => {
+            {sortedObj.map((key) => {
                 return <Button key={key}
                                id={props.obj[key] ? "selected" : "notSelected"}
                                onClick = {() => handleObjChange(key)}>
