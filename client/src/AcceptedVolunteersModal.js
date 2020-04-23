@@ -19,10 +19,15 @@ export default function AcceptedVolunteersModal(props) {
                             return (
                                 <ListGroup.Item key={i}>
                                     <div >
-                                        <h5 id="volunteer-name">
+                                        <h5 id="volunteer-name" style={{marginBottom: 15}}>
                                             {volunteer.volunteer_first} {volunteer.volunteer_last} 
                                         </h5>
-                                        {/* <Badge style={{float: "right", marginTop: 2}} key={i} className='pending-task'>Not Accepted</Badge> */}
+                                        <h5 id="volunteer-name" style={{marginBottom: 15}}>
+                                            Contact
+                                        </h5>
+                                        <p id="regular-text" style={{marginBottom: 15, fontSize: 16}}>
+                                            
+                                        </p>
                                     </div>
                                 </ListGroup.Item>);
                             })}

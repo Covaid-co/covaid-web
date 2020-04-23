@@ -58,6 +58,7 @@ export default function OrganizationBeaconModal(props) {
 
     const showAcceptedVolunteersModal = () => {
         setShowAcceptedVolunteers(true);
+        props.setModalOpen(false);
     }
 
     const showDeactivateBeacon = () => {
