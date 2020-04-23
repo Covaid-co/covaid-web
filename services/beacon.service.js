@@ -1,5 +1,8 @@
 const BeaconRepository = require('../repositories/beacon.repository');
-const BeaconStatusEnum = {"active":1, "inactive":2, "delete":3}
+const BeaconStatusEnum = {"active":1, "inactive":2, "delete":3};
+
+const UserService = require('./user.service');
+
 
 exports.getQueriedBeacons = async function(query) {
     try {
@@ -53,9 +56,15 @@ exports.createBeacon = async function (auth_id, beacon) {
             beaconStartDate: new Date(beacon.beaconStartDate),
             beaconEndDate: new Date(beacon.beaconEndDate)
         };
-        return await BeaconRepository.createBeacon(constructedBeacon);
+        let savedBeacon =  await BeaconRepository.createBeacon(constructedBeacon);
 
+        const users = await UserService.getUsersByUserIDs(beacon.volunteers);
+        users.forEach(user => {
+            console.log("Sending beacon to " + user.email);
+        });
+        return savedBeacon;
     } catch (e) {
+        console.log(e);
         throw e;
     }
 }

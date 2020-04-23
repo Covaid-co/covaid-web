@@ -16,7 +16,7 @@ export default function AccountInfo(props) {
         setIsLoaded(true)
         setUser(props.user)
     }, [props.user])
-
+ 
     const getAssocName = () => {
         var assocName = <></>
         if (user.association && user.association.length > 0) {
@@ -34,46 +34,51 @@ export default function AccountInfo(props) {
 
     if (isLoaded) {
         return (
-            <Row>
-                <Col>
-                    <h3 id="small-header">Your Profile</h3>
-                    <p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p>
-                    <div style={{marginTop: 0, marginBottom: 30}}>
-                        <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Name:</b> {user.first_name + " " + user.last_name}
-                        </h5>
-                        {phoneNum}
-                        <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Email:</b> {user.email}
-                        </h5>
-                    </div>
-                    <div style={{marginTop: 0, marginBottom: 30}}>
-                        {getAssocName()}
-                        <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Location:</b> {user.offer.neighborhoods.join(", ")} <FontAwesomeIcon style={{color: "red"}} icon={faMapMarkerAlt} /> 
-                        </h5>
-                    </div>
-                    <div style={{marginTop: 0, marginBottom: 10}}>
-                        <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Languages:</b> {user.languages.join(", ")}
-                        </h5>
-                        <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
-                            <b>Car:</b> {user.offer.car ? "Yes" : "No"}
-                        </h5>
-                        <h5 id="regular-text" style={{marginTop: 0, marginBottom: 0, color: 'black'}}>
-                            <b>Availability:</b> {user.offer.timesAvailable.join(", ")}
-                        </h5>
-                    </div>
-                    <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}>&nbsp;</p>
-                    <Button id="regular-text" onClick={() => {setShowEditModal(true);}} 
-                        style={{margin: "auto", display: "block", color: '#2670FF'}}variant="link">
-                        Edit Info
-                    </Button>
-                    <Modal size={"lg"} show={showEditModal} onHide={() => {setShowEditModal(false);}}  style = {{marginTop: 10, paddingBottom: 50}}>
-                        <EditAccountInfoModal user={user} />
-                    </Modal>
-                </Col>
-            </Row>
+            <Modal show={props.showAccountModal} onHide={() => props.setShowAccountModal(false)}>
+                 <Modal.Header closeButton>
+                    <Modal.Title id="small-header">Your Profile</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Row>
+                        <Col>
+                            <div style={{marginTop: 0, marginBottom: 30}}>
+                                <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
+                                    <b>Name:</b> {user.first_name + " " + user.last_name}
+                                </h5>
+                                {phoneNum}
+                                <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
+                                    <b>Email:</b> {user.email}
+                                </h5>
+                            </div>
+                            <div style={{marginTop: 0, marginBottom: 30}}>
+                                {getAssocName()}
+                                <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
+                                    <b>Location:</b> {user.offer.neighborhoods.join(", ")} <FontAwesomeIcon style={{color: "red"}} icon={faMapMarkerAlt} /> 
+                                </h5>
+                            </div>
+                            <div style={{marginTop: 0, marginBottom: 10}}>
+                                <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
+                                    <b>Languages:</b> {user.languages.join(", ")}
+                                </h5>
+                                <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
+                                    <b>Car:</b> {user.offer.car ? "Yes" : "No"}
+                                </h5>
+                                <h5 id="regular-text" style={{marginTop: 0, marginBottom: 0, color: 'black'}}>
+                                    <b>Availability:</b> {user.offer.timesAvailable.join(", ")}
+                                </h5>
+                            </div>
+                            <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}>&nbsp;</p>
+                            <Button id="regular-text" onClick={() => {setShowEditModal(true);}} 
+                                style={{margin: "auto", display: "block", color: '#2670FF'}}variant="link">
+                                Edit Info
+                            </Button>
+                            <Modal size={"lg"} show={showEditModal} onHide={() => {setShowEditModal(false);}}  style = {{marginTop: 10, paddingBottom: 50}}>
+                                <EditAccountInfoModal user={user} />
+                            </Modal>
+                        </Col>
+                    </Row>
+                </Modal.Body>
+            </Modal>
         )
     } else {
         return (

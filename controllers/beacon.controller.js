@@ -34,7 +34,7 @@ exports.handleCreateBeacon = asyncWrapper(async (req, res) => {
 
     try {
 		const newBeacon = await BeaconService.createBeacon(auth_id, beacon);
-        return (newBeacon._id === null) ? res.sendStatus(500) : res.status(201).send({'_id': newBeacon._id});
+        return (newBeacon._id === null) ? res.sendStatus(500) : res.status(201).send({'beacon': newBeacon});
     } catch (e) {
 		return res.status(422).send(e);
     }

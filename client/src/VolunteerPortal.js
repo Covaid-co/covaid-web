@@ -17,10 +17,12 @@ import Feedback from './components_modals/Feedback'
 import { generateURL } from './Helpers';
 import CovaidNavbar from './CovaidNavbar'
 import VolunteerLogin from './components_volunteerpage/VolunteerLogin'
-import Beacons from './Beacons'
+import VolunteerBeacons from './VolunteerBeacons'
 import './VolunteerPage.css'
 import fetch_a from './util/fetch_auth'
 import Footer from './components/Footer'
+
+import {UserType} from './constants'
 
 
 export default function VolunteerPortal(props) {
@@ -34,6 +36,7 @@ export default function VolunteerPortal(props) {
 	const [beacons, setBeacons] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState(0);
+	const [showAccountModal, setShowAccountModal] = useState(false);
 	const { addToast } = useToasts();
 
 	const fetchPendingRequests = (id) => {
@@ -190,10 +193,13 @@ export default function VolunteerPortal(props) {
 			<Jumbotron fluid id="jumbo-volunteer">
 				<Container style={{maxWidth: 1500}}>
 					<Row>
-						<Col lg={2} md={1} sm={0}></Col>
+						<Col lg={1} md={1} sm={0}></Col>
 						<Col>
 							<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {user.first_name}!</h1>
-							<p id="regular-text">This is your volunteer portal, a place for you to manage your offer and handle requests</p>
+							<p id="regular-text" style={{fontSize: 20}} >This is your volunteer portal, a place for you to manage your offer and handle requests</p>
+							<Button id="medium-button" onClick={()=>{setShowAccountModal(true)}}>
+								View Profile Information
+							</Button>{' '}
 						</Col>
 					</Row>
 				</Container>
@@ -212,9 +218,6 @@ export default function VolunteerPortal(props) {
 							</Button>
 							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
 								Completed ({completedRequests.length})
-							</Button>
-							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(4)}}>
-								Beacons ({beacons.length})
 							</Button>
 						</Container>
 						<Container id="newOfferContainer"
@@ -235,15 +238,12 @@ export default function VolunteerPortal(props) {
 							<CompletedVolunteerRequests user={user} 
 								completedRequests={completedRequests} />
 						</Container>
-						<Container id="newOfferContainer"
-							style={tabNum===4 ? {'display': 'block'} : {'display': 'none'}}>
-								<Beacons beacons={beacons}/>
-						</Container>
 					</Col>
-					<Col lg={4} md={8} sm={10}>
+					<Col lg={4} md={8} sm={10} style={{marginTop: -28}}>
+						<h5 id="volunteer-offer-status" style={{fontSize: 24, fontWeight: "bold", color: "black"}}>Organization Beacons</h5>
 						<Container id="newOfferContainer"
 							style={{'display': 'block', marginTop: 10}}>
-							{foundUser ? <AccountInfo user={user}/> : <></>}
+							<VolunteerBeacons beacons={beacons} volunteer={user} />
 						</Container>
 					</Col>
 					<Col lg={1}></Col>
@@ -252,6 +252,7 @@ export default function VolunteerPortal(props) {
 			{getCurrentModal()}
 		</div>
 		<Footer key="2" handleShowModal={handleShowModal}/>
+		<AccountInfo user={user} showAccountModal={showAccountModal} setShowAccountModal={setShowAccountModal} />
 		</>
 	);
 }

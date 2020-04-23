@@ -126,9 +126,9 @@ export default function BeaconCreation(props) {
             body: JSON.stringify(form)
         })
             .then((response) => response.json())
-                .then((_id) => {
-                    console.log(_id); 
+                .then((body) => {
                     props.setBeaconModal(false);
+                    props.pushBeacon(body.beacon);
                     resetState();
                 })
                 .catch((error) => {

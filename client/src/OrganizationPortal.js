@@ -14,7 +14,6 @@ import Footer from './components/Footer'
 
 import RequestDetails from './components_orgpage/RequestDetails';
 import VolunteerDetails from './components_orgpage/VolunteerDetails';
-import Beacons from './Beacons';
 import NewMap from './components_orgpage/NewMap'
 import VolunteersModal from './components_orgpage/VolunteersModal';
 import AdminModal from './components_orgpage/AdminModal';
@@ -25,6 +24,10 @@ import { generateURL } from './Helpers'
 import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
+
+import {UserType} from './constants'
+import { set } from "mongoose";
+import OrganizationBeacons from "./OrganizationBeacons";
 
 export default function OrganiationPortal() {
 
@@ -104,6 +107,10 @@ export default function OrganiationPortal() {
 			}).catch((e) => {
 				console.log(e);
 			});
+	}
+
+	const pushBeacon = (beacon) => {
+		setBeacons(beacons.concat(beacon));
 	}
 
 	function login() {
@@ -232,23 +239,41 @@ export default function OrganiationPortal() {
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
 					<Container style={{maxWidth: 1500}}>
 						<Row>
-							<Col lg={1} md={1} sm={0}></Col>
 							<Col>
-								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {association.name}!</h1>
-								<p id="regular-text" style={{marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
+								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back,</h1>
+								<h1 id="home-heading" style={{marginTop: 0}}>{association.name}!</h1>
+								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
 								<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
 									Manage Organization
 								</Button>{' '}
 								<Button id="medium-button" onClick={()=>{setVolunteersModal(true)}}>
 									View Volunteers
 								</Button>{' '}
-								<Button id="medium-button" onClick={()=>{setBeaconModal(true)}}>
-									Create a beacon
-								</Button><br/>
+								<br/>
 								<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
 									+ Add a link to your community's resources
 								</Button>
 							</Col>
+							<Col>
+							<Col lg={1}></Col>
+								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 140}}>
+									<h3 id="home-heading" style={{marginTop: 0, fontSize: 20}}>Need a task done?</h3>
+									<p id="regular-text" style={{marginBottom: 10}}>Use our Beacon Notifcation System and mass notify your volunteers about any internal organization requests.</p>
+									<Row>
+										<Col style={{paddingRight: 5}}>
+											<Button id="large-button" onClick={()=>{setBeaconModal(true)}}>
+												Create Beacon
+											</Button>
+										</Col>
+										<Col style={{paddingLeft: 5}}>
+											<Button id="large-button-empty" style={{marginTop: 0, paddingLeft: 5}}>
+												View Live Beacons ({beacons.length})
+											</Button>
+										</Col>
+									</Row>
+								</Container>
+							</Col>
+							
 						</Row>
 					</Container>
 				</Jumbotron>
@@ -259,7 +284,7 @@ export default function OrganiationPortal() {
 								<Button id={tabID(1)} onClick={() => {setCurrTab(1)}}>Unmatched ({unmatched.length})</Button>
 								<Button id={tabID(2)} onClick={() => {setCurrTab(2)}}>Matched ({matched.length})</Button>
 								<Button id={tabID(3)} onClick={() => {setCurrTab(3)}}>Completed ({completed.length})</Button>
-								<Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Beacons ({beacons.length})</Button>
+								{/* <Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Beacons ({beacons.length})</Button> */}
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(1)}>
 								<UnmatchedRequests association={association}
@@ -301,7 +326,7 @@ export default function OrganiationPortal() {
 													mode={3}/>
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(4)}>
-								<Beacons beacons={beacons}/>
+								<OrganizationBeacons beacons={beacons} association={association} />
 							</Container>
 						</Col>
 						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
@@ -359,7 +384,8 @@ export default function OrganiationPortal() {
 				<BeaconCreation beaconModal={beaconModal}
 							setBeaconModal={setBeaconModal}
 							association={association}
-							volunteers={volunteers} />
+							volunteers={volunteers}
+							pushBeacon={pushBeacon} />
 			</div>
 		</div>,
 		<Footer key="2" handleShowModal={() => {}}/>]
