@@ -19,6 +19,7 @@ import VolunteersModal from './components_orgpage/VolunteersModal';
 import AdminModal from './components_orgpage/AdminModal';
 import BeaconCreation from './components_orgpage/BeaconCreation';
 import OrgResourcesModal from './OrgResourcesModal';
+import LiveBeaconView from './LiveBeaconView'
 import { sortFn } from './OrganizationHelpers'
 import { generateURL } from './Helpers'
 import './OrganizationPage.css'
@@ -51,6 +52,9 @@ export default function OrganiationPortal() {
 	const [requestDetailsModal, setRequestDetailsModal] = useState(false);
 	const [currVolunteer, setCurrVolunteer] = useState({});
 	const [currRequest, setCurrRequest] = useState({});
+
+	const [beaconView, setBeaconView] = useState(false);
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	const fetchBeacons = () => {
 		// Get all request types for an association
@@ -170,6 +174,7 @@ export default function OrganiationPortal() {
 								return sortFn(x, y, false);
 							});
 							setVolunteers(resVolunteer);
+							setIsLoaded(true);
 						});
 					} else {
 						console.log(response);
@@ -213,6 +218,11 @@ export default function OrganiationPortal() {
 		}
 	}, []);
 
+	if (beaconView) {
+		return <LiveBeaconView volunteers={volunteers} association={association} setBeaconView={setBeaconView} beacons={beacons} />
+	}
+
+
 	const displayTab = (tabNumber) => {
 		if (tabNumber === currTabNumber) {
 			return {'display': 'block', paddingLeft: 15, paddingTop: 15};
@@ -231,6 +241,9 @@ export default function OrganiationPortal() {
 				<OrgLogin login={login} setShowLogin={setShowLogin}/>
 			</div>
 		)
+	}
+	if (!isLoaded) {
+		return <></>;
 	}
 	return ([
 		<div className="App">
@@ -266,14 +279,13 @@ export default function OrganiationPortal() {
 											</Button>
 										</Col>
 										<Col style={{paddingLeft: 5}}>
-											<Button id="large-button-empty" style={{marginTop: 0, paddingLeft: 5}}>
-												View Live Beacons ({beacons.length})
+											<Button id="large-button-empty" style={{marginTop: 0, paddingLeft: 5}} onClick={()=>{setBeaconView(true)}} >
+												View Live Beacons ({beacons.filter(beacon => beacon.beaconStatus===1).length})
 											</Button>
 										</Col>
 									</Row>
 								</Container>
 							</Col>
-							
 						</Row>
 					</Container>
 				</Jumbotron>

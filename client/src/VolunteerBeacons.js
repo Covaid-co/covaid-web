@@ -14,6 +14,10 @@ export default function VolunteerBeacons(props) {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedBeacon, setSelectedBeacon] = useState({});
 
+    const refetchBeacons = () => {
+        props.fetchBeacons();
+    }
+
     useEffect(() => {
         setBeacons(props.beacons.reverse());
         setVolunteer(props.volunteer);
@@ -78,6 +82,7 @@ export default function VolunteerBeacons(props) {
                     showBeaconModal={modalOpen}
                     setModalOpen={setModalOpen}
                     volunteer={volunteer}
+                    refetchBeacons={refetchBeacons}
                     />
             </>
             );

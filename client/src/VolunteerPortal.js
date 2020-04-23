@@ -37,6 +37,7 @@ export default function VolunteerPortal(props) {
 	const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState(0);
 	const [showAccountModal, setShowAccountModal] = useState(false);
+	const [loginError, setLoginError] = useState(false);
 	const { addToast } = useToasts();
 
 	const fetchPendingRequests = (id) => {
@@ -116,8 +117,8 @@ export default function VolunteerPortal(props) {
 		fetch_a('token', '/api/users/current')
 			.then((response) => response.json())
 			.then((user) => {
-				setUser(user)
-				setFoundUser(true)
+				setUser(user);
+				setFoundUser(true);
 
 				var pusher = new Pusher('ed72954a8d404950e3c8', {
 					cluster: 'us2',
@@ -140,7 +141,7 @@ export default function VolunteerPortal(props) {
 				fetchBeacons();
 		})
 		.catch((error) => {
-			console.error(error);
+			setLoginError(true);
 		});
 	}
 
@@ -179,80 +180,82 @@ export default function VolunteerPortal(props) {
             modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)}/>;
         }
         return modal;
-    }
-	
-
-	if (!props.location.loggedIn && foundUser === false) {
-		return <VolunteerLogin/>
 	}
 
-	return (<>
-		<div className="App">
-			<CovaidNavbar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
-			<div id="bgImage"></div>
-			<Jumbotron fluid id="jumbo-volunteer">
-				<Container style={{maxWidth: 1500}}>
-					<Row>
-						<Col lg={1} md={1} sm={0}></Col>
-						<Col>
-							<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {user.first_name}!</h1>
-							<p id="regular-text" style={{fontSize: 20}} >This is your volunteer portal, a place for you to manage your offer and handle requests</p>
-							<Button id="medium-button" onClick={()=>{setShowAccountModal(true)}}>
-								View Profile Information
-							</Button>{' '}
+	if (foundUser) {
+
+		return (<>
+			<div className="App">
+				<CovaidNavbar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
+				<div id="bgImage"></div>
+				<Jumbotron fluid id="jumbo-volunteer">
+					<Container style={{maxWidth: 1500}}>
+						<Row>
+							<Col lg={1} md={1} sm={0}></Col>
+							<Col>
+								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back, {user.first_name}!</h1>
+								<p id="regular-text" style={{fontSize: 20}} >This is your volunteer portal, a place for you to manage your offer and handle requests</p>
+								<Button id="medium-button" onClick={()=>{setShowAccountModal(true)}}>
+									View Profile Information
+								</Button>{' '}
+							</Col>
+						</Row>
+					</Container>
+				</Jumbotron>
+				<Container id="volunteer-info">
+					<Row lg={1}></Row>
+					<Row className="justify-content-md-center">
+						<Col lg={1}></Col>
+						<Col lg={6} md={8} sm={10} style={{marginTop: -44}}>
+							<Container style={{padding: 0, marginLeft: 0}}> 
+								<Button id={tabNum===1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>
+									Your Offer
+								</Button>
+								<Button id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
+									Pending ({pendingRequests.length}) / Active ({acceptedRequests.length})
+								</Button>
+								<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
+									Completed ({completedRequests.length})
+								</Button>
+							</Container>
+							<Container id="newOfferContainer"
+								style={tabNum===1 ? {'display': 'block'} : {'display': 'none'}}>
+								{foundUser ? <YourOffer user={user} /> : <></>}
+							</Container>
+							<Container id="newOfferContainer"
+								style={tabNum===2 ? {'display': 'block'} : {'display': 'none'}}>
+								<PendingVolunteerRequests user={user} 
+									pendingRequests={pendingRequests}
+									acceptedRequests={acceptedRequests} 
+									moveRequestFromPendingToInProgress={moveRequestFromPendingToInProgress} 
+									rejectAPendingRequest={rejectAPendingRequest} 
+									completeAnInProgressRequest={completeAnInProgressRequest} />
+							</Container>
+							<Container id="newOfferContainer"
+								style={tabNum===3 ? {'display': 'block'} : {'display': 'none'}}>
+								<CompletedVolunteerRequests user={user} 
+									completedRequests={completedRequests} />
+							</Container>
 						</Col>
+						<Col lg={4} md={8} sm={10} style={{marginTop: -28}}>
+							<h5 id="volunteer-offer-status" style={{fontSize: 24, fontWeight: "bold", color: "black"}}>Organization Beacons</h5>
+							<Container id="newOfferContainer"
+								style={{'display': 'block', marginTop: 10}}>
+								<VolunteerBeacons beacons={beacons} volunteer={user} fetchBeacons={fetchBeacons}/>
+							</Container>
+						</Col>
+						<Col lg={1}></Col>
 					</Row>
 				</Container>
-			</Jumbotron>
-			<Container id="volunteer-info">
-				<Row lg={1}></Row>
-				<Row className="justify-content-md-center">
-					<Col lg={1}></Col>
-					<Col lg={6} md={8} sm={10} style={{marginTop: -44}}>
-						<Container style={{padding: 0, marginLeft: 0}}> 
-							<Button id={tabNum===1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>
-								Your Offer
-							</Button>
-							<Button id={tabNum===2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>
-								Pending ({pendingRequests.length}) / Active ({acceptedRequests.length})
-							</Button>
-							<Button id={tabNum===3 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(3)}}>
-								Completed ({completedRequests.length})
-							</Button>
-						</Container>
-						<Container id="newOfferContainer"
-							style={tabNum===1 ? {'display': 'block'} : {'display': 'none'}}>
-							{foundUser ? <YourOffer user={user} /> : <></>}
-						</Container>
-						<Container id="newOfferContainer"
-							style={tabNum===2 ? {'display': 'block'} : {'display': 'none'}}>
-							<PendingVolunteerRequests user={user} 
-								pendingRequests={pendingRequests}
-								acceptedRequests={acceptedRequests} 
-								moveRequestFromPendingToInProgress={moveRequestFromPendingToInProgress} 
-								rejectAPendingRequest={rejectAPendingRequest} 
-								completeAnInProgressRequest={completeAnInProgressRequest} />
-						</Container>
-						<Container id="newOfferContainer"
-							style={tabNum===3 ? {'display': 'block'} : {'display': 'none'}}>
-							<CompletedVolunteerRequests user={user} 
-								completedRequests={completedRequests} />
-						</Container>
-					</Col>
-					<Col lg={4} md={8} sm={10} style={{marginTop: -28}}>
-						<h5 id="volunteer-offer-status" style={{fontSize: 24, fontWeight: "bold", color: "black"}}>Organization Beacons</h5>
-						<Container id="newOfferContainer"
-							style={{'display': 'block', marginTop: 10}}>
-							<VolunteerBeacons beacons={beacons} volunteer={user} />
-						</Container>
-					</Col>
-					<Col lg={1}></Col>
-				</Row>
-			</Container>
-			{getCurrentModal()}
-		</div>
-		<Footer key="2" handleShowModal={handleShowModal}/>
-		<AccountInfo user={user} showAccountModal={showAccountModal} setShowAccountModal={setShowAccountModal} />
-		</>
-	);
+				{getCurrentModal()}
+			</div>
+			<Footer key="2" handleShowModal={handleShowModal}/>
+			<AccountInfo user={user} showAccountModal={showAccountModal} setShowAccountModal={setShowAccountModal} />
+			</>
+		);
+	} else if (loginError)  {
+		return <VolunteerLogin />;
+	} else {
+		return <></>;
+	}
 }

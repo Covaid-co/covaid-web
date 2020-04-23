@@ -93,7 +93,10 @@ export default function BeaconCreation(props) {
         for (var volunteer in checkboxStatus) {
             if (checkboxStatus.hasOwnProperty(volunteer)) {
                 if (checkboxStatus[volunteer]) {
-                    volunteers.push(volunteer);
+                    const currentVolunteer = foundVolunteers.filter(function (v) {
+                        return v._id === volunteer
+                    });
+                    volunteers.push(currentVolunteer[0]);
                 }
             }
         }
@@ -119,6 +122,8 @@ export default function BeaconCreation(props) {
                 'beaconEndDate': endDate.toDate()
             }
         }
+
+        console.log(form);
 
         fetch_a('org_token', '/api/beacon/create', {
             method: 'post',

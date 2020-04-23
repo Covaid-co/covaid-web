@@ -60,6 +60,18 @@
 }
 
 
+#medium-button-solid {
+    font-family: 'Inter';
+    border-radius: 12px;
+    background-color: transparent;
+    background-color: #2670FF;
+    height: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 8px;
+}
+
+
 #medium-button {
     font-family: 'Inter';
     border-radius: 12px;

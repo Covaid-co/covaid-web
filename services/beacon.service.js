@@ -1,5 +1,5 @@
 const BeaconRepository = require('../repositories/beacon.repository');
-const BeaconStatusEnum = {"active":1, "inactive":2, "delete":3};
+const BeaconStatusEnum = {"active":1, "inactive":2, "complete":3, "delete": 4};
 
 const UserService = require('./user.service');
 
@@ -42,7 +42,11 @@ exports.createBeacon = async function (auth_id, beacon) {
         beacon.volunteers.forEach(volunteer => {
             volunteerResponse.push(
                 {
-                    volunteer_id: volunteer,
+                    volunteer_id: volunteer._id,
+                    volunteer_first: volunteer.first_name,
+                    volunteer_last: volunteer.last_name,
+                    volunteer_email: volunteer.email,
+                    volunteer_phone: volunteer.phone,
                     response: false
                 }
             );

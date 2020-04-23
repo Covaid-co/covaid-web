@@ -94,11 +94,13 @@ exports.handleUpdateBeacon = asyncWrapper(async (req, res) => {
  */
 exports.handleUserAction = asyncWrapper(async (req, res) => {
     const { body: { beacon_id, updates } } = req;
+    console.log(beacon_id)
     const auth_id = req.token.id;
 	try {
 		await BeaconService.userAction(auth_id, beacon_id, updates);
 		return res.sendStatus(200);
 	} catch (e) {
+        console.log(e);
 		return res.sendStatus(400);
 	}
 });

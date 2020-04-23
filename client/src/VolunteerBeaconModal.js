@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
+import fetch_a from './util/fetch_auth'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { useFormFields } from "./libs/hooksLib";
 
@@ -37,8 +38,12 @@ export default function VolunteerBeaconModal(props) {
             }
         }
     }
+    
 
     const updateUserResponse = () => {
+        if (currentUserResponse.response) {
+            fields.message = '';
+        }
         const form = {
             beacon_id: beacon._id,
             updates: {
@@ -47,11 +52,22 @@ export default function VolunteerBeaconModal(props) {
             }
         }
 
-        console.log(form);
-
-        var currResponse = {...currentUserResponse};
-        currResponse.response = !currentUserResponse.response;
-        setCurrentUserResponse(currResponse);
+        fetch_a('token', '/api/beacon/userAction', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => {
+            if (response.ok) {
+                var currResponse = {...currentUserResponse};
+                currResponse.response = !currentUserResponse.response;
+                setCurrentUserResponse(currResponse);
+                props.refetchBeacons();
+            } else {
+                console.log("Error");
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
     }
 
      const formatDate = (beacon) => {

@@ -1,4 +1,5 @@
 const Beacon = require('../models/beacon.model'); 
+const BeaconStatusEnum = {"active":1, "inactive":2, "complete":3, "delete": 4};
 
 exports.createBeacon = async function (beacon) {
     try {
@@ -23,6 +24,7 @@ exports.getBeaconsForAVolunteer = async function (_id) {
     try {
         var beacons = await Beacon.find(
             { 
+                beaconStatus: BeaconStatusEnum.active,
                 volunteers: 
                     { $elemMatch: 
                         { 
@@ -51,11 +53,8 @@ exports.updateBeaconWithVolunteer = async function(user_id, beacon_id, updates) 
     try {
         var beacon = await Beacon.findByIdAndUpdate({_id: beacon_id}, updates);
         var foundIndex = beacon.volunteers.findIndex(volunteer => volunteer.volunteer_id == user_id);
-        beacon.volunteers[foundIndex] = {
-            volunteer_id: user_id, 
-            response: updates.response,
-            responseMessage: updates.responseMessage
-        }
+        beacon.volunteers[foundIndex].response =  updates.response;
+        beacon.volunteers[foundIndex].responseMessage =  updates.responseMessage;
         await beacon.save();
         if (!beacon) {
             throw Error('No beacon found'); 

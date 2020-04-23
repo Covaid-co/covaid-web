@@ -21,7 +21,7 @@ export default function BestMatches(props) {
 
     useEffect(() => {
         var temp_volunteers = []
-        var needed_resources = props.currRequest.resource_request;
+        var needed_resources = props.currRequest.resource_request ? props.currRequest.resource_request : []
         props.volunteers.forEach(
             function(volunteer) { 
                 var volunteer_resources = volunteer.offer.tasks;
