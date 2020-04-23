@@ -87,7 +87,6 @@ export default function EditAccountInfoModal(props) {
                             }
                         }
                     }
-
                 }
             }
         );
@@ -121,6 +120,9 @@ export default function EditAccountInfoModal(props) {
 
     async function getLatLng(zip) {
         try {
+            if (zip.length !== 5 || !(/^\d+$/.test(zip))) {
+                throw Error('Invalid zip');
+            }
             var response = await Geocode.fromAddress(zip);
             var new_neighborhoods = []
             var foundState = [];
@@ -158,8 +160,8 @@ export default function EditAccountInfoModal(props) {
                 setFoundState(foundState)
                 handleNewAssociation(data[0])
             } else {
-                setNeighborhoods(props.user.offer.neighborhoods)
-                setFoundState(props.user.offer.state)
+                setNeighborhoods(new_neighborhoods)
+                setFoundState(foundState)
                 setAssociation(user.association)
                 setAssociationName(user.association_name)
                 setShowChangeAssocModal(false)
@@ -230,8 +232,15 @@ export default function EditAccountInfoModal(props) {
             'phone': fields.phone,
             'offer.timesAvailable': selectedTimes,
             'offer.car': hasCar,
+            'offer.neighborhoods': neighborhoods,
+            'offer.state': state,
+            'location': {
+                'type': 'Point',
+                'coordinates': latlong
+            },
             'languages': selectedLanguages,
         };
+
 
         if (showChangeAssocModal) {  
             if (Object.values(resources).every(v => v === false)) {
@@ -317,7 +326,11 @@ export default function EditAccountInfoModal(props) {
     }, [props.user])
 
     const updateLocation = async e => {
-
+        if (zip.length !== 5 || !(/^\d+$/.test(zip))) {
+            setToastMessage('Invalid zip');
+            setShowToast(true);
+            return;
+        }
         if (initialZip !== zip) {
             await handleChangedZip();
         } else {
