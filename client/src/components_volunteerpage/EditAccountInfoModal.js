@@ -294,6 +294,7 @@ export default function EditAccountInfoModal(props) {
         fields.last_name = props.user.last_name
         fields.email = props.user.email
         fields.phone = props.user.phone
+        setLatLong(props.user.latlong)
         getZip(props.user.latlong)
         setAssociation(props.user.association)
         setAssociationName(props.user.association_name)
@@ -334,9 +335,10 @@ export default function EditAccountInfoModal(props) {
         if (initialZip !== zip) {
             await handleChangedZip();
         } else {
-            setNeighborhoods(props.user.offer.neighborhoods)
+            setNeighborhoods(user.offer.neighborhoods)
             setAssociation(user.association)
             setAssociationName(user.association_name)
+            setLatLong(props.user.latlong)
             setShowChangeAssocModal(false)
             setCurrentUserObject(props.user.offer.tasks, defaultResources, setResources);
         }
