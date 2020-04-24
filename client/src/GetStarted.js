@@ -17,7 +17,7 @@ export default function GetStarted(props) {
                 <p id="regular-text">Bring Covaid to your community today! Using Covaid empowers your organization 
                     to more easily handle requests of support made by neighbors in your community. At the 
                     same time, it gives your organization the ability to manage/assign volunteers to requests with the 
-                    touch of a few buttons</p>
+                    touch of a few buttons.</p>
                 <p id="regular-text" style={{fontStyle: 'italic', fontWeight: 600}}> 
                     Simply fill out this form and we'll be in contact with you shortly to setup your organization account!</p>
 				<Form onSubmit={props.handleHide} style={{marginTop: 0, marginBottom: 10, display: "block", whiteSpace: 'nowrap'}}>

@@ -152,25 +152,25 @@ export default function OrgLogin(props) {
             </Row>
             <Row style={{marginTop: 15}}>
                 <Col md={6} id="requests-feature-mobile">
-                    <h1 id="home-sub-heading">Track your requests</h1>
-                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0, marginBottom: 0}}>Optimize your workflow immediately with the Covaid request tracker, 
-                    automating the sorting practice that organization leaders would have to manually do otherwise.</p>
+                    <h1 id="home-sub-heading">Track Requests</h1>
+                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0, marginBottom: 0}}>Optimize your workflow with the Covaid request tracker, 
+                    an automated system for managing resource requests coming to your organization.</p>
                 </Col>
 
                 <Col md={6} id="requests-feature-container" style={{textAlign: 'center'}}>
                     <img id="request-img" src={requestsImg}></img>
                 </Col>
                 <Col md={6} id="feature-container">
-                    <h1 id="home-sub-heading">Track your requests</h1>
-                    <p id="home-subheading" style={{fontSize: 16}}>Optimize your workflow immediately with the Covaid request tracker, 
-                    automating the sorting practice that organization leaders would have to manually do otherwise.</p>
+                    <h1 id="home-sub-heading">Track Requests</h1>
+                    <p id="home-subheading" style={{fontSize: 16}}>Optimize your workflow with the Covaid Request Tracker, 
+                    an automated system for managing resource requests coming to your organization.</p>
                 </Col>
             </Row>
             <Row style={{marginTop: 45}}>
                 <Col md={6} id="location-feature-container">
                     <h1 id="home-sub-heading">Location Visualization</h1>
-                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0,  marginBottom: 0}}>The platform also allows you to delegate tasks by location and 
-                    visualize the number of volunteers and requesters in the organization.</p>
+                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0,  marginBottom: 0}}>Delegate requests by location and 
+                    visualize your volunteer base.</p>
                 </Col>
                 <Col md={6} id="map-feature-container">
                     <img id="request-img" src={mapsImg}></img>
@@ -179,8 +179,7 @@ export default function OrgLogin(props) {
             <Row style={{marginTop: 50}}>
                 <Col xs={12} id="org-feature-container">
                     <h1 id="home-sub-heading">Organization Portal</h1>
-                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0,  marginBottom: 0}}>When help is needed, 
-                    Covaid’s org portal allows admins to assign/notify volunteers in the organization based on request.</p>
+                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0,  marginBottom: 0}}>Use the Organization Portal as the one-stop-shop for managing your mutual aid.</p>
                 </Col>
                 <Col xs={12} style={{textAlign: 'center'}}>
                     <img id="orgscreen-img" src={orgscreenImg}></img>
@@ -188,7 +187,7 @@ export default function OrgLogin(props) {
                 <Col xs={12} id="org-feature-container">
                     <h1 id="home-sub-heading">Take your next step</h1>
                     <p id="home-subheading" style={{fontSize: 20, paddingRight: 0,  marginBottom: 0}}>We’re excited to work 
-                    with you and help grow your mutual aid efforts.</p>
+                    with you and help grow your efforts!</p>
                     <Button style={{marginTop: 10, width: 250}} id="large-button">Get Started</Button>
                 </Col>
             </Row>
