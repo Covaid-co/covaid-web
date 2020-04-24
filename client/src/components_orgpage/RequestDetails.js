@@ -400,13 +400,15 @@ export default function RequestDetails(props) {
         }
     }
 
-    return (
-        <>
-            <Modal show={props.requestDetailsModal} 
-                   onHide={() => {props.setRequestDetailsModal(false); setNotes();}} 
-                   style = {{marginTop: 10, paddingBottom: 50, zoom: '90%'}}>
-                <Modal.Body>
-                    <h5 id="regular-text-bold" style={{marginTop: 0, marginBottom: 5}}>Who's tracking this request:</h5>
+    const assignToMe = () => {
+        setAssignee(props.admin.first_name + " " + props.admin.last_name);
+        setAdmin(props.admin.first_name + " " + props.admin.last_name);
+    }
+
+    const adminTracker = () => {
+        if (props.admin && (Object.keys(props.admin).length !== 0 || props.admin.constructor !== Object)) {
+            return (<Row>
+                <Col xs={8} style={{paddingRight: 4}}>
                     <Form>
                         <Form.Group controlId="tracking">
                             <Form.Control as="select" style = {{fontSize: 15}} value={assignee} onChange={changeAssignee}>
@@ -416,6 +418,42 @@ export default function RequestDetails(props) {
                             </Form.Control>
                         </Form.Group>
                     </Form>
+                </Col>
+                <Col xs={4} style={{paddingLeft: 4}}>
+                        <Button onClick={assignToMe} style={{
+                                "fontFamily": "Inter",
+                                "backgroundColor": "transparent",
+                                "borderColor": "#8A8A8A",
+                                "color": "#8A8A8A",
+                                "borderRadius": "8px"
+                            }}>
+                            Assign to me
+                        </Button>
+                </Col></Row>
+            );
+        } else {
+            return (
+                <Form>
+                    <Form.Group controlId="tracking">
+                        <Form.Control as="select" style = {{fontSize: 15}} value={assignee} onChange={changeAssignee}>
+                            {adminList.length > 0 ? adminList.map((admin, i) => {
+                                return <option key={i} style={{textIndent: 10}}>{admin}</option>;
+                            }) : <></>}
+                        </Form.Control>
+                    </Form.Group>
+                </Form>
+            );
+        }
+    }
+
+    return (
+        <>
+            <Modal show={props.requestDetailsModal} 
+                   onHide={() => {props.setRequestDetailsModal(false); setNotes();}} 
+                   style = {{marginTop: 10, paddingBottom: 50, zoom: '90%'}}>
+                <Modal.Body>
+                    <h5 id="regular-text-bold" style={{marginTop: 0, marginBottom: 5}}>Who's tracking this request:</h5>
+                    {adminTracker()}
                     <h5 id="regular-text-bold" style={{marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
                     <Form>
                         <Form.Group controlId="email2" bssize="large">

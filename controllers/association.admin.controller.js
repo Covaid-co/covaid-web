@@ -64,6 +64,7 @@ exports.handleLoginRequest = asyncWrapper(async (req, res) => {
 		let result = await AssociaitonAdminService.login_admin(admin);
 		res.status(200).json(result)
     } catch (e) {
+        console.log(e);
         return res.status(422).send({
 			error: e.message
 		});

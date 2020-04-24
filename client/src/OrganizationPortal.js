@@ -50,6 +50,8 @@ export default function OrganiationPortal() {
 	const [currVolunteer, setCurrVolunteer] = useState({});
 	const [currRequest, setCurrRequest] = useState({});
 
+	const [admin, setAdmin] = useState({});
+
 	const [beaconView, setBeaconView] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 
@@ -114,7 +116,18 @@ export default function OrganiationPortal() {
 		setBeacons(beacons.concat(beacon));
 	}
 
-	function login() {
+	function fetchCurrentAdmin() {
+		fetch_a('admin_token', '/api/association-admin/current')
+			.then((response) => response.json())
+			.then((adminResponse) => {
+				setAdmin(adminResponse);
+				setIsLoaded(true);
+			}).catch((e) => {
+				console.log(e);
+			});
+	}
+
+	function login(adminMode) {
 		// Get association from login
 		fetch_a('org_token', '/api/association/current')
 			.then((response) => response.json())
@@ -171,7 +184,11 @@ export default function OrganiationPortal() {
 								return sortFn(x, y, false);
 							});
 							setVolunteers(resVolunteer);
-							setIsLoaded(true);
+							if (adminMode) {
+								fetchCurrentAdmin();
+							} else {
+								setIsLoaded(true);
+							}
 						});
 					} else {
 						console.log(response);
@@ -185,8 +202,10 @@ export default function OrganiationPortal() {
 	}
 
 	useEffect(() => {
-		if (Cookie.get("org_token")) {
-			login();
+		if (Cookie.get("admin_token") && Cookie.get("org_token")) {
+			login(true);
+		} else if (Cookie.get("org_token")) {
+			login(false);
 		} else {
 			setShowLogin(true);
 			var pusher = new Pusher('ed72954a8d404950e3c8', {
@@ -238,16 +257,26 @@ export default function OrganiationPortal() {
 	if (showLogin === true) {
 		return (
 			<div className="App">
-				<OrgLogin login={login} setShowLogin={setShowLogin}/>
+				<OrgLogin login={login} setShowLogin={setShowLogin} />
 			</div>
 		)
 	}
+
+	const getName = () => {
+		if (Object.keys(admin).length === 0 && admin.constructor === Object) {
+			return association.name;
+		} else {
+			return admin.first_name;
+		}
+	}
+
 	if (!isLoaded) {
 		return <></>;
 	}
+
 	return ([
 		<div className="App">
-			<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} orgPortal={true} first_name={association.name} handleShowModal={() => {}}/>
+			<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} setAdmin={setAdmin} orgPortal={true} first_name={getName()} handleShowModal={() => {}}/>
 			<div style ={{zoom: '95%'}}>
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
 					<Container style={{maxWidth: 1500}}>
@@ -314,7 +343,9 @@ export default function OrganiationPortal() {
 													setMatched={setMatched}
 													setCompleted={setCompleted}
 													volunteers={volunteers}
-													mode={1}/>
+													mode={1}
+													admin={admin}
+													/>
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(2)}>
 								<UnmatchedRequests association={association}
@@ -327,7 +358,9 @@ export default function OrganiationPortal() {
 													setMatched={setMatched}
 													setCompleted={setCompleted}
 													volunteers={volunteers}
-													mode={2}/>
+													mode={2}
+													admin={admin}
+													/>
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(3)}>
 								<UnmatchedRequests association={association}
@@ -340,7 +373,9 @@ export default function OrganiationPortal() {
 													setMatched={setMatched}
 													setCompleted={setCompleted}
 													volunteers={volunteers}
-													mode={3}/>
+													mode={3}
+													admin={admin}
+													/>
 							</Container>
 							
 						</Col>

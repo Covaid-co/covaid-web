@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Badge from 'react-bootstrap/Badge'
 import ListGroup from 'react-bootstrap/ListGroup'
 import VolunteerDetails from './VolunteerDetails'
+import Button from 'react-bootstrap/Button'
 import { calcDistance } from '../Helpers';
 import Pagination from '../CommunityBulletinComponents/Pagination'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,17 +16,23 @@ export default function BestMatches(props) {
     const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
     const [sortedVolunteers, setSortedVolunteers] = useState([]);
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
+    const [allVolunteersInOrg, setAllVolunteersInOrg] = useState([]);
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const volunteersPerPage = 5;
     const [currRequest, setCurrRequest] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
+    const [looseMatch, setLooseMatch] = useState(false);
+
+    const [viewedVolunteers, setViewedVolunteers] = useState([]);
 
     useEffect(() => {
         setCurrRequest(props.currRequest);
         var temp_volunteers = []
         var nomatch_volunteers = [];
-        var needed_resources = props.currRequest.resource_request ? props.currRequest.resource_request : []
+        var needed_resources = props.currRequest.resource_request ? props.currRequest.resource_request : [];
+        var tempAllVolunteers = [];
+
         props.volunteers.forEach(
             function(volunteer) { 
                 var volunteer_resources = volunteer.offer.tasks;
@@ -34,8 +41,14 @@ export default function BestMatches(props) {
                 } else {
                     nomatch_volunteers.push(volunteer);
                 }
+                tempAllVolunteers.push(volunteer);
             }
         );
+        tempAllVolunteers.sort(function(a, b) {
+            return distance(a) - distance(b)
+        })
+
+        setAllVolunteersInOrg(tempAllVolunteers)
         temp_volunteers.sort(function(a, b) {
             return distance(a) - distance(b)
         });
@@ -44,6 +57,7 @@ export default function BestMatches(props) {
         })
         var allVolunteers = temp_volunteers.concat(nomatch_volunteers);
         setSortedVolunteers(allVolunteers);
+        setViewedVolunteers(allVolunteers);
         setDisplayedVolunteers(allVolunteers.slice(0, volunteersPerPage));
         setIsLoaded(true);
     }, [props.currRequest]);
@@ -62,7 +76,7 @@ export default function BestMatches(props) {
         setCurrentPage(pageNumber);
         const lastIndex = pageNumber * volunteersPerPage;
         const firstIndex = lastIndex - volunteersPerPage;
-        const slicedVolunteers = sortedVolunteers.slice(firstIndex, lastIndex);
+        const slicedVolunteers = viewedVolunteers.slice(firstIndex, lastIndex);
         setDisplayedVolunteers(slicedVolunteers);
     }
 
@@ -81,6 +95,18 @@ export default function BestMatches(props) {
         props.setTopMatchesModal(false);
         resetState();
     }
+
+    const switchVolunteers = () => {
+        if (!looseMatch) {
+            setDisplayedVolunteers(allVolunteersInOrg.slice(0, 5));
+            setViewedVolunteers(allVolunteersInOrg);
+        } else {
+            setDisplayedVolunteers(sortedVolunteers.slice(0, 5));
+            setViewedVolunteers(sortedVolunteers);
+        }
+        setLooseMatch(!looseMatch);
+        setCurrentPage(1);
+    }
     
     if (!isLoaded) {
         return <></>;
@@ -88,10 +114,18 @@ export default function BestMatches(props) {
     return (
         <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 40, paddingBottom: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title id="small-header">{currRequest.requester_first}'s Top Matches</Modal.Title>
+                <Modal.Title id="small-header">{currRequest.requester_first}'s Top Matches 
+                        <Button
+                            id={looseMatch ? "notSelected" : "selected"}
+                            onClick={switchVolunteers}
+                            style={{marginLeft: 15, marginBottom: 8}}
+                            >
+                            {looseMatch ? "Showing All Volunteers" : "Showing Best Volunteers"}
+                        </Button>
+                        </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Row style={{marginTop: -9}}>
+                <Row style={{marginTop: 0}}>
                     <Col xs={12}>
                         <ListGroup variant="flush" onClick={() => {setVolunteerDetailsModal(true)}}>
                             {displayedVolunteers.map((volunteer, i) => {

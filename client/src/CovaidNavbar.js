@@ -28,6 +28,10 @@ export default function CovaidNavbar(props) {
     const logout = () => {
         if (props.orgPortal) {
             Cookie.remove('org_token');
+            if (Cookie.get('admin_token')) {
+                Cookie.remove('admin_token');
+                props.setAdmin({});
+            }
             window.open(window.location.protocol + '//' + window.location.host + '/organizationPortal', '_self');
         } else {
             Cookie.remove('token');
