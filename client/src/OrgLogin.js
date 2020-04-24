@@ -127,12 +127,12 @@ export default function OrgLogin(props) {
                                 <Form.Group controlId="passOrg" bssize="large">
                                     <Form.Control placeholder="Password" type="password" value={fields.passOrg} onChange={handleFieldChange}/>
                                 </Form.Group>
-                                <Form.Check
+                                {/* <Form.Check
                                     type="checkbox"
                                     style={{marginTop: 5}}
                                     id='default-checkbox'
                                     label="I'm an admin"
-                                />
+                                /> */}
 
                             </Col>
                         </Row>
