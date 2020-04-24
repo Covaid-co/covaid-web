@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
@@ -7,6 +6,7 @@ import Badge from 'react-bootstrap/Badge'
 import ListGroup from 'react-bootstrap/ListGroup'
 import VolunteerDetails from './VolunteerDetails'
 import { calcDistance } from '../Helpers';
+import { formatName } from './OrganizationHelpers';
 import Pagination from '../CommunityBulletinComponents/Pagination'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -81,6 +81,18 @@ export default function BestMatches(props) {
         props.setTopMatchesModal(false);
         resetState();
     }
+
+    const displayPrevMatched = (volunteer) => {
+        const prevMatched = props.currRequest.prev_matched;
+        if (prevMatched) {
+            if (prevMatched.includes(volunteer._id)) {
+                return <h5 id="association-name" style={{color: '#DB4B4B'}}>
+                        Previously Matched
+                    </h5>
+            }
+        }
+        return <></>;
+    }
     
     if (!isLoaded) {
         return <></>;
@@ -101,6 +113,7 @@ export default function BestMatches(props) {
                                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
+                                        {displayPrevMatched(volunteer)}
                                     </div>
                                     <div>
                                         <p id="volunteer-location">{volunteer.offer.neighborhoods.join(', ')}</p>

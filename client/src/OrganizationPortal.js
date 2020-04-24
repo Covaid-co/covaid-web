@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Badge from 'react-bootstrap/Badge'
 import UnmatchedRequests from './UnmatchedRequests'
-import OrgLogin from './OrgLogin'
+import OrgLogin from './components_orgpage/OrgLogin'
 import Cookie from 'js-cookie'
 import CovaidNavbar from './CovaidNavbar'
 import Footer from './components/Footer'
@@ -21,7 +21,7 @@ import AdminModal from './components_orgpage/AdminModal';
 import BeaconCreation from './components_orgpage/BeaconCreation';
 import OrgResourcesModal from './OrgResourcesModal';
 import LiveBeaconView from './components_orgpage/LiveBeaconView'
-import { sortFn } from './OrganizationHelpers'
+import { sortFn } from './components_orgpage/OrganizationHelpers'
 import { generateURL } from './Helpers'
 import './OrganizationPage.css'
 
@@ -235,6 +235,26 @@ export default function OrganiationPortal() {
 		return (tabNumber === currTabNumber) ? 'tab-button-selected' : 'tab-button';
 	}
 
+	const requesterStyle = () => {
+		if (!requesterMap) {
+			if (currTabNumber === 1) {
+				return {border: '1px solid #DB4B4B', color: '#DB4B4B'}
+			} else if (currTabNumber === 2) {
+				return {border: '1px solid #DB9327', color: '#DB9327'}
+			} else if (currTabNumber === 3) {
+				return {border: '1px solid #28A745', color: '#28A745'}
+			}
+		} else {
+			if (currTabNumber === 1) {
+				return {border: '1px solid #DB4B4B', background: '#DB4B4B', color: 'white'}
+			} else if (currTabNumber === 2) {
+				return {border: '1px solid #DB9327', background: '#DB9327', color: 'white'}
+			} else if (currTabNumber === 3) {
+				return {border: '1px solid #28A745', background: '#28A745', color: 'white'}
+			}
+		}
+	}
+
 	if (showLogin === true) {
 		return (
 			<div className="App">
@@ -258,8 +278,8 @@ export default function OrganiationPortal() {
 								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
 								<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
 									Manage Organization
-								</Button>{' '}
-								<Button id="medium-button" onClick={()=>{setVolunteersModal(true)}}>
+								</Button>
+								<Button id="medium-button" style={{marginLeft: 10}} onClick={()=>{setVolunteersModal(true)}}>
 									View Volunteers
 								</Button>{' '}
 								<br/>
@@ -347,12 +367,14 @@ export default function OrganiationPortal() {
 						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
 							<Container id="newOfferContainer" style={{'display': 'block'}}>
 								<Col xs={12} style={{padding: 0, marginBottom: 10}}>
-									<p id="small-header" style={{display: 'inline'}}>Volunteer/Requester Map</p>
+									<p id="small-header" style={{display: 'inline'}}>Organization Map</p>
 									<Button id={!volunteerMap ? "volunteer-not-selected" : "volunteer-selected"} onClick={() => setVolunteerMap(!volunteerMap)}>
-										Volunteer
+										Volunteers
 									</Button>
-									<Button id={!requesterMap ? "requester-not-selected" : "requester-selected"} onClick={() => setRequesterMap(!requesterMap)}>
-										Requester
+									<Button id={!requesterMap ? "requester-not-selected" : "requester-selected"} 
+										onClick={() => setRequesterMap(!requesterMap)}
+										style={requesterStyle()}>
+										Requesters
 									</Button>
 								</Col>
 								<NewMap requests={allRequests} volunteers={volunteers} mode={currTabNumber}

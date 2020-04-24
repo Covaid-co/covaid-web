@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useFormFields } from "./libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
+
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -8,13 +9,17 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import Cookie from 'js-cookie'
-import orgImg from './assets/org.png'
-import CovaidNavbar from './CovaidNavbar'
-import AboutUs from './components_modals/AboutUs'
-import HowItWorks from './components_modals/HowItWorks'
-import Feedback from './components_modals/Feedback'
-import Footer from './components/Footer';
-import NewLogin from './NewLogin';
+import orgImg from '../assets/org.png'
+import requestsImg from '../assets/requests.png'
+import mapsImg from '../assets/mapscreen.png'
+import orgscreenImg from '../assets/orgscreen.png'
+import CovaidNavbar from '../CovaidNavbar'
+import AboutUs from '../components_modals/AboutUs'
+import HowItWorks from '../components_modals/HowItWorks'
+import Feedback from '../components_modals/Feedback'
+import Footer from '../components/Footer';
+import NewLogin from '../NewLogin';
+import GetStarted from './GetStarted';
 
 export default function OrgLogin(props) {
     const [fields, handleFieldChange] = useFormFields({
@@ -100,6 +105,8 @@ export default function OrgLogin(props) {
             modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)}/>;
         } else if (modalType === 6) {
             modal = <NewLogin showModal={showModal} hideModal={() => setShowModal(false)}/>
+        } else if (modalType === 7) {
+            modal = <GetStarted showModal={showModal} hideModal={() => setShowModal(false)}/>;
         }
         return modal;
     }
@@ -137,10 +144,61 @@ export default function OrgLogin(props) {
                             </Col>
                         </Row>
                         <Button style={{marginTop: 10, width: 150}} id="large-button" type="submit">Sign In</Button>
+                        <p id="regular-text" style={{marginTop: 15, color: '#2670FF'}}>Manage a mutual aid initiative?
+                            <a id="regular-text" onClick={() => handleShowModal(7)} style={{color: '#2670FF', marginLeft: 5, textDecoration: 'underline'}} href="#">
+                                Get Started</a><br/>
+                        </p>
                     </Form>
                 </Col>
-                <Col md={6} style={{paddingLeft: 50}}>
-                    <img id="org-image" src={orgImg} style={{width: 480, marginTop: 50}}></img>
+                <Col md={6} style={{marginTop: 50}}>
+                    <img id="org-img" src={orgImg}></img>
+                </Col>
+            </Row>
+            <Row id="orgpage-separator">
+                <Col xs={12}>
+                    <p id="requestCall" style={{marginTop: 30, marginBottom: 0}}>&nbsp;</p>
+                </Col>
+            </Row>
+            <Row style={{marginTop: 15}}>
+                <Col md={6} id="requests-feature-mobile">
+                    <h1 id="home-sub-heading">Track Requests</h1>
+                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0, marginBottom: 0}}>Optimize your workflow with the Covaid request tracker, 
+                    an automated system for managing resource requests coming to your organization.</p>
+                </Col>
+
+                <Col md={6} id="requests-feature-container" style={{textAlign: 'center'}}>
+                    <img id="request-img" src={requestsImg}></img>
+                </Col>
+                <Col md={6} id="feature-container">
+                    <h1 id="home-sub-heading">Track Requests</h1>
+                    <p id="home-subheading" style={{fontSize: 16}}>Optimize your workflow with the Covaid Request Tracker, 
+                    an automated system for managing resource requests coming to your organization.</p>
+                </Col>
+            </Row>
+            <Row style={{marginTop: 45}}>
+                <Col md={6} id="location-feature-container">
+                    <h1 id="home-sub-heading">Location Tracker</h1>
+                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0,  marginBottom: 0}}>Delegate requests by location 
+                    and better understand your volunteer base. The map integration also allows organization leaders to view the 
+                    general location of in-progress and completed requests.</p>
+                </Col>
+                <Col md={6} id="map-feature-container">
+                    <img id="request-img" src={mapsImg}></img>
+                </Col>
+            </Row>
+            <Row style={{marginTop: 50}}>
+                <Col xs={12} id="org-feature-container">
+                    <h1 id="home-sub-heading">Organization Portal</h1>
+                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0,  marginBottom: 0}}>Use the Organization Portal as the one-stop-shop for managing your mutual aid.</p>
+                </Col>
+                <Col xs={12} style={{textAlign: 'center'}}>
+                    <img id="orgscreen-img" src={orgscreenImg}></img>
+                </Col>
+                <Col xs={12} id="org-feature-container">
+                    <h1 id="home-sub-heading">Take your next step</h1>
+                    <p id="home-subheading" style={{fontSize: 20, paddingRight: 0,  marginBottom: 0}}>We’re excited to work 
+                    with you and help grow your efforts!</p>
+                    <Button style={{marginTop: 10, width: 250}} id="large-button" onClick={() => handleShowModal(7)}>Get Started</Button>
                 </Col>
             </Row>
         </Container>

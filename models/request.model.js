@@ -33,6 +33,7 @@ let RequestSchema = new Schema({
         volunteer: String,
         reason: String
     },
+    prev_matched: [String],
     volunteer_status: String,
     pending_time: Date,
     completed_date: Date

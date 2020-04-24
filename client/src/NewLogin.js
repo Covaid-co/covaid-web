@@ -8,17 +8,18 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Cookie from 'js-cookie'
+import { validateEmail } from './Helpers'
 
 export default function NewLogin(props) {
     const [fields, handleFieldChange] = useFormFields({
         email: "",
-        password: "",
+        password: ""
     });
 
     const [mode, setMode] = useState(true);
 
     function validateForm() {
-        return fields.email.length > 0 && fields.password.length > 0;
+        return validateEmail(fields.email) && fields.password.length > 0;
     }
 
     function validateForgotForm() {

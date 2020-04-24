@@ -204,19 +204,23 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
 })
 
 exports.removeVolunteer = asyncWrapper(async (req, res) => {
-    const request_id = req.body.request_id
-    const assoc_id = req.body.assoc_id
-    Requests.findByIdAndUpdate(request_id, 
-        {$set: {
-            "status": {
-                "current_status": "incomplete",
-                "volunteer": ""
-            },
-            "adminMessage": "",
-            "volunteer_status": "",
-            "last_modified": new Date()
-        }
-    }, function (err, request) {
+    const request_id = req.body.request_id;
+    const assoc_id = req.body.assoc_id;
+    const volunteer_id = req.body.volunteer_id;
+    var updateQuery = {'$set': {
+        "status": {
+            "current_status": "incomplete",
+            "volunteer": ""
+        },
+        "adminMessage": "",
+        "volunteer_status": "",
+        "last_modified": new Date()}}
+
+    if (volunteer_id) {
+        updateQuery['$push'] = {'prev_matched': volunteer_id};
+    }
+
+    Requests.findByIdAndUpdate(request_id, updateQuery, function (err, request) {
         if (err) return next(err);
         Association.findOne({
             '_id': request.association

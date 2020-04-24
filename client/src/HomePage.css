@@ -38,6 +38,43 @@
     margin-top: 50px;
 }
 
+#login-container {
+    padding-left: 100px;
+    padding-top: 40px;
+}
+
+#feature-container {
+    margin-top: 170px;
+    padding-left: 100px;
+    padding-right: 40px;
+}
+
+#requests-feature-mobile {
+    display: none;
+}
+
+#location-feature-container {
+    margin-top: 100px;
+    padding-left: 140px;
+    padding-right: 40px;
+}
+
+#map-feature-container {
+    padding-left: 50px;
+}
+
+#requests-feature-container {
+    padding-left: 50px;
+    padding-top: 40px;
+}
+
+#request-img {
+    width: 480px;
+}
+
+#org-img {
+    width: 480px;
+}
 
 @media (max-width:1150px){ 
     #jumboContainer {
@@ -56,6 +93,22 @@
         margin-right: 5%;
         margin-top: 70px;
     }
+
+    #login-container {
+        padding-left: 30px;
+    }
+
+    #requests-feature-container {
+        padding-left: 30px;
+    }
+
+    #feature-container {
+        padding-left: 100px;
+    }
+
+    #location-feature-container {
+        padding-left: 70px;
+    }
 }
 
 @media (max-width:1000px){ 
@@ -73,11 +126,41 @@
         margin-left: 4%;
         margin-right: 4%;
     }
+
+    #login-container {
+        padding-left: 20px;
+    }
+
+    #requests-feature-container {
+        padding-left: 20px;
+    }
+
+    #feature-container {
+        padding-left: 70px;
+        margin-top: 120px;
+    }
+
+    #location-feature-container {
+        padding-left: 60px;
+        margin-top: 60px;
+    }
+
+    #request-img {
+        width: 420px;
+    }
+
+    #org-img {
+        width: 420px;
+    }
 }
 
 @media (max-width:960px) {
     #location-container-logged {
         margin-top: 110px;
+    }
+
+    #request-img {
+        width: 400px;
     }
 }
 
@@ -98,6 +181,14 @@
         margin-right: 3%;
         margin-top: 120px;
     }
+
+    #request-img {
+        width: 390px;
+    }
+
+    #org-img {
+        width: 390px;
+    }
 }
 
 @media (max-width:800px){ 
@@ -115,16 +206,62 @@
         margin-left: 2%;
         margin-right: 2%;
     }
+
+    #login-container {
+        padding-left: 10px;
+    }
+
+    #requests-feature-container {
+        padding-left: 10px;
+    }
 }
 
 @media (max-width:768px) {
-    #login-container {
-        padding-left: 50px !important;
-        padding-right: 100px;
+    #orgpage-separator {
+        margin-top: -65px;
     }
 
-    #org-image {
+    #login-container {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    #requests-feature-container {
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 0px;
+        margin-top: 20px;
+    }
+
+    #feature-container {
         display: none;
+    }
+
+    #requests-feature-mobile {
+        display: block;
+        padding-left: 50px;
+        margin-top: 0px;
+        padding-right: 10px;
+    }
+
+    #location-feature-container {
+        padding-left: 50px;
+        margin-top: 0px;
+    }
+
+    #map-feature-container {
+        padding-left: 50px;
+        padding-right: 50px;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    #org-img {
+        display: none;
+    }
+
+    #request-img {
+        width: 380px;
     }
 
     .footer {
@@ -157,7 +294,6 @@
     #community-bulletin {
         display: none;
     }
-
 
     .volunteer-badge-web {
         display: none;
@@ -194,8 +330,25 @@
 
 @media (max-width:605px){
     #login-container {
-        padding-left: 30px !important;
+        padding-left: 30px;
     }
+
+    #requests-feature-container {
+        padding-left: 30px;
+    }
+
+    #requests-feature-mobile {
+        padding-left: 30px;
+    }
+
+    #location-feature-container {
+        padding-left: 30px;
+    }
+
+    #map-feature-container {
+        padding-left: 30px;
+    }
+
 
     #location-container-logged {
         margin-top: 50px;
@@ -203,15 +356,35 @@
 }
 
 
-@media (max-width:578px){ 
+@media (max-width:578px) { 
     #login-container {
-        padding-left: 20px !important;
+        padding-left: 20px;
+    }
+
+    #requests-feature-container {
+        padding-left: 20px;
+    }
+
+    #requests-feature-mobile {
+        padding-left: 25px;
+    }
+
+    #location-feature-container {
+        padding-left: 20px;
+    }
+
+    #map-feature-container {
+        padding-left: 20px;
+    }
+
+    #request-img {
+        width: 340px;
     }
 
     #jumbo-text {
         margin-top: 10px;
         padding-right: 30px;
-    }  
+    }
 
     #jumboContainer {
         height: 320px;

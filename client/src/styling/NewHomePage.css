@@ -78,7 +78,7 @@
     background-color: transparent;
     color: #2670FF;
     border-color: #2670FF;
-    height: 40px;
+    height: 43px;
     padding-left: 15px;
     padding-right: 15px;
     border-radius: 8px;
@@ -174,8 +174,9 @@
     padding-bottom: 1px;
     font-size: 13px;
     font-family: "Inter";
-    font-weight: bold;
+    font-weight: 600;
     margin: 4px 6px 0px 0px;
+    padding-top: 5px;
 }
 
 #navbar-brand {
