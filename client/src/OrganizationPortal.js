@@ -271,7 +271,7 @@ export default function OrganiationPortal() {
 							<Col lg={1}></Col>
 								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 140}}>
 									<h3 id="home-heading" style={{marginTop: 0, fontSize: 20}}>Need a task done?</h3>
-									<p id="regular-text" style={{marginBottom: 10}}>Use our Beacon Notifcation System and mass notify your volunteers about any internal organization requests.</p>
+									<p id="regular-text" style={{marginBottom: 10}}>Use our Beacon Notifcation System and mass notify your volunteers about any internal organization requests</p>
 									<Row>
 										<Col style={{paddingRight: 5}}>
 											<Button id="large-button" onClick={()=>{setBeaconModal(true)}}>

@@ -90,7 +90,7 @@ export default function LiveBeaconView(props) {
 						<Row>
 							<Col style={{marginTop: 165}}>
 								<h1 id="home-heading" style={{marginTop: 0}}>Your Live Beacons</h1>
-								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
+								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>Beacons are your organization's way of sending mass notifications to your volunteers</p>
 								<Button id="medium-button-solid" onClick={()=>{setBeaconModal(true)}}>
 									Create Beacon
 								</Button>
