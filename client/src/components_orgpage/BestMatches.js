@@ -32,13 +32,16 @@ export default function BestMatches(props) {
                 if (volunteer_resources.some(item => needed_resources.includes(item))) {
                     temp_volunteers.push(volunteer)
                 } else {
-                    nomatch_volunteers.push(volunteer)
+                    nomatch_volunteers.push(volunteer);
                 }
             }
         );
         temp_volunteers.sort(function(a, b) {
             return distance(a) - distance(b)
         });
+        nomatch_volunteers.sort(function(a, b) {
+            return distance(a) - distance(b);
+        })
         var allVolunteers = temp_volunteers.concat(nomatch_volunteers);
         setSortedVolunteers(allVolunteers);
         setDisplayedVolunteers(allVolunteers.slice(0, volunteersPerPage));
@@ -48,8 +51,8 @@ export default function BestMatches(props) {
     const distance = (volunteer) => {
         const latA = volunteer.latitude;
         const longA = volunteer.longitude;
-        const latB = currRequest.latitude;
-        const longB = currRequest.longitude;
+        const latB = props.currRequest.latitude;
+        const longB = props.currRequest.longitude;
         const meters = calcDistance(latA, longA, latB, longB);
         const miles = meters * 0.00062137;
         return Math.round(miles * 100) / 100;
@@ -62,12 +65,28 @@ export default function BestMatches(props) {
         const slicedVolunteers = sortedVolunteers.slice(firstIndex, lastIndex);
         setDisplayedVolunteers(slicedVolunteers);
     }
+
+    function resetState() {
+        setTimeout(function () {
+            setCurrentPage(1);
+            setSortedVolunteers([]);
+            setDisplayedVolunteers([]);
+            setCurrVolunteer({});
+            setCurrRequest({});
+            setIsLoaded(false);
+        }, 500);
+    }
+
+    const closePage = () => {
+        props.setTopMatchesModal(false);
+        resetState();
+    }
     
     if (!isLoaded) {
         return <></>;
     }
     return (
-        <Modal show={props.topMatchesModal} size="lg" onHide={() => props.setTopMatchesModal(false)} style = {{marginTop: 40, paddingBottom: 40}}>
+        <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 40, paddingBottom: 40}}>
             <Modal.Header closeButton>
                 <Modal.Title id="small-header">{currRequest.requester_first}'s Top Matches</Modal.Title>
             </Modal.Header>

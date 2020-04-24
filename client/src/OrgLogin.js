@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "./libs/hooksLib";
-
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -89,6 +88,8 @@ export default function OrgLogin(props) {
       };
 
 
+
+
     const getCurrentModal = () => {
         var modal = <></>;
         if (modalType === 1) {
@@ -126,6 +127,13 @@ export default function OrgLogin(props) {
                                 <Form.Group controlId="passOrg" bssize="large">
                                     <Form.Control placeholder="Password" type="password" value={fields.passOrg} onChange={handleFieldChange}/>
                                 </Form.Group>
+                                <Form.Check
+                                    type="checkbox"
+                                    style={{marginTop: 5}}
+                                    id='default-checkbox'
+                                    label="I'm an admin"
+                                />
+
                             </Col>
                         </Row>
                         <Button style={{marginTop: 10, width: 150}} id="large-button" type="submit">Sign In</Button>
