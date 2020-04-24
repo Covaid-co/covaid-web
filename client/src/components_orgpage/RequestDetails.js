@@ -9,7 +9,7 @@ import BestMatches from './BestMatches'
 import Col from 'react-bootstrap/Col'
 import VolunteerDetails from './VolunteerDetails'
 import { useFormFields } from "../libs/hooksLib";
-import { formatName } from '../OrganizationHelpers'
+import { formatName } from './OrganizationHelpers'
 import { toastTime, paymentOptions } from '../constants';
 import { generateURL, generateMapsURL, moveFromToArr } from '../Helpers';
 

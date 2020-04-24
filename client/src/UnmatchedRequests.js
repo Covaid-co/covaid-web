@@ -6,7 +6,7 @@ import Badge from 'react-bootstrap/Badge'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from  'react-bootstrap/Dropdown'
-import { sortReq, filterReq, formatName } from './OrganizationHelpers';
+import { sortReq, filterReq, formatName } from './components_orgpage/OrganizationHelpers';
 import { convertTime } from './Helpers';
 
 export default function UnmatchedRequests(props) {
@@ -126,7 +126,7 @@ export default function UnmatchedRequests(props) {
                 <Col xs={4} style={{paddingLeft: 0}}>
                     <Dropdown drop='up'>
                         <Dropdown.Toggle id="dropdown-basic" className='dropdown-sort'>
-                            Sort ({lastPressed})
+                            {lastPressed}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{width: '100%'}}>
                             <Dropdown.Item onClick={()=>sortRequests('name')}>Name</Dropdown.Item>
@@ -153,8 +153,9 @@ export default function UnmatchedRequests(props) {
                                     <div>{resourceCompleteBadge(request)} {requestStatus(request)}</div>
                                     <div style={{display: 'inline-block', width: '100%', marginTop: 3, fontFamily: 'Inter'}}>
                                         <p style={{float: 'left', marginBottom: 0}}>Tracking: 
-                                        <Badge key={i} id='task-info' style={{background: '#6c757d', border: '1px solid #6c757d', paddingTop: 4, marginLeft: 5}}>
-                                        {request.assignee ? request.assignee : "No one assigned"}</Badge></p>
+                                            <a style={request.assignee && request.assignee != 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.assignee ? request.assignee : "No one assigned"}
+                                            </a>
+                                        </p>
                                     </div>
                                 </ListGroup.Item>);
                             })}

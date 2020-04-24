@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 
 import VolunteerDetails from './VolunteerDetails'
-import { filterVolunteers } from '../OrganizationHelpers';
+import { filterVolunteers } from './OrganizationHelpers';
 import { extractTrueObj } from '../Helpers';
 import Pagination from '../CommunityBulletinComponents/Pagination'
 
