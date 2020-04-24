@@ -28,12 +28,6 @@ input {
     margin-bottom: -3px;
 }
 
-#login-container {
-    padding-left: 100px;
-    padding-top: 50px;
-    padding-top: 60px;
-}
-
 #emailOrg.form-control {
     border-radius: 12px;
     width: 300px;
@@ -43,6 +37,101 @@ input {
     border-radius: 12px;
     width: 300px;
 }
+
+#home-sub-heading {
+    font-family: "Montserrat";
+    font-size: 28px;
+    margin-bottom: 10px;
+    margin-top: 30px;
+    font-weight: bold;
+    color: black;
+}
+
+#org-feature-container {
+    text-align: center;
+    padding-right: 350px;
+    padding-left: 350px;
+}
+
+#orgscreen-img {
+    width: 900px;
+    margin-top: 40px;
+}
+
+@media (max-width:1150px) {
+    #org-feature-container {
+        padding-right: 300px;
+        padding-left: 300px;
+    }
+
+    #orgscreen-img {
+        width: 800px;
+    }
+}
+
+@media (max-width:1000px) {
+    #org-feature-container {
+        padding-right: 250px;
+        padding-left: 250px;
+    }
+
+    #orgscreen-img {
+        width: 750px;
+    }
+}
+
+@media (max-width:900px) {
+    #org-feature-container {
+        padding-right: 200px;
+        padding-left: 200px;
+    }
+
+    #orgscreen-img {
+        width: 700px;
+    }
+}
+
+@media (max-width:768px) {
+    #org-feature-container {
+        padding-right: 100px;
+        padding-left: 100px;
+    }
+
+    #orgscreen-img {
+        width: 600px;
+    }
+}
+
+@media (max-width:605px) {
+    #org-feature-container {
+        padding-right: 50px;
+        padding-left: 50px;
+    }
+
+    #orgscreen-img {
+        width: 500px;
+    }
+}
+
+@media (max-width:578px) {
+    #org-feature-container {
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+
+    #orgscreen-img {
+        width: 470px;
+    }
+}
+
+
+@media (max-width: 460px) {
+    #orgscreen-img {
+        width: 360px;
+    }
+}
+
+
 
 .pending-task {
     float: right;

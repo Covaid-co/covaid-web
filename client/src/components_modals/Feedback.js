@@ -33,7 +33,7 @@ export default function Feedback(props) {
 						name="entry.1354002737"
 						placeholder="Feedback"
 						className="mr-sm-2" />
-					<Button type="submit" id="large-button" variant="success" style={{marginTop: 15}} >Submit</Button>
+					<Button type="submit" id="large-button" style={{marginTop: 15}}>Submit</Button>
 				</Form>
 			</Modal.Body>
 		</Modal>
