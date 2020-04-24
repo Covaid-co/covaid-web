@@ -18,8 +18,11 @@ export default function BestMatches(props) {
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const volunteersPerPage = 5;
+    const [currRequest, setCurrRequest] = useState({});
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
+        setCurrRequest(props.currRequest);
         var temp_volunteers = []
         var nomatch_volunteers = [];
         var needed_resources = props.currRequest.resource_request ? props.currRequest.resource_request : []
@@ -39,13 +42,14 @@ export default function BestMatches(props) {
         var allVolunteers = temp_volunteers.concat(nomatch_volunteers);
         setSortedVolunteers(allVolunteers);
         setDisplayedVolunteers(allVolunteers.slice(0, volunteersPerPage));
+        setIsLoaded(true);
     }, [props.currRequest]);
 
     const distance = (volunteer) => {
         const latA = volunteer.latitude;
         const longA = volunteer.longitude;
-        const latB = props.currRequest.latitude;
-        const longB = props.currRequest.longitude;
+        const latB = currRequest.latitude;
+        const longB = currRequest.longitude;
         const meters = calcDistance(latA, longA, latB, longB);
         const miles = meters * 0.00062137;
         return Math.round(miles * 100) / 100;
@@ -59,10 +63,13 @@ export default function BestMatches(props) {
         setDisplayedVolunteers(slicedVolunteers);
     }
     
+    if (!isLoaded) {
+        return <></>;
+    }
     return (
         <Modal show={props.topMatchesModal} size="lg" onHide={() => props.setTopMatchesModal(false)} style = {{marginTop: 40, paddingBottom: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title id="small-header">{props.currRequest.requester_first}'s Top Matches</Modal.Title>
+                <Modal.Title id="small-header">{currRequest.requester_first}'s Top Matches</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row style={{marginTop: -9}}>
@@ -88,7 +95,7 @@ export default function BestMatches(props) {
                                                 No tasks entered
                                             </Badge> 
                                             : volunteer.offer.tasks.map((task, i) => {
-                                                if (props.currRequest && props.currRequest.resource_request.length > 0 && props.currRequest.resource_request.indexOf(task) !== -1) {
+                                                if (currRequest && currRequest.resource_request && currRequest.resource_request.length > 0 && currRequest.resource_request.indexOf(task) !== -1) {
                                                     return <Badge key={i} style={{background: '#4CA846'}} id='task-info'>{task}</Badge>
                                                 } else {
                                                     return <Badge key={i} style={{background: '#6C757D'}} id='task-info'>{task}</Badge>
@@ -110,7 +117,7 @@ export default function BestMatches(props) {
                 <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
                                     setVolunteerDetailsModal={setVolunteerDetailsModal}
                                     currVolunteer={currVolunteer}
-                                    currRequest={props.currRequest}
+                                    currRequest={currRequest}
                                     setCurrRequest={props.setCurrRequest}
                                     setTopMatchesModal={props.setTopMatchesModal}
                                     setRequestDetailsModal={props.setRequestDetailsModal}

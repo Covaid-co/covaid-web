@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "react-dates/initialize";
@@ -27,6 +28,8 @@ export default function BeaconCreation(props) {
     const [car, setCar] = useState(false);
     const [foundVolunteers, setFoundVolunteers] = useState([]);
     const [checkboxStatus, setCheckboxStatus] = useState({});
+
+    const [isSending, setIsSending] = useState(false);
 
     const [pageNum, setPageNum] = useState(1);
     const [currVolunteer, setCurrVolunteer] = useState({});
@@ -140,7 +143,20 @@ export default function BeaconCreation(props) {
         }, 1000);
     }
 
+    var spinnerComponent = <Spinner animation="border" />
+
+    function loadAndSwitch(beacon) {
+        setTimeout(function () {
+            props.setBeaconModal(false);
+            props.pushBeacon(beacon);
+            resetState();
+            setIsSending(false);
+            props.switchToBeacon(true);
+        }, 750);
+    }
+
     const sendBeacon = () => {
+        setIsSending(true);
         let form = {
             'beacon': {
                 'beaconName': fields.name,
@@ -151,7 +167,6 @@ export default function BeaconCreation(props) {
             }
         }
 
-        console.log(form);
 
         fetch_a('org_token', '/api/beacon/create', {
             method: 'post',
@@ -160,10 +175,7 @@ export default function BeaconCreation(props) {
         })
             .then((response) => response.json())
                 .then((body) => {
-                    props.setBeaconModal(false);
-                    props.pushBeacon(body.beacon);
-                    resetState();
-                    props.setBeaconView(true);
+                    loadAndSwitch(body.beacon)
                 })
                 .catch((error) => {
                     console.error(error);
@@ -331,9 +343,7 @@ export default function BeaconCreation(props) {
                             </Row>
                             <Button style={{marginTop: 20}}
                                     id="large-button"
-                                    onClick={sendBeacon}
-                                    >
-                                        Send your beacon</Button>
+                                    onClick={() => sendBeacon()}>{isSending ? spinnerComponent : "Send your beacon"}</Button> 
                         </div>
                     </Modal.Body>
                     <VolunteerDetails volunteerDetailModal={volunteerDetailModal}

@@ -219,6 +219,9 @@ export default function OrganiationPortal() {
 		return <LiveBeaconView volunteers={volunteers} association={association} setBeaconView={setBeaconView} beacons={beacons} />
 	}
 
+	const switchToBeacon = () => {
+		setBeaconView(true);
+	}
 
 	const displayTab = (tabNumber) => {
 		if (tabNumber === currTabNumber) {
@@ -398,7 +401,7 @@ export default function OrganiationPortal() {
 							association={association}
 							volunteers={volunteers}
 							pushBeacon={pushBeacon}
-							setBeaconView={setBeaconView} />
+							switchToBeacon={switchToBeacon} />
 			</div>
 		</div>,
 		<Footer key="2" handleShowModal={() => {}}/>]
