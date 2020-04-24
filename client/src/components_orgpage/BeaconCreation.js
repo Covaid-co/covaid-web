@@ -40,6 +40,17 @@ export default function BeaconCreation(props) {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [focused, setFocused] = useState(null); // this will be removed
+    const [allSelected, setAllSelected] = useState(false);
+
+    const selectAll = () => {
+        const newSelect = !allSelected
+        var temp_checkbox = JSON.parse(JSON.stringify(checkboxStatus));
+        Object.keys(temp_checkbox).forEach(function(key,index) {
+            temp_checkbox[key] = newSelect;
+        });
+        setAllSelected(!allSelected);
+        setCheckboxStatus(temp_checkbox);
+    }
 
     useEffect(() => {
         if (props.association.resources) {
@@ -61,6 +72,7 @@ export default function BeaconCreation(props) {
     }
 
     const findVolunteers = () => {
+        
         var requiredTasks = [];
         for (var task in selectedTasks) {
             if (selectedTasks.hasOwnProperty(task)) {
@@ -68,6 +80,21 @@ export default function BeaconCreation(props) {
                     requiredTasks.push(task);
                 }
             }
+        }
+
+        if (requiredTasks.length === 0) {
+            setFoundVolunteers(props.volunteers);
+            var checkboxStatusConstruction = {};
+            props.volunteers.forEach(
+                function(volunteer) { 
+                    if (!car || volunteer.offer.car) {
+                        checkboxStatusConstruction[volunteer._id] = false;
+                    }
+                }
+            );
+            setCheckboxStatus(checkboxStatusConstruction);
+            setPageNum(2);
+            return;
         }
 
         var filteredVolunteers = [];
@@ -83,6 +110,7 @@ export default function BeaconCreation(props) {
                 } 
             }
         );
+
         setFoundVolunteers(filteredVolunteers);
         setCheckboxStatus(checkboxStatusConstruction);
         setPageNum(2);
@@ -146,7 +174,7 @@ export default function BeaconCreation(props) {
     if (pageNum === 1) {
         return(
             <>
-                <Modal size="lg" show={props.beaconModal} onHide={() => {setPageNum(1); props.setBeaconModal(false)}} style = {{marginTop: 10, paddingBottom: 40}}>
+                <Modal size="lg" show={props.beaconModal} onHide={() => {resetState(); props.setBeaconModal(false)}} style = {{marginTop: 10, paddingBottom: 40}}>
                     <Modal.Header closeButton>
                         <Modal.Title style={{marginLeft: 5}}>Create a Beacon</Modal.Title>
                     </Modal.Header>
@@ -177,7 +205,7 @@ export default function BeaconCreation(props) {
     } else if (pageNum === 2) {
         return (
             <>
-                <Modal size="md" show={props.beaconModal} onHide={() => {setPageNum(1); props.setBeaconModal(false)}} style = {{marginTop: 10, paddingBottom: 40}}>
+                <Modal size="md" show={props.beaconModal} onHide={() => {resetState(); props.setBeaconModal(false); props.setBeaconModal(false)}} style = {{marginTop: 10, paddingBottom: 40}}>
                     <Modal.Header closeButton>
                         <Modal.Title style={{marginLeft: 5}}>Create a Beacon</Modal.Title>
                     </Modal.Header>
@@ -190,7 +218,12 @@ export default function BeaconCreation(props) {
                                         <Col lg={11} md={11} style = {{marginTop: 10, marginBottom: 5}}>
                                             <h5 id="volunteer-name">
                                                 Found {foundVolunteers.length} volunteers 
-                                            </h5>
+                                            </h5>{' '}
+                                            <Button
+                                                id={allSelected ? "selected" : "notSelected"}
+                                                onClick = {() => selectAll()} style = {{marginBottom: 8}}>
+                                                {allSelected ? "Deselect all" : "Select all"}
+                                            </Button>
                                         </Col>
                                     </Row>
                                     </div>
@@ -240,7 +273,7 @@ export default function BeaconCreation(props) {
     } else if (pageNum === 3) {
         return (
             <>
-                <Modal size="md" show={props.beaconModal} onHide={() => {setPageNum(1); props.setBeaconModal(false)}} style = {{marginTop: 10, paddingBottom: 40}}>
+                <Modal size="md" show={props.beaconModal} onHide={() => {resetState(); props.setBeaconModal(false); props.setBeaconModal(false)}} style = {{marginTop: 10, paddingBottom: 40}}>
                     <Modal.Header closeButton>
                         <Modal.Title style={{marginLeft: 5}}>Create a Beacon</Modal.Title>
                     </Modal.Header>
