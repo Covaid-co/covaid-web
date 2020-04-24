@@ -11,6 +11,7 @@ import { setFalseObj } from './Helpers';
 export default function NewOffers(props) {
 
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
+    const [currentVolunteers, setCurrentVolunteers] = useState([]);
     const [taskSelect, setTaskSelect] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const volunteersPerPage = 4;
@@ -29,6 +30,7 @@ export default function NewOffers(props) {
 
     useEffect(() => {
         setCurrentPage(1);
+        setCurrentVolunteers(props.volunteers);
         setDisplayedVolunteers(props.volunteers.slice(0, volunteersPerPage));
         setTaskSelect(setFalseObj(props.resources));
     }, [props.resources, props.volunteers]);
@@ -37,8 +39,14 @@ export default function NewOffers(props) {
         setCurrentPage(pageNumber);
         const lastIndex = pageNumber * volunteersPerPage;
         const firstIndex = lastIndex - volunteersPerPage;
-        const slicedVolunteers = props.volunteers.slice(firstIndex, lastIndex);
+        const slicedVolunteers = currentVolunteers.slice(firstIndex, lastIndex);
         setDisplayedVolunteers(slicedVolunteers);
+    }
+
+    const reloadPagination = (volunteers) => {
+        setCurrentPage(1);
+        setCurrentVolunteers(volunteers);
+        setDisplayedVolunteers(volunteers.slice(0, volunteersPerPage));
     }
 
     return (
@@ -51,6 +59,7 @@ export default function NewOffers(props) {
                              taskSelect={taskSelect} 
                              setTaskSelect={setTaskSelect} 
                              setDisplayedVolunteers={setDisplayedVolunteers}
+                             reloadPagination={reloadPagination}
                              volunteers={props.volunteers}
                              mobile={props.mobile}/>
             <Container id="newOfferContainer">
@@ -63,7 +72,7 @@ export default function NewOffers(props) {
                         style = {{paddingTop: 15, marginTop: 50}}
                         postsPerPage={volunteersPerPage}
                         currPage={currentPage}
-                        totalPosts={props.volunteers.length}
+                        totalPosts={currentVolunteers.length}
                         paginate={paginatePage}/>
                 </ListGroup>
                 

@@ -14,11 +14,13 @@ export default function NewFilterButton(props) {
         props.setTaskSelect(newTaskSelect);
         const selectedTasks = extractTrueObj(newTaskSelect);
         if (selectedTasks.length === 0) {
-            props.setDisplayedVolunteers(props.volunteers);
+            // props.setDisplayedVolunteers(props.volunteers);
+            props.reloadPagination(props.volunteers);
             return;
         }
         const result = props.volunteers.filter(user => selectedTasks.every(v => user.offer.tasks.indexOf(v) !== -1));
-        props.setDisplayedVolunteers(result);
+        // props.setDisplayedVolunteers(result);
+        props.reloadPagination(result);
     }
 
     const dropdownToggle = (newValue, event, metadata) => {
