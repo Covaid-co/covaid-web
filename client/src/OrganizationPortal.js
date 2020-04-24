@@ -6,6 +6,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Badge from 'react-bootstrap/Badge'
 import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './OrgLogin'
 import Cookie from 'js-cookie'
@@ -266,8 +267,13 @@ export default function OrganiationPortal() {
 							<Col>
 							<Col lg={1}></Col>
 								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 140}}>
-									<h3 id="home-heading" style={{marginTop: 0, fontSize: 20}}>Need a task done?</h3>
-									<p id="regular-text" style={{marginBottom: 10}}>Use our Beacon Notifcation System and mass notify your volunteers about any internal organization requests</p>
+									<h3 id="home-heading" style={{marginTop: 0, fontSize: 20}}>
+										Need a task done? {' '}
+										<Badge id='task-info' style={{background: '#AE2F2F'}}>
+											BETA
+										</Badge> 
+									</h3>
+									<p id="regular-text" style={{marginBottom: 10}}>Use our <b>Beacon Notifcation System</b> and mass notify your volunteers about any internal organization requests</p>
 									<Row>
 										<Col style={{paddingRight: 5}}>
 											<Button id="large-button" onClick={()=>{setBeaconModal(true)}}>
