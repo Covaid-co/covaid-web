@@ -91,6 +91,7 @@ const toAuthJSON = (admin) => {
         _id: admin._id,
         email: admin.email,
         token: generateJWT(admin),
+        orgToken: generateOrgJWT(admin)
     };
 }
 
@@ -102,6 +103,18 @@ const generateJWT = (admin) => {
     return jwt.sign({
     email: admin.email,
     id: admin._id,
+    exp: parseInt(expirationDate.getTime() / 1000, 10),
+    }, secret);
+}
+
+const generateOrgJWT = (admin) => {
+    const today = new Date();
+    const expirationDate = new Date(today);
+    expirationDate.setDate(today.getDate() + 60);
+    const secret = process.env.SECRET || "secret"
+    return jwt.sign({
+    email: 'covaidco@gmail.com',
+    id: admin.association_id,
     exp: parseInt(expirationDate.getTime() / 1000, 10),
     }, secret);
 }

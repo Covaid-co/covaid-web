@@ -331,3 +331,9 @@ input {
     border-radius: 4px;
 }
 
+.form-check-label { 
+    font-family: "Inter";
+    font-size: 13px;
+    color: #7F7F7F;
+ }
+

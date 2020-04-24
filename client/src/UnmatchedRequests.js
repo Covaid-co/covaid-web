@@ -175,7 +175,8 @@ export default function UnmatchedRequests(props) {
                             setMatched={props.setMatched}
                             setCompleted={props.setCompleted}
                             mode={props.mode}
-                            volunteers={props.volunteers}/>
+                            volunteers={props.volunteers}
+                            admin={props.admin}/>
         </>
     );
 }
