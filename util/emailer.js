@@ -8,7 +8,8 @@ templates = {
     org_notification: 'd-f43176afdac34a18aaffee5d6945dbc1',
     verification: 'd-454bd90ee0b74df19746bf2ec664cedc',
     admin_notification: 'd-6c2dcfa1d8734e3293837804b1496ed5',
-    pending_notification: 'd-1a6056febc214315bb3c12e1da3674b9'
+    pending_notification: 'd-1a6056febc214315bb3c12e1da3674b9',
+    beacon: 'd-15d81c1063f2490aa94ba195448d8fac'
 };
 
 exports.sendNotificationEmail = (data) => {
@@ -33,6 +34,28 @@ exports.sendNotificationEmail = (data) => {
             console.log("Email sent!");
         }
       });
+}
+
+exports.sendBeaconEmail = (data) => {
+    const msg = {
+        //extract the email details
+        to: data.receiver,
+        from: data.sender,
+        templateId: templates[data.templateName],
+        //extract the custom fields 
+        dynamic_template_data: {
+            beacon: data.beacon
+        }
+    };
+
+    //send the email
+    sgMail.send(msg, (error, result) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Email sent!");
+        }
+    });
 }
 
 exports.sendVerificationEmail = (data) => {

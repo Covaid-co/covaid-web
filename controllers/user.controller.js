@@ -88,7 +88,7 @@ async function addUserToSpreadsheet(user, ID, spreadsheetID) {
     Car: user.offer.car.toString(),
     TimeOfAvailability: user.offer.timesAvailable.join(", "),
     Phone: user.phone,
-    AvailabilityStatus: user.availability.toString(),
+    AvailabilityStatus: useradd.availability.toString(),
     Agreement: true
   });
 

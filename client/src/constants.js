@@ -33,3 +33,4 @@ export const defaultTerms = [
     'I will take take every CDC-provided safety precaution',
     'I understand that Covaid is strictly a volunteer group established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during fulfillment of the services which I have requested.'
 ];
+export const UserType = {'volunteer': 1, 'organization': 2};
