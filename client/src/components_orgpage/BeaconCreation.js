@@ -135,6 +135,7 @@ export default function BeaconCreation(props) {
                     props.setBeaconModal(false);
                     props.pushBeacon(body.beacon);
                     resetState();
+                    props.setBeaconView(true);
                 })
                 .catch((error) => {
                     console.error(error);

@@ -397,7 +397,8 @@ export default function OrganiationPortal() {
 							setBeaconModal={setBeaconModal}
 							association={association}
 							volunteers={volunteers}
-							pushBeacon={pushBeacon} />
+							pushBeacon={pushBeacon}
+							setBeaconView={setBeaconView} />
 			</div>
 		</div>,
 		<Footer key="2" handleShowModal={() => {}}/>]

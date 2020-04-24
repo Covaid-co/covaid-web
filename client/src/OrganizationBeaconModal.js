@@ -21,7 +21,7 @@ export default function OrganizationBeaconModal(props) {
     const [unacceptedVolunteers, setUnacceptedVolunteers] = useState([]);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [showAcceptedVolunteers, setShowAcceptedVolunteers] = useState(false);
-    const [confirmationType, setConfirmationType] = useState(0);
+    const [confirmationType, setConfirmationType] = useState('');
     
     const setVolunteers = (volunteers) => {
         setAcceptedVolunteers(volunteers.filter(volunteer => volunteer.response));
@@ -73,6 +73,22 @@ export default function OrganizationBeaconModal(props) {
         setConfirmationType('reactivate');
     }
 
+    const showCompleteBeacon = () => {
+        setShowConfirmationModal(true);
+        props.setModalOpen(false);
+
+        switch (props.type) {
+            case BeaconStatusEnum.active:
+                setConfirmationType('active-complete');
+                break;
+            case BeaconStatusEnum.inactive:
+                setConfirmationType('inactive-complete');
+                break;
+            default:
+                break;
+        }
+    }
+
     const move = (to, from) => {
         props.move(beacon, to, from);
     }
@@ -80,11 +96,29 @@ export default function OrganizationBeaconModal(props) {
     const modeButton = (type) => {
         switch (type) {
             case 1:
-                return (<Button id='large-button-empty' onClick={showDeactivateBeacon} style={{borderColor: '#DB4B4B', color: '#DB4B4B'}}>Deactivate Beacon</Button>)
-                break;
+                return (
+                    <Row>
+                        <Col md={6} style={{paddingLeft: 15, paddingRight: 4}}>
+                            <Button id='large-button-empty' onClick={showDeactivateBeacon} style={{borderColor: '#DB4B4B', color: '#DB4B4B'}}>Deactivate Beacon</Button>
+                        </Col>
+                        <Col md={6} style={{paddingRight: 15, paddingLeft: 4}}>
+                            <Button id='large-button-empty' onClick={showCompleteBeacon}>Complete Beacon</Button>
+                        </Col>
+                    </Row>
+                    );
             case 2:
-                return (<Button id='large-button-empty' onClick={showReactivateBeacon} style={{borderColor: '#28a745', color: '#28a745'}}>Reactivate Beacon</Button>)
-                break;
+                return (
+                    <Row>
+                        <Col md={6} style={{paddingLeft: 15, paddingRight: 4}}>
+                            <Button id='large-button-empty' onClick={showReactivateBeacon} style={{borderColor: '#28a745', color: '#28a745'}}>Reactivate Beacon</Button>
+                        </Col>
+                        <Col md={6} style={{paddingRight: 15, paddingLeft: 4}}>
+                            <Button id='large-button-empty' onClick={showCompleteBeacon}>Complete Beacon</Button>
+                        </Col>
+                    </Row>
+                    );
+            case 3:
+                return <></>
             default:
                 return <></>;
         }
@@ -156,11 +190,7 @@ export default function OrganizationBeaconModal(props) {
                         <Button id='large-button' onClick={showAcceptedVolunteersModal}>View Accepted Volunteers</Button>
                     </Col>
                 </Row>
-                <Row style={{marginTop: 5}}>
-                    <Col>
-                        {modeButton(props.type)}
-                    </Col>
-                </Row>
+                {modeButton(props.type)}
             </Modal.Body>
         </Modal>
         <BeaconConfirmation 

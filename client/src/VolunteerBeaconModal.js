@@ -117,7 +117,7 @@ export default function VolunteerBeaconModal(props) {
                                         />
                         </Form.Group>
                         <Button id={!currentUserResponse.response ? 'rightCarButton' : 'rightCarButtonPressed'} onClick={updateUserResponse}>
-                            {(!currentUserResponse.response) ? "I'm in!" : "I can't help anymore"}
+                            {(!currentUserResponse.response) ? "I'm in!" : "I'm out!'"}
                         </Button>
                     </Col>
                 </Row>

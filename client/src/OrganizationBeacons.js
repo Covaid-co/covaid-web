@@ -33,7 +33,7 @@ export default function OrganizationBeacons(props) {
             case BeaconStatusEnum.inactive:
                 return <Badge style={{float: "right", marginTop: 2}} className='pending-task'>Inactive</Badge>;
             case BeaconStatusEnum.complete:
-                return <Badge style={{float: "right", marginTop: 2, borderColor: '#28a745', color: '#28a745'}} className='pending-task'>Inactive</Badge>;
+                return <Badge style={{float: "right", marginTop: 2, borderColor: '#2670FF', color: '#2670FF'}} className='pending-task'>Completed</Badge>;
             default:
                 return <></>;
         }

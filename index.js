@@ -6,7 +6,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const mountRoutes = require('./routes')
 
-const Scheduler = require('./request_scheduler/request.scheduler')
+const RequestScheduler = require('./scheduler/request.scheduler');
+const BeaconScheduler = require('./scheduler/beacon.scheduler');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -37,7 +38,8 @@ require('./models/association.model');
 require('./models/user.model');
 require('./config/passport');
 
-Scheduler.request_scheduler()
+RequestScheduler.request_scheduler();
+BeaconScheduler.BeaconScheduler();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -3,6 +3,8 @@ const BeaconStatusEnum = {"active":1, "inactive":2, "complete":3, "delete": 4};
 
 const UserService = require('./user.service');
 
+const emailer = require('../util/emailer');
+
 
 exports.getQueriedBeacons = async function(query) {
     try {
@@ -65,6 +67,14 @@ exports.createBeacon = async function (auth_id, beacon) {
         const users = await UserService.getUsersByUserIDs(beacon.volunteers);
         users.forEach(user => {
             console.log("Sending beacon to " + user.email);
+            var data = {
+                //sender's and receiver's email
+                sender: "Covaid@covaid.co",
+                receiver: user.email,
+                beacon: savedBeacon.beaconName,
+                templateName: "beacon",
+             };
+            emailer.sendBeaconEmail(data);
         });
         return savedBeacon;
     } catch (e) {
