@@ -6,9 +6,9 @@ import Row from 'react-bootstrap/Row'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
-import fetch_a from './util/fetch_auth'
+import fetch_a from '../util/fetch_auth'
 import ListGroup from 'react-bootstrap/ListGroup'
-import { useFormFields } from "./libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
 
 
 export default function VolunteerBeaconModal(props) {

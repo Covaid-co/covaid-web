@@ -118,7 +118,7 @@ export default function RequestInfo(props) {
     }
 
     const adminDetails = () => {
-        if ((props.modalMode === 2 || props.modalMode == 1) && props.currRequest.adminMessage && props.currRequest.adminMessage.length > 0) {
+        if ((props.modalMode === 2 || props.modalMode === 1) && props.currRequest.adminMessage && props.currRequest.adminMessage.length > 0) {
             return (
                 <>
                 <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Message from your mutual aid group:</h5>

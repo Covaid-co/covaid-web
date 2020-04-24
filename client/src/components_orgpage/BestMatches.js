@@ -21,20 +21,24 @@ export default function BestMatches(props) {
 
     useEffect(() => {
         var temp_volunteers = []
+        var nomatch_volunteers = [];
         var needed_resources = props.currRequest.resource_request ? props.currRequest.resource_request : []
         props.volunteers.forEach(
             function(volunteer) { 
                 var volunteer_resources = volunteer.offer.tasks;
                 if (volunteer_resources.some(item => needed_resources.includes(item))) {
                     temp_volunteers.push(volunteer)
-                } 
+                } else {
+                    nomatch_volunteers.push(volunteer)
+                }
             }
         );
         temp_volunteers.sort(function(a, b) {
             return distance(a) - distance(b)
         });
-        setSortedVolunteers(temp_volunteers);
-        setDisplayedVolunteers(temp_volunteers.slice(0, volunteersPerPage));
+        var allVolunteers = temp_volunteers.concat(nomatch_volunteers);
+        setSortedVolunteers(allVolunteers);
+        setDisplayedVolunteers(allVolunteers.slice(0, volunteersPerPage));
     }, [props.currRequest]);
 
     const distance = (volunteer) => {
@@ -80,7 +84,7 @@ export default function BestMatches(props) {
                                     </div>
                                     <div>
                                         {volunteer.offer.tasks.length === 0 ? 
-                                            <Badge className='task-info' style={{background: '#AE2F2F', border: '1px solid #AE2F2F'}}>
+                                            <Badge id='task-info' style={{background: '#AE2F2F'}}>
                                                 No tasks entered
                                             </Badge> 
                                             : volunteer.offer.tasks.map((task, i) => {

@@ -19,16 +19,12 @@ import VolunteersModal from './components_orgpage/VolunteersModal';
 import AdminModal from './components_orgpage/AdminModal';
 import BeaconCreation from './components_orgpage/BeaconCreation';
 import OrgResourcesModal from './OrgResourcesModal';
-import LiveBeaconView from './LiveBeaconView'
+import LiveBeaconView from './components_orgpage/LiveBeaconView'
 import { sortFn } from './OrganizationHelpers'
 import { generateURL } from './Helpers'
 import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
-
-import {UserType} from './constants'
-import { set } from "mongoose";
-import OrganizationBeacons from "./OrganizationBeacons";
 
 export default function OrganiationPortal() {
 
@@ -337,9 +333,7 @@ export default function OrganiationPortal() {
 													volunteers={volunteers}
 													mode={3}/>
 							</Container>
-							<Container id="newOfferContainer" style={displayTab(4)}>
-								<OrganizationBeacons beacons={beacons} association={association} />
-							</Container>
+							
 						</Col>
 						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
 							<Container id="newOfferContainer" style={{'display': 'block'}}>

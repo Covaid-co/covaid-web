@@ -4,8 +4,8 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
-import CovaidNavbar from './CovaidNavbar'
-import BeaconCreation from './components_orgpage/BeaconCreation';
+import CovaidNavbar from '../CovaidNavbar'
+import BeaconCreation from './BeaconCreation';
 import OrganizationBeacons from './OrganizationBeacons';
 
 import Container from 'react-bootstrap/Container';

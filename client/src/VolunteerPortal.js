@@ -17,7 +17,7 @@ import Feedback from './components_modals/Feedback'
 import { generateURL } from './Helpers';
 import CovaidNavbar from './CovaidNavbar'
 import VolunteerLogin from './components_volunteerpage/VolunteerLogin'
-import VolunteerBeacons from './VolunteerBeacons'
+import VolunteerBeacons from './components_volunteerpage/VolunteerBeacons'
 import './VolunteerPage.css'
 import fetch_a from './util/fetch_auth'
 import Footer from './components/Footer'

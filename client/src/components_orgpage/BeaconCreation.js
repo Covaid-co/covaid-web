@@ -84,15 +84,15 @@ export default function BeaconCreation(props) {
 
         if (requiredTasks.length === 0) {
             setFoundVolunteers(props.volunteers);
-            var checkboxStatusConstruction = {};
+            var checkboxStatusConstructionNoTasks = {};
             props.volunteers.forEach(
                 function(volunteer) { 
                     if (!car || volunteer.offer.car) {
-                        checkboxStatusConstruction[volunteer._id] = false;
+                        checkboxStatusConstructionNoTasks[volunteer._id] = false;
                     }
                 }
             );
-            setCheckboxStatus(checkboxStatusConstruction);
+            setCheckboxStatus(checkboxStatusConstructionNoTasks);
             setPageNum(2);
             return;
         }
