@@ -17,7 +17,7 @@ export default function CheckForm(props) {
     return (
         <>
             {sortedObj.map((key) => {
-                return <Button key={key}
+                return <Button key={key} disabled={props.disabled}
                                id={props.obj[key] ? "selected" : "notSelected"}
                                onClick = {() => handleObjChange(key)}>
                                {key}

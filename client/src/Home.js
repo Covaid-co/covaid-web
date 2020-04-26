@@ -34,6 +34,7 @@ class Home extends Component {
 			isLoggedIn: false,
 			first_name: '',
 			last_name: '',
+			showRequest: '',
 			currentUser: undefined,
 			showModal: false,
 			modalType: '',
@@ -61,6 +62,9 @@ class Home extends Component {
 		if (this.props.location.verified) {
 			this.handleShowModal(6);
 			this.setState({justVerified: true});
+		}
+		if (this.props.location.requestHelp) {
+			this.setState({showRequest: true})
 		}
 		getMyLocation(this);
 		if (!this.state.isLoggedIn && Cookie.get("token")) {
@@ -95,8 +99,11 @@ class Home extends Component {
 			response => {
 				const { lat, lng } = response.results[0].geometry.location;
 				removeCookies(cookieNames);
-				setNeighborhood(lat, lng, this);
+				setNeighborhood(lat, lng, this, this.state.showRequest);
 				findAssociations(lat, lng, this);
+				if (this.state.showRequest) {
+					this.handleShowModal(8)
+				}
 				return true;
 			}, () => {
 				return false;

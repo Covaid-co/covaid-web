@@ -167,3 +167,11 @@ export const setFalseObj = (names) => {
     }
     return res;
 } 
+
+export const setTrueObj = (names) => {
+    var res = {}
+    for (var i = 0; i < names.length; i++) {
+        res[names[i]] = true;
+    }
+    return res;
+} 

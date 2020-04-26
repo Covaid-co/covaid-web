@@ -22,7 +22,7 @@ import './HomePage.css';
 
 export default function HomePage(props) {
 
-    const [mode, setMode] = useState('');
+    const [mode, setMode] = useState('general');
     const [modalInfo, setModalInfo] = useState({});
     const [volunteers, setVolunteers] = useState([]);
     const [resources, setResources] = useState([]);

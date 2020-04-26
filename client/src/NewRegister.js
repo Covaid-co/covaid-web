@@ -15,7 +15,7 @@ import CheckForm from './components/CheckForm';
 import PhoneNumber from './PhoneNumber';
 import NewHasCar from './components_homepage/NewHasCar';
 import Details from './components_homepage/Details'
-import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';
+import { validateEmail, extractTrueObj, setFalseObj, setTrueObj } from './Helpers';
 import { defaultResources, availability, defaultTerms } from './constants';
 
 import Geocode from "react-geocode";
@@ -72,7 +72,7 @@ export default function NewRegister(props) {
             setTaskChecked(setFalseObj(defaultResources));
         }
         setAvailabilityChecked(setFalseObj(availability));
-        setNeighborhoodsChecked(setFalseObj(props.state.neighborhoods));
+        setNeighborhoodsChecked(setTrueObj(props.state.neighborhoods));
     }, [props.state.currentAssoc, props.state.neighborhoods])
 
     const handleTermChange = (event, task) => { 
@@ -168,6 +168,20 @@ export default function NewRegister(props) {
         }
     }
 
+    const resetState = () => {
+        setTimeout(function () {
+            setPageNum(1);
+            setShowToast(false);
+            setToastMessage('');
+            fields.first_name = '';
+            fields.last_name = '';
+            fields.password = '';
+            fields.confirmPassword = '';
+            setPhoneNumber('');
+            fields.email = '';
+        }, 500);
+    }
+
     const newHandleSubmit = async e => {
         e.preventDefault();
         if (checkThirdPageInput() === false) {
@@ -208,7 +222,6 @@ export default function NewRegister(props) {
                 'phone': phoneString,
             }
         };
-        console.log(form);
 
         fetch('/api/users/', {
             method: 'post',
@@ -233,7 +246,7 @@ export default function NewRegister(props) {
     if (justRegistered === false) {
         if (pageNum === 1) {
             return (
-                <Modal show={props.showModal} onHide={() => { props.hideModal(); setPageNum(1);}} 
+                <Modal show={props.showModal} onHide={() => { props.hideModal(); resetState();}} 
                        id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title id="small-header">Create a new account</Modal.Title>
@@ -297,7 +310,7 @@ export default function NewRegister(props) {
                         <p id="pagenum-text">Page 1 of 3</p>
                         <Toast
                             show={showToast}
-                            delay={3000}
+                            delay={1000}
                             onClose={() => setShowToast(false)}
                             autohide
                             id='toastError'>
@@ -308,7 +321,7 @@ export default function NewRegister(props) {
             );
         } else if (pageNum === 2){
             return (
-                <Modal show={props.showModal} onHide={() => { props.hideModal(); setPageNum(1);}} 
+                <Modal show={props.showModal} onHide={() => { props.hideModal(); resetState();}} 
                        id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title id="small-header">Tell us more about you!</Modal.Title>
@@ -333,7 +346,7 @@ export default function NewRegister(props) {
                         <p id="pagenum-text">Page 2 of 3</p>
                         <Toast
                             show={showToast}
-                            delay={3000}
+                            delay={1000}
                             onClose={() => setShowToast(false)}
                             autohide
                             id='toastError'>
@@ -344,7 +357,7 @@ export default function NewRegister(props) {
             )
         } else {
             return (
-                <Modal show={props.showModal} onHide={() => {props.hideModal(); setPageNum(1);}} 
+                <Modal show={props.showModal} onHide={() => {props.hideModal(); resetState();}} 
                        id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title id="small-header">Almost Done!</Modal.Title>
@@ -352,24 +365,28 @@ export default function NewRegister(props) {
                     <Modal.Body>
                         <Form onSubmit={newHandleSubmit}>
                             <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 4}}>
-                                Here are your closest neighborhoods
+                                We've identified the following as your primary locality
                             </h5>
                             <p id="regular-text" style={{marginBottom: 4, fontSize: 14}}>
-                                If these neighborhoods seem unfamiliar, please change your location before registering
+                                If they seem unfamiliar, please change your location from the home page.
                             </p>
-                            <CheckForm obj={neighborhoodsChecked} setObj={setNeighborhoodsChecked}/>
-                            <h5 id="regular-text-bold"  style = {{marginTop: '24px', marginBottom: 5}}>Please choose an organization</h5>
-                            <p id="regular-text" style={{marginBottom: 5, fontSize: 14}}>
-                                Choose a nearby supporting organization to help manage your mutual aid efforts.
-                            </p>
-                            <SelectionForm associations={props.state.associations} setState={props.setState} currentAssoc={props.state.currentAssoc}/>
+                            <CheckForm obj={neighborhoodsChecked} setObj={setNeighborhoodsChecked} disabled={true}/>
+                            {props.state.associations.length > 0 ? <>
+                                <h5 id="regular-text-bold"  style = {{marginTop: '24px', marginBottom: 5}}>Local organizations help match volunteers with neighbors in need</h5>
+                                <p id="regular-text" style={{marginBottom: 5, fontSize: 14}}>
+                                    Choose a nearby supporting organization to help manage your mutual aid efforts.
+                                </p>
+                                <SelectionForm associations={props.state.associations} setState={props.setState} currentAssoc={props.state.currentAssoc}/></>
+                                :
+                                <></>
+                            }
                             <h5 id="regular-text-bold" style = {{marginTop: 20, marginBottom: 4}}>
                                 Health
                             </h5>
                             <p id="regular-text" style={{marginBottom: 20, fontSize: 14}}>
                                 For the your safety and the safety of all community members, please check 
                                 the boxes to complete the volunteer pledge. If you have any questions about 
-                                any of the choices, do not fill out the form and contact us at covaidco@gmail.com
+                                any of the choices, do not fill out the form and contact us at covaidco@gmail.com.
                             </p>
                             <Row>
                                 <Col md={12}>
@@ -406,7 +423,7 @@ export default function NewRegister(props) {
         }
     } else {
         return (
-            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); setPageNum(1); props.hideModal();}}>
+            <Modal show={justRegistered} onHide={() => {setJustRegistered(false); props.hideModal(); resetState();}}>
                 <Modal.Header closeButton>
                     <Modal.Title id="small-header">Check your email for a verification link!</Modal.Title>
                 </Modal.Header>
@@ -415,7 +432,7 @@ export default function NewRegister(props) {
                         Once verified, you will be able to post an offer to support your 
                         community directly from your volunteer portal.
                     </p>
-                    <Button id="large-button" onClick={() => {setJustRegistered(false); setPageNum(1); props.hideModal();}}>
+                    <Button id="large-button" onClick={() => {setJustRegistered(false); props.hideModal(); setPageNum(1);}}>
                         Return to home
                     </Button>
                 </Modal.Body>

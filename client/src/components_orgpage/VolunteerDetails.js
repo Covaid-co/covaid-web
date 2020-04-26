@@ -176,10 +176,10 @@ export default function VolunteerDetails(props) {
                     <div id="name-details">{props.currVolunteer.first_name} {props.currVolunteer.last_name} 
                         {props.currVolunteer.availability ? 
                             <Badge aria-describedby='tooltip-bottom' id='task-info' style={{marginLeft: 8, marginTop: 0, backgroundColor: '#28a745'}}>
-                                Available
+                                Visible
                             </Badge>
                           : <Badge aria-describedby='tooltip-bottom' id='task-info' style={{marginLeft: 8, marginTop: -4, backgroundColor: '#dc3545'}}>
-                                Not Available
+                                Not visible
                             </Badge>}
                         {displaySwitch()}
                         {requestStatus()}

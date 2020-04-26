@@ -13,6 +13,7 @@ export default function GetLocation(props) {
     const [showInvalid, setShowInvalid] = useState(false);
 
     const handleSubmit = (e) => {
+        e.preventDefault();
         props.onLocationSubmit(e, locationString).then((res) => {
             if (res === false) {
                 setShowInvalid(true);
