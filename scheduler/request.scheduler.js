@@ -20,9 +20,9 @@ exports.request_scheduler = function() {
         updateAllExpiredRequests()
     })
 
-    cron.schedule("0 0 */1 * * *", function() {
-        remindPendingRequests()
-    })
+    // cron.schedule("0 0 */1 * * *", function() {
+    //     remindPendingRequests()
+    // })
 };
 
 // const remindPendingRequests = () => {
