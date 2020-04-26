@@ -4,7 +4,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import CovaidNavbar from '../CovaidNavbar'
+import NavBar from '../components/NavBar'
 import NewOffers from '../NewOffers'
 import RequestHelp from '../RequestHelp'
 import NewLogin from '../NewLogin'
@@ -51,7 +51,7 @@ export default function Main(props) {
 
     return (
         <>
-          <CovaidNavbar setShowLogin={setShowLogin} setShowRegistration={setShowRegistration}/>
+          <NavBar setShowLogin={setShowLogin} setShowRegistration={setShowRegistration}/>
           <Jumbotron fluid id="jumbo">
             <Container id="jumboContainer">
               <Row>

@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
-import CovaidNavbar from '../CovaidNavbar'
+import NavBar from '../components/NavBar'
 import BeaconCreation from './BeaconCreation';
 import OrganizationBeacons from './OrganizationBeacons';
 
@@ -84,7 +84,7 @@ export default function LiveBeaconView(props) {
     return (
         <>
             <div className="App">
-                <CovaidNavbar isLoggedIn={true} totalVolunteers={props.volunteers.length} orgPortal={true} first_name={props.association.name} handleShowModal={() => {}}/>
+                <NavBar isLoggedIn={true} totalVolunteers={props.volunteers.length} orgPortal={true} first_name={props.association.name} handleShowModal={() => {}}/>
                 <Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
 					<Container style={{maxWidth: 1500}}>
 						<Row>

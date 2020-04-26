@@ -411,6 +411,12 @@ exports.all_users = function (req, res) {
   });
 }
 
+exports.actual_all_users = function (req, res) {
+  Users.find({}).then(function (users) {
+      res.send(users);
+  });
+}
+
 exports.total_users = function (req, res) {
   Users.find({}).count(function(err, count) {
     res.send({'count': count});

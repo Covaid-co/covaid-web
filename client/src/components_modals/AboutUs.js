@@ -5,7 +5,7 @@ export default function AboutUs(props) {
     return (
         <Modal show={props.showModal} style={{marginTop: 60}} onHide={props.hideModal}>
             <Modal.Header closeButton>
-                <Modal.Title id="small-header">About Us</Modal.Title>
+                <Modal.Title>About Us</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <p id="regular-text">Hi! We're a group of college student/recent grads who want to play our part in the fight against COVID-19.

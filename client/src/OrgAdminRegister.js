@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container'
 import { useFormFields } from "./libs/hooksLib"; 
 import { generateURL } from './Helpers';
 import orgImg from './assets/org.png'
-import CovaidNavbar from './CovaidNavbar';
+import NavBar from './components/NavBar'
 import { validateEmail } from './Helpers';
 import Cookie from 'js-cookie'
 const queryString = require('query-string');
@@ -115,7 +115,7 @@ export default function OrgAdminRegister(props) {
     } else {
         return (
             <>
-            <CovaidNavbar isLoggedIn={false} orgAdmin={true} handleShowModal={handleShowModal} />
+            <NavBar isLoggedIn={false} orgAdmin={true} handleShowModal={handleShowModal} />
             <Container style={{maxWidth: 1500}}>
                 <Row>
                     <Col md={6} id="login-container">

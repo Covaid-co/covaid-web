@@ -10,7 +10,7 @@ import Badge from 'react-bootstrap/Badge'
 import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './components_orgpage/OrgLogin'
 import Cookie from 'js-cookie'
-import CovaidNavbar from './CovaidNavbar'
+import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 
 import RequestDetails from './components_orgpage/RequestDetails';
@@ -22,7 +22,7 @@ import BeaconCreation from './components_orgpage/BeaconCreation';
 import OrgResourcesModal from './OrgResourcesModal';
 import LiveBeaconView from './components_orgpage/LiveBeaconView'
 import { sortFn } from './components_orgpage/OrganizationHelpers'
-import { generateURL } from './Helpers'
+import { generateURL, convertTime } from './Helpers'
 import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
@@ -103,6 +103,19 @@ export default function OrganiationPortal() {
 						setUnmatched(unMatchedArr);
 						setMatched(matchedArr);
 						setCompleted(completedArr);
+
+						var res = {}
+						data.forEach(function (result) {
+							if (result.time_posted) {
+								var day = convertTime(result.time_posted);
+								if (!res[day]) {
+									res[day] = 0;
+								}
+								res[day]++;
+							}
+						});
+
+						console.log(res)
 					});
 				} else {
 					console.log("Error");
@@ -296,7 +309,7 @@ export default function OrganiationPortal() {
 
 	return ([
 		<div className="App">
-			<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} setAdmin={setAdmin} orgPortal={true} first_name={getName()} handleShowModal={() => {}}/>
+			<NavBar isLoggedIn={true} totalVolunteers={volunteers.length} setAdmin={setAdmin} orgPortal={true} first_name={getName()} handleShowModal={() => {}}/>
 			<div style ={{zoom: '95%'}}>
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
 					<Container style={{maxWidth: 1500}}>

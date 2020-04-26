@@ -3,22 +3,29 @@ import Navbar from 'react-bootstrap/Navbar'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
+import Button from 'react-bootstrap/Button'
+
 import HowItWorks from '../components_modals/HowItWorks'
 import Feedback from '../components_modals/Feedback'
 
 export default function Footer(props) {
 
     const [showModal, setShowModal] = useState(false);
-    const [modalType, setModalType] = useState(0);
+    const [modalName, setModalName] = useState('');
 
     const getCurrentModal = () => {
         var modal = <></>;
-        if (modalType === 2) {
+        if (modalName === 'faq') {
             modal = <HowItWorks showModal={showModal} hideModal={() => setShowModal(false)}/>;
-        } else if  (modalType === 4) {
+        } else if  (modalName === 'feedback') {
             modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)}/>;
         }
         return modal;
+    }
+
+    const setCurrModal = (name) => {
+        setShowModal(true);
+        setModalName(name);
     }
     
     return (
@@ -37,8 +44,8 @@ export default function Footer(props) {
                 </Col>
                 <Col xs={2} style={{padding: 20, paddingLeft: 30, paddingTop: 80,  paddingRight: 0}}>
                     {/* <a target="_blank" rel="noopener noreferrer" href="github.com">Donate</a><br/> */}
-                    <a id="regular-text" style={{color: '#2670FF'}} onClick={() => props.handleShowModal(2)} href="#">FAQ</a><br/>
-                    <a id="regular-text" style={{color: '#2670FF'}} onClick={() => props.handleShowModal(4)} href="#">Send feedback</a><br/>
+                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0}} onClick={() => setCurrModal('faq')}>FAQ</Button><br/>
+                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0, marginTop: -5}} onClick={() => setCurrModal('feedback')}>Send feedback</Button>
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 100, paddingTop: 37}}>
                     <p id="regular-text" style={{color: '#7B7B7B', fontWeight: 'bold'}}>Current Partners</p>

@@ -13,7 +13,7 @@ import orgImg from '../assets/org.png'
 import requestsImg from '../assets/requests.png'
 import mapsImg from '../assets/mapscreen.png'
 import orgscreenImg from '../assets/orgscreen.png'
-import CovaidNavbar from '../CovaidNavbar'
+import NavBar from '../components/NavBar'
 import AboutUs from '../components_modals/AboutUs'
 import HowItWorks from '../components_modals/HowItWorks'
 import Feedback from '../components_modals/Feedback'
@@ -137,7 +137,7 @@ export default function OrgLogin(props) {
 	}
 
     return (<>
-        <CovaidNavbar isLoggedIn={false} totalVolunteers={0} orgPortal={true} handleShowModal={handleShowModal}/>
+        <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} handleShowModal={handleShowModal}/>
         <Container style={{maxWidth: 1500}}>
             <Row>
                 <Col md={6} id="login-container">

@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import MapGL, { Popup, NavigationControl, FullscreenControl }  from 'react-map-gl';
+import React, { useState, useEffect, useRef } from 'react';
+import MapGL, { Popup, NavigationControl, FullscreenControl, Marker }  from 'react-map-gl';
+import useSupercluster from 'use-supercluster';
 import Pins from './pins';
 import InfoMarker from './InfoMarker'
+import { MARKER_SIZE, ICON } from '../constants'
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibGlqZWZmcmV5MzkiLCJhIjoiY2s5MGUwMDNmMDBzdDNsbzFoY2VmZWNzOCJ9.8k5L4gUP4EF9AhvSylaIvw';
 
 export default function NewMap(props) {
+    const mapRef = useRef();
+    const [popupInfo, setPopupInfo] = useState(null);
     const [viewport, setViewport] = useState({
         latitude: 38.7528233,
         longitude: -98.1970437,
         zoom: 2.8,
         bearing: 0,
-        pitch: 0
+        pitch: 0,
+        width: "100%",
+        height: 450
     });
-    const [popupInfo, setPopupInfo] = useState(null);
 
     useEffect(() => {
-        if (props.association.name && props.association.name !== "Covaid") {
+        if (props.association && props.association.name && props.association.name !== "Covaid") {
             setViewport({
                 ...viewport,
                 latitude: props.association.location.coordinates[0],
@@ -43,16 +48,47 @@ export default function NewMap(props) {
     const onClickMarker = (obj) => {
         setPopupInfo(obj);
     }
-      
+
+    const points = props.volunteers.map(volunteer => ({
+        type: "Feature",
+        properties: {
+            cluster: false,
+            id: volunteer._id
+        },
+        geometry: { type: "Point", coordinates: [volunteer.longitude, volunteer.latitude] }
+    }));
+
+    // [lat, long, lat, long]
+    const bounds = mapRef.current ? mapRef.current.getMap().getBounds().toArray().flat() : null;
+
+    const { clusters, supercluster } = useSupercluster({
+        points,
+        zoom: viewport.zoom,
+        bounds,
+        options: { radius: 75, maxZoom: 20 }
+    })
+
+    if (props.public) {
+        return (
+            <MapGL {...viewport} mapStyle="mapbox://styles/lijeffrey39/ck9hiqyoq4w001ilenf9zx129" width="100%" 
+                height="450px" mapboxApiAccessToken={MAPBOX_TOKEN} ref={mapRef}
+                onViewportChange={(newViewPort) => {
+                    setViewport({ ...newViewPort })
+                }}>
+                <Pins volunteers={props.volunteers} setViewport={setViewport} viewport={viewport}
+                      public={true} clusters={clusters} supercluster={supercluster}/>
+                <div style={navStyle}>
+                    <NavigationControl/>
+                </div>
+                <div style={fullscreenControlStyle}>
+                    <FullscreenControl/>
+                </div>
+            </MapGL>
+        )
+    }
 
     return (
-        <MapGL
-            {...viewport}
-            width="100%"
-            height="450px"
-            mapStyle="mapbox://styles/mapbox/light-v9"
-            onViewportChange={setViewport}
-            mapboxApiAccessToken={MAPBOX_TOKEN}>
+        <MapGL {...viewport} mapStyle="mapbox://styles/mapbox/light-v9" onViewportChange={setViewport} mapboxApiAccessToken={MAPBOX_TOKEN}>
             <Pins requests={props.requests} volunteers={props.volunteers} onClick={onClickMarker}
                   requesterMap={props.requesterMap} volunteerMap={props.volunteerMap} mode={props.mode}
                   unmatched={props.unmatched} matched={props.matched} completed={props.completed}/>

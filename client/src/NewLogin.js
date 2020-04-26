@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Cookie from 'js-cookie'
 import { validateEmail } from './Helpers'
+import { currURL } from './constants';
 
 export default function NewLogin(props) {
     const [fields, handleFieldChange] = useFormFields({
@@ -44,7 +45,7 @@ export default function NewLogin(props) {
                 response.json().then(data => {
                     Cookie.set("token", data.user.token);
                     props.hideModal();
-                    window.location.href = window.location.protocol + '//' + window.location.host + '/volunteerPortal';
+                    window.location.href = currURL + '/volunteerPortal';
                 });
             } else {
                 if (response.status === 403) {

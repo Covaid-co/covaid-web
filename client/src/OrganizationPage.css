@@ -1,3 +1,13 @@
+.cluster-marker {
+    color: #fff;
+    background: #2670FF;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .dropdown-sort {
     width: 100%;
     background-color: transparent;

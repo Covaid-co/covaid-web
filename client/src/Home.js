@@ -5,7 +5,7 @@ import fetch_a from './util/fetch_auth';
 import Cookie from 'js-cookie'
 
 import HomePage from './HomePage'
-import CovaidNavbar from './CovaidNavbar'
+import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import { findAssociations, getMyLocation, setNeighborhood } from './location_tools/LocationHelpers'
 import { removeCookies } from './Helpers';
@@ -60,7 +60,7 @@ class Home extends Component {
 
 	componentDidMount() {
 		if (this.props.location.verified) {
-			this.handleShowModal(6);
+			this.handleShowModal('signin');
 			this.setState({justVerified: true});
 		}
 		if (this.props.location.requestHelp) {
@@ -115,7 +115,7 @@ class Home extends Component {
 		return (
 			[
 				<div className="App" style={{height: '100%'}}>
-					<CovaidNavbar isLoggedIn={this.state.isLoggedIn} first_name={this.state.first_name} handleShowModal={this.handleShowModal}/>
+					<NavBar isLoggedIn={this.state.isLoggedIn} first_name={this.state.first_name} handleShowModal={this.handleShowModal}/>
 					<HomePage state={this.state} 
 								setState={this.setState}
 								setVolunteerPortal={() => this.props.history.push({
