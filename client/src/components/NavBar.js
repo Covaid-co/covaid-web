@@ -6,10 +6,19 @@ import Button from 'react-bootstrap/Button'
 import Badge from 'react-bootstrap/Badge'
 import Cookie from 'js-cookie'
 
+import AboutUs from '../components_modals/AboutUs'
+import HowItWorks from '../components_modals/HowItWorks'
+import MapModal from '../components_modals/MapModal';
+import { currURL } from '../constants';
+
+
 export default function CovaidNavbar(props) {
     const [toggled, setToggled] = useState(false);
     const [totalVolunteers, setTotalVolunteers] = useState(0);
     const [width, setWidth] = useState(window.innerWidth);
+    const [modalName, setModalName] = useState('');
+    const [showModal, setShowModal] = useState(false);
+
     window.addEventListener("resize", () => {
         setWidth(window.innerWidth);
         if (window.innerWidth > 767) {
@@ -32,10 +41,10 @@ export default function CovaidNavbar(props) {
                 Cookie.remove('admin_token');
                 props.setAdmin({});
             }
-            window.open(window.location.protocol + '//' + window.location.host + '/organizationPortal', '_self');
+            window.open(currURL + '/organizationPortal', '_self');
         } else {
             Cookie.remove('token');
-            window.open(window.location.protocol + '//' + window.location.host, '_self');
+            window.open(currURL, '_self');
         }
     }
 
@@ -61,19 +70,19 @@ export default function CovaidNavbar(props) {
         } else {
             if (width > 767) {
                 rightNav = <Form inline style ={{display: 'block', marginRight: '5%', marginBottom: 3}}>
-                                <Button variant="outline-light" id='login-button' onClick={() => props.handleShowModal(6)}>
+                                <Button variant="outline-light" id='login-button' onClick={() => props.handleShowModal('signin')}>
                                     Sign In
                                 </Button>
-                                <Button variant="outline-light" id='register-button' onClick={() => props.handleShowModal(7)}>
+                                <Button variant="outline-light" id='register-button' onClick={() => props.handleShowModal('register')}>
                                     Volunteer Registration
                                 </Button>
                             </Form>
             } else {
                 rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
-                                <Button id="large-button-empty" onClick={() => props.handleShowModal(6)} style={{marginTop: 0, marginBottom: 5}}>
+                                <Button id="large-button-empty" onClick={() => props.handleShowModal('signin')} style={{marginTop: 0, marginBottom: 5}}>
                                     Volunteer Login
                                 </Button>
-                                <Button id='large-button' onClick={() => props.handleShowModal(7)}>
+                                <Button id='large-button' onClick={() => props.handleShowModal('register')}>
                                     Volunteer Registration
                                 </Button>
                             </Form>;
@@ -81,38 +90,72 @@ export default function CovaidNavbar(props) {
         }
     }
 
-    return (
+    const setCurrModal = (name) => {
+        setShowModal(true);
+        setModalName(name);
+    }
+
+    const getCurrentModal = () => {
+        var res = <></>;
+        if (modalName === 'about') {
+            res = <AboutUs showModal={showModal} hideModal={() => setShowModal(false)}/>; 
+        } else if (modalName === 'faq') {
+            res = <HowItWorks showModal={showModal} hideModal={() => setShowModal(false)}/>;
+        } else if (modalName === 'map') {
+            res = <MapModal showModal={showModal} hideModal={() => setShowModal(false)} totalVolunteers={totalVolunteers} mobile={width < 767}/>;
+        }
+        return res;
+    }
+
+    const volunteerBadge = (view) => {
+        if (props.totalVolunteers === 0 || totalVolunteers === 0) {
+            return <></>;
+        } else {
+            const numVolunteers = props.orgPortal ? props.totalVolunteers : totalVolunteers;
+            if (props.orgAdmin) {
+                if (view === 'mobile') {
+                    return <Badge id='volunteer-mobile' onClick={() => setCurrModal('map')}>{numVolunteers} Volunteers</Badge>
+                } else {
+                    return <Badge id='volunteerBadge' onClick={() => setCurrModal('map')}>{numVolunteers} Volunteers</Badge>
+                }
+            } else {
+                if (view === 'mobile') {
+                    return <Badge id='volunteer-mobile' onClick={() => setCurrModal('map')}>Volunteer Map</Badge>
+                } else {
+                    return <Badge id='volunteerBadge' onClick={() => setCurrModal('map')}>Volunteer Map</Badge>
+                }
+            }
+        }
+    }
+
+    return (<>
         <Navbar collapseOnSelect onToggle={(e) => setToggled(e)} variant="light" expand="md" id="custom-navbar">
-            <Navbar.Brand href = {window.location.protocol + '//' + window.location.host} id="navbar-brand" style={(width < 767) ? {marginTop: 12} : {}}>
+            <Navbar.Brand href = {currURL} id="navbar-brand" style={(width < 767) ? {marginTop: 12} : {}}>
                 covaid
             </Navbar.Brand>
             <Form inline className="volunteer-badge-mobile">
-                {props.totalVolunteers === 0 ? <></> : 
-                    <Badge aria-describedby='tooltip-bottom' id='volunteer-mobile'>{totalVolunteers} Volunteers</Badge>
-                }
+                {volunteerBadge('mobile')}
                 <Navbar.Toggle aria-controls="basic-navbar-nav" id={toggled ? 'toggledNav1': 'nav1'}/>
             </Form>
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(1)}>
+                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => setCurrModal('about')}>
                         <p id={toggled ? 'navLinkToggled': 'navLink'}>About us</p>
                     </Nav.Link>
                     <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-border-element'}
-                        href = {window.location.protocol + '//' + window.location.host + '/organizationPortal'}>
+                        href = {currURL + '/organizationPortal'}>
                         <p id={toggled ? 'navLinkToggled': 'navLinkBorder'}>Organizations</p>
                     </Nav.Link>
-                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => props.handleShowModal(2)}>
+                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => setCurrModal('faq')}>
                         <p id={toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
                     </Nav.Link>
                     <Nav.Link className="volunteer-badge-web">
-                        {(props.totalVolunteers === 0 || totalVolunteers === 0) ? <></> :
-                        <Badge aria-describedby='tooltip-bottom' id='volunteerBadge'>{
-                            props.orgPortal ? props.totalVolunteers : totalVolunteers
-                        } Volunteers</Badge>}
+                        {volunteerBadge('desktop')}
                     </Nav.Link>
                 </Nav>
                 {rightNav}
             </Navbar.Collapse>
         </Navbar>
-    );
+        {getCurrentModal()}
+    </>);
 }

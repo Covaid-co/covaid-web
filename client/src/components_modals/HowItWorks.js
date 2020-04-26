@@ -12,7 +12,7 @@ export default function HowItWorks(props) {
     return (
         <Modal size="lg" show={props.showModal} style={{marginTop: 10}} onHide={props.hideModal}>
             <Modal.Header closeButton>
-                <Modal.Title id="small-header">Frequently asked questions</Modal.Title>
+                <Modal.Title>Frequently asked questions</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{paddingLeft: 5, paddingRight: 0}}>
                 <Container id="volunteer-info" style={{maxWidth: 2000, marginLeft: 0, marginRight: 0, color: 'black'}}>

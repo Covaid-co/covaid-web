@@ -10,7 +10,7 @@ import Badge from 'react-bootstrap/Badge'
 import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './components_orgpage/OrgLogin'
 import Cookie from 'js-cookie'
-import CovaidNavbar from './CovaidNavbar'
+import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 
 import RequestDetails from './components_orgpage/RequestDetails';
@@ -309,7 +309,7 @@ export default function OrganiationPortal() {
 
 	return ([
 		<div className="App">
-			<CovaidNavbar isLoggedIn={true} totalVolunteers={volunteers.length} setAdmin={setAdmin} orgPortal={true} first_name={getName()} handleShowModal={() => {}}/>
+			<NavBar isLoggedIn={true} totalVolunteers={volunteers.length} setAdmin={setAdmin} orgPortal={true} first_name={getName()} handleShowModal={() => {}}/>
 			<div style ={{zoom: '95%'}}>
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
 					<Container style={{maxWidth: 1500}}>

@@ -11,8 +11,6 @@ import NewRegister from './NewRegister';
 import NewLogin from './NewLogin';
 import RequestHelp from './RequestHelp';
 import GetLocation from './components_homepage/GetLocation';
-import AboutUs from './components_modals/AboutUs'
-import HowItWorks from './components_modals/HowItWorks'
 import HelpfulLinks from './components_modals/HelpfulLinks';
 import Feedback from './components_modals/Feedback'
 import NewLocationSetting from './location_tools/NewLocationSetting';
@@ -59,7 +57,7 @@ export default function HomePage(props) {
     }
 
     function updateRequestHelpMode(mode, modalInfo) {
-        props.handleShowModal(8);
+        props.handleShowModal('request');
         setMode(mode);
         setModalInfo(modalInfo);
     }
@@ -86,30 +84,24 @@ export default function HomePage(props) {
 
     const getCurrentModal = () => {
         var modal = <></>;
-        if (props.state.modalType === 1) {
-            modal = <AboutUs showModal={props.state.showModal} hideModal={props.handleHideModal}/>;
-        } else if (props.state.modalType === 2) {
-            modal = <HowItWorks showModal={props.state.showModal} hideModal={props.handleHideModal}/>;
-        } else if  (props.state.modalType === 3) {
+        if (props.state.modalType === 'resources') {
             modal = <HelpfulLinks showModal={props.state.showModal} 
                                   hideModal={props.handleHideModal}
                                   associationCity={props.state.currentAssoc.city}
                                   associationLinks={props.state.currentAssoc.links}/>;
-        } else if  (props.state.modalType === 4) {
-            modal = <Feedback showModal={props.state.showModal} hideModal={props.handleHideModal}/>;
-        } else if (props.state.modalType === 5) {
+        }  else if (props.state.modalType === 'location') {
             modal = <NewLocationSetting locationSubmit={props.onLocationSubmit}
                                         refreshLocation={props.refreshLocation}
                                         showModal={props.state.showModal} 
                                         hideModal={props.handleHideModal}/>
-        } else if (props.state.modalType === 6) {
+        } else if (props.state.modalType === 'signin') {
             modal = <NewLogin showModal={props.state.showModal} hideModal={props.handleHideModal}/>
-        } else if (props.state.modalType === 7) {
+        } else if (props.state.modalType === 'register') {
             modal = <NewRegister showModal={props.state.showModal} 
                                  hideModal={props.handleHideModal}
                                  state={props.state}
                                  setState={props.setState}/>
-        } else if (props.state.modalType === 8) {
+        } else if (props.state.modalType === 'request') {
             modal = <RequestHelp requestHelpMode={mode} 
                                  showModal={props.state.showModal} 
                                  hideModal={props.handleHideModal}
@@ -130,13 +122,13 @@ export default function HomePage(props) {
                             {supportButton()}{' '}
                             {volunteerButton()}
                             <br />
-                            <Button variant="link" id="underlined-link" onClick={() => props.handleShowModal(3)}>
+                            <Button variant="link" id="underlined-link" onClick={() => props.handleShowModal('resources')}>
                                 <u>View COVID-19 Resources</u>
                             </Button>
                         </Col>
                         <Col md={6} id="community-bulletin">
                             <p id='location-text'>Volunteers around 
-                                <button id="change-location" onClick={() => props.handleShowModal(5)}> {props.state.locality}</button>
+                                <button id="change-location" onClick={() => props.handleShowModal('location')}> {props.state.locality}</button>
                             </p>
                             <p id="volunteer-info">Click an offer below for more info</p>
                             <NewOffers volunteers={volunteers} state={props.state} resources={resources} mobile={false}
@@ -156,7 +148,7 @@ export default function HomePage(props) {
                 <Col xs={12} id="mobile-bulletin">
                     <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
                     <p id='location-text' style={{color: 'black', float: 'left', width: '100%', fontSize: "5vw"}}>Volunteers around 
-                        <button id="change-location" onClick={() => props.handleShowModal(5)}> {props.state.locality}</button>
+                        <button id="change-location" onClick={() => props.handleShowModal('location')}> {props.state.locality}</button>
                     </p>
                     <p id="volunteer-info" style={{color: 'black', float: 'left', width: '100%', fontSize: "3vw"}}>
                         Click an offer below for more info

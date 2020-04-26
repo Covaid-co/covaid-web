@@ -25,7 +25,9 @@
     "react-router-sitemap": "^1.2.0",
     "react-scripts": "3.0.0",
     "react-tiny-link": "^3.2.0",
-    "react-toast-notifications": "^2.4.0"
+    "react-toast-notifications": "^2.4.0",
+    "supercluster": "^7.0.0",
+    "use-supercluster": "^0.2.6"
   },
   "scripts": {
     "start": "react-scripts start",

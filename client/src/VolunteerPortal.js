@@ -15,7 +15,7 @@ import AboutUs from './components_modals/AboutUs'
 import HowItWorks from './components_modals/HowItWorks'
 import Feedback from './components_modals/Feedback'
 import { generateURL } from './Helpers';
-import CovaidNavbar from './CovaidNavbar'
+import NavBar from './components/NavBar'
 import VolunteerLogin from './components_volunteerpage/VolunteerLogin'
 import VolunteerBeacons from './components_volunteerpage/VolunteerBeacons'
 import './VolunteerPage.css'
@@ -186,7 +186,7 @@ export default function VolunteerPortal(props) {
 
 		return (<>
 			<div className="App">
-				<CovaidNavbar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
+				<NavBar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
 				<div id="bgImage"></div>
 				<Jumbotron fluid id="jumbo-volunteer">
 					<Container style={{maxWidth: 1500}}>
