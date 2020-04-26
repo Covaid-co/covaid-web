@@ -18,6 +18,7 @@ router.post('/login', auth.optional, user_controller.login);
 //GET current route (required, only authenticated users have access)
 router.get('/current', auth.required, user_controller.current);
 router.get('/all', user_controller.all_users);
+router.get('/actual_all', user_controller.actual_all_users);
 router.get('/user', user_controller.find_user);
 router.get('/allFromAssoc', auth.optional, user_controller.all_users_of_an_association);
 router.get('/totalUsers', auth.optional, user_controller.total_users);
