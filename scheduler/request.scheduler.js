@@ -25,45 +25,45 @@ exports.request_scheduler = function() {
     })
 };
 
-const remindPendingRequests = () => {
-    Requests.find({
-        $and: [
-            {
-                "volunteer_status": "accepted"
-            },
-            {
-                "pending_time": {
-                    $lte: new Date(Date.now() - 48 * 60 * 60 * 1000)
-                }
-            }
-        ]
-    }, function(err, requests) {
-        if (err) console.log(err)
-        else {
-            requests.forEach(function(request) {
-                if (request.status) {
-                    if (request.status.volunteer && request.status.volunteer.length > 0) {
-                        Users.findOne(
-                            {'_id': request.status.volunteer},
-                            function (err, volunteer) {
-                                if (err) return next(err)
-                                else {
-                                    var data = {
-                                        //sender's and receiver's email
-                                        sender: "Covaid@covaid.co",
-                                        receiver: volunteer.email,
-                                        templateName: "pending_notification",
-                                    };
-                                    emailer.sendNotificationEmail(data)
-                                }
-                            }
-                        )
-                    }
-                }
-            });
-        }
-    })
-}
+// const remindPendingRequests = () => {
+//     Requests.find({
+//         $and: [
+//             {
+//                 "volunteer_status": "accepted"
+//             },
+//             {
+//                 "pending_time": {
+//                     $lte: new Date(Date.now() - 48 * 60 * 60 * 1000)
+//                 }
+//             }
+//         ]
+//     }, function(err, requests) {
+//         if (err) console.log(err)
+//         else {
+//             requests.forEach(function(request) {
+//                 if (request.status) {
+//                     if (request.status.volunteer && request.status.volunteer.length > 0) {
+//                         Users.findOne(
+//                             {'_id': request.status.volunteer},
+//                             function (err, volunteer) {
+//                                 if (err) return next(err)
+//                                 else {
+//                                     var data = {
+//                                         //sender's and receiver's email
+//                                         sender: "Covaid@covaid.co",
+//                                         receiver: volunteer.email,
+//                                         templateName: "pending_notification",
+//                                     };
+//                                     emailer.sendNotificationEmail(data)
+//                                 }
+//                             }
+//                         )
+//                     }
+//                 }
+//             });
+//         }
+//     })
+// }
 
 const updateAllExpiredRequests = () => {
     Requests.find({
