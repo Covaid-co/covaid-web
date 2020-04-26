@@ -123,12 +123,12 @@ export default function OrgAdminRegister(props) {
                         <p id="home-subheading" style={{fontSize: 16}}>Manage and delegate your volunteers efficiently through our all-in-one platform.</p>
                         <Form onSubmit={handleSubmit}>
                             <Row>
-                                <Col xs={6}>
+                                <Col xs={6} style={{paddingRight: 5}}>
                                     <Form.Group controlId="first_name" bssize="large" style={{marginBottom: 5}}>
                                         <Form.Control placeholder="First Name" value={fields.first_name} onChange={handleFieldChange}/>
                                     </Form.Group>
                                 </Col>
-                                <Col xs={6}>
+                                <Col xs={6} style={{paddingLeft: 5}}>
                                     <Form.Group controlId="last_name" bssize="large" style={{marginBottom: 5}}>
                                         <Form.Control placeholder="Last Name" value={fields.last_name} onChange={handleFieldChange}/>
                                     </Form.Group>
