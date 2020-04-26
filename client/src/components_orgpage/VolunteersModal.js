@@ -20,6 +20,7 @@ export default function VolunteersModal(props) {
     const [filteredVolunteers, setFilteredVolunteers] = useState([]);
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
     const [resourcesSelected, setResourcesSelected] = useState([]);
+    const [noTasks, setNoTasks] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [currQuery, setQuery] = useState('');
     const volunteersPerPage = 10;
@@ -67,12 +68,36 @@ export default function VolunteersModal(props) {
         setDisplayedVolunteers(result.slice(0, volunteersPerPage));
     }
 
+    const handleNoTaskChange = () => {
+        var result = [];
+        const selectedResourcees = extractTrueObj(resourcesSelected);
+        if (!noTasks) {
+            result = props.volunteers.filter(user => user.offer.tasks.length === 0);
+        } else {
+            result = props.volunteers.filter(user => selectedResourcees.every(v => user.offer.tasks.indexOf(v) !== -1));
+        }
+        setFilteredVolunteers(result);
+        setDisplayedVolunteers(result.slice(0, volunteersPerPage));
+        setNoTasks(!noTasks);
+    }
+
     const paginatePage = (pageNumber) => {
         setCurrentPage(pageNumber);
         const lastIndex = pageNumber * volunteersPerPage;
         const firstIndex = lastIndex - volunteersPerPage;
         const slicedVolunteers = filteredVolunteers.slice(firstIndex, lastIndex);
         setDisplayedVolunteers(slicedVolunteers);
+    }
+
+    const volunteerLocation = (volunteer) => {
+        var result = '';
+        if (volunteer.offer.neighborhoods.length > 0) {
+            result = volunteer.offer.neighborhoods[0];
+        }
+        if (volunteer.offer.state) {
+            result += (', ' + volunteer.offer.state);
+        }
+        return result;
     }
 
     return (
@@ -86,11 +111,16 @@ export default function VolunteersModal(props) {
                         <Form>
                             <div style={{marginTop: -5}}>
                                 {Object.keys(resourcesSelected).map((resource, i) => {
-                                    return <Button style={{paddingTop: 2}} key={i} onClick = {() => handleChangeResource(resource)}
+                                    return <Button key={i} onClick = {() => handleChangeResource(resource)}
                                                    id={resourcesSelected[resource] ? 'selected' : 'notSelected'}>
                                                 {resource}
                                             </Button>
                                 })}
+                                <Button key={10} onClick = {handleNoTaskChange} id={noTasks ? 'selected' : 'notSelected'} 
+                                        style={noTasks ? {backgroundColor: '#AE2F2F', color: 'white', border: '1px solid #AE2F2F'} : 
+                                            {backgroundColor: 'transparent', color: '#AE2F2F', border: '1px solid #AE2F2F'}}>
+                                    No Tasks
+                                </Button>
                             </div>
                             <Form.Group controlId="zip" bssize="large" style={{marginTop: 10}}>
                                 <Form.Control placeholder="Search by a volunteer or location" onChange={filterRequests}/>
@@ -112,7 +142,7 @@ export default function VolunteersModal(props) {
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
                                     </div>
-                                    <p id="volunteer-location">{volunteer.offer.neighborhoods.join(', ')}</p>
+                                    <p id="volunteer-location">{volunteerLocation(volunteer)}</p>
                                     <div>
                                         {volunteer.offer.tasks.length === 0 ? 
                                             <Badge id='task-info' style={{background: '#AE2F2F', border: '1px solid #AE2F2F'}}>

@@ -22,7 +22,7 @@ import BeaconCreation from './components_orgpage/BeaconCreation';
 import OrgResourcesModal from './OrgResourcesModal';
 import LiveBeaconView from './components_orgpage/LiveBeaconView'
 import { sortFn } from './components_orgpage/OrganizationHelpers'
-import { generateURL } from './Helpers'
+import { generateURL, convertTime } from './Helpers'
 import './OrganizationPage.css'
 
 import fetch_a from './util/fetch_auth';
@@ -103,6 +103,19 @@ export default function OrganiationPortal() {
 						setUnmatched(unMatchedArr);
 						setMatched(matchedArr);
 						setCompleted(completedArr);
+
+						var res = {}
+						data.forEach(function (result) {
+							if (result.time_posted) {
+								var day = convertTime(result.time_posted);
+								if (!res[day]) {
+									res[day] = 0;
+								}
+								res[day]++;
+							}
+						});
+
+						console.log(res)
 					});
 				} else {
 					console.log("Error");
