@@ -12,7 +12,6 @@ import NewLogin from './NewLogin';
 import RequestHelp from './RequestHelp';
 import GetLocation from './components_homepage/GetLocation';
 import HelpfulLinks from './components_modals/HelpfulLinks';
-import Feedback from './components_modals/Feedback'
 import NewLocationSetting from './location_tools/NewLocationSetting';
 import { generateURL } from './Helpers'
 import { defaultResources } from './constants'

@@ -25,7 +25,7 @@ export default function UnmatchedRequests(props) {
         const filteredRequests = filterReq(foundQuery, props.requests);
         const sorted = sortReq('updated', filteredRequests, false, false, true, false);
         setFilteredRequests(sorted);
-    }, [props.requests]);
+    }, [props.requests, foundQuery]);
 
     const filterRequests = (e) => {
         var query = e.target.value.toLowerCase();
@@ -153,8 +153,8 @@ export default function UnmatchedRequests(props) {
                                     <div>{resourceCompleteBadge(request)} {requestStatus(request)}</div>
                                     <div style={{display: 'inline-block', width: '100%', marginTop: 3, fontFamily: 'Inter'}}>
                                         <p style={{float: 'left', marginBottom: 0}}>Tracking: 
-                                            <a style={request.assignee && request.assignee != 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.assignee ? request.assignee : "No one assigned"}
-                                            </a>
+                                            <font style={request.assignee && request.assignee !== 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.assignee ? request.assignee : "No one assigned"}
+                                            </font>
                                         </p>
                                     </div>
                                 </ListGroup.Item>);

@@ -14,11 +14,7 @@ import requestsImg from '../assets/requests.png'
 import mapsImg from '../assets/mapscreen.png'
 import orgscreenImg from '../assets/orgscreen.png'
 import NavBar from '../components/NavBar'
-import AboutUs from '../components_modals/AboutUs'
-import HowItWorks from '../components_modals/HowItWorks'
-import Feedback from '../components_modals/Feedback'
 import Footer from '../components/Footer';
-import NewLogin from '../NewLogin';
 import GetStarted from './GetStarted';
 
 export default function OrgLogin(props) {
@@ -58,7 +54,7 @@ export default function OrgLogin(props) {
             }
         })
         .catch((e) => {
-            alert('Error')
+            alert('Error');
         });
     };
 
@@ -113,19 +109,11 @@ export default function OrgLogin(props) {
     const handleSubmit = async e => {
         e.preventDefault();
         await tryLogin();
-      };
+    };
 
     const getCurrentModal = () => {
         var modal = <></>;
-        if (modalType === 1) {
-            modal = <AboutUs showModal={showModal} hideModal={() => setShowModal(false)}/>;
-        } else if (modalType === 2) {
-            modal = <HowItWorks showModal={showModal} hideModal={() => setShowModal(false)}/>;
-        } else if  (modalType === 4) {
-            modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)}/>;
-        } else if (modalType === 6) {
-            modal = <NewLogin showModal={showModal} hideModal={() => setShowModal(false)}/>
-        } else if (modalType === 7) {
+        if (modalType === 'get started') {
             modal = <GetStarted showModal={showModal} hideModal={() => setShowModal(false)}/>;
         }
         return modal;
@@ -137,7 +125,7 @@ export default function OrgLogin(props) {
 	}
 
     return (<>
-        <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} handleShowModal={handleShowModal}/>
+        <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
         <Container style={{maxWidth: 1500}}>
             <Row>
                 <Col md={6} id="login-container">
@@ -158,13 +146,18 @@ export default function OrgLogin(props) {
                         </Row>
                         <Button style={{marginTop: 10, width: 150}} id="large-button" type="submit">Sign In</Button>
                         <p id="regular-text" style={{marginTop: 15, color: '#2670FF'}}>Manage a mutual aid initiative?
-                            <a id="regular-text" onClick={() => handleShowModal(7)} style={{color: '#2670FF', marginLeft: 5, textDecoration: 'underline'}} href="#">
-                                Get Started</a><br/>
+                            <Button variant="link" id="regular-text" onClick={() => handleShowModal('get started')}
+                                    style={{color: '#2670FF', padding: 0, textDecoration: 'underline', marginTop: -2, marginLeft: 5}} >
+                                Get Started
+                            </Button>
+                            {/* <a id="regular-text" onClick={() => handleShowModal('get started')} 
+                                style={{color: '#2670FF', marginLeft: 5, textDecoration: 'underline'}} href="#">
+                                Get Started</a><br/> */}
                         </p>
                     </Form>
                 </Col>
                 <Col md={6} style={{marginTop: 50}}>
-                    <img id="org-img" src={orgImg}></img>
+                    <img id="org-img" alt="" src={orgImg}></img>
                 </Col>
             </Row>
             <Row id="orgpage-separator">
@@ -180,7 +173,7 @@ export default function OrgLogin(props) {
                 </Col>
 
                 <Col md={6} id="requests-feature-container" style={{textAlign: 'center'}}>
-                    <img id="request-img" src={requestsImg}></img>
+                    <img id="request-img" alt="" src={requestsImg}></img>
                 </Col>
                 <Col md={6} id="feature-container">
                     <h1 id="home-sub-heading">Track Requests</h1>
@@ -196,16 +189,16 @@ export default function OrgLogin(props) {
                     general location of in-progress and completed requests.</p>
                 </Col>
                 <Col md={6} id="map-feature-container">
-                    <img id="request-img" src={mapsImg}></img>
+                    <img id="request-img" alt="" src={mapsImg}></img>
                 </Col>
             </Row>
-            <Row style={{marginTop: 50}}>
+            <Row style={{marginTop: 50, marginBottom: 100}}>
                 <Col xs={12} id="org-feature-container">
                     <h1 id="home-sub-heading">Organization Portal</h1>
                     <p id="home-subheading" style={{fontSize: 16, paddingRight: 0,  marginBottom: 0}}>Use the Organization Portal as the one-stop-shop for managing your mutual aid.</p>
                 </Col>
                 <Col xs={12} style={{textAlign: 'center'}}>
-                    <img id="orgscreen-img" src={orgscreenImg}></img>
+                    <img id="orgscreen-img" alt="" src={orgscreenImg}></img>
                 </Col>
                 <Col xs={12} id="org-feature-container">
                     <h1 id="home-sub-heading">Take your next step</h1>

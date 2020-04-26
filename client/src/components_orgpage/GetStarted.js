@@ -88,12 +88,11 @@ export default function GetStarted(props) {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-                <p id="regular-text">Bring Covaid to your community today! Using Covaid empowers your organization 
-                    to more easily handle requests of support made by neighbors in your community. At the 
-                    same time, it gives your organization the ability to manage/assign volunteers to requests with the 
-                    touch of a few buttons.</p>
+                <p id="regular-text">Bring Covaid to your community today! Covaid empowers your organization 
+                    to more easily handle requests for support made by neighbors in your community. It also 
+                    gives your organization the ability to assign volunteers to requests with the touch of a few buttons.</p>
                 <p id="regular-text" style={{fontStyle: 'italic', fontWeight: 600}}> 
-                    Simply fill out this form and we'll be in contact with you shortly to setup your organization account!</p>
+                    Simply fill out this form and we’ll be in contact with you shortly!</p>
 				<Form onSubmit={props.handleHide} style={{marginTop: 0, marginBottom: 10, display: "block", whiteSpace: 'nowrap'}}>
                     <Form.Group controlId="org_name" bssize="large">
 					    <FormControl value={fields.org_name} onChange={handleFieldChange} placeholder="Organization Name" style={{marginBottom: 5}}/>

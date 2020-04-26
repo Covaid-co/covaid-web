@@ -65,7 +65,7 @@ export default function CovaidNavbar(props) {
                     </Form>;
         }
     } else {
-        if (props.orgAdmin) {
+        if (props.orgAdmin || props.orgPortal) {
             rightNav = <></>;
         } else {
             if (width > 767) {
@@ -108,15 +108,15 @@ export default function CovaidNavbar(props) {
     }
 
     const volunteerBadge = (view) => {
-        if (props.totalVolunteers === 0 || totalVolunteers === 0) {
+        if (totalVolunteers === 0) {
             return <></>;
         } else {
             const numVolunteers = props.orgPortal ? props.totalVolunteers : totalVolunteers;
-            if (props.orgAdmin) {
+            if (props.orgPortal && props.isLoggedIn) {
                 if (view === 'mobile') {
-                    return <Badge id='volunteer-mobile' onClick={() => setCurrModal('map')}>{numVolunteers} Volunteers</Badge>
+                    return <Badge id='volunteer-mobile'>{numVolunteers} Volunteers</Badge>
                 } else {
-                    return <Badge id='volunteerBadge' onClick={() => setCurrModal('map')}>{numVolunteers} Volunteers</Badge>
+                    return <Badge id='volunteerBadge'>{numVolunteers} Volunteers</Badge>
                 }
             } else {
                 if (view === 'mobile') {

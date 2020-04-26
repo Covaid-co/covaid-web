@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useFormFields } from "./libs/hooksLib";
 import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
-import { useFormFields } from "./libs/hooksLib";
 
 import NeededBy from './components_homepage/NeededBy';
 import NewPaymentMethod from './components_homepage/NewPaymentMethod';
 import NewDetails from './components_homepage/NewDetails';
-import PhoneNumber from './PhoneNumber';
+import PhoneNumber from './components/PhoneNumber';
 import CheckForm from './components/CheckForm';
 import { defaultResources, languages, toastTime } from './constants'
 import { validateEmail, extractTrueObj, setFalseObj } from './Helpers';

@@ -153,7 +153,7 @@ export default function OrgAdminRegister(props) {
                         </Form>
                     </Col>
                     <Col md={6} style={{marginTop: 50}}>
-                        <img id="org-img" src={orgImg}></img>
+                        <img id="org-img" alt="" src={orgImg}></img>
                     </Col>
                 </Row>
             </Container>

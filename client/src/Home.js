@@ -114,7 +114,7 @@ class Home extends Component {
 	render() {
 		return (
 			[
-				<div className="App" style={{height: '100%'}}>
+				<div key="1" className="App" style={{height: '100%'}}>
 					<NavBar isLoggedIn={this.state.isLoggedIn} first_name={this.state.first_name} handleShowModal={this.handleShowModal}/>
 					<HomePage state={this.state} 
 								setState={this.setState}
@@ -127,7 +127,7 @@ class Home extends Component {
 								refreshLocation={this.refreshLocation}
 								handleHideModal={this.handleHideModal}/>
 				</div>,
-				<Footer key="2" handleShowModal={this.handleShowModal}/>
+				<Footer key="2"/>
 			]
 		)}
 }

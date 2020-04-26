@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import fetch_a from './util/fetch_auth';
 import Pusher from 'pusher-js';
 import { useToasts } from 'react-toast-notifications'
+
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
@@ -25,7 +27,6 @@ import { sortFn } from './components_orgpage/OrganizationHelpers'
 import { generateURL, convertTime } from './Helpers'
 import './OrganizationPage.css'
 
-import fetch_a from './util/fetch_auth';
 
 export default function OrganiationPortal() {
 
@@ -308,7 +309,7 @@ export default function OrganiationPortal() {
 	}
 
 	return ([
-		<div className="App">
+		<div className="App" key="1">
 			<NavBar isLoggedIn={true} totalVolunteers={volunteers.length} setAdmin={setAdmin} orgPortal={true} first_name={getName()} handleShowModal={() => {}}/>
 			<div style ={{zoom: '95%'}}>
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
@@ -474,6 +475,6 @@ export default function OrganiationPortal() {
 							switchToBeacon={switchToBeacon} />
 			</div>
 		</div>,
-		<Footer key="2" handleShowModal={() => {}}/>]
+		<Footer key="2"/>]
 	);
 }

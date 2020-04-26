@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button'
 import HowItWorks from '../components_modals/HowItWorks'
 import Feedback from '../components_modals/Feedback'
 
-export default function Footer(props) {
+export default function Footer() {
 
     const [showModal, setShowModal] = useState(false);
     const [modalName, setModalName] = useState('');
@@ -42,10 +42,10 @@ export default function Footer(props) {
                     <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/covaidco">Facebook</a><br/>
                     <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/covaidmutualaid/">Instagram</a><br/>
                 </Col>
-                <Col xs={2} style={{padding: 20, paddingLeft: 30, paddingTop: 80,  paddingRight: 0}}>
+                <Col xs={2} style={{padding: 20, paddingLeft: 0, paddingTop: 80,  paddingRight: 0}}>
                     {/* <a target="_blank" rel="noopener noreferrer" href="github.com">Donate</a><br/> */}
                     <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0}} onClick={() => setCurrModal('faq')}>FAQ</Button><br/>
-                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0, marginTop: -5}} onClick={() => setCurrModal('feedback')}>Send feedback</Button>
+                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0, marginTop: -8}} onClick={() => setCurrModal('feedback')}>Send feedback</Button>
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 100, paddingTop: 37}}>
                     <p id="regular-text" style={{color: '#7B7B7B', fontWeight: 'bold'}}>Current Partners</p>

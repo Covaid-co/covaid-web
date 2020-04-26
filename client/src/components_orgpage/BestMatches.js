@@ -23,7 +23,6 @@ export default function BestMatches(props) {
     const [currRequest, setCurrRequest] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
     const [looseMatch, setLooseMatch] = useState(false);
-
     const [viewedVolunteers, setViewedVolunteers] = useState([]);
 
     useEffect(() => {
@@ -124,17 +123,17 @@ export default function BestMatches(props) {
         return <></>;
     }
     return (
-        <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 40, paddingBottom: 40}}>
+        <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title id="small-header">{currRequest.requester_first}'s Top Matches 
-                        <Button
-                            id={looseMatch ? "notSelected" : "selected"}
-                            onClick={switchVolunteers}
-                            style={{marginLeft: 15, marginBottom: 8}}
-                            >
-                            {looseMatch ? "Match on task" : "Match on task"}
-                        </Button>
-                        </Modal.Title>
+                <Modal.Title>{formatName(currRequest.requester_first)}'s Top Matches 
+                    <Button
+                        id={looseMatch ? "notSelected" : "selected"}
+                        onClick={switchVolunteers}
+                        style={{marginLeft: 15, marginBottom: 8}}
+                        >
+                        {looseMatch ? "Match on task" : "Match on task"}
+                    </Button>
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row style={{marginTop: 0}}>

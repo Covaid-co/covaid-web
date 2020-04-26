@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "./libs/hooksLib";
 
 import Modal from 'react-bootstrap/Modal'
@@ -12,7 +11,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 import SelectionForm from './components/SelectionForm';
 import CheckForm from './components/CheckForm';
-import PhoneNumber from './PhoneNumber';
+import PhoneNumber from './components/PhoneNumber';
 import NewHasCar from './components_homepage/NewHasCar';
 import Details from './components_homepage/Details'
 import { validateEmail, extractTrueObj, setFalseObj, setTrueObj } from './Helpers';
@@ -249,7 +248,7 @@ export default function NewRegister(props) {
                 <Modal show={props.showModal} onHide={() => { props.hideModal(); resetState();}} 
                        id='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
-                        <Modal.Title id="small-header">Create a new account</Modal.Title>
+                        <Modal.Title>Create a new account</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <p id="regular-text" style={{marginBottom: 5}}>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import MapGL, { Popup, NavigationControl, FullscreenControl, Marker }  from 'react-map-gl';
+import MapGL, { Popup, NavigationControl, FullscreenControl }  from 'react-map-gl';
 import useSupercluster from 'use-supercluster';
 import Pins from './pins';
 import InfoMarker from './InfoMarker'
-import { MARKER_SIZE, ICON } from '../constants'
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibGlqZWZmcmV5MzkiLCJhIjoiY2s5MGUwMDNmMDBzdDNsbzFoY2VmZWNzOCJ9.8k5L4gUP4EF9AhvSylaIvw';
 

@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
+import { currURL } from '../constants';
+
 export default function CitySupport(props) {
 
     const citySupportedBy = (screen) => {
@@ -16,7 +18,10 @@ export default function CitySupport(props) {
                                         {association.name}</a><br /> 
                                 </div>
                     })}
-                    <p style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">Covaid.co</p> 
+                    {props.associations.length === 0 ?
+                    <><a href={currURL + '/organizationPortal'} rel="noopener noreferrer" style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
+                        Include your Mutual Aid Initiative</a><br/></> : <></>}
+                    {/* <p style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">Covaid.co</p> */}
                 </div>
     }
 
@@ -35,7 +40,6 @@ export default function CitySupport(props) {
                     <p id="requestCall" style={{marginBottom: 15}}></p>
                 </Col>
                 <Col lg={12} md={12} sm={12} xs={12}>
-                    {/* <p id="requestCall" style={{marginBottom: 20}}></p> */}
                     {citySupportedBy('web')}
                 </Col>
             </Row>

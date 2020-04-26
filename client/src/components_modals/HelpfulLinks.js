@@ -27,7 +27,9 @@ export default function HelpfulLinks(props) {
     const associationTab = () => {
         if (associationExists && associationLinks.length > 0) {
             return (
-                <Button id={tabNum==2 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(2)}}>{associationCity}</Button>
+                <Button id={tabNum === 2 ? "tab-button-selected" : "tab-button"} 
+                        onClick={() => {setTabNum(2)}}>{associationCity}
+                </Button>
             );
         } else {
             return (
@@ -39,7 +41,7 @@ export default function HelpfulLinks(props) {
     const associationResourceList = () => {
         if (associationExists && associationLinks.length > 0) {
             return(
-                <Container id="requester-tab" style={tabNum==2 ? {'display': 'block'} : {'display': 'none'}}>
+                <Container id="requester-tab" style={tabNum === 2 ? {'display': 'block'} : {'display': 'none'}}>
                     {associationLinks.map((link, i) => {               
                         var tempLink = link.link;
                         if (tempLink.substring(0, 7) !== 'http://' || tempLink.substring(0, 8) !== 'https://') {
@@ -89,13 +91,14 @@ export default function HelpfulLinks(props) {
                         </Col>
                         <Col xs="12">
                             <Container style={{padding: 0,  marginLeft: 0}}>
-                                <Button style={{"position": "relative"}}id={tabNum==1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>
+                                <Button style={{"position": "relative"}}id={tabNum === 1 ? "tab-button-selected" : "tab-button"} 
+                                        onClick={() => {setTabNum(1)}}>
                                     General
                                 </Button>
                                 {associationTab()}
                             </Container>
                             {associationResourceList()}
-                            <Container id="requester-tab" style={tabNum==1 ? {'display': 'block'} : {'display': 'none'}}>
+                            <Container id="requester-tab" style={tabNum === 1 ? {'display': 'block'} : {'display': 'none'}}>
                                 {defaultLinks.map((link, i) => {                
                                     return (
                                         <div key={i} style={{marginBottom: 10, textAlign: "center"}}>
