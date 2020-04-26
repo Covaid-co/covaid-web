@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 const AssociaitonAdminRepository = require('../repositories/association.admin.repository');
+const Association = require('../models/association.model');
 
 exports.registerAdmin = async function (admin) {
     try{
@@ -9,7 +10,8 @@ exports.registerAdmin = async function (admin) {
         if (valid) {
             setPassword(admin, admin.password);
             var new_admin = await AssociaitonAdminRepository.createAssociationAdmin(admin);
-
+            var new_admin_name = new_admin.first_name + " " + new_admin.last_name
+            await Association.findByIdAndUpdate(admin.association_id, {$push: {'admins': {'email': admin.email, 'name': new_admin_name}}});
             return new_admin;
         } else {
             throw new Error('Email already exists');

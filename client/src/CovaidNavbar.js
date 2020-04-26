@@ -56,24 +56,28 @@ export default function CovaidNavbar(props) {
                     </Form>;
         }
     } else {
-        if (width > 767) {
-            rightNav = <Form inline style ={{display: 'block', marginRight: '5%', marginBottom: 3}}>
-                            <Button variant="outline-light" id='login-button' onClick={() => props.handleShowModal(6)}>
-                                Sign In
-                            </Button>
-                            <Button variant="outline-light" id='register-button' onClick={() => props.handleShowModal(7)}>
-                                Volunteer Registration
-                            </Button>
-                        </Form>
+        if (props.orgAdmin) {
+            rightNav = <></>;
         } else {
-            rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
-                            <Button id="large-button-empty" onClick={() => props.handleShowModal(6)} style={{marginTop: 0, marginBottom: 5}}>
-                                Volunteer Login
-                            </Button>
-                            <Button id='large-button' onClick={() => props.handleShowModal(7)}>
-                                Volunteer Registration
-                            </Button>
-                        </Form>;
+            if (width > 767) {
+                rightNav = <Form inline style ={{display: 'block', marginRight: '5%', marginBottom: 3}}>
+                                <Button variant="outline-light" id='login-button' onClick={() => props.handleShowModal(6)}>
+                                    Sign In
+                                </Button>
+                                <Button variant="outline-light" id='register-button' onClick={() => props.handleShowModal(7)}>
+                                    Volunteer Registration
+                                </Button>
+                            </Form>
+            } else {
+                rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
+                                <Button id="large-button-empty" onClick={() => props.handleShowModal(6)} style={{marginTop: 0, marginBottom: 5}}>
+                                    Volunteer Login
+                                </Button>
+                                <Button id='large-button' onClick={() => props.handleShowModal(7)}>
+                                    Volunteer Registration
+                                </Button>
+                            </Form>;
+            }
         }
     }
 

@@ -30,7 +30,6 @@ export default function OrgLogin(props) {
     const [mode, setMode] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState(0);
-    const [adminChecked, setAdminChecked] = useState(false);
 
     function validateForm() {
         return fields.emailOrg.length > 0 && fields.password.length > 0;
@@ -61,71 +60,60 @@ export default function OrgLogin(props) {
         .catch((e) => {
             alert('Error')
         });
-      };
+    };
 
-    const handleSubmit = async e => {
-        e.preventDefault();
-        if (!adminChecked) {
+    const tryLogin = async () => {
+        try {
             let form = {
                 'association': {
                     'email': fields.emailOrg,
                     'password': fields.passOrg
                 }
             };
-            fetch('/api/association/login/', {
+            const response = await fetch('/api/association/login/', {
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(form)
-            })
-            .then((response) => {
-                if (response.ok) {
-                    response.json().then(data => {
-                        console.log("Login successful")
-                        Cookie.set("org_token", data.user.token);
-                        props.setShowLogin(false);
-                        props.login(false);
-                    });
-                } else {
-                    alert('Incorrect Login!')
-                }
-            })
-            .catch((e) => {
-                alert('Incorrect Login!')
             });
-        } else {
-            let form = {
-                'admin': {
-                    'email': fields.emailOrg,
-                    'password': fields.passOrg
+            const responseJSON = await response.json();
+            if (!responseJSON.errors) {
+                Cookie.set("org_token", responseJSON.user.token);
+                props.setShowLogin(false);
+                props.login(false);
+                return;
+            } else {
+                form = {
+                        'admin': {
+                            'email': fields.emailOrg,
+                            'password': fields.passOrg
+                        }
+                    }
+                const adminResponse = await fetch('/api/association-admin/login/', {
+                    method: 'post',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(form)
+                });
+
+                const adminResponseJSON = await adminResponse.json();
+                if (!adminResponseJSON.errors) {
+                    Cookie.set("admin_token", adminResponseJSON.admin.token);
+                    Cookie.set("org_token", adminResponseJSON.admin.orgToken);
+                    props.setShowLogin(false);
+                    props.login(true);
+                    return;
+                } else {
+                    alert('Login is incorrect. Please try again.');
                 }
             }
-            fetch('/api/association-admin/login/', {
-                method: 'post',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(form)
-            })
-            .then((response) => {
-                if (response.ok) {
-                    response.json().then(data => {
-                        console.log("Login successful")
-                        console.log(data.admin);
-                        Cookie.set("admin_token", data.admin.token);
-                        Cookie.set("org_token", data.admin.orgToken);
-                        props.setShowLogin(false);
-                        props.login(true);
-                    });
-                } else {
-                    alert('Incorrect Login!')
-                }
-            })
-            .catch((e) => {
-                alert('Incorrect Login!')
-            });
+        } catch (e) {
+            alert('Login is incorrect. Please try again.');
         }
+    }
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        await tryLogin();
       };
-
-
-
 
     const getCurrentModal = () => {
         var modal = <></>;
@@ -166,14 +154,6 @@ export default function OrgLogin(props) {
                                 <Form.Group controlId="passOrg" bssize="large">
                                     <Form.Control placeholder="Password" type="password" value={fields.passOrg} onChange={handleFieldChange}/>
                                 </Form.Group>
-                                <Form.Check
-                                    type="checkbox"
-                                    style={{marginTop: 5}}
-                                    checked={adminChecked}
-                                    onChange={() => setAdminChecked(!adminChecked)}
-                                    id='default-checkbox'
-                                    label="Admin Login (use your personal admin account)"
-                                />
                             </Col>
                         </Row>
                         <Button style={{marginTop: 10, width: 150}} id="large-button" type="submit">Sign In</Button>
