@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "../libs/hooksLib";
 
@@ -20,25 +20,33 @@ import GetStarted from './GetStarted';
 export default function OrgLogin(props) {
     const [fields, handleFieldChange] = useFormFields({
         emailOrg: "",
+        email: "",
         passOrg: "",
     });
 
     const [mode, setMode] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState(0);
+    const [showForgot, setShowForgot] = useState(false);
 
     function validateForm() {
         return fields.emailOrg.length > 0 && fields.password.length > 0;
     }
 
     function validateForgotForm() {
-        return fields.emailOrg.length > 0;
+        return fields.email.length > 0;
     }
+
+    useEffect(() => {
+        if (props.orgReset) {
+            setShowForgot(props.orgReset)
+        }
+    }, [props.orgReset])
 
     const handleSubmitForgot = async e => {
         e.preventDefault();
         let form = {
-            'email': fields.emailOrg,
+            'email': fields.email,
         };
         // console.log(form)
         fetch('/api/association/emailpasswordresetlink', {
@@ -209,51 +217,7 @@ export default function OrgLogin(props) {
             </Row>
         </Container>
         {getCurrentModal()}
-        <Footer key="2" handleShowModal={handleShowModal}/>
-    </>)
-
-      if (mode) {
-        return (
-            <Modal show={props.showLogin} size='sm' style={{marginTop: 110}}>
-                <Modal.Header>
-                    <Modal.Title id="small-header" style={{marginLeft: 5}}>
-                        Login to your portal
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={handleSubmit}>
-                        <Row>
-                            <Col xs={12}>
-                                <Form.Group controlId="email" bssize="large">
-                                    <Form.Control 
-                                        type="email"
-                                        placeholder="Email"
-                                        value={fields.email}
-                                        onChange={handleFieldChange}
-                                    />
-
-                                </Form.Group>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Group controlId="password" bssize="large">
-                                    <Form.Control 
-                                        placeholder="Password"
-                                        value={fields.password}
-                                        onChange={handleFieldChange}
-                                        type="password"
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Button style={{marginTop: 10}} id="large-button" disabled={!validateForm()} type="submit">Sign In</Button>
-                        <Button id="large-button-empty" onClick={() => {setMode(!mode);}}>Reset your password</Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-        )
-    } else {
-        return (
-            <Modal show={props.showLogin} size='sm' style={{marginTop: 110}}>
+        <Modal show={showForgot} size='sm' style={{marginTop: 110}}>
                     <Modal.Header>
                         <Modal.Title id="small-header" style={{marginLeft: 5}}>Reset your password</Modal.Title>
                     </Modal.Header>
@@ -275,10 +239,10 @@ export default function OrgLogin(props) {
                             <Button style={{marginTop: 10}} id="large-button" disabled={!validateForgotForm()} type="submit">
                                 Send me a password reset link
                             </Button>
-                            <Button id="large-button-empty" onClick={() => {setMode(!mode);}}>Back to login</Button>
+                            <Button id="large-button-empty" onClick={() => {setShowForgot(false);}}>Back to login</Button>
                         </Form>
                     </Modal.Body>
                 </Modal>
-        )
-    }
+        <Footer key="2" handleShowModal={handleShowModal}/>
+    </>)
 }

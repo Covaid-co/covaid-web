@@ -28,7 +28,7 @@ import { generateURL, convertTime } from './Helpers'
 import './OrganizationPage.css'
 
 
-export default function OrganiationPortal() {
+export default function OrganiationPortal(props) {
 
 	const { addToast } = useToasts()
 	const [currTabNumber, setCurrTab] = useState(1); 
@@ -291,7 +291,7 @@ export default function OrganiationPortal() {
 	if (showLogin === true) {
 		return (
 			<div className="App">
-				<OrgLogin login={login} setShowLogin={setShowLogin} />
+				<OrgLogin login={login} setShowLogin={setShowLogin} orgReset={props.location.orgReset} />
 			</div>
 		)
 	}
