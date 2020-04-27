@@ -56,7 +56,7 @@ const remindPendingRequests = () => {
                                         templateName: "pending_notification",
                                     };
                                     console.log("sending an email to " + volunteer.email)
-                                    // emailer.sendNotificationEmail(data)
+                                    emailer.sendNotificationEmail(data)
                                 }
                             }
                         )

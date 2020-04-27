@@ -208,7 +208,7 @@ export default function RequestHelp(props) {
             setShowToast(false);
             setToastMessage('');
             setFirstPage(true)
-        }, 500);
+        }, 700);
     }
 
     if (firstPage) {
