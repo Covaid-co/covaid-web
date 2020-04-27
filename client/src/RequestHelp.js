@@ -203,9 +203,17 @@ export default function RequestHelp(props) {
         return res;
     }
 
+    const resetState = () => {
+        setTimeout(function () {
+            setShowToast(false);
+            setToastMessage('');
+            setFirstPage(true)
+        }, 500);
+    }
+
     if (firstPage) {
         return (
-            <Modal show={props.showModal} onHide={props.hideModal} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
+            <Modal show={props.showModal} onHide={() => {props.hideModal(); resetState();}} className='showRequestModal' style={{marginTop: 10, paddingBottom: 20}}>
                 <Modal.Header closeButton>
                     <Modal.Title id="small-header">Submit a {general}request</Modal.Title>
                 </Modal.Header>
@@ -247,7 +255,7 @@ export default function RequestHelp(props) {
     } else {
         if (completed === false) {
             return (
-                <Modal show={props.showModal} onHide={() => {props.hideModal(); setFirstPage(true);}} id="showRequestModal" style={{marginTop: 10, paddingBottom: 20}}>
+                <Modal show={props.showModal} onHide={() => {props.hideModal(); resetState();}} id="showRequestModal" style={{marginTop: 10, paddingBottom: 20}}>
                     <Modal.Header closeButton>
                         <Modal.Title id="small-header">Almost Done!</Modal.Title>
                     </Modal.Header>
@@ -272,7 +280,7 @@ export default function RequestHelp(props) {
             )
         } else {
             return (
-                <Modal show={completed} onHide={() => {setCompleted(false); props.hideModal(); setFirstPage(true);}} id="showRequestModal">
+                <Modal show={completed} onHide={() => {setCompleted(false); props.hideModal(); resetState();}} id="showRequestModal">
                     <Modal.Header closeButton>
                         <Modal.Title>Your request has been sent!</Modal.Title>
                     </Modal.Header>
@@ -281,7 +289,7 @@ export default function RequestHelp(props) {
                             Your request has been saved and you should receive an email soon 
                             from a matched volunteer who can support you.
                         </p>
-                        <Button id="large-button" style={{marginTop: 15}} onClick={() => {setCompleted(false); props.hideModal(); setFirstPage(true);}}>
+                        <Button id="large-button" style={{marginTop: 15}} onClick={() => {setCompleted(false); props.hideModal(); resetState();}}>
                             Return to home
                         </Button>
                     </Modal.Body>

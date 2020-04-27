@@ -18,7 +18,6 @@ export default function CompletedVolunteerRequests(props) {
     const [currRequest, setCurrRequest] = useState({});
 
     useEffect(() => {
-
         setCompletedRequests(props.completedRequests.reverse());
     }, [props.completedRequests])
 

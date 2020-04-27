@@ -446,6 +446,17 @@ export default function RequestDetails(props) {
         }
     }
 
+    const volunteerComments = () => {
+        if (props.mode === 3 && props.currRequest && props.currRequest.volunteer_comment) {
+            return <>
+                <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Volunteer's completion remarks:</h5>
+                    <p id="regular-text-nomargin">"{props.currRequest.volunteer_comment}"</p>
+            </>
+        } else {
+            return <></>
+        }
+    }
+
     return (
         <>
             <Modal show={props.requestDetailsModal} 
@@ -477,6 +488,7 @@ export default function RequestDetails(props) {
                     <p id="regular-text-nomargin"> {props.currRequest.details}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Needed by:</h5>
                     <p id="regular-text-nomargin">{props.currRequest.time} of {props.currRequest.date}</p>
+                    {volunteerComments()}
                     {modeButton()}
                 </Modal.Body>
             </Modal>
