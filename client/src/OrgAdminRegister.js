@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import { useFormFields } from "./libs/hooksLib"; 
 import { generateURL } from './Helpers';
-import orgImg from './assets/org.png'
+import orgImg from './assets/orgNew.png'
 import NavBar from './components/NavBar'
 import { validateEmail } from './Helpers';
 import Cookie from 'js-cookie'
