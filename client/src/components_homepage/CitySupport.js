@@ -22,7 +22,7 @@ export default function CitySupport(props) {
                     <br /> 
                     {props.associations.length === 0 ?
                     <><a href={currURL + '/organizationPortal'} rel="noopener noreferrer" style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
-                        Join the movement</a><br/></> : <></>}
+                        Bring to your community</a><br/></> : <></>}
                 </div>
     }
 
