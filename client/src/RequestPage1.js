@@ -24,7 +24,7 @@ export default function RequestPage1(props) {
 
     useEffect(() => {
         var resourcesFromAssoc = defaultResources;
-        if (Object.keys(props.currentAssoc).length > 0) {
+        if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
             resourcesFromAssoc = props.currentAssoc.resources;
         }
         var tempAssoc = setFalseObj(resourcesFromAssoc);
@@ -91,8 +91,9 @@ export default function RequestPage1(props) {
                     </p>
                 </Col>
             </Row>
-            <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>What support do you need?</h5>
-            <CheckForm obj={resources} setObj={setResources}/>
+            {props.currentAssoc === null ? <></> :
+            <><h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>What support do you need?</h5>
+            <CheckForm obj={resources} setObj={setResources}/></>}
             <Button id="large-button" style={{marginTop: 15}} onClick={goToSecondPage}>Next</Button>
             <p id="pagenum-text">Page 1 of 2</p>
             <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>

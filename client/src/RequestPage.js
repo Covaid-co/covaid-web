@@ -23,7 +23,7 @@ export default function RequestPage(props) {
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
     const [associations, setAssociations] = useState([]);
-    const [currentAssoc, setCurrentAssoc] = useState({});
+    const [currentAssoc, setCurrentAssoc] = useState(null);
     const [firstPage, setFirstPage] = useState({});
     const [locality, setLocality] = useState('');
     const [completed, setCompleted] = useState(false);
@@ -64,6 +64,7 @@ export default function RequestPage(props) {
             } else {
                 findAssociations(lat, long).then((associations) => {
                     setAssociations(associations);
+                    setCurrentAssoc({});
                     if (associations.length > 0) {
                         setCurrentAssoc(associations[0]);
                     }
@@ -87,6 +88,7 @@ export default function RequestPage(props) {
 					setLocality(neighborObj['locality']);
 					findAssociations(lat, lng).then((associations) => {
                         setAssociations(associations);
+                        setCurrentAssoc({});
                         if (associations.length > 0) {
                             setCurrentAssoc(associations[0]);
                         }
@@ -106,6 +108,9 @@ export default function RequestPage(props) {
     }
 
     const foundPhoneNumber = () => {
+        if (currentAssoc === null) {
+            return <></>;
+        }
         var res = '(401) 526-8243';
         if (currentAssoc.name === "Pittsburgh Mutual Aid") {
             res = '(412) 301-6127';
