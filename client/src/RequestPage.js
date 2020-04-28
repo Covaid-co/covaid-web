@@ -78,12 +78,14 @@ export default function RequestPage(props) {
 		e.stopPropagation();
 		return Geocode.fromAddress(locationString).then(
 			response => {
-				const { lat, lng } = response.results[0].geometry.location;
-
+                const { lat, lng } = response.results[0].geometry.location;
 				removeCookies(cookieNames);
 				setLatLongCookie(lat, lng);
-				setIsLoaded(true);
-
+                setIsLoaded(true);
+                
+                setLatitude(lat);
+                setLongitude(lng);
+                
 				setNeighborhood(lat, lng).then((neighborObj) => {
 					setLocality(neighborObj['locality']);
 					findAssociations(lat, lng).then((associations) => {
@@ -169,22 +171,24 @@ export default function RequestPage(props) {
             'status': "pending"
         };
 
-        fetch('/api/request/create_request', {
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        })
-        .then((response) => {
-            if (response.ok) {
-                console.log("Request successfully created");
-                setCompleted(true);
-            } else {
-                console.log("Request not successful")
-            }
-        })
-        .catch((e) => {
-            console.log(e);
-        });
+        console.log(form);
+
+        // fetch('/api/request/create_request', {
+        //     method: 'post',
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify(form)
+        // })
+        // .then((response) => {
+        //     if (response.ok) {
+        //         console.log("Request successfully created");
+        //         setCompleted(true);
+        //     } else {
+        //         console.log("Request not successful")
+        //     }
+        // })
+        // .catch((e) => {
+        //     console.log(e);
+        // });
     }
 
     if (completed) {
