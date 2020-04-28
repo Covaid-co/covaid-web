@@ -212,7 +212,7 @@ export default function OrgLogin(props) {
                     <h1 id="home-sub-heading">Take your next step</h1>
                     <p id="home-subheading" style={{fontSize: 20, paddingRight: 0,  marginBottom: 0}}>We’re excited to work 
                     with you and help grow your efforts!</p>
-                    <Button style={{marginTop: 10, width: 250}} id="large-button" onClick={() => handleShowModal(7)}>Get Started</Button>
+                    <Button style={{marginTop: 10, width: 250}} id="large-button" onClick={() => handleShowModal('get started')}>Get Started</Button>
                 </Col>
             </Row>
         </Container>

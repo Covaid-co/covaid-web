@@ -7,7 +7,7 @@ import Cookie from 'js-cookie'
 import HomePage from './HomePage'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
-import { findAssociations, getMyLocation, setNeighborhood } from './location_tools/LocationHelpers'
+import { findAssociations, getMyLocation, setNeighborhood, setLatLongCookie } from './location_tools/LocationHelpers'
 import { removeCookies } from './Helpers';
 import { cookieNames } from './constants';
 
@@ -34,7 +34,6 @@ class Home extends Component {
 			isLoggedIn: false,
 			first_name: '',
 			last_name: '',
-			showRequest: '',
 			currentUser: undefined,
 			showModal: false,
 			modalType: '',
@@ -58,15 +57,43 @@ class Home extends Component {
 		this.setState({showModal: false});
 	}
 
+	setAssociationState(lat, long) {
+		this.setState({latitude: lat, longitude: long});
+		findAssociations(lat, long).then((associations) => {
+			this.setState({'associations': associations});
+			if (associations.length > 0) {
+				this.setState({'currentAssoc': associations[0]})
+			} else {
+				this.setState({'currentAssoc': {}});
+			}
+		});
+	}
+
+	setLocationState() {
+		getMyLocation().then((stateObj) => {
+			this.setState(stateObj);
+			this.setState({isLoaded: true});
+			this.handleHideModal();
+			if (!('neighborhoods' in stateObj)) {
+				setNeighborhood(stateObj.latitude, stateObj.longitude).then((neighborObj) => {
+					this.setState(neighborObj);
+					this.setAssociationState(stateObj.latitude, stateObj.longitude);
+				})
+			} else {
+				this.setAssociationState(stateObj.latitude, stateObj.longitude);
+			}
+		});
+	}
+
 	componentDidMount() {
 		if (this.props.location.verified) {
 			this.handleShowModal('signin');
 			this.setState({justVerified: true});
 		}
-		if (this.props.location.requestHelp) {
-			this.setState({showRequest: true})
-		}
-		getMyLocation(this);
+
+		// Automatically on load find location
+		this.setLocationState();
+
 		if (!this.state.isLoggedIn && Cookie.get("token")) {
 			this.fetchUser();
 		}
@@ -86,24 +113,29 @@ class Home extends Component {
 		});
 	}
 
+	// Pressing refresh button
 	refreshLocation() {
 		removeCookies(cookieNames);
 		this.setState({isLoaded: false});
-		getMyLocation(this);
+		this.setLocationState();
 	}
 
+	// Entering location manually
 	onLocationSubmit = (e, locationString) => {
 		e.preventDefault();
 		e.stopPropagation();
 		return Geocode.fromAddress(locationString).then(
 			response => {
 				const { lat, lng } = response.results[0].geometry.location;
+
 				removeCookies(cookieNames);
-				setNeighborhood(lat, lng, this, this.state.showRequest);
-				findAssociations(lat, lng, this);
-				if (this.state.showRequest) {
-					this.handleShowModal(8)
-				}
+				setLatLongCookie(lat, lng);
+				this.setState({isLoaded: true});
+
+				setNeighborhood(lat, lng).then((neighborObj) => {
+					this.setState(neighborObj);
+					this.setAssociationState(lat, lng);
+				});
 				return true;
 			}, () => {
 				return false;

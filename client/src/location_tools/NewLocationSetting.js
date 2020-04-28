@@ -25,7 +25,7 @@ export default function NewLocationSetting(props) {
     return (
         <Modal dialogClassName="location-set-modal" show={props.showModal} style={{marginTop: 60}} onHide={props.hideModal}>
             <Modal.Header>
-                <Modal.Title id="small-header">Change your location</Modal.Title>
+                <Modal.Title>Change your location</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <p id="regular-text">Please input desired city or zip code.</p>
