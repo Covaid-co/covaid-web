@@ -22,7 +22,7 @@ export default function GetLocation(props) {
     };
 
     return (
-        <Modal show={!props.state.isLoaded} style = {{marginTop: 90}} onHide={() => {}}>
+        <Modal show={!props.isLoaded} style = {{marginTop: 90}} onHide={() => {}}>
             <Modal.Header>
                 <Modal.Title>Looking for your location...</Modal.Title>
                 <Spinner animation="border" role="status" style = {{textAlign: 'right', color: "black"}}></Spinner>

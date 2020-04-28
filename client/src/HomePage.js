@@ -137,9 +137,8 @@ export default function HomePage(props) {
                     </Row>
                 </Container>
             </Jumbotron>
-            <GetLocation state={props.state}
-                        onLocationSubmit={props.onLocationSubmit}
-                        hideModal={props.handleHideModal}/>
+            <GetLocation isLoaded={props.state.isLoaded}
+                        onLocationSubmit={props.onLocationSubmit}/>
             <Container id={props.state.isLoggedIn ? "location-container-logged" : "location-container"}>
                 <CitySupport state={props.state} associations={props.state.associations}/>
             </Container>
@@ -157,10 +156,6 @@ export default function HomePage(props) {
                     {cantFindLink}
                 </Col>
             </Container>
-
-            {/* <Container id="footer">
-                Footer
-            </Container> */}
             {getCurrentModal()}
         </div>
     );
