@@ -17,7 +17,7 @@ export default function VolunteerActionConfirmationModal(props) {
         if (props.action !== 'complete') {
             return false;
         } else {
-            if (fields.comment.length === 0) {
+            if (fields.comment.length < 10) {
                 return true;
             }
             else {
@@ -92,7 +92,7 @@ export default function VolunteerActionConfirmationModal(props) {
                             How did you complete this request?
                         </h5>
                 <Form.Group controlId="comment" bssize="large">
-                    <Form.Control value={fields.comment} onChange={handleFieldChange} as="textarea" rows="2" placeholder="Ex: I delivered groceries to this person's front door!" />
+                    <Form.Control value={fields.comment} onChange={handleFieldChange} as="textarea" rows="2" placeholder="Ex: I delivered groceries to this person's front door! (min. 10 characters)" />
                 </Form.Group>
             </>
         } else {
