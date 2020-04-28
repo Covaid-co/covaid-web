@@ -18,10 +18,11 @@ export default function CitySupport(props) {
                                         {association.name}</a><br /> 
                                 </div>
                     })}
+                    <p style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">Covaid.co</p>
+                    <br /> 
                     {props.associations.length === 0 ?
                     <><a href={currURL + '/organizationPortal'} rel="noopener noreferrer" style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
-                        Include your Mutual Aid Initiative</a><br/></> : <></>}
-                    {/* <p style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">Covaid.co</p> */}
+                        Bring to your community</a><br/></> : <></>}
                 </div>
     }
 

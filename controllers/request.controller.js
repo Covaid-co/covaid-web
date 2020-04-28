@@ -270,6 +270,7 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
             "status.current_status": "complete",
             "status.reason": reason,
             "volunteer_status": "completed",
+            "volunteer_comment": req.body.volunteer_comment,
             "last_modified": new Date(),
             "completed_date": new Date()
         }

@@ -28,7 +28,7 @@ export default function RequestInfo(props) {
         setShowConfirmationModal(true);
         props.setModalOpen(false)
         setTitle("Confirmation");
-        setConfirmation("Confirm that you've completed this request");
+        setConfirmation("Confirm that you've completed this request.");
         setAction('complete');
         setButtonColor("#28a745")
     }

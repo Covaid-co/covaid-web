@@ -21,7 +21,7 @@ export const findAssociations = (lat, long, currentComponent) => {
     fetchData();
 }
 
-export const setNeighborhood = (latitude, longitude, currentComponent, showRequest) => {
+export const setNeighborhood = (latitude, longitude, currentComponent) => {
     currentComponent.setState({
         latitude: latitude,
         longitude: longitude
@@ -81,9 +81,7 @@ export const setNeighborhood = (latitude, longitude, currentComponent, showReque
                 locality: locality,
                 state: foundState
             });
-            if (!showRequest) {
-                currentComponent.handleHideModal();
-            }
+            currentComponent.handleHideModal();
         },
         error => {
             console.error(error);

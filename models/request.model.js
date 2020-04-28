@@ -35,6 +35,7 @@ let RequestSchema = new Schema({
     },
     prev_matched: [String],
     volunteer_status: String,
+    volunteer_comment: String,
     pending_time: Date,
     completed_date: Date
 });
