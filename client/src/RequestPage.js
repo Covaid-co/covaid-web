@@ -85,7 +85,7 @@ export default function RequestPage(props) {
                 
                 setLatitude(lat);
                 setLongitude(lng);
-                
+
 				setNeighborhood(lat, lng).then((neighborObj) => {
 					setLocality(neighborObj['locality']);
 					findAssociations(lat, lng).then((associations) => {
@@ -171,24 +171,22 @@ export default function RequestPage(props) {
             'status': "pending"
         };
 
-        console.log(form);
-
-        // fetch('/api/request/create_request', {
-        //     method: 'post',
-        //     headers: {'Content-Type': 'application/json'},
-        //     body: JSON.stringify(form)
-        // })
-        // .then((response) => {
-        //     if (response.ok) {
-        //         console.log("Request successfully created");
-        //         setCompleted(true);
-        //     } else {
-        //         console.log("Request not successful")
-        //     }
-        // })
-        // .catch((e) => {
-        //     console.log(e);
-        // });
+        fetch('/api/request/create_request', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Request successfully created");
+                setCompleted(true);
+            } else {
+                console.log("Request not successful")
+            }
+        })
+        .catch((e) => {
+            console.log(e);
+        });
     }
 
     if (completed) {
