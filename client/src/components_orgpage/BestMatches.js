@@ -122,6 +122,15 @@ export default function BestMatches(props) {
     if (!isLoaded) {
         return <></>;
     }
+
+    const generateInvisible = (availability) => {
+        if (availability == false) {
+            return <p style={{color: "#AE2F2F", marginBottom: 5}}>Not Publicly Available</p>;
+        } else {
+            return <></>;
+        }
+    }
+
     return (
         <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
@@ -146,6 +155,7 @@ export default function BestMatches(props) {
                                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
+                                        {generateInvisible(volunteer.availability)}
                                         {displayPrevMatched(volunteer)}
                                     </div>
                                     <div>

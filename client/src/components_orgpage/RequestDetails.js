@@ -65,7 +65,7 @@ export default function RequestDetails(props) {
 
 
     const findUser = (request) => {
-        if (request.status.volunteer === undefined || request.status.volunteer === 'manual') {
+        if (request.status.volunteer === undefined || request.status.volunteer.length === 0 || request.status.volunteer === 'manual') {
             setCurrVolunteer({});
             return;
         }
