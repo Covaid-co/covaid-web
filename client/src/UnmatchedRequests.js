@@ -65,9 +65,11 @@ export default function UnmatchedRequests(props) {
     const resourceCompleteBadge = (request) => {
         var result = <></>;
         if (props.mode === 3) {
-            result = <Badge id='task-info' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
-                        {request.status.reason ? request.status.reason : "Volunteer Completed"}
-                    </Badge>                      
+            if (request.status) {
+                result = <Badge id='task-info' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
+                        {request.status.reason ? request.status.reason : "No reason selected"}
+                    </Badge>
+            }
         } else {
             result = request.resource_request.map((task, i) => {
                 return <Badge key={i} id='task-info'>{task}</Badge>
@@ -77,8 +79,9 @@ export default function UnmatchedRequests(props) {
     }
 
     const clickRequest = (request) => {
-        setCurrRequest({...request}); 
-        setRequestDetailsModal(true);
+        props.setCurrRequest({...request}); 
+        props.setRequestDetailsModal(true);
+        props.setInRequest(true);
     }
 
     const sortInfo = (request) => {
@@ -139,8 +142,8 @@ export default function UnmatchedRequests(props) {
                 <Col xs={12}>
                     <p id="requestCall" style={{marginTop: 5, marginBottom: 0}}></p>
                 </Col>
-                <Col xs={12}>
-                    <ListGroup variant="flush" style={{overflowY: "scroll", height: 441}}>
+                <Col xs={12} id="col-scroll">
+                    <ListGroup variant="flush">
                         {filteredRequests.map((request, i) => {
                             return (
                                 <ListGroup.Item key={i} action onClick={() => {clickRequest(request)}}>
@@ -162,21 +165,6 @@ export default function UnmatchedRequests(props) {
                     </ListGroup>
                 </Col>
             </Row>
-            <RequestDetails requestDetailsModal={requestDetailsModal} 
-                            setRequestDetailsModal={setRequestDetailsModal} 
-                            currRequest={currRequest}
-                            setCurrRequest={setCurrRequest}
-                            association={props.association}
-                            setRequests={props.setRequests}
-                            unmatched={props.unmatched}
-                            matched={props.matched}
-                            completed={props.completed}
-                            setUnmatched={props.setUnmatched}
-                            setMatched={props.setMatched}
-                            setCompleted={props.setCompleted}
-                            mode={props.mode}
-                            volunteers={props.volunteers}
-                            admin={props.admin}/>
         </>
     );
 }

@@ -14,6 +14,7 @@ export default class InfoMarker extends PureComponent {
       this.props.setRequestDetailsModal(true);
       this.props.setCurrRequest(info);
       this.props.setPopupInfo(null);
+      this.props.setInRequest(true);
     }
 
     // volunteer

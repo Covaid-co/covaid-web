@@ -129,7 +129,7 @@ export default function VolunteerDetails(props) {
     }
 
     const displaySwitch = () => {
-        return (<Form style = {{position: "absolute", marginLeft: 10, top: 11, display: 'inline-block'}}>
+        return (<Form>
                     <Form.Group controlId="preverify" bssize="large" style = {{marginBottom: 0, marginTop: 2}}>
                         <Form.Check 
                             type="switch"
@@ -142,30 +142,18 @@ export default function VolunteerDetails(props) {
                 </Form>);
     }
 
-
-    const requestStatus = () => {
-        if (props.currRequest) {
-            if (props.currRequest.volunteer_status === 'pending') {
-                return <Badge className='pending-task'>Pending</Badge>;
-            } else if (props.currRequest.volunteer_status === 'accepted') {
-                return <Badge className='in-progress-task'>In Progress (Matched)</Badge>;
-            }     
-        } else {
-            return <></>;
-        }
-    }
-
     if (Object.keys(props.currVolunteer).length > 0) {
         return (
             <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
-                    console.log(props.matching);
                     props.setVolunteerDetailsModal(false);
                     setNotes();
-                    if (props.setVolunteersModal) {
+                    if (props.inVolunteer) {
                         props.setVolunteersModal(true);
                     }
+                    if (props.inRequest) {
+                        props.setRequestDetailsModal(true);
+                    }
                     if (props.matching) {
-                        console.log("rip")
                         props.setTopMatchesModal(true);
                     }
                 }} style = {{marginTop: 10, paddingBottom: 40}}>
@@ -181,10 +169,9 @@ export default function VolunteerDetails(props) {
                           : <Badge aria-describedby='tooltip-bottom' id='task-info' style={{marginLeft: 8, marginTop: -4, backgroundColor: '#dc3545'}}>
                                 Not visible
                             </Badge>}
-                        {displaySwitch()}
-                        {requestStatus()}
                     </div>
-                    <p id="regular-text-nomargin" style={{marginTop: 5}}>Location: <a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
+                    {displaySwitch()}
+                    <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
                     <p id="regular-text-nomargin">{props.currVolunteer.email}</p>
                     <p id="regular-text-nomargin">{props.currVolunteer.phone}</p>
                     <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ""}</p>

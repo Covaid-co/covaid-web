@@ -68,7 +68,7 @@ export default function AdminModal(props) {
                                 }) : <></>}
                             </ListGroup>
                         </Col>
-                        <Col xs={12}>
+                        {/* <Col xs={12}>
                             <p id="requestCall" style={{marginTop: 0, marginBottom: 10}}></p>
                         </Col>
                         <Col xs={12} style={{textAlign: 'center'}}>
@@ -76,7 +76,7 @@ export default function AdminModal(props) {
                                 onClick={() => {setAddAdmin(true); props.setAdminModal(false)}}>
                                 Add an Admin +
                             </Button>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Modal.Body>
             </Modal>

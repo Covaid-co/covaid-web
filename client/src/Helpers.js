@@ -6,6 +6,13 @@ export const removeCookies = (cookies) => {
     }
 }
 
+export const clearCookies = () => {
+    const cookies = ['latitude', 'longitude', 'zipcode', 'neighborhoods', 'locality', 'state'];
+    for (var i = 0; i < cookies.length; i++) {
+        Cookie.remove(cookies[i]);
+    }
+}
+
 export const generateURL = (baseURL, params) => {
     let query = Object.keys(params)
 					.map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))

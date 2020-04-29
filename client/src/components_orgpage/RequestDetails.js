@@ -6,8 +6,8 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Toast from 'react-bootstrap/Toast'
 import BestMatches from './BestMatches'
+import Badge from 'react-bootstrap/Badge'
 import Col from 'react-bootstrap/Col'
-import VolunteerDetails from './VolunteerDetails'
 import { useFormFields } from "../libs/hooksLib";
 import { formatName } from './OrganizationHelpers'
 import { toastTime, paymentOptions } from '../constants';
@@ -18,7 +18,6 @@ export default function RequestDetails(props) {
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [topMatchesModal, setTopMatchesModal] = useState(false);
     const [assignee, setAssignee] = useState('No one assigned');
-    const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [unmatchModal, setUnmatchModal] = useState(false);
     const [confirmCompleteModal, setConfirmCompleteModal] = useState(false);
@@ -275,7 +274,13 @@ export default function RequestDetails(props) {
         } else {
             return (<>
                     {Object.keys(currVolunteer).length > 0 ? 
-                        <Button id="large-button" style={{marginTop: 15}} onClick={() => setVolunteerDetailsModal(true)}>
+                        <Button id="large-button" style={{marginTop: 15}} onClick={() => {
+                                props.setVolunteerDetailsModal(true); 
+                                props.setCurrVolunteer(currVolunteer);
+                                props.setRequestDetailsModal(false);
+                                props.setInRequest(true);
+                                console.log(2);
+                            }}>
                             View Volunteers's Information
                         </Button>
                         : <></>}
@@ -290,11 +295,6 @@ export default function RequestDetails(props) {
                                 {completeButton}
                         </Col>
                     </Row>
-                    <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
-                                    setVolunteerDetailsModal={setVolunteerDetailsModal}
-                                    currVolunteer={currVolunteer}
-                                    currRequest={props.currRequest}
-                                    matching={false}/>
                 </>);
         }
     }
@@ -392,11 +392,11 @@ export default function RequestDetails(props) {
 
     const modeString = () => {
         if (props.mode === 1) {
-            return "Unmatched";
+            return " (Unmatched)";
         } else if (props.mode === 2) {
-            return "Matched";
+            return "";
         } else {
-            return "Completed";
+            return " (Completed) ";
         }
     }
 
@@ -457,10 +457,28 @@ export default function RequestDetails(props) {
         }
     }
 
+    const requestStatus = () => {
+        if (props.currRequest) {
+            if (props.currRequest.volunteer_status === 'pending') {
+                return <Badge className='pending-task' style={{marginTop: 6}}>Pending</Badge>;
+            } else if (props.currRequest.volunteer_status === 'accepted') {
+                return <Badge className='in-progress-task' style={{marginTop: 6}}>In Progress</Badge>;
+            }     
+        } else {
+            return <></>;
+        }
+    }
+
     return (
         <>
             <Modal show={props.requestDetailsModal} 
-                   onHide={() => {props.setRequestDetailsModal(false); setNotes();}} 
+                   onHide={() => {
+                        props.setRequestDetailsModal(false); 
+                        setNotes();
+                        if (props.setInRequest) {
+                            props.setInRequest(false);
+                        }
+                    }} 
                    style = {{marginTop: 10, paddingBottom: 50, zoom: '90%'}}>
                 <Modal.Body>
                     <h5 id="regular-text-bold" style={{marginTop: 0, marginBottom: 5}}>Who's tracking this request:</h5>
@@ -475,7 +493,7 @@ export default function RequestDetails(props) {
                                         onChange={handleFieldChange}/>
                         </Form.Group>
                     </Form>
-                    <Modal.Title id="small-header" style={{marginTop: 20}}>Request Details ({modeString()})</Modal.Title>
+                    <Modal.Title id="small-header" style={{marginTop: 20}}>Request Details {modeString()} {requestStatus()}</Modal.Title>
                     <Col xs={12} style={{padding: 0}}><p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p></Col>
                     <p id="name-details">{formatName(props.currRequest.requester_first, props.currRequest.requester_last)}</p>
                     <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapsURL}>Click here</a></p>
