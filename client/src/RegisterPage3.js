@@ -36,7 +36,7 @@ export default function RegisterPage3(props) {
             setTermSentences(termsList);
         }
         setNeighborhoodsChecked(setTrueObj(props.neighborhoods));
-    }, [props.currentAssoc])
+    }, [props.currentAssoc, props.neighborhoods])
 
     const handleTermChange = (event, task) => { 
         setCurrentTerms(prev => ({ 

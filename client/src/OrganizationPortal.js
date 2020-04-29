@@ -8,6 +8,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Badge from 'react-bootstrap/Badge'
 import UnmatchedRequests from './UnmatchedRequests'
 import OrgLogin from './components_orgpage/OrgLogin'
 import Cookie from 'js-cookie'
@@ -322,7 +323,7 @@ export default function OrganiationPortal(props) {
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
 					<Container style={{maxWidth: 1500}}>
 						<Row>
-							<Col>
+							<Col lg={7} md={7} sm={12}>
 								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back,</h1>
 								<h1 id="home-heading" style={{marginTop: 0}}>{association.name}!</h1>
 								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
@@ -337,9 +338,8 @@ export default function OrganiationPortal(props) {
 									+ Add a link to your community's resources
 								</Button>
 							</Col>
-							{/* <Col>
-							<Col lg={1}></Col>
-								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 140}}>
+							<Col lg={5} md={5} sm={12} style={width < 768 ? {display: 'none'} : {display: 'block'}}>
+								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 20}}>
 									<h3 id="home-heading" style={{marginTop: 0, fontSize: 20}}>
 										Need a task done? {' '}
 										<Badge id='task-info' style={{background: '#AE2F2F'}}>
@@ -360,7 +360,7 @@ export default function OrganiationPortal(props) {
 										</Col>
 									</Row>
 								</Container>
-							</Col> */}
+							</Col>
 						</Row>
 					</Container>
 				</Jumbotron>
