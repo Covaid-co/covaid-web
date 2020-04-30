@@ -18,6 +18,8 @@ import VolunteerPortal from './VolunteerPortal'
 import OrgAdminRegister from './OrgAdminRegister'
 import OrgReset from './OrgReset';
 import RegisterPage from './RegisterPage';
+import ChangeLog from './ChangeLog';
+import SubmitChangeLog from './SubmitChangeLog';
 import { generateURL, clearCookies } from './Helpers';
 import { findAssociations, getMyLocation, setNeighborhood, setLatLongCookie } from './location_tools/LocationHelpers'
 
@@ -197,6 +199,8 @@ function App() {
                 <Route exact path="/resetAssociationPassword" component={ResetAssociationPassword}/>
                 <Route exact path="/orgAdmin" component={OrgAdminRegister} />
                 <Route exact path="/orgPasswordReset" component={OrgReset} />
+                <Route exact path="/updates" component={ChangeLog}/>
+                <Route exact path="/submit-updates" component={SubmitChangeLog}/>
                 <Route path="/" component={Home}/>
                 <Route path="*" component={Home}/>
             </Switch>

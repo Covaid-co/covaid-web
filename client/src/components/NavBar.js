@@ -9,6 +9,7 @@ import Cookie from 'js-cookie'
 import AboutUs from '../components_modals/AboutUs'
 import HowItWorks from '../components_modals/HowItWorks'
 import MapModal from '../components_modals/MapModal';
+import Donate from '../components_modals/Donate';
 import { currURL } from '../constants';
 
 
@@ -101,6 +102,8 @@ export default function CovaidNavbar(props) {
             res = <AboutUs showModal={showModal} hideModal={() => setShowModal(false)}/>; 
         } else if (modalName === 'faq') {
             res = <HowItWorks showModal={showModal} hideModal={() => setShowModal(false)}/>;
+        } else if (modalName === 'donate') {
+            res = <Donate showModal={showModal} hideModal={() => setShowModal(false)}/>;
         } else if (modalName === 'map') {
             res = <MapModal showModal={showModal} hideModal={() => setShowModal(false)} totalVolunteers={totalVolunteers} mobile={width < 767}/>;
         }
@@ -148,6 +151,9 @@ export default function CovaidNavbar(props) {
                     </Nav.Link>
                     <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => setCurrModal('faq')}>
                         <p id={toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
+                    </Nav.Link>
+                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => setCurrModal('donate')}>
+                        <p id={toggled ? 'navLinkToggled': 'navLink'}>Donate</p>
                     </Nav.Link>
                     <Nav.Link className="volunteer-badge-web">
                         {volunteerBadge('desktop')}

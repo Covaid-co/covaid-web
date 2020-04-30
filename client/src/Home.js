@@ -14,6 +14,7 @@ import { cookieNames } from './constants';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import './Home.css'
+import './ChangeLog.css'
 import './styling/NewHomePage.css';
 
 Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");

@@ -14,6 +14,7 @@ const association_routes = require('./api/association_routes')
 const beacon_routes = require('./api/beacon.routes')
 const admin_routes = require('./api/association.admin.routes');
 const orgsignup_routes = require('./api/orgsignup.routes.js');
+const changelog_routes = require('./api/changelog.routes.js');
 
 router.use('/offers', offer_routes);
 router.use('/users', user_routes);
@@ -22,6 +23,7 @@ router.use('/association', association_routes);
 router.use('/beacon', beacon_routes);
 router.use('/association-admin', admin_routes);
 router.use('/orgsignup', orgsignup_routes);
+router.use('/changelog', changelog_routes);
 
 module.exports = app => {
 	app.use('/api', router);
