@@ -157,6 +157,26 @@ function App() {
                             onLocationSubmit={onLocationSubmit} refreshLocation={refreshLocation}/>
     }
 
+    const requestPage = (props, org) => {
+        if (stateRef.current === '' && org !== '') {
+            stateRef.current = org;
+            if (org === 'pitt') {
+                setAssocByOrg('5e843ab29ad8d24834c8edbf');
+            }
+        }
+        const locationProps = {
+            'latitude': latitude,
+            'longitude': longitude,
+            'currentAssoc': currentAssoc,
+            'neighborhoods': neighborhoods,
+            'locality': locality,
+            'state': state,
+            'zipcode': zipcode
+        }
+        return <RequestPage { ...props } org={org} locationProps={locationProps} isLoaded={isLoaded}
+                            onLocationSubmit={onLocationSubmit} refreshLocation={refreshLocation}/>
+    }
+
     return (
         <ToastProvider>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -169,9 +189,10 @@ function App() {
                 <Route exact path="/volunteerPortal" component={VolunteerPortal}/>
                 <Route exact path="/verify" component={Verify}/>
                 <Route exact path="/welcome" component={Welcome}/>
-                <Route exact path="/pitt-request" render={(props) => <RequestPage {...props} org={'pitt'}/>}/>
+                <Route exact path="/pitt-request" render={(props) => requestPage(props, 'pitt')}/>
+                <Route exact path="/request" render={(props) => requestPage(props, '')}/>
                 <Route exact path="/pitt-volunteer" render={(props) => registerPage(props, 'pitt')}/>
-                {/* <Route exact path="/volunteer" render={(props) => registerPage(props, '')}/> */}
+                <Route exact path="/volunteer" render={(props) => registerPage(props, '')}/>
                 <Route exact path="/resetPassword" component={ResetPassword}/>
                 <Route exact path="/resetAssociationPassword" component={ResetAssociationPassword}/>
                 <Route exact path="/orgAdmin" component={OrgAdminRegister} />

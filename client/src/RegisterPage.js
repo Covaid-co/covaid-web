@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
+
 import NewLocationSetting from './location_tools/NewLocationSetting';
 import GetLocation from './components_homepage/GetLocation';
 import NavBar from './components/NavBar';
@@ -10,6 +13,8 @@ import Footer from './components/Footer';
 import RegisterPage1 from './RegisterPage1';
 import RegisterPage2 from './RegisterPage2';
 import RegisterPage3 from './RegisterPage3';
+import PittHeader from './association_volunteer_header/PittHeader';
+import DefaultHeader from './association_volunteer_header/DefaultHeader';
 
 
 export default function RegisterPage(props) {
@@ -21,23 +26,22 @@ export default function RegisterPage(props) {
 
     useEffect(() => {
         setShowModal(false);
+        console.log(props.locationProps)
     }, [props.locationProps]);
 
-
     const volunteerFormInfo = () => {
+        var topHeader = <DefaultHeader/>;
+        if (props.org === 'pitt') {
+            topHeader = <PittHeader/>;
+        }
         return (
             <>
-                <h1 id="small-header">Volunteer Registration (Pittsburgh Mutual Aid)</h1>
-                <p id="regular-text" style={{marginBottom: 5}}>
-                    Creating an account allows you to be listed as a volunteer in your area under Pittsburgh Mutual Aid. 
-                    Once logged in, you will be able to update your availability and indicate 
-                    which tasks you’re able to complete.
-                </p>
-                <p id="regular-text" style={{fontStyle: 'italic', marginTop: 0}}>
-                    Your contact information will <strong id='hello-name' style={{marginRight: 0}}>never</strong> be publicly visible.
-                </p>
+                {topHeader}
                 <p id='regular-text' style={{marginBottom: 0}}>Current Location: 
-                    <button id="change-location" onClick={() => setShowModal(true)}> {props.locationProps.locality + ', ' + props.locationProps.zipcode}</button>
+                    <button id="change-location" onClick={() => setShowModal(true)}> 
+                        {props.locationProps.locality + ', ' + props.locationProps.zipcode} 
+                        <FontAwesomeIcon style={{color: "red", marginLeft: 5}} icon={faMapMarkerAlt}/> 
+                    </button>
                 </p>
             </>
         )
