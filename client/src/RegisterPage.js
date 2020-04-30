@@ -27,9 +27,9 @@ export default function RegisterPage(props) {
     const volunteerFormInfo = () => {
         return (
             <>
-                <h1 id="small-header">Volunteer Registration</h1>
+                <h1 id="small-header">Volunteer Registration (Pittsburgh Mutual Aid)</h1>
                 <p id="regular-text" style={{marginBottom: 5}}>
-                    Creating an account allows you to be listed as a volunteer in your area. 
+                    Creating an account allows you to be listed as a volunteer in your area under Pittsburgh Mutual Aid. 
                     Once logged in, you will be able to update your availability and indicate 
                     which tasks you’re able to complete.
                 </p>
