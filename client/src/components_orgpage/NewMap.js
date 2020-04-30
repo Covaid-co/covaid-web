@@ -110,7 +110,8 @@ export default function NewMap(props) {
                                 setCurrVolunteer={props.setCurrVolunteer}
                                 setRequestDetailsModal={props.setRequestDetailsModal} 
                             	setCurrRequest={props.setCurrRequest}
-                                setPopupInfo = {setPopupInfo}/>
+                                setPopupInfo = {setPopupInfo}
+                                setInRequest={props.setInRequest}/>
                 </Popup>
             )}
         </MapGL>

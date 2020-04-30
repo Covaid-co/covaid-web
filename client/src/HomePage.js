@@ -30,7 +30,8 @@ export default function HomePage(props) {
         async function fetchData() {
             const response = await fetch(url);
             response.json().then((data) => {
-                setVolunteers(data.slice(0, Math.min(data.length, 20)));
+                const res = data.filter(volunteer => volunteer.offer.tasks.length > 0);
+                setVolunteers(res.slice(0, Math.min(res.length, 20)));
             });
         }
 

@@ -1,3 +1,10 @@
+#col-scroll {
+    max-height: 500px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
 .cluster-marker {
     color: #fff;
     background: #2670FF;
@@ -16,6 +23,7 @@
     border-radius: 8px;
     font-weight: 700;
     font-family: "Inter";
+    height: 39px;
 }
 
 .dropdown-sort:hover {
@@ -154,7 +162,7 @@ input {
     font-weight: bold;
     border: 1px solid #8A8A8A;
     box-sizing: border-box;
-    margin-top: 6px;
+    margin-top: 2px;
     margin-left: 8px !important;
     padding-bottom: 0;
     padding-top: 6px;
@@ -177,7 +185,7 @@ input {
     font-weight: bold;
     border: 1px solid #DB9327;
     box-sizing: border-box;
-    margin-top: 6px;
+    margin-top: 2px;
     margin-left: 8px !important;
     padding-bottom: 0;
     padding-top: 6px;
@@ -200,7 +208,7 @@ input {
     font-weight: bold;
     border: 1px solid #dc3545;
     box-sizing: border-box;
-    margin-top: 6px;
+    margin-top: 2px;
     margin-left: 8px !important;
     padding-bottom: 0;
     padding-top: 6px;
@@ -265,6 +273,8 @@ input {
     font-family: 'Inter';
     text-decoration: underline;
     margin-top: 10px;
+    text-align: left;
+    padding-left: 0px;
 }
 
 #volunteer-not-selected {

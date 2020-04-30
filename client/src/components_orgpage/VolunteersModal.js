@@ -8,15 +8,11 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 
-import VolunteerDetails from './VolunteerDetails'
 import { filterVolunteers } from './OrganizationHelpers';
 import { extractTrueObj } from '../Helpers';
 import Pagination from '../CommunityBulletinComponents/Pagination'
 
 export default function VolunteersModal(props) {
-
-    const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
-    const [currVolunteer, setCurrVolunteer] = useState({});
     const [filteredVolunteers, setFilteredVolunteers] = useState([]);
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
     const [resourcesSelected, setResourcesSelected] = useState([]);
@@ -101,7 +97,7 @@ export default function VolunteersModal(props) {
     }
 
     return (
-        <Modal show={props.volunteersModal} onHide={() => props.setVolunteersModal(false)} style={{marginTop: 10, paddingBottom: 40}}>
+        <Modal show={props.volunteersModal} onHide={() => {props.setVolunteersModal(false); props.setInVolunteer(false)}} style={{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
                 <Modal.Title>All Volunteers</Modal.Title>
             </Modal.Header>
@@ -135,8 +131,10 @@ export default function VolunteersModal(props) {
                             {displayedVolunteers.map((volunteer, i) => {
                                 return (
                                 <ListGroup.Item key={i} action onClick={() => {
-                                            setCurrVolunteer({...volunteer}); 
-                                            setVolunteerDetailsModal(true);}}>
+                                            props.setCurrVolunteer({...volunteer}); 
+                                            props.setVolunteerDetailsModal(true);
+                                            props.setVolunteersModal(false);
+                                            props.setInVolunteer(true)}}>
                                     <div>
                                         <h5 id="volunteer-name">
                                             {volunteer.first_name} {volunteer.last_name}
@@ -164,11 +162,6 @@ export default function VolunteersModal(props) {
                             paginate={paginatePage}/>
                     </Col>
                 </Row>
-                <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
-                                  setVolunteerDetailsModal={setVolunteerDetailsModal}
-                                  setVolunteersModal={props.setVolunteersModal}
-                                  currVolunteer={currVolunteer}
-                                  preVerify={props.preVerify}/>
             </Modal.Body>
         </Modal>
     );

@@ -55,6 +55,14 @@ export default function OrganiationPortal(props) {
 
 	const [beaconView, setBeaconView] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
+	const [width, setWidth] = useState(window.innerWidth);
+
+	const [inRequest, setInRequest] = useState(false);
+	const [inVolunteer, setInVolunteer] = useState(false);
+
+	window.addEventListener("resize", () => {
+        setWidth(window.innerWidth);
+	});
 
 	const fetchBeacons = () => {
 		// Get all request types for an association
@@ -315,14 +323,14 @@ export default function OrganiationPortal(props) {
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
 					<Container style={{maxWidth: 1500}}>
 						<Row>
-							<Col>
+							<Col lg={7} md={7} sm={12}>
 								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back,</h1>
 								<h1 id="home-heading" style={{marginTop: 0}}>{association.name}!</h1>
 								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
-								<Button id="medium-button" onClick={()=>{setAdminModal(true)}}>
+								<Button id="medium-button" style={{marginRight: 10, marginTop: 5}} onClick={()=>{setAdminModal(true)}}>
 									Manage Organization
 								</Button>
-								<Button id="medium-button" style={{marginLeft: 10}} onClick={()=>{setVolunteersModal(true)}}>
+								<Button id="medium-button" style={{marginTop: 5}} onClick={()=>{setVolunteersModal(true)}}>
 									View Volunteers
 								</Button>{' '}
 								<br/>
@@ -330,9 +338,8 @@ export default function OrganiationPortal(props) {
 									+ Add a link to your community's resources
 								</Button>
 							</Col>
-							<Col>
-							<Col lg={1}></Col>
-								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 140}}>
+							<Col lg={5} md={5} sm={12} style={width < 768 ? {display: 'none'} : {display: 'block'}}>
+								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 20}}>
 									<h3 id="home-heading" style={{marginTop: 0, fontSize: 20}}>
 										Need a task done? {' '}
 										<Badge id='task-info' style={{background: '#AE2F2F'}}>
@@ -367,56 +374,23 @@ export default function OrganiationPortal(props) {
 								{/* <Button id={tabID(4)} onClick={() => {setCurrTab(4)}}>Beacons ({beacons.length})</Button> */}
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(1)}>
-								<UnmatchedRequests association={association}
-													requests={unmatched}
-													unmatched={unmatched}
-													matched={matched}
-													completed={completed}
-													setRequests={setUnmatched}
-													setUnmatched={setUnmatched}
-													setMatched={setMatched}
-													setCompleted={setCompleted}
-													volunteers={volunteers}
-													mode={1}
-													admin={admin}
-													/>
+								<UnmatchedRequests setCurrRequest={setCurrRequest} setRequestDetailsModal={setRequestDetailsModal} 
+												   mode={1} requests={unmatched} setInRequest={setInRequest}/>
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(2)}>
-								<UnmatchedRequests association={association}
-													requests={matched}
-													unmatched={unmatched}
-													matched={matched}
-													completed={completed}
-													setRequests={setMatched}
-													setUnmatched={setUnmatched}
-													setMatched={setMatched}
-													setCompleted={setCompleted}
-													volunteers={volunteers}
-													mode={2}
-													admin={admin}
-													/>
+								<UnmatchedRequests setCurrRequest={setCurrRequest} setRequestDetailsModal={setRequestDetailsModal} 
+												   mode={2} requests={matched} setInRequest={setInRequest}/>
 							</Container>
 							<Container id="newOfferContainer" style={displayTab(3)}>
-								<UnmatchedRequests association={association}
-													requests={completed}
-													unmatched={unmatched}
-													matched={matched}
-													completed={completed}
-													setRequests={setCompleted}
-													setUnmatched={setUnmatched}
-													setMatched={setMatched}
-													setCompleted={setCompleted}
-													volunteers={volunteers}
-													mode={3}
-													admin={admin}
-													/>
+								<UnmatchedRequests setCurrRequest={setCurrRequest} setRequestDetailsModal={setRequestDetailsModal} 
+												   mode={3} requests={completed} setInRequest={setInRequest}/>
 							</Container>
 							
 						</Col>
 						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
 							<Container id="newOfferContainer" style={{'display': 'block'}}>
 								<Col xs={12} style={{padding: 0, marginBottom: 10}}>
-									<p id="small-header" style={{display: 'inline'}}>Organization Map</p>
+									<p id="small-header" style={{display: 'inline'}}>{width < 600 ? 'Map' : 'Organization Map'}</p>
 									<Button id={!volunteerMap ? "volunteer-not-selected" : "volunteer-selected"} onClick={() => setVolunteerMap(!volunteerMap)}>
 										Volunteers
 									</Button>
@@ -433,7 +407,7 @@ export default function OrganiationPortal(props) {
 										setVolunteerDetailsModal={setVolunteerDetailsModal}
 										currVolunteer={currVolunteer} setCurrVolunteer={setCurrVolunteer}
 										requestDetailsModal={requestDetailsModal} setRequestDetailsModal={setRequestDetailsModal} 
-										currRequest={currRequest} setCurrRequest={setCurrRequest}/>
+										currRequest={currRequest} setCurrRequest={setCurrRequest} setInRequest={setInRequest}/>
 							</Container>
 						</Col>
 					</Row>
@@ -442,7 +416,9 @@ export default function OrganiationPortal(props) {
 								setVolunteersModal={setVolunteersModal}
 								volunteers={volunteers}
 								association={association}
-								preVerify={true}/>
+								setCurrVolunteer={setCurrVolunteer}
+								setVolunteerDetailsModal={setVolunteerDetailsModal}
+								setInVolunteer={setInVolunteer}/>
 				<AdminModal adminModal={adminModal}
 							setAdminModal={setAdminModal}
 							association={association}
@@ -452,10 +428,19 @@ export default function OrganiationPortal(props) {
 								association={association}
 								setAssociation={setAssociation}/>
 				<VolunteerDetails volunteerDetailModal={volunteerDetailModal}
-							setVolunteerDetailsModal={setVolunteerDetailsModal}
-							currVolunteer={currVolunteer}/>
+								setVolunteerDetailsModal={setVolunteerDetailsModal}
+								currVolunteer={currVolunteer}
+								setVolunteersModal={setVolunteersModal}
+								currRequest={currRequest}
+								requestDetailsModal={requestDetailsModal}
+								setRequestDetailsModal={setRequestDetailsModal}
+								inRequest={inRequest}
+								inVolunteer={inVolunteer}/>
 				<RequestDetails requestDetailsModal={requestDetailsModal} 
-									setRequestDetailsModal={setRequestDetailsModal} 
+									setRequestDetailsModal={setRequestDetailsModal}
+									volunteerDetailModal={volunteerDetailModal}
+									setVolunteerDetailsModal={setVolunteerDetailsModal}
+									setCurrVolunteer={setCurrVolunteer}
 									currRequest={currRequest}
 									setCurrRequest={setCurrRequest}
 									association={association}
@@ -466,7 +451,9 @@ export default function OrganiationPortal(props) {
 									setMatched={setMatched}
 									setCompleted={setCompleted}
 									mode={currTabNumber}
-									volunteers={volunteers}/>
+									volunteers={volunteers}
+									admin={admin}
+									setInRequest={setInRequest}/>
 				<BeaconCreation beaconModal={beaconModal}
 							setBeaconModal={setBeaconModal}
 							association={association}
