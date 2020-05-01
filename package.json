@@ -21,7 +21,7 @@
     "google-spreadsheet": "^3.0.10",
     "hogan.js": "^3.0.2",
     "jwt-simple": "^0.5.6",
-    "moment": "^2.25.1",
+    "moment": "2.18.1",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.5",
     "morgan": "^1.9.1",
