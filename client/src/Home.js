@@ -68,13 +68,13 @@ class Home extends Component {
 		});
 	}
 
-	setLocationState(googleApiKey) {
-		getMyLocation(googleApiKey).then((stateObj) => {
+	setLocationState(key) {
+		getMyLocation().then((stateObj) => {
 			this.setState(stateObj);
 			this.setState({isLoaded: true});
 			this.handleHideModal();
 			if (!('neighborhoods' in stateObj)) {
-				setNeighborhood(stateObj.latitude, stateObj.longitude).then((neighborObj) => {
+				setNeighborhood(stateObj.latitude, stateObj.longitude, key).then((neighborObj) => {
 					this.setState(neighborObj);
 					this.setAssociationState(stateObj.latitude, stateObj.longitude);
 				})
@@ -92,9 +92,9 @@ class Home extends Component {
 		fetch('/api/apikey/google').then((response) => {
             if (response.ok) {
 				response.json().then(key => {
-                    // setGoogleApiKey(key);
-                    Geocode.setApiKey(key);
-                    this.setLocationState(key);
+					this.setState({ googleApiKey: key['google'] });
+					Geocode.setApiKey(key['google']);
+                    this.setLocationState(key['google']);
 				});
 			} else {
 				console.log("Error");
@@ -126,13 +126,14 @@ class Home extends Component {
 	refreshLocation() {
 		removeCookies(cookieNames);
 		this.setState({isLoaded: false});
-		this.setLocationState();
+		this.setLocationState(this.state.googleApiKey);
 	}
 
 	// Entering location manually
 	onLocationSubmit = (e, locationString) => {
 		e.preventDefault();
 		e.stopPropagation();
+		Geocode.setApiKey(this.state.googleApiKey);
 		return Geocode.fromAddress(locationString).then(
 			response => {
 				const { lat, lng } = response.results[0].geometry.location;
@@ -141,7 +142,7 @@ class Home extends Component {
 				setLatLongCookie(lat, lng);
 				this.setState({isLoaded: true});
 
-				setNeighborhood(lat, lng).then((neighborObj) => {
+				setNeighborhood(lat, lng, this.state.googleApiKey).then((neighborObj) => {
 					this.setState(neighborObj);
 					this.setAssociationState(lat, lng);
 				});

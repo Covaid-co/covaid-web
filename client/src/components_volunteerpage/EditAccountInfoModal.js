@@ -18,7 +18,6 @@ import CheckForm from '../components/CheckForm';
 import NewCar from '../components_homepage/NewHasCar'
 
 import Geocode from "react-geocode";
-Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 
 export default function EditAccountInfoModal(props) {
@@ -288,42 +287,50 @@ export default function EditAccountInfoModal(props) {
     }
 
     useEffect(() => {
-        setIsLoaded(true)
-        setUser(props.user)
-        fields.first_name = props.user.first_name
-        fields.last_name = props.user.last_name
-        fields.email = props.user.email
-        fields.phone = props.user.phone
-        setLatLong(props.user.latlong)
-        getZip(props.user.latlong)
-        setAssociation(props.user.association)
-        setAssociationName(props.user.association_name)
-        setHasCar(props.user.offer.car)
-        setCurrentUserObject(props.user.offer.timesAvailable, timeNames, setTimes);
-        setCurrentUserObject(props.user.languages, languages, setLanguageChecked)
+        fetch('/api/apikey/google').then((response) => {
+            if (response.ok) {
+				response.json().then(key => {
+                    Geocode.setApiKey(key['google']);
+					setIsLoaded(true)
+                    setUser(props.user)
+                    fields.first_name = props.user.first_name
+                    fields.last_name = props.user.last_name
+                    fields.email = props.user.email
+                    fields.phone = props.user.phone
+                    setLatLong(props.user.latlong)
+                    getZip(props.user.latlong)
+                    setAssociation(props.user.association)
+                    setAssociationName(props.user.association_name)
+                    setHasCar(props.user.offer.car)
+                    setCurrentUserObject(props.user.offer.timesAvailable, timeNames, setTimes);
+                    setCurrentUserObject(props.user.languages, languages, setLanguageChecked)
 
-        async function getResources() {
-            var url = "/api/association/get_assoc/?";
-            if (!props.user.association) {
-                setCurrentUserObject(props.user.offer.tasks, defaultResources, setResources);
-                return;
-            }
-            let params = {
-                'associationID': props.user.association
-            }
-            let query = Object.keys(params)
-                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-                .join('&');
-            url += query;
+                    async function getResources() {
+                        var url = "/api/association/get_assoc/?";
+                        if (!props.user.association) {
+                            setCurrentUserObject(props.user.offer.tasks, defaultResources, setResources);
+                            return;
+                        }
+                        let params = {
+                            'associationID': props.user.association
+                        }
+                        let query = Object.keys(params)
+                            .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                            .join('&');
+                        url += query;
 
-            const response = await fetch(url);
-            response.json().then((data) => {
-                setDefaultResources(data.resources)
-                setCurrentUserObject(props.user.offer.tasks, data.resources, setResources);
-            });
+                        const response = await fetch(url);
+                        response.json().then((data) => {
+                            setDefaultResources(data.resources)
+                            setCurrentUserObject(props.user.offer.tasks, data.resources, setResources);
+                        });
         }
         getResources();
-
+				});
+			} else {
+				console.log("Error");
+			}
+        })
     }, [props.user])
 
     const updateLocation = async e => {

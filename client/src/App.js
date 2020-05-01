@@ -42,9 +42,9 @@ function App() {
         fetch('/api/apikey/google').then((response) => {
             if (response.ok) {
 				response.json().then(key => {
-                    setGoogleApiKey(key);
-                    Geocode.setApiKey(key);
-                    setLocationState(key);
+                    setGoogleApiKey(key['google']);
+                    Geocode.setApiKey(key['google']);
+                    setLocationState(key['google']);
 				});
 			} else {
 				console.log("Error");
@@ -63,7 +63,7 @@ function App() {
     // Find locality/neighborhood by lat long
     const findLocality = (lat, long, stateObj) => {
         if (!('neighborhoods' in stateObj)) {
-            setNeighborhood(lat, long).then((neighborObj) => {
+            setNeighborhood(lat, long, googleApiKey).then((neighborObj) => {
                 setLocationVariables(neighborObj);
             })
         } else {
@@ -99,8 +99,8 @@ function App() {
     }
 
     // Find location attributes when page loads
-    const setLocationState = (googleApiKey) => {
-        getMyLocation(googleApiKey).then((stateObj) => {
+    const setLocationState = () => {
+        getMyLocation().then((stateObj) => {
             setIsLoaded(true);
             const lat = stateObj['latitude'];
             const long = stateObj['longitude'];
@@ -127,7 +127,7 @@ function App() {
                 setLatitude(lat);
                 setLongitude(lng);
 
-				setNeighborhood(lat, lng).then((neighborObj) => {
+				setNeighborhood(lat, lng, googleApiKey).then((neighborObj) => {
                     setLocationVariables(neighborObj);
 
                     // Only update org if it is not in a org specific page
@@ -146,7 +146,7 @@ function App() {
     const refreshLocation = () => {
 		clearCookies();
 		setIsLoaded(false);
-		setLocationState();
+		setLocationState(googleApiKey);
     }
 
     const registerPage = (props, org) => {

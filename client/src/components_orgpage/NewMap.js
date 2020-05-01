@@ -9,6 +9,7 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoibGlqZWZmcmV5MzkiLCJhIjoiY2s5MGUwMDNmMDBzdDNsbzF
 export default function NewMap(props) {
     const mapRef = useRef();
     const [popupInfo, setPopupInfo] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [viewport, setViewport] = useState({
         latitude: 38.7528233,
         longitude: -98.1970437,
@@ -18,8 +19,21 @@ export default function NewMap(props) {
         width: "100%",
         height: 450
     });
+    const [mapBoxToken, setMapBoxToken] = useState('');
+
 
     useEffect(() => {
+        fetch('/api/apikey/mapbox').then((response) => {
+            if (response.ok) {
+                response.json().then(key => {
+                   setMapBoxToken(key['mapbox']);
+                   setIsLoaded(true);
+                });
+            } else {
+                console.log("Error");
+            }
+        });
+
         if (props.association && props.association.name && props.association.name !== "Covaid") {
             setViewport({
                 ...viewport,
@@ -67,10 +81,14 @@ export default function NewMap(props) {
         options: { radius: 75, maxZoom: 20 }
     })
 
+    if (!isLoaded) {
+        return <></>
+    }
+
     if (props.public) {
         return (
             <MapGL {...viewport} mapStyle="mapbox://styles/lijeffrey39/ck9hiqyoq4w001ilenf9zx129" width="100%" 
-                height="450px" mapboxApiAccessToken={MAPBOX_TOKEN} ref={mapRef}
+                height="450px" mapboxApiAccessToken={mapBoxToken} ref={mapRef}
                 onViewportChange={(newViewPort) => {
                     setViewport({ ...newViewPort })
                 }}>
@@ -87,7 +105,7 @@ export default function NewMap(props) {
     }
 
     return (
-        <MapGL {...viewport} mapStyle="mapbox://styles/mapbox/light-v9" onViewportChange={setViewport} mapboxApiAccessToken={MAPBOX_TOKEN}>
+        <MapGL {...viewport} mapStyle="mapbox://styles/mapbox/light-v9" onViewportChange={setViewport} mapboxApiAccessToken={mapBoxToken}>
             <Pins requests={props.requests} volunteers={props.volunteers} onClick={onClickMarker}
                   requesterMap={props.requesterMap} volunteerMap={props.volunteerMap} mode={props.mode}
                   unmatched={props.unmatched} matched={props.matched} completed={props.completed}/>
