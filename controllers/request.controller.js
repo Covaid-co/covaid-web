@@ -5,63 +5,10 @@ const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
 const Association = require('../models/association.model')
 const asyncWrapper = require('../util/asyncWrapper');
-const Pusher = require('pusher');
-const {GoogleSpreadsheet }= require('google-spreadsheet')
-const config = require("../config/client_secret").config
 var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
 var compiledTemplate = Hogan.compile(template)
-const emailer = require('../util/emailer')
 require('dotenv').config();
 
-const pusher = new Pusher({
-    appId: process.env.PUSHER_APP_ID,
-    key: process.env.PUSHER_APP_KEY,
-    secret: process.env.PUSHER_APP_SECRET,
-    cluster: process.env.PUSHER_APP_CLUSTER,
-    useTLS: true
-});
-
-async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
-    var creds;
-    if (process.env.GOOGLE_PRIVATE_KEY) {
-        const config = require("../config/client_secret").config
-        config["private_key"] = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n')
-        creds = JSON.parse(JSON.stringify(config))
-    } else {
-        creds = require('../config/client_secret.json')
-    }
-
-    const doc = new GoogleSpreadsheet(spreadsheetID);
-    await doc.useServiceAccountAuth({
-      client_email: creds.client_email,
-      private_key: creds.private_key,
-    });
-
-  
-    await doc.loadInfo(); // loads document properties and worksheets
-  
-    // create a sheet and set the header row
-    const requestSheet = doc.sheetsByIndex[1]; // or use doc.sheetsById[id]
-
-    var volunteer_emails = []
-    for (var i = 0; i < Math.min(volunteers.length, 3); i++) {
-        volunteer_emails.push(volunteers[i].email)
-    }
-    
-    // append rows 
-    await requestSheet.addRow({ 
-        Name: request.requester_first,
-        Email: request.requester_email,
-        Phone: request.requester_phone,
-        NeedHelpWith: request.resource_request.join(", "),
-        Languages: request.languages.join(", "),
-        Details: request.details,
-        When: request.time + " " + request.date,
-        BestVolunteers: volunteer_emails.join(", "),
-        Location: "(" + request.latitude +  ", " + request.longitude + ")"
-    });
-
-  }
 
 exports.update_completed = function (req, res) {
     Requests.findByIdAndUpdate(req.params.id, 
