@@ -17,9 +17,6 @@ import Details from './components_homepage/Details'
 import { validateEmail, extractTrueObj, setFalseObj, setTrueObj } from './Helpers';
 import { defaultResources, availability, defaultTerms } from './constants';
 
-import Geocode from "react-geocode";
-Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
-
 export default function NewRegister(props) {
     const [currentTerms, setCurrentTerms] = useState({
         0: false, 

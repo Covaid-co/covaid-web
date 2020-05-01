@@ -24,7 +24,6 @@ import { generateURL, clearCookies } from './Helpers';
 import { findAssociations, getMyLocation, setNeighborhood, setLatLongCookie } from './location_tools/LocationHelpers'
 
 import Geocode from "react-geocode";
-Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 function App() {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -36,10 +35,21 @@ function App() {
     const [neighborhoods, setNeighborhoods] = useState([]);
     const [state, setState] = useState('');
     const [zipcode, setZipcode] = useState('');
+    const [googleApiKey, setGoogleApiKey] = useState('');
     const stateRef = useRef('');
 
     useEffect(() => {
-        setLocationState();
+        fetch('/api/apikey/google').then((response) => {
+            if (response.ok) {
+				response.json().then(key => {
+                    setGoogleApiKey(key);
+                    Geocode.setApiKey(key);
+                    setLocationState(key);
+				});
+			} else {
+				console.log("Error");
+			}
+        });
     }, []);
 
 
@@ -89,8 +99,8 @@ function App() {
     }
 
     // Find location attributes when page loads
-    const setLocationState = () => {
-        getMyLocation().then((stateObj) => {
+    const setLocationState = (googleApiKey) => {
+        getMyLocation(googleApiKey).then((stateObj) => {
             setIsLoaded(true);
             const lat = stateObj['latitude'];
             const long = stateObj['longitude'];

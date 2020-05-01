@@ -17,9 +17,6 @@ import './Home.css'
 import './ChangeLog.css'
 import './styling/NewHomePage.css';
 
-Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
-
-
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -41,7 +38,8 @@ class Home extends Component {
 			justVerified: false,
 			associations: [],
 			currentAssoc: {},
-			toggled: false
+			toggled: false, 
+			googleApiKey: ''
 		}
 
 		this.handleHideModal = this.handleHideModal.bind(this);
@@ -70,8 +68,8 @@ class Home extends Component {
 		});
 	}
 
-	setLocationState() {
-		getMyLocation().then((stateObj) => {
+	setLocationState(googleApiKey) {
+		getMyLocation(googleApiKey).then((stateObj) => {
 			this.setState(stateObj);
 			this.setState({isLoaded: true});
 			this.handleHideModal();
@@ -91,9 +89,19 @@ class Home extends Component {
 			this.handleShowModal('signin');
 			this.setState({justVerified: true});
 		}
+		fetch('/api/apikey/google').then((response) => {
+            if (response.ok) {
+				response.json().then(key => {
+                    // setGoogleApiKey(key);
+                    Geocode.setApiKey(key);
+                    this.setLocationState(key);
+				});
+			} else {
+				console.log("Error");
+			}
+        });
 
 		// Automatically on load find location
-		this.setLocationState();
 
 		if (!this.state.isLoggedIn && Cookie.get("token")) {
 			this.fetchUser();
