@@ -138,48 +138,12 @@ export default function OrganiationPortal(props) {
 		setBeacons(beacons.concat(beacon));
 	}
 
-	function fetchCurrentAdmin() {
-		fetch_a('admin_token', '/api/association-admin/current')
-			.then((response) => response.json())
-			.then((adminResponse) => {
-				setAdmin(adminResponse);
-				setIsLoaded(true);
-			}).catch((e) => {
-				console.log(e);
-			});
-	}
-
-	function login(adminMode) {
+	function login() {
 		// Get association from login
-		fetch_a('org_token', '/api/association/current')
+		fetch('/api/association/current_demo')
 			.then((response) => response.json())
 			.then((association_response) => {
 				setAssociation(association_response);
-				console.log(association_response);
-				var pusher = new Pusher('ed72954a8d404950e3c8', {
-					cluster: 'us2',
-					forceTLS: true
-				  });
-				var channel = pusher.subscribe(association_response._id);
-				channel.bind('general', function(data) {
-					fetch_requests(association_response._id)
-					addToast(data,
-						{
-							appearance: 'info',
-							autoDismiss: true
-						}
-					)
-				});
-				channel.bind('complete', function(data) {
-					fetch_requests(association_response._id)
-					addToast("Someone completed a request!",
-						{
-							appearance: 'success',
-							autoDismiss: true
-						}
-					)
-				});
-
 				// All requests for an association
 				fetch_requests(association_response._id);
 
@@ -206,11 +170,7 @@ export default function OrganiationPortal(props) {
 								return sortFn(x, y, false);
 							});
 							setVolunteers(resVolunteer);
-							if (adminMode) {
-								fetchCurrentAdmin();
-							} else {
-								setIsLoaded(true);
-							}
+							setIsLoaded(true);
 						});
 					} else {
 						console.log(response);
@@ -224,36 +184,7 @@ export default function OrganiationPortal(props) {
 	}
 
 	useEffect(() => {
-		if (Cookie.get("admin_token") && Cookie.get("org_token")) {
-			login(true);
-		} else if (Cookie.get("org_token")) {
-			login(false);
-		} else {
-			setShowLogin(true);
-			var pusher = new Pusher('ed72954a8d404950e3c8', {
-				cluster: 'us2',
-				forceTLS: true
-			  });
-			var channel = pusher.subscribe(association._id ? association._id : "");
-			channel.bind('general', function(data) {
-				fetch_requests(association._id)
-				addToast(data,
-					{
-						appearance: 'info',
-						autoDismiss: true
-					}
-				)
-			});
-			channel.bind('complete', function(data) {
-				fetch_requests(association._id)
-				addToast("Someone completed a request!",
-					{
-						appearance: 'success',
-						autoDismiss: true
-					}
-				)
-			});
-		}
+		login()
 	}, []);
 
 	if (beaconView) {
@@ -324,9 +255,8 @@ export default function OrganiationPortal(props) {
 					<Container style={{maxWidth: 1500}}>
 						<Row>
 							<Col lg={7} md={7} sm={12}>
-								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back,</h1>
-								<h1 id="home-heading" style={{marginTop: 0}}>{association.name}!</h1>
-								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
+								<h1 id="home-heading" style={{marginTop: 0}}>Welcome to the demo portal!</h1>
+								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This portal is for demo purposes only and real-time functionality as well as requester contacting is disabled.</p>
 								<Button id="medium-button" style={{marginRight: 10, marginTop: 5}} onClick={()=>{setAdminModal(true)}}>
 									Manage Organization
 								</Button>
@@ -334,9 +264,6 @@ export default function OrganiationPortal(props) {
 									View Volunteers
 								</Button>{' '}
 								<br/>
-								<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
-									+ Add a link to your community's resources
-								</Button>
 							</Col>
 							<Col lg={5} md={5} sm={12} style={width < 768 ? {display: 'none'} : {display: 'block'}}>
 								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 20}}>

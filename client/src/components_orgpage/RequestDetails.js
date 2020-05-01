@@ -89,7 +89,7 @@ export default function RequestDetails(props) {
     }
 
     const topMatch = () => {
-        if (props.currRequest.assignee && props.currRequest.assignee !== '' && props.currRequest.assignee !== 'No one assigned') {
+        if (true) {
             props.setRequestDetailsModal(false);
             setTopMatchesModal(true);
             setNotes();
@@ -504,8 +504,7 @@ export default function RequestDetails(props) {
                     <p id="regular-text-nomargin">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currRequest.details}</p>
-                    <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Needed by:</h5>
-                    <p id="regular-text-nomargin">{props.currRequest.time} of {props.currRequest.date}</p>
+
                     {volunteerComments()}
                     {modeButton()}
                 </Modal.Body>

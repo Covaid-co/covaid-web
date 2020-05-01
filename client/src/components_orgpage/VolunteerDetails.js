@@ -191,8 +191,7 @@ export default function VolunteerDetails(props) {
                     {props.currVolunteer.offer ? props.currVolunteer.offer.tasks.map((task, i) => {
                         return <Badge key={i} id='task-info'>{task}</Badge>
                     }) : ""}
-                    <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
-                    <p id="regular-text-nomargin"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
+                   
                     {props.matching ? 
                         <>
                             <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Share any relevant information with volunteer (optional):</h5>
@@ -239,8 +238,7 @@ export default function VolunteerDetails(props) {
                     <h5 id="regular-text-bold" style={{marginBottom: 3}}>Information</h5>
                     <p id="regular-text-nomargin">Email: {props.currRequest.manual_match.email}</p>
                     <p id="regular-text-nomargin">Phone: {props.currRequest.manual_match.phone}</p>
-                    <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
-                    <p id="regular-text-nomargin"> {props.currRequest.manual_match.details}</p>
+                    
                 </Modal.Body>
             </Modal>
         )

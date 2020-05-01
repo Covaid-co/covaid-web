@@ -131,8 +131,8 @@ exports.register = function (req, res) {
         const finalUser = new Users(user);
     
         finalUser.setPassword(user.password);
-        finalUser.preVerified = false;
-        finalUser.verified = false;
+        finalUser.preVerified = true;
+        finalUser.verified = true;
         finalUser.agreedToTerms = true;
         finalUser.availability = true;
         finalUser.notes = '';
@@ -143,35 +143,6 @@ exports.register = function (req, res) {
           }
 
           var userID = result._id;
-          if (user.association == "5e843ab29ad8d24834c8edbf") {
-            // PITT
-            addUserToSpreadsheet(finalUser, userID, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-          } else if (user.association == "5e8439ad9ad8d24834c8edbe") {
-            // BALTI
-            addUserToSpreadsheet(finalUser, userID, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4') 
-          }
-
-          var mode = "localhost:3000";
-          if (process.env.PROD) {
-              mode = "covaid.co"
-          }
-    
-          var message = "http://" + mode + "/verify?ID=" + userID;
-
-          // if user association is baltimore, send google forms link
-          if (user.association == '5e8439ad9ad8d24834c8edbe') {
-            message = "https://forms.gle/aTxAbGVC49ff18R1A"
-          }
-
-          var data = {
-            //sender's and receiver's email
-            sender: "Covaid@covaid.co",
-            receiver: user.email,
-            link: message,
-            templateName: "verification",
-         };
-
-        emailer.sendVerificationEmail(data)
 
         return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
         });

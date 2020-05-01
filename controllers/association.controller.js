@@ -264,3 +264,15 @@ exports.login = function (req, res, next) {
       }
     })(req, res, next);
 };
+
+exports.demoCurrent = function (req, res) {
+  const id = "5eac76fd6cb925281c364dde"
+
+  return Association.findById(id)
+    .then((association) => {
+      if(!association) {
+        return res.sendStatus(400);
+      }
+      return res.json(association);
+  });
+};

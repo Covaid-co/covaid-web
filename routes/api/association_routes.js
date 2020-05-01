@@ -7,6 +7,7 @@ const association_controller = require('../../controllers/association.controller
 router.get('/get_assoc', association_controller.association_details);
 router.get('/', association_controller.all);
 router.get('/current', auth.required, association_controller.current);
+router.get('/current_demo', association_controller.demoCurrent);
 router.post('/create', association_controller.create_association);
 router.post('/login', auth.optional, association_controller.login);
 router.get('/get_assoc/lat_long', association_controller.assoc_by_lat_long);

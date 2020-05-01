@@ -27,69 +27,7 @@ export default function CovaidNavbar(props) {
         }
     });
 
-    useEffect(() => { 
-        fetch('/api/users/totalUsers')
-        .then((res) => res.json())
-        .then((res) => {
-            setTotalVolunteers(res.count);
-        });
-    }, []);
-
-    const logout = () => {
-        if (props.orgPortal) {
-            Cookie.remove('org_token');
-            if (Cookie.get('admin_token')) {
-                Cookie.remove('admin_token');
-                props.setAdmin({});
-            }
-            window.open(currURL + '/organizationPortal', '_self');
-        } else {
-            Cookie.remove('token');
-            window.open(currURL, '_self');
-        }
-    }
-
-    var rightNav;
-    if (props.isLoggedIn) {
-        if (toggled) {
-            rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
-                        <Button variant="outline-danger" id='logoutButton' onClick={logout} style={{width: '100%'}}>
-                            Logout
-                        </Button>
-                    </Form>;
-        } else {
-            rightNav = <Form inline id = "getStarted" style ={{display: 'block', marginRight: '5%', marginBottom: 3}}>
-                        {(width > 767) ? <span id="hello-name">Hello, {props.first_name}</span> : <></>}
-                        <Button variant="outline-danger" id='logoutButton' onClick={logout}>
-                            Logout
-                        </Button>
-                    </Form>;
-        }
-    } else {
-        if (props.orgAdmin || props.orgPortal) {
-            rightNav = <></>;
-        } else {
-            if (width > 767) {
-                rightNav = <Form inline style ={{display: 'block', marginRight: '5%', marginBottom: 3}}>
-                                <Button variant="outline-light" id='login-button' onClick={() => props.handleShowModal('signin')}>
-                                    Sign In
-                                </Button>
-                                <Button variant="outline-light" id='register-button' onClick={() => props.handleShowModal('register')}>
-                                    Volunteer Registration
-                                </Button>
-                            </Form>
-            } else {
-                rightNav = <Form inline id = "getStarted" style ={{display: 'block'}}>
-                                <Button id="large-button-empty" onClick={() => props.handleShowModal('signin')} style={{marginTop: 0, marginBottom: 5}}>
-                                    Volunteer Login
-                                </Button>
-                                <Button id='large-button' onClick={() => props.handleShowModal('register')}>
-                                    Volunteer Registration
-                                </Button>
-                            </Form>;
-            }
-        }
-    }
+    var rightNav = <></>
 
     const setCurrModal = (name) => {
         setShowModal(true);
@@ -151,9 +89,6 @@ export default function CovaidNavbar(props) {
                     </Nav.Link>
                     <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => setCurrModal('faq')}>
                         <p id={toggled ? 'navLinkToggled': 'navLink'}>FAQs</p>
-                    </Nav.Link>
-                    <Nav.Link className={toggled ? 'navBorderToggled': 'navbar-element'} onClick={() => setCurrModal('donate')}>
-                        <p id={toggled ? 'navLinkToggled': 'navLink'}>Donate</p>
                     </Nav.Link>
                     <Nav.Link className="volunteer-badge-web">
                         {volunteerBadge('desktop')}

@@ -156,7 +156,7 @@ export default function UnmatchedRequests(props) {
                                     <div>{resourceCompleteBadge(request)} {requestStatus(request)}</div>
                                     <div style={{display: 'inline-block', width: '100%', marginTop: 3, fontFamily: 'Inter'}}>
                                         <p style={{float: 'left', marginBottom: 0}}>Tracking: 
-                                            <font style={request.assignee && request.assignee !== 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.assignee ? request.assignee : "No one assigned"}
+                                            <font style={request.assignee && request.assignee !== 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.assignee ? request.assignee : "Admin"}
                                             </font>
                                         </p>
                                     </div>
