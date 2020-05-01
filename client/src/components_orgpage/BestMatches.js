@@ -19,7 +19,7 @@ export default function BestMatches(props) {
     const [allVolunteersInOrg, setAllVolunteersInOrg] = useState([]);
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
-    const volunteersPerPage = 5;
+    const volunteersPerPage = 3;
     const [currRequest, setCurrRequest] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
     const [looseMatch, setLooseMatch] = useState(false);
@@ -188,8 +188,7 @@ export default function BestMatches(props) {
                             totalPosts={Math.min(volunteersPerPage * 10, sortedVolunteers.length)}
                             paginate={paginatePage}/>
                     </Col>
-                </Row>
-                <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
+                    <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
                                     setVolunteerDetailsModal={setVolunteerDetailsModal}
                                     currVolunteer={currVolunteer}
                                     currRequest={currRequest}
@@ -201,6 +200,40 @@ export default function BestMatches(props) {
                                     setUnmatched={props.setUnmatched}
                                     setMatched={props.setMatched}
                                     matching={true}/>
+                </Row>
+
+                {/* <Row>
+                    <Col>
+                        <h5 id="volunteer-name" style={{marginBottom: 0}}>
+                            Request Beacon
+                        </h5>
+                        <ListGroup variant="flush" onClick={() => {setVolunteerDetailsModal(true)}} style={{overflowY: "scroll", height: 150}}>
+                            {[].map((volunteer, i) => {
+                                return (
+                                <ListGroup.Item key={i} action onClick={() => {setCurrVolunteer({...volunteer});  setVolunteerDetailsModal(true)}}>
+                                    <div >
+                                        <h5 id="volunteer-name" style={{marginBottom: 0}}>
+                                            {volunteer.first_name} {volunteer.last_name}
+                                        </h5>
+                                    </div>
+                                    <div>
+                                        {volunteer.offer.tasks.length === 0 ? 
+                                            <Badge id='task-info' style={{background: '#AE2F2F'}}>
+                                                No tasks entered
+                                            </Badge> 
+                                            : volunteer.offer.tasks.map((task, i) => {
+                                                if (currRequest && currRequest.resource_request && currRequest.resource_request.length > 0 && currRequest.resource_request.indexOf(task) !== -1) {
+                                                    return <Badge key={i} style={{background: '#4CA846'}} id='task-info'>{task}</Badge>
+                                                } else {
+                                                    return <Badge key={i} style={{background: '#6C757D'}} id='task-info'>{task}</Badge>
+                                                }
+                                        })}
+                                    </div>
+                                </ListGroup.Item>);
+                            })}
+                        </ListGroup>
+                    </Col>
+                </Row> */}
             </Modal.Body>
         </Modal>
     )
