@@ -24,7 +24,6 @@ import { generateURL, clearCookies } from './Helpers';
 import { findAssociations, getMyLocation, setNeighborhood, setLatLongCookie } from './location_tools/LocationHelpers'
 
 import Geocode from "react-geocode";
-Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 function App() {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -36,10 +35,21 @@ function App() {
     const [neighborhoods, setNeighborhoods] = useState([]);
     const [state, setState] = useState('');
     const [zipcode, setZipcode] = useState('');
+    const [googleApiKey, setGoogleApiKey] = useState('');
     const stateRef = useRef('');
 
     useEffect(() => {
-        setLocationState();
+        fetch('/api/apikey/google').then((response) => {
+            if (response.ok) {
+				response.json().then(key => {
+                    setGoogleApiKey(key['google']);
+                    Geocode.setApiKey(key['google']);
+                    setLocationState(key['google']);
+				});
+			} else {
+				console.log("Error");
+			}
+        });
     }, []);
 
 
@@ -53,7 +63,7 @@ function App() {
     // Find locality/neighborhood by lat long
     const findLocality = (lat, long, stateObj) => {
         if (!('neighborhoods' in stateObj)) {
-            setNeighborhood(lat, long).then((neighborObj) => {
+            setNeighborhood(lat, long, googleApiKey).then((neighborObj) => {
                 setLocationVariables(neighborObj);
             })
         } else {
@@ -117,7 +127,7 @@ function App() {
                 setLatitude(lat);
                 setLongitude(lng);
 
-				setNeighborhood(lat, lng).then((neighborObj) => {
+				setNeighborhood(lat, lng, googleApiKey).then((neighborObj) => {
                     setLocationVariables(neighborObj);
 
                     // Only update org if it is not in a org specific page
@@ -136,7 +146,7 @@ function App() {
     const refreshLocation = () => {
 		clearCookies();
 		setIsLoaded(false);
-		setLocationState();
+		setLocationState(googleApiKey);
     }
 
     const registerPage = (props, org) => {

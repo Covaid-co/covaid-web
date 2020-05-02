@@ -51,7 +51,7 @@ export default function HomePage(props) {
 
     var cantFindLink = <></>;
     if (props.state.currentAssoc.name === "Baltimore Mutual Aid") {
-      cantFindLink = <Button variant="link" onClick={() => updateRequestHelpMode('general')} id="general-request-link">
+      cantFindLink = <Button variant="link" style={{marginTop: 10}} onClick={() => updateRequestHelpMode('general')} id="general-request-link">
                       Can't find what you're looking for? Click here.
                     </Button>
     }
