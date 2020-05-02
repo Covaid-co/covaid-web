@@ -237,7 +237,7 @@ export default function VolunteerPortal(props) {
 									completedRequests={completedRequests} />
 							</Container>
 						</Col>
-						<Col lg={4} md={8} sm={10} style={{marginTop: -28}}>
+						<Col lg={4} md={8} sm={10} style={{marginTop: -8}}>
 							<h5 id="volunteer-offer-status" style={{fontSize: 24, fontWeight: "bold", color: "black"}}>Organization Beacons</h5>
 							<Container id="newOfferContainer"
 								style={{'display': 'block', marginTop: 10}}>

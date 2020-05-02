@@ -9,6 +9,8 @@ import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import BeaconConfirmation from './BeaconConfirmation'
 import AcceptedVolunteersModal from './AcceptedVolunteersModal';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const BeaconStatusEnum = {"active":1, "inactive":2, "complete":3, "delete": 4};
 
@@ -145,8 +147,9 @@ export default function OrganizationBeaconModal(props) {
                 </Row>
                 <Row>
                     <Col>
-                    <h5 id="volunteer-name" style = {{marginTop: 0, marginBottom: 5}}>Volunteer Responses:</h5>
+                    <h5 id="volunteer-name" style = {{marginTop: 0, marginBottom: 5}}>Volunteer Responses</h5>
                     <p id="requestCall" style={{marginTop: -15, marginBottom: 0}}>&nbsp;</p>
+                    
                     <ListGroup variant="flush" style={{overflowY: "scroll", height: 200}}>
                     {!acceptedVolunteers ? <></> :
                         acceptedVolunteers.map((volunteer, i) => {
