@@ -135,6 +135,11 @@ export default function AdminModal(props) {
 
     }
 
+    const getHeight = () => {
+        const adminLength = props.association.admins ? props.association.admins.length : 0;
+        return Math.min(adminLength*72, 300);
+    }
+
     return (
         <>
             <Modal size="md" show={props.adminModal} onHide={() => props.setAdminModal(false)} style = {{marginTop: 10, paddingBottom: 40}}>
@@ -144,10 +149,10 @@ export default function AdminModal(props) {
                 <Modal.Body style={{paddingTop: 0}}>
                     <Row>
                         <Col xs={12}>
-                            <ListGroup variant="flush" style={{overflowY: "scroll", height: 300}}>
+                            <ListGroup variant="flush" style={{overflowY: "scroll", height: getHeight()}}>
                                 {props.association.admins ? props.association.admins.map((admin, i) => {
                                     return (
-                                    <ListGroup.Item key={i}>
+                                    <ListGroup.Item style={{height: 72}}key={i}>
                                         <h5 id="volunteer-name">{admin.name}</h5>
                                         <p id="regular-text" style={{marginBottom: 0}}>{admin.email}</p>
                                     </ListGroup.Item>);
