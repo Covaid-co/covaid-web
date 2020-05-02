@@ -6,6 +6,7 @@ import Badge from 'react-bootstrap/Badge'
 import ListGroup from 'react-bootstrap/ListGroup'
 import VolunteerDetails from './VolunteerDetails'
 import Button from 'react-bootstrap/Button'
+import CreateRequestBeacon from './CreateRequestBeacon';
 import { calcDistance } from '../Helpers';
 import { formatName } from './OrganizationHelpers';
 import Pagination from '../CommunityBulletinComponents/Pagination'
@@ -24,6 +25,7 @@ export default function BestMatches(props) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [looseMatch, setLooseMatch] = useState(false);
     const [viewedVolunteers, setViewedVolunteers] = useState([]);
+    const [showCreateRequestBeaconModal, setShowCreateRequestBeaconModal] = useState(false);
 
     useEffect(() => {
         setCurrRequest(props.currRequest);
@@ -95,6 +97,12 @@ export default function BestMatches(props) {
         resetState();
     }
 
+    const showCreateRequestBeacon = () => {
+        setShowCreateRequestBeaconModal(true);
+        props.setTopMatchesModal(false);
+
+    }
+
     const displayPrevMatched = (volunteer) => {
         const prevMatched = props.currRequest.prev_matched;
         if (prevMatched) {
@@ -132,6 +140,7 @@ export default function BestMatches(props) {
     }
 
     return (
+        <>
         <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
                 <Modal.Title>{formatName(currRequest.requester_first)}'s Top Matches 
@@ -201,40 +210,19 @@ export default function BestMatches(props) {
                                     setMatched={props.setMatched}
                                     matching={true}/>
                 </Row>
-
-                {/* <Row>
+                <Row>
                     <Col>
-                        <h5 id="volunteer-name" style={{marginBottom: 0}}>
-                            Request Beacon
-                        </h5>
-                        <ListGroup variant="flush" onClick={() => {setVolunteerDetailsModal(true)}} style={{overflowY: "scroll", height: 150}}>
-                            {[].map((volunteer, i) => {
-                                return (
-                                <ListGroup.Item key={i} action onClick={() => {setCurrVolunteer({...volunteer});  setVolunteerDetailsModal(true)}}>
-                                    <div >
-                                        <h5 id="volunteer-name" style={{marginBottom: 0}}>
-                                            {volunteer.first_name} {volunteer.last_name}
-                                        </h5>
-                                    </div>
-                                    <div>
-                                        {volunteer.offer.tasks.length === 0 ? 
-                                            <Badge id='task-info' style={{background: '#AE2F2F'}}>
-                                                No tasks entered
-                                            </Badge> 
-                                            : volunteer.offer.tasks.map((task, i) => {
-                                                if (currRequest && currRequest.resource_request && currRequest.resource_request.length > 0 && currRequest.resource_request.indexOf(task) !== -1) {
-                                                    return <Badge key={i} style={{background: '#4CA846'}} id='task-info'>{task}</Badge>
-                                                } else {
-                                                    return <Badge key={i} style={{background: '#6C757D'}} id='task-info'>{task}</Badge>
-                                                }
-                                        })}
-                                    </div>
-                                </ListGroup.Item>);
-                            })}
-                        </ListGroup>
+                        <Button id="large-button" onClick={showCreateRequestBeacon}>Create a request beacon</Button>
                     </Col>
-                </Row> */}
+                </Row>
             </Modal.Body>
         </Modal>
+        <CreateRequestBeacon 
+            showCreateRequestBeaconModal={showCreateRequestBeaconModal} 
+            setShowCreateRequestBeaconModal={setShowCreateRequestBeaconModal}
+            setOriginalModal={props.setTopMatchesModal}
+            volunteers={sortedVolunteers}
+            />
+        </>
     )
 }
