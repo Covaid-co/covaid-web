@@ -196,11 +196,10 @@ export default function RequestHelp(props) {
     }
 
     const foundPhoneNumber = () => {
-        var res = '(401) 526-8243';
-        if (props.state.currentAssoc.name === "Pittsburgh Mutual Aid") {
-            res = '(412) 301-6127';
+        if (Object.keys(props.state.currentAssoc).length > 0) {
+            return props.state.currentAssoc.phone;
         }
-        return res;
+        return '(401) 526-8243';
     }
 
     const resetState = () => {

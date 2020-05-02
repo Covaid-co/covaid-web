@@ -192,6 +192,7 @@ function App() {
                 <Route exact path="/verify" component={Verify}/>
                 <Route exact path="/welcome" component={Welcome}/>
                 <Route exact path="/pitt-request" render={(props) => requestPage(props, 'pitt')}/>
+                {/* <Route exact path="/ccom-request" render={(props) => requestPage(props, 'ccom')}/> */}
                 <Route exact path="/request" render={(props) => requestPage(props, '')}/>
                 <Route exact path="/pitt-volunteer" render={(props) => registerPage(props, 'pitt')}/>
                 <Route exact path="/volunteer" render={(props) => registerPage(props, '')}/>

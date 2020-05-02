@@ -16,6 +16,7 @@ let AssociationSchema = new Schema({
     email: {type: String, required: true},
     hash: {type: String, required: true},
     salt: {type: String, required: true},
+    phone: {type: String, required: true},
     location: {
         type: { type: String },
         coordinates: {

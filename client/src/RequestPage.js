@@ -109,11 +109,11 @@ export default function RequestPage(props) {
 	return ([
 		<div className="App" key="1">
 			<NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
-            <Container style={{maxWidth: 1500}}>
+            <Container style={{maxWidth: 2500}}>
                 <Row>
-                    <Col lg={2} md={2} sm={0}>
+                    <Col lg={3} md={2} sm={0}>
                     </Col>
-                    <Col lg={8} md={8} sm={12}>
+                    <Col lg={6} md={8} sm={12}>
                         <Container id="newOfferContainer" style={{marginBottom: 15}}>
                             {requestFormInfo()}
                         </Container>

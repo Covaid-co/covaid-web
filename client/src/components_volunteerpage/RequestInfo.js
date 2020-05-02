@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import fetch_a from '../util/fetch_auth'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal' 
 import VolunteerActionConfirmationModal from './VolunteerActionConfirmationModal'
-import fetch_a from '../util/fetch_auth'
+
 
 export default function RequestInfo(props) {
-
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [title, setTitle] = useState('');
     const [confirmation, setConfirmation] = useState('');
@@ -24,6 +24,7 @@ export default function RequestInfo(props) {
         setAction('reject');
         setButtonColor("#DB4B4B")
     }
+
     const showComplete = () => {
         setShowConfirmationModal(true);
         props.setModalOpen(false)
@@ -91,7 +92,7 @@ export default function RequestInfo(props) {
     </>
     var buttons = <></> 
     if (props.modalMode === 1) {
-        header = <Modal.Title id="small-header">New pending request</Modal.Title>
+        header = <Modal.Title>New pending request</Modal.Title>
         contactInfo = <></>
         buttons =
         <Row style={{marginTop: 15}}>
@@ -103,7 +104,7 @@ export default function RequestInfo(props) {
             </Col>
         </Row>
     } else if (props.modalMode === 2) {
-        header = <Modal.Title id="small-header">Request is in-progress</Modal.Title>
+        header = <Modal.Title>Request is in-progress</Modal.Title>
         buttons = <Row style={{marginTop: 15}}>
                     <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
                         <Button onClick={showReject} id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}}>Cancel this request</Button>
@@ -113,7 +114,7 @@ export default function RequestInfo(props) {
                     </Col>
                 </Row>
     } else if (props.modalMode === 3) {
-        header = <Modal.Title id="small-header">Completed request</Modal.Title>
+        header = <Modal.Title>Completed request</Modal.Title>
         timeSpecific = <></>
     }
 
@@ -128,13 +129,28 @@ export default function RequestInfo(props) {
         else return <></>
     }
 
+    const requestWarnings = () => {
+        if (props.modalMode === 1) {
+            return <Alert style={{marginBottom: 20}} variant={'secondary'}>
+                Thanks for volunteering in your community! You can choose to accept the request below 
+                or decline it if you are no longer able to help.
+            </Alert>
+        } else if (props.modalMode === 2) {
+            return <Alert style={{marginBottom: 20}} variant={'warning'}>
+                Thanks for accepting this request for support! Please reach out to the requester 
+                by using the contact information below. 
+            </Alert>
+        }
+    }
+
     return (
         <>
-            <Modal show={props.modalOpen} onHide={() => {props.setModalOpen(false)}} style = {{marginTop: 40}}>
+            <Modal show={props.modalOpen} onHide={() => {props.setModalOpen(false)}} style = {{marginTop: 10, paddingBottom: 50}}>
                 <Modal.Header closeButton>
                     {header}
                 </Modal.Header>
                 <Modal.Body>
+                    {requestWarnings()}
                     {contactInfo}
                     <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: (props.modalMode === 1 ? 0 : 16)}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currRequest.details}</p>
@@ -160,8 +176,7 @@ export default function RequestInfo(props) {
                 complete={complete}
                 reject={reject}
                 buttonColor={buttonColor}
-                currRequest={props.currRequest}
-                />
+                currRequest={props.currRequest}/>
         </>
     );
 }

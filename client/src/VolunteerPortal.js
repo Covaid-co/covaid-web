@@ -11,9 +11,6 @@ import Col from 'react-bootstrap/Col'
 
 import PendingVolunteerRequests from './components_volunteerpage/PendingVolunteerRequests';
 import CompletedVolunteerRequests from './components_volunteerpage/CompletedVolunteerRequests';
-import AboutUs from './components_modals/AboutUs'
-import HowItWorks from './components_modals/HowItWorks'
-import Feedback from './components_modals/Feedback'
 import { generateURL } from './Helpers';
 import NavBar from './components/NavBar'
 import VolunteerLogin from './components_volunteerpage/VolunteerLogin'
@@ -34,8 +31,6 @@ export default function VolunteerPortal(props) {
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
 	const [completedRequests, setCompletedRequests] = useState([]);
 	const [beacons, setBeacons] = useState([]);
-	const [showModal, setShowModal] = useState(false);
-	const [modalType, setModalType] = useState(0);
 	const [showAccountModal, setShowAccountModal] = useState(false);
 	const [loginError, setLoginError] = useState(false);
 	const { addToast } = useToasts();
@@ -165,28 +160,10 @@ export default function VolunteerPortal(props) {
 		fetchUser();
 	}, []);
 
-	const handleShowModal = (type) => {
-		setModalType(type);
-		setShowModal(true);
-	}
-
-    const getCurrentModal = () => {
-        var modal = <></>;
-        if (modalType === 1) {
-            modal = <AboutUs showModal={showModal} hideModal={() => setShowModal(false)}/>;
-        } else if (modalType === 2) {
-            modal = <HowItWorks showModal={showModal} hideModal={() => setShowModal(false)}/>;
-        } else if  (modalType === 4) {
-            modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)}/>;
-        }
-        return modal;
-	}
-
 	if (foundUser) {
-
 		return (<>
 			<div className="App">
-				<NavBar isLoggedIn={true} first_name={user.first_name} handleShowModal={handleShowModal}/>
+				<NavBar isLoggedIn={true} first_name={user.first_name}/>
 				<div id="bgImage"></div>
 				<Jumbotron fluid id="jumbo-volunteer">
 					<Container style={{maxWidth: 1500}}>
@@ -202,11 +179,10 @@ export default function VolunteerPortal(props) {
 						</Row>
 					</Container>
 				</Jumbotron>
-				<Container id="volunteer-info">
-					<Row lg={1}></Row>
+				<Container id="volunteer-info" style={{marginTop: 50}}>
 					<Row className="justify-content-md-center">
 						<Col lg={1}></Col>
-						<Col lg={6} md={8} sm={10} style={{marginTop: -44}}>
+						<Col lg={6} md={10} sm={12} style={{marginTop: -20}}>
 							<Container style={{padding: 0, marginLeft: 0}}> 
 								<Button id={tabNum===1 ? "tab-button-selected" : "tab-button"} onClick={() => {setTabNum(1)}}>
 									Your Offer
@@ -237,7 +213,7 @@ export default function VolunteerPortal(props) {
 									completedRequests={completedRequests} />
 							</Container>
 						</Col>
-						<Col lg={4} md={8} sm={10} style={{marginTop: -28}}>
+						<Col lg={4} md={10} sm={12} style={{marginTop: 0}}>
 							<h5 id="volunteer-offer-status" style={{fontSize: 24, fontWeight: "bold", color: "black"}}>Organization Beacons</h5>
 							<Container id="newOfferContainer"
 								style={{'display': 'block', marginTop: 10}}>
@@ -247,12 +223,10 @@ export default function VolunteerPortal(props) {
 						<Col lg={1}></Col>
 					</Row>
 				</Container>
-				{getCurrentModal()}
 			</div>
-			<Footer key="2" handleShowModal={handleShowModal}/>
+			<Footer/>
 			<AccountInfo user={user} showAccountModal={showAccountModal} setShowAccountModal={setShowAccountModal} />
-			</>
-		);
+		</>);
 	} else if (loginError)  {
 		return <VolunteerLogin />;
 	} else {

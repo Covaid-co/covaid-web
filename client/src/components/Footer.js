@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button'
 
 import HowItWorks from '../components_modals/HowItWorks'
 import Feedback from '../components_modals/Feedback'
+import { currURL } from '../constants';
 
 export default function Footer() {
 
@@ -38,23 +39,25 @@ export default function Footer() {
                             covaid
                         </Navbar.Brand>
                     </Navbar>
-                    {/* <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://github.com/debanik1997/corona-aid">Github</a><br/> */}
+                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0}} onClick={() => setCurrModal('faq')}>FAQ</Button><br/>
+                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0, marginTop: -8}} onClick={() => window.location.href = currURL + '/updates'}>Updates</Button><br/>
+                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0, marginTop: -8}} onClick={() => setCurrModal('feedback')}>Send feedback</Button>
+                </Col>
+                <Col xs={2} style={{padding: 20, paddingLeft: 0, paddingTop: 80,  paddingRight: 0}}>
+                    <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://github.com/debanik1997/corona-aid">Github</a><br/>
                     <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/covaidco">Facebook</a><br/>
                     <a id="regular-text" style={{color: '#2670FF'}} target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/covaidmutualaid/">Instagram</a><br/>
                 </Col>
-                <Col xs={2} style={{padding: 20, paddingLeft: 0, paddingTop: 80,  paddingRight: 0}}>
-                    {/* <a target="_blank" rel="noopener noreferrer" href="github.com">Donate</a><br/> */}
-                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0}} onClick={() => setCurrModal('faq')}>FAQ</Button><br/>
-                    <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0, marginTop: -8}} onClick={() => setCurrModal('feedback')}>Send feedback</Button>
-                </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 100, paddingTop: 37}}>
                     <p id="regular-text" style={{color: '#7B7B7B', fontWeight: 'bold'}}>Current Partners</p>
-                    <p id="regular-text" style={{marginBottom: 0}}>Delaware Mutual Aid</p>
-                    <p id="regular-text" style={{marginBottom: 0}}>Indy COVID-19 Neighbor Response Team</p>
+                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.facebook.com/bmoremutualaid/" target="_blank">Baltimore Mutual Aid</a><br/>
+                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.pittsburghmutualaid.com/" target="_blank">Pittsburgh Mutual Aid</a><br/>
+                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.covid-gca.org/" target="_blank">Greater Charlotte Area Mutual Aid</a><br/>
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 20, paddingTop: 78}}>
-                    <p id="regular-text" style={{marginBottom: 0}}>Baltimore Mutual Aid</p>
-                    <p id="regular-text" style={{marginBottom: 0}}>Greater Charlotte Area Mutual Aid</p>
+                <a id="regular-text" style={{marginBottom: 0}} href="https://www.facebook.com/groups/200572921276575/" target="_blank">Delaware Mutual Aid</a><br/>
+                <a id="regular-text" style={{marginBottom: 0}} href="https://ccomcovid.wixsite.com/covid" target="_blank">CCOM COVID-19 Task Force</a>
+                <p id="regular-text" style={{marginBottom: 0}}>Indy COVID-19 Neighbor Response Team</p>
                 </Col>
             </Row>
             </Container>

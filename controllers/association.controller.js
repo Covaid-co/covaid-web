@@ -87,7 +87,7 @@ function validateEmailAccessibility(email){
 exports.create_association = function (req, res) {
     const { body: { association } } = req;
     console.log(req.body);
-
+    console.log(association);
     if(!association.email) {
         return res.status(422).json({
             errors: {
