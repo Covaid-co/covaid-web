@@ -4,8 +4,6 @@ import useSupercluster from 'use-supercluster';
 import Pins from './pins';
 import InfoMarker from './InfoMarker'
 
-const MAPBOX_TOKEN = 'pk.eyJ1IjoibGlqZWZmcmV5MzkiLCJhIjoiY2s5MGUwMDNmMDBzdDNsbzFoY2VmZWNzOCJ9.8k5L4gUP4EF9AhvSylaIvw';
-
 export default function NewMap(props) {
     const mapRef = useRef();
     const [popupInfo, setPopupInfo] = useState(null);
