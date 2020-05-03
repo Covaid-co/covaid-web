@@ -12,7 +12,7 @@ export default function OrgHeader(props) {
             </p>
             <p id="regular-text">
                 We are prioritizing folks who are sick, disabled, quarantined without pay, elderly, undocumented, 
-                queer, Black, Indigenous, and/or people of color -- including those displaced from Pittsburgh to the nearby areas. 
+                queer, Black, Indigenous, and/or people of color -- including those displaced from {props.assoc.city} to the nearby areas. 
             </p>
             <p id="regular-text">
                 This form is being managed by a group of all-volunteer {props.assoc.city} community members involved in local organizing efforts. 
@@ -23,7 +23,7 @@ export default function OrgHeader(props) {
                 <strong>{props.assoc.email}</strong>
             </p>
             <p id="regular-text">
-                Let’s take care of each other. By us for us. <br/>
+                Let’s take care of each other. By us, for us. <br/>
                 Vamos a cuidarnos unes a otres. Por nosotres, para nosotres. 
             </p>
             <p id="request-calling" style={{borderBottom: '0px solid', marginBottom: 0}}> For those who would rather call in a request, 

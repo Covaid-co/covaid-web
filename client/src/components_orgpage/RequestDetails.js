@@ -469,6 +469,14 @@ export default function RequestDetails(props) {
         }
     }
 
+    const paymentText = () => {
+        if (props.association._id === '5e843ab29ad8d24834c8edbf') {
+            return <></>
+        } else {
+            return <p id="regular-text-nomargin">Payment: {paymentOptions[props.currRequest.payment]}</p>
+        }
+    }
+
     return (
         <>
             <Modal show={props.requestDetailsModal} 
@@ -500,7 +508,7 @@ export default function RequestDetails(props) {
                     {props.currRequest.requester_email ? <p id="regular-text-nomargin">{props.currRequest.requester_email}</p> : <></>}
                     {props.currRequest.requester_phone ? <p id="regular-text-nomargin">{props.currRequest.requester_phone}</p> : <></>}
                     <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
-                    <p id="regular-text-nomargin">Payment: {paymentOptions[props.currRequest.payment]}</p>
+                    {paymentText()}
                     <p id="regular-text-nomargin">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currRequest.details}</p>

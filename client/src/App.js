@@ -209,11 +209,11 @@ function App() {
                 <Route exact path="/volunteerPortal" component={VolunteerPortal}/>
                 <Route exact path="/verify" component={Verify}/>
                 <Route exact path="/welcome" component={Welcome}/>
-                <Route exact path="/pitt-request" render={(props) => requestPage(props, 'pitt')}/>
+                <Route exact path="/pgh-request" render={(props) => requestPage(props, 'pitt')}/>
                 <Route exact path="/ccom-request" render={(props) => requestPage(props, 'ccom')}/>
                 <Route exact path="/charlotte-request" render={(props) => requestPage(props, 'charlotte')}/>
                 <Route exact path="/request" render={(props) => requestPage(props, '')}/>
-                <Route exact path="/pitt-volunteer" render={(props) => registerPage(props, 'pitt')}/>
+                <Route exact path="/pgh-volunteer" render={(props) => registerPage(props, 'pitt')}/>
                 <Route exact path="/ccom-volunteer" render={(props) => registerPage(props, 'ccom')}/>
                 <Route exact path="/charlotte-volunteer" render={(props) => registerPage(props, 'charlotte')}/>
                 <Route exact path="/volunteer" render={(props) => registerPage(props, '')}/>
