@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Badge from 'react-bootstrap/Badge'
 
 import VolunteerBeaconModal from './VolunteerBeaconModal';
 
@@ -37,7 +38,19 @@ export default function VolunteerBeacons(props) {
         if (startString === endString) {
             return startString;
         } else {
-            return startString + join + endString;
+            return "Expires on " + endString;
+        }
+    }
+
+    const getBadge = (beacon) => {
+        var volunteerData = beacon.volunteers.find(b => {
+            return b.volunteer_id === volunteer._id;
+        })
+
+        if (volunteerData.response) {
+            return <Badge className='in-progress-task' style={{marginTop: 0, color: "#28a745", border: "1px solid #28a745"}}>Accepted</Badge>;
+        } else {
+            return <Badge className='in-progress-task' style={{marginTop: 0}}>Not Accepted</Badge>;
         }
     }
 
@@ -65,6 +78,9 @@ export default function VolunteerBeacons(props) {
                                             <h5 id="volunteer-name">
                                                 {beacon.beaconName}
                                             </h5>
+                                            <p style={{float: 'right', marginBottom: 0}}>
+                                                {getBadge(beacon)}
+                                            </p>
                                         </div>
                                         <div style={{display: 'inline-block', width: '100%', marginTop: 3, fontFamily: 'Inter'}}>
                                             <p style={{float: 'left', marginBottom: 0}}>

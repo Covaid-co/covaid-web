@@ -10,8 +10,10 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.4.1",
+    "file-saver": "^2.0.2",
     "google-maps-react": "^2.0.2",
     "js-cookie": "^2.2.1",
+    "moment": "2.18.1",
     "pusher-js": "^5.1.1",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
@@ -27,7 +29,8 @@
     "react-tiny-link": "^3.2.0",
     "react-toast-notifications": "^2.4.0",
     "supercluster": "^7.0.0",
-    "use-supercluster": "^0.2.6"
+    "use-supercluster": "^0.2.6",
+    "xlsx": "^0.16.0"
   },
   "scripts": {
     "start": "react-scripts start",

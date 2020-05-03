@@ -1,7 +1,6 @@
 import Cookie from "js-cookie";
 import Geocode from 'react-geocode';
 import { generateURL } from '../Helpers';
-Geocode.setApiKey("AIzaSyCikN5Wx3CjLD-AJuCOPTVTxg4dWiVFvxY");
 
 
 export const setLatLongCookie = (lat, long) => {
@@ -20,12 +19,14 @@ export const findAssociations = async (lat, long) => {
     return data;
 }
 
-export const setNeighborhood = async (latitude, longitude) => {
+export const setNeighborhood = async (latitude, longitude, googleApiKey) => {
     var foundNeighborhoods = [];
     var foundState = [];
     var foundZipCode = '';
     var prevLocality = '';
     var locality = '';
+    
+    Geocode.setApiKey(googleApiKey);
 
     const response = await Geocode.fromLatLng(latitude, longitude);
     for (var i = 0; i < Math.min(5, response.results.length); i++) {
