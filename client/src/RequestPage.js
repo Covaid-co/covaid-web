@@ -12,7 +12,7 @@ import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import RequestPage1 from './RequestPage1';
 import RequestPage2 from './RequestPage2';
-import PittHeader from './association_request_headers/PittHeader';
+import OrgHeader from './association_request_headers/OrgHeader';
 import DefaultHeader from './association_request_headers/DefaultHeader';
 
 
@@ -24,13 +24,12 @@ export default function RequestPage(props) {
 
     useEffect(() => {
         setShowModal(false);
-        console.log(props.locationProps)
     }, [props.locationProps]);
     
     const requestFormInfo = () => {
         var topHeader = <DefaultHeader/>;
-        if (props.org === 'pitt') {
-            topHeader = <PittHeader/>;
+        if (props.locationProps.currentAssoc && Object.keys(props.locationProps.currentAssoc).length > 0) {
+            topHeader = <OrgHeader assoc={props.locationProps.currentAssoc}/>;
         }
         return (
             <>

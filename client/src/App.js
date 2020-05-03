@@ -154,6 +154,10 @@ function App() {
             stateRef.current = org;
             if (org === 'pitt') {
                 setAssocByOrg('5e843ab29ad8d24834c8edbf');
+            } else if (org === 'ccom') {
+                setAssocByOrg('5eac6be7bd9e0369f78a0f28');
+            } else if (org === 'charlotte') {
+                setAssocByOrg('5e909963a4141a039a6fc1e5');
             }
         }
         const locationProps = {
@@ -174,6 +178,10 @@ function App() {
             stateRef.current = org;
             if (org === 'pitt') {
                 setAssocByOrg('5e843ab29ad8d24834c8edbf');
+            } else if (org === 'ccom') {
+                setAssocByOrg('5eac6be7bd9e0369f78a0f28');
+            } else if (org === 'charlotte') {
+                setAssocByOrg('5e909963a4141a039a6fc1e5');
             }
         }
         const locationProps = {
@@ -202,9 +210,12 @@ function App() {
                 <Route exact path="/verify" component={Verify}/>
                 <Route exact path="/welcome" component={Welcome}/>
                 <Route exact path="/pitt-request" render={(props) => requestPage(props, 'pitt')}/>
-                {/* <Route exact path="/ccom-request" render={(props) => requestPage(props, 'ccom')}/> */}
+                <Route exact path="/ccom-request" render={(props) => requestPage(props, 'ccom')}/>
+                <Route exact path="/charlotte-request" render={(props) => requestPage(props, 'charlotte')}/>
                 <Route exact path="/request" render={(props) => requestPage(props, '')}/>
                 <Route exact path="/pitt-volunteer" render={(props) => registerPage(props, 'pitt')}/>
+                <Route exact path="/ccom-volunteer" render={(props) => registerPage(props, 'ccom')}/>
+                <Route exact path="/charlotte-volunteer" render={(props) => registerPage(props, 'charlotte')}/>
                 <Route exact path="/volunteer" render={(props) => registerPage(props, '')}/>
                 <Route exact path="/resetPassword" component={ResetPassword}/>
                 <Route exact path="/resetAssociationPassword" component={ResetAssociationPassword}/>

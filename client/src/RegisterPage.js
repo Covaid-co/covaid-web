@@ -13,7 +13,7 @@ import Footer from './components/Footer';
 import RegisterPage1 from './RegisterPage1';
 import RegisterPage2 from './RegisterPage2';
 import RegisterPage3 from './RegisterPage3';
-import PittHeader from './association_volunteer_header/PittHeader';
+import OrgHeader from './association_volunteer_header/OrgHeader';
 import DefaultHeader from './association_volunteer_header/DefaultHeader';
 
 
@@ -26,13 +26,12 @@ export default function RegisterPage(props) {
 
     useEffect(() => {
         setShowModal(false);
-        console.log(props.locationProps)
     }, [props.locationProps]);
 
     const volunteerFormInfo = () => {
         var topHeader = <DefaultHeader/>;
-        if (props.org === 'pitt') {
-            topHeader = <PittHeader/>;
+        if (props.locationProps.currentAssoc && Object.keys(props.locationProps.currentAssoc).length > 0) {
+            topHeader = <OrgHeader assoc={props.locationProps.currentAssoc}/>;
         }
         return (
             <>
