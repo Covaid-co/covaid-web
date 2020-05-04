@@ -21,17 +21,16 @@ export default function OrgLogin(props) {
         passOrg: "",
     });
 
-    const [mode, setMode] = useState(true);
     const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState(0);
 
-    function validateForm() {
-        return fields.emailOrg.length > 0 && fields.password.length > 0;
-    }
+    // function validateForm() {
+    //     return fields.emailOrg.length > 0 && fields.password.length > 0;
+    // }
 
-    function validateForgotForm() {
-        return fields.emailOrg.length > 0;
-    }
+    // function validateForgotForm() {
+    //     return fields.emailOrg.length > 0;
+    // }
 
     // const handleSubmitForgot = async e => {
     //     e.preventDefault();
@@ -73,7 +72,7 @@ export default function OrgLogin(props) {
             if (response.ok) {
                 response.json().then(data => {
                     Cookie.set("token", data.user.token);
-                    window.location.href = window.location.href;
+                    window.location.reload(true);
                 });
             } else {
                 if (response.status === 403) {

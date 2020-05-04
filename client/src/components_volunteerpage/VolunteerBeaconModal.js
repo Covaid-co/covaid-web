@@ -3,18 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
-import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import fetch_a from '../util/fetch_auth'
-import ListGroup from 'react-bootstrap/ListGroup'
 import { useFormFields } from "../libs/hooksLib";
 
 
 export default function VolunteerBeaconModal(props) {
     const [loaded, setLoaded] = useState(false);
     const [beacon, setBeacon] = useState({});
-    const [volunteer, setVolunteer] = useState({});
     const [currentUserResponse, setCurrentUserResponse] = useState({});
     const [fields, handleFieldChange] = useFormFields({
         message: ""
@@ -23,7 +20,6 @@ export default function VolunteerBeaconModal(props) {
     useEffect(() => {
         setLoaded(true);
         setBeacon(props.beacon);
-        setVolunteer(props.volunteer);
         getBeaconResponse(props.beacon, props.volunteer);
      }, [props.beacon, props.volunteer]);
 
