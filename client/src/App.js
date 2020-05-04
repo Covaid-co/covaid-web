@@ -61,7 +61,7 @@ function App() {
     }
 
     // Find locality/neighborhood by lat long
-    const findLocality = (lat, long, stateObj) => {
+    const findLocality = (lat, long, stateObj, googleApiKey) => {
         if (!('neighborhoods' in stateObj)) {
             setNeighborhood(lat, long, googleApiKey).then((neighborObj) => {
                 setLocationVariables(neighborObj);
@@ -99,14 +99,14 @@ function App() {
     }
 
     // Find location attributes when page loads
-    const setLocationState = () => {
+    const setLocationState = (key) => {
         getMyLocation().then((stateObj) => {
             setIsLoaded(true);
             const lat = stateObj['latitude'];
             const long = stateObj['longitude'];
             setLatitude(lat);
             setLongitude(long);
-            findLocality(lat, long, stateObj);
+            findLocality(lat, long, stateObj, key);
             if (stateRef.current === '') {
                 findAssociation(lat, long);
             }

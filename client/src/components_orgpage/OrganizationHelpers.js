@@ -104,7 +104,7 @@ export const filterReq = (query, unmatched) => {
         filtered = unmatched.filter(p => {
             var dup = JSON.parse(JSON.stringify(p.resource_request));
             dup.push('groceries');
-            var emailMatch = String(p.requester_email.toLowerCase()).startsWith(query);
+            var emailMatch = p.requester_email ? String(p.requester_email.toLowerCase()).startsWith(query): false;
             var firstNameMatch = String(p.requester_first.toLowerCase()).startsWith(query);
             var lastNameMatch = p.requester_last ? String(p.requester_last.toLowerCase()).startsWith(query) : false;
             var ass = (p.assignee) ? String(p.assignee.toLowerCase()).startsWith(query) : false;
