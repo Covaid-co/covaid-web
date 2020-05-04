@@ -119,15 +119,19 @@ export default function BeaconCreation(props) {
         setPageNum(2);
     }
 
+    const findVolunteer = (id) => {
+        return foundVolunteers.find(function (v) {
+            return v._id === id
+        });
+    }
+
     const createBeacon = () => {
         var volunteers = [];
         for (var volunteer in checkboxStatus) {
             if (checkboxStatus.hasOwnProperty(volunteer)) {
                 if (checkboxStatus[volunteer]) {
-                    const currentVolunteer = foundVolunteers.filter(function (v) {
-                        return v._id === volunteer
-                    });
-                    volunteers.push(currentVolunteer[0]);
+                    const currentVolunteer = findVolunteer(volunteer);
+                    volunteers.push(currentVolunteer);
                 }
             }
         }
@@ -166,8 +170,7 @@ export default function BeaconCreation(props) {
                 'beaconEndDate': endDate.toDate()
             }
         }
-
-
+        
         fetch_a('org_token', '/api/beacon/create', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},

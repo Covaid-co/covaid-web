@@ -1,15 +1,9 @@
-var nodemailer = require('nodemailer');
-var fs = require('fs')
-var Hogan = require('hogan.js')
 const Requests = require('../models/request.model');
 const Users = require('../models/user.model');
-const Association = require('../models/association.model')
+const Association = require('../models/association.model');
 const asyncWrapper = require('../util/asyncWrapper');
+const distance_tools = require('../util/distance_tools');
 const Pusher = require('pusher');
-const {GoogleSpreadsheet }= require('google-spreadsheet')
-const config = require("../config/client_secret").config
-var template = fs.readFileSync('./email_views/request_email.hjs', 'utf-8')
-var compiledTemplate = Hogan.compile(template)
 const emailer = require('../util/emailer')
 require('dotenv').config();
 
@@ -20,48 +14,6 @@ const pusher = new Pusher({
     cluster: process.env.PUSHER_APP_CLUSTER,
     useTLS: true
 });
-
-async function addRequestToSpreadsheet(request, ID, volunteers, spreadsheetID) {
-    var creds;
-    if (process.env.GOOGLE_PRIVATE_KEY) {
-        const config = require("../config/client_secret").config
-        config["private_key"] = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n')
-        creds = JSON.parse(JSON.stringify(config))
-    } else {
-        creds = require('../config/client_secret.json')
-    }
-
-    const doc = new GoogleSpreadsheet(spreadsheetID);
-    await doc.useServiceAccountAuth({
-      client_email: creds.client_email,
-      private_key: creds.private_key,
-    });
-
-  
-    await doc.loadInfo(); // loads document properties and worksheets
-  
-    // create a sheet and set the header row
-    const requestSheet = doc.sheetsByIndex[1]; // or use doc.sheetsById[id]
-
-    var volunteer_emails = []
-    for (var i = 0; i < Math.min(volunteers.length, 3); i++) {
-        volunteer_emails.push(volunteers[i].email)
-    }
-    
-    // append rows 
-    await requestSheet.addRow({ 
-        Name: request.requester_first,
-        Email: request.requester_email,
-        Phone: request.requester_phone,
-        NeedHelpWith: request.resource_request.join(", "),
-        Languages: request.languages.join(", "),
-        Details: request.details,
-        When: request.time + " " + request.date,
-        BestVolunteers: volunteer_emails.join(", "),
-        Location: "(" + request.latitude +  ", " + request.longitude + ")"
-    });
-
-  }
 
 exports.update_completed = function (req, res) {
     Requests.findByIdAndUpdate(req.params.id, 
@@ -77,6 +29,9 @@ exports.update_completed = function (req, res) {
     });
 };
 
+/**
+ * Handle requests to get all requests under an association
+ */
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
     const assoc = req.query.association
 
@@ -85,8 +40,11 @@ exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
         '$or': [{'delete': false}, {'delete': {"$exists": false}}]
     });
     res.send(requests);
-})
+});
 
+/**
+ * Handle requests to get all requests tied to a user
+ */
 exports.getAllRequestsInVolunteer = asyncWrapper(async (req, res) => {
     const id = req.query.volunteerID
     var requests = await Requests.find({
@@ -95,6 +53,9 @@ exports.getAllRequestsInVolunteer = asyncWrapper(async (req, res) => {
     res.send(requests)
 })
 
+/**
+ * Handle requests to get all pending requests tied to a user
+ */
 exports.getAllPendingRequestsInVolunteer = asyncWrapper(async (req, res) => {
     const id = req.query.volunteerID
     var requests = await Requests.find({
@@ -104,6 +65,9 @@ exports.getAllPendingRequestsInVolunteer = asyncWrapper(async (req, res) => {
     res.send(requests)
 })
 
+/**
+ * Handle requests to get all accepted requests tied to a user
+ */
 exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     const id = req.query.volunteerID
     var requests = await Requests.find({
@@ -113,6 +77,9 @@ exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     res.send(requests)
 })
 
+/**
+ * Handle requests to get all completed requests tied to a user
+ */
 exports.getAllCompletedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     const id = req.query.volunteerID
     var requests = await Requests.find({
@@ -122,6 +89,9 @@ exports.getAllCompletedRequestsInVolunteer = asyncWrapper(async (req, res) => {
     res.send(requests)
 })
 
+/**
+ * Handle requests to accept a request as a volunteer
+ */
 exports.acceptRequest = asyncWrapper(async (req, res) => {
     const req_id = req.query.ID
     var request = await Requests.findByIdAndUpdate(req_id, 
@@ -159,13 +129,14 @@ exports.acceptRequest = asyncWrapper(async (req, res) => {
         res.sendStatus(404)
         return
     }
+});
 
-})
-
+/**
+ * Handle requests to attach a volunteer to a request
+ */
 exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     const volunteer_id = req.body.volunteer_id
-    const assoc_id = req.body.association
     const volunteer_email = req.body.volunteer_email
     const volunteer_name = req.body.volunteer_name
     const adminMessage = req.body.adminDetails
@@ -201,8 +172,11 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
         }
         res.send('Request updated.');
     });
-})
+});
 
+/**
+ * Handle requests to remove a volunteer from a request
+ */
 exports.removeVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     const assoc_id = req.body.assoc_id;
@@ -259,9 +233,11 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
         pusher.trigger(assoc_id, 'general', 'A volunteer has been unmatched from a request!')
         res.send('Request updated.');
     });
+});
 
-})
-
+/**
+ * Handle requests to complete a request
+ */
 exports.completeARequest = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     const reason = req.body.reason;
@@ -279,8 +255,11 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
         pusher.trigger(req.body.assoc_id, 'complete', request_id)
         res.send('Request updated.');
     });
-})
+});
 
+/**
+ * Handle requests to set a request assignee
+ */
 exports.setAssignee = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     const assignee = req.body.assignee;
@@ -295,6 +274,9 @@ exports.setAssignee = asyncWrapper(async (req, res) => {
     });
 });
 
+/**
+ * Handle requests to set the notes of a request
+ */
 exports.setNotes = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     const note = req.body.note;
@@ -309,7 +291,9 @@ exports.setNotes = asyncWrapper(async (req, res) => {
     });
 });
 
-
+/**
+ * Handle requests to set a request to delete
+ */
 exports.setDelete = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     Requests.findByIdAndUpdate(request_id, 
@@ -323,6 +307,9 @@ exports.setDelete = asyncWrapper(async (req, res) => {
     });
 });
 
+/**
+ * Handle requests to set a manual volunteer to a request
+ */
 exports.setManualVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     Requests.findByIdAndUpdate(request_id, 
@@ -345,18 +332,9 @@ exports.setManualVolunteer = asyncWrapper(async (req, res) => {
     });
 });
 
-exports.handle_old_request = asyncWrapper(async (req, res) => {
-    const request = new Requests(req.body);
-    request.completed = false;
-    request.save().then(result => {
-        res.status(201).json({
-            message: "Request Created", //
-            result: result // the "result" object can be filtered or you can simply return the message
-        });
-        sendEmail(req);
-    });
-});
-
+/**
+ * Handle requests to create a request
+ */
 exports.createARequest = asyncWrapper(async (req, res) => {
     const request = new Requests(req.body);
     request.time_posted = new Date(); 
@@ -368,8 +346,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
         associationEmail = assoc.email;
         assocName = assoc.name
     }
-    if (!req.body.volunteer) {
-        // General requests
+    if (!req.body.volunteer) { // General requests have no volunteer in body
         volunteers = await getBestVolunteers(request)
         var volunteer_emails = []
         for (var i = 0; i < Math.min(volunteers.length, 3); i++) {
@@ -389,22 +366,12 @@ exports.createARequest = asyncWrapper(async (req, res) => {
 
         emailer.sendNotificationEmail(data)
         pusher.trigger(request.association, 'general', "You have a new unmatched request!")
-        // sendEmail(request, associationEmail, associationEmail)
-
-        // if (request.association == "5e843ab29ad8d24834c8edbf") {
-        //     // PITT
-        //     await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0')
-        // } else if (request.association == "5e8439ad9ad8d24834c8edbe") {
-        //     // BALTIMORE
-        //     await addRequestToSpreadsheet(request, dbResult._id, volunteers, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4')
-        // }
 
         res.status(200).json({
             volunteers: volunteers 
         });
         return
-    } else {
-        // Direct Matches
+    } else { // Direct match requests have a volunteer in body
         volunteers = [req.body.volunteer]
         request.status = {
             "current_status": "in_progress",
@@ -428,31 +395,13 @@ exports.createARequest = asyncWrapper(async (req, res) => {
             templateName: "volunteer_notification",
         };
 
-            emailer.sendNotificationEmail(data)
-            // sendEmail(request, req.body.volunteer.email, associationEmail)
+        emailer.sendNotificationEmail(data);
         res.status(200).json({
             volunteers: volunteers 
         });
         return
     }
 });
-
-var rad = function(x) {
-    return x * Math.PI / 180;
-};
-
-function calcDistance(latA, longA, latB, longB) {
-    var R = 6378137; // Earth’s mean radius in meter
-    var dLat = rad(latB - latA);
-    var dLong = rad(longB - longA);
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(rad(latA)) * Math.cos(rad(latB)) *
-      Math.sin(dLong / 2) * Math.sin(dLong / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c;
-    return d; // returns the distance in meter
-  }
-
 
 async function getBestVolunteers(request) {
     var users = await Users.find({'availability': true,
@@ -463,62 +412,9 @@ async function getBestVolunteers(request) {
     
     for (var i = 0; i < users.length; i++) {
         const coords = users[i].location.coordinates;
-        const distance = calcDistance(request.latitude, request.longitude, coords[1], coords[0]);
+        const distance = distance_tools.calcDistance(request.latitude, request.longitude, coords[1], coords[0]);
         users[i]['distance'] = distance;
     }
     users.sort(function(a, b){return a['distance'] - b['distance']});
     return users;
-}
-
-function sendEmail(request, recipient, assoc_email) {
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-               user: 'covaidco@gmail.com',
-               pass: 'supportyourcity_covaid_1?'
-        }
-    }); 
-    
-    var paymentText;
-    if (request.payment == 0) {
-        paymentText = "Call Ahead"
-    } else if (request.payment == 1) {
-        paymentText = "Reimburse Volunteer"
-    } else {
-        paymentText = "N/A"
-    }
-
-    var mode = "localhost:3000";
-    if (process.env.PROD) {
-        mode = "covaid.co"
-    }
-
-    // var link = 'http://' + mode + '/completeOffer?ID=' + ID;
-    var link = 'http://' + mode;
-
-    var email = request.requester_email
-    var phone = request.requester_phone;
-
-    if (!request.requester_email || request.requester_email.length == 0) {
-        email = "N/A"
-    }
-
-    if (!request.requester_phone || request.requester_phone.length == 0) {
-        phone = "N/A"
-    }
-
-
-    const mailOptions = {
-        from: 'covaidco@gmail.com', // sender address
-        to: recipient, // list of receivers
-        subject: 'Someone needs your help!', // Subject line
-        html: compiledTemplate.render({email: email, phone: phone, details: request.details, assoc_email: assoc_email})
-    };
-
-    transporter.sendMail(mailOptions, function (err, info) {
-        if (err)
-            res.sendStatus(400);
-        else
-            res.sendStatus(200);
-    });
 }

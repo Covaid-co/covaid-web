@@ -4,6 +4,7 @@ const passport = require('passport');
 const asyncWrapper = require('../util/asyncWrapper');
 var jwt = require('jwt-simple');
 const emailer =  require("../util/emailer");
+const distance_tools = require('../util/distance_tools');
 
 exports.add_resource_link = function (req, res) {
   const id = req.body.associationID;
@@ -178,22 +179,6 @@ exports.resetPassword = asyncWrapper(async (req, res) => {
   })
 });
 
-var rad = function(x) {
-  return x * Math.PI / 180;
-};
-
-function calcDistance(latA, longA, latB, longB) {
-  var R = 6378137; // Earth’s mean radius in meter
-  var dLat = rad(latB - latA);
-  var dLong = rad(longB - longA);
-  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(rad(latA)) * Math.cos(rad(latB)) *
-      Math.sin(dLong / 2) * Math.sin(dLong / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = R * c;
-  return d;
-}
-
 exports.assoc_by_lat_long = asyncWrapper(async (req, res) => {
     var latitude = req.query.latitude
     var longitude = req.query.longitude
@@ -207,13 +192,13 @@ exports.assoc_by_lat_long = asyncWrapper(async (req, res) => {
           var rad = currentAssociation.radius
           var currentAssociationLat = currentAssociation.location.coordinates[0]
           var currentAssociationLong = currentAssociation.location.coordinates[1]
-          var distance = calcDistance(latitude, longitude, currentAssociationLat, currentAssociationLong) / 1609.34
+          var distance = distance_tools.calcDistance(latitude, longitude, currentAssociationLat, currentAssociationLong) / 1609.34
           if (distance <= rad) {
-            relevantAssociations.push(currentAssociation)
+            relevantAssociations.push(currentAssociation);
           }
         }
     }
-    res.send(relevantAssociations)
+    res.send(relevantAssociations);
 });
 
 exports.current = function (req, res) {

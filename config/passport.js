@@ -23,7 +23,7 @@ passport.use('associationLocal', new LocalStrategy({
   usernameField: 'association[email]',
   passwordField: 'association[password]',
 }, (email, password, done) => {
-  Association.findOne({ email })
+  Association.findOne({ email : { $regex : new RegExp(email, "i") } })
     .then((association) => {
       if(!association || !association.validatePassword(password)) {
         return done(null, false, { errors: { 'email or password': 'is invalid' } });

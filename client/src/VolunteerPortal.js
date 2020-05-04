@@ -19,9 +19,6 @@ import './VolunteerPage.css'
 import fetch_a from './util/fetch_auth'
 import Footer from './components/Footer'
 
-import {UserType} from './constants'
-
-
 export default function VolunteerPortal(props) {
 
 	const [tabNum, setTabNum] = useState(1);
@@ -158,7 +155,7 @@ export default function VolunteerPortal(props) {
 
 	useEffect(() => {
 		fetchUser();
-	}, []);
+	},[]);
 
 	if (foundUser) {
 		return (<>
