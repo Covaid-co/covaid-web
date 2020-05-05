@@ -53,11 +53,9 @@ exports.register = function (req, res) {
 			
 			var userID = result._id;
 			
-			// Save Baltimore/Pittsburgh users to their respective spreadsheets
+			// Save Pittsburgh users to respective spreadsheets
 			if (user.association == "5e843ab29ad8d24834c8edbf") { // Pittsburgh
 				spreadsheets.addUserToSpreadsheet(finalUser, userID, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0');
-			} else if (user.association == "5e8439ad9ad8d24834c8edbe") { // Baltimore
-				spreadsheets.addUserToSpreadsheet(finalUser, userID, '1N1uWTVLRbmuVIjpFACSK-8JsHJxewcyjqUssZWgRna4');
 			}
 
 			// Send verification email to user
