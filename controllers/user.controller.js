@@ -6,6 +6,8 @@ const distance_tools = require('../util/distance_tools');
 const asyncWrapper = require("../util/asyncWrapper")
 var jwt = require('jwt-simple');
 
+const UserService = '../services/user.service';
+
 // Helper function to determine whether an email is valid
 function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){

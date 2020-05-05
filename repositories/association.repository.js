@@ -1,4 +1,4 @@
-const Association = '../models/association.model';
+const Association = require('../models/association.model');
 
 exports.createAssociation = async function (association) {
     try {

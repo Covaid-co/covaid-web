@@ -5,7 +5,6 @@ const UserService = require('./user.service');
 
 const emailer = require('../util/emailer');
 
-
 exports.getQueriedBeacons = async function(query) {
     try {
         return await BeaconRepository.readBeacon(query);

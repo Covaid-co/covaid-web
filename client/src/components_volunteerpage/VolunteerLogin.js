@@ -1,3 +1,7 @@
+/*
+* Volunteer Login Page
+*/
+
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "../libs/hooksLib";
@@ -23,37 +27,6 @@ export default function OrgLogin(props) {
 
     const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState(0);
-
-    // function validateForm() {
-    //     return fields.emailOrg.length > 0 && fields.password.length > 0;
-    // }
-
-    // function validateForgotForm() {
-    //     return fields.emailOrg.length > 0;
-    // }
-
-    // const handleSubmitForgot = async e => {
-    //     e.preventDefault();
-    //     let form = {
-    //         'email': fields.emailOrg,
-    //     };
-    //     // console.log(form)
-    //     fetch('/api/association/emailpasswordresetlink', {
-    //         method: 'post',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify(form)
-    //     })
-    //     .then((response) => {
-    //         if (response.ok) {
-    //             alert("Check your email for password link!")
-    //         } else {
-    //             alert('Error sending link!')
-    //         }
-    //     })
-    //     .catch((e) => {
-    //         alert('Error')
-    //     });
-    //   };
 
     const handleSubmit = async e => {
         e.preventDefault();

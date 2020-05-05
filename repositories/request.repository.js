@@ -1,4 +1,4 @@
-const Request = '../models/request.model';
+const Request = require('../models/request.model');
 
 exports.createRequest = async function (request) {
     try {
@@ -10,11 +10,12 @@ exports.createRequest = async function (request) {
     }
 }
 
-exports.readRequest = async function (query, limit) {
+exports.readRequest = async function (query) {
     try {
-        var requests = await Request.find(query).limit(limit);
+        var requests = await Request.find(query);
         return requests;
     } catch (e) {
+        console.log(e);
         throw Error('Error while querying requests');
     }
 }

@@ -10,10 +10,7 @@ router.post('/create_request', request_controller.createARequest);
 // GET
 router.get('/:id/update_completed', request_controller.update_completed);
 router.get('/allRequestsInAssoc', request_controller.getAllRequestsOfAnAssoc);
-router.get('/allRequestsInVolunteer', request_controller.getAllRequestsInVolunteer);
-router.get('/allPendingRequestsInVolunteer', request_controller.getAllPendingRequestsInVolunteer);
-router.get('/allAcceptedRequestsInVolunteer', request_controller.getAllAcceptedRequestsInVolunteer);
-router.get('/allCompletedRequestsInVolunteer', request_controller.getAllCompletedRequestsInVolunteer);
+router.get('/volunteerRequests', auth.required, request_controller.handleGetVolunteerRequests);
 
 // PUT
 router.put('/attachVolunteerToRequest', request_controller.attachVolunteer);

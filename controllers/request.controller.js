@@ -7,6 +7,8 @@ const Pusher = require('pusher');
 const emailer = require('../util/emailer')
 require('dotenv').config();
 
+const RequestService = require('../services/request.service');
+
 const pusher = new Pusher({
     appId: process.env.PUSHER_APP_ID,
     key: process.env.PUSHER_APP_KEY,
@@ -33,8 +35,7 @@ exports.update_completed = function (req, res) {
  * Handle requests to get all requests under an association
  */
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
-    const assoc = req.query.association
-
+    const assoc = req.query.association;
     var requests = await Requests.find({
         'association': assoc,
         '$or': [{'delete': false}, {'delete': {"$exists": false}}]
@@ -45,49 +46,19 @@ exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
 /**
  * Handle requests to get all requests tied to a user
  */
-exports.getAllRequestsInVolunteer = asyncWrapper(async (req, res) => {
-    const id = req.query.volunteerID
-    var requests = await Requests.find({
-        'status.volunteer': id
-    })
-    res.send(requests)
-})
+exports.handleGetVolunteerRequests = asyncWrapper(async (req, res) => {
+    const query = {
+        'status.volunteer': req.token.id,
+        'volunteer_status': req.query.status
+    }
 
-/**
- * Handle requests to get all pending requests tied to a user
- */
-exports.getAllPendingRequestsInVolunteer = asyncWrapper(async (req, res) => {
-    const id = req.query.volunteerID
-    var requests = await Requests.find({
-        'status.volunteer': id,
-        'volunteer_status': 'pending',
-    })
-    res.send(requests)
-})
-
-/**
- * Handle requests to get all accepted requests tied to a user
- */
-exports.getAllAcceptedRequestsInVolunteer = asyncWrapper(async (req, res) => {
-    const id = req.query.volunteerID
-    var requests = await Requests.find({
-        'status.volunteer': id,
-        'volunteer_status': 'accepted'
-    })
-    res.send(requests)
-})
-
-/**
- * Handle requests to get all completed requests tied to a user
- */
-exports.getAllCompletedRequestsInVolunteer = asyncWrapper(async (req, res) => {
-    const id = req.query.volunteerID
-    var requests = await Requests.find({
-        'status.volunteer': id,
-        'volunteer_status': 'completed'
-    })
-    res.send(requests)
-})
+    try {
+        var requests = await RequestService.getRequests(query);
+        res.send(requests);
+    } catch (e) {
+        res.sendStatus(400);
+    }
+});
 
 /**
  * Handle requests to accept a request as a volunteer

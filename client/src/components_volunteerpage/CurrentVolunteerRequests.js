@@ -1,10 +1,14 @@
+/**
+ * Current requests tied to a volunteer (pending and in progress)
+ */
+
 import React, { useState, useEffect } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import RequestInfo from './RequestInfo';
 
 
-export default function PendingVolunteerRequests(props) {
+export default function CurrentVolunteerRequests(props) {
     const [pendingRequests, setPendingRequests] = useState([]);
     const [acceptedRequests, setAcceptedRequests] = useState([]);
     const [modalMode, setModalMode] = useState(0);
@@ -14,34 +18,24 @@ export default function PendingVolunteerRequests(props) {
     useEffect(() => {
         setPendingRequests(props.pendingRequests);
         setAcceptedRequests(props.acceptedRequests);
-        console.log(props.pendingRequests)
-        console.log(props.acceptedRequests)
     }, [props.pendingRequests, props.acceptedRequests])
 
+    // Callback to change VolunteerPortal state (Pending -> In Progress)
     const acceptRequest = () => {
         props.moveRequestFromPendingToInProgress(currRequest)
     }
 
+    // Callback to change VolunteerPortal state (Reject (Disappear))
     const rejectRequest = () => {
         props.rejectAPendingRequest(currRequest)
     }
 
+     // Callback to change VolunteerPortal state (In Progress -> Complete)
     const completeARequest = () => {
         props.completeAnInProgressRequest(currRequest)
     }
 
-    const calculateRemainingTime = (pendingTime) => {
-        var pendingTimeDate = new Date(pendingTime);
-        var currentTime = new Date();
-
-        var diff = currentTime - pendingTimeDate;
-        diff = diff / 60 / 60 / 1000;
-
-        var remainingTime = 24 - diff
-
-        return Math.round(remainingTime)
-    }
-
+    // Render default text if there are no pending/active requests
     if (pendingRequests.length + acceptedRequests.length === 0) {
         return <>
             <p id="regular-text" style={{color: 'black', textAlign: "center", marginTop: 20}}>

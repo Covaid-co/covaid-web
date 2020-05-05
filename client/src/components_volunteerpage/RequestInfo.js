@@ -1,3 +1,7 @@
+/**
+ * Request information for a volunteer-tied request
+ */
+
 import React, { useState, useEffect } from 'react';
 import fetch_a from '../util/fetch_auth'
 import Row from 'react-bootstrap/Row'
@@ -7,7 +11,7 @@ import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal' 
 import VolunteerActionConfirmationModal from './VolunteerActionConfirmationModal'
-
+const RequestStatusEnum = {"pending":1, "in_progress":2, "complete":3};
 
 export default function RequestInfo(props) {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -15,7 +19,9 @@ export default function RequestInfo(props) {
     const [confirmation, setConfirmation] = useState('');
     const [action, setAction] = useState('');
     const [buttonColor, setButtonColor] = useState('');
+    const [mapURL, setMapURL] = useState('');
 
+    // Show reject confirmation modal
     const showReject = () => {
         setShowConfirmationModal(true);
         props.setModalOpen(false)
@@ -25,6 +31,7 @@ export default function RequestInfo(props) {
         setButtonColor("#DB4B4B")
     }
 
+    // Show accept confirmation modal
     const showComplete = () => {
         setShowConfirmationModal(true);
         props.setModalOpen(false)
@@ -35,22 +42,22 @@ export default function RequestInfo(props) {
     }
 
     useEffect(() => {
+        // Generate map url given lat and long
         var tempURL = "https://www.google.com/maps/@";
         if (props.currRequest.latitude && props.currRequest.longitude) {
             tempURL += props.currRequest.latitude + ',';
             tempURL += props.currRequest.longitude + ',15z';
         }
         setMapURL(tempURL);
-    }, [props.currRequest])
+    }, [props.currRequest]);
 
-    const [mapURL, setMapURL] = useState('');
-
+    // Callback to request rejection
     const reject = () => {
-        console.log("attached");
         props.setModalOpen(false)
         props.rejectRequest();
     }
 
+    // Update request to In Progress on backend, callback to request accept
     const accept = () => {
         var url = "/api/request/acceptRequest?";
         let params = {
@@ -62,21 +69,21 @@ export default function RequestInfo(props) {
         url += query;
         fetch_a('token', url)
         .then((response) => {
-            console.log("Successful")
-            props.setModalOpen(false)
-            props.acceptRequest()
+            props.setModalOpen(false);
+            props.acceptRequest();
         })
         .catch((error) => {
           console.error(error);
         });
     }
 
+    // Callback to request complete
     const complete = () => {
-        console.log("attached");
-        props.setModalOpen(false)
-        props.completeARequest()
+        props.setModalOpen(false);
+        props.completeARequest();
     } 
 
+    // Render specific elements in modal, depending on view mode (pending, in_progress, complete)
     var header = <></>
     var contactInfo = <>
         <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 0}}>Who:</h5>
@@ -91,7 +98,7 @@ export default function RequestInfo(props) {
         <p id="regular-text-bold"><a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
     </>
     var buttons = <></> 
-    if (props.modalMode === 1) {
+    if (props.modalMode === RequestStatusEnum.pending) {
         header = <Modal.Title>New pending request</Modal.Title>
         contactInfo = <></>
         buttons =
@@ -103,7 +110,7 @@ export default function RequestInfo(props) {
                 <Button onClick={accept} id='large-button-empty' style={{borderColor: '#28a745', color: '#28a745'}}>Accept this request</Button>
             </Col>
         </Row>
-    } else if (props.modalMode === 2) {
+    } else if (props.modalMode === RequestStatusEnum.in_progress) {
         header = <Modal.Title>Request is in-progress</Modal.Title>
         buttons = <Row style={{marginTop: 15}}>
                     <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
@@ -113,11 +120,12 @@ export default function RequestInfo(props) {
                         <Button onClick={showComplete} id='large-button-empty' style={{borderColor: '#28a745', color: '#28a745'}}>Complete this request</Button>
                     </Col>
                 </Row>
-    } else if (props.modalMode === 3) {
+    } else if (props.modalMode === RequestStatusEnum.complete) {
         header = <Modal.Title>Completed request</Modal.Title>
         timeSpecific = <></>
     }
 
+    // If there are messages from an admin, include those in pending/in_progress requests
     const adminDetails = () => {
         if ((props.modalMode === 2 || props.modalMode === 1) && props.currRequest.adminMessage && props.currRequest.adminMessage.length > 0) {
             return (
@@ -129,6 +137,7 @@ export default function RequestInfo(props) {
         else return <></>
     }
 
+    // Add Alerts to indicate what next steps in request workflow are
     const requestWarnings = () => {
         if (props.modalMode === 1) {
             return <Alert style={{marginBottom: 20}} variant={'secondary'}>

@@ -1,3 +1,7 @@
+/**
+ * Volunteer Portal component for covaid
+ */
+
 import React, { useState, useEffect } from "react";
 import Pusher from 'pusher-js';
 import { useToasts } from 'react-toast-notifications'
@@ -9,7 +13,7 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import PendingVolunteerRequests from './components_volunteerpage/PendingVolunteerRequests';
+import CurrentVolunteerRequests from './components_volunteerpage/CurrentVolunteerRequests';
 import CompletedVolunteerRequests from './components_volunteerpage/CompletedVolunteerRequests';
 import { generateURL } from './Helpers';
 import NavBar from './components/NavBar'
@@ -32,35 +36,16 @@ export default function VolunteerPortal(props) {
 	const [loginError, setLoginError] = useState(false);
 	const { addToast } = useToasts();
 
-	const fetchPendingRequests = (id) => {
-        let params = {'volunteerID': id}
-		var url = generateURL( "/api/request/allPendingRequestsInVolunteer?", params);
-        fetch(url, {
+	// fetch requests given a status, update frontend state using 'requestStateChanger'
+	const fetchRequests = (status, requestStateChanger) => {
+		let params = {'status': status};
+		var url = generateURL( "/api/request/volunteerRequests?", params);
+		fetch_a('token', url, {
             method: 'get',
-            headers: {'Content-Type': 'application/json'},
         }).then((response) => {
             if (response.ok) {
                 response.json().then(data => {
-					setPendingRequests(data)
-                });
-            } else {
-                console.log("Error");
-            }
-        }).catch((e) => {
-            console.log(e)
-        });
-	  }
-
-	const fetchAcceptedRequests = (id) => {
-        let params = {'volunteerID': id}
-		var url = generateURL( "/api/request/allAcceptedRequestsInVolunteer?", params);
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-					setAcceptedRequests(data)
+					requestStateChanger(data);
                 });
             } else {
                 console.log("Error")
@@ -68,27 +53,9 @@ export default function VolunteerPortal(props) {
         }).catch((e) => {
             console.log(e)
         });
-	}
+	};
 
-	const fetchCompletedRequests = (id) => {
-		let params = {'volunteerID': id}
-		var url = generateURL( "/api/request/allCompletedRequestsInVolunteer?", params);
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-					setCompletedRequests(data)
-                });
-            } else {
-                console.log("Error")
-            }
-        }).catch((e) => {
-            console.log(e)
-        });
-	}
-
+	// fetch beacons tied to a user
 	const fetchBeacons = () => {
 		fetch_a('token', '/api/beacon/user', {
             method: 'get',
@@ -105,31 +72,40 @@ export default function VolunteerPortal(props) {
 		});
 	}
 
+	const setupPushNotifications = () => {
+		var pusher = new Pusher('ed72954a8d404950e3c8', {
+			cluster: 'us2',
+			forceTLS: true
+		});
+		var channel = pusher.subscribe(user._id);
+		channel.bind('direct-match', function(data) {
+			fetchRequests('pending', setPendingRequests);
+			addToast('You have a new pending request!',
+				{
+					appearance: 'info',
+					autoDismiss: true
+				}
+			)
+		});
+	}
+
 	const fetchUser = () => {
+		// Get the current authenticated user
 		fetch_a('token', '/api/users/current')
 			.then((response) => response.json())
 			.then((user) => {
 				setUser(user);
 				setFoundUser(true);
 
-				var pusher = new Pusher('ed72954a8d404950e3c8', {
-					cluster: 'us2',
-					forceTLS: true
-				});
-			  
-				var channel = pusher.subscribe(user._id);
-				channel.bind('direct-match', function(data) {
-					fetchPendingRequests(user._id);
-					addToast('You have a new pending request!',
-						{
-							appearance: 'info',
-							autoDismiss: true
-						}
-					)
-				});
-				fetchPendingRequests(user._id);
-				fetchAcceptedRequests(user._id);
-				fetchCompletedRequests(user._id);
+				// Set up the push notifs
+				setupPushNotifications();
+
+				// Fetch requests
+				fetchRequests('pending', setPendingRequests);
+				fetchRequests('accepted', setAcceptedRequests);
+				fetchRequests('completed', setCompletedRequests);
+
+				// Featch beacons
 				fetchBeacons();
 		})
 		.catch((error) => {
@@ -137,15 +113,19 @@ export default function VolunteerPortal(props) {
 		});
 	}
 
+	// State change (Pending -> In Progress)
 	const moveRequestFromPendingToInProgress = (request) => {
 		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
 		setAcceptedRequests(acceptedRequests.concat(request))
 	}
+
+	// State change (Pending -> Reject (Disappear))
 	const rejectAPendingRequest = (request) => {
 		setPendingRequests(pendingRequests.filter(pendingRequest => pendingRequest._id !== request._id));
 		setAcceptedRequests(acceptedRequests.filter(acceptedRequest => acceptedRequest._id !== request._id));
 	}
 
+	// State change (Accepted -> Complete)
 	const completeAnInProgressRequest = (request) => {
 		request.completed_date = Date.now()
 		setAcceptedRequests(acceptedRequests.filter(acceptedRequest => acceptedRequest._id !== request._id))
@@ -154,6 +134,7 @@ export default function VolunteerPortal(props) {
 	}
 
 	useEffect(() => {
+		// Fetch user and all requests/beacons
 		fetchUser();
 	},[]);
 
@@ -197,7 +178,7 @@ export default function VolunteerPortal(props) {
 							</Container>
 							<Container id="newOfferContainer"
 								style={tabNum===2 ? {'display': 'block'} : {'display': 'none'}}>
-								<PendingVolunteerRequests user={user} 
+								<CurrentVolunteerRequests user={user} 
 									pendingRequests={pendingRequests}
 									acceptedRequests={acceptedRequests} 
 									moveRequestFromPendingToInProgress={moveRequestFromPendingToInProgress} 
