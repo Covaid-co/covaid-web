@@ -72,23 +72,6 @@ export default function VolunteerPortal(props) {
 		});
 	}
 
-	const setupPushNotifications = () => {
-		var pusher = new Pusher('ed72954a8d404950e3c8', {
-			cluster: 'us2',
-			forceTLS: true
-		});
-		var channel = pusher.subscribe(user._id);
-		channel.bind('direct-match', function(data) {
-			fetchRequests('pending', setPendingRequests);
-			addToast('You have a new pending request!',
-				{
-					appearance: 'info',
-					autoDismiss: true
-				}
-			)
-		});
-	}
-
 	const fetchUser = () => {
 		// Get the current authenticated user
 		fetch_a('token', '/api/users/current')
@@ -98,7 +81,20 @@ export default function VolunteerPortal(props) {
 				setFoundUser(true);
 
 				// Set up the push notifs
-				setupPushNotifications();
+				var pusher = new Pusher('ed72954a8d404950e3c8', {
+					cluster: 'us2',
+					forceTLS: true
+				});
+				var channel = pusher.subscribe(user._id);
+				channel.bind('direct-match', function(data) {
+					fetchRequests('pending', setPendingRequests);
+					addToast('You have a new pending request!',
+						{
+							appearance: 'info',
+							autoDismiss: true
+						}
+					)
+				});
 
 				// Fetch requests
 				fetchRequests('pending', setPendingRequests);

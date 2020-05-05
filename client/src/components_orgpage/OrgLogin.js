@@ -29,7 +29,7 @@ export default function OrgLogin(props) {
     const [showForgot, setShowForgot] = useState(false);
 
     function validateForm() {
-        return fields.emailOrg.length > 0 && fields.password.length > 0;
+        return fields.emailOrg.length > 0 && fields.passOrg.length > 0;
     }
 
     function validateForgotForm() {
