@@ -1,10 +1,12 @@
 import React, {useState, useEffect } from "react";
+import Cookie from 'js-cookie'
+import PropTypes from 'prop-types';
+
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Badge from 'react-bootstrap/Badge'
-import Cookie from 'js-cookie'
 
 import AboutUs from '../components_modals/AboutUs'
 import HowItWorks from '../components_modals/HowItWorks'
@@ -12,6 +14,9 @@ import MapModal from '../components_modals/MapModal';
 import Donate from '../components_modals/Donate';
 import { currURL } from '../constants';
 
+/**
+ * Navbar used in every frontend component
+ */
 
 export default function CovaidNavbar(props) {
     const [toggled, setToggled] = useState(false);
@@ -27,13 +32,15 @@ export default function CovaidNavbar(props) {
         }
     });
 
-    useEffect(() => { 
-        fetch('/api/users/totalUsers')
-        .then((res) => res.json())
-        .then((res) => {
-            setTotalVolunteers(res.count);
-        });
-    }, []);
+    useEffect(() => {
+        if (props.pageLoaded) {
+            fetch('/api/users/totalUsers')
+            .then((res) => res.json())
+            .then((res) => {
+                setTotalVolunteers(res.count);
+            });
+        }
+    }, [props.pageLoaded]);
 
     const logout = () => {
         if (props.orgPortal) {
@@ -74,7 +81,8 @@ export default function CovaidNavbar(props) {
                                 <Button variant="outline-light" id='login-button' onClick={() => props.handleShowModal('signin')}>
                                     Sign In
                                 </Button>
-                                <Button variant="outline-light" id='register-button' onClick={() => props.handleShowModal('register')}>
+                                <Button variant="outline-light" id='register-button' 
+                                    onClick={() => window.open(currURL + '/volunteer', '_self')}>
                                     Volunteer Registration
                                 </Button>
                             </Form>
@@ -83,7 +91,7 @@ export default function CovaidNavbar(props) {
                                 <Button id="large-button-empty" onClick={() => props.handleShowModal('signin')} style={{marginTop: 0, marginBottom: 5}}>
                                     Volunteer Login
                                 </Button>
-                                <Button id='large-button' onClick={() => props.handleShowModal('register')}>
+                                <Button id='large-button' onClick={() => window.open(currURL + '/volunteer', '_self')}>
                                     Volunteer Registration
                                 </Button>
                             </Form>;
@@ -164,4 +172,15 @@ export default function CovaidNavbar(props) {
         </Navbar>
         {getCurrentModal()}
     </>);
+}
+
+CovaidNavbar.propTypes = {
+    orgPortal: PropTypes.bool,
+    isLoggedIn: PropTypes.bool,
+    pageLoaded: PropTypes.bool,
+    orgAdmin: PropTypes.bool,
+    first_name: PropTypes.string,
+    totalVolunteers: PropTypes.number,
+    handleShowModal: PropTypes.func,
+    setAdmin: PropTypes.func
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from 'prop-types';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
@@ -14,10 +15,13 @@ import RequestPage1 from './RequestPage1';
 import RequestPage2 from './RequestPage2';
 import OrgHeader from './association_request_headers/OrgHeader';
 import DefaultHeader from './association_request_headers/DefaultHeader';
+import { generalRequestText } from './constants';
 
+/**
+ * Request support page 
+ */
 
 export default function RequestPage(props) {
-
     const [showModal, setShowModal] = useState(false);
     const [firstPage, setFirstPage] = useState({});
     const [completed, setCompleted] = useState(false);
@@ -27,7 +31,7 @@ export default function RequestPage(props) {
     }, [props.locationProps]);
     
     const requestFormInfo = () => {
-        var topHeader = <DefaultHeader/>;
+        var topHeader = <DefaultHeader generalRequestText={generalRequestText}/>;
         if (props.locationProps.currentAssoc && Object.keys(props.locationProps.currentAssoc).length > 0) {
             topHeader = <OrgHeader assoc={props.locationProps.currentAssoc}/>;
         }
@@ -110,37 +114,40 @@ export default function RequestPage(props) {
 			<NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
             <Container style={{maxWidth: 2500}}>
                 <Row>
-                    <Col lg={3} md={2} sm={0}>
-                    </Col>
+                    <Col lg={3} md={2} sm={0}></Col>
                     <Col lg={6} md={8} sm={12}>
                         <Container id="newOfferContainer" style={{marginBottom: 15}}>
                             {requestFormInfo()}
                         </Container>
                     </Col>
-                    <Col lg={3} md={2} sm={0}>
-                    </Col>
+                    <Col lg={3} md={2} sm={0}></Col>
                 </Row>
                 <Row>
-                    <Col lg={3} md={2} sm={0}>
-                    </Col>
+                    <Col lg={3} md={2} sm={0}></Col>
                     <Col lg={6} md={8} sm={12}>
                         <Container id="newOfferContainer" style={{marginBottom: 0}}>
                             {Object.keys(firstPage).length === 0 ?
                                 <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.locationProps.currentAssoc}/> :
-                                <RequestPage2 currentAssoc={props.locationProps.currentAssoc} handleSubmit={handleSubmit}/>
-                            }
+                                <RequestPage2 currentAssoc={props.locationProps.currentAssoc} handleSubmit={handleSubmit}/>}
                         </Container>
                     </Col>
-                    <Col lg={3} md={2} sm={0}>
-                    </Col>
+                    <Col lg={3} md={2} sm={0}></Col>
                 </Row>
             </Container>
-            <NewLocationSetting locationSubmit={props.onLocationSubmit}
-                                refreshLocation={props.refreshLocation}
-                                showModal={showModal} 
-                                hideModal={() => setShowModal(false)}/>
+            <NewLocationSetting locationSubmit={props.onLocationSubmit} refreshLocation={props.refreshLocation}
+                                showModal={showModal} hideModal={() => setShowModal(false)}/>
             <GetLocation isLoaded={props.isLoaded} onLocationSubmit={props.onLocationSubmit}/>
 		</div>,
 		<Footer key="2"/>]
 	);
 }
+
+RequestPage.propTypes = {
+    locationProps: PropTypes.shape({
+        currentAssoc: PropTypes.object,
+        latitude: PropTypes.number,
+        longitude: PropTypes.number,
+        zipcode: PropTypes.string,
+        locality: PropTypes.string
+    })
+};

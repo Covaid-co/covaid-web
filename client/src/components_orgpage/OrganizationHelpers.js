@@ -1,3 +1,5 @@
+import { generateURL, convertTime } from '../Helpers';
+import fetch_a from '../util/fetch_auth';
 
 export const sortFn = (x, y, direction) => {
     if (direction) {
@@ -69,6 +71,7 @@ export const sortReq = (type, filteredRequests, name, need, updated, posted) => 
     return temp;
 }
 
+// Volunteer filtering based on query from admin
 export const filterVolunteers = (query, volunteers) => {
     var filtered = volunteers;
     if (!(!query || query === "")) {
@@ -98,6 +101,7 @@ export const filterVolunteers = (query, volunteers) => {
     return filtered;
 }
 
+// Request filtering based on query from admin
 export const filterReq = (query, unmatched) => {
     var filtered = unmatched;
     if (!(!query || query === "")) {
@@ -129,7 +133,7 @@ const capitalize = (s) => {
     return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-
+// Formatting requesters name 
 export const formatName = (first, last) => {
     first = first !== undefined ? capitalize(String(first.toLowerCase())) : "";
     last = last !== undefined ? capitalize(String(last.toLowerCase())) : "";
@@ -143,4 +147,95 @@ export const formatName = (first, last) => {
         }
     }
     return first + ' ' + last;
+}
+
+// Get organization or admin's first_name
+export const getName = (admin, association) => {
+    if (Object.keys(admin).length === 0 && admin.constructor === Object) {
+        return association.name;
+    } else {
+        return admin.first_name;
+    }
+}
+
+
+export const fetchBeacons = async () => {
+    const response = await fetch_a('org_token', '/api/beacon/', {
+        method: 'get',
+    })
+    const data = await response.json();
+    return data;
+}
+
+
+// Return orgs volunteers
+export const fetchOrgVolunteers = async (id) => {
+    let params = {'association': id};
+    var url = generateURL("/api/users/allFromAssoc?", params);
+    const response = await fetch(url, {
+        method: 'get',
+        headers: {'Content-Type': 'application/json'},
+    });
+
+    const data = await response.json();
+    var resVolunteer = data.map((volunteer) => {
+        volunteer.latitude = volunteer.latlong[1];
+        volunteer.longitude = volunteer.latlong[0];
+        return volunteer;
+    });
+    resVolunteer.sort(function(a, b) {
+        const x = String(a.first_name.toLowerCase())
+        const y = String(b.first_name.toLowerCase())
+        return sortFn(x, y, false);
+    });
+
+    return resVolunteer;
+}
+
+// Return orgs requests
+export const fetchOrgRequests = async (id) => {
+    let params = {'association': id}
+    var url = generateURL( "/api/request/allRequestsInAssoc?", params);
+    const response = await fetch(url, {
+        method: 'get',
+        headers: {'Content-Type': 'application/json'},
+    });
+    const data = await response.json();
+    var res = {}
+    data.forEach(function (result) {
+        if (result.time_posted) {
+            var day = convertTime(result.time_posted);
+            if (!res[day]) {
+                res[day] = 0;
+            }
+            res[day]++;
+        }
+    });
+    console.log(res);
+    return data;
+}
+
+// Split all requests in unmatched, matched and completed requests
+export const splitRequests = (data) => {
+    var unMatchedArr = [];
+    var matchedArr = [];
+    var completedArr = [];
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].status) {
+            if (data[i].status.current_status === 'in_progress') {
+                matchedArr.push(data[i]);
+            } else if (data[i].status.current_status === 'incomplete' || data[i].status.current_status === 'pending') {
+                unMatchedArr.push(data[i]);
+            } else {
+                completedArr.push(data[i]);
+            }
+        } else {
+            unMatchedArr.push(data[i]);
+        }
+    }
+    return {
+        unmatched: unMatchedArr,
+        matched: matchedArr,
+        completed: completedArr
+    }
 }

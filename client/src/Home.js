@@ -108,26 +108,26 @@ class Home extends Component {
 		}
 	}
 
-	fetchUser(){
-		fetch_a('token', '/api/users/current')
-		.then((response) => response.json())
-		.then((user) => {
-			this.setState({ currentUser: user });
-			this.setState({ isLoggedIn: true });
-			this.setState({ first_name: user.first_name });
-			this.setState({ last_name: user.last_name });
-		})
-		.catch((error) => {
-			console.error(error);
-		});
-	}
+	// fetchUser(){
+	// 	fetch_a('token', '/api/users/current')
+	// 	.then((response) => response.json())
+	// 	.then((user) => {
+	// 		this.setState({ currentUser: user });
+	// 		this.setState({ isLoggedIn: true });
+	// 		this.setState({ first_name: user.first_name });
+	// 		this.setState({ last_name: user.last_name });
+	// 	})
+	// 	.catch((error) => {
+	// 		console.error(error);
+	// 	});
+	// }
 
 	// Pressing refresh button
-	refreshLocation() {
-		removeCookies(cookieNames);
-		this.setState({isLoaded: false});
-		this.setLocationState(this.state.googleApiKey);
-	}
+	// refreshLocation() {
+	// 	removeCookies(cookieNames);
+	// 	this.setState({isLoaded: false});
+	// 	this.setLocationState(this.state.googleApiKey);
+	// }
 
 	// Entering location manually
 	onLocationSubmit = (e, locationString) => {
@@ -164,6 +164,7 @@ class Home extends Component {
 									pathname: '/volunteerPortal',
 									loggedIn: true
 								})}
+								locationProps={this.props.locationProps}
 								handleShowModal={this.handleShowModal} 
 								onLocationSubmit={this.onLocationSubmit}
 								refreshLocation={this.refreshLocation}

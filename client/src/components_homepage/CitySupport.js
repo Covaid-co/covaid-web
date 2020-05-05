@@ -1,26 +1,30 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import PropTypes from 'prop-types';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-
 import { currURL } from '../constants';
+
+/**
+ * Text on homepage to show what who this city is supported by
+ */
 
 export default function CitySupport(props) {
 
-    const citySupportedBy = (screen) => {
+    const citySupportedBy = () => {
         var float = "left";
+        if (!props.currentAssoc) {
+            return <></>
+        }
         return <div style={{float: float}}>
                     <p id="regular-text" style={{marginBottom: 0}}>This city is supported by:</p>
-                    {props.associations.map((association, i) => {                
-                        return <div key={i}>
-                                    <a href={association.homepage} target="_blank" rel="noopener noreferrer" 
-                                        style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
-                                        {association.name}</a><br /> 
-                                </div>
-                    })}
+                    <div>
+                        <a href={props.currentAssoc.homepage} target="_blank" rel="noopener noreferrer" 
+                            style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
+                            {props.currentAssoc.name}</a><br /> 
+                    </div>
                     <p style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">Covaid.co</p>
                     <br /> 
-                    {props.associations.length === 0 ?
+                    {Object.keys(props.currentAssoc).length === 0 ?
                     <><a href={currURL + '/organizationPortal'} rel="noopener noreferrer" style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
                         Bring to your community</a><br/></> : <></>}
                 </div>
@@ -33,7 +37,7 @@ export default function CitySupport(props) {
                     <p id="requestCall" style={{marginBottom: 15}}></p>
                 </Col>
                 <Col md={12} sm={12} style={{overflow: 'hidden'}}>
-                    {citySupportedBy('tablet')}
+                    {citySupportedBy()}
                 </Col>
             </Row>
             <Row id="web-separate">
@@ -41,9 +45,13 @@ export default function CitySupport(props) {
                     <p id="requestCall" style={{marginBottom: 15}}></p>
                 </Col>
                 <Col lg={12} md={12} sm={12} xs={12}>
-                    {citySupportedBy('web')}
+                    {citySupportedBy()}
                 </Col>
             </Row>
         </>
     );
 }
+
+CitySupport.propTypes = {
+    currentAssoc: PropTypes.object
+};

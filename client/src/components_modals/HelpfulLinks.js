@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import PropTypes from 'prop-types';
 import { ReactTinyLink } from 'react-tiny-link'
+
 import Modal from 'react-bootstrap/Modal'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
@@ -9,38 +9,34 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import { defaultLinks } from '../constants'
 
-export default function HelpfulLinks(props) {
+/*
+ * Resource links Modal (General/Org specific)
+ */
 
-    const [associationExists, setAssociationExists] = useState(false);
+export default function HelpfulLinks(props) {
     const [associationCity, setAssociationCity] = useState('');
     const [associationLinks, setAssociationLinks] = useState([]);
     const [tabNum, setTabNum] = useState(1);
 
     useEffect(() => {
-        if (props.associationCity) {
-            setAssociationExists(true)
-            setAssociationCity(props.associationCity)
-            setAssociationLinks(props.associationLinks)
-        }
-    }, [props.associationCity, props.associationLinks])
+        setAssociationCity(props.currentAssoc.city)
+        setAssociationLinks(props.currentAssoc.links)
+    }, [props.currentAssoc])
 
     const associationTab = () => {
-        if (associationExists && associationLinks.length > 0) {
+        if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
             return (
                 <Button id={tabNum === 2 ? "tab-button-selected" : "tab-button"} 
                         onClick={() => {setTabNum(2)}}>{associationCity}
                 </Button>
             );
-        } else {
-            return (
-                <></>
-            );
         }
+        return <></>
     }
 
     const associationResourceList = () => {
-        if (associationExists && associationLinks.length > 0) {
-            return(
+        if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
+            return (
                 <Container id="requester-tab" style={tabNum === 2 ? {'display': 'block'} : {'display': 'none'}}>
                     {associationLinks.map((link, i) => {               
                         var tempLink = link.link;
@@ -68,11 +64,8 @@ export default function HelpfulLinks(props) {
                     })}
                 </Container>
             )
-        } else {
-            return (
-                <></>
-            );
-        } 
+        }
+        return <></>;
     }
 
     return (
@@ -120,3 +113,9 @@ export default function HelpfulLinks(props) {
         </Modal>
     );
 }
+
+HelpfulLinks.propTypes = {
+    currentAssoc: PropTypes.object,
+    showModal: PropTypes.bool,
+    hideModal: PropTypes.func
+};

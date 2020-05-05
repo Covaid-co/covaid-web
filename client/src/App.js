@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {ToastProvider} from 'react-toast-notifications'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {ToastProvider} from 'react-toast-notifications';
+import Geocode from "react-geocode";
+
 import Home from './Home'
 import CompleteOffer from './CompleteOffer'
 import InternalRequests from './InternalRequests'
@@ -20,19 +18,23 @@ import OrgReset from './OrgReset';
 import RegisterPage from './RegisterPage';
 import ChangeLog from './ChangeLog';
 import SubmitChangeLog from './SubmitChangeLog';
+import HomePage from './HomePage';
+
+import { defaultResources } from './constants'
 import { generateURL, clearCookies } from './Helpers';
 import { findAssociations, getMyLocation, setNeighborhood, setLatLongCookie } from './location_tools/LocationHelpers'
 
-import Geocode from "react-geocode";
 
 function App() {
     const [isLoaded, setIsLoaded] = useState(false);
-    const [latitude, setLatitude] = useState('');
-    const [longitude, setLongitude] = useState('');
+    const [latitude, setLatitude] = useState(40.4379259);
+    const [longitude, setLongitude] = useState(-79.9556424);
+    const [totalVolunteers, setTotalVolunteers] = useState(0);
     const [associations, setAssociations] = useState([]);
     const [currentAssoc, setCurrentAssoc] = useState(null);
     const [locality, setLocality] = useState('');
     const [neighborhoods, setNeighborhoods] = useState([]);
+    const [resources, setResources] = useState(defaultResources);
     const [state, setState] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [googleApiKey, setGoogleApiKey] = useState('');
@@ -49,6 +51,12 @@ function App() {
 			} else {
 				console.log("Error");
 			}
+        });
+
+        fetch('/api/users/totalUsers')
+        .then((res) => res.json())
+        .then((res) => {
+            setTotalVolunteers(res.count);
         });
     }, []);
 
@@ -76,6 +84,7 @@ function App() {
         findAssociations(lat, long).then((associations) => {
             setAssociations(associations);
             if (associations.length > 0) {
+                setResources(associations[0].resources);
                 setCurrentAssoc(associations[0]);
             } else {
                 setCurrentAssoc({});
@@ -90,6 +99,7 @@ function App() {
         fetch(url).then((response) => {
             if (response.ok) {
                 response.json().then(association => {
+                    setResources(association.resources);
                     setCurrentAssoc(association);
                 });
             }
@@ -102,8 +112,8 @@ function App() {
     const setLocationState = (key) => {
         getMyLocation().then((stateObj) => {
             setIsLoaded(true);
-            const lat = stateObj['latitude'];
-            const long = stateObj['longitude'];
+            const lat = parseFloat(stateObj['latitude']);
+            const long = parseFloat(stateObj['longitude']);
             setLatitude(lat);
             setLongitude(long);
             findLocality(lat, long, stateObj, key);
@@ -121,11 +131,11 @@ function App() {
 			response => {
                 const { lat, lng } = response.results[0].geometry.location;
 				clearCookies();
-				setLatLongCookie(lat, lng);
+                setLatLongCookie(lat, lng);
                 setIsLoaded(true);
 
-                setLatitude(lat);
-                setLongitude(lng);
+                setLatitude(parseFloat(lat));
+                setLongitude(parseFloat(lng));
 
 				setNeighborhood(lat, lng, googleApiKey).then((neighborObj) => {
                     setLocationVariables(neighborObj);
@@ -223,8 +233,30 @@ function App() {
                 <Route exact path="/orgPasswordReset" component={OrgReset} />
                 <Route exact path="/updates" component={ChangeLog}/>
                 <Route exact path="/submit-updates" component={SubmitChangeLog}/>
-                <Route path="/" component={Home}/>
-                <Route path="*" component={Home}/>
+                <Route path="/" component={(props) => <HomePage { ...props }
+                        refreshLocation={refreshLocation}
+                        onLocationSubmit={onLocationSubmit}
+                        latitude={latitude}
+                        longitude={longitude}
+                        currentAssoc={currentAssoc}
+                        neighborhoods={neighborhoods}
+                        locality={locality}
+                        state={state}
+                        isLoaded={isLoaded}
+                        zipcode={zipcode}
+                        resources={resources}/>}/>
+                <Route path="*" component={(props) => <HomePage { ...props }
+                        refreshLocation={refreshLocation}
+                        onLocationSubmit={onLocationSubmit}
+                        latitude={latitude}
+                        longitude={longitude}
+                        currentAssoc={currentAssoc}
+                        neighborhoods={neighborhoods}
+                        locality={locality}
+                        state={state}
+                        isLoaded={isLoaded}
+                        zipcode={zipcode}
+                        resources={resources}/>}/>
             </Switch>
         </Router>
         </ToastProvider>

@@ -15,7 +15,7 @@ import RegisterPage2 from './RegisterPage2';
 import RegisterPage3 from './RegisterPage3';
 import OrgHeader from './association_volunteer_header/OrgHeader';
 import DefaultHeader from './association_volunteer_header/DefaultHeader';
-
+ 
 
 export default function RegisterPage(props) {
 
@@ -134,7 +134,7 @@ export default function RegisterPage(props) {
 		<div className="App" key="1">
 			<NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
             <Container style={{maxWidth: 1500}}>
-            <   Row>
+                <Row>
                     <Col lg={3} md={2} sm={0}>
                     </Col>
                     <Col lg={6} md={8} sm={12}>
@@ -157,10 +157,8 @@ export default function RegisterPage(props) {
                     </Col>
                 </Row>
             </Container>
-            <NewLocationSetting locationSubmit={props.onLocationSubmit}
-                                refreshLocation={props.refreshLocation}
-                                showModal={showModal}
-                                hideModal={() => setShowModal(false)}/>
+            <NewLocationSetting locationSubmit={props.onLocationSubmit} refreshLocation={props.refreshLocation}
+                                showModal={showModal} hideModal={() => setShowModal(false)}/>
             <GetLocation isLoaded={props.isLoaded} onLocationSubmit={props.onLocationSubmit}/>
 		</div>,
 		<Footer key="2"/>]

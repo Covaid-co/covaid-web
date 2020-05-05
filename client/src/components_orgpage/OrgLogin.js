@@ -132,7 +132,7 @@ export default function OrgLogin(props) {
 		setShowModal(true);
 	}
 
-    return (<>
+    return (<div className="App">
         <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
         <Container style={{maxWidth: 1500}}>
             <Row>
@@ -244,5 +244,5 @@ export default function OrgLogin(props) {
                     </Modal.Body>
                 </Modal>
         <Footer key="2" handleShowModal={handleShowModal}/>
-    </>)
+    </div>)
 }

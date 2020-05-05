@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useFormFields } from "./libs/hooksLib";
+import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -11,16 +12,19 @@ import CheckForm from './components/CheckForm';
 import { defaultResources, toastTime } from './constants'
 import { validateEmail, setFalseObj, extractTrueObj } from './Helpers';
 
-export default function RequestPage1(props) {
+/**
+ * Request support (Page 1)
+ */
 
+export default function RequestPage1(props) {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [resources, setResources] = useState({});
     const [fields, handleFieldChange] = useFormFields({
         name_request: "",
         email: ""
     });
-    const [resources, setResources] = useState({});
 
     useEffect(() => {
         var resourcesFromAssoc = defaultResources;
@@ -102,3 +106,8 @@ export default function RequestPage1(props) {
         </>
     )
 }
+
+RequestPage1.propTypes = {
+    setFirstPage: PropTypes.func,
+    currentAssoc: PropTypes.object
+};

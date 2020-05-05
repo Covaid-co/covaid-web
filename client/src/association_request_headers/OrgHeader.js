@@ -2,8 +2,9 @@ import React from "react";
 
 export default function OrgHeader(props) {
     return (
-        <>
-            <h1 id="small-header">{props.assoc.name} Form</h1>
+        <>  
+            {props.modal ? <></> : 
+                <h1 id="small-header">{props.assoc.name} Form</h1>}
             <p id="regular-text">
                 If you need support or have resources to offer as we navigate the COVID-19 crisis as a community, 
                 please use this form. Your responses to this form will only be seen by a team of volunteers working 
