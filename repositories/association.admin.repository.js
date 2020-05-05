@@ -31,8 +31,7 @@ exports.updateAssociationAdmin = async function(_id, updates) {
 
 exports.deleteAssociationAdmin = async function(associationAdmin_id) {
     try {
-
-        
+        await AssociationAdmin.findByIdAndRemove(associationAdmin_id);
     } catch (e) {
         throw Error('Error while deleting AssociationAdmin')
     }
