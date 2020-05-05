@@ -219,35 +219,38 @@ exports.all_users_of_an_association = function (req, res) {
 		});
 		return;
 	} else { // If association is unaffiliated (i.e. Covaid)
-		Users.find({'association': assoc}).then(function (users) {
-		if (req.query.latitude) {
-		Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
-			for (var i = 0; i < users.length; i++) {
-				const coords = users[i].location.coordinates;
-				const distance = distance_tools.calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
-				users[i]['distance'] = distance;
+		Users.find({'association': assoc})
+		.then(function (users) {
+			if (req.query.latitude) {
+			Users.find({$or: [{'association': assoc}, {'association': ""}]})
+				.then(function (users) {
+					for (var i = 0; i < users.length; i++) {
+						const coords = users[i].location.coordinates;
+						const distance = distance_tools.calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
+						users[i]['distance'] = distance;
+					}
+					users.sort(function(a, b){return a['distance'] - b['distance']});
+					res.send(users);
+				});
+			} else {
+				Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
+					res.send(users);
+				});
 			}
-			users.sort(function(a, b){return a['distance'] - b['distance']});
-			res.send(users);
-		});
-		} else {
-			Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
-				res.send(users);
-			});
-		}
-	});
-}
+		})
+	};
+};
 
 /**
  * Handle requests to find a user by ID
  */
 exports.find_user = function (req, res) {
-  var id = req.query.id;
-  Users.find({
-      '_id': id
+	var id = req.query.id;
+	Users.find({
+		'_id': id
     }).then(function (user) {
-      res.send(user);
-  });
+		res.send(user);
+  	});
 }
 
 /**
@@ -264,32 +267,32 @@ exports.all_users = function (req, res) {
                   }
                 }
     }).then(function (users) {
-      for (var i = 0; i < users.length; i++) {
-        const coords = users[i].location.coordinates;
-        const distance = distance_tools.calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
-        users[i]['distance'] = distance;
-      }
-      users.sort(function(a, b){return a['distance'] - b['distance']});
-      res.send(users);
-  });
+    	for (var i = 0; i < users.length; i++) {
+			const coords = users[i].location.coordinates;
+			const distance = distance_tools.calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
+			users[i]['distance'] = distance;
+      	}
+		users.sort(function(a, b){return a['distance'] - b['distance']});
+		res.send(users);
+  	});
 }
 
 /**
  * Handle requests to get all users
  */
 exports.actual_all_users = function (req, res) {
-  Users.find({}).then(function (users) {
-      res.send(users);
-  });
+	Users.find({}).then(function (users) {
+    	res.send(users);
+  	});
 }
 
 /**
  * Handle requests to get the count of total users
  */
 exports.total_users = function (req, res) {
-  Users.find({}).count(function(err, count) {
-    res.send({'count': count});
-  })
+	Users.find({}).count(function(err, count) {
+    	res.send({'count': count});
+ 	});
 }
 
 /**
@@ -345,17 +348,17 @@ exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
 exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
   const user = await Users.findById(req.params.id)
   var secret = user.hash;
-  try{
+  try {
     var payload = jwt.decode(req.params.token, secret);   
     res.sendStatus(200)      
-  }catch(error){
+  } catch(error){
     console.log(error.message);
     res.sendStatus(403);
   }
 });
 
 exports.resetPassword = asyncWrapper(async (req, res) => {
-  var newPassword = req.body.newPassword
+  var newPassword = req.body.newPassword;
   // update password
   const user = await Users.findById(req.body.id)
   user.setPassword(newPassword)
