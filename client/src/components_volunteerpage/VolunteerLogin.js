@@ -102,7 +102,7 @@ export default function OrgLogin(props) {
                     </Form>
                 </Col>
                 <Col md={6} style={{paddingLeft: 50}}>
-                    <img src={orgImg} style={{width: 480, marginTop: 50}}></img>
+                    <img src={orgImg} alt="Covaid Logo" style={{width: 480, marginTop: 50}}></img>
                 </Col>
             </Row>
             </Container>

@@ -50,13 +50,13 @@ export default function Footer() {
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 100, paddingTop: 37}}>
                     <p id="regular-text" style={{color: '#7B7B7B', fontWeight: 'bold'}}>Current Partners</p>
-                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.facebook.com/bmoremutualaid/" target="_blank">Baltimore Mutual Aid</a><br/>
-                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.pittsburghmutualaid.com/" target="_blank">Pittsburgh Mutual Aid</a><br/>
-                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.covid-gca.org/" target="_blank">Greater Charlotte Area Mutual Aid</a><br/>
+                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.facebook.com/bmoremutualaid/" rel="noopener noreferrer" target="_blank">Baltimore Mutual Aid</a><br/>
+                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.pittsburghmutualaid.com/" rel="noopener noreferrer" target="_blank">Pittsburgh Mutual Aid</a><br/>
+                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.covid-gca.org/" rel="noopener noreferrer" target="_blank">Greater Charlotte Area Mutual Aid</a><br/>
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 20, paddingTop: 78}}>
-                <a id="regular-text" style={{marginBottom: 0}} href="https://www.facebook.com/groups/200572921276575/" target="_blank">Delaware Mutual Aid</a><br/>
-                <a id="regular-text" style={{marginBottom: 0}} href="https://ccomcovid.wixsite.com/covid" target="_blank">CCOM COVID-19 Task Force</a>
+                <a id="regular-text" style={{marginBottom: 0}} href="https://www.facebook.com/groups/200572921276575/" rel="noopener noreferrer" target="_blank">Delaware Mutual Aid</a><br/>
+                <a id="regular-text" style={{marginBottom: 0}} href="https://ccomcovid.wixsite.com/covid" rel="noopener noreferrer" target="_blank">CCOM COVID-19 Task Force</a>
                 <p id="regular-text" style={{marginBottom: 0}}>Indy COVID-19 Neighbor Response Team</p>
                 </Col>
             </Row>

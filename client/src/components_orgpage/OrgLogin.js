@@ -24,7 +24,6 @@ export default function OrgLogin(props) {
         passOrg: "",
     });
 
-    const [mode, setMode] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState(0);
     const [showForgot, setShowForgot] = useState(false);
@@ -152,7 +151,7 @@ export default function OrgLogin(props) {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button style={{marginTop: 10, width: 150}} id="large-button" type="submit">Sign In</Button>
+                        <Button style={{marginTop: 10, width: 150}} id="large-button" disabled={!validateForm()} type="submit">Sign In</Button>
                         <p id="regular-text" style={{marginTop: 15, color: '#2670FF'}}>Manage a mutual aid initiative?
                             <Button variant="link" id="regular-text" onClick={() => handleShowModal('get started')}
                                     style={{color: '#2670FF', padding: 0, textDecoration: 'underline', marginTop: -2, marginLeft: 5}} >

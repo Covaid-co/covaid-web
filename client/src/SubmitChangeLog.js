@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useFormFields } from "./libs/hooksLib";
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import Badge from 'react-bootstrap/Badge'
 import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
