@@ -134,7 +134,6 @@ const updateAllExpiredRequests = () => {
                                 emailer.sendNotificationEmail(data)
                             }
                         });
-
                         pusher.trigger(request.association, 'general', 'A matched request has expired!')
                         pusher.trigger(volunteer_id, 'direct-match', 'A request has expired!')
                     }

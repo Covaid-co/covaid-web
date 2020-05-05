@@ -2,7 +2,7 @@ const asyncWrapper = require("../util/asyncWrapper")
 const AssociaitonAdminService = require('../services/association.admin.service');
 
 /**
- * Handle requests to register a user
+ * Handle requests to register an admin
  */
 exports.handleRegisterRequest = asyncWrapper(async (req, res) => {
     const { body: { admin } } = req;
@@ -72,7 +72,7 @@ exports.handleLoginRequest = asyncWrapper(async (req, res) => {
 });
 
 /**
- * Get current user who is logged in
+ * Get current admin who is logged in
  */
 exports.handleGetCurrentAdmin = function (req, res) {
 	const id = req.token.id;

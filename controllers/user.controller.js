@@ -83,11 +83,11 @@ exports.register = function (req, res) {
 		});	
       } else {
         return res.status(403).json({
-          errors: {
-              email: 'Already Exists',
-          },
-        });
-      }
+        	errors: {
+            		email: 'Already Exists',
+				},
+			});
+      	}
     });
 };
 
@@ -206,35 +206,36 @@ exports.verify = function(req, res) {
  * Handle requests to get all users of a specific association
  */
 exports.all_users_of_an_association = function (req, res) {
-  var assoc = req.query.association;
-  if (assoc !== '5e88cf8a6ea53ef574d1b80c') {
-    Users.find({'association': assoc}).then(function (users) {
-      for (var i = 0; i < users.length; i++) {
-        const coords = users[i].location.coordinates;
-        const distance = distance_tools.calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
-        users[i]['distance'] = distance;
-      }
-      users.sort(function(a, b){return a['distance'] - b['distance']});
-      res.send(users);
-    });
-    return;
-  } else {
-    if (req.query.latitude) {
-      Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
-        for (var i = 0; i < users.length; i++) {
-          const coords = users[i].location.coordinates;
-		  const distance = distance_tools.calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
-          users[i]['distance'] = distance;
-        }
-        users.sort(function(a, b){return a['distance'] - b['distance']});
-        res.send(users);
-      });
-    } else {
-      Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
-        res.send(users);
-      });
-    }
-  }
+	var assoc = req.query.association;
+	if (assoc !== '5e88cf8a6ea53ef574d1b80c') { // If association is not unaffiliated (i.e. Covaid)
+		Users.find({'association': assoc}).then(function (users) {
+			for (var i = 0; i < users.length; i++) {
+				const coords = users[i].location.coordinates;
+				const distance = distance_tools.calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
+				users[i]['distance'] = distance;
+			}
+			users.sort(function(a, b){return a['distance'] - b['distance']});
+			res.send(users);
+		});
+		return;
+	} else { // If association is unaffiliated (i.e. Covaid)
+		Users.find({'association': assoc}).then(function (users) {
+		if (req.query.latitude) {
+		Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
+			for (var i = 0; i < users.length; i++) {
+				const coords = users[i].location.coordinates;
+				const distance = distance_tools.calcDistance(req.query.latitude, req.query.longitude, coords[1], coords[0]);
+				users[i]['distance'] = distance;
+			}
+			users.sort(function(a, b){return a['distance'] - b['distance']});
+			res.send(users);
+		});
+		} else {
+			Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
+				res.send(users);
+			});
+		}
+	});
 }
 
 /**
