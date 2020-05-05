@@ -16,7 +16,7 @@ const Association = require('../models/association.model')
 const Users = require('../models/user.model')
  
 exports.request_scheduler = function() {
-    cron.schedule("*/20 * * * * *", function() {
+    cron.schedule("0 */30 * * * *", function() {
         updateAllExpiredRequests()
     })
 
@@ -70,7 +70,6 @@ const remindPendingRequests = () => {
 }
 
 const updateAllExpiredRequests = () => {
-    console.log('expiring')
     Requests.find({
         $and: [
             {
@@ -78,8 +77,8 @@ const updateAllExpiredRequests = () => {
             },
             {
                 "pending_time": {
-                    // $lte: new Date(Date.now() - 24 * 60 * 60 * 1000)
-                    $lte: new Date(Date.now() - 20 * 1000)
+                    $lte: new Date(Date.now() - 24 * 60 * 60 * 1000)
+                    // $lte: new Date(Date.now() - 20 * 1000)
                 }
             }
         ]
