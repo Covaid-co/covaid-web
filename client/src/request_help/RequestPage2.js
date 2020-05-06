@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useFormFields } from "./libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 import Form from 'react-bootstrap/Form'
 
-import NeededBy from './components_homepage/NeededBy';
-import NewDetails from './components_homepage/NewDetails';
-import NewPaymentMethod from './components_homepage/NewPaymentMethod';
-import CheckForm from './components/CheckForm';
-import { toastTime, languages } from './constants'
-import { setFalseObj, extractTrueObj } from './Helpers';
+import NeededBy from '../components_homepage/NeededBy';
+import NewDetails from '../components_homepage/NewDetails';
+import NewPaymentMethod from '../components_homepage/NewPaymentMethod';
+import CheckForm from '../components/CheckForm';
+import { toastTime, languages } from '../constants'
+import { setFalseObj, extractTrueObj } from '../Helpers';
 
 /**
  * Request support (Page 2)

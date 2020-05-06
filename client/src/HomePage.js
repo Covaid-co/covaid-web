@@ -9,12 +9,12 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import CitySupport from './components_homepage/CitySupport';
-import CommunityBulletin from './CommunityBulletin';
-import NewLogin from './NewLogin';
-import RequestHelp from './RequestHelp';
+import CommunityBulletin from './components_homepage/CommunityBulletin';
+import NewLogin from './components_modals/NewLogin';
+import RequestHelp from './request_help/RequestModal';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
-import GetLocation from './components_homepage/GetLocation';
+import GetLocation from './location_tools/GetLocation';
 import HelpfulLinks from './components_modals/HelpfulLinks';
 import NewLocationSetting from './location_tools/NewLocationSetting';
 import { generateURL } from './Helpers';

@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useFormFields } from "./libs/hooksLib";
+import Cookie from 'js-cookie'
+import { useFormFields } from "../libs/hooksLib";
 
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import Cookie from 'js-cookie'
-import { validateEmail } from './Helpers'
-import { currURL } from './constants';
+
+import ResetPassword from './ResetPassword';
+import { validateEmail } from '../Helpers'
+import { currURL } from '../constants';
 
 /**
  * Login modal for volunteers
@@ -53,7 +54,7 @@ export default function NewLogin(props) {
                 }
             }
         }).catch(e => {
-            alert('Seems to be some issues on our end, please try again later.')
+            alert(e)
         });
     };
 
@@ -114,30 +115,8 @@ export default function NewLogin(props) {
         )
     } else {
         return (
-            <Modal show={props.showModal} dialogClassName="location-set-modal" onHide={props.hideModal} style={{marginTop: 110}}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Reset your password</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={handleSubmitForgot}>
-                        <Row>
-                            <Col xs={12}>
-                                <Form.Group controlId="email" bssize="large">
-                                    <Form.Control 
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        value={fields.email}
-                                        onChange={handleFieldChange}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Button style={{marginTop: 10}} id="large-button" disabled={!validateEmail(fields.email)} type="submit">
-                            Send me a password reset link
-                        </Button>
-                        <Button id="large-button-empty" onClick={() => setMode(!mode)}>Back to login</Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
+            <ResetPassword showModal={props.showModal} hideModal={() => setMode(!mode)} 
+                        handleSubmitForgot={handleSubmitForgot} fields={fields} handleFieldChange={handleFieldChange}/>
         )
     }
 }

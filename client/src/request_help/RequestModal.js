@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from 'prop-types';
+
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import RequestPage1 from './RequestPage1';
 import RequestPage2 from './RequestPage2';
-import OrgHeader from './association_request_headers/OrgHeader';
-import DefaultHeader from './association_request_headers/DefaultHeader';
-import { generalRequestText } from './constants';
+
+import OrgHeader from '../association_request_headers/OrgHeader';
+import DefaultHeader from '../association_request_headers/DefaultHeader';
+import { generalRequestText } from '../constants';
+import CurrentLocation from '../location_tools/CurrentLocation';
 
 /**
- * Request support modal 
+ * Request Support Modal 
  */
 
 export default function RequestHelp(props) {
@@ -41,12 +42,8 @@ export default function RequestHelp(props) {
         return (
             <>
                 {topHeader}
-                <p id='regular-text' style={{marginBottom: 0}}>Current Location: 
-                    <button id="change-location" onClick={() => {props.showModalType('location-request')}}> 
-                        {props.locality + ', ' + props.zipcode} 
-                        <FontAwesomeIcon style={{color: "red", marginLeft: 5}} icon={faMapMarkerAlt}/> 
-                    </button>
-                </p>
+                <CurrentLocation locationProps={{locality: props.locality, zipcode: props.zipcode}} 
+                                 showModal={() => {props.showModalType('location-request')}}/>
                 <p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p>
             </>
         )

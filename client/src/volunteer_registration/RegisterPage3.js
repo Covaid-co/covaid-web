@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
+
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -6,22 +8,24 @@ import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 import ReCAPTCHA from "react-google-recaptcha";
 
-import CheckForm from './components/CheckForm';
-import { toastTime, defaultTerms } from './constants'
-import { extractTrueObj, setTrueObj } from './Helpers';
+import CheckForm from '../components/CheckForm';
+import { toastTime, defaultTerms } from '../constants'
+import { extractTrueObj, setTrueObj } from '../Helpers';
+
+/**
+ * Volunteer Registration (Page 3)
+ */
 
 export default function RegisterPage3(props) {
     const terms = [0, 1, 2, 3, 4, 5];
-    const [currentTerms, setCurrentTerms] = useState({
-        0: false, 1: false, 2: false,
-        3: false, 4: false, 5: false
-    }); 
-
     const [neighborhoodsChecked, setNeighborhoodsChecked] = useState({});
     const [captcha, setCaptcha] = useState(false);
     const [termSentences, setTermSentences] = useState(defaultTerms);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [currentTerms, setCurrentTerms] = useState({
+        0: false, 1: false, 2: false, 3: false, 4: false, 5: false
+    }); 
 
     useEffect(() => {
         if (props.currentAssoc.resources) {
@@ -89,7 +93,7 @@ export default function RegisterPage3(props) {
         <>
             <Form onSubmit={goToSubmit}>
                 <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 4}}>
-                    We've identified the following as your primary locality
+                    We&apos;ve identified the following as your primary locality
                 </h5>
                 <p id="regular-text" style={{marginBottom: 4, fontSize: 14}}>
                     If they seem unfamiliar, please change your location above.
@@ -116,11 +120,9 @@ export default function RegisterPage3(props) {
                         })}
                     </Col>
                 </Row>
-                <ReCAPTCHA
-                    sitekey="6LeZmeQUAAAAALo6YR9A7H-f7EZsYj3c0KJ189Ev"
-                    onChange={() => {setCaptcha(true)}}
-                    style = {{marginBottom: 0, marginTop: 20}}
-                />
+                <ReCAPTCHA sitekey="6LeZmeQUAAAAALo6YR9A7H-f7EZsYj3c0KJ189Ev"
+                            onChange={() => {setCaptcha(true)}}
+                            style = {{marginBottom: 0, marginTop: 20}}/>
                 <Button id="large-button" style={{marginTop: 15}} type="submit">Sign up!</Button>
             </Form>
             <p id="pagenum-text">Page 3 of 3</p>
@@ -129,5 +131,10 @@ export default function RegisterPage3(props) {
             </Toast>
         </>
     )
+}
 
+RegisterPage3.propTypes = {
+    handleSubmit: PropTypes.func,
+    currentAssoc: PropTypes.object,
+    neighborhoods: PropTypes.array
 }

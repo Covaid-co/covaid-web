@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from 'prop-types';
 
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 
-import NewLocationSetting from './location_tools/NewLocationSetting';
-import GetLocation from './components_homepage/GetLocation';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
+import NewLocationSetting from '../location_tools/NewLocationSetting';
+import GetLocation from '../location_tools/GetLocation';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 import RegisterPage1 from './RegisterPage1';
 import RegisterPage2 from './RegisterPage2';
 import RegisterPage3 from './RegisterPage3';
-import OrgHeader from './association_volunteer_header/OrgHeader';
-import DefaultHeader from './association_volunteer_header/DefaultHeader';
+import OrgHeader from '../association_volunteer_header/OrgHeader';
+import DefaultHeader from '../association_volunteer_header/DefaultHeader';
+import CurrentLocation from '../location_tools/CurrentLocation';
  
+/**
+ * Volunteer Registration Main Page
+ */
 
 export default function RegisterPage(props) {
-
     const [showModal, setShowModal] = useState(false);
     const [firstPage, setFirstPage] = useState({});
     const [secondPage, setSecondPage] = useState({});
@@ -36,12 +38,7 @@ export default function RegisterPage(props) {
         return (
             <>
                 {topHeader}
-                <p id='regular-text' style={{marginBottom: 0}}>Current Location: 
-                    <button id="change-location" onClick={() => setShowModal(true)}> 
-                        {props.locationProps.locality + ', ' + props.locationProps.zipcode} 
-                        <FontAwesomeIcon style={{color: "red", marginLeft: 5}} icon={faMapMarkerAlt}/> 
-                    </button>
-                </p>
+                <CurrentLocation locationProps={props.locationProps} showModal={() => setShowModal(true)}/>
             </>
         )
     }
@@ -80,12 +77,9 @@ export default function RegisterPage(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
-                response.json().then(data => {
+                response.json().then(() => {
                     setJustRegistered(true);
-                    console.log("niceeeee");
                 });
-            } else {
-                console.log("email exists");
             }
         }).catch((e) => {
             console.log(e);
@@ -163,5 +157,14 @@ export default function RegisterPage(props) {
 		</div>,
 		<Footer key="2"/>]
 	);
-
 }
+
+RegisterPage.propTypes = {
+    locationProps: PropTypes.shape({
+        currentAssoc: PropTypes.object,
+        latitude: PropTypes.number,
+        longitude: PropTypes.number,
+        zipcode: PropTypes.string,
+        locality: PropTypes.string
+    })
+};

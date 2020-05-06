@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
-import { useFormFields } from "./libs/hooksLib";
+import React from 'react';
+import { useFormFields } from "../libs/hooksLib";
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import Badge from 'react-bootstrap/Badge'
 import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl'
 
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 
+/**
+ * Submitting an update for covaid
+ */
 
-export default function ChangeLog(props) {
-
+export default function ChangeLog() {
     const [fields, handleFieldChange] = useFormFields({
         date_field: "",
         features_field: "",
@@ -21,12 +22,8 @@ export default function ChangeLog(props) {
         fixes_field: ""
     });
 
-    useEffect(() => {
-    }, []);
-
     const handleSubmit = async e => {
         e.preventDefault();
-
         const features = fields.features_field.split("\n");
         const improvements = fields.improvements_field.split("\n");
         const fixes = fields.fixes_field.split("\n");
@@ -42,16 +39,14 @@ export default function ChangeLog(props) {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
-        })
-        .then((response) => {
+        }).then((response) => {
             if (response.ok) {
                 console.log("Successfully added");
             } else {
                 console.log("Not successful");
             }
-        })
-        .catch((e) => {
-            console.log("Error");
+        }).catch((e) => {
+            console.log(e);
         });
     }
 
@@ -60,10 +55,8 @@ export default function ChangeLog(props) {
             <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
             <Container style={{maxWidth: 1500}}>
                 <Row>
-                    <Col lg={3} md={2} sm={0}>
-                    </Col>
+                    <Col lg={3} md={2} sm={0}></Col>
                     <Col lg={6} md={8} sm={12}>
-
                         <Form style={{marginTop: 0, marginBottom: 10, display: "block", whiteSpace: 'nowrap'}}>
                             <Form.Group controlId="date_field" bssize="large">
                                 <FormControl value={fields.date_field} onChange={handleFieldChange} placeholder="Date" style={{marginBottom: 5}}/>
@@ -85,8 +78,7 @@ export default function ChangeLog(props) {
                             </Button>
                         </Form>
                     </Col>
-                    <Col lg={3} md={2} sm={0}>
-                    </Col>
+                    <Col lg={3} md={2} sm={0}></Col>
                 </Row>
             </Container>
         </div>,

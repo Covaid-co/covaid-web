@@ -10,7 +10,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 
 import { filterVolunteers } from './OrganizationHelpers';
 import { extractTrueObj } from '../Helpers';
-import Pagination from '../CommunityBulletinComponents/Pagination'
+import Pagination from '../components/Pagination'
 
 export default function VolunteersModal(props) {
     const [filteredVolunteers, setFilteredVolunteers] = useState([]);

@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { useFormFields } from "./libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
+import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 
-import PhoneNumber from './components/PhoneNumber';
-import { toastTime } from './constants'
-import { validateEmail } from './Helpers';
+import PhoneNumber from '../components/PhoneNumber';
+import { toastTime } from '../constants'
+import { validateEmail } from '../Helpers';
+ 
+/**
+ * Volunteer Registration (Page 1)
+ */
 
 export default function RegisterPage1(props) {
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
     const [fields, handleFieldChange] = useFormFields({
         first_name: "",
         last_name: "",
@@ -19,10 +27,6 @@ export default function RegisterPage1(props) {
         confirmPassword: "", 
         pronouns: ""
     });
-
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
 
     const goToSecondPage = () => {
         const valid = checkPage();
@@ -128,5 +132,8 @@ export default function RegisterPage1(props) {
             </Toast>
         </>
     )
+}
 
+RegisterPage1.propTypes = {
+    setFirstPage: PropTypes.func
 }

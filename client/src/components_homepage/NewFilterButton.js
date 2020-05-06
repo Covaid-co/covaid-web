@@ -1,6 +1,6 @@
 import React, {  useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown'
-import { extractTrueObj } from './Helpers';
+import { extractTrueObj } from '../Helpers';
 
 export default function NewFilterButton(props) {
 

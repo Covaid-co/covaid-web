@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from 'prop-types';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import NewLocationSetting from './location_tools/NewLocationSetting';
-import GetLocation from './components_homepage/GetLocation';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
+import NewLocationSetting from '../location_tools/NewLocationSetting';
+import GetLocation from '../location_tools/GetLocation';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 import RequestPage1 from './RequestPage1';
 import RequestPage2 from './RequestPage2';
-import OrgHeader from './association_request_headers/OrgHeader';
-import DefaultHeader from './association_request_headers/DefaultHeader';
-import { generalRequestText } from './constants';
+import OrgHeader from '../association_request_headers/OrgHeader';
+import DefaultHeader from '../association_request_headers/DefaultHeader';
+import CurrentLocation from '../location_tools/CurrentLocation';
+import { generalRequestText } from '../constants';
 
 /**
- * Request support page 
+ * Request Support Main Page
  */
 
 export default function RequestPage(props) {
@@ -38,12 +37,7 @@ export default function RequestPage(props) {
         return (
             <>
                 {topHeader}
-                <p id='regular-text' style={{marginBottom: 0}}>Current Location: 
-                    <button id="change-location" onClick={() => setShowModal(true)}> 
-                        {props.locationProps.locality + ', ' + props.locationProps.zipcode} 
-                        <FontAwesomeIcon style={{color: "red", marginLeft: 5}} icon={faMapMarkerAlt}/> 
-                    </button>
-                </p>
+                <CurrentLocation locationProps={props.locationProps} showModal={() => setShowModal(true)}/>
             </>
         )
     }
@@ -69,16 +63,14 @@ export default function RequestPage(props) {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
-        })
-        .then((response) => {
+        }).then((response) => {
             if (response.ok) {
                 console.log("Request successfully created");
                 setCompleted(true);
             } else {
                 console.log("Request not successful")
             }
-        })
-        .catch((e) => {
+        }).catch((e) => {
             console.log(e);
         });
     }
@@ -89,19 +81,17 @@ export default function RequestPage(props) {
                 <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
                 <Container style={{maxWidth: 1500}}>
                     <Row>
-                        <Col lg={3} md={2} sm={0}>
-                        </Col>
+                        <Col lg={3} md={2} sm={0}></Col>
                         <Col lg={6} md={8} sm={12}>
                             <Container id="newOfferContainer" style={{marginBottom: 0}}>
-                                <h1 id="small-header">We've received your request!</h1>
+                                <h1 id="small-header">We&apos;ve received your request!</h1>
                                 <p id="regular-text" style={{marginBottom: 5}}>
                                     Your request has been saved and you should be contacted soon 
                                     from a matched volunteer who can support you!
                                 </p>
                             </Container>
                         </Col>
-                        <Col lg={3} md={2} sm={0}>
-                        </Col>
+                        <Col lg={3} md={2} sm={0}></Col>
                     </Row>
                 </Container>
             </div>,

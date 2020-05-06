@@ -19,7 +19,7 @@ import VolunteerDetails from './components_orgpage/VolunteerDetails';
 import VolunteersModal from './components_orgpage/VolunteersModal';
 import AdminModal from './components_orgpage/AdminModal';
 import BeaconCreation from './components_orgpage/BeaconCreation';
-import OrgResourcesModal from './OrgResourcesModal';
+import OrgResourcesModal from './components_orgpage/OrgResourcesModal';
 import LiveBeaconView from './components_orgpage/LiveBeaconView'
 import OrganizationRequestBoard from './components_orgpage/OrganizationRequestBoard';
 import OrganizationMap from './components_orgpage/OrganizationMap';
@@ -100,7 +100,7 @@ export default function OrganiationPortal(props) {
 				}
 			)
 		});
-		channel.bind('complete', function(data) {
+		channel.bind('complete', function() {
 			fetch_requests(id)
 			addToast("Someone completed a request!", {
 					appearance: 'success',
@@ -180,7 +180,7 @@ export default function OrganiationPortal(props) {
 								</Button>{' '}
 								<br/>
 								<Button variant="link" id="resources-link" onClick={()=>{setResourceModal(true)}}>
-									+ Add a link to your community's resources
+									+ Add a link to your community&apos;s resources
 								</Button>
 							</Col>
 							<Col lg={5} md={5} sm={12} style={width < 768 ? {display: 'none'} : {display: 'block'}}>

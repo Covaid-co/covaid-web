@@ -3,21 +3,26 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {ToastProvider} from 'react-toast-notifications';
 import Geocode from "react-geocode";
 
-import Home from './Home'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css'
+import './Home.css'
+import './changelog/ChangeLog.css'
+import './styling/NewHomePage.css';
+
 import CompleteOffer from './CompleteOffer'
 import InternalRequests from './InternalRequests'
-import Verify from './Verify'
-import Welcome from './Welcome'
-import RequestPage from './RequestPage'
+import Verify from './components_homepage/Verify'
+import Welcome from './components_homepage/Welcome'
+import RequestPage from './request_help/RequestPage'
 import ResetPassword from './ResetPassword'
 import ResetAssociationPassword from './ResetAssociationPassword'
 import OrganizationPortal from './OrganizationPortal'
 import VolunteerPortal from './VolunteerPortal'
-import OrgAdminRegister from './OrgAdminRegister'
-import OrgReset from './OrgReset';
-import RegisterPage from './RegisterPage';
-import ChangeLog from './ChangeLog';
-import SubmitChangeLog from './SubmitChangeLog';
+import OrgAdminRegister from './components_orgpage/OrgAdminRegister'
+import OrgReset from './components_orgpage/OrgReset';
+import RegisterPage from './volunteer_registration/RegisterPage';
+import ChangeLog from './changelog/ChangeLog';
+import SubmitChangeLog from './changelog/SubmitChangeLog';
 import HomePage from './HomePage';
 
 import { defaultResources } from './constants'

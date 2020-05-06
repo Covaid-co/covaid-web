@@ -4,13 +4,15 @@ import Row from 'react-bootstrap/Row'
 import Badge from 'react-bootstrap/Badge'
 import Container from 'react-bootstrap/Container'
 
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
-import { sortFn } from './components_orgpage/OrganizationHelpers';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import { sortFn } from '../components_orgpage/OrganizationHelpers';
 
+/**
+ * Changelog/updates page for keeping track of covaid updates
+ */
 
-export default function ChangeLog(props) {
-
+export default function ChangeLog() {
     const [changeLog, setChangeLog] = useState([])
 
     useEffect(() => {
@@ -35,25 +37,23 @@ export default function ChangeLog(props) {
             <>
                 <Badge id={category}>{category.charAt(0).toUpperCase() + category.slice(1)}</Badge>
                 <ul id="changelog-list">
-                    {log[category].map((item) => {
+                    {log[category].map((item, i) => {
                         if (item === "") {
                             return <></>
                         }
-                        return <li id="changelog-listitem">{item}</li>
+                        return <li key={i} id="changelog-listitem">{item}</li>
                     })}
                 </ul>
             </>
         )
     }
     
-    
     return ([
         <div className="App" key="1">
             <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
             <Container style={{maxWidth: 1500}}>
                 <Row>
-                    <Col lg={3} md={2} sm={0}>
-                    </Col>
+                    <Col lg={3} md={2} sm={0}></Col>
                     <Col lg={6} md={8} sm={12}>
                         <h1 id="changelog-heading" style={{fontSize: 40}}>Changelog 📬</h1>
                         <p id="regular-text" style={{marginBottom: 5}}>
@@ -71,8 +71,7 @@ export default function ChangeLog(props) {
                             </>
                         })}
                     </Col>
-                    <Col lg={3} md={2} sm={0}>
-                    </Col>
+                    <Col lg={3} md={2} sm={0}></Col>
                 </Row>
             </Container>
         </div>,

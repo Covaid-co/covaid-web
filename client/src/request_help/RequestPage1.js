@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useFormFields } from "./libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -7,10 +7,10 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 
-import PhoneNumber from './components/PhoneNumber';
-import CheckForm from './components/CheckForm';
-import { defaultResources, toastTime } from './constants'
-import { validateEmail, setFalseObj, extractTrueObj } from './Helpers';
+import PhoneNumber from '../components/PhoneNumber';
+import CheckForm from '../components/CheckForm';
+import { defaultResources, toastTime } from '../constants'
+import { validateEmail, setFalseObj, extractTrueObj } from '../Helpers';
 
 /**
  * Request support (Page 1)

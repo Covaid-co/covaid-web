@@ -2,7 +2,7 @@ import React from "react";
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
-import UnmatchedRequests from '../UnmatchedRequests';
+import OrgRequests from './OrgRequests';
 
 /*
  * Organization bulletin of requests
@@ -25,11 +25,11 @@ export default function OrganizationRequestBoard(props) {
     const requestsCol = (mode, requests) => {
         return (
             <Container id="newOfferContainer" style={displayTab(mode)}>
-            <UnmatchedRequests setCurrRequest={props.setCurrRequest} 
-                               setRequestDetailsModal={props.setRequestDetailsModal}
-                               setInRequest={props.setInRequest}
-                               mode={mode} requests={requests}/>
-        </Container>
+                <OrgRequests setCurrRequest={props.setCurrRequest} 
+                                setRequestDetailsModal={props.setRequestDetailsModal}
+                                setInRequest={props.setInRequest}
+                                mode={mode} requests={requests}/>
+            </Container>
         )
     }
 
