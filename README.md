@@ -58,9 +58,12 @@ Generally, the project is broken down into the client and server. The server run
     │   ├── public                     # Files being served in deployed version
     │   ├── src                        # React files
     │       ├── App.js                 # Main file for frontend
-    │       ├── VolunteerPortal.js     # Main volunteer page 
+    │       ├── Homepage.js            # Main landing page
+    │       ├── components_homepage    # Components used in landing page
     │       ├── OrganizationPortal.js  # Main organization page 
-    │       ├── location_tools         # Location related components
+    │       ├── components_orgpage     # Components used in organization page
+    │       ├── VolunteerPortal.js     # Main volunteer page 
+    │       ├── components_volunteer   # Components used in volunteer page
 
 
 ## Code Change Process
