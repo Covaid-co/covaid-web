@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal' 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -105,15 +105,6 @@ export default function BeaconConfirmation(props) {
         }).catch((e) => {
             console.log(e);
         });
-    }
-
-    const formatEndDate = (endDate) => {
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-        ];
-        var end = new Date(endDate);
-        var endString = monthNames[end.getMonth()] + " " + end.getDate();
-        return endString;
     }
 
     const action = (type) => {

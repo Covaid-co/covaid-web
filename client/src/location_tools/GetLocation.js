@@ -36,7 +36,7 @@ export default function GetLocation(props) {
                 <Spinner animation="border" role="status" style = {{textAlign: 'right', color: "black"}}></Spinner>
             </Modal.Header>
             <Modal.Body>
-                <p id="regular-text">Depending on server speeds, this make take a bit. If you’d like, you can input your current city/zip code.</p>
+                <p id="regular-text">Depending on server speeds, this may take a bit. If you’d like, you can input your current city/zip code.</p>
                 <Form onSubmit={handleSubmit}>
                     <Row>
                         <Col xs={12}>

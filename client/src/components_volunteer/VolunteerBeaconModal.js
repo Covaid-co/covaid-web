@@ -1,20 +1,21 @@
+/**
+ * Specific beacon modal
+ */
+
 import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
-import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import fetch_a from '../util/fetch_auth'
-import ListGroup from 'react-bootstrap/ListGroup'
 import { useFormFields } from "../libs/hooksLib";
 
 
 export default function VolunteerBeaconModal(props) {
     const [loaded, setLoaded] = useState(false);
     const [beacon, setBeacon] = useState({});
-    const [volunteer, setVolunteer] = useState({});
     const [currentUserResponse, setCurrentUserResponse] = useState({});
     const [fields, handleFieldChange] = useFormFields({
         message: ""
@@ -23,15 +24,15 @@ export default function VolunteerBeaconModal(props) {
     useEffect(() => {
         setLoaded(true);
         setBeacon(props.beacon);
-        setVolunteer(props.volunteer);
         getBeaconResponse(props.beacon, props.volunteer);
      }, [props.beacon, props.volunteer]);
 
-     const getBeaconResponse = (beacon, currVolunteer) => {
+     // Update state to contain user's response to specific beacon
+    const getBeaconResponse = (beacon, currVolunteer) => {
         if (beacon.volunteers) {
             var userResponse = beacon.volunteers.filter(function(listVolunteer) {
                 return listVolunteer.volunteer_id === currVolunteer._id;
-            })
+            });
             setCurrentUserResponse(userResponse[0]);
             if (userResponse[0].responseMessage) {
                 fields.message = userResponse[0].responseMessage;
@@ -39,7 +40,7 @@ export default function VolunteerBeaconModal(props) {
         }
     }
     
-
+    // Update user's response to a beacon on backend, update frontend state
     const updateUserResponse = () => {
         if (currentUserResponse.response) {
             fields.message = '';
@@ -47,8 +48,8 @@ export default function VolunteerBeaconModal(props) {
         const form = {
             beacon_id: beacon._id,
             updates: {
-                response: !currentUserResponse.response,
-                responseMessage: fields.message
+                response: !currentUserResponse.response, // True or False
+                responseMessage: fields.message // Text response
             }
         }
 
@@ -70,7 +71,8 @@ export default function VolunteerBeaconModal(props) {
         });
     }
 
-     const formatDate = (beacon) => {
+    // Render the date for a beacon's start and end date
+    const formatDate = (beacon) => {
         const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
         ];

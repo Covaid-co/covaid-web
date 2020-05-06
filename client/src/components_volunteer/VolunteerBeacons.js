@@ -1,3 +1,7 @@
+/**
+ * Active beacons tied to a volunteer
+ */
+
 import React, { useState, useEffect } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
@@ -25,28 +29,22 @@ export default function VolunteerBeacons(props) {
         setLoading(false);
     }, [props.beacons, props.volunteer]);
 
+    // Render the date for when a beacon will expire
     const formatDate = (beacon) => {
         const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
         ];
-        var start = new Date(beacon.beaconStartDate);
         var end = new Date(beacon.beaconEndDate);
-        var startString = monthNames[start.getMonth()] + " " + start.getDate();
-        var join = " - ";
         var endString = monthNames[end.getMonth()] + " " + end.getDate();
 
-        if (startString === endString) {
-            return startString;
-        } else {
-            return "Expires on " + endString;
-        }
+        return "Expires on " + endString;
     }
 
+    // Render badge depending on whether beacon has been accepted by user
     const getBadge = (beacon) => {
         var volunteerData = beacon.volunteers.find(b => {
             return b.volunteer_id === volunteer._id;
         })
-
         if (volunteerData.response) {
             return <Badge className='in-progress-task' style={{marginTop: 0, color: "#28a745", border: "1px solid #28a745"}}>Accepted</Badge>;
         } else {
@@ -58,6 +56,7 @@ export default function VolunteerBeacons(props) {
         return <></>
     } else {
 
+        // Default text is there are no beacons
         if (beacons.length === 0) {
             return <>
                      <p id="regular-text" style={{color: 'black', textAlign: "center", marginTop: 20}}>

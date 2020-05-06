@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
@@ -9,8 +8,6 @@ import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
 import BeaconConfirmation from './BeaconConfirmation'
 import AcceptedVolunteersModal from './AcceptedVolunteersModal';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const BeaconStatusEnum = {"active":1, "inactive":2, "complete":3, "delete": 4};
 

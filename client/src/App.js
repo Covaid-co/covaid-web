@@ -9,8 +9,6 @@ import './Home.css'
 import './changelog/ChangeLog.css'
 import './styling/NewHomePage.css';
 
-import CompleteOffer from './CompleteOffer'
-import InternalRequests from './InternalRequests'
 import Verify from './components_homepage/Verify'
 import Welcome from './components_homepage/Welcome'
 import RequestPage from './request_help/RequestPage'
@@ -218,8 +216,6 @@ function App() {
         <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2:400&display=swap" rel="stylesheet"></link>
         <Router>
             <Switch>
-                <Route exact path="/completeOffer" component={CompleteOffer}/>
-                <Route exact path="/internal/requests" component={InternalRequests}/>
                 <Route exact path="/organizationPortal" component={OrganizationPortal}/>
                 <Route exact path="/volunteerPortal" component={VolunteerPortal}/>
                 <Route exact path="/verify" component={Verify}/>

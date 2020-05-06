@@ -30,6 +30,10 @@ export default function OrgLogin(props) {
         passOrg: "",
     });
 
+    function validateForm() {
+        return fields.emailOrg.length > 0 && fields.passOrg.length > 0;
+    }
+
     useEffect(() => {
         if (props.orgReset) {
             setShowModal(true);
@@ -144,7 +148,7 @@ export default function OrgLogin(props) {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button style={{marginTop: 10, width: 150}} id="large-button" type="submit">Sign In</Button>
+                        <Button style={{marginTop: 10, width: 150}} id="large-button" disabled={!validateForm()} type="submit">Sign In</Button>
                         <p id="regular-text" style={{marginTop: 15, color: '#2670FF'}}>Manage a mutual aid initiative?
                             <Button variant="link" id="regular-text" onClick={() => handleShowModal('get started')}
                                     style={{color: '#2670FF', padding: 0, textDecoration: 'underline', marginTop: -2, marginLeft: 5}} >

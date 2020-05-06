@@ -1,3 +1,7 @@
+/**
+ * Completed requests tied to a volunteer
+ */
+
 import React, { useState, useEffect } from 'react';
 import Badge from 'react-bootstrap/Badge'
 import ListGroup from 'react-bootstrap/ListGroup'
@@ -21,6 +25,7 @@ export default function CompletedVolunteerRequests(props) {
         setCompletedRequests(props.completedRequests.reverse());
     }, [props.completedRequests])
 
+    // Render default text if there are no completed requests
     if (completedRequests.length === 0) {
         return <>
                  <p id="regular-text" style={{color: 'black', textAlign: "center", marginTop: 20}}>

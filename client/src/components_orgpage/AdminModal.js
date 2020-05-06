@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { generateURL, convertTime } from '../Helpers'
+import { generateURL } from '../Helpers'
 
 export default function AdminModal(props) {
     
@@ -108,16 +108,14 @@ export default function AdminModal(props) {
                 response.json().then(requests => {
                     var d = new Date();
                     const reformattedRequests = requests.map(request => {
-                        if (!request.delete) {
-                            return {
-                                'Name': request.requester_first,
-                                'Email': request.requester_email,
-                                'Phone': request.requester_phone,
-                                'Resource Request': request.resource_request.join(", "),
-                                'Details': request.details,
-                                'Time Created': request.time_posted,
-                            };
-                        }
+                        return {
+                            'Name': request.requester_first,
+                            'Email': request.requester_email,
+                            'Phone': request.requester_phone,
+                            'Resource Request': request.resource_request.join(", "),
+                            'Details': request.details,
+                            'Time Created': request.time_posted,
+                        };
                     })
                     const fileName = 'requests-' + d.toLocaleDateString();
                     const ws = XLSX.utils.json_to_sheet(reformattedRequests);

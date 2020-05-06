@@ -4,15 +4,15 @@ const auth = require('../auth');
 
 const request_controller = require('../../controllers/request.controller');
 
-router.post('/create_request', request_controller.createARequest)
+// POST
+router.post('/create_request', request_controller.createARequest);
+
+// GET
 router.get('/:id/update_completed', request_controller.update_completed);
 router.get('/allRequestsInAssoc', request_controller.getAllRequestsOfAnAssoc);
-router.post('/handle_request', request_controller.handle_old_request);
-router.get('/allRequestsInVolunteer', request_controller.getAllRequestsInVolunteer);
-router.get('/allPendingRequestsInVolunteer', request_controller.getAllPendingRequestsInVolunteer);
-router.get('/allAcceptedRequestsInVolunteer', request_controller.getAllAcceptedRequestsInVolunteer);
-router.get('/allCompletedRequestsInVolunteer', request_controller.getAllCompletedRequestsInVolunteer);
+router.get('/volunteerRequests', auth.required, request_controller.handleGetVolunteerRequests);
 
+// PUT
 router.put('/attachVolunteerToRequest', request_controller.attachVolunteer);
 router.put('/removeVolunteerFromRequest', request_controller.removeVolunteer);
 router.get('/acceptRequest', auth.required, request_controller.acceptRequest)

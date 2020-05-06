@@ -1,3 +1,7 @@
+/**
+ * Volunteer's Your Offer component
+ */
+
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "../libs/hooksLib";
@@ -26,7 +30,20 @@ export default function YourOffer(props) {
     const [isUnPublish, setIsUnPublish] = useState(false);
     const [isUpdate, setIsUpdate] = useState(false);
 
+    // Helper function to update list state elements
+    const setCurrentUserObject = (userList, fullList, setFunction) => {
+        for (var i = 0; i < fullList.length; i++) {
+            const curr = fullList[i];
+            const include = (userList.includes(curr)) ? true : false;
+            setFunction(prev => ({ 
+                ...prev,
+                [curr]: include,
+            }));
+        }
+    }
+
     useEffect(() => {
+        // Fill in existing user info to state
         fields.details = props.user.offer.details;
         setAvailability(props.user.availability);
         async function getResources() {
@@ -44,17 +61,15 @@ export default function YourOffer(props) {
         getResources();
     }, [props.user]);
 
-    const setCurrentUserObject = (userList, fullList, setFunction) => {
-        for (var i = 0; i < fullList.length; i++) {
-            const curr = fullList[i];
-            const include = (userList.includes(curr)) ? true : false;
-            setFunction(prev => ({ 
-                ...prev,
-                [curr]: include,
-            }));
-        }
+    // Update the state of offer, allow a 750 ms loading time
+    function stateChange(setter, publish) {
+        setTimeout(function () {
+            setAvailability(publish)
+            setter(false);
+        }, 750);
     }
 
+    // Input validation
     const checkInputs = () => {
         if (Object.values(resources).every(v => v === false)) {
             setShowToast(true);
@@ -70,21 +85,15 @@ export default function YourOffer(props) {
         return true;
     }
 
-
-    function stateChange(setter, publish) {
-        setTimeout(function () {
-            console.log("Offer successfully created");
-            setAvailability(publish)
-            setter(false);
-        }, 750);
-    }
-    
-
+    // PUT offer changes to backend, update state
+    // publish -> T/F (whether to publish or unpublish offer)
+    // setter -> State setting function that allows for loading effect
     const handleUpdate = (publish, setter) => {
         if (checkInputs() === false) {
             return;
         }
 
+        // Start Loading
         setter(true);
 
         var resourceList = extractTrueObj(resources);
@@ -100,9 +109,10 @@ export default function YourOffer(props) {
             body: JSON.stringify(form)
         }).then((response) => {
             if (response.ok) {
+                // Change the state to refect offer update
                 stateChange(setter, publish)
             } else {
-                console.log("Offer not successful");
+                console.log("Update not successful");
             }
         }).catch((e) => {
             console.log("Error");
@@ -119,11 +129,13 @@ export default function YourOffer(props) {
     var spinnerComponent = <Spinner animation="border" />
 
     if (availability) {
+        // Render specific text if user is available
         visibleText = <h5 id="volunteer-offer-status" style={{color: "#45A03D"}}>
             *Your offer is currently live and on the community bulletin</h5>
         publishButton = <Button id="large-button-empty" style={{color: "#AE2F2F", borderColor: "#AE2F2F", marginTop: 5}} onClick={() => handleUpdate(false, setIsUnPublish)}>{isUnPublish ? spinnerComponent : unpublishText}</Button>
         updateButton =  <Button id="large-button" style={{marginTop: 20}} onClick={() => handleUpdate(true, setIsUpdate)} >{isUpdate ? spinnerComponent : updateText}</Button>
     } else {
+        // Render specific test is user is unavailable
         visibleText = <h5 id="volunteer-offer-status" style={{color: "#AE2F2F"}}>
             *Your offer is currently inactive</h5> 
         publishButton = <Button id="large-button" style={{marginTop: 20}} onClick={() => handleUpdate(true, setIsPublish)} >{isPublish ? spinnerComponent : publishText}</Button>  

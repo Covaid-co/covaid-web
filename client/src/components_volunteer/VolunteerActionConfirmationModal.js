@@ -1,35 +1,27 @@
-import React, {useState} from 'react';
+/**
+ * Confirmation modal for changing status of a request (volunteer)
+ */
+
+import React from 'react';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal' 
-import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
-import Toast from 'react-bootstrap/Toast'
 import { useFormFields } from "../libs/hooksLib";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function VolunteerActionConfirmationModal(props) {
-    const [showToast, setShowToast] = useState(false);
+    // fields.comment is used if a request is attempting to be completed
+    // Filled in with request completion details
     const [fields, handleFieldChange] = useFormFields({
         comment: ""
-    })
+    });
 
-    const confirmComplete = () => {
-        if (props.action !== 'complete') {
-            return false;
-        } else {
-            if (fields.comment.length < 10) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    }
-
+    // Update request completion details on backend
+    // Callback to parent modal
     const complete = () => {
         const requester_id = props.currRequest._id;
         const volunteer_id = props.currRequest.status.volunteer;
-        const assoc_id = props.currRequest.association
+        const assoc_id = props.currRequest.association;
 
         let form = {
             'request_id': requester_id,
@@ -49,13 +41,15 @@ export default function VolunteerActionConfirmationModal(props) {
                 props.setOriginalModal(false)
                 props.complete();
             } else {
-                alert("unable to attach");
+                alert("Unable to complete, please email us at covaidco@gmail.com.");
             }
         }).catch((e) => {
             console.log(e);
         });
     }
 
+    // Update request reject on backend
+    // Callback to parent modal
     const reject = () => {
         const requester_id = props.currRequest._id;
         const volunteer_id = props.currRequest.status.volunteer;
@@ -76,15 +70,30 @@ export default function VolunteerActionConfirmationModal(props) {
                 props.setOriginalModal(false)
                 props.reject();
             } else {
-                alert("unable to attach");
+                alert("Unable to reject, please email us at covaidco@gmail.com.");
             }
         }).catch((e) => {
             console.log(e);
         });
     }
 
+    // Determine which action to process (complete or reject)
     const action = props.action === 'complete' ? complete : reject;
 
+    // Input validation for confirm case
+    const confirmComplete = () => {
+        if (props.action !== 'complete') {
+            return false;
+        } else {
+            if (fields.comment.length < 10) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    // Generate a request comment form if the modal is in 'complete' mode.
     const getCommentForm = (action) => {
         if (action === 'complete') {
             return <>

@@ -1,3 +1,7 @@
+/*
+* Volunteer Login Page
+*/
+
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "../libs/hooksLib";
@@ -21,40 +25,8 @@ export default function OrgLogin(props) {
         passOrg: "",
     });
 
-    const [mode, setMode] = useState(true);
     const [showModal, setShowModal] = useState(false);
 	const [modalType, setModalType] = useState(0);
-
-    function validateForm() {
-        return fields.emailOrg.length > 0 && fields.password.length > 0;
-    }
-
-    function validateForgotForm() {
-        return fields.emailOrg.length > 0;
-    }
-
-    // const handleSubmitForgot = async e => {
-    //     e.preventDefault();
-    //     let form = {
-    //         'email': fields.emailOrg,
-    //     };
-    //     // console.log(form)
-    //     fetch('/api/association/emailpasswordresetlink', {
-    //         method: 'post',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify(form)
-    //     })
-    //     .then((response) => {
-    //         if (response.ok) {
-    //             alert("Check your email for password link!")
-    //         } else {
-    //             alert('Error sending link!')
-    //         }
-    //     })
-    //     .catch((e) => {
-    //         alert('Error')
-    //     });
-    //   };
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -73,7 +45,7 @@ export default function OrgLogin(props) {
             if (response.ok) {
                 response.json().then(data => {
                     Cookie.set("token", data.user.token);
-                    window.location.href = window.location.href;
+                    window.location.reload(true);
                 });
             } else {
                 if (response.status === 403) {
@@ -130,7 +102,7 @@ export default function OrgLogin(props) {
                     </Form>
                 </Col>
                 <Col md={6} style={{paddingLeft: 50}}>
-                    <img src={orgImg} style={{width: 480, marginTop: 50}}></img>
+                    <img src={orgImg} alt="Covaid Logo" style={{width: 480, marginTop: 50}}></img>
                 </Col>
             </Row>
             </Container>

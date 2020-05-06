@@ -2,7 +2,7 @@ const asyncWrapper = require("../util/asyncWrapper")
 const AssociaitonAdminService = require('../services/association.admin.service');
 
 /**
- * Handle requests to register a user
+ * Handle requests to register an admin
  */
 exports.handleRegisterRequest = asyncWrapper(async (req, res) => {
     const { body: { admin } } = req;
@@ -72,7 +72,7 @@ exports.handleLoginRequest = asyncWrapper(async (req, res) => {
 });
 
 /**
- * Get current user who is logged in
+ * Get current admin who is logged in
  */
 exports.handleGetCurrentAdmin = function (req, res) {
 	const id = req.token.id;
@@ -84,49 +84,3 @@ exports.handleGetCurrentAdmin = function (req, res) {
 			return res.json(admin[0]);
 		})
 };
-
-// /**
-//  * Get all users given a query and a limit
-//  */
-// exports.handleGetUsers = asyncWrapper(async (req, res) => {
-
-// 	const query = req.query;
-// 	const limit = null;
-
-// 	try {
-// 		let users = await UserService.get_users(query, limit);
-// 		return res.json(users);
-// 	} catch (e) {
-// 		return res.sendStatus(400);
-// 	}
-// });
-
-// /**
-//  * Get all users given a latitude, longitude, and radius
-//  */
-// exports.handleGetUsersGivenLocation = asyncWrapper(async (req, res) => {
-// 	const latitude = req.query.latitude;
-// 	const longitude = req.query.longitude;
-// 	const radius = req.query.radius;
-// 	const limit = req.query.limit;
-// 	try {
-// 		let users = await UserService.get_users_with_location(latitude, longitude, radius, limit);
-// 		return res.json(users);
-// 	} catch (e) {
-// 		return res.sendStatus(400);
-// 	}
-// });
-
-// /**
-//  * Update any user-related information
-//  */
-// exports.handleUpdateInfo = asyncWrapper(async (req, res) => {
-// 	const { body: { _id, updates } } = req;
-// 	try {
-// 		await UserService.update_user(_id, updates);
-// 		return res.sendStatus(200);
-// 	} catch (e) {
-// 		console.log(e);
-// 		return res.sendStatus(400);
-// 	}
-// });

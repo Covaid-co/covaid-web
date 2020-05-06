@@ -1,7 +1,5 @@
 var cron = require('node-cron');
-const Pusher = require('pusher');
 require('dotenv').config();
-const emailer = require('../util/emailer')
 const Beacon = require('../models/beacon.model');
 const BeaconStatusEnum = {"active":1, "inactive":2, "complete":3, "delete": 4};
  

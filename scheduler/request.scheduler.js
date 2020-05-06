@@ -88,16 +88,23 @@ const updateAllExpiredRequests = () => {
             requests.forEach(function(request) {
                 var id = request._id;
                 var volunteer_id = request.status.volunteer
-                Requests.findOneAndUpdate({"_id": id}, {
-                    $set: {
+                var updateQuery = {
+                    '$set': {
                         "status": {
                             "current_status": "incomplete",
                             "volunteer": ""
                         },
+                        "adminMessage": "",
                         "volunteer_status": "",
                         "last_modified": new Date()
                     }
-                }, function(err, post) {
+                }
+            
+                if (volunteer_id) {
+                    updateQuery['$push'] = {'prev_matched': volunteer_id};
+                }
+
+                Requests.findOneAndUpdate({"_id": id}, updateQuery, function(err, post) {
                     if (err) console.log(err)
                     else {
                         Association.findOne({
@@ -134,7 +141,6 @@ const updateAllExpiredRequests = () => {
                                 emailer.sendNotificationEmail(data)
                             }
                         });
-
                         pusher.trigger(request.association, 'general', 'A matched request has expired!')
                         pusher.trigger(volunteer_id, 'direct-match', 'A request has expired!')
                     }

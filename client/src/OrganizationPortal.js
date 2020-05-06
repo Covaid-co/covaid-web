@@ -191,7 +191,7 @@ export default function OrganiationPortal(props) {
 											BETA
 										</Badge> 
 									</h3>
-									<p id="regular-text" style={{marginBottom: 10}}>Use our <b>Beacon Notifcation System</b> and mass notify your volunteers about any internal organization requests</p>
+									<p id="regular-text" style={{marginBottom: 10}}>Use our <b>Beacon Notification System</b> and mass notify your volunteers about any internal organization requests</p>
 									<Row>
 										<Col style={{paddingRight: 5}}>
 											<Button id="large-button" onClick={()=>{setBeaconModal(true)}}>

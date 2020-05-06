@@ -67,8 +67,7 @@ exports.updateBeaconWithVolunteer = async function(user_id, beacon_id, updates) 
 
 exports.deleteBeacon = async function(_id) {
     try {
-
-        
+        await Beacon.findByIdAndRemove(_id);
     } catch (e) {
         throw Error('Error while deleting request')
     }
