@@ -1,25 +1,19 @@
 import React, {useState, useEffect} from "react";
-import {translations} from './translations';
-import LocalizedStrings from 'react-localization';
-
-let translatedStrings = new LocalizedStrings({translations});
+import Select from 'react-select';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+const options = [
+    { value: 'en', label: 'English' },
+    { value: 'es', label: 'Español' }
+  ];
 
 export default function OrgHeader(props) {
-    const [language, setLanguage] = useState('es');
-    const [loadedStrings, setLoadedStrings] = useState(false);
-
-    useEffect(() => {
-        setLoadedStrings(true);
-    });
-
-    if (!loadedStrings) {
-        return <></>;
-    }
+    const [selectedOption, setSelectedOption] = useState({value: 'en', label: 'English'});
 
     const createFormName = (assocName, assocCity) => {
-        switch (language) {
+        switch (props.language) {
             case 'en':
-                return assocName + " " + translatedStrings[language].formTitle
+                return assocName + " " + props.translations[props.language].formTitle
             case 'es':
                 return "Formulario de Ayuda Mutua en " + assocCity;
             default:
@@ -27,27 +21,46 @@ export default function OrgHeader(props) {
         }
     }
 
+    const handleLanguageChange = (selectedDropdownOption) => {
+        setSelectedOption(selectedDropdownOption);
+        props.changeLanguage(selectedDropdownOption.value);
+    }
+
     return (
         <>
-            <h1 id="small-header">{createFormName(props.assoc.name, props.assoc.city)}</h1>
+            <Row>
+                <Col xs={8}>
+                    <h1 id="small-header" style={{marginTop: 5}}>{createFormName(props.assoc.name, props.assoc.city)}
+                    </h1>
+                </Col>
+                <Col xs={4}>
+                    <Select
+                        value={selectedOption}
+                        onChange={handleLanguageChange}
+                        placeholder={'Translate...'}
+                        options={options}
+                    />
+                </Col>
+            </Row>
+            <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
             <p id="regular-text">
-                {translatedStrings[language].intro}
+                {props.translations[props.language].intro}
                 <a href={props.assoc.homepage} target="_blank" rel="noopener noreferrer"> {props.assoc.name}</a>.
             </p>
             <p id="regular-text">
-                {translatedStrings[language].prioritizing} {props.assoc.city} {translatedStrings[language].areas}. 
+                {props.translations[props.language].prioritizing} {props.assoc.city} {props.translations[props.language].areas}. 
             </p>
             <p id="regular-text">
-                {translatedStrings[language].formManage} {props.assoc.city} {translatedStrings[language].managedBy}. 
+                {props.translations[props.language].formManage} {props.assoc.city} {props.translations[props.language].managedBy}. 
             </p>
             <p id="regular-text">
-                {translatedStrings[language].questions}:<br/>
+                {props.translations[props.language].questions}:<br/>
                 <strong>{props.assoc.email}</strong>
             </p>
             <p id="regular-text">
-                {translatedStrings[language].motto}
+                {props.translations[props.language].motto}
             </p>
-            <p id="request-calling" style={{borderBottom: '0px solid', marginBottom: 0}}>{translatedStrings[language].call}: 
+            <p id="request-calling" style={{borderBottom: '0px solid', marginBottom: 0}}>{props.translations[props.language].call}: 
             <br /><span id="phoneNumber">{props.assoc.phone ? props.assoc.phone : '(401) 526-8243'}</span></p>
         </>
     );

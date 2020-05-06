@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from "../libs/hooksLib";
+import PropTypes from 'prop-types';
 
-import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
@@ -16,52 +15,47 @@ import orgscreenImg from '../assets/orgscreen.png'
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer';
 import GetStarted from './GetStarted';
+import ResetPassword from '../components_modals/ResetPassword';
+
+/**
+ * Landing Page for non-logged in organizations
+ */
 
 export default function OrgLogin(props) {
+    const [showModal, setShowModal] = useState(false);
+    const [modalType, setModalType] = useState('');
     const [fields, handleFieldChange] = useFormFields({
         emailOrg: "",
         email: "",
         passOrg: "",
     });
 
-    const [showModal, setShowModal] = useState(false);
-    const [modalType, setModalType] = useState(0);
-    const [showForgot, setShowForgot] = useState(false);
-
     function validateForm() {
         return fields.emailOrg.length > 0 && fields.passOrg.length > 0;
     }
 
-    function validateForgotForm() {
-        return fields.email.length > 0;
-    }
-
     useEffect(() => {
         if (props.orgReset) {
-            setShowForgot(props.orgReset)
+            setShowModal(true);
+            setModalType('forgot');
         }
     }, [props.orgReset])
 
     const handleSubmitForgot = async e => {
         e.preventDefault();
-        let form = {
-            'email': fields.email,
-        };
-        // console.log(form)
+        let form = { 'email': fields.email };
         fetch('/api/association/emailpasswordresetlink', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
-        })
-        .then((response) => {
+        }).then((response) => {
             if (response.ok) {
                 alert("Check your email for password link!")
             } else {
                 alert('Error sending link!')
             }
-        })
-        .catch((e) => {
-            alert('Error');
+        }).catch(e => {
+            alert(e);
         });
     };
 
@@ -122,6 +116,9 @@ export default function OrgLogin(props) {
         var modal = <></>;
         if (modalType === 'get started') {
             modal = <GetStarted showModal={showModal} hideModal={() => setShowModal(false)}/>;
+        } else if (modalType === 'forgot') {
+            modal = <ResetPassword showModal={showModal} hideModal={() => setShowModal(false)} 
+                        handleSubmitForgot={handleSubmitForgot} fields={fields} handleFieldChange={handleFieldChange}/>
         }
         return modal;
     }
@@ -131,7 +128,7 @@ export default function OrgLogin(props) {
 		setShowModal(true);
 	}
 
-    return (<>
+    return (<div className="App">
         <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
         <Container style={{maxWidth: 1500}}>
             <Row>
@@ -157,9 +154,6 @@ export default function OrgLogin(props) {
                                     style={{color: '#2670FF', padding: 0, textDecoration: 'underline', marginTop: -2, marginLeft: 5}} >
                                 Get Started
                             </Button>
-                            {/* <a id="regular-text" onClick={() => handleShowModal('get started')} 
-                                style={{color: '#2670FF', marginLeft: 5, textDecoration: 'underline'}} href="#">
-                                Get Started</a><br/> */}
                         </p>
                     </Form>
                 </Col>
@@ -178,7 +172,6 @@ export default function OrgLogin(props) {
                     <p id="home-subheading" style={{fontSize: 16, paddingRight: 0, marginBottom: 0}}>Optimize your workflow with the Covaid request tracker, 
                     an automated system for managing resource requests coming to your organization.</p>
                 </Col>
-
                 <Col md={6} id="requests-feature-container" style={{textAlign: 'center'}}>
                     <img id="request-img" alt="" src={requestsImg}></img>
                 </Col>
@@ -216,32 +209,12 @@ export default function OrgLogin(props) {
             </Row>
         </Container>
         {getCurrentModal()}
-        <Modal show={showForgot} size='sm' style={{marginTop: 110}}>
-                    <Modal.Header>
-                        <Modal.Title id="small-header" style={{marginLeft: 5}}>Reset your password</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={handleSubmitForgot}>
-                            <Row>
-                                <Col xs={12}>
-                                    <Form.Group controlId="email" bssize="large">
-                                        <Form.Control 
-                                            type="email"
-                                            placeholder="Enter your email"
-                                            value={fields.email}
-                                            onChange={handleFieldChange}
-                                        />
-
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Button style={{marginTop: 10}} id="large-button" disabled={!validateForgotForm()} type="submit">
-                                Send me a password reset link
-                            </Button>
-                            <Button id="large-button-empty" onClick={() => {setShowForgot(false);}}>Back to login</Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
         <Footer key="2" handleShowModal={handleShowModal}/>
-    </>)
+    </div>)
+}
+
+OrgLogin.propTypes = {
+    orgReset: PropTypes.bool,
+    setShowLogin: PropTypes.func,
+    login: PropTypes.func
 }

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import PropTypes from 'prop-types';
+
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner';
@@ -6,9 +8,15 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Toast from 'react-bootstrap/Toast'
+import { toastTime } from '../constants'
+
+
+/*
+ * Display this modal if no lat/long is set (isLoaded = False)
+ * Give user option to enter a string
+ */
 
 export default function GetLocation(props) {
-
     const [locationString, setLocationString] = useState('');
     const [showInvalid, setShowInvalid] = useState(false);
 
@@ -36,23 +44,22 @@ export default function GetLocation(props) {
                                 <Form.Control 
                                     placeholder="City/Zipcode"
                                     value={locationString} 
-                                    onChange={(e) => setLocationString(e.target.value)}
-                                />
+                                    onChange={(e) => setLocationString(e.target.value)}/>
                             </Form.Group>
                         </Col>
                     </Row>
                     <Button style={{marginTop: 5}} id="large-button" type="submit">Enter Location</Button>
                 </Form>
             </Modal.Body>
-            <Toast
-                show={showInvalid}
-                delay={3000}
-                onClose={() => setShowInvalid(false)}
-                autohide
-                id='toastError'
-                style={{marginBottom: 75, marginRight: 18}}>
+            <Toast show={showInvalid} delay={toastTime} onClose={() => setShowInvalid(false)} autohide
+                id='toastError' style={{marginBottom: 75, marginRight: 18}}>
                 <Toast.Body>Invalid city/zipcode</Toast.Body>
             </Toast>
         </Modal>
     );
 }
+
+GetLocation.propTypes = {
+    onLocationSubmit: PropTypes.func,
+    isLoaded: PropTypes.bool
+};

@@ -8,7 +8,7 @@ import VolunteerDetails from './VolunteerDetails'
 import Button from 'react-bootstrap/Button'
 import { calcDistance } from '../Helpers';
 import { formatName } from './OrganizationHelpers';
-import Pagination from '../CommunityBulletinComponents/Pagination'
+import Pagination from '../components/Pagination'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function BestMatches(props) {

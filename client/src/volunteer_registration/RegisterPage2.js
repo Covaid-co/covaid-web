@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { useFormFields } from "./libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 
-import NewHasCar from './components_homepage/NewHasCar';
-import CheckForm from './components/CheckForm';
-import Details from './components_homepage/Details'
-import { defaultResources, toastTime, availability } from './constants'
-import { setFalseObj, extractTrueObj } from './Helpers';
+import NewHasCar from '../components_homepage/NewHasCar';
+import CheckForm from '../components/CheckForm';
+import Details from '../components_homepage/Details'
+import { defaultResources, toastTime, availability } from '../constants'
+import { setFalseObj, extractTrueObj } from '../Helpers';
 
+/**
+ * Volunteer Registration (Page 2)
+ */
 
-export default function RegisterPage1(props) {
-    const [fields, handleFieldChange] = useFormFields({
-        details: ""
-    });
-
+export default function RegisterPage2(props) {
     const [taskChecked, setTaskChecked] = useState({});
     const [availabilityChecked, setAvailabilityChecked] = useState({});
     const [hasCar, setHasCar] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [fields, handleFieldChange] = useFormFields({
+        details: ""
+    });
 
     useEffect(() => {
         if (props.currentAssoc && props.currentAssoc.resources) {
@@ -90,5 +93,9 @@ export default function RegisterPage1(props) {
             </Toast>
         </>
     )
+}
 
+RegisterPage2.propTypes = {
+    setSecondPage: PropTypes.func,
+    currentAssoc: PropTypes.object
 }

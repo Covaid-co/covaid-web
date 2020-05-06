@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import ListGroup from 'react-bootstrap/ListGroup'
-import Pagination from './CommunityBulletinComponents/Pagination'
-import Offer from './components_homepage/Offer'
+import Pagination from '../components/Pagination'
+import Offer from './BulletinOffers'
 import Container from 'react-bootstrap/Container'
 
 import NewFilterButton from './NewFilterButton'
-import OfferDetails from './components_homepage/OfferDetails'
-import { setFalseObj } from './Helpers';
+import OfferDetails from './OfferDetails'
+import { setFalseObj } from '../Helpers';
 
-export default function NewOffers(props) {
+/**
+ * Community Bulletin of volunteers for the homepage
+ */
 
+export default function CommunityBulletin(props) {
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
     const [currentVolunteers, setCurrentVolunteers] = useState([]);
     const [taskSelect, setTaskSelect] = useState({});
@@ -75,8 +79,14 @@ export default function NewOffers(props) {
                         totalPosts={currentVolunteers.length}
                         paginate={paginatePage}/>
                 </ListGroup>
-                
             </Container>
         </>
     );
 }
+
+CommunityBulletin.propTypes = {
+    handleShowRequestHelp: PropTypes.func,
+    volunteers: PropTypes.array,
+    resources: PropTypes.array,
+    mobile: PropTypes.bool
+};

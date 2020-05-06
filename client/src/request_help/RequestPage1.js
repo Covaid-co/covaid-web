@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { useFormFields } from "./libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
+import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 
-import PhoneNumber from './components/PhoneNumber';
-import CheckForm from './components/CheckForm';
-import { defaultResources, toastTime } from './constants'
-import { validateEmail, setFalseObj, extractTrueObj } from './Helpers';
+import PhoneNumber from '../components/PhoneNumber';
+import CheckForm from '../components/CheckForm';
+import { defaultResources, toastTime } from '../constants'
+import { validateEmail, setFalseObj, extractTrueObj } from '../Helpers';
+
+/**
+ * Request support (Page 1)
+ */
 
 export default function RequestPage1(props) {
-
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [resources, setResources] = useState({});
     const [fields, handleFieldChange] = useFormFields({
         name_request: "",
         email: ""
     });
-    const [resources, setResources] = useState({});
 
     useEffect(() => {
         var resourcesFromAssoc = defaultResources;
@@ -72,28 +76,28 @@ export default function RequestPage1(props) {
 
     return (
         <>
-            <h5 id="regular-text-bold">Personal Information</h5>
+            <h5 id="regular-text-bold">{props.translations[props.language].personalInformation}</h5>
             <Row>
                 <Col xs={12}>
                     <Form.Group controlId="name_request" bssize="large">
-                        <Form.Control value={fields.name_request} onChange={handleFieldChange} placeholder="Name" />
+                        <Form.Control value={fields.name_request} onChange={handleFieldChange} placeholder={props.translations[props.language].name} />
                     </Form.Group>
                 </Col>
                 <Col xs={12}>
-                    <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder={"Phone"}/>
+                    <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} placeholder={props.translations[props.language].phone}/>
                 </Col>
                 <Col xs={12}>
                     <Form.Group controlId="email" bssize="large">
-                        <Form.Control value={fields.email} onChange={handleFieldChange} placeholder="Email" />
+                        <Form.Control value={fields.email} onChange={handleFieldChange} placeholder={props.translations[props.language].phone} />
                     </Form.Group>
                     <p id="regular-text" style={{fontStyle: 'italic', marginTop: 0, fontSize: 14}}>
-                        Please enter either an email or a phone number.
+                        {props.translations[props.language].emailOrPhone}.
                     </p>
                 </Col>
             </Row>
             {props.currentAssoc === null ? <></> :
-            <><h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>What support do you need?</h5>
-            <CheckForm obj={resources} setObj={setResources}/></>}
+            <><h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>{props.translations[props.language].whatSupport}?</h5>
+            <CheckForm obj={resources} setObj={setResources} translations={props.translations} language={props.language}/></>}
             <Button id="large-button" style={{marginTop: 15}} onClick={goToSecondPage}>Next</Button>
             <p id="pagenum-text">Page 1 of 2</p>
             <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
@@ -102,3 +106,8 @@ export default function RequestPage1(props) {
         </>
     )
 }
+
+RequestPage1.propTypes = {
+    setFirstPage: PropTypes.func,
+    currentAssoc: PropTypes.object
+};

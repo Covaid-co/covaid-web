@@ -5,20 +5,20 @@
 import React, { useState, useEffect } from "react";
 import Pusher from 'pusher-js';
 import { useToasts } from 'react-toast-notifications'
-import AccountInfo from './components_volunteerpage/AccountInfo'
-import YourOffer from './components_volunteerpage/YourOffer'
+import AccountInfo from './components_volunteer/AccountInfo'
+import YourOffer from './components_volunteer/YourOffer'
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import CurrentVolunteerRequests from './components_volunteerpage/CurrentVolunteerRequests';
-import CompletedVolunteerRequests from './components_volunteerpage/CompletedVolunteerRequests';
+import CurrentVolunteerRequests from './components_volunteer/CurrentVolunteerRequests';
+import CompletedVolunteerRequests from './components_volunteer/CompletedVolunteerRequests';
 import { generateURL } from './Helpers';
 import NavBar from './components/NavBar'
-import VolunteerLogin from './components_volunteerpage/VolunteerLogin'
-import VolunteerBeacons from './components_volunteerpage/VolunteerBeacons'
+import VolunteerLogin from './components_volunteer/VolunteerLogin'
+import VolunteerBeacons from './components_volunteer/VolunteerBeacons'
 import './VolunteerPage.css'
 import fetch_a from './util/fetch_auth'
 import Footer from './components/Footer'

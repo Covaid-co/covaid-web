@@ -29,6 +29,13 @@ export default function Footer() {
         setModalName(name);
     }
     
+    const linkObject = (url, name) => {
+        return <><a id="regular-text" style={{marginBottom: 0}} href={url} 
+                    target="_blank" rel="noopener noreferrer">
+                    {name}
+                </a><br/></>
+    }
+
     return (
         <footer className="footer">
             <Container>
@@ -50,13 +57,13 @@ export default function Footer() {
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 100, paddingTop: 37}}>
                     <p id="regular-text" style={{color: '#7B7B7B', fontWeight: 'bold'}}>Current Partners</p>
-                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.facebook.com/bmoremutualaid/" rel="noopener noreferrer" target="_blank">Baltimore Mutual Aid</a><br/>
-                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.pittsburghmutualaid.com/" rel="noopener noreferrer" target="_blank">Pittsburgh Mutual Aid</a><br/>
-                    <a id="regular-text" style={{marginBottom: 0}} href="https://www.covid-gca.org/" rel="noopener noreferrer" target="_blank">Greater Charlotte Area Mutual Aid</a><br/>
+                    {linkObject("https://www.facebook.com/bmoremutualaid/", 'Baltimore Mutual Aid')}
+                    {linkObject("https://www.pittsburghmutualaid.com/", 'Pittsburgh Mutual Aid')}
+                    {linkObject("https://www.covid-gca.org/", 'Greater Charlotte Area Mutual Aid')}
                 </Col>
                 <Col xs={4} style={{padding: 20,  paddingLeft: 20, paddingTop: 78}}>
-                <a id="regular-text" style={{marginBottom: 0}} href="https://www.facebook.com/groups/200572921276575/" rel="noopener noreferrer" target="_blank">Delaware Mutual Aid</a><br/>
-                <a id="regular-text" style={{marginBottom: 0}} href="https://ccomcovid.wixsite.com/covid" rel="noopener noreferrer" target="_blank">CCOM COVID-19 Task Force</a>
+                {linkObject("https://www.facebook.com/groups/200572921276575/", 'Delaware Mutual Aid')}
+                {linkObject("https://ccomcovid.wixsite.com/covid", 'CCOM COVID-19 Task Force')}
                 <p id="regular-text" style={{marginBottom: 0}}>Indy COVID-19 Neighbor Response Team</p>
                 </Col>
             </Row>

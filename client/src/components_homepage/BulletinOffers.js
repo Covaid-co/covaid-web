@@ -1,9 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Badge from 'react-bootstrap/Badge'
  
-const Offer = ({ displayedVolunteers, setModalInfo, setModalOfferOpen }) => {
-
+/**
+ * Offers on the community bulletin
+ */
+ 
+export default function BulletinOffers({ displayedVolunteers, setModalInfo, setModalOfferOpen }) {
     return (
         <>
             {displayedVolunteers.map((user, i) => {
@@ -36,6 +40,10 @@ const Offer = ({ displayedVolunteers, setModalInfo, setModalOfferOpen }) => {
             : ''}
         </>
     );
-};
+}
 
-export default Offer;
+BulletinOffers.propTypes = {
+    displayedVolunteers: PropTypes.array,
+    setModalInfo: PropTypes.func,
+    setModalOfferOpen: PropTypes.func
+};

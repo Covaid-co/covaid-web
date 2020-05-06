@@ -5,11 +5,11 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
-import { useFormFields } from "./libs/hooksLib"; 
-import { generateURL } from './Helpers';
-import orgImg from './assets/orgNew.png'
-import NavBar from './components/NavBar'
-import { validateEmail } from './Helpers';
+import { useFormFields } from "../libs/hooksLib"; 
+import { generateURL } from '../Helpers';
+import orgImg from '../assets/orgNew.png'
+import NavBar from '../components/NavBar'
+import { validateEmail } from '../Helpers';
 import Cookie from 'js-cookie'
 const queryString = require('query-string');
 
@@ -40,9 +40,8 @@ export default function OrgAdminRegister(props) {
                         }
                     });
                 }
-            })
-            .catch((e) => {
-                alert('Seems to be server issues. Please try again later.');
+            }).catch(e => {
+                alert(e);
             });
     }, [props.location.search]);
 
@@ -98,10 +97,6 @@ export default function OrgAdminRegister(props) {
         return false;
     }
 
-    const handleShowModal = () => {
-
-    }
-
     if (!loaded) {
         return <></>;
     }
@@ -115,7 +110,7 @@ export default function OrgAdminRegister(props) {
     } else {
         return (
             <>
-            <NavBar isLoggedIn={false} orgAdmin={true} handleShowModal={handleShowModal} />
+            <NavBar isLoggedIn={false} orgAdmin={true}/>
             <Container style={{maxWidth: 1500}}>
                 <Row>
                     <Col md={6} id="login-container">

@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import PropTypes from 'prop-types';
+
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Toast from 'react-bootstrap/Toast'
+import { toastTime } from '../constants'
+
+/**
+ * Changing location modal
+ */
 
 export default function NewLocationSetting(props) {
-
     const [locationString, setLocationString] = useState('');
     const [showInvalid, setShowInvalid] = useState(false);
 
@@ -36,8 +42,7 @@ export default function NewLocationSetting(props) {
                                 <Form.Control 
                                     placeholder="City/Zipcode"
                                     value={locationString} 
-                                    onChange={(e) => setLocationString(e.target.value)}
-                                />
+                                    onChange={(e) => setLocationString(e.target.value)}/>
                             </Form.Group>
                         </Col>
                     </Row>
@@ -49,10 +54,17 @@ export default function NewLocationSetting(props) {
                     </Button>
                 </Form>
             </Modal.Body>
-            <Toast show={showInvalid} delay={2000} onClose={() => setShowInvalid(false)} autohide
+            <Toast show={showInvalid} delay={toastTime} onClose={() => setShowInvalid(false)} autohide
                 id='toastError' style={{marginBottom: -50, marginRight: 0}}>
                 <Toast.Body>Invalid city/zipcode</Toast.Body>
             </Toast>
         </Modal>
     );
+}
+
+NewLocationSetting.propTypes = {
+    refreshLocation: PropTypes.func,
+    showModal: PropTypes.bool,
+    hideModal: PropTypes.func,
+    locationSubmit: PropTypes.func
 }

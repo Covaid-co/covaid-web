@@ -105,4 +105,4 @@ export const getMyLocation = async () =>  {
     const res = await getPosition();
     setLatLongCookie(res.coords.latitude, res.coords.longitude);
     return {latitude: res.coords.latitude, longitude: res.coords.longitude};
-  }
+}
