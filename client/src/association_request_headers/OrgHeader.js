@@ -9,7 +9,7 @@ export default function OrgHeader(props) {
                 If you need support or have resources to offer as we navigate the COVID-19 crisis as a community, 
                 please use this form. Your responses to this form will only be seen by a team of volunteers working 
                 to match resources with needs. You can find more public resources at 
-                <a href={props.assoc.homepage} target="_blank"> {props.assoc.name}</a>.
+                <a href={props.assoc.homepage} target="_blank" rel="noopener noreferrer"> {props.assoc.name}</a>.
             </p>
             <p id="regular-text">
                 We are prioritizing folks who are sick, disabled, quarantined without pay, elderly, undocumented, 

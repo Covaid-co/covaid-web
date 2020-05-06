@@ -55,20 +55,20 @@ export default function ChangeLog() {
                 <Row>
                     <Col lg={3} md={2} sm={0}></Col>
                     <Col lg={6} md={8} sm={12}>
-                        <h1 id="changelog-heading" style={{fontSize: 40}}>Changelog 📬</h1>
+                        <h1 id="changelog-heading" style={{fontSize: 40}}>Changelog <span role="img" aria-label="mailbox">📬</span></h1>
                         <p id="regular-text" style={{marginBottom: 5}}>
                             Changes and updates made to Covaid sorted by date.
                         </p>
                         <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
 
-                        {changeLog.map((log) => {
-                            return <>
+                        {changeLog.map((log, i) => {
+                            return <div key={i}>
                                 <p id="date-heading">{log.date}</p>
                                 {displayInfo(log, 'features')}
                                 {displayInfo(log, 'improvements')}
                                 {displayInfo(log, 'fixes')}
                                 <p id="requestCall" style={{marginTop: 45, marginBottom: 0}}></p>
-                            </>
+                            </div>
                         })}
                     </Col>
                     <Col lg={3} md={2} sm={0}></Col>

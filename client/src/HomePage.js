@@ -38,7 +38,7 @@ export default function HomePage(props) {
 
     useEffect(() => {
         // Find 20 nearest volunteers once props are set
-        if (props.latitude != '' && props.longitude != '' && props.currentAssoc) {
+        if (props.latitude !== '' && props.longitude !== '' && props.currentAssoc) {
             let params = {'latitude': props.latitude, 'longitude': props.longitude}
             var url = generateURL("/api/users/all?", params);
             fetch(url).then((response) => {
@@ -54,10 +54,10 @@ export default function HomePage(props) {
             });
         }
 
-        if (Object.keys(currentUser).length == 0 && Cookie.get('token')) {
+        if (Object.keys(currentUser).length === 0 && Cookie.get('token')) {
             fetchUser();
         }
-    }, [props.latitude, props.longitude, props.currentAssoc]);
+    }, [props.latitude, props.longitude, props.currentAssoc, currentUser]);
 
     const showModalType = (type) => {
         setModalType(type);
