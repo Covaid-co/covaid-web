@@ -94,10 +94,9 @@ export default function RequestPage(props) {
                         <Col lg={3} md={2} sm={0}></Col>
                         <Col lg={6} md={8} sm={12}>
                             <Container id="newOfferContainer" style={{marginBottom: 0}}>
-                                <h1 id="small-header">We&apos;ve received your request!</h1>
+                                <h1 id="small-header">{translatedStrings[language].ReceivedYourRequest}</h1>
                                 <p id="regular-text" style={{marginBottom: 5}}>
-                                    Your request has been saved and you should be contacted soon 
-                                    from a matched volunteer who can support you!
+                                    {translatedStrings[language].VolunteerReachOutSoon}
                                 </p>
                             </Container>
                         </Col>
