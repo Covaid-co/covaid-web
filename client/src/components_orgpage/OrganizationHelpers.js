@@ -195,7 +195,6 @@ export const fetchOrgVolunteers = async (id) => {
 // Return orgs requests
 export const fetchOrgRequests = async (id) => {
     let params = {'association': id}
-    console.log(params);
     var url = generateURL( "/api/request/allRequestsInAssoc?", params);
     const response = await fetch(url, {
         method: 'get',
@@ -212,7 +211,6 @@ export const fetchOrgRequests = async (id) => {
             res[day]++;
         }
     });
-    console.log(res);
     return data;
 }
 
