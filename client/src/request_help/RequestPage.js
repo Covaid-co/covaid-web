@@ -52,6 +52,9 @@ export default function RequestPage(props) {
         )
     }
 
+    var assoc_id = (props.locationProps.currentAssoc && props.locationProps.currentAssoc._id && props.locationProps.currentAssoc._id.length > 0) 
+                        ? props.locationProps.currentAssoc._id : "5e88cf8a6ea53ef574d1b80c";
+
     const handleSubmit = (secondPage) => {
         let form = {
             'requester_first': firstPage.name,
@@ -61,11 +64,12 @@ export default function RequestPage(props) {
             'payment': secondPage.payment,
             'resource_request': firstPage.resources,
             'languages': secondPage.languages,
-            'association': props.locationProps.currentAssoc._id,
+            'association': assoc_id,
             'time': secondPage.time,
             'date': secondPage.date,
             'latitude': props.locationProps.latitude,
             'longitude': props.locationProps.longitude,
+            'volunteer': props.volunteer,
             'status': "pending"
         };
 
