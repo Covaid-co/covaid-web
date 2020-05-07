@@ -553,11 +553,11 @@ export default function RequestDetails(props) {
                     <Form onSubmit={completeRequest}>
                         <Form.Group controlId="time" onChange={handleChangeReasons}>
                             <Form.Control as="select">
-                                <option>Volunteer Completed</option>
+                                <option>Volunteer completed</option>
                                 <option>Could not reach</option>
-                                <option>No one area</option>
-                                <option>Recurring Request</option>
-                                <option>Referred for support</option>
+                                <option>No one in area</option>
+                                <option>Recurring request</option>
+                                <option>Referred to support</option>
                             </Form.Control>
                         </Form.Group>
                         <Button type="submit" id="large-button" style={{backgroundColor: '#28a745', border: '1px solid #28a745'}}>
