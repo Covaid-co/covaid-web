@@ -219,9 +219,7 @@ exports.all_users_of_an_association = function (req, res) {
 		});
 		return;
 	} else { // If association is unaffiliated (i.e. Covaid)
-		Users.find({'association': assoc})
-		.then(function (users) {
-			if (req.query.latitude) {
+		if (req.query.latitude) {
 			Users.find({$or: [{'association': assoc}, {'association': ""}]})
 				.then(function (users) {
 					for (var i = 0; i < users.length; i++) {
@@ -232,12 +230,11 @@ exports.all_users_of_an_association = function (req, res) {
 					users.sort(function(a, b){return a['distance'] - b['distance']});
 					res.send(users);
 				});
-			} else {
-				Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
-					res.send(users);
-				});
-			}
-		})
+		} else {
+			Users.find({$or: [{'association': assoc}, {'association': ""}]}).then(function (users) {
+				res.send(users);
+			});
+		}
 	};
 };
 
