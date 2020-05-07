@@ -1,6 +1,6 @@
 # Covaid
 
-A mutual aid platform for local aid efforts to organize/match volunteers to those in need of support.
+A mutual aid platform for local aid efforts to organize/match volunteers with those in need of support.
 
 Live site: [here](https://covaid.co)!
 
@@ -43,18 +43,15 @@ npm i
 npm run client
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
-
 ### General Project Breakdown
 
 Generally, the project is broken down into the client and server. The server runs locally on localhost:5000 and the client runs on localhost:3000. To access the front end, just paste the client url into your browser. 
 
-### Detailed Project Breakdown
+### Detailed Project Breakdown (Important Files)
     
-    ├── package.json                   # Packages being used for backend
+    ├── package.json                   # Packages being used for server
     ├── client                         # Frontend for Coviad
-    │   ├── package.json               # Packages being used for frontend
+    │   ├── package.json               # Packages being used for client
     │   ├── public                     # Files being served in deployed version
     │   ├── src                        # React files
     │       ├── App.js                 # Main file for frontend
@@ -63,14 +60,17 @@ Generally, the project is broken down into the client and server. The server run
     │       ├── OrganizationPortal.js  # Main organization page 
     │       ├── components_orgpage     # Components used in organization page
     │       ├── VolunteerPortal.js     # Main volunteer page 
-    │       ├── components_volunteer   # Components used in volunteer page
-
+    │       ├── location_tools         # Frontend tools to assist with location
+    ├── config                         # Necessary server config files
+    ├── controllers                    # Backend controllers
+    ├── models                         # Models with information regarding 'business logic'
+    ├── repositories                   # DB commands
+    ├── routes                         # API endpoints
+    ├── scheduler                      # Node-Cron jobs 
+    ├── services                       # Relevant services for managing workflows
+    ├── util                           # Utility files (Emailer, Google Sheets integration)
+    ├── index.js                       # Main server file
 
 ## Code Change Process
 
-The Covaid repo is broken down into master, staging, and prestaging. Any should be made off of prestaging and tested in staging/prestaging before merging into master. 
-
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+The Covaid repo is broken down into master, staging, and prestaging. Any changes should be made off of prestaging. Create PRs when to prestaging when you are done with a feature. Someone will respond shortly with feedback.
