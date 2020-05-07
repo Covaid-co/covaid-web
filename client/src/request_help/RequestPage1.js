@@ -96,7 +96,7 @@ export default function RequestPage1(props) {
                 </Col>
             </Row>
             {props.currentAssoc === null ? <></> :
-            <><h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>{props.translations[props.language].whatSupport}?</h5>
+            <><h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>{props.translations[props.language].whatSupport}</h5>
             <CheckForm obj={resources} setObj={setResources} translations={props.translations} language={props.language}/></>}
             <Button id="large-button" style={{marginTop: 15}} onClick={goToSecondPage}>{props.translations[props.language].Next}</Button>
             <p id="pagenum-text">Page 1 of 2</p>
