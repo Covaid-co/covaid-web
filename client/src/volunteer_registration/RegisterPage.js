@@ -64,8 +64,8 @@ export default function RegisterPage(props) {
                     'car': secondPage.car,
                     'timesAvailable': secondPage.timesAvailable,
                 },
-                'association': props.locationProps.currentAssoc._id,
-                'association_name': props.locationProps.currentAssoc.name,
+                'association': props.locationProps.currentAssoc._id ? props.locationProps.currentAssoc._id : '',
+                'association_name': props.locationProps.currentAssoc.name ? props.locationProps.currentAssoc.name : '',
                 'languages': ['English'],
                 'phone': firstPage.phone,
             }
