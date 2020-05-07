@@ -40,7 +40,7 @@ export default function NewMap(props) {
                 zoom: 10
             })
         }
-    }, [props.association, viewport])
+    }, [props.association])
     
     const fullscreenControlStyle = {
         position: 'absolute',
