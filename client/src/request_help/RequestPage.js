@@ -30,11 +30,9 @@ export default function RequestPage(props) {
     const [firstPage, setFirstPage] = useState({});
     const [completed, setCompleted] = useState(false);
     const [language, setLanguage] = useState('en');
-    const [loadedStrings, setLoadedStrings] = useState(false);
 
     useEffect(() => {
         setShowModal(false);
-        setLoadedStrings(true);
     }, [props.locationProps]);
 
     const changeLanguage = (newLanguage) => {
@@ -85,10 +83,6 @@ export default function RequestPage(props) {
         }).catch((e) => {
             console.log(e);
         });
-    }
-
-    if (!loadedStrings) {
-        return <></>;
     }
 
     if (completed) {

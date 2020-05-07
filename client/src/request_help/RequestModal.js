@@ -10,18 +10,23 @@ import OrgHeader from '../association_request_headers/OrgHeader';
 import DefaultHeader from '../association_request_headers/DefaultHeader';
 import { generalRequestText } from '../constants';
 import CurrentLocation from '../location_tools/CurrentLocation';
+import {translations} from '../translations/translations';
+import LocalizedStrings from 'react-localization';
 
 /**
  * Request Support Modal 
  */
 
+ let translatedStrings = new LocalizedStrings({translations});
+
 export default function RequestHelp(props) {
     const [firstPage, setFirstPage] = useState({});
     const [completed, setCompleted] = useState(false);
+    const [language, setLanguage] = useState('en');
 
     const requestHeaderText = () => {
         if (props.requestHelpMode === 'bulletin') {
-            return 'After submitting a direct request, your volunteer will reach out to you shortly! If you have any problems, please contact covaidco@gmail.com'
+            return 'After submitting a direct request, the volunteer will reach out to you shortly! If you have any problems, please contact covaidco@gmail.com.'
         }
         return generalRequestText;
     }
@@ -112,19 +117,19 @@ export default function RequestHelp(props) {
                 </Modal.Header>
                 <Modal.Body>
                     {requestFormInfo()}
-                    <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.currentAssoc}/>
+                    <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.currentAssoc} translations={translatedStrings} language={language}/>
                 </Modal.Body>
             </Modal>
         )
     }
     return (
-        <Modal show={props.showModal} onHide={() => {props.hideModal(); resetState();}} 
+        <Modal show={props.showModal} onHide={resetState}
                id="showRequestModal" style={{marginTop: 10, paddingBottom: 20}}>
             <Modal.Header closeButton>
                 <Modal.Title id="small-header">Almost Done!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <RequestPage2 currentAssoc={props.currentAssoc} handleSubmit={handleSubmit}/>
+                <RequestPage2 currentAssoc={props.currentAssoc} handleSubmit={handleSubmit} translations={translatedStrings} language={language}/>
             </Modal.Body>
         </Modal>
     )

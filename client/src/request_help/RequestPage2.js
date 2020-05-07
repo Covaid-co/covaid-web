@@ -93,17 +93,17 @@ export default function RequestPage2(props) {
 
     return (
         <>
-            <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 0}}>What language do you speak?</h5>
+            <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 0}}>{props.translations[props.language].WhatLanguageDoYouSpeak}</h5>
             <p id="regular-text" style={{marginBottom: 0}}>
-                If language not listed, please mention in details section below
+                {props.translations[props.language].LanguageNotListed}
             </p>
-            <CheckForm obj={languageChecked} setObj={setLanguageChecked}/>
-            <NeededBy setTime={setTime} setDate={setDate}/>
+            <CheckForm obj={languageChecked} setObj={setLanguageChecked} translations={props.translations} language={props.language}/>
+            <NeededBy setTime={setTime} setDate={setDate} translations={props.translations} language={props.language}/>
             {paymentMethod()}
             {paymentAgreement}
-            <NewDetails fields={fields} handleFieldChange={handleFieldChange}/>
+            <NewDetails fields={fields} handleFieldChange={handleFieldChange} translations={props.translations} language={props.language}/>
             {agreement}
-            <Button id="large-button" disabled={pendingSubmit} style={{marginTop: 15}} onClick={goToSubmit}>Submit a Request</Button>
+            <Button id="large-button" disabled={pendingSubmit} style={{marginTop: 15}} onClick={goToSubmit}>{props.translations[props.language].SubmitRequest}</Button>
             <p id="pagenum-text">Page 2 of 2</p>
             <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
                 <Toast.Body>{toastMessage}</Toast.Body>

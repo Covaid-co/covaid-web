@@ -20,16 +20,16 @@ export default function NeededBy(props) {
     return (
         <>
             <h5 id="regular-text-bold" style = {{marginTop: '26px', marginBottom: 5}}>
-                When will this needed by?
+                {props.translations[props.language].WhenNeeded}?
             </h5>
             <Row >
                 <Col xs={6} style = {{paddingRight: '4px'}}>
                     <Form.Group controlId="time" onChange={handleChangeTime}>
                         <Form.Control as="select">
-                            <option>Morning</option>
-                            <option>Afternoon</option>
-                            <option>Evening</option>
-                            <option>Night</option>
+                            <option value="Morning">{props.translations[props.language].Morning}</option>
+                            <option value="Afternoon">{props.translations[props.language].Afternoon}</option>
+                            <option value="Evening">{props.translations[props.language].Evening}</option>
+                            <option value="Night">{props.translations[props.language].Night}</option>
                         </Form.Control>
                     </Form.Group>
                 </Col>

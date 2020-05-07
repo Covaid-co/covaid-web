@@ -26,6 +26,15 @@ export default function OrgHeader(props) {
         props.changeLanguage(selectedDropdownOption.value);
     }
 
+    if (props.modal) {
+        return <>
+            <p id="regular-text">
+                After submitting a direct request, your volunteer will reach out to you shortly! If you have any problems, please contact <span id="phoneNumber">{props.assoc.email ? props.assoc.email : 'covaidco@gmail.com'}</span>.
+            </p>
+            <p id="request-calling" style={{borderBottom: '0px solid', marginBottom: 0}}> For those who would rather call in a request, 
+                please call <br /><span id="phoneNumber">{props.assoc.phone ? props.assoc.phone : '(401) 526-8243'}</span></p>
+        </>
+    }
     return (
         <>
             <Row>
