@@ -108,7 +108,6 @@ export default function BeaconConfirmation(props) {
     }
 
     const action = (type) => {
-        console.log(type);
         switch (type) {
             case 'deactivate':
                 return deactivate;

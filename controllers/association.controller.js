@@ -10,7 +10,6 @@ exports.add_resource_link = function (req, res) {
 	const id = req.body.associationID;
 	var link = req.body.link;
 	var name = req.body.name;
-	console.log(req.body);
 	let newResources = new AssociationResources({'link': link, 'name': name});
 	Association.findByIdAndUpdate(id, {$push: {'links': newResources}}, {safe: true, upsert: true},
 		function (err, doc) {
@@ -87,8 +86,6 @@ function validateEmailAccessibility(email){
 
 exports.create_association = function (req, res) {
     const { body: { association } } = req;
-    console.log(req.body);
-    console.log(association);
     if(!association.email) {
         return res.status(422).json({
             errors: {

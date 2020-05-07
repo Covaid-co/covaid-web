@@ -19,7 +19,6 @@ export default function ChangeLog() {
         fetch('/api/changelog/')
             .then((res) => res.json())
             .then((res) => {
-                console.log(res);
                 res.sort(function(a, b) {
                     const x = new Date(a.date);
                     const y = new Date(b.date);

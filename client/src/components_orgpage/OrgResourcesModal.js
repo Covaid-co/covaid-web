@@ -96,7 +96,6 @@ export default function OrgResourcesModal(props) {
     }
 
     const deleteResource = (id) => {
-        console.log(id)
         let form = {
             'id': props.association._id
         }

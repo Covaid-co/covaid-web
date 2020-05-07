@@ -143,7 +143,6 @@ export default function RequestDetails(props) {
             'reason': reason,
             'assoc_id': props.association._id
         };
-        console.log(form);
         fetch('/api/request/completeRequest', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
@@ -386,7 +385,6 @@ export default function RequestDetails(props) {
     const handleChangeReasons = (event) => {
         event.persist();
         var result = event.target.value;
-        console.log(result);
         setReason(result);
     }
 

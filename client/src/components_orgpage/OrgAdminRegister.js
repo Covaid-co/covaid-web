@@ -65,8 +65,6 @@ export default function OrgAdminRegister(props) {
             body: JSON.stringify(form)
         });
 
-        console.log(response)
-
         if (response.ok) {
             Cookie.remove('org_token');
             Cookie.remove('admin_token');

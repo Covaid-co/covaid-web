@@ -116,7 +116,6 @@ export default function OrganiationPortal(props) {
 			.then((response) => response.json())
 			.then((association_response) => {
 				setAssociation(association_response);
-				console.log(association_response);
 				pusherSetup(association_response._id);
 
 				// Get requests for an association
