@@ -64,7 +64,7 @@ export default function OrgHeader(props) {
             </p>
             <p id="regular-text">
                 {props.translations[props.language].questions}:<br/>
-                <strong>{props.assoc.email}</strong>
+                <strong>{props.assoc.email}</strong>.
             </p>
             <p id="regular-text">
                 {props.translations[props.language].motto}
