@@ -40,7 +40,7 @@ export default function RequestPage(props) {
     }
 
     const requestFormInfo = () => {
-        var topHeader = <DefaultHeader generalRequestText={generalRequestText}/>;
+        var topHeader = <DefaultHeader requestHeaderText={generalRequestText} translations={translatedStrings} language={language} changeLanguage={changeLanguage}/>;
         if (props.locationProps.currentAssoc && Object.keys(props.locationProps.currentAssoc).length > 0) {
             topHeader = <OrgHeader assoc={props.locationProps.currentAssoc} translations={translatedStrings} language={language} changeLanguage={changeLanguage} />;
         }

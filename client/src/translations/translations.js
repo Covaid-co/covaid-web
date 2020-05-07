@@ -47,7 +47,14 @@ const translations = {
         ComfortableSharingDetails: 'Use as much detail as you feel comfortable sharing, no judgements here',
         DetailExample: 'Example: "I\'m quarantined and need groceries for the week. Can they can be dropped off at 123 Main street?"',
         ReceivedYourRequest: 'We\'ve received your request!',
-        VolunteerReachOutSoon: 'Your request has been saved and you should be contacted soon from a matched volunteer who can support you!'
+        VolunteerReachOutSoon: 'Your request has been saved and you should be contacted soon from a matched volunteer who can support you!',
+        RequestSupport: 'Request support',
+        'Academic/Professional': '',
+        Donate: 'Donate',
+        'Emotional Support': 'Emotional Support',
+        'Food/Groceries': 'Food/Groceries',
+        Medication: 'Medication',
+        'Misc.': 'Misc.'
     },
     es: {
         intro: "Si usted necesita ayuda o tiene recursos para ofrecer mientras que navegamos como una comunidad el crisis de COVID-19, por favor rellenar el formulario. Sus respuestas al formulario solo serían vistos por un equipo de voluntarias/os trabajando para juntar recursos con necesidades. Usted puede encontrar más recursos públicos en",
@@ -97,7 +104,14 @@ const translations = {
         ComfortableSharingDetails: 'Usa las detalles que se siente cómoda compartiendo, no se juzga acá',
         DetailExample: 'Por ejemplo: “Estoy en cuarentena y necesito alimentos para la semana. Se puede dejarlos en 123 Main Street?”',
         ReceivedYourRequest: '¡Hemos recibido su solicitud!',
-        VolunteerReachOutSoon: '¡Su solicitud se ha guardado y pronto lo contactaremos de un voluntario compatible que pueda apoyarlo!'
+        VolunteerReachOutSoon: '¡Su solicitud se ha guardado y pronto lo contactaremos de un voluntario compatible que pueda apoyarlo!',
+        RequestSupport: 'Solicitar apoyo',
+        'Academic/Professional': 'Académico/Profesional',
+        Donate: 'Donar',
+        'Emotional Support': 'Apoyo emocional',
+        'Food/Groceries': 'Comida/Comestibles',
+        Medication: 'Medicamento',
+        'Misc.': 'Misceláneas'
     }
   }
   export {translations};

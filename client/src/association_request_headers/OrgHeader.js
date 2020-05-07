@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import Select from 'react-select';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -29,7 +29,7 @@ export default function OrgHeader(props) {
     if (props.modal) {
         return <>
             <p id="regular-text">
-                After submitting a direct request, your volunteer will reach out to you shortly! If you have any problems, please contact <span id="phoneNumber">{props.assoc.email ? props.assoc.email : 'covaidco@gmail.com'}</span>.
+                After submitting a direct request, a volunteer will reach out to you shortly! If you have any problems, please contact <span id="phoneNumber">{props.assoc.email ? props.assoc.email : 'covaidco@gmail.com'}</span>.
             </p>
             <p id="request-calling" style={{borderBottom: '0px solid', marginBottom: 0}}> For those who would rather call in a request, 
                 please call <br /><span id="phoneNumber">{props.assoc.phone ? props.assoc.phone : '(401) 526-8243'}</span></p>

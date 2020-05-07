@@ -26,7 +26,7 @@ export default function RequestHelp(props) {
 
     const requestHeaderText = () => {
         if (props.requestHelpMode === 'bulletin') {
-            return 'After submitting a direct request, the volunteer will reach out to you shortly! If you have any problems, please contact covaidco@gmail.com.'
+            return 'After submitting a matched request, the volunteer will reach out to you directly. If you have any problems, please contact covaidco@gmail.com.'
         }
         return generalRequestText;
     }
