@@ -1,17 +1,11 @@
-import React, {useState} from "react";
-import Select from 'react-select';
+import React from "react";
+import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-const options = [
-    { value: 'en', label: 'English' },
-    { value: 'es', label: 'Español' }
-  ];
-export default function DefaultHeader(props) {
-    const [selectedOption, setSelectedOption] = useState({value: 'en', label: 'English'});
 
-    const handleLanguageChange = (selectedDropdownOption) => {
-        setSelectedOption(selectedDropdownOption);
-        props.changeLanguage(selectedDropdownOption.value);
+export default function DefaultHeader(props) {
+    const handleLanguageChange = (language) => {
+        props.changeLanguage(language);
     }
 
     if (props.modal) {
@@ -27,17 +21,19 @@ export default function DefaultHeader(props) {
     return (
         <>
             <Row>
-                <Col xs={8}>
-                    <h1 id="small-header" style={{marginTop: 5}}>{props.translations[props.language].RequestSupport} 
+                <Col xs={9} sm={8}>
+                    <h1 id="small-header" style={{marginTop: 4}}>{props.translations[props.language].RequestSupport} 
                     </h1>
                 </Col>
-                <Col xs={4}>
-                    <Select
-                        value={selectedOption}
-                        onChange={handleLanguageChange}
-                        placeholder={'Translate...'}
-                        options={options}
-                    />
+                <Col xs={3} sm={4}>
+                    <Button id={props.language === 'en' ? "selected" : "notSelected"}
+                            onClick = {() => handleLanguageChange('en')}>
+                            English
+                    </Button>
+                    <Button id={props.language === 'es' ? "selected" : "notSelected"}
+                            onClick = {() => handleLanguageChange('es')}>
+                            Español
+                    </Button>
                 </Col>
             </Row>
             <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
