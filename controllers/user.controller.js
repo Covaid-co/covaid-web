@@ -1,4 +1,5 @@
 const Users = require('../models/user.model');
+const Association = require('../models/association.model');
 const passport = require('passport');
 const emailer =  require("../util/emailer");
 const spreadsheets = require('../util/spreadsheet_tools');
@@ -13,6 +14,46 @@ function validateEmailAccessibility(email){
   return Users.findOne({email: email}).then(function(result){
        return result === null;
   });
+}
+
+const sendHelpMatchEmail = async (assocID, volunteerName, volunteerEmail, helpDetails) => {
+	associationEmail = 'covaidco@gmail.com';
+	if (assocID !== '') {
+		var assoc = await Association.findById(assocID);
+		associationEmail = assoc.email;
+	}
+
+	var data = {
+		sender: "covaid@covaid.co",
+		receiver: associationEmail,
+		name: volunteerName,
+		email: volunteerEmail,
+		details: helpDetails,
+		templateName: "help_match"
+	};
+	console.log(data);
+	emailer.sendHelpMatchEmail(data);
+}
+
+const sendVerifyEmail = (userID, user) => {
+	var mode = "localhost:3000";
+	if (process.env.PROD) {
+		mode = "covaid.co";
+	}
+
+	var message = "http://" + mode + "/verify?ID=" + userID;
+	// Baltimore users will receive a Google Form
+	if (user.association == '5e8439ad9ad8d24834c8edbe') {
+		message = "https://forms.gle/aTxAbGVC49ff18R1A";
+	}
+	var data = {
+		//sender's and receiver's email
+		sender: "Covaid@covaid.co",
+		receiver: user.email,
+		link: message,
+		templateName: "verification",
+	};
+	emailer.sendVerificationEmail(data);
 }
 
 /**
@@ -52,32 +93,19 @@ exports.register = function (req, res) {
 			if (err) {
 				return res.status(422).send(err);
 			}
-			
-			var userID = result._id;
-			
+			const userID = result._id;
 			// Save Pittsburgh users to respective spreadsheets
 			if (user.association == "5e843ab29ad8d24834c8edbf") { // Pittsburgh
 				spreadsheets.addUserToSpreadsheet(finalUser, userID, '1l2kVGLjnk-XDywbhqCut8xkGjaGccwK8netaP3cyJR0');
 			}
 
-			// Send verification email to user
-			var mode = "localhost:3000";
-			if (process.env.PROD) {
-				mode = "covaid.co";
+			// Send verification email to volunteer
+			sendVerifyEmail(userID, user);
+
+			// Sending email if volunteer marked they could help match
+			if (user.offer.canHelp) {
+				sendHelpMatchEmail(user.association, user.first_name, user.email, user.offer.helpDetails);
 			}
-			var message = "http://" + mode + "/verify?ID=" + userID;
-			// Baltimore users will receive a Google Form
-			if (user.association == '5e8439ad9ad8d24834c8edbe') {
-				message = "https://forms.gle/aTxAbGVC49ff18R1A";
-			}
-			var data = {
-				//sender's and receiver's email
-				sender: "Covaid@covaid.co",
-				receiver: user.email,
-				link: message,
-				templateName: "verification",
-			};
-        	emailer.sendVerificationEmail(data)
 
         	return (userID === null) ? res.sendStatus(500) : res.status(201).send({'id': userID});
 		});	

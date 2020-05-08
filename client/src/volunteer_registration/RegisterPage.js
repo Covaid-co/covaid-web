@@ -59,10 +59,12 @@ export default function RegisterPage(props) {
                 'offer': {
                     'details': secondPage.details,
                     'tasks': secondPage.tasks,
-                    'neighborhoods': thirdPage.neighborhoods,
+                    'neighborhoods': firstPage.neighborhoods,
                     'state': props.locationProps.state,
                     'car': secondPage.car,
                     'timesAvailable': secondPage.timesAvailable,
+                    'canHelp': thirdPage.canHelp,
+                    'helpDetails': thirdPage.helpDetails
                 },
                 'association': props.locationProps.currentAssoc._id ? props.locationProps.currentAssoc._id : '',
                 'association_name': props.locationProps.currentAssoc.name ? props.locationProps.currentAssoc.name : '',
@@ -71,6 +73,8 @@ export default function RegisterPage(props) {
             }
         };
 
+        // console.log(form);
+        // return
         fetch('/api/users/', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -82,19 +86,18 @@ export default function RegisterPage(props) {
                 });
             }
         }).catch((e) => {
-            console.log(e);
+            alert(e);
         });
     }
 
     const displayRegisterPage = () => {
         if (Object.keys(firstPage).length === 0) {
-            return <RegisterPage1 setFirstPage={setFirstPage}/>
+            return <RegisterPage1 setFirstPage={setFirstPage} neighborhoods={props.locationProps.neighborhoods}/>
         } else if (Object.keys(secondPage).length === 0) {
             return <RegisterPage2 setSecondPage={setSecondPage} currentAssoc={props.locationProps.currentAssoc}/>
         } else {
             return <RegisterPage3 handleSubmit={handleSubmit} 
-                                  currentAssoc={props.locationProps.currentAssoc} 
-                                  neighborhoods={props.locationProps.neighborhoods}/>
+                                  currentAssoc={props.locationProps.currentAssoc}/>
         }
     }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormFields } from "../libs/hooksLib";
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row'
@@ -7,15 +7,17 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 
+import CheckForm from '../components/CheckForm';
 import PhoneNumber from '../components/PhoneNumber';
 import { toastTime } from '../constants'
-import { validateEmail } from '../Helpers';
+import { validateEmail, setTrueObj, extractTrueObj } from '../Helpers';
  
 /**
  * Volunteer Registration (Page 1)
  */
 
 export default function RegisterPage1(props) {
+    const [neighborhoodsChecked, setNeighborhoodsChecked] = useState({});
     const [phoneNumber, setPhoneNumber] = useState('');
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
@@ -28,10 +30,15 @@ export default function RegisterPage1(props) {
         pronouns: ""
     });
 
+    useEffect(() => {
+        setNeighborhoodsChecked(setTrueObj(props.neighborhoods));
+    }, [props.neighborhoods]);
+
     const goToSecondPage = () => {
         const valid = checkPage();
         if (valid) {
             setShowToast(false);
+            const selectedNeighborhoods = extractTrueObj(neighborhoodsChecked);
             var phoneString = phoneNumber.replace(/\D/g,'').substring(0,10);
             const result = { 
                 'first_name': fields.first_name,
@@ -39,7 +46,8 @@ export default function RegisterPage1(props) {
                 'email': fields.email,
                 'password': fields.password,
                 'pronouns': fields.pronouns,
-                'phone': phoneString
+                'phone': phoneString,
+                'neighborhoods': selectedNeighborhoods
             }
             props.setFirstPage(result);
         } else {
@@ -69,6 +77,9 @@ export default function RegisterPage1(props) {
         } else if (fields.password !== fields.confirmPassword) {
             setToastMessage('Passwords not the same');
             valid = false;
+        } else if (Object.values(neighborhoodsChecked).every(v => v === false)) {
+            setToastMessage('No neighborhood selected');
+            valid = false;
         }
 
         if (valid === false) {
@@ -79,7 +90,14 @@ export default function RegisterPage1(props) {
 
     return (
         <>
-            <h5 id="regular-text-bold">Personal Information</h5>
+            <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 10}}>
+                We&apos;ve identified the following as your primary locality
+            </h5>
+            <p id="regular-text" style={{marginBottom: 4, fontSize: 14}}>
+                We use this so that you can be matched with neighbors in need of support in your community! (If they seem unfamiliar, please change your location above)
+            </p>
+            <CheckForm obj={neighborhoodsChecked} setObj={setNeighborhoodsChecked} disabled={true}/>
+            <h5 id="regular-text-bold" style={{marginTop: 20}}>Personal Information</h5>
             <Row>
                 <Col xs={6} style = {{paddingRight: '4px'}}>
                     <Form.Group controlId="first_name" bssize="large">
@@ -135,5 +153,6 @@ export default function RegisterPage1(props) {
 }
 
 RegisterPage1.propTypes = {
-    setFirstPage: PropTypes.func
+    setFirstPage: PropTypes.func,
+    neighborhoods: PropTypes.array
 }

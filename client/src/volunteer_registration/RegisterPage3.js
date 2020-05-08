@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useFormFields } from "../libs/hooksLib";
 import PropTypes from 'prop-types';
 
 import Row from 'react-bootstrap/Row'
@@ -8,9 +9,8 @@ import Button from 'react-bootstrap/Button'
 import Toast from 'react-bootstrap/Toast'
 import ReCAPTCHA from "react-google-recaptcha";
 
-import CheckForm from '../components/CheckForm';
+import HelpOrganization from './HelpOrganization';
 import { toastTime, defaultTerms } from '../constants'
-import { extractTrueObj, setTrueObj } from '../Helpers';
 
 /**
  * Volunteer Registration (Page 3)
@@ -18,14 +18,17 @@ import { extractTrueObj, setTrueObj } from '../Helpers';
 
 export default function RegisterPage3(props) {
     const terms = [0, 1, 2, 3, 4, 5];
-    const [neighborhoodsChecked, setNeighborhoodsChecked] = useState({});
     const [captcha, setCaptcha] = useState(false);
     const [termSentences, setTermSentences] = useState(defaultTerms);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [canHelp, setCanHelp] = useState(false);
     const [currentTerms, setCurrentTerms] = useState({
         0: false, 1: false, 2: false, 3: false, 4: false, 5: false
-    }); 
+    });
+    const [fields, handleFieldChange] = useFormFields({
+        helpDetails: ""
+    });
 
     useEffect(() => {
         if (props.currentAssoc.resources) {
@@ -39,8 +42,7 @@ export default function RegisterPage3(props) {
             ]
             setTermSentences(termsList);
         }
-        setNeighborhoodsChecked(setTrueObj(props.neighborhoods));
-    }, [props.currentAssoc, props.neighborhoods])
+    }, [props.currentAssoc])
 
     const handleTermChange = (event, task) => { 
         setCurrentTerms(prev => ({ 
@@ -54,9 +56,9 @@ export default function RegisterPage3(props) {
         const valid = checkPage();
         if (valid) {
             setShowToast(false);
-            const selectedNeighborhoods = extractTrueObj(neighborhoodsChecked);
             const result = { 
-                'neighborhoods': selectedNeighborhoods,
+                'canHelp': canHelp,
+                'helpDetails': fields.helpDetails
             }
             props.handleSubmit(result);
         } else {
@@ -66,10 +68,6 @@ export default function RegisterPage3(props) {
 
     const checkPage = () => {
         var valid = true;
-        if (Object.values(neighborhoodsChecked).every(v => v === false)) {
-            setToastMessage('No neighborhood selected');
-            valid = false;
-        }
 
         for (const term in currentTerms) {
             if (currentTerms[term] === false) {
@@ -92,13 +90,9 @@ export default function RegisterPage3(props) {
     return (
         <>
             <Form onSubmit={goToSubmit}>
-                <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 4}}>
-                    We&apos;ve identified the following as your primary locality
-                </h5>
-                <p id="regular-text" style={{marginBottom: 4, fontSize: 14}}>
-                    If they seem unfamiliar, please change your location above.
-                </p>
-                <CheckForm obj={neighborhoodsChecked} setObj={setNeighborhoodsChecked} disabled={true}/>
+                <HelpOrganization canHelp={canHelp} setCanHelp={setCanHelp} currentAssoc={props.currentAssoc}
+                    helpDetails={fields.helpDetails} handleFieldChange={handleFieldChange}/>
+
                 <h5 id="regular-text-bold" style = {{marginTop: 20, marginBottom: 4}}>
                     Health
                 </h5>

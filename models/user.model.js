@@ -20,10 +20,12 @@ let UsersSchema = new Schema({
     offer: {
         tasks: [String],
         neighborhoods: [String],
-        details: String,
+        details: {type: String},
         car: {type: Boolean, requried: true},
         timesAvailable: [String],
-        state: [String]
+        state: [String],
+        canHelp: {type: Boolean},
+        helpDetails: {type: String}
     },
     location: {
         type: { type: String },

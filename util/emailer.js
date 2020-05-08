@@ -9,8 +9,31 @@ templates = {
     verification: 'd-454bd90ee0b74df19746bf2ec664cedc',
     admin_notification: 'd-6c2dcfa1d8734e3293837804b1496ed5',
     pending_notification: 'd-1a6056febc214315bb3c12e1da3674b9',
-    beacon: 'd-15d81c1063f2490aa94ba195448d8fac'
+    beacon: 'd-15d81c1063f2490aa94ba195448d8fac',
+    help_match: 'd-1cba047db5294fc196a1a9836bdad06e'
 };
+
+exports.sendHelpMatchEmail = (data) => {
+    const msg = {
+        to: data.receiver,
+        from: data.sender,
+        templateId: templates[data.templateName],
+        dynamic_template_data: {
+            name: data.name,
+            email: data.email,
+            details: data.details
+        }
+    };
+
+    //send the email
+    sgMail.send(msg, (error, result) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Email sent!");
+        }
+      });
+}
 
 exports.sendNotificationEmail = (data) => {
     const msg = {
