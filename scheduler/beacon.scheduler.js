@@ -4,9 +4,9 @@ const Beacon = require('../models/beacon.model');
 const BeaconStatusEnum = {"active":1, "inactive":2, "complete":3, "delete": 4};
  
 exports.BeaconScheduler = function() {
-    // cron.schedule('0 0 0 * * *', function() {
-    //     expireAnyExpiringBeacons()
-    // })
+    cron.schedule('0 0 0 * * *', function() {
+        expireAnyExpiringBeacons()
+    })
 };
 
 const expireAnyExpiringBeacons = async () => {
