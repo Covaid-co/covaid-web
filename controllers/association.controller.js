@@ -187,8 +187,8 @@ exports.assoc_by_lat_long = asyncWrapper(async (req, res) => {
         var currentAssociation = associations[i]
         if (currentAssociation.name !== "Covaid") {
           var rad = currentAssociation.radius
-          var currentAssociationLat = currentAssociation.location.coordinates[0]
-          var currentAssociationLong = currentAssociation.location.coordinates[1]
+          var currentAssociationLat = currentAssociation.location.coordinates[1]
+          var currentAssociationLong = currentAssociation.location.coordinates[0]
           var distance = distance_tools.calcDistance(latitude, longitude, currentAssociationLat, currentAssociationLong) / 1609.34
           if (distance <= rad) {
             relevantAssociations.push(currentAssociation);
