@@ -18,12 +18,12 @@ export default function HelpOrganization(props) {
     const displayRecruiting = (assoc) => {
         if (assoc) {
             if (Object.keys(assoc).length === 0) {
-                return true;
+                return false;
             } else {
                 return assoc.recruiting;
             }
         }
-        return true;
+        return false;
     }
 
     if (!displayRecruiting(props.currentAssoc)) {

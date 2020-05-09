@@ -1,5 +1,4 @@
 import React, { useEffect, useState} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -7,8 +6,11 @@ import Button from 'react-bootstrap/Button';
 import { useFormFields } from "../libs/hooksLib";
 import { generateMapsURL, moveFromToArr } from '../Helpers';
 
-export default function VolunteerDetails(props) {
+/**
+ * Volunteer Details Modal in Org portal
+ */
 
+export default function VolunteerDetails(props) {
     const [mapURL, setMapURL] = useState('');
     const [verified, setVerified] = useState(true);
     const [prevNote, setPrevNote] = useState('');
@@ -52,8 +54,8 @@ export default function VolunteerDetails(props) {
             } else {
                 alert("unable to attach");
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch(e => {
+            alert(e);
         });
     };
 
