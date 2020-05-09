@@ -27,6 +27,7 @@ let AssociationSchema = new Schema({
     },
     radius: {type: Number},
     admins: [adminSchema],
+    recruiting: {type: Boolean},
     usesSpreadsheet: {type: Boolean, required: true},
     spreadsheetID: {type: String, required: false},
 });

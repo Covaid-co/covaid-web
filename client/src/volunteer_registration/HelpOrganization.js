@@ -15,8 +15,23 @@ export default function HelpOrganization(props) {
         return "Covaid";
     }
 
+    const displayRecruiting = (assoc) => {
+        if (assoc) {
+            if (Object.keys(assoc).length === 0) {
+                return true;
+            } else {
+                return assoc.recruiting;
+            }
+        }
+        return true;
+    }
+
+    if (!displayRecruiting(props.currentAssoc)) {
+        return <></>
+    }
+
     return (
-        <Form.Group controlId="helpDetails" bssize="large" style = {{marginBottom: 0, marginTop: 0}}>
+        <Form.Group controlId="helpDetails" bssize="large" style = {{marginBottom: 20, marginTop: 0}}>
             <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 5}}>
                 Can you help {assocName(props.currentAssoc)}?
             </h5>

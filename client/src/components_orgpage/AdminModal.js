@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import PropTypes from 'prop-types';
+
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
@@ -13,8 +14,11 @@ import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { generateURL } from '../Helpers'
 
+/**
+ * Manage Organization Modal
+ */
+
 export default function AdminModal(props) {
-    
     const [addAdmin, setAddAdmin] = useState(false);
     const [fields, handleFieldChange] = useFormFields({
         name3: "",
@@ -48,8 +52,33 @@ export default function AdminModal(props) {
             } else {
                 alert("unable to attach");
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch(e => {
+            alert(e);
+        });
+    }
+
+    const updateRecruiting = async e => {
+        e.preventDefault();
+        let form = {
+            'associationID': props.association._id,
+            'recruiting': !props.association.recruiting
+        };
+
+        fetch('/api/association/update_recruiting', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => {
+            if (response.ok) {
+                props.setAssociation({
+                    ...props.association,
+                    'recruiting': !props.association.recruiting
+                })
+            } else {
+                alert("unable to attach");
+            }
+        }).catch(e => {
+            alert(e);
         });
     }
 
@@ -57,40 +86,38 @@ export default function AdminModal(props) {
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const fileExtension = '.xlsx';
         let params = {'association': props.association._id}
-				var url = generateURL("/api/users/allFromAssoc?", params);
-				fetch(url, {
-					method: 'get',
-					headers: {'Content-Type': 'application/json'},
-				}).then((response) => {
-					if (response.ok) {
-						response.json().then(volunteers => {
-                            var d = new Date();
-                            const reformattedVolunteers = volunteers.map(volunteer => {
-                                return {
-                                    'First Name': volunteer.first_name,
-                                    'Last Name': volunteer.last_name,
-                                    'Pronouns': volunteer.pronouns,
-                                    'Email': volunteer.email,
-                                    'Phone': volunteer.phone,
-                                    'More Info': volunteer.offer.details,
-                                    'Neighborhoods': volunteer.offer.neighborhoods.join(", "),
-                                    'Resources': volunteer.offer.tasks.join(", "),
-                                    'Internal Note': volunteer.note
-                                };
-                            })
-                            const fileName = 'volunteers-' + d.toLocaleDateString();
-                            const ws = XLSX.utils.json_to_sheet(reformattedVolunteers);
-                            const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-                            const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-                            const data = new Blob([excelBuffer], {type: fileType});
-                            FileSaver.saveAs(data, fileName + fileExtension);
-						});
-					} else {
-						console.log(response);
-					}
-				}).catch((e) => {
-					console.log(e);
-				});
+        var url = generateURL("/api/users/allFromAssoc?", params);
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        }).then((response) => {
+            if (response.ok) {
+                response.json().then(volunteers => {
+                    var d = new Date();
+                    const reformattedVolunteers = volunteers.map(volunteer => {
+                        return {
+                            'First Name': volunteer.first_name,
+                            'Last Name': volunteer.last_name,
+                            'Pronouns': volunteer.pronouns,
+                            'Email': volunteer.email,
+                            'Phone': volunteer.phone,
+                            'More Info': volunteer.offer.details,
+                            'Neighborhoods': volunteer.offer.neighborhoods.join(", "),
+                            'Resources': volunteer.offer.tasks.join(", "),
+                            'Internal Note': volunteer.note
+                        };
+                    })
+                    const fileName = 'volunteers-' + d.toLocaleDateString();
+                    const ws = XLSX.utils.json_to_sheet(reformattedVolunteers);
+                    const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+                    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                    const data = new Blob([excelBuffer], {type: fileType});
+                    FileSaver.saveAs(data, fileName + fileExtension);
+                });
+            }
+        }).catch(e => {
+            alert(e);
+        });
     }
 
     const exportRequests = () => {
@@ -124,18 +151,16 @@ export default function AdminModal(props) {
                     const data = new Blob([excelBuffer], {type: fileType});
                     FileSaver.saveAs(data, fileName + fileExtension);
                 });
-            } else {
-                console.log("Error");
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch(e => {
+            alert(e);
         });
 
     }
 
     const getHeight = () => {
         const adminLength = props.association.admins ? props.association.admins.length : 0;
-        return Math.min(adminLength*72, 300);
+        return Math.min(adminLength * 72, 300);
     }
 
     return (
@@ -167,6 +192,19 @@ export default function AdminModal(props) {
                             </Button>
                         </Col> */}
                     </Row>
+                </Modal.Body>
+                <Modal.Header>
+                    <Modal.Title style={{marginLeft: 5}}>Recruiting for admins</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId="preverify" bssize="large" style = {{marginBottom: 0, marginTop: -5}}>
+                            <Form.Check type="switch" id="custom-switch" style={{color: '#7F7F7F', fontSize: 14}}
+                                label={props.association.recruiting ? "Recruiting": "Not Recruiting"} 
+                                checked={props.association.recruiting ? props.association.recruiting : false}
+                                onChange={updateRecruiting}/>
+                        </Form.Group>
+                    </Form>
                 </Modal.Body>
                 <Modal.Header>
                     <Modal.Title style={{marginLeft: 5}}>Export to file</Modal.Title>
@@ -205,4 +243,11 @@ export default function AdminModal(props) {
             </Modal>
         </>
     );
+}
+
+AdminModal.propTypes = {
+    association: PropTypes.object,
+    adminModal: PropTypes.bool,
+    setAdminModal: PropTypes.func,
+    setAssociation: PropTypes.func
 }

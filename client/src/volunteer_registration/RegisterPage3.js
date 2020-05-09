@@ -93,7 +93,7 @@ export default function RegisterPage3(props) {
                 <HelpOrganization canHelp={canHelp} setCanHelp={setCanHelp} currentAssoc={props.currentAssoc}
                     helpDetails={fields.helpDetails} handleFieldChange={handleFieldChange}/>
 
-                <h5 id="regular-text-bold" style = {{marginTop: 20, marginBottom: 4}}>
+                <h5 id="regular-text-bold" style = {{marginTop: 0, marginBottom: 4}}>
                     Health
                 </h5>
                 <p id="regular-text" style={{marginBottom: 20, fontSize: 14}}>

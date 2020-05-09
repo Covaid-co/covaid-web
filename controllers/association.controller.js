@@ -63,6 +63,16 @@ exports.update_association = function (req, res) {
   });
 };
 
+// Update whether association is recruiting for volunteers on backend
+exports.update_recruiting = function (req, res) {
+  const id = req.body.associationID;
+  const recruiting = req.body.recruiting;
+  Association.findByIdAndUpdate(id, {$set: {'recruiting': recruiting}}, function (err) {
+    if (err) return next(err);
+    res.send('Association updated.');
+  });
+};
+
 exports.add_admin = function (req, res) {
   const id = req.body.associationID;
   const email = req.body.email;

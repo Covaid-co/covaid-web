@@ -11,6 +11,7 @@ router.get('/', association_controller.all);
 router.get('/current', auth.required, association_controller.current);
 router.get('/get_assoc/lat_long', association_controller.assoc_by_lat_long);
 router.put('/update', association_controller.update_association);
+router.put('/update_recruiting', association_controller.update_recruiting);
 router.put('/admins', association_controller.add_admin);
 
 
