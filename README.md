@@ -40,7 +40,7 @@ Install npm packages and running the client
 ```
 cd client
 npm i
-npm run client
+npm start
 ```
 
 ### General Project Breakdown
