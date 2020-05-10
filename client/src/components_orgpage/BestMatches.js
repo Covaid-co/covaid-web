@@ -149,13 +149,13 @@ export default function BestMatches(props) {
                     <Col xs={12}>
                         <ListGroup variant="flush" onClick={() => {setVolunteerDetailsModal(true)}}>
                             {displayedVolunteers.map((volunteer, i) => {
+                                if (volunteer.availability) {
                                 return (
                                 <ListGroup.Item key={i} action onClick={() => {setCurrVolunteer({...volunteer});  setVolunteerDetailsModal(true)}}>
                                     <div >
                                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
-                                        {generateInvisible(volunteer.availability)}
                                         {displayPrevMatched(volunteer)}
                                     </div>
                                     <div>
@@ -178,7 +178,7 @@ export default function BestMatches(props) {
                                         })}
                                     </div>
                                 </ListGroup.Item>);
-                            })}
+                                }})}
                         </ListGroup>
                         <Pagination
                             className='justfiy-content-center'

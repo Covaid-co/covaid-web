@@ -10,23 +10,27 @@ import { currURL } from '../constants';
 
 export default function CitySupport(props) {
 
+    const associationText = () => {
+        if (!props.currentAssoc || Object.keys(props.currentAssoc).length === 0) {
+            return <>
+                <p style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">Covaid.co</p><br />
+                <a href={currURL + '/organizationPortal'} rel="noopener noreferrer" style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
+                Bring Covaid to your community</a>
+                </>
+        } else {
+            return <a href={props.currentAssoc.homepage} target="_blank" rel="noopener noreferrer" 
+            style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
+            {props.currentAssoc.name}</a>
+        }
+    }
+
     const citySupportedBy = () => {
         var float = "left";
-        if (!props.currentAssoc) {
-            return <></>
-        }
         return <div style={{float: float}}>
-                    <p id="regular-text" style={{marginBottom: 0}}>This city is supported by:</p>
+                <p id="regular-text" style={{marginBottom: 0}}>This city is supported by:</p>
                     <div>
-                        <a href={props.currentAssoc.homepage} target="_blank" rel="noopener noreferrer" 
-                            style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
-                            {props.currentAssoc.name}</a><br /> 
+                        {associationText()}
                     </div>
-                    <p style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">Covaid.co</p>
-                    <br /> 
-                    {Object.keys(props.currentAssoc).length === 0 ?
-                    <><a href={currURL + '/organizationPortal'} rel="noopener noreferrer" style={{paddingLeft: 0, marginBottom: 0, marginLeft: 0, fontSize: 16}} id="association-name">
-                        Bring to your community</a><br/></> : <></>}
                 </div>
     }
 
