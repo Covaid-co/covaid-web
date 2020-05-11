@@ -21,7 +21,7 @@ export default class InfoMarker extends PureComponent {
 		if (info.first_name) {
 			return (
 				<div>
-					<p id="regular-text" style={{marginRight: 15, marginBottom: 0, fontWeight: 'bold'}}>{info.first_name}</p>
+					<p id="regular-text" style={{marginRight: 15, marginBottom: 0, fontWeight: 'bold'}}>{info.name}</p>
 					<p id="regular-text-nomargin" onClick={() => viewVolunteer(info)} style={{fontWeight: 'bold', color: '#2670FF'}}>
 					View Volunteer</p>
 				</div>
@@ -29,7 +29,7 @@ export default class InfoMarker extends PureComponent {
 		} else {
 			return (
 				<div>
-					<p id="regular-text" style={{marginRight: 15, marginBottom: 0, fontWeight: 'bold'}}>{info.requester_first}</p>
+					<p id="regular-text" style={{marginRight: 15, marginBottom: 0, fontWeight: 'bold'}}>{info.name}</p>
 					<p onClick={() => viewRequest(info)} id="regular-text-nomargin" style={{fontWeight: 'bold', color: '#2670FF'}}>
 					View Request</p>
 				</div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
@@ -9,12 +9,15 @@ import BestMatches from './BestMatches'
 import Badge from 'react-bootstrap/Badge'
 import Col from 'react-bootstrap/Col'
 import { useFormFields } from "../libs/hooksLib";
-import { formatName } from './OrganizationHelpers'
-import { toastTime, paymentOptions } from '../constants';
-import { generateURL, generateMapsURL, moveFromToArr } from '../Helpers';
+import { formatName, updateAllRequests } from './OrganizationHelpers'
+import { toastTime, paymentOptions, current_tab, volunteer_status } from '../constants';
+import { generateURL, generateMapsURL } from '../Helpers';
+
+/**
+ * Request Details Modal
+ */
 
 export default function RequestDetails(props) {
-
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [topMatchesModal, setTopMatchesModal] = useState(false);
     const [assignee, setAssignee] = useState('No one assigned');
@@ -31,6 +34,26 @@ export default function RequestDetails(props) {
         email2: "",
     });
 
+    useEffect(() => {
+        setAssignee('No one assigned');
+        createMapsLink();
+        fields.email2 = props.currRequest.note;
+        setPrevNote(props.currRequest.note);
+        updateAdminList();
+        findUser();
+    }, [props.currRequest, props.association]);
+
+    // Create link to requesters location
+    const createMapsLink = () => {
+        if (props.currRequest.location) {
+            const lat = props.currRequest.location.coordinates[1];
+            const long = props.currRequest.location.coordinates[0];
+            const tempURL = generateMapsURL(lat, long);
+            setMapsURL(tempURL);
+        }
+    }
+
+    // Update selection menu for list of admins
     const updateAdminList = () => {
         if (props.association.admins) {
             const currAdminList = props.association.admins;
@@ -48,27 +71,15 @@ export default function RequestDetails(props) {
         }
     }
 
-    useEffect(() => {
-        setAssignee('No one assigned');
-        if (props.currRequest.latitude) {
-            const tempURL = generateMapsURL(props.currRequest.latitude, props.currRequest.longitude);
-            setMapsURL(tempURL);
-        }
-        fields.email2 = props.currRequest.note;
-        setPrevNote(props.currRequest.note);
-        updateAdminList();
-        if (props.currRequest.status && (props.mode === 2 || props.mode === 3)) {
-            findUser(props.currRequest);
-        }
-    }, [props.currRequest, props.association]);
-
-
-    const findUser = (request) => {
-        if (request.status.volunteer === undefined || request.status.volunteer.length === 0 || request.status.volunteer === 'manual') {
+    // Find Volunteer attached to this request
+    const findUser = () => {
+        if (props.currRequest.status === undefined ||
+            props.currRequest.status.volunteers.length === 0 ||
+            props.mode === current_tab.UNMATCHED) {
             setCurrVolunteer({});
             return;
         }
-        let params = {'id': request.status.volunteer}
+        const params = { 'id': props.currRequest.status.volunteers[0]._id }
         const url = generateURL( "/api/users/user?", params);
         fetch(url, {
             method: 'get',
@@ -80,25 +91,35 @@ export default function RequestDetails(props) {
                         setCurrVolunteer(data[0]);
                     }
                 });
-            } else {
-                console.log(response);
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch(e => {
+            alert(e);
         });
     }
 
+    // Display Top Matches Modal if there is an admin attached
     const topMatch = () => {
-        if (props.currRequest.assignee && props.currRequest.assignee !== '' && props.currRequest.assignee !== 'No one assigned') {
-            props.setRequestDetailsModal(false);
+        if (props.currRequest.admin_info.assignee && 
+            props.currRequest.admin_info.assignee !== '' && 
+            props.currRequest.admin_info.assignee !== 'No one assigned') {
             setTopMatchesModal(true);
             setNotes();
+            props.setRequestDetailsModal(false);
         } else {
             setShowToast(true);
             setToastMessage('Please assign an admin to track this request');
         }
     }
 
+    // Update current request and requests array
+    const updateRequests = (request) => {
+        props.setCurrRequest(request);
+        // Update all requests array with the new updated request
+        const newAllRequests = updateAllRequests(request, props.allRequests);
+        props.setAllRequests(newAllRequests);
+    }
+
+    // Remove a volunteer from request
     const unMatch = () => {
         let form = {
             'request_id': props.currRequest._id,
@@ -108,32 +129,20 @@ export default function RequestDetails(props) {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                const newRequest = {
-                    ...props.currRequest,
-                    'status': {
-                        'current_status': 'incomplete',
-                        'volunteer': ''
-                    }
-                }
-                props.setCurrRequest(newRequest);
-                if (props.mode === 2) {
-                    moveFromToArr(newRequest, props.matched, props.setMatched, props.unmatched, props.setUnmatched);
-                } else if (props.mode === 3) {
-                    moveFromToArr(newRequest, props.completed, props.setCompleted, props.unmatched, props.setUnmatched);
-                }
-                setTopMatchesModal(false);
-                setUnmatchModal(false);
-                props.setRequestDetailsModal(false);
-            } else {
-                alert("unable to attach");
-            }
-        }).catch((e) => {
-            console.log(e);
+        }).then((response) => response.json())
+        .then(newRequest => {
+            updateRequests(newRequest);
+
+            // Reset/close all modals 
+            setTopMatchesModal(false);
+            setUnmatchModal(false);
+            props.setRequestDetailsModal(false);
+        }).catch(e => {
+            alert(e);
         });
     }
 
+    // Completing a request
     const completeRequest = async e => {
         e.preventDefault();
         e.stopPropagation();
@@ -147,50 +156,17 @@ export default function RequestDetails(props) {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                var newRequest = {
-                    ...props.currRequest,
-                    'status': {
-                        'current_status': 'complete',
-                        "reason": reason
-                    }
-                }
-                if (props.currRequest.status) {
-                    newRequest = {
-                        ...props.currRequest,
-                        'status': {
-                            ...props.currRequest.status,
-                            'current_status': 'complete',
-                            "reason": reason
-                        }
-                    }
-                }
-                props.setCurrRequest(newRequest);
-                if (props.mode === 3) {
-                    var dup = [...props.completed];
-                    for (var i = 0; i < dup.length; i++) {
-                        if (props.currRequest._id === dup[i]._id) {
-                            dup[i] = newRequest;
-                            break;
-                        }
-                    }
-                    props.setCompleted(dup);
-                } else if (props.mode === 2) {
-                    moveFromToArr(newRequest, props.matched, props.setMatched, props.completed, props.setCompleted);
-                } else if (props.mode === 1) {
-                    moveFromToArr(newRequest, props.unmatched, props.setUnmatched, props.completed, props.setCompleted);
-                }
-                setConfirmCompleteModal(false);
-                props.setRequestDetailsModal(false);
-            } else {
-                alert("unable to attach");
-            }
-        }).catch((e) => {
-            console.log(e);
+        }).then((response) => response.json())
+        .then(newRequest => {
+            updateRequests(newRequest);
+            setConfirmCompleteModal(false);
+            props.setRequestDetailsModal(false);
+        }).catch(e => {
+            alert(e);
         });
     }
 
+    // Add admin to a request
     const setAdmin = (assignString) => {
         const requester_id = props.currRequest._id;
         let form = {
@@ -202,49 +178,88 @@ export default function RequestDetails(props) {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                var dup;
-                var i = 0;
-                if (props.mode === 3) {
-                    dup = [...props.completed];
-                    for (i = 0; i < dup.length; i++) {
-                        if (props.currRequest._id === dup[i]._id) {
-                            dup[i].assignee = assignString;
-                            break;
-                        }
-                    }
-                    props.setCompleted(dup);
-                } else if (props.mode === 2) {
-                    dup = [...props.matched];
-                    for (i = 0; i < dup.length; i++) {
-                        if (props.currRequest._id === dup[i]._id) {
-                            dup[i].assignee = assignString;
-                            break;
-                        }
-                    }
-                    props.setMatched(dup);
-                } else if (props.mode === 1) {
-                    dup = [...props.unmatched];
-                    for (i = 0; i < dup.length; i++) {
-                        if (props.currRequest._id === dup[i]._id) {
-                            dup[i].assignee = assignString;
-                            break;
-                        }
-                    }
-                    props.setUnmatched(dup);
-                }
-                var newRequest = {
-                    ...props.currRequest,
-                    'assignee': assignString
-                }
-                props.setCurrRequest(newRequest);
-            } else {
-                alert("unable to attach");
-            }
-        }).catch((e) => {
-            console.log(e);
+        }).then((response) => response.json())
+        .then(newRequest => {
+            updateRequests(newRequest);
+        }).catch(e => {
+            alert(e);
         });
+    }
+
+    // Deleting a request
+    const deleteRequest = () => {
+        const requester_id = props.currRequest._id;
+        let form = {'request_id': requester_id};
+
+        fetch('/api/request/set_delete', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => response.json())
+        .then(request => {
+            props.setCurrRequest(request);
+            // Remove request from array
+            const newAllRequests = updateAllRequests(request, props.allRequests, true);
+            props.setAllRequests(newAllRequests);
+            setDeleteModal(false);
+            props.setRequestDetailsModal(false);
+        }).catch(e => {
+            alert(e);
+        });
+    }
+
+    // Update admin notes
+    const setNotes = () =>{
+        if (prevNote === fields.email2) {
+            return;
+        }
+        let form = {
+            'request_id': props.currRequest._id,
+            'note': fields.email2
+        };
+
+        fetch('/api/request/set_notes', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => response.json())
+        .then(newRequest => {
+            updateRequests(newRequest);
+        }).catch(e => {
+            alert(e);
+        });
+    }
+
+    const changeAssignee = (e) => {
+        e.persist();
+        setAssignee(e.target.value);
+        setAdmin(e.target.value);
+    }
+
+    const handleChangeReasons = (event) => {
+        event.persist();
+        var result = event.target.value;
+        setReason(result);
+    }
+
+    const displayMatchVolunteer = (completeButton) => {
+        return <>
+                <Button id="large-button" style={{marginTop: 15}} onClick={topMatch}>Match a volunteer</Button>
+                <Row style={{marginBottom: 10}}>
+                    <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
+                        <Button id='large-button-empty'style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
+                                onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
+                            Remove Request
+                        </Button>
+                    </Col>
+                    <Col xs={6} style = {{padding: 0, paddingLeft: 4, paddingRight: 15}}>
+                        {completeButton}
+                    </Col>
+                </Row>
+                <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id="toastError">
+                    <Toast.Body>{toastMessage}</Toast.Body>
+                </Toast>    
+            </>;
     }
 
     const modeButton = () => {
@@ -252,24 +267,8 @@ export default function RequestDetails(props) {
                                         onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
                                     Mark Complete
                                 </Button>
-        if (props.mode === 1) {
-            return <>
-                    <Button id="large-button" style={{marginTop: 15}} onClick={topMatch}>Match a volunteer</Button>
-                    <Row style={{marginBottom: 10}}>
-                        <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
-                            <Button id='large-button-empty'style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
-                                    onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
-                                Remove Request
-                            </Button>
-                        </Col>
-                        <Col xs={6} style = {{padding: 0, paddingLeft: 4, paddingRight: 15}}>
-                            {completeButton}
-                        </Col>
-                    </Row>
-                    <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id="toastError">
-                        <Toast.Body>{toastMessage}</Toast.Body>
-                    </Toast>    
-                </>;
+        if (props.mode === current_tab.UNMATCHED) {
+            return displayMatchVolunteer(completeButton);
         } else {
             return (<>
                     {Object.keys(currVolunteer).length > 0 ? 
@@ -278,7 +277,6 @@ export default function RequestDetails(props) {
                                 props.setCurrVolunteer(currVolunteer);
                                 props.setRequestDetailsModal(false);
                                 props.setInRequest(true);
-                                console.log(2);
                             }}>
                             View Volunteers's Information
                         </Button>
@@ -298,100 +296,10 @@ export default function RequestDetails(props) {
         }
     }
 
-    const deleteRequest = () => {
-        const requester_id = props.currRequest._id;
-        let form = {'request_id': requester_id};
-
-        fetch('/api/request/set_delete', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                if (props.mode === 3) {
-                    moveFromToArr(props.currRequest, props.completed, props.setCompleted, [{'x': 'x'}], ()=>{});
-                } else if (props.mode === 2) {
-                    moveFromToArr(props.currRequest, props.matched, props.setMatched, [{'x': 'x'}], ()=>{});
-                } else if (props.mode === 1) {
-                    moveFromToArr(props.currRequest, props.unmatched, props.setUnmatched, [{'x': 'x'}], ()=>{});
-                }
-                setDeleteModal(false);
-                props.setRequestDetailsModal(false);
-            } else {
-                alert("unable to attach");
-            }
-        }).catch((e) => {
-            console.log(e);
-        });
-    }
-
-    const setNotes = () =>{
-        if (prevNote === fields.email2) {
-            return;
-        }
-        let form = {
-            'request_id': props.currRequest._id,
-            'note': fields.email2
-        };
-
-        fetch('/api/request/set_notes', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                if (props.mode === 3) {
-                    var dup = [...props.completed];
-                    for (var i = 0; i < dup.length; i++) {
-                        if (props.currRequest._id === dup[i]._id) {
-                            dup[i].note = fields.email2;
-                            break;
-                        }
-                    }
-                    props.setCompleted(dup);
-                } else if (props.mode === 2) {
-                    var dup = [...props.matched];
-                    for (var i = 0; i < dup.length; i++) {
-                        if (props.currRequest._id === dup[i]._id) {
-                            dup[i].note = fields.email2;
-                            break;
-                        }
-                    }
-                    props.setMatched(dup);
-                } else if (props.mode === 1) {
-                    var dup = [...props.unmatched];
-                    for (var i = 0; i < dup.length; i++) {
-                        if (props.currRequest._id === dup[i]._id) {
-                            dup[i].note = fields.email2;
-                            break;
-                        }
-                    }
-                    props.setUnmatched(dup);
-                }
-            } else {
-                alert("unable to attach");
-            }
-        }).catch((e) => {
-            console.log(e);
-        });
-    }
-
-    const changeAssignee = (e) => {
-        e.persist();
-        setAssignee(e.target.value);
-        setAdmin(e.target.value);
-    }
-
-    const handleChangeReasons = (event) => {
-        event.persist();
-        var result = event.target.value;
-        setReason(result);
-    }
-
     const modeString = () => {
-        if (props.mode === 1) {
+        if (props.mode === current_tab.UNMATCHED) {
             return " (Unmatched)";
-        } else if (props.mode === 2) {
+        } else if (props.mode === current_tab.MATCHED) {
             return "";
         } else {
             return " (Completed) ";
@@ -445,33 +353,40 @@ export default function RequestDetails(props) {
     }
 
     const volunteerComments = () => {
-        if (props.mode === 3 && props.currRequest && props.currRequest.volunteer_comment) {
+        const volunteers = props.currRequest.status.volunteers;
+        const found = volunteers.find(vol => {
+            return vol.current_status === volunteer_status.COMPLETE;
+        });
+        if (props.mode === current_tab.COMPLETED && found) {
             return <>
                 <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Volunteer's completion remarks:</h5>
-                    <p id="regular-text-nomargin">"{props.currRequest.volunteer_comment}"</p>
+                    <p id="regular-text-nomargin">"{found.volunteer_response}"</p>
             </>
         } else {
             return <></>
         }
     }
 
+    // Current status of request (pending/in progress)
     const requestStatus = () => {
-        if (props.currRequest) {
-            if (props.currRequest.volunteer_status === 'pending') {
-                return <Badge className='pending-task' style={{marginTop: 6}}>Pending</Badge>;
-            } else if (props.currRequest.volunteer_status === 'accepted') {
+        if (props.mode === current_tab.MATCHED) {
+            const volunteers = props.currRequest.status.volunteers;
+            const in_progress = volunteers.find(vol => vol.current_status === volunteer_status.IN_PROGRESS);
+            const pending = volunteers.find(vol => vol.current_status === volunteer_status.PENDING);
+            if (in_progress) {
                 return <Badge className='in-progress-task' style={{marginTop: 6}}>In Progress</Badge>;
-            }     
-        } else {
-            return <></>;
+            } else if (pending) {
+                return <Badge className='pending-task' style={{marginTop: 6}}>Pending</Badge>;
+            }
         }
+        return <></>
     }
 
     const paymentText = () => {
         if (props.association._id === '5e843ab29ad8d24834c8edbf') {
             return <></>
         } else {
-            return <p id="regular-text-nomargin">Payment: {paymentOptions[props.currRequest.payment]}</p>
+            return <p id="regular-text-nomargin">Payment: {paymentOptions[props.currRequest.request_info.payment]}</p>
         }
     }
 
@@ -501,17 +416,17 @@ export default function RequestDetails(props) {
                     </Form>
                     <Modal.Title id="small-header" style={{marginTop: 20}}>Request Details {modeString()} {requestStatus()}</Modal.Title>
                     <Col xs={12} style={{padding: 0}}><p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p></Col>
-                    <p id="name-details">{formatName(props.currRequest.requester_first, props.currRequest.requester_last)}</p>
+                    <p id="name-details">{formatName(props.currRequest.personal_info.requester_name)}</p>
                     <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapsURL}>Click here</a></p>
-                    {props.currRequest.requester_email ? <p id="regular-text-nomargin">{props.currRequest.requester_email}</p> : <></>}
-                    {props.currRequest.requester_phone ? <p id="regular-text-nomargin">{props.currRequest.requester_phone}</p> : <></>}
-                    <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currRequest.languages ? props.currRequest.languages.join(', ') : ''}</p>
+                    <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_email}</p>
+                    <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_phone}</p>
+                    <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currRequest.personal_info.languages.join(', ')}</p>
                     {paymentText()}
-                    <p id="regular-text-nomargin">Needs: {props.currRequest.resource_request ? props.currRequest.resource_request.join(', ') : ''}</p>
+                    <p id="regular-text-nomargin">Needs: {props.currRequest.request_info.resource_request.join(', ')}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
-                    <p id="regular-text-nomargin"> {props.currRequest.details}</p>
+                    <p id="regular-text-nomargin"> {props.currRequest.request_info.details}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Needed by:</h5>
-                    <p id="regular-text-nomargin">{props.currRequest.time} of {props.currRequest.date}</p>
+                    <p id="regular-text-nomargin">{props.currRequest.request_info.time} of {props.currRequest.request_info.date}</p>
                     {volunteerComments()}
                     {modeButton()}
                 </Modal.Body>
@@ -564,18 +479,22 @@ export default function RequestDetails(props) {
                     </Form>
                 </Modal.Body>
             </Modal>
-
-            <BestMatches topMatchesModal={topMatchesModal} 
-                        setTopMatchesModal={setTopMatchesModal} 
-                        currRequest={props.currRequest}
-                        setCurrRequest={props.setCurrRequest}
-                        association={props.association}
-                        setRequestDetailsModal={props.setRequestDetailsModal}
-                        volunteers={props.volunteers}
-                        unmatched={props.unmatched}
-                        matched={props.matched}
-                        setUnmatched={props.setUnmatched}
-                        setMatched={props.setMatched}/>
+            <BestMatches { ... props} topMatchesModal={topMatchesModal} setTopMatchesModal={setTopMatchesModal} />
         </>
     );
 }
+
+RequestDetails.propTypes = {
+    admin: PropTypes.obj,
+    currRequest: PropTypes.obj,
+    setCurrRequest: PropTypes.func,
+    association: PropTypes.obj,
+    mode: PropTypes.number,
+    setRequestDetailsModal: PropTypes.func,
+    setVolunteerDetailsModal: PropTypes.func,
+    setCurrVolunteer: PropTypes.func,
+    setAllRequests: PropTypes.func,
+    setInRequest: PropTypes.func,
+    allRequests: PropTypes.array,
+    requestDetailsModal: PropTypes.bool
+};

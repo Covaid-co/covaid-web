@@ -40,3 +40,25 @@ c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4
 C20.1,15.8,20.2,15.8,20.2,15.7z`;
 export const MARKER_SIZE = 20;
 export const generalRequestText = 'After submitting a general request for support, we will attempt to match you with a volunteer in your area.';
+
+export const request_status = {
+    UNMATCHED: 0,
+    MATCHED: 1,
+    COMPLETED: 2
+}
+
+export const volunteer_status = {
+    PENDING: 0,
+    IN_PROGRESS: 1,
+    COMPLETE: 2,
+    REJECTED: 3,
+    DOES_NOT_EXIST: -1
+}
+
+export const current_tab = {
+    UNMATCHED: 1,
+    MATCHED: 2,
+    COMPLETED: 3
+}
+
+export const sort_types = ['Name', 'Needed By', 'Last Updated', 'Time Posted'];

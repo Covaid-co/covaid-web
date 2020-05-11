@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import { Marker, FlyToInterpolator} from 'react-map-gl';
-import { MARKER_SIZE, ICON } from '../constants'
+import { MARKER_SIZE, ICON, current_tab } from '../constants'
+import { filter_requests, isInProgress } from './OrganizationHelpers';
 
 // Important for perf: the markers never change, avoid rerender when the map viewport changes
 export default class Pins extends PureComponent {
@@ -47,15 +49,6 @@ export default class Pins extends PureComponent {
                                 })
                             }}>
                     </div>
-                        {/* <svg height={SIZE} viewBox="0 0 24 24"
-                            style={{
-                                cursor: 'pointer',
-                                fill: '#2670FF',
-                                stroke: 'none',
-                                transform: `translate(${-SIZE / 2}px,${-SIZE}px)`
-                            }}>
-                            <path d={ICON}/>
-                        </svg> */}
                     </Marker>
         });
     }
@@ -73,37 +66,29 @@ export default class Pins extends PureComponent {
                     </svg>
                 </Marker>
     })
-    var realRequests = [];
+
+    var requests = filter_requests(this.props.allRequests, mode);
     var color = '#DB4B4B';
-    if (mode === 1) {
-        realRequests = this.props.unmatched;
-    } else if (mode === 2) {
-        realRequests = this.props.matched;
-        color = '#db9327';
-    } else if (mode === 3) {
-        realRequests = this.props.completed;
+    if (mode === current_tab.MATCHED) {
+        color = '#8A8A8A';
+    } else if (mode === current_tab.COMPLETED) {
         color = '#28a745';
     }
-    var requesterMarkers = realRequests.map((request, index) => {
-        if (request.longitude && request.latitude) {
-            return  <Marker key={`requester-${index}`} longitude={request.longitude} latitude={request.latitude}>
-                        <svg
-                        height={MARKER_SIZE}
-                        viewBox="0 0 24 24"
+
+    var requesterMarkers = requests.map((request, index) => {
+        const lat = request.location.coordinates[1];
+        const long = request.location.coordinates[0];
+        return  <Marker key={`requester-${index}`} longitude={long} latitude={lat}>
+                    <svg height={MARKER_SIZE} viewBox="0 0 24 24" onClick={() => onClick(request)}
                         style={{
                             cursor: 'pointer',
-                            fill: request.volunteer_status === 'pending' ? '#8A8A8A': color,
+                            fill: isInProgress(request) ? '#db9327': color,
                             stroke: 'none',
                             transform: `translate(${-MARKER_SIZE / 2}px,${-MARKER_SIZE}px)`
-                        }}
-                        onClick={() => onClick(request)}
-                        >
+                        }}>
                         <path d={ICON} />
-                        </svg>
-                    </Marker>
-        } else {
-            return <></>;
-        }
+                    </svg>
+                </Marker>
     });
 
     if (this.props.requesterMap && this.props.volunteerMap) {
@@ -117,3 +102,19 @@ export default class Pins extends PureComponent {
     return <></>;
   }
 }
+
+Pins.propTypes = {
+    setCurrRequest: PropTypes.func,
+    setRequestDetailsModal: PropTypes.func,
+    setCurrVolunteer: PropTypes.func,
+    setVolunteerDetailsModal: PropTypes.func,
+    setInRequest: PropTypes.func,
+    volunteers: PropTypes.array,
+    requests: PropTypes.array,
+    mode: PropTypes.number,
+    association: PropTypes.object,
+    requesterMap: PropTypes.bool,
+    volunteerMap: PropTypes.bool,
+    allRequests: PropTypes.array,
+    public: PropTypes.bool
+};

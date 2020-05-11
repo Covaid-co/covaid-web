@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
-import NewMap from './NewMap'
+import NewMap from './NewMap';
+import { current_tab } from '../constants';
 
 /*
  * Map that displays requesters/volunteers for and organization
@@ -15,19 +16,19 @@ export default function OrganizationMap(props) {
     
     const requesterStyle = () => {
 		if (!requesterMap) {
-			if (props.mode === 1) {
+			if (props.mode === current_tab.UNMATCHED) {
 				return {border: '1px solid #DB4B4B', color: '#DB4B4B'}
-			} else if (props.mode === 2) {
+			} else if (props.mode === current_tab.MATCHED) {
 				return {border: '1px solid #DB9327', color: '#DB9327'}
-			} else if (props.mode === 3) {
+			} else if (props.mode === current_tab.COMPLETED) {
 				return {border: '1px solid #28A745', color: '#28A745'}
 			}
 		} else {
-			if (props.mode === 1) {
+			if (props.mode === current_tab.UNMATCHED) {
 				return {border: '1px solid #DB4B4B', background: '#DB4B4B', color: 'white'}
-			} else if (props.mode === 2) {
+			} else if (props.mode === current_tab.MATCHED) {
 				return {border: '1px solid #DB9327', background: '#DB9327', color: 'white'}
-			} else if (props.mode === 3) {
+			} else if (props.mode === current_tab.COMPLETED) {
 				return {border: '1px solid #28A745', background: '#28A745', color: 'white'}
 			}
 		}

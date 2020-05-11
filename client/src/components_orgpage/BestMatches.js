@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Modal from 'react-bootstrap/Modal'
-import Badge from 'react-bootstrap/Badge'
-import ListGroup from 'react-bootstrap/ListGroup'
+import PropTypes from 'prop-types';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
+import Badge from 'react-bootstrap/Badge';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
+import Pagination from '../components/Pagination';
 import VolunteerDetails from './VolunteerDetails'
-import Button from 'react-bootstrap/Button'
 import { calcDistance } from '../Helpers';
 import { formatName } from './OrganizationHelpers';
-import Pagination from '../components/Pagination'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { volunteer_status } from '../constants';
+
+/**
+ * Finding best matches for a request
+ */
 
 export default function BestMatches(props) {
 
@@ -20,16 +25,14 @@ export default function BestMatches(props) {
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const volunteersPerPage = 5;
-    const [currRequest, setCurrRequest] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
     const [looseMatch, setLooseMatch] = useState(false);
     const [viewedVolunteers, setViewedVolunteers] = useState([]);
 
     useEffect(() => {
-        setCurrRequest(props.currRequest);
         var temp_volunteers = []
         var nomatch_volunteers = [];
-        var needed_resources = props.currRequest.resource_request ? props.currRequest.resource_request : [];
+        var needed_resources = props.currRequest.request_info ? props.currRequest.request_info.resource_request : [];
         var tempAllVolunteers = [];
 
         props.volunteers.forEach(
@@ -85,7 +88,6 @@ export default function BestMatches(props) {
             setSortedVolunteers([]);
             setDisplayedVolunteers([]);
             setCurrVolunteer({});
-            setCurrRequest({});
             setIsLoaded(false);
         }, 500);
     }
@@ -95,14 +97,17 @@ export default function BestMatches(props) {
         resetState();
     }
 
+    // Display if volunteer was previously matched
     const displayPrevMatched = (volunteer) => {
-        const prevMatched = props.currRequest.prev_matched;
-        if (prevMatched) {
-            if (prevMatched.includes(volunteer._id)) {
-                return <h5 id="association-name" style={{color: '#DB4B4B'}}>
-                        Previously Matched
-                    </h5>
-            }
+        const volunteers = props.currRequest.status.volunteers;
+        const found = volunteers.find(vol => {
+            return volunteer._id === vol.volunteer && vol.current_status === volunteer_status.REJECTED;
+        });
+
+        if (found) {
+            return <h5 id="association-name" style={{color: '#DB4B4B'}}>
+                    Previously Matched
+                </h5>
         }
         return <></>;
     }
@@ -118,28 +123,33 @@ export default function BestMatches(props) {
         setLooseMatch(!looseMatch);
         setCurrentPage(1);
     }
-    
+
+    // Resource's that match between requester and volunteer
+    const displayResourceMatch = (volunteer) => {
+        return volunteer.offer.tasks.length === 0 ? 
+            <Badge id='task-info' style={{background: '#AE2F2F'}}>
+                No tasks entered
+            </Badge> 
+            : volunteer.offer.tasks.map((task, i) => {
+                if (props.currRequest
+                    && props.currRequest.request_info
+                    && props.currRequest.request_info.resource_request.length > 0
+                    &&  props.currRequest.request_info.resource_request.indexOf(task) !== -1) {
+                    return <Badge key={i} style={{background: '#4CA846'}} id='task-info'>{task}</Badge>
+                } else {
+                    return <Badge key={i} style={{background: '#6C757D'}} id='task-info'>{task}</Badge>
+                }
+        })
+    }
+
     if (!isLoaded) {
         return <></>;
     }
-
-    const generateInvisible = (availability) => {
-        if (availability == false) {
-            return <p style={{color: "#AE2F2F", marginBottom: 5}}>Not Publicly Available</p>;
-        } else {
-            return <></>;
-        }
-    }
-
     return (
         <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title>{formatName(currRequest.requester_first)}'s Top Matches 
-                    <Button
-                        id={looseMatch ? "notSelected" : "selected"}
-                        onClick={switchVolunteers}
-                        style={{marginLeft: 15, marginBottom: 8}}
-                        >
+                <Modal.Title>{formatName(props.currRequest.requester_first)}'s Top Matches 
+                    <Button id={looseMatch ? "notSelected" : "selected"} onClick={switchVolunteers} style={{marginLeft: 15, marginBottom: 8}}>
                         {looseMatch ? "Match on task" : "Match on task"}
                     </Button>
                 </Modal.Title>
@@ -165,17 +175,7 @@ export default function BestMatches(props) {
                                         </p>
                                     </div>
                                     <div>
-                                        {volunteer.offer.tasks.length === 0 ? 
-                                            <Badge id='task-info' style={{background: '#AE2F2F'}}>
-                                                No tasks entered
-                                            </Badge> 
-                                            : volunteer.offer.tasks.map((task, i) => {
-                                                if (currRequest && currRequest.resource_request && currRequest.resource_request.length > 0 && currRequest.resource_request.indexOf(task) !== -1) {
-                                                    return <Badge key={i} style={{background: '#4CA846'}} id='task-info'>{task}</Badge>
-                                                } else {
-                                                    return <Badge key={i} style={{background: '#6C757D'}} id='task-info'>{task}</Badge>
-                                                }
-                                        })}
+                                        {displayResourceMatch(volunteer)}
                                     </div>
                                 </ListGroup.Item>);
                                 }})}
@@ -192,16 +192,16 @@ export default function BestMatches(props) {
                 <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
                                     setVolunteerDetailsModal={setVolunteerDetailsModal}
                                     currVolunteer={currVolunteer}
-                                    currRequest={currRequest}
-                                    setCurrRequest={props.setCurrRequest}
-                                    setTopMatchesModal={props.setTopMatchesModal}
-                                    setRequestDetailsModal={props.setRequestDetailsModal}
-                                    unmatched={props.unmatched}
-                                    matched={props.matched}
-                                    setUnmatched={props.setUnmatched}
-                                    setMatched={props.setMatched}
+                                    { ... props }
                                     matching={true}/>
             </Modal.Body>
         </Modal>
     )
 }
+
+BestMatches.propTypes = {
+    currRequest: PropTypes.obj,
+    topMatchesModal: PropTypes.bool,
+    volunteers: PropTypes.array,
+    setTopMatchesModal: PropTypes.func
+};

@@ -7,7 +7,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from  'react-bootstrap/Dropdown'
 import { sortReq, filterReq, formatName } from './OrganizationHelpers';
-import { convertTime } from '../Helpers';
+import { convertTime, isInProgress } from '../Helpers';
+import { sort_types, current_tab } from '../constants';
 
 /*
  * All Requests component
@@ -15,17 +16,13 @@ import { convertTime } from '../Helpers';
 
 export default function OrgRequests(props) {
     const [filteredRequests, setFilteredRequests] = useState([]);
-    const [name, setName] = useState(false);
-    const [need, setNeed] = useState(false);
-    const [updated, setUpdated] = useState(true);
-    const [posted, setPosted] = useState(true);
     const [foundQuery, setQuery] = useState('');
-    const [lastPressed, setLastPressed] = useState('Last Updated');
+    const [sortType, setSortType] = useState('Last Updated');
 
     useEffect(() => {
         const filteredRequests = filterReq(foundQuery, props.requests);
-        const sorted = sortReq('updated', filteredRequests, false, false, true, false);
-        setFilteredRequests(sorted);
+        const sorted_requests = sortReq(sortType, filteredRequests);
+        setFilteredRequests(sorted_requests);
     }, [props.requests, foundQuery]);
 
     const filterRequests = (e) => {
@@ -36,47 +33,21 @@ export default function OrgRequests(props) {
     }
 
     const sortRequests = (type) => {
-        const sortedRequests = sortReq(type, filteredRequests, name, need, updated, posted);
-        if (type === 'name') {
-            setLastPressed('Name');
-            setName(!name);
-        } else if (type === 'need') {
-            setLastPressed('Needed By');
-            setNeed(!need);
-        } else if (type === 'updated') {
-            setLastPressed('Last Updated');
-            if (lastPressed !== 'Last Updated') {
-                sortReq(type, filteredRequests, name, need, true, posted);
-                setUpdated(true);
-            } else {
-                setUpdated(!updated);
-            }
-        } else {
-            setLastPressed('Time Posted');
-            if (lastPressed !== 'Time Posted') {
-                sortReq(type, filteredRequests, name, need, updated, true);
-                setPosted(true);
-            } else {
-                setPosted(!posted);
-            }
-        }
-        setFilteredRequests(sortedRequests);
+        setSortType(type);
+        const sorted_requests = sortReq(type, filteredRequests);
+        setFilteredRequests(sorted_requests);
     }
 
-    const resourceCompleteBadge = (request) => {
-        var result = <></>;
+    const displayBadges = (request) => {
+        // Completed Tab only
         if (props.mode === 3) {
-            if (request.status) {
-                result = <Badge id='task-info' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
-                        {request.status.reason ? request.status.reason : "No reason selected"}
-                    </Badge>
-            }
-        } else {
-            result = request.resource_request.map((task, i) => {
-                return <Badge key={i} id='task-info'>{task}</Badge>
-            })
+            return <Badge id='task-info' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
+                        {request.status.completed_reason ? request.status.completed_reason : "No reason selected"}
+                </Badge>
         }
-        return result;
+        return request.request_info.resource_request.map((task, i) => {
+            return <Badge key={i} id='task-info'>{task}</Badge>
+        });
     }
 
     const clickRequest = (request) => {
@@ -85,36 +56,46 @@ export default function OrgRequests(props) {
         props.setInRequest(true);
     }
 
+    // Text displayed based on sort type
     const sortInfo = (request) => {
-        if (lastPressed === 'Last Updated') {
-            if (request.last_modified) {
-                const formatted = convertTime(request.last_modified);
-                return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Last Updated: {formatted}</p>
-            } else {
-                return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Unread</p>
-            }
-        } else if (lastPressed === 'Time Posted') {
-            if (request.time_posted) {
-                const formatted = convertTime(request.time_posted);
-                return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Time Posted: {formatted}</p>
-            } else {
-                return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>No Time</p>
-            }
+        var formatted_time = request.request_info.date;
+        var temp_sortType = sortType;
+        if (temp_sortType === 'Last Updated') {
+            formatted_time = convertTime(request.admin_info.last_modified);
+        } else if (temp_sortType === 'Time Posted') {
+            formatted_time = convertTime(request.time_posted);
         } else {
-            return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>Needed by: {request.date}</p>
+            temp_sortType = 'Needed by';
         }
+        return <p id="regular-text" style={{float: 'right', marginBottom: 0, marginRight: 10}}>
+            {temp_sortType}: {formatted_time}</p>
     }
 
+    // Admin Tracking Text
+    const displayAdmin = (request) => {
+        return <p style={{float: 'left', marginBottom: 0}}>Tracking: 
+            <font style={request.assignee !== 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.assignee ? request.assignee : "No one assigned"}
+            </font>
+        </p>
+    }
+
+    // Request status 
     const requestStatus = (request) => {
-        if (request.volunteer_status === 'pending') {
-            return <Badge className='pending-task'>Pending</Badge>;
-        } else if (request.volunteer_status === 'accepted') {
-            return <Badge className='in-progress-task'>In Progress</Badge>;
-        } else if (props.mode === 2) {
-            return <Badge className='no-match-task'>No Match</Badge>;
+        if (props.mode === current_tab.MATCHED) {
+            const in_progress = isInProgress(request);
+            if (in_progress) {
+                return <Badge className='in-progress-task'>In Progress</Badge>;
+            } else {
+                return <Badge className='pending-task'>Pending</Badge>;
+            }
         } else {
             return <></>;
         }
+    }
+
+    // Possible dropdown names
+    const displayDropdownItems = () => {
+        return sort_types.map((type, i) => {return <Dropdown.Item key={i} onClick={()=>sortRequests(type)}>{type}</Dropdown.Item>})
     }
 
     return (
@@ -129,13 +110,10 @@ export default function OrgRequests(props) {
             <Col xs={4} style={{paddingLeft: 0}}>
                 <Dropdown drop='up'>
                     <Dropdown.Toggle id="dropdown-basic" className='dropdown-sort'>
-                        {lastPressed}
+                        {sortType}
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{width: '100%'}}>
-                        <Dropdown.Item onClick={()=>sortRequests('name')}>Name</Dropdown.Item>
-                        <Dropdown.Item onClick={()=>sortRequests('need')}>Needed By</Dropdown.Item>
-                        <Dropdown.Item onClick={()=>sortRequests('updated')}>Last Updated</Dropdown.Item>
-                        <Dropdown.Item onClick={()=>sortRequests('posted')}>Time Posted</Dropdown.Item>
+                        {displayDropdownItems()}
                     </Dropdown.Menu>
                 </Dropdown>
             </Col>
@@ -147,18 +125,15 @@ export default function OrgRequests(props) {
                     {filteredRequests.map((request, i) => {
                         return (
                             <ListGroup.Item key={i} action onClick={() => {clickRequest(request)}}>
-                                <div >
+                                <div>
                                     <h5 id="volunteer-name">
-                                        {formatName(request.requester_first, request.requester_last)}
+                                        {formatName(request.personal_info.requester_name)}
                                     </h5>
                                     {sortInfo(request)}
                                 </div>
-                                <div>{resourceCompleteBadge(request)} {requestStatus(request)}</div>
+                                <div>{displayBadges(request)} {requestStatus(request)}</div>
                                 <div style={{display: 'inline-block', width: '100%', marginTop: 3, fontFamily: 'Inter'}}>
-                                    <p style={{float: 'left', marginBottom: 0}}>Tracking: 
-                                        <font style={request.assignee && request.assignee !== 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.assignee ? request.assignee : "No one assigned"}
-                                        </font>
-                                    </p>
+                                    {displayAdmin(request)}
                                 </div>
                             </ListGroup.Item>);
                         })}
