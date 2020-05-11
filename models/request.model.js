@@ -2,42 +2,57 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-let RequestSchema = new Schema({
-    requester_first: String,
-    requester_last: String,
+let PersonalInfo = new Schema ({
+    requester_name: String,
     requester_email: String,
     requester_phone: String,
+    languages: [String]
+}, {noId: true});
+
+let RequestInfo = new Schema ({
     resource_request: [String],
-    languages: [String],
-    association: String,
-    latitude: Number,
-    longitude: Number,
     payment: Number,
-    details: String,
-    time: String,
-    time_posted: Date,
+   	details: String,
+	time: String,
     date: String,
+}, {noId: true});
+
+let LocationInfo = new Schema ({
+    type: { type: String },
+    coordinates: {
+        type: [Number],
+        index: "2dsphere"
+    }
+}, {noId: true});
+
+let AdminInfo = new Schema ({
     note: String,
-    adminMessage: String,
     assignee: String,
-    delete: Boolean,
-    last_modified: Date,
-    manual_match: {
-        name: String,
-        email: String,
-        phone: String,
-        details: String
-    },
+    last_modified: Date 
+}, {noId: true});
+
+let VolunteerStatus = new Schema ({
+    current_status: Number,
+    volunteer: String,
+    volunteer_response: String,
+    last_notified_time: Date,
+    adminMessage: String
+}, {noID: true});
+
+let RequestSchema = new Schema({
+    personal_info: PersonalInfo,
+    request_info: RequestInfo,
+    admin_info: AdminInfo,
+    location: LocationInfo,
     status: {
-        current_status: String,
-        volunteer: String,
-        reason: String
+        current_status: Number,
+        volunteers: [VolunteerStatus],
+        completed_reason: String,
+        completed_date: Date
     },
-    prev_matched: [String],
-    volunteer_status: String,
-    volunteer_comment: String,
-    pending_time: Date,
-    completed_date: Date
+    association: String,
+    time_posted: Date,
+    delete: Boolean
 });
 
 module.exports = mongoose.model('Requests', RequestSchema);

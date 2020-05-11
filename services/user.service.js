@@ -15,4 +15,14 @@ exports.getUsersByUserIDs = async function(_ids) {
     }
 }
 
+exports.getUser = async function(query) {
+    try {
+        const users = await UserRepository.readUsers(query);
+        return users;
+
+    } catch (e) {
+        throw e;
+    }
+}
+
 // TODO
