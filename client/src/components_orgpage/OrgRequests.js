@@ -74,7 +74,7 @@ export default function OrgRequests(props) {
     // Admin Tracking Text
     const displayAdmin = (request) => {
         return <p style={{float: 'left', marginBottom: 0}}>Tracking: 
-            <font style={request.assignee !== 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.assignee ? request.assignee : "No one assigned"}
+            <font style={request.admin_info.assignee !== 'No one assigned' ? {color: '#2670FF'} : {color: '#EF6315'}}> {request.admin_info.assignee}
             </font>
         </p>
     }

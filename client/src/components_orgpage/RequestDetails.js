@@ -61,12 +61,10 @@ export default function RequestDetails(props) {
                 return admin['name'];
             })
             adminNames.push('No one assigned')
-            if (props.currRequest.assignee) {
-                if (adminNames.includes(props.currRequest.assignee) === false) {
-                    adminNames.push(props.currRequest.assignee);
-                }
-                setAssignee(props.currRequest.assignee);
+            if (adminNames.includes(props.currRequest.admin_info.assignee) === false) {
+                adminNames.push(props.currRequest.admin_info.assignee);
             }
+            setAssignee(props.currRequest.admin_info.assignee);
             setAdminList(adminNames);
         }
     }
@@ -370,7 +368,6 @@ export default function RequestDetails(props) {
     // Current status of request (pending/in progress)
     const requestStatus = () => {
         if (props.mode === current_tab.MATCHED) {
-            console.log(props.currRequest);
             const volunteers = props.currRequest.status.volunteers;
             const in_progress = volunteers.find(vol => vol.current_status === volunteer_status.IN_PROGRESS);
             const pending = volunteers.find(vol => vol.current_status === volunteer_status.PENDING);
