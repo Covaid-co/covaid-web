@@ -198,7 +198,7 @@ export const fetchOrgRequests = async (id) => {
 }
 
 export const filter_requests = (requests, type) => {
-    return requests.filter(request => request.status.status === type);
+    return requests.filter(request => request.status.current_status === type);
 }
 
 // Split all requests in unmatched, matched and completed requests
@@ -217,7 +217,7 @@ export const splitRequests = (requests) => {
 export const isInProgress = (request) => {
     var in_progress = false;
     const request_volunteers = request.status.volunteers;
-    for (var i = 0; i < request_volunteers; i++) {
+    for (var i = 0; i < request_volunteers.length; i++) {
         if (request_volunteers[i].current_status === volunteer_status.IN_PROGRESS) {
             in_progress = true;
         }

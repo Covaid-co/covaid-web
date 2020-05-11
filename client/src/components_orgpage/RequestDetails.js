@@ -45,9 +45,9 @@ export default function RequestDetails(props) {
 
     // Create link to requesters location
     const createMapsLink = () => {
-        if (props.currRequest.location) {
-            const lat = props.currRequest.location.coordinates[1];
-            const long = props.currRequest.location.coordinates[0];
+        if (props.currRequest.location_info) {
+            const lat = props.currRequest.location_info.coordinates[1];
+            const long = props.currRequest.location_info.coordinates[0];
             const tempURL = generateMapsURL(lat, long);
             setMapsURL(tempURL);
         }
@@ -79,7 +79,7 @@ export default function RequestDetails(props) {
             setCurrVolunteer({});
             return;
         }
-        const params = { 'id': props.currRequest.status.volunteers[0]._id }
+        const params = { 'id': props.currRequest.status.volunteers[0].volunteer }
         const url = generateURL( "/api/users/user?", params);
         fetch(url, {
             method: 'get',
@@ -370,6 +370,7 @@ export default function RequestDetails(props) {
     // Current status of request (pending/in progress)
     const requestStatus = () => {
         if (props.mode === current_tab.MATCHED) {
+            console.log(props.currRequest);
             const volunteers = props.currRequest.status.volunteers;
             const in_progress = volunteers.find(vol => vol.current_status === volunteer_status.IN_PROGRESS);
             const pending = volunteers.find(vol => vol.current_status === volunteer_status.PENDING);
@@ -485,10 +486,10 @@ export default function RequestDetails(props) {
 }
 
 RequestDetails.propTypes = {
-    admin: PropTypes.obj,
-    currRequest: PropTypes.obj,
+    admin: PropTypes.object,
+    currRequest: PropTypes.object,
     setCurrRequest: PropTypes.func,
-    association: PropTypes.obj,
+    association: PropTypes.object,
     mode: PropTypes.number,
     setRequestDetailsModal: PropTypes.func,
     setVolunteerDetailsModal: PropTypes.func,

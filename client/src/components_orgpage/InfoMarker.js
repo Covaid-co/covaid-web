@@ -2,11 +2,11 @@ import React, {PureComponent} from 'react';
 
 export default class InfoMarker extends PureComponent {
 	render() {
-		const {info} = this.props;
+		const {info, request} = this.props;
 
 		const viewVolunteer = () => {
 			this.props.setVolunteerDetailsModal(true);
-			this.props.setCurrVolunteer(info);
+			this.props.setCurrVolunteer(request);
 			this.props.setPopupInfo(null);
 		}
 

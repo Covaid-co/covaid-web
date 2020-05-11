@@ -6,8 +6,8 @@ import Badge from 'react-bootstrap/Badge'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from  'react-bootstrap/Dropdown'
-import { sortReq, filterReq, formatName } from './OrganizationHelpers';
-import { convertTime, isInProgress } from '../Helpers';
+import { sortReq, filterReq, formatName, isInProgress } from './OrganizationHelpers';
+import { convertTime } from '../Helpers';
 import { sort_types, current_tab } from '../constants';
 
 /*

@@ -9,6 +9,7 @@ export default function NewMap(props) {
     const mapRef = useRef();
     const [popupInfo, setPopupInfo] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [currRequest, setCurrRequest] = useState({});
     const [viewport, setViewport] = useState({
         latitude: 38.7528233,
         longitude: -98.1970437,
@@ -58,11 +59,12 @@ export default function NewMap(props) {
 
     const onClickMarker = (obj) => {
         // Request obj
-        if (obj.location) {
+        if (obj.location_info) {
+            setCurrRequest(obj);
             obj = {
                     'name': obj.personal_info.requester_name,
-                    'latitude': obj.location.coordinates[1],
-                    'longitude': obj.location.coordinates[0]
+                    'latitude': obj.location_info.coordinates[1],
+                    'longitude': obj.location_info.coordinates[0]
                 }
         } else {
             obj['name'] = obj.first_name;
@@ -126,7 +128,7 @@ export default function NewMap(props) {
                     longitude={popupInfo.longitude}
                     latitude={popupInfo.latitude}
                     onClose={() => setPopupInfo(null)}>
-                    <InfoMarker info={popupInfo} style={{color: 'black'}} { ...props } setPopupInfo = {setPopupInfo}/>
+                    <InfoMarker info={popupInfo} request={currRequest} style={{color: 'black'}} { ...props } setPopupInfo = {setPopupInfo}/>
                 </Popup>
             )}
         </MapGL>

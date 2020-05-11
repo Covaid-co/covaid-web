@@ -26,7 +26,7 @@ export default function OrganizationRequestBoard(props) {
 
     // Requests List based on current mode
     const requestsCol = (mode) => {
-        const requests = filter_requests(mode);
+        const requests = filter_requests(props.allRequests, mode);
         return (
             <Container id="newOfferContainer" style={displayTab(mode)}>
                 <OrgRequests setCurrRequest={props.setCurrRequest} setRequestDetailsModal={props.setRequestDetailsModal}
@@ -37,7 +37,7 @@ export default function OrganizationRequestBoard(props) {
 
     // Current mode tab
     const displaySelectedButton = (text, mode) => {
-        const requests = filter_requests(mode);
+        const requests = filter_requests(props.allRequests, mode);
         return <Button id={tabID(mode)} 
                        onClick={() => {props.setCurrTab(mode)}}>
                 {text} ({requests.length})

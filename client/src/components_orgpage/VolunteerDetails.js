@@ -4,7 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useFormFields } from "../libs/hooksLib";
-import { generateMapsURL, updateAllRequests } from '../Helpers';
+import { generateMapsURL } from '../Helpers';
+import { updateAllRequests } from './OrganizationHelpers';
 
 /**
  * Volunteer Details Modal in Org portal

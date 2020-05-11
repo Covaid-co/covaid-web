@@ -56,9 +56,9 @@ export const volunteer_status = {
 }
 
 export const current_tab = {
-    UNMATCHED: 1,
-    MATCHED: 2,
-    COMPLETED: 3
+    UNMATCHED: 0,
+    MATCHED: 1,
+    COMPLETED: 2
 }
 
 export const sort_types = ['Name', 'Needed By', 'Last Updated', 'Time Posted'];

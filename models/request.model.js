@@ -43,7 +43,7 @@ let RequestSchema = new Schema({
     personal_info: PersonalInfo,
     request_info: RequestInfo,
     admin_info: AdminInfo,
-    location: LocationInfo,
+    location_info: LocationInfo,
     status: {
         current_status: Number,
         volunteers: [VolunteerStatus],

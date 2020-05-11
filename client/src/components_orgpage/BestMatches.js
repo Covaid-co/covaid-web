@@ -200,7 +200,7 @@ export default function BestMatches(props) {
 }
 
 BestMatches.propTypes = {
-    currRequest: PropTypes.obj,
+    currRequest: PropTypes.object,
     topMatchesModal: PropTypes.bool,
     volunteers: PropTypes.array,
     setTopMatchesModal: PropTypes.func

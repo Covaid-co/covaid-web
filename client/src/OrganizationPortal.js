@@ -45,7 +45,10 @@ export default function OrganiationPortal(props) {
 	const [requestDetailsModal, setRequestDetailsModal] = useState(false);
 	const [currVolunteer, setCurrVolunteer] = useState({});
 	const [currRequest, setCurrRequest] = useState({
-		status: {current_status: 1},
+		status: {
+			current_status: 1,
+			volunteers: []
+		},
 		personal_info: {
 			requester_name: '1',
 			requester_email: '1',
@@ -59,7 +62,7 @@ export default function OrganiationPortal(props) {
 			date: '1'
 		},
 		association: "5e88cf8a6ea53ef574d1b80c",
-		location_info: {coordinate: [1, 1]}
+		location_info: {coordinates: [1, 1]}
 	});
 
 	const [admin, setAdmin] = useState({});
