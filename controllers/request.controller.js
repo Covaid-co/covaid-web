@@ -34,12 +34,8 @@ exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
  * Handle requests to get all requests tied to a user
  */
 exports.handleGetVolunteerRequests = asyncWrapper(async (req, res) => {
-    const query = {
-        "status.volunteers.volunteer":  req.token.id,
-        "status.volunteers.current_status": req.query.status
-    }
     try {
-        var requests = await RequestService.getRequests(query);
+        var requests = await RequestService.getVolunteerRequests(req.token.id, req.query.status);
         res.send(requests);
     } catch (e) {
         res.sendStatus(400);
@@ -82,7 +78,6 @@ exports.unmatchVolunteers = asyncWrapper(async (req, res) => {
         let updated_request = await RequestService.unmatchVolunteers(_id, volunteers, adminMessage);
         return res.status(200).send(updated_request);
     } catch (e) {
-        console.log(e)
         res.status(400).send(e);
     }
 });
@@ -91,6 +86,18 @@ exports.unmatchVolunteers = asyncWrapper(async (req, res) => {
  * Handle requests to accept a request as a volunteer
  */
 exports.acceptRequest = asyncWrapper(async (req, res) => {
+    const requestID = req.query.ID;
+    const volunteerID = req.token.id;
+    try {
+        let updated_request = await RequestService.acceptRequest(volunteerID, requestID);
+        return res.status(200).send(updated_request);
+    } catch (e) {
+        console.log(e);
+        res.status(400).send(e);
+    }
+
+
+
     const req_id = req.query.ID
     var request = await Requests.findByIdAndUpdate(req_id, 
         {
@@ -100,7 +107,6 @@ exports.acceptRequest = asyncWrapper(async (req, res) => {
             }
         })
     if (request) {
-
         var assoc = await Association.findOne({
             '_id': request.association
         });
@@ -117,9 +123,50 @@ exports.acceptRequest = asyncWrapper(async (req, res) => {
                     action: 'accepted',
                     templateName: "admin_notification",
                 };
-                emailer.sendNotificationEmail(data)
+                emailer.sendNotificationEmail(data); 
                 break;
             }
+        }
+        res.sendStatus(200);
+        return
+    } else {
+        res.sendStatus(404);
+        return
+    }
+});
+
+/**
+ * Handle requests to reject a request as a volunteer
+ */
+exports.rejectRequest = asyncWrapper(async (req, res) => {
+    const req_id = req.query.ID
+    var request = await Requests.findByIdAndUpdate(req_id, 
+        {
+            $set: {
+                volunteer_status: 'accepted',
+                'pending_time': new Date()
+            }
+        })
+    if (request) {
+        var assoc = await Association.findOne({
+            '_id': request.association
+        });
+
+        for (var i = 0; i < assoc.admins.length; i++) {
+            var admin = assoc.admins[i];
+            if (admin.name === request.assignee) {
+                console.log(admin.email)
+                var data = {
+                    //sender's and receiver's email
+                    sender: "Covaid@covaid.co",
+                    receiver: admin.email,
+                    name: request.requester_first,
+                    action: 'accepted',
+                    templateName: "admin_notification",
+                };
+                emailer.sendNotificationEmail(data); 
+                break;
+            }d
         }
         res.sendStatus(200)
         return
@@ -127,6 +174,28 @@ exports.acceptRequest = asyncWrapper(async (req, res) => {
         res.sendStatus(404)
         return
     }
+});
+
+/**
+ * Handle requests to complete a request
+ */
+exports.completeARequest = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id;
+    const reason = req.body.reason;
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            "status.current_status": "complete",
+            "status.reason": reason,
+            "volunteer_status": "completed",
+            "volunteer_comment": req.body.volunteer_comment,
+            "last_modified": new Date(),
+            "completed_date": new Date()
+        }
+    }, function (err, request) {
+        if (err) return next(err);
+        pusher.trigger(req.body.assoc_id, 'complete', request_id)
+        res.send('Request updated.');
+    });
 });
 
 /**
@@ -229,28 +298,6 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
             }
         });
         pusher.trigger(assoc_id, 'general', 'A volunteer has been unmatched from a request!')
-        res.send('Request updated.');
-    });
-});
-
-/**
- * Handle requests to complete a request
- */
-exports.completeARequest = asyncWrapper(async (req, res) => {
-    const request_id = req.body.request_id;
-    const reason = req.body.reason;
-    Requests.findByIdAndUpdate(request_id, 
-        {$set: {
-            "status.current_status": "complete",
-            "status.reason": reason,
-            "volunteer_status": "completed",
-            "volunteer_comment": req.body.volunteer_comment,
-            "last_modified": new Date(),
-            "completed_date": new Date()
-        }
-    }, function (err, request) {
-        if (err) return next(err);
-        pusher.trigger(req.body.assoc_id, 'complete', request_id)
         res.send('Request updated.');
     });
 });

@@ -370,7 +370,6 @@ export default function RequestDetails(props) {
     // Current status of request (pending/in progress)
     const requestStatus = () => {
         if (props.mode === current_tab.MATCHED) {
-            console.log(props.currRequest);
             const volunteers = props.currRequest.status.volunteers;
             const in_progress = volunteers.find(vol => vol.current_status === volunteer_status.IN_PROGRESS);
             const pending = volunteers.find(vol => vol.current_status === volunteer_status.PENDING);

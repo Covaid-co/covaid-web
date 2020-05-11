@@ -11,7 +11,7 @@ import Badge from 'react-bootstrap/Badge'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal' 
 import VolunteerActionConfirmationModal from './VolunteerActionConfirmationModal'
-const RequestStatusEnum = {"pending":1, "in_progress":2, "complete":3};
+import { request_status, volunteer_status } from '../constants';
 
 export default function RequestInfo(props) {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -20,6 +20,7 @@ export default function RequestInfo(props) {
     const [action, setAction] = useState('');
     const [buttonColor, setButtonColor] = useState('');
     const [mapURL, setMapURL] = useState('');
+    const [loaded, setLoaded] = useState(false);
 
     // Show reject confirmation modal
     const showReject = () => {
@@ -44,12 +45,18 @@ export default function RequestInfo(props) {
     useEffect(() => {
         // Generate map url given lat and long
         var tempURL = "https://www.google.com/maps/@";
-        if (props.currRequest.latitude && props.currRequest.longitude) {
-            tempURL += props.currRequest.latitude + ',';
-            tempURL += props.currRequest.longitude + ',15z';
+        console.log(props.currRequest)
+        if (props.currRequest.location_info) {
+            tempURL += props.currRequest.location_info.coordinates[1] + ',';
+            tempURL += props.currRequest.location_info.coordinates[0] + ',15z';
+            setLoaded(true);
         }
         setMapURL(tempURL);
-    }, [props.currRequest]);
+    }, [props.currRequest, props.volunteerSpecificInfo]);
+
+    if (!loaded) {
+        return <></>;
+    }
 
     // Callback to request rejection
     const reject = () => {
@@ -67,13 +74,17 @@ export default function RequestInfo(props) {
              .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
              .join('&');
         url += query;
-        fetch_a('token', url)
-        .then((response) => {
-            props.setModalOpen(false);
-            props.acceptRequest();
-        })
-        .catch((error) => {
-          console.error(error);
+        fetch_a('token', url, {
+            method: 'put'
+        }).then((response) => {
+            if (response.ok) {
+                props.setModalOpen(false);
+                props.acceptRequest();
+            } else {
+                console.log("Error");
+            }
+        }).catch((e) => {
+            console.log(e);
         });
     }
 
@@ -87,18 +98,18 @@ export default function RequestInfo(props) {
     var header = <></>
     var contactInfo = <>
         <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 0}}>Who:</h5>
-        <p id="regular-text-nomargin"> {props.currRequest.requester_first}</p>
+        <p id="regular-text-nomargin"> {props.currRequest.personal_info.requester_name}</p>
         <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Contact:</h5>
-        <p id="regular-text-nomargin">{props.currRequest.requester_email} {props.currRequest.requester_phone}</p>
+        <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_email} {props.currRequest.personal_info.requester_phone}</p>
     </>
     var timeSpecific = <>
         <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Needed by:</h5>
-        <p id="regular-text-nomargin">{props.currRequest.time} of {props.currRequest.date}</p>
+        <p id="regular-text-nomargin">{props.currRequest.request_info.time} of {props.currRequest.request_info.date}</p>
         <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Location:</h5>
         <p id="regular-text-bold"><a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
     </>
     var buttons = <></> 
-    if (props.modalMode === RequestStatusEnum.pending) {
+    if (props.modalMode === volunteer_status.PENDING) {
         header = <Modal.Title>New pending request</Modal.Title>
         contactInfo = <></>
         buttons =
@@ -110,7 +121,7 @@ export default function RequestInfo(props) {
                 <Button onClick={accept} id='large-button-empty' style={{borderColor: '#28a745', color: '#28a745'}}>Accept this request</Button>
             </Col>
         </Row>
-    } else if (props.modalMode === RequestStatusEnum.in_progress) {
+    } else if (props.modalMode === volunteer_status.IN_PROGRESS) {
         header = <Modal.Title>Request is in-progress</Modal.Title>
         buttons = <Row style={{marginTop: 15}}>
                     <Col xs={6} style = {{padding: 0, paddingLeft: 15, paddingRight: 4}}>
@@ -120,18 +131,18 @@ export default function RequestInfo(props) {
                         <Button onClick={showComplete} id='large-button-empty' style={{borderColor: '#28a745', color: '#28a745'}}>Complete this request</Button>
                     </Col>
                 </Row>
-    } else if (props.modalMode === RequestStatusEnum.complete) {
+    } else if (props.modalMode === volunteer_status.COMPLETED) {
         header = <Modal.Title>Completed request</Modal.Title>
         timeSpecific = <></>
     }
 
     // If there are messages from an admin, include those in pending/in_progress requests
     const adminDetails = () => {
-        if ((props.modalMode === 2 || props.modalMode === 1) && props.currRequest.adminMessage && props.currRequest.adminMessage.length > 0) {
+        if ((props.modalMode === volunteer_status.IN_PROGRESS || props.modalMode === volunteer_status.PENDING) && props.volunteerSpecificInfo.adminMessage && props.volunteerSpecificInfo.adminMessage.length > 0) {
             return (
                 <>
                 <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Message from your mutual aid group:</h5>
-                <p id="regular-text-nomargin">"{props.currRequest.adminMessage}"</p></>
+                <p id="regular-text-nomargin">"{props.volunteerSpecificInfo.adminMessage}"</p></>
             );
         }
         else return <></>
@@ -139,12 +150,12 @@ export default function RequestInfo(props) {
 
     // Add Alerts to indicate what next steps in request workflow are
     const requestWarnings = () => {
-        if (props.modalMode === 1) {
+        if (props.modalMode === volunteer_status.PENDING) {
             return <Alert style={{marginBottom: 20}} variant={'secondary'}>
                 Thanks for volunteering in your community! You can choose to accept the request below 
                 or decline it if you are no longer able to help.
             </Alert>
-        } else if (props.modalMode === 2) {
+        } else if (props.modalMode === volunteer_status.IN_PROGRESS) {
             return <Alert style={{marginBottom: 20}} variant={'warning'}>
                 Thanks for accepting this request for support! Please reach out to the requester 
                 by using the contact information below. 
@@ -161,12 +172,12 @@ export default function RequestInfo(props) {
                 <Modal.Body>
                     {requestWarnings()}
                     {contactInfo}
-                    <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: (props.modalMode === 1 ? 0 : 16)}}>Details:</h5>
-                    <p id="regular-text-nomargin"> {props.currRequest.details}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: (props.modalMode === volunteer_status.PENDING ? 0 : 16)}}>Details:</h5>
+                    <p id="regular-text-nomargin"> {props.currRequest.request_info.details}</p>
                     {adminDetails()}
                     <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Requesting support with:</h5>
-                    {props.currRequest.resource_request ? 
-                        props.currRequest.resource_request.map((task, i) => {
+                    {props.currRequest.request_info.resource_request ? 
+                        props.currRequest.request_info.resource_request.map((task, i) => {
                             return <Badge key={i} id='task-info'>{task}</Badge>
                         }) : <></>
                     }

@@ -26,9 +26,48 @@ const pusher = new Pusher({
     useTLS: true
 });
 
+// Generic get requests given a query
 exports.getRequests = async function(query) {
     try {
         return await RequestRepository.readRequest(query);
+    } catch (e) {
+        throw e;
+    }
+}
+
+exports.getVolunteerRequests = async function(id, status) {
+    const query = {
+        "status.volunteers.volunteer":  id
+    }
+    try {
+        var requests = await RequestRepository.readRequest(query);
+        var volunteer_requests = [];
+        requests.forEach(request => {
+            request.status.volunteers.forEach(volunteer_obj => {
+                if (volunteer_obj.volunteer === id && volunteer_obj.current_status === parseInt(status)) {
+                    volunteer_requests.push(request);
+                }
+            });
+        });
+
+        return volunteer_requests;
+
+    } catch (e) {
+        throw e;
+    }
+}
+
+exports.acceptRequest = async function(volunteerID, requestID) {
+    try {
+        await RequestRepository.updateRequestComplex({'_id': requestID, 'status.volunteers.volunteer': volunteerID}, { 
+            $set: {
+                "status.volunteers.$.current_status": volunteer_status.IN_PROGRESS,
+                "status.volunteers.$.last_notified_time": new Date()
+            }
+        });
+        let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+        console.log(updatedRequest.status.volunteers)
+        return updatedRequest;
     } catch (e) {
         throw e;
     }
@@ -57,6 +96,9 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             await RequestRepository.updateRequest(requestID, {
                 $push: {
                     'status.volunteers': { $each: new_volunteers }
+                }, 
+                $set: {
+                    'admin_info.last_modified_time': new Date()
                 }
             });
         } else {
@@ -95,6 +137,7 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
 
         if (removing_volunteers.length > 0) {
             var current_request = (await RequestRepository.readRequest({_id: requestID}))[0];
+            current_request.admin_info.last_modified_time = new Date();
             current_request.status.volunteers.forEach(function(v, index, array) {
                 if (removing_volunteers.filter(volunteer_id => volunteer_id === v.volunteer).length !== 0) {
                     array[index] = {
@@ -128,6 +171,9 @@ exports.createRequest = async function(request) {
     try {
         let new_request = request.status.volunteer ? await handleDirectMatch(request) : await handleGeneral(request);
         new_request.time_posted = new Date();
+        new_request['admin_info'] = {
+            last_modified_time: new Date()
+        }
         return await RequestRepository.createRequest(new_request);
     } catch (e) {
         console.log(e);
@@ -139,7 +185,7 @@ async function handleDirectMatch(request) {
     // Construct a direct match request
     let volunteer_status_obj = {
         current_status: volunteer_status.PENDING,
-        volunteer: volunteer._id,
+        volunteer: request.status.volunteer._id,
         volunteer_response: "",
         adminMessage: "",
         last_notified_time: new Date()
@@ -147,6 +193,7 @@ async function handleDirectMatch(request) {
     let volunteer_statuses = [
         volunteer_status_obj
     ]
+    var volunteer = request.status.volunteer;
     request['status'] = {
         current_status: request_status.MATCHED,
         volunteers: volunteer_statuses,
@@ -159,7 +206,6 @@ async function handleDirectMatch(request) {
         let association = await AssociationService.getAssociation({'_id': request.association});
         associationEmail = association.email;
     }
-    var volunteer = (await UserService.getUser({_id: request.status.volunteer}))[0];
     var first_name = volunteer.first_name;
     first_name = first_name.toLowerCase();
     first_name = first_name[0].toUpperCase() + first_name.slice(1);
@@ -171,7 +217,7 @@ async function handleDirectMatch(request) {
         templateName: "volunteer_notification",
     };
     emailer.sendNotificationEmail(data);
-    pusher.trigger(request.status.volunteer._id, 'direct-match', 'You have a new pending request!');
+    pusher.trigger(volunteer._id, 'direct-match', 'You have a new pending request!');
     return request;
 }
 

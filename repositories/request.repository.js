@@ -30,6 +30,16 @@ exports.updateRequest = async function(_id, updates) {
     }
 }
 
+exports.updateRequestComplex = async function(find, updates) {
+    try {
+        await Request.updateOne(find, updates);
+        return;
+    } catch (e) {
+        console.log(e);
+        throw Error('Error while updating requests')
+    }
+}
+
 exports.deleteRequest = async function(request_id) {
     try {
 

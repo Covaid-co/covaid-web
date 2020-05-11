@@ -71,7 +71,7 @@ export default function RequestPage(props) {
                     'time': secondPage.time,
                     'date': secondPage.date,
                 },
-                location: {
+                location_info: {
                     'type': 'Point',
                     'coordinates': [props.locationProps.longitude, props.locationProps.latitude]
                 },

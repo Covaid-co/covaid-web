@@ -73,7 +73,7 @@ export default function RequestHelp(props) {
                     'time': secondPage.time,
                     'date': secondPage.date,
                 },
-                location: {
+                location_info: {
                     'type': 'Point',
                     'coordinates': [props.longitude, props.latitude]
                 },
