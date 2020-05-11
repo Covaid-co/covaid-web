@@ -22,10 +22,10 @@ exports.readRequest = async function (query) {
 
 exports.updateRequest = async function(_id, updates) {
     try {
-        await Request.updateOne({_id: _id}, {
-            $set: updates
-        });
+        await Request.updateOne({_id: _id}, updates);
+        return;
     } catch (e) {
+        console.log(e);
         throw Error('Error while updating requests')
     }
 }

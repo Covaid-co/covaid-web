@@ -8,11 +8,12 @@ const request_controller = require('../../controllers/request.controller');
 router.post('/create_request', request_controller.createARequest);
 
 // GET
-router.get('/:id/update_completed', request_controller.update_completed);
 router.get('/allRequestsInAssoc', request_controller.getAllRequestsOfAnAssoc);
 router.get('/volunteerRequests', auth.required, request_controller.handleGetVolunteerRequests);
 
 // PUT
+router.put('/matchVolunteers', request_controller.matchVolunteers);
+router.put('/unmatchVolunteers', request_controller.unmatchVolunteers);
 router.put('/attachVolunteerToRequest', request_controller.attachVolunteer);
 router.put('/removeVolunteerFromRequest', request_controller.removeVolunteer);
 router.get('/acceptRequest', auth.required, request_controller.acceptRequest)

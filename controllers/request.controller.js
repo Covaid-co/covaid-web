@@ -17,29 +17,16 @@ const pusher = new Pusher({
     useTLS: true
 });
 
-exports.update_completed = function (req, res) {
-    Requests.findByIdAndUpdate(req.params.id, 
-            {"completed": true}, function(err, result){
-        if (err){
-            console.log("ERROR");
-            res.sendStatus(500);
-        }
-        else {
-            console.log("Success");
-            res.sendStatus(200);
-        }
-    });
-};
-
 /**
  * Handle requests to get all requests under an association
  */
 exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
     const assoc = req.query.association;
-    var requests = await Requests.find({
-        'association': assoc,
+    const query = {
+        "association":  assoc,
         '$or': [{'delete': false}, {'delete': {"$exists": false}}]
-    });
+    }
+    var requests = await RequestService.getRequests(query);
     res.send(requests);
 });
 
@@ -48,15 +35,55 @@ exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
  */
 exports.handleGetVolunteerRequests = asyncWrapper(async (req, res) => {
     const query = {
-        'status.volunteer': req.token.id,
-        'volunteer_status': req.query.status
+        "status.volunteers.volunteer":  req.token.id,
+        "status.volunteers.current_status": req.query.status
     }
-
     try {
         var requests = await RequestService.getRequests(query);
         res.send(requests);
     } catch (e) {
         res.sendStatus(400);
+    }
+});
+
+/**
+ * Handle requests to create a request
+ */
+exports.createARequest = asyncWrapper(async (req, res) => {
+    const { body: { request } } = req;
+    try {
+		const new_request = await RequestService.createRequest(request);
+        return (new_request._id === null) ? res.sendStatus(500) : res.status(201).send({'_id': new_request._id});
+    } catch (e) {
+		return res.status(422).send(e);
+    }
+});
+
+/**
+ * Handle requests to match volunteers to a request
+ */
+exports.matchVolunteers = asyncWrapper(async (req, res) => {
+    const { body: { volunteers, _id, adminMessage } } = req;
+    try {
+        let updated_request = await RequestService.matchVolunteers(_id, volunteers, adminMessage);
+        return res.status(200).send(updated_request);
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(e);
+    }
+});
+
+/**
+ * Handle requests to unmatch volunteers from a request
+ */
+exports.unmatchVolunteers = asyncWrapper(async (req, res) => {
+    const { body: { volunteers, _id, adminMessage } } = req;
+    try {
+        let updated_request = await RequestService.unmatchVolunteers(_id, volunteers, adminMessage);
+        return res.status(200).send(updated_request);
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(e);
     }
 });
 
@@ -302,90 +329,3 @@ exports.setManualVolunteer = asyncWrapper(async (req, res) => {
         res.send('Request updated.');
     });
 });
-
-/**
- * Handle requests to create a request
- */
-exports.createARequest = asyncWrapper(async (req, res) => {
-    const request = new Requests(req.body);
-    request.time_posted = new Date(); 
-    var volunteers;
-    var associationEmail = 'covaidco@gmail.com'
-    var assocName = 'Covaid'
-    if (request.association){
-        var assoc = await Association.findById(request.association)
-        associationEmail = assoc.email;
-        assocName = assoc.name
-    }
-    if (!req.body.volunteer) { // General requests have no volunteer in body
-        volunteers = await getBestVolunteers(request)
-        var volunteer_emails = []
-        for (var i = 0; i < Math.min(volunteers.length, 3); i++) {
-            volunteer_emails.push(volunteers[i].email)
-        }
-
-        var dbResult = await request.save()
-
-        var data = {
-            //sender's and receiver's email
-            sender: "Covaid@covaid.co",
-            receiver: associationEmail,
-            name: request.requester_first,
-            assoc: assocName,
-            templateName: "org_notification",
-         };
-
-        emailer.sendNotificationEmail(data)
-        pusher.trigger(request.association, 'general', "You have a new unmatched request!")
-
-        res.status(200).json({
-            volunteers: volunteers 
-        });
-        return
-    } else { // Direct match requests have a volunteer in body
-        volunteers = [req.body.volunteer]
-        request.status = {
-            "current_status": "in_progress",
-            "volunteer": req.body.volunteer._id
-        }
-        request.volunteer_status = "pending"
-        request.pending_time = new Date()
-
-        pusher.trigger(req.body.volunteer._id, 'direct-match', 'You have a new pending request!')
-        await request.save();
-
-        var first_name = req.body.volunteer.first_name;
-        first_name = first_name.toLowerCase();
-        first_name = first_name[0].toUpperCase() + first_name.slice(1);
-        var data = {
-            //sender's and receiver's email
-            sender: "Covaid@covaid.co",
-            receiver: req.body.volunteer.email,
-            name: first_name,
-            assoc: associationEmail,
-            templateName: "volunteer_notification",
-        };
-
-        emailer.sendNotificationEmail(data);
-        res.status(200).json({
-            volunteers: volunteers 
-        });
-        return
-    }
-});
-
-async function getBestVolunteers(request) {
-    var users = await Users.find({'availability': true,
-                        'preVerified': true,
-                        'association': request.association,
-                        'offer.tasks': { $all: request.resource_request },
-                })
-    
-    for (var i = 0; i < users.length; i++) {
-        const coords = users[i].location.coordinates;
-        const distance = distance_tools.calcDistance(request.latitude, request.longitude, coords[1], coords[0]);
-        users[i]['distance'] = distance;
-    }
-    users.sort(function(a, b){return a['distance'] - b['distance']});
-    return users;
-}

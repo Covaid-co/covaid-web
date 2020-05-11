@@ -55,4 +55,4 @@ let RequestSchema = new Schema({
     delete: Boolean
 });
 
-module.exports = mongoose.model('Requests', RequestSchema);
+module.exports = mongoose.model('RequestsNew', RequestSchema);
