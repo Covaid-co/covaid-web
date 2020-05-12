@@ -256,7 +256,7 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         var matchedVolunteers = 0;
         updatedRequest.status.volunteers.forEach(volunteer => {
-            if (volunteer.current_status === volunteer_status.IN_PROGRESS || volunteer_status.PENDING) {
+            if (volunteer.current_status === volunteer_status.IN_PROGRESS || volunteer.current_status === volunteer_status.PENDING) {
                 matchedVolunteers += 1;
             }
         });
