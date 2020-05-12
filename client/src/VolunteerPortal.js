@@ -124,7 +124,7 @@ export default function VolunteerPortal(props) {
 
 	// State change (Accepted -> Complete)
 	const completeAnInProgressRequest = (request) => {
-		request.completed_date = Date.now()
+		request.status.completed_date = Date.now()
 		setAcceptedRequests(acceptedRequests.filter(acceptedRequest => acceptedRequest._id !== request._id))
 		setCompletedRequests(completedRequests.concat(request))
 		setTabNum(3);

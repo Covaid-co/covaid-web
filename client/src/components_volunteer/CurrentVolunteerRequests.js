@@ -61,17 +61,6 @@ export default function CurrentVolunteerRequests(props) {
         setVolunteerSpecificInfo(volunteerSpecific);
     }
 
-    const helpStillNeeded = (request) => {
-        request.status.volunteers.forEach(volunteer_status_obj => {
-            if (volunteer_status_obj.volunteer !== props.user._id) {
-                if (parseInt(volunteer_status_obj.current_status) === volunteer_status.IN_PROGRESS || parseInt(volunteer_status_obj).current_status === volunteer_status.COMPLETE) {
-                    return "Someone else is on it";
-                }
-            }
-        });
-        return "Action Needed";
-    }
-
     return (
         <>
             <ListGroup variant="flush">

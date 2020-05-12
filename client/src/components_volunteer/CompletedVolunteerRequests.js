@@ -50,7 +50,7 @@ export default function CompletedVolunteerRequests(props) {
         <>
             <ListGroup variant="flush">
                 {completedRequests.map((request, i) => { 
-                    var completedDate = new Date(request.status.complete_date);
+                    var completedDate = new Date(request.status.completed_date);
                         return (
                         <ListGroup.Item action onClick={() => {handleRequestClick(request)}}>
                             <div >
@@ -73,7 +73,7 @@ export default function CompletedVolunteerRequests(props) {
                                 </Col>
                             </Row>
                             <div style={{display: 'inline-block', width: '100%', marginTop: 10}}>
-                                <p style={{float: 'left', marginBottom: 0}} id="regular-text">Completed on: {request.status.complete_date ? completedDate.toLocaleDateString('en-US') : "N/A"}</p>
+                                <p style={{float: 'left', marginBottom: 0}} id="regular-text">Completed on: {request.status.completed_date ? completedDate.toLocaleDateString('en-US') : "N/A"}</p>
                             </div>
                         </ListGroup.Item>);
                         })}

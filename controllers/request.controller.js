@@ -187,22 +187,33 @@ exports.rejectRequest = asyncWrapper(async (req, res) => {
  * Handle requests to complete a request
  */
 exports.completeARequest = asyncWrapper(async (req, res) => {
-    const request_id = req.body.request_id;
-    const reason = req.body.reason;
-    Requests.findByIdAndUpdate(request_id, 
-        {$set: {
-            "status.current_status": "complete",
-            "status.reason": reason,
-            "volunteer_status": "completed",
-            "volunteer_comment": req.body.volunteer_comment,
-            "last_modified": new Date(),
-            "completed_date": new Date()
-        }
-    }, function (err, request) {
-        if (err) return next(err);
-        pusher.trigger(req.body.assoc_id, 'complete', request_id)
-        res.send('Request updated.');
-    });
+    const requestID = req.query.ID;
+    const volunteerID = req.token.id;
+    const { body: { reason, volunteer_comment } } = req;
+
+    try {
+        let updated_request = await RequestService.completeRequest(volunteerID, requestID, reason, volunteer_comment);
+        return res.status(200).send(updated_request);
+    } catch (e) {
+        console.log(e);
+        return res.status(400).send(e);
+    }
+    // const request_id = req.body.request_id;
+    // const reason = req.body.reason;
+    // Requests.findByIdAndUpdate(request_id, 
+    //     {$set: {
+    //         "status.current_status": "complete",
+    //         "status.reason": reason,
+    //         "volunteer_status": "completed",
+    //         "volunteer_comment": req.body.volunteer_comment,
+    //         "last_modified": new Date(),
+    //         "completed_date": new Date()
+    //     }
+    // }, function (err, request) {
+    //     if (err) return next(err);
+    //     pusher.trigger(req.body.assoc_id, 'complete', request_id)
+    //     res.send('Request updated.');
+    // });
 });
 
 /**

@@ -45,7 +45,13 @@ exports.getVolunteerRequests = async function(id, status) {
         requests.forEach(request => {
             request.status.volunteers.forEach(volunteer_obj => {
                 if (volunteer_obj.volunteer === id && volunteer_obj.current_status === parseInt(status)) {
-                    volunteer_requests.push(request);
+                    if (request.status.current_status === request_status.COMPLETED) {
+                        if (volunteer_obj.current_status === volunteer_status.COMPLETE) {
+                            volunteer_requests.push(request);
+                        }
+                    } else {
+                        volunteer_requests.push(request);
+                    }
                 }
             });
         });
@@ -87,15 +93,33 @@ exports.rejectRequest = async function(volunteerID, requestID) {
     }
 }
 
-exports.completeRequest = async function(volunteerID, requestID) {
+exports.completeRequest = async function(volunteerID, requestID, reason, volunteer_comment) {
     try {
         await RequestRepository.updateRequestComplex({'_id': requestID, 'status.volunteers.volunteer': volunteerID}, { 
             $set: {
-                "status.volunteers.$.current_status": volunteer_status.IN_PROGRESS,
+                "status.volunteers.$.current_status": volunteer_status.COMPLETE,
+                "status.volunteers.$.volunteer_response": volunteer_comment,
                 "status.volunteers.$.last_notified_time": new Date()
             }
         });
+
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+        var completeCount = 0;
+        updatedRequest.status.volunteers.forEach(volunteer => {
+            if (volunteer.current_status === volunteer_status.COMPLETE) {
+                completeCount += 1;
+            }
+        });
+
+        if (completeCount === updatedRequest.status.volunteer_quota) {
+            await RequestRepository.updateRequest(requestID, {
+                $set: {
+                    'status.current_status': request_status.COMPLETED,
+                    'status.completed_reason': reason,
+                    'status.completed_date': new Date()
+                }
+            });
+        }
 
         // TODO -> Notify admins
         return updatedRequest;
@@ -219,7 +243,6 @@ exports.createRequest = async function(request) {
         new_request['admin_info'] = {
             last_modified_time: new Date()
         }
-        new_request.volunteer_quota = request.status.volunteer_quota ? request.status.volunteer_quota : 1;
         return await RequestRepository.createRequest(new_request);
     } catch (e) {
         console.log(e);
@@ -244,6 +267,7 @@ async function handleDirectMatch(request) {
         current_status: request_status.MATCHED,
         volunteers: volunteer_statuses,
         completed_reason: "",
+        volunteer_quota: 1
     }
 
     // Prepare email/pusher notifications
@@ -273,6 +297,7 @@ async function handleGeneral(request) {
         current_status: request_status.UNMATCHED,
         volunteers: [],
         completed_reason: "",
+        volunteer_quota: 1
     }
 
     // Prepare email/pusher notifications
