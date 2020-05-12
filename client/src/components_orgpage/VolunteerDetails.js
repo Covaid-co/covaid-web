@@ -32,7 +32,7 @@ export default function VolunteerDetails(props) {
         } else {
             fields.email5 = '';
         }
-    }, [props.currVolunteer])
+    }, [props.currVolunteer, props.show])
 
     const handleChangeVerify = (event) => {
         event.persist();
@@ -158,7 +158,7 @@ export default function VolunteerDetails(props) {
 
     if (Object.keys(props.currVolunteer).length > 0) {
         return (
-            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
+            <Modal id="volunteer-details" show={props.show} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
                     <Modal.Title id="small-header">Volunteer Information</Modal.Title>
                 </Modal.Header>
@@ -217,7 +217,7 @@ export default function VolunteerDetails(props) {
         );
     } else {
         return (
-            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
+            <Modal id="volunteer-details" show={props.show} onHide={() => {
                     props.setVolunteerDetailsModal(false);
                     if (props.setVolunteersModal) {
                         props.setVolunteersModal(true);

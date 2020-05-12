@@ -75,7 +75,8 @@ exports.createRequest = async function(request) {
         let new_request = request.status.volunteer ? await handleDirectMatch(request) : await handleGeneral(request); // if there is a volunteer attached to the request, create direct match. Otherwise, create general
         new_request.time_posted = new Date();
         new_request['admin_info'] = {
-            last_modified_time: new Date()
+            last_modified_time: new Date(),
+            assignee: 'No one assigned'
         }
         return await RequestRepository.createRequest(new_request);
     } catch (e) {

@@ -145,6 +145,12 @@ export default function BestMatches(props) {
     if (!isLoaded) {
         return <></>;
     }
+
+    const handleVolunteerClick = (volunteer) => {
+        setCurrVolunteer({...volunteer});
+        setVolunteerDetailsModal(true);
+    }
+
     return (
         <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
@@ -161,7 +167,7 @@ export default function BestMatches(props) {
                             {displayedVolunteers.map((volunteer, i) => {
                                 if (volunteer.availability) {
                                 return (
-                                <ListGroup.Item key={i} action onClick={() => {setCurrVolunteer({...volunteer});  setVolunteerDetailsModal(true)}}>
+                                <ListGroup.Item key={i} action onClick={() => handleVolunteerClick(volunteer)}>
                                     <div >
                                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                                             {volunteer.first_name} {volunteer.last_name}
@@ -189,7 +195,7 @@ export default function BestMatches(props) {
                             paginate={paginatePage}/>
                     </Col>
                 </Row>
-                <VolunteerDetails volunteerDetailModal={volunteerDetailModal}
+                <VolunteerDetails show={volunteerDetailModal}
                                     setVolunteerDetailsModal={setVolunteerDetailsModal}
                                     currVolunteer={currVolunteer}
                                     { ... props }
