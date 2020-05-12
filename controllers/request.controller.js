@@ -235,6 +235,7 @@ exports.updateRequestDetails = asyncWrapper(async (req, res) => {
 /**
  * Handle requests to set a request assignee
  */
+// TODO -> DELETE
 exports.setAssignee = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     const assignee = req.body.assignee;
@@ -253,6 +254,7 @@ exports.setAssignee = asyncWrapper(async (req, res) => {
 /**
  * Handle requests to set the notes of a request
  */
+// TODO -> DELETE
 exports.setNotes = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     const note = req.body.note;
@@ -270,6 +272,7 @@ exports.setNotes = asyncWrapper(async (req, res) => {
 /**
  * Handle requests to set a request to delete
  */
+// TODO -> DELETE
 exports.setDelete = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     Requests.findByIdAndUpdate(request_id, 
