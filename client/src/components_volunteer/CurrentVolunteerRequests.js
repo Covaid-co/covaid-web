@@ -61,6 +61,19 @@ export default function CurrentVolunteerRequests(props) {
         setVolunteerSpecificInfo(volunteerSpecific);
     }
 
+    const helpNeeded = (request) => {
+        let volunteers_needed = request.status.volunteer_quota;
+        var matchedVolunteers = 0;
+        request.status.volunteers.forEach(volunteer_status_obj => {
+            if (volunteer_status_obj.volunteer !== props.user._id) {
+                if (parseInt(volunteer_status_obj.current_status) === volunteer_status.IN_PROGRESS || parseInt(volunteer_status_obj.current_status) === volunteer_status.COMPLETE) {
+                    matchedVolunteers += 1;
+                }
+            }
+        });
+        return matchedVolunteers < volunteers_needed;
+    }
+
     return (
         <>
             <ListGroup variant="flush">
@@ -84,25 +97,24 @@ export default function CurrentVolunteerRequests(props) {
                     </ListGroup.Item>);
                 })}
                 {pendingRequests.map((request, i) => {
-                    var helpNeededText = "Action needed";
+                    var mainText = "Someone needs your support!";
                     var disabled = false;
-                    request.status.volunteers.forEach(volunteer_status_obj => {
-                        if (volunteer_status_obj.volunteer !== props.user._id) {
-                            if (parseInt(volunteer_status_obj.current_status) === volunteer_status.IN_PROGRESS || parseInt(volunteer_status_obj).current_status === volunteer_status.COMPLETE) {
-                                helpNeededText = "Someone else is on it";
-                                disabled = true;
-                            }
-                        }
-                    });
+                    var badgeText = "Action needed";
+                    if (!helpNeeded(request)) {
+                        mainText = "Someone else is on it!";
+                        disabled = true;
+                        badgeText = "Thanks for checking in"
+                    }
+
                     return (
                         <ListGroup.Item action key={i} disabled={disabled} onClick={() => {handleRequestClick(request, volunteer_status.PENDING)}}>
                             <div >
                                 <h5 id="volunteer-name">
-                                    <b>Someone needs your support!</b>
+                                <b>{mainText}</b>
                                 </h5>
                                 <Badge className='pending-task' style={{float: 'right'}}>
                                     {
-                                        helpNeededText
+                                        badgeText
                                     }
                                 </Badge>
                             </div>
