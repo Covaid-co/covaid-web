@@ -66,7 +66,38 @@ exports.acceptRequest = async function(volunteerID, requestID) {
             }
         });
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
-        console.log(updatedRequest.status.volunteers)
+
+        // TODO -> Notify admins
+        return updatedRequest;
+    } catch (e) {
+        throw e;
+    }
+}
+
+exports.rejectRequest = async function(volunteerID, requestID) {
+    try {
+
+        await exports.unmatchVolunteers(requestID, [volunteerID]);
+        let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+
+        // TODO -> Notify admins
+        return updatedRequest;
+    } catch (e) {
+        throw e;
+    }
+}
+
+exports.completeRequest = async function(volunteerID, requestID) {
+    try {
+        await RequestRepository.updateRequestComplex({'_id': requestID, 'status.volunteers.volunteer': volunteerID}, { 
+            $set: {
+                "status.volunteers.$.current_status": volunteer_status.IN_PROGRESS,
+                "status.volunteers.$.last_notified_time": new Date()
+            }
+        });
+        let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+
+        // TODO -> Notify admins
         return updatedRequest;
     } catch (e) {
         throw e;
@@ -105,7 +136,15 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             return request;
         }
 
-        if (request.status.volunteers.length + new_volunteers.length > 0) {
+        let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+        var matchedVolunteers = 0;
+        updatedRequest.status.volunteers.forEach(volunteer => {
+            if (volunteer.current_status === volunteer_status.IN_PROGRESS || volunteer_status.PENDING) {
+                matchedVolunteers += 1;
+            }
+        });
+
+        if (matchedVolunteers > 0) {
             await RequestRepository.updateRequest(requestID, {
                 $set: {
                     'status.current_status': request_status.MATCHED
@@ -113,7 +152,6 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             });
         }
 
-        let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         return updatedRequest;
         // TODO -> send emails
 
@@ -150,7 +188,15 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
             await RequestRepository.updateRequest(requestID, current_request);
         }
 
-        if (request.status.volunteers.length - removing_volunteers.length === 0) {
+        let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+        var matchedVolunteers = 0;
+        updatedRequest.status.volunteers.forEach(volunteer => {
+            if (volunteer.current_status === volunteer_status.IN_PROGRESS || volunteer_status.PENDING) {
+                matchedVolunteers += 1;
+            }
+        });
+
+        if (matchedVolunteers === 0) {
             await RequestRepository.updateRequest(requestID, {
                 $set: {
                     'status.current_status': request_status.UNMATCHED
@@ -158,7 +204,6 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
             });
         }
 
-        let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         return updatedRequest;
         // TODO -> send emails
 
@@ -174,6 +219,7 @@ exports.createRequest = async function(request) {
         new_request['admin_info'] = {
             last_modified_time: new Date()
         }
+        new_request.volunteer_quota = request.status.volunteer_quota ? request.status.volunteer_quota : 1;
         return await RequestRepository.createRequest(new_request);
     } catch (e) {
         console.log(e);

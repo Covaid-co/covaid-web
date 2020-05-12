@@ -93,87 +93,94 @@ exports.acceptRequest = asyncWrapper(async (req, res) => {
         return res.status(200).send(updated_request);
     } catch (e) {
         console.log(e);
-        res.status(400).send(e);
+        return res.status(400).send(e);
     }
 
+    // const req_id = req.query.ID
+    // var request = await Requests.findByIdAndUpdate(req_id, 
+    //     {
+    //         $set: {
+    //             volunteer_status: 'accepted',
+    //             'pending_time': new Date()
+    //         }
+    //     })
+    // if (request) {
+    //     var assoc = await Association.findOne({
+    //         '_id': request.association
+    //     });
 
-
-    const req_id = req.query.ID
-    var request = await Requests.findByIdAndUpdate(req_id, 
-        {
-            $set: {
-                volunteer_status: 'accepted',
-                'pending_time': new Date()
-            }
-        })
-    if (request) {
-        var assoc = await Association.findOne({
-            '_id': request.association
-        });
-
-        for (var i = 0; i < assoc.admins.length; i++) {
-            var admin = assoc.admins[i];
-            if (admin.name === request.assignee) {
-                console.log(admin.email)
-                var data = {
-                    //sender's and receiver's email
-                    sender: "Covaid@covaid.co",
-                    receiver: admin.email,
-                    name: request.requester_first,
-                    action: 'accepted',
-                    templateName: "admin_notification",
-                };
-                emailer.sendNotificationEmail(data); 
-                break;
-            }
-        }
-        res.sendStatus(200);
-        return
-    } else {
-        res.sendStatus(404);
-        return
-    }
+    //     for (var i = 0; i < assoc.admins.length; i++) {
+    //         var admin = assoc.admins[i];
+    //         if (admin.name === request.assignee) {
+    //             console.log(admin.email)
+    //             var data = {
+    //                 //sender's and receiver's email
+    //                 sender: "Covaid@covaid.co",
+    //                 receiver: admin.email,
+    //                 name: request.requester_first,
+    //                 action: 'accepted',
+    //                 templateName: "admin_notification",
+    //             };
+    //             emailer.sendNotificationEmail(data); 
+    //             break;
+    //         }
+    //     }
+    //     res.sendStatus(200);
+    //     return
+    // } else {
+    //     res.sendStatus(404);
+    //     return
+    // }
 });
 
 /**
  * Handle requests to reject a request as a volunteer
  */
 exports.rejectRequest = asyncWrapper(async (req, res) => {
-    const req_id = req.query.ID
-    var request = await Requests.findByIdAndUpdate(req_id, 
-        {
-            $set: {
-                volunteer_status: 'accepted',
-                'pending_time': new Date()
-            }
-        })
-    if (request) {
-        var assoc = await Association.findOne({
-            '_id': request.association
-        });
-
-        for (var i = 0; i < assoc.admins.length; i++) {
-            var admin = assoc.admins[i];
-            if (admin.name === request.assignee) {
-                console.log(admin.email)
-                var data = {
-                    //sender's and receiver's email
-                    sender: "Covaid@covaid.co",
-                    receiver: admin.email,
-                    name: request.requester_first,
-                    action: 'accepted',
-                    templateName: "admin_notification",
-                };
-                emailer.sendNotificationEmail(data); 
-                break;
-            }d
-        }
-        res.sendStatus(200)
-        return
-    } else {
-        res.sendStatus(404)
-        return
+    const requestID = req.query.ID;
+    const volunteerID = req.token.id;
+    try {
+        let updated_request = await RequestService.rejectRequest(volunteerID, requestID);
+        return res.status(200).send(updated_request);
+    } catch (e) {
+        console.log(e);
+        return res.status(400).send(e);
     }
+    // const req_id = req.query.ID
+    // var request = await Requests.findByIdAndUpdate(req_id, 
+    //     {
+    //         $set: {
+    //             volunteer_status: 'accepted',
+    //             'pending_time': new Date()
+    //         }
+    //     })
+    // if (request) {
+    //     var assoc = await Association.findOne({
+    //         '_id': request.association
+    //     });
+
+    //     for (var i = 0; i < assoc.admins.length; i++) {
+    //         var admin = assoc.admins[i];
+    //         if (admin.name === request.assignee) {
+    //             console.log(admin.email)
+    //             var data = {
+    //                 //sender's and receiver's email
+    //                 sender: "Covaid@covaid.co",
+    //                 receiver: admin.email,
+    //                 name: request.requester_first,
+    //                 action: 'accepted',
+    //                 templateName: "admin_notification",
+    //             };
+    //             emailer.sendNotificationEmail(data); 
+    //             break;
+    //         }d
+    //     }
+    //     res.sendStatus(200)
+    //     return
+    // } else {
+    //     res.sendStatus(404)
+    //     return
+    // }
 });
 
 /**

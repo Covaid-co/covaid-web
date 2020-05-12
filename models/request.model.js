@@ -46,6 +46,7 @@ let RequestSchema = new Schema({
     location_info: LocationInfo,
     status: {
         current_status: Number,
+        volunteer_quota: Number,
         volunteers: [VolunteerStatus],
         completed_reason: String,
         completed_date: Date
