@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
@@ -11,6 +11,34 @@ import { filter_requests } from './/OrganizationHelpers';
  */
 
 export default function OrganizationRequestBoard(props) {
+    const [unmatchedRequests, setUnmatchedRequests] = useState([]);
+    const [matchedRequests, setMatchedRequests] = useState([]);
+    const [completedRequests, setCompletedRequests] = useState([]);
+    const [loaded, setIsLoaded] = useState(false);
+
+    const enumToRequests = (type) => {
+        switch (type) {
+            case current_tab.UNMATCHED:
+                return unmatchedRequests;
+            case current_tab.MATCHED:
+                return matchedRequests;
+            case current_tab.COMPLETED:
+                return completedRequests;
+            default:
+                return [];
+        }
+    }
+
+    useEffect(() => {
+        setUnmatchedRequests(filter_requests(props.allRequests, current_tab.UNMATCHED));
+        setMatchedRequests(filter_requests(props.allRequests, current_tab.MATCHED));
+        setCompletedRequests(filter_requests(props.allRequests, current_tab.COMPLETED));
+        setIsLoaded(true);
+    }, [props.allRequests]);
+    
+    if (!loaded) {
+        return false;
+    }
 
     const tabID = (tabNumber) => {
         return (tabNumber === props.currTabNumber) ? 'tab-button-selected' : 'tab-button';
@@ -26,7 +54,7 @@ export default function OrganizationRequestBoard(props) {
 
     // Requests List based on current mode
     const requestsCol = (mode) => {
-        const requests = filter_requests(props.allRequests, mode);
+        const requests = enumToRequests(mode);
         return (
             <Container id="newOfferContainer" style={displayTab(mode)}>
                 <OrgRequests setCurrRequest={props.setCurrRequest} setRequestDetailsModal={props.setRequestDetailsModal}
@@ -37,7 +65,7 @@ export default function OrganizationRequestBoard(props) {
 
     // Current mode tab
     const displaySelectedButton = (text, mode) => {
-        const requests = filter_requests(props.allRequests, mode);
+        const requests = enumToRequests(mode);
         return <Button id={tabID(mode)} 
                        onClick={() => {props.setCurrTab(mode)}}>
                 {text} ({requests.length})
