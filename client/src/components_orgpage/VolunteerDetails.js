@@ -144,6 +144,7 @@ export default function VolunteerDetails(props) {
 
     const hidingVolunteerModal = () => {
         props.setVolunteerDetailsModal(false);
+        console.log("yo")
         setNotes();
         if (props.inVolunteer) {
             props.setVolunteersModal(true);

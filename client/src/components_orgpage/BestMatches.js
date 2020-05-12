@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -148,20 +149,52 @@ export default function BestMatches(props) {
 
     const handleVolunteerClick = (volunteer) => {
         setCurrVolunteer({...volunteer});
+        console.log("yoadsf")
         setVolunteerDetailsModal(true);
     }
 
     return (
-        <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 10, paddingBottom: 40}}>
-            <Modal.Header closeButton>
+        <Modal show={props.topMatchesModal} onHide={closePage} style = {{marginTop: 10, paddingBottom: 40, zoom: '90%'}}>
+            {/* <Modal.Header closeButton>
                 <Modal.Title>{formatName(props.currRequest.personal_info.requester_name)}'s Top Matches 
                     <Button id={looseMatch ? "notSelected" : "selected"} onClick={switchVolunteers} style={{marginLeft: 15, marginBottom: 8}}>
                         {looseMatch ? "Match on task" : "Match on task"}
                     </Button>
                 </Modal.Title>
-            </Modal.Header>
+            </Modal.Header> */}
             <Modal.Body>
                 <Row style={{marginTop: 0}}>
+                   {/* <Col xs="12" style = {{marginTop: 0, marginBottom: 5}}>
+                        <h5 id="volunteer-name">
+                            Found1 volunteers 
+                        </h5>{' '}
+                    </Col>
+                    <Col xs="12" id="col-scroll">
+                        <ListGroup variant="flush">
+                            {displayedVolunteers.map((volunteer, i) => {
+                                if (volunteer.availability) {
+                                return (
+                                <ListGroup.Item key={i} action onClick={() => handleVolunteerClick(volunteer)}>
+                                    <div >
+                                        <h5 id="volunteer-name" style={{marginBottom: 0}}>
+                                            {volunteer.first_name} {volunteer.last_name}
+                                        </h5>
+                                        {displayPrevMatched(volunteer)}
+                                    </div>
+                                    <div>
+                                        <p id="volunteer-location">{volunteer.offer.neighborhoods.join(', ')}</p>
+                                        <p id="volunteer-location" style={{float: 'right', marginTop: -25, marginRight: 10}}>
+                                            {distance(volunteer)} miles
+                                        </p>
+                                    </div>
+                                    <div>
+                                        {displayResourceMatch(volunteer)}
+                                    </div>
+                                </ListGroup.Item>);
+                            }})}
+                        </ListGroup>
+                    </Col>
+                    <Button style={{marginTop: 20}} id="large-button">Select Volunteers</Button> */}
                     <Col xs={12}>
                         <ListGroup variant="flush">
                             {displayedVolunteers.map((volunteer, i) => {
@@ -195,11 +228,8 @@ export default function BestMatches(props) {
                             paginate={paginatePage}/>
                     </Col>
                 </Row>
-                <VolunteerDetails show={volunteerDetailModal}
-                                    setVolunteerDetailsModal={setVolunteerDetailsModal}
-                                    currVolunteer={currVolunteer}
-                                    { ... props }
-                                    matching={true}/>
+                <VolunteerDetails show={volunteerDetailModal} setVolunteerDetailsModal={setVolunteerDetailsModal}
+                                    currVolunteer={currVolunteer} { ... props } matching={true}/>
             </Modal.Body>
         </Modal>
     )
