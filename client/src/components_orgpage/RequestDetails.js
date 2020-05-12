@@ -61,12 +61,10 @@ export default function RequestDetails(props) {
                 return admin['name'];
             })
             adminNames.push('No one assigned')
-            if (props.currRequest.assignee) {
-                if (adminNames.includes(props.currRequest.assignee) === false) {
-                    adminNames.push(props.currRequest.assignee);
-                }
-                setAssignee(props.currRequest.assignee);
+            if (adminNames.includes(props.currRequest.admin_info.assignee) === false) {
+                adminNames.push(props.currRequest.admin_info.assignee);
             }
+            setAssignee(props.currRequest.admin_info.assignee);
             setAdminList(adminNames);
         }
     }

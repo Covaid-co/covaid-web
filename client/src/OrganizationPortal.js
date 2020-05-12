@@ -31,7 +31,7 @@ export default function OrganiationPortal(props) {
 
 	const { addToast } = useToasts()
 	const [pageLoaded, setPageLoaded] = useState(false);
-	const [currTabNumber, setCurrTab] = useState(1); 
+	const [currTabNumber, setCurrTab] = useState(0); 
 	const [showLogin, setShowLogin] = useState(false); 
 	const [association, setAssociation] = useState({});
 	const [volunteers, setVolunteers] = useState([]);
@@ -45,6 +45,9 @@ export default function OrganiationPortal(props) {
 	const [requestDetailsModal, setRequestDetailsModal] = useState(false);
 	const [currVolunteer, setCurrVolunteer] = useState({});
 	const [currRequest, setCurrRequest] = useState({
+		admin_info: {
+			assignee: '1'
+		},
 		status: {
 			current_status: 1,
 			volunteers: []
