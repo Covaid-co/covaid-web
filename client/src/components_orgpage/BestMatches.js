@@ -67,8 +67,8 @@ export default function BestMatches(props) {
     const distance = (volunteer) => {
         const latA = volunteer.latitude;
         const longA = volunteer.longitude;
-        const latB = props.currRequest.latitude;
-        const longB = props.currRequest.longitude;
+        const latB = props.currRequest.location_info.coordinates[1];
+        const longB = props.currRequest.location_info.coordinates[0];
         const meters = calcDistance(latA, longA, latB, longB);
         const miles = meters * 0.00062137;
         return Math.round(miles * 100) / 100;
@@ -148,7 +148,7 @@ export default function BestMatches(props) {
     return (
         <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 10, paddingBottom: 40}}>
             <Modal.Header closeButton>
-                <Modal.Title>{formatName(props.currRequest.requester_first)}'s Top Matches 
+                <Modal.Title>{formatName(props.currRequest.personal_info.requester_name)}'s Top Matches 
                     <Button id={looseMatch ? "notSelected" : "selected"} onClick={switchVolunteers} style={{marginLeft: 15, marginBottom: 8}}>
                         {looseMatch ? "Match on task" : "Match on task"}
                     </Button>
@@ -157,7 +157,7 @@ export default function BestMatches(props) {
             <Modal.Body>
                 <Row style={{marginTop: 0}}>
                     <Col xs={12}>
-                        <ListGroup variant="flush" onClick={() => {setVolunteerDetailsModal(true)}}>
+                        <ListGroup variant="flush">
                             {displayedVolunteers.map((volunteer, i) => {
                                 if (volunteer.availability) {
                                 return (

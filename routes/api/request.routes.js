@@ -17,14 +17,12 @@ router.put('/unmatchVolunteers', request_controller.unmatchVolunteers);
 router.put('/acceptRequest', auth.required, request_controller.acceptRequest);
 router.put('/rejectRequest', auth.required, request_controller.rejectRequest);
 router.put('/completeRequest', auth.required, request_controller.completeARequest);
-
-
+router.put('/updateRequestDetails', request_controller.updateRequestDetails);
 
 
 router.put('/attachVolunteerToRequest', request_controller.attachVolunteer);
 router.put('/removeVolunteerFromRequest', request_controller.removeVolunteer);
 router.put('/set_assignee', request_controller.setAssignee);
-router.put('/manual_volunteer', request_controller.setManualVolunteer);
 router.put('/set_notes', request_controller.setNotes);
 router.put('/set_delete', request_controller.setDelete);
 

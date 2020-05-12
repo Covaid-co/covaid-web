@@ -37,8 +37,8 @@ export default function RequestDetails(props) {
     useEffect(() => {
         setAssignee('No one assigned');
         createMapsLink();
-        fields.email2 = props.currRequest.note;
-        setPrevNote(props.currRequest.note);
+        fields.email2 = props.currRequest.admin_info.note;
+        setPrevNote(props.currRequest.admin_info.note);
         updateAdminList();
         findUser();
     }, [props.currRequest, props.association]);
@@ -168,11 +168,15 @@ export default function RequestDetails(props) {
     const setAdmin = (assignString) => {
         const requester_id = props.currRequest._id;
         let form = {
-            'request_id': requester_id,
-            'assignee': assignString
+            requestID: requester_id,
+            updates: {
+                $set: {
+                    "admin_info.assignee": assignString,
+                }
+            } 
         };
 
-        fetch('/api/request/set_assignee', {
+        fetch('/api/request/updateRequestDetails', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
@@ -187,9 +191,16 @@ export default function RequestDetails(props) {
     // Deleting a request
     const deleteRequest = () => {
         const requester_id = props.currRequest._id;
-        let form = {'request_id': requester_id};
+        let form = {
+            requestID: requester_id,
+            updates: {
+                $set: {
+                    "delete": true,
+                }
+            } 
+        };
 
-        fetch('/api/request/set_delete', {
+        fetch('/api/request/updateRequestDetails', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
@@ -211,17 +222,23 @@ export default function RequestDetails(props) {
         if (prevNote === fields.email2) {
             return;
         }
+        const requester_id = props.currRequest._id;
         let form = {
-            'request_id': props.currRequest._id,
-            'note': fields.email2
+            requestID: requester_id,
+            updates: {
+                $set: {
+                    "admin_info.note": fields.email2,
+                }
+            } 
         };
 
-        fetch('/api/request/set_notes', {
+        fetch('/api/request/updateRequestDetails', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
         }).then((response) => response.json())
         .then(newRequest => {
+            console.log(newRequest)
             updateRequests(newRequest);
         }).catch(e => {
             alert(e);

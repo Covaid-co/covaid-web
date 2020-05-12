@@ -214,11 +214,79 @@ exports.completeARequest = asyncWrapper(async (req, res) => {
     //     pusher.trigger(req.body.assoc_id, 'complete', request_id)
     //     res.send('Request updated.');
     // });
+
+    // TODO -> might break for completing without volunteer
+});
+
+/**
+ * Update request details
+ */
+exports.updateRequestDetails = asyncWrapper(async (req, res) => {
+    try {
+        const updates = req.body.updates;
+        const requestID = req.body.requestID;
+        let updated_request = await RequestService.updateRequestDetails(requestID, updates);
+        return res.status(200).send(updated_request);
+    } catch(e) {
+        return res.status(400).send(e);
+    }
+});
+
+/**
+ * Handle requests to set a request assignee
+ */
+exports.setAssignee = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id;
+    const assignee = req.body.assignee;
+
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            "assignee": assignee,
+            "last_modified": new Date()
+        }
+    }, function (err, request) {
+        if (err) return next(err);
+        res.send('Request updated.');
+    });
+});
+
+/**
+ * Handle requests to set the notes of a request
+ */
+exports.setNotes = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id;
+    const note = req.body.note;
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            "note": note,
+            "last_modified": new Date()
+        }
+    }, function (err, request) {
+        if (err) return next(err);
+        res.send('Request updated.');
+    });
+});
+
+/**
+ * Handle requests to set a request to delete
+ */
+exports.setDelete = asyncWrapper(async (req, res) => {
+    const request_id = req.body.request_id;
+    Requests.findByIdAndUpdate(request_id, 
+        {$set: {
+            "delete": true,
+            "last_modified": new Date()
+        }
+    }, function (err, request) {
+        if (err) return next(err);
+        res.send('Request updated.');
+    });
 });
 
 /**
  * Handle requests to attach a volunteer to a request
  */
+// TODO -> DELETE
 exports.attachVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id
     const volunteer_id = req.body.volunteer_id
@@ -262,6 +330,7 @@ exports.attachVolunteer = asyncWrapper(async (req, res) => {
 /**
  * Handle requests to remove a volunteer from a request
  */
+// TODO -> DELETE
 exports.removeVolunteer = asyncWrapper(async (req, res) => {
     const request_id = req.body.request_id;
     const assoc_id = req.body.assoc_id;
@@ -316,81 +385,6 @@ exports.removeVolunteer = asyncWrapper(async (req, res) => {
             }
         });
         pusher.trigger(assoc_id, 'general', 'A volunteer has been unmatched from a request!')
-        res.send('Request updated.');
-    });
-});
-
-/**
- * Handle requests to set a request assignee
- */
-exports.setAssignee = asyncWrapper(async (req, res) => {
-    const request_id = req.body.request_id;
-    const assignee = req.body.assignee;
-    Requests.findByIdAndUpdate(request_id, 
-        {$set: {
-            "assignee": assignee,
-            "last_modified": new Date()
-        }
-    }, function (err, request) {
-        if (err) return next(err);
-        res.send('Request updated.');
-    });
-});
-
-/**
- * Handle requests to set the notes of a request
- */
-exports.setNotes = asyncWrapper(async (req, res) => {
-    const request_id = req.body.request_id;
-    const note = req.body.note;
-    Requests.findByIdAndUpdate(request_id, 
-        {$set: {
-            "note": note,
-            "last_modified": new Date()
-        }
-    }, function (err, request) {
-        if (err) return next(err);
-        res.send('Request updated.');
-    });
-});
-
-/**
- * Handle requests to set a request to delete
- */
-exports.setDelete = asyncWrapper(async (req, res) => {
-    const request_id = req.body.request_id;
-    Requests.findByIdAndUpdate(request_id, 
-        {$set: {
-            "delete": true,
-            "last_modified": new Date()
-        }
-    }, function (err, request) {
-        if (err) return next(err);
-        res.send('Request updated.');
-    });
-});
-
-/**
- * Handle requests to set a manual volunteer to a request
- */
-exports.setManualVolunteer = asyncWrapper(async (req, res) => {
-    const request_id = req.body.request_id;
-    Requests.findByIdAndUpdate(request_id, 
-        {$set: {
-            "last_modified": new Date(),
-            'manual_match': {
-                "name": req.body.name,
-                "email": req.body.email,
-                "phone": req.body.phone,
-                "details": req.body.details
-            },
-            "status": {
-                "current_status": "in_progress",
-                "volunteer": "manual"
-            }
-        }
-    }, function (err, request) {
-        if (err) return next(err);
         res.send('Request updated.');
     });
 });

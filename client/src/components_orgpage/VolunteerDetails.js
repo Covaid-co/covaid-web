@@ -68,16 +68,24 @@ export default function VolunteerDetails(props) {
         first_name = first_name.toLowerCase();
         first_name = first_name[0].toUpperCase() + first_name.slice(1);
 
+        // OLD
+        // let form = {
+        //     'request_id': requester_id,
+        //     'volunteer_id': volunteer_id,
+        //     'volunteer_email': volunteer_email,
+        //     'volunteer_name': first_name,
+        //     'association': assoc_id,
+        //     'adminDetails': fields.adminDetails
+        // };
+
+        // NEW
         let form = {
-            'request_id': requester_id,
-            'volunteer_id': volunteer_id,
-            'volunteer_email': volunteer_email,
-            'volunteer_name': first_name,
-            'association': assoc_id,
-            'adminDetails': fields.adminDetails
+            _id: requester_id,
+            volunteers: [volunteer_id], // TODO -> this can now be multiple volunteers if needed
+            adminMessage: fields.adminDetails
         };
 
-        fetch('/api/request/attachVolunteerToRequest', {
+        fetch('/api/request/matchVolunteers', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
