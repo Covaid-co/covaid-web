@@ -9,7 +9,6 @@ exports.getUsersByUserIDs = async function(_ids) {
         }
         const users = await UserRepository.readUsers(query);
         return users;
-
     } catch (e) {
         throw e;
     }

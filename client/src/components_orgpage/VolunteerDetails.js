@@ -33,7 +33,7 @@ export default function VolunteerDetails(props) {
             fields.email5 = '';
         }
     }, [props.currVolunteer, props.show])
-
+ 
     const handleChangeVerify = (event) => {
         event.persist();
         setVerified(!verified);
@@ -57,53 +57,6 @@ export default function VolunteerDetails(props) {
             alert(e);
         });
     };
-
-    const matchVolunteer = () => {
-        const requester_id = props.currRequest._id;
-        const volunteer_id = props.currVolunteer._id;
-        const volunteer_email = props.currVolunteer.email;
-        const assoc_id = props.currRequest.association;
-        const volunteer_name = props.currVolunteer.first_name
-        var first_name = volunteer_name;
-        first_name = first_name.toLowerCase();
-        first_name = first_name[0].toUpperCase() + first_name.slice(1);
-
-        // OLD
-        // let form = {
-        //     'request_id': requester_id,
-        //     'volunteer_id': volunteer_id,
-        //     'volunteer_email': volunteer_email,
-        //     'volunteer_name': first_name,
-        //     'association': assoc_id,
-        //     'adminDetails': fields.adminDetails
-        // };
-
-        // NEW
-        let form = {
-            _id: requester_id,
-            volunteers: [volunteer_id], // TODO -> this can now be multiple volunteers if needed
-            adminMessage: fields.adminDetails
-        };
-
-        fetch('/api/request/matchVolunteers', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        }).then((response) => response.json())
-        .then(newRequest => {
-            props.setCurrRequest(newRequest);
-            // Update all requests array with the new updated request
-            const newAllRequests = updateAllRequests(newRequest, props.allRequests);
-            props.setAllRequests(newAllRequests);
-
-            // Reset/close all modals 
-            props.setVolunteerDetailsModal(false);
-            props.setTopMatchesModal(false);
-            props.setRequestDetailsModal(false);
-        }).catch(e => {
-            alert(e);
-        });
-    }
 
     // Not currently updating all other states
     const setNotes = () =>{
@@ -196,23 +149,6 @@ export default function VolunteerDetails(props) {
                     }) : ""}
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
-                    {props.matching ? 
-                        <>
-                            <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Share any relevant information with volunteer (optional):</h5>
-                            <Form>
-                                <Form.Group controlId="adminDetails" bssize="large">
-                                    <Form.Control as="textarea" 
-                                                rows="3"
-                                                placeholder="Message to volunteer"
-                                                value={fields.adminDetails ? fields.adminDetails : ''} 
-                                                onChange={handleFieldChange}/>
-                                </Form.Group>
-                            </Form>
-                        </>
-                        :
-                        <></>
-                    }
-                    {props.matching ? <Button id="large-button" onClick={matchVolunteer}>Match with {props.currVolunteer.first_name}</Button> : <></>}
                 </Modal.Body>
             </Modal>
         );

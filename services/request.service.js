@@ -75,9 +75,10 @@ exports.createRequest = async function(request) {
         let new_request = request.status.volunteer ? await handleDirectMatch(request) : await handleGeneral(request); // if there is a volunteer attached to the request, create direct match. Otherwise, create general
         new_request.time_posted = new Date();
         new_request['admin_info'] = {
-            last_modified_time: new Date(),
+            last_modified: new Date(),
             assignee: 'No one assigned'
         }
+        console.log(new_request);
         return await RequestRepository.createRequest(new_request);
     } catch (e) {
         console.log(e);
@@ -225,7 +226,9 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
 exports.unmatchVolunteers = async function(requestID, volunteers) {
     try {
         let request = (await RequestRepository.readRequest({_id: requestID}))[0]; // Find the relevant request
-        let removing_volunteers = volunteers.map(function (volunteer_id) {
+        // if volunteers is not defined, unmatch all volunteers
+        let removing_volunteers = !volunteers ? request.status.volunteers.map(function (volunteer) {return volunteer.volunteer}) :
+         volunteers.map(function (volunteer_id) {
             if (request.status.volunteers.filter(volunteer => volunteer.volunteer === volunteer_id && volunteer.current_status !== volunteer_status.REJECTED).length !== 0) { // Get all attached volunteers from the volunteers list who have not already rejected the request
                 return volunteer_id
             }

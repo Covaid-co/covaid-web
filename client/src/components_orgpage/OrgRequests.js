@@ -84,9 +84,9 @@ export default function OrgRequests(props) {
         if (props.mode === current_tab.MATCHED) {
             const in_progress = isInProgress(request);
             if (in_progress) {
-                return <Badge className='in-progress-task'>In Progress</Badge>;
+                return <Badge className='in-progress-task' style={{marginRight: 8}}>In Progress</Badge>;
             } else {
-                return <Badge className='pending-task'>Pending</Badge>;
+                return <Badge className='pending-task' style={{marginRight: 8}}>Pending</Badge>;
             }
         } else {
             return <></>;

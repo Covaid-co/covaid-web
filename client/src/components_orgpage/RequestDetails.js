@@ -8,6 +8,7 @@ import Toast from 'react-bootstrap/Toast'
 import BestMatches from './BestMatches'
 import Badge from 'react-bootstrap/Badge'
 import Col from 'react-bootstrap/Col'
+import ViewVolunteersModal from './ViewVolunteersModal';
 import { useFormFields } from "../libs/hooksLib";
 import { formatName, updateAllRequests } from './OrganizationHelpers'
 import { toastTime, paymentOptions, current_tab, volunteer_status } from '../constants';
@@ -33,6 +34,9 @@ export default function RequestDetails(props) {
     const [fields, handleFieldChange] = useFormFields({
         email2: "",
     });
+    const [showVolunteers, setShowVolunteers] = useState(false);
+    const [selectedVolunteers, setSelectedVolunteers] = useState([]);
+    const [viewVolunteersMode, setViewVolunteersMode] = useState(-1);
 
     useEffect(() => {
         setAssignee('No one assigned');
@@ -119,10 +123,9 @@ export default function RequestDetails(props) {
     // Remove a volunteer from request
     const unMatch = () => {
         let form = {
-            'request_id': props.currRequest._id,
-            'assoc_id': props.association._id
+            '_id': props.currRequest._id,
         };
-        fetch('/api/request/removeVolunteerFromRequest', {
+        fetch('/api/request/unmatchVolunteers', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
@@ -276,6 +279,61 @@ export default function RequestDetails(props) {
             </>;
     }
 
+    const openVolunteersModal = (volunteers, mode) => {
+        setSelectedVolunteers(volunteers);
+        setShowVolunteers(true);
+        setViewVolunteersMode(mode);
+    }
+
+    const getVolunteers = (volunteers, status) => {
+        return volunteers.filter(volunteer => parseInt(volunteer.current_status) === status);
+    }
+
+    const viewVolunteers = () => {
+        switch (props.mode) {
+            case current_tab.MATCHED:
+                const volunteers = props.currRequest.status.volunteers;
+                const in_progress = volunteers.find(vol => vol.current_status === volunteer_status.IN_PROGRESS);
+                const pending = volunteers.find(vol => vol.current_status === volunteer_status.PENDING);
+                if (in_progress) {
+                    const in_progress_volunteers = getVolunteers(volunteers, volunteer_status.IN_PROGRESS);
+                    return (
+                            <>
+                                <div style={{textAlign: 'center'}}>
+                                    <Button variant="link" onClick={() => openVolunteersModal(in_progress_volunteers, volunteer_status.IN_PROGRESS)}>
+                                        <p id="regular-text-nomargin" style={{color: '#DB9327', marginTop: 10, marginBottom: 10}}><b>
+                                        {
+                                            in_progress_volunteers.length === 1 ?
+                                            "1 volunteer" 
+                                                :
+                                            in_progress_volunteers.length + " volunteers"
+                                        } working on this</b></p>
+                                     </Button>
+                                </div>
+                            </>
+                        );
+                } else {
+                    const pendingVolunteers = getVolunteers(volunteers, volunteer_status.PENDING);
+                    return (
+                        <>
+                            <div style={{textAlign: 'center'}}>
+                                <Button variant="link" onClick={() => openVolunteersModal(pendingVolunteers, volunteer_status.PENDING)}>
+                                <p id="regular-text-nomargin" style={{marginTop: 10, marginBottom: 10}}><b>Awaiting responses from {
+                                            pendingVolunteers.length === 1 ?
+                                            "1 volunteer" 
+                                                :
+                                            pendingVolunteers.length + " volunteers"
+                                        }</b></p>
+                                </Button>
+                            </div>
+                        </>
+                    );
+                }
+            default:
+                return <></>;
+        }
+    }
+
     const modeButton = () => {
         const completeButton = <Button id="large-button-empty" style={{borderColor: '#28a745', color: '#28a745'}} 
                                         onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
@@ -285,7 +343,7 @@ export default function RequestDetails(props) {
             return displayMatchVolunteer(completeButton);
         } else {
             return (<>
-                    {Object.keys(currVolunteer).length > 0 ? 
+                    {/* {Object.keys(currVolunteer).length > 0 ? 
                         <Button id="large-button" style={{marginTop: 15}} onClick={() => {
                                 props.setVolunteerDetailsModal(true); 
                                 props.setCurrVolunteer(currVolunteer);
@@ -294,7 +352,10 @@ export default function RequestDetails(props) {
                             }}>
                             View Volunteers's Information
                         </Button>
-                        : <></>}
+                        : <></>} */}
+                    {
+                        viewVolunteers()
+                    }
                     <Row style={{marginBottom: 10}}>
                         <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
                             <Button id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
@@ -442,6 +503,7 @@ export default function RequestDetails(props) {
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Needed by:</h5>
                     <p id="regular-text-nomargin">{props.currRequest.request_info.time} of {props.currRequest.request_info.date}</p>
                     {volunteerComments()}
+                    <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
                     {modeButton()}
                 </Modal.Body>
             </Modal>
@@ -494,6 +556,13 @@ export default function RequestDetails(props) {
                 </Modal.Body>
             </Modal>
             <BestMatches { ... props} topMatchesModal={topMatchesModal} setTopMatchesModal={setTopMatchesModal} />
+            <ViewVolunteersModal 
+                showVolunteers={showVolunteers} 
+                setShowVolunteers={setShowVolunteers} 
+                volunteers={selectedVolunteers} 
+                currRequest={props.currRequest}
+                mode={viewVolunteersMode}
+                />
         </>
     );
 }

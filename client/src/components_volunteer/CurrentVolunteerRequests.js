@@ -58,7 +58,9 @@ export default function CurrentVolunteerRequests(props) {
         let volunteerSpecific = request.status.volunteers.filter(function(volunteer) {
             return volunteer.volunteer === props.user._id;
         });
-        setVolunteerSpecificInfo(volunteerSpecific);
+        if (volunteerSpecific.length === 1) {
+            setVolunteerSpecificInfo(volunteerSpecific[0]);
+        }
     }
 
     const helpNeeded = (request) => {

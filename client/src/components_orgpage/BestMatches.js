@@ -8,7 +8,8 @@ import Toast from 'react-bootstrap/Toast';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
-import VolunteerDetails from './VolunteerDetails'
+import VolunteerDetails from './VolunteerDetails';
+import { useFormFields } from "../libs/hooksLib";
 import { calcDistance } from '../Helpers';
 import { formatName } from './OrganizationHelpers';
 import { volunteer_status } from '../constants';
@@ -19,7 +20,9 @@ import { toastTime } from '../constants';
  */
 
 export default function BestMatches(props) {
-
+    const [fields, handleFieldChange] = useFormFields({
+        adminMessage: ''
+    });
     const [bestMatchVolunteer, setBestMatchVolunteer] = useState(false);
     const [sortedVolunteers, setSortedVolunteers] = useState([]);
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
@@ -30,6 +33,7 @@ export default function BestMatches(props) {
     const [checkboxStatus, setCheckboxStatus] = useState({});
     const [showToast, setShowToast] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false);
+    const [selectedVolunteers, setSelectedVolunteers] = useState([]);
 
     useEffect(() => {
         var temp_volunteers = []
@@ -149,9 +153,15 @@ export default function BestMatches(props) {
         setBestMatchVolunteer(true);
     }
 
-    const handleCheckboxAction = (id) => {
+    const handleCheckboxAction = (volunteer) => {
         var temp_checkbox = JSON.parse(JSON.stringify(checkboxStatus));
-        temp_checkbox[id] = !checkboxStatus[id];
+        if (!checkboxStatus[volunteer._id]) {
+            setSelectedVolunteers(selectedVolunteers.concat(volunteer));
+        }
+        if (checkboxStatus[volunteer._id]) {
+            setSelectedVolunteers(selectedVolunteers.filter(selectedVolunteer => selectedVolunteer._id !== volunteer._id));
+        }
+        temp_checkbox[volunteer._id] = !checkboxStatus[volunteer._id];
         setCheckboxStatus(temp_checkbox);
     }
 
@@ -170,7 +180,30 @@ export default function BestMatches(props) {
     }
 
     const submitForm = () => {
-        console.log("submitting");
+        let form = {
+            _id: props.currRequest._id,
+            volunteers: selectedVolunteers.map(volunteer => volunteer._id),
+            adminMessage: fields.adminMessage
+        };
+
+        fetch('/api/request/matchVolunteers', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form)
+        }).then((response) => response.json())
+        .then(newRequest => {
+            // props.setCurrRequest(newRequest);
+            // // Update all requests array with the new updated request
+            // const newAllRequests = updateAllRequests(newRequest, props.allRequests);
+            // props.setAllRequests(newAllRequests);
+
+            // // Reset/close all modals 
+            // props.setVolunteerDetailsModal(false);
+            // props.setTopMatchesModal(false);
+            // props.setRequestDetailsModal(false);
+        }).catch(e => {
+            alert(e);
+        });
     }
 
     return (<>
@@ -190,7 +223,7 @@ export default function BestMatches(props) {
                                         <Col lg={1} md={1}>
                                             <Form.Check type="checkbox" style={{marginTop: 20}} id='default-checkbox' 
                                                 checked={checkboxStatus[volunteer._id]}
-                                                onChange={() => handleCheckboxAction(volunteer._id)}/>
+                                                onChange={() => handleCheckboxAction(volunteer)}/>
                                         </Col>
                                         <Col id="best-match-item" lg={11} md={11} onClick={() => handleVolunteerClick(volunteer)}>
                                             <div>
@@ -234,7 +267,7 @@ export default function BestMatches(props) {
                     </Col>
                     <Col xs="12" id="col-scroll">
                         <ListGroup variant="flush">
-                            {displayedVolunteers.map((volunteer, i) => {
+                            {selectedVolunteers.map((volunteer, i) => {
                                 if (volunteer.availability) {
                                 return (
                                 <ListGroup.Item key={i} action onClick={() => handleVolunteerClick(volunteer)}>
@@ -258,6 +291,18 @@ export default function BestMatches(props) {
                         </ListGroup>
                     </Col>
                     <Col xs="12">
+                        <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Share any relevant information with volunteer (optional):</h5>
+                                <Form>
+                                    <Form.Group controlId="adminMessage" bssize="large">
+                                        <Form.Control as="textarea" 
+                                                    rows="3"
+                                                    placeholder="Message to volunteer"
+                                                    value={fields.adminMessage ? fields.adminMessage : ''} 
+                                                    onChange={handleFieldChange}/>
+                                    </Form.Group>
+                                </Form>
+                    </Col>
+                    <Col xs="12">
                         <p id="requestCall" style={{marginTop: -15, marginBottom: 5}}>&nbsp;</p>
                         <Button style={{marginTop: 10}} id="large-button" onClick={submitForm}>Confirm</Button>
                         <Button style={{marginTop: 5}} id="large-button-empty" onClick={closeConfirmPage}>Back</Button>
@@ -266,7 +311,7 @@ export default function BestMatches(props) {
             </Modal.Body>
         </Modal>
         <VolunteerDetails show={bestMatchVolunteer} setBestMatchVolunteer={setBestMatchVolunteer}
-                        currVolunteer={currVolunteer} { ... props } matching={true}/>
+                        currVolunteer={currVolunteer} { ... props } matching={true} />
     </>)
 }
 
