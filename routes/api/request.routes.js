@@ -11,6 +11,7 @@ router.post('/create_request', request_controller.createARequest);
 router.get('/allRequestsInAssoc', request_controller.getAllRequestsOfAnAssoc);
 router.get('/volunteerRequests', auth.required, request_controller.handleGetVolunteerRequests);
 router.get('/volunteerStatistics', request_controller.handleGetVolunteerStatistics);
+
 // PUT
 router.put('/matchVolunteers', request_controller.matchVolunteers);
 router.put('/unmatchVolunteers', request_controller.unmatchVolunteers);

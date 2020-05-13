@@ -47,7 +47,8 @@ exports.handleGetVolunteerRequests = asyncWrapper(async (req, res) => {
  */
 exports.handleGetVolunteerStatistics = asyncWrapper(async (req, res) => {
     try {
-        res.sendStatus(200);
+        var statistics = {total: 400, completed: 20}
+        res.send(statistics);
     } catch (e) {
         res.sendStatus(400);
     }
