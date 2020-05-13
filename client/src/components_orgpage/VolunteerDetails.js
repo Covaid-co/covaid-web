@@ -104,8 +104,12 @@ export default function VolunteerDetails(props) {
         if (props.inRequest) {
             props.setRequestDetailsModal(true);
         }
-        if (props.matching) {
+        if (props.matching && props.matching[0]) {
             props.setTopMatchesModal(true);
+            props.setBestMatchVolunteer(false);
+        }
+        if (props.matching && props.matching[1]) {
+            props.setConfirmModal(true);
             props.setBestMatchVolunteer(false);
         }
     }

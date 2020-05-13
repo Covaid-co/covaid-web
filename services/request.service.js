@@ -210,6 +210,7 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                     'status.current_status': request_status.MATCHED
                 }
             });
+            updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
 
         return updatedRequest;
@@ -270,6 +271,7 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
                     'status.current_status': request_status.UNMATCHED
                 }
             });
+            updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
 
         return updatedRequest;
