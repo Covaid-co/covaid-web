@@ -3,6 +3,8 @@ import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { useFormFields } from "../libs/hooksLib";
 import { generateMapsURL } from '../Helpers';
 import { updateAllRequests } from './OrganizationHelpers';
@@ -133,6 +135,28 @@ export default function VolunteerDetails(props) {
                     <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ""}</p>
                     <p id="regular-text-nomargin">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}</p>
                     <p id="regular-text-nomargin">Driver: {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}</p>
+                    {/* Right now these are just dummy numbers for stats before backend is implemented 
+                    the overlays are good for clarity but descriptions should be modified/finalized before being merged 
+                    */}
+                    <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 14}}>Volunteer Statistics:</h5>
+                    <OverlayTrigger
+                    placement = "left"
+                    overlay={
+                    <Tooltip >
+                        total requests matched all time
+                    </Tooltip>
+                    }
+                    >
+                    <p id="regular-text-nomargin">Matched: 5</p></OverlayTrigger>
+                    <OverlayTrigger
+                    placement = "left"
+                    overlay={
+                    <Tooltip >
+                        total requests accepted
+                    </Tooltip>
+                    }
+                    >
+                    <p id="regular-text-nomargin">Accepted: 4</p></OverlayTrigger>
                     <h5 id="regular-text-bold" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
                     <Form>
                         <Form.Group controlId="email5" bssize="large">
