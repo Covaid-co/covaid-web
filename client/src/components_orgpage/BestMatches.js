@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Toast from 'react-bootstrap/Toast';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
-import Pagination from '../components/Pagination';
 import VolunteerDetails from './VolunteerDetails'
 import { calcDistance } from '../Helpers';
 import { formatName } from './OrganizationHelpers';
 import { volunteer_status } from '../constants';
+import { toastTime } from '../constants';
 
 /**
  * Finding best matches for a request
@@ -18,16 +20,16 @@ import { volunteer_status } from '../constants';
 
 export default function BestMatches(props) {
 
-    const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
+    const [bestMatchVolunteer, setBestMatchVolunteer] = useState(false);
     const [sortedVolunteers, setSortedVolunteers] = useState([]);
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
     const [allVolunteersInOrg, setAllVolunteersInOrg] = useState([]);
     const [currVolunteer, setCurrVolunteer] = useState({});
-    const [currentPage, setCurrentPage] = useState(1);
-    const volunteersPerPage = 5;
     const [isLoaded, setIsLoaded] = useState(false);
     const [looseMatch, setLooseMatch] = useState(false);
-    const [viewedVolunteers, setViewedVolunteers] = useState([]);
+    const [checkboxStatus, setCheckboxStatus] = useState({});
+    const [showToast, setShowToast] = useState(false);
+    const [confirmModal, setConfirmModal] = useState(false);
 
     useEffect(() => {
         var temp_volunteers = []
@@ -59,8 +61,14 @@ export default function BestMatches(props) {
         })
         var allVolunteers = temp_volunteers.concat(nomatch_volunteers);
         setSortedVolunteers(allVolunteers);
-        setViewedVolunteers(allVolunteers);
-        setDisplayedVolunteers(allVolunteers.slice(0, volunteersPerPage));
+        setDisplayedVolunteers(allVolunteers.slice(0, 20));
+        var checkboxStatusConstructionNoTasks = {};
+        props.volunteers.forEach(
+            function(volunteer) { 
+                checkboxStatusConstructionNoTasks[volunteer._id] = false;
+            }
+        );
+        setCheckboxStatus(checkboxStatusConstructionNoTasks);
         setIsLoaded(true);
     }, [props.currRequest]);
 
@@ -74,27 +82,14 @@ export default function BestMatches(props) {
         return Math.round(miles * 100) / 100;
     }
 
-    const paginatePage = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        const lastIndex = pageNumber * volunteersPerPage;
-        const firstIndex = lastIndex - volunteersPerPage;
-        const slicedVolunteers = viewedVolunteers.slice(firstIndex, lastIndex);
-        setDisplayedVolunteers(slicedVolunteers);
-    }
-
-    function resetState() {
-        setTimeout(function () {
-            setCurrentPage(1);
-            setSortedVolunteers([]);
-            setDisplayedVolunteers([]);
-            setCurrVolunteer({});
-            setIsLoaded(false);
-        }, 500);
-    }
-
     const closePage = () => {
         props.setTopMatchesModal(false);
-        resetState();
+        props.setRequestDetailsModal(true);
+    }
+
+    const closeConfirmPage = () => {
+        props.setTopMatchesModal(true);
+        setConfirmModal(false);
     }
 
     // Display if volunteer was previously matched
@@ -105,41 +100,44 @@ export default function BestMatches(props) {
         });
 
         if (found) {
-            return <h5 id="association-name" style={{color: '#DB4B4B'}}>
+            return <h5 id="association-name" style={{color: '#FF4133'}}>
                     Previously Matched
                 </h5>
         }
         return <></>;
     }
 
-    const switchVolunteers = () => {
-        if (!looseMatch) {
-            setDisplayedVolunteers(allVolunteersInOrg.slice(0, 5));
-            setViewedVolunteers(allVolunteersInOrg);
-        } else {
-            setDisplayedVolunteers(sortedVolunteers.slice(0, 5));
-            setViewedVolunteers(sortedVolunteers);
-        }
-        setLooseMatch(!looseMatch);
-        setCurrentPage(1);
+    const sortSelectedTask = (x, y) => {
+        const validX = props.currRequest && props.currRequest.request_info
+                    && props.currRequest.request_info.resource_request.length > 0
+                    && props.currRequest.request_info.resource_request.indexOf(x) !== -1;
+        
+        const validY = props.currRequest && props.currRequest.request_info
+                    && props.currRequest.request_info.resource_request.length > 0
+                    && props.currRequest.request_info.resource_request.indexOf(y) !== -1;
+        return (validX === validY) ? 0 : validX ? -1 : 1;
     }
 
     // Resource's that match between requester and volunteer
     const displayResourceMatch = (volunteer) => {
-        return volunteer.offer.tasks.length === 0 ? 
-            <Badge id='task-info' style={{background: '#AE2F2F'}}>
-                No tasks entered
-            </Badge> 
-            : volunteer.offer.tasks.map((task, i) => {
+        if (volunteer.offer.tasks.length === 0) {
+            return <Badge id='task-info' style={{background: '#AE2F2F'}}>
+                    No tasks entered
+                </Badge>
+        } else { 
+            var tasks = volunteer.offer.tasks;
+            tasks.sort(sortSelectedTask);
+            return tasks.map((task, i) => {
                 if (props.currRequest
                     && props.currRequest.request_info
                     && props.currRequest.request_info.resource_request.length > 0
                     &&  props.currRequest.request_info.resource_request.indexOf(task) !== -1) {
-                    return <Badge key={i} style={{background: '#4CA846'}} id='task-info'>{task}</Badge>
+                    return <Badge key={i} style={{background: '#2670FF'}} id='task-info'>{task}</Badge>
                 } else {
-                    return <Badge key={i} style={{background: '#6C757D'}} id='task-info'>{task}</Badge>
+                    return <Badge key={i} style={{background: '#cadaff'}} id='task-info'>{task}</Badge>
                 }
-        })
+            });
+        }
     }
 
     if (!isLoaded) {
@@ -148,27 +146,99 @@ export default function BestMatches(props) {
 
     const handleVolunteerClick = (volunteer) => {
         setCurrVolunteer({...volunteer});
-        setVolunteerDetailsModal(true);
+        setBestMatchVolunteer(true);
     }
 
-    return (
-        <Modal show={props.topMatchesModal} size="lg" onHide={closePage} style = {{marginTop: 10, paddingBottom: 40}}>
-            <Modal.Header closeButton>
-                <Modal.Title>{formatName(props.currRequest.personal_info.requester_name)}'s Top Matches 
-                    <Button id={looseMatch ? "notSelected" : "selected"} onClick={switchVolunteers} style={{marginLeft: 15, marginBottom: 8}}>
-                        {looseMatch ? "Match on task" : "Match on task"}
-                    </Button>
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+    const handleCheckboxAction = (id) => {
+        var temp_checkbox = JSON.parse(JSON.stringify(checkboxStatus));
+        temp_checkbox[id] = !checkboxStatus[id];
+        setCheckboxStatus(temp_checkbox);
+    }
+
+    const volunteerCount = () => {
+        return Object.values(checkboxStatus).reduce((a, item) => a + item, 0);
+    }
+
+    const confirmSelection = () => {
+        if (volunteerCount() === 0) {
+            setShowToast(true);
+            return
+        } else {
+            props.setTopMatchesModal(false);
+            setConfirmModal(true);
+        }
+    }
+
+    const submitForm = () => {
+        console.log("submitting");
+    }
+
+    return (<>
+        <Modal show={props.topMatchesModal} onHide={closePage} style = {{marginTop: 5, paddingBottom: 40}}>
+            <Modal.Body style={{zoom: '90%'}}>
                 <Row style={{marginTop: 0}}>
-                    <Col xs={12}>
+                   <Col xs="12" style = {{marginTop: 0, marginBottom: 5}}>
+                        <Modal.Title>{formatName(props.currRequest.personal_info.requester_name)}'s Top Matches </Modal.Title>
+                    </Col>
+                    <Col xs="12" id="col-scroll">
+                        <ListGroup variant="flush">
+                            {displayedVolunteers.map((volunteer, i) => {
+                                if (volunteer.availability) {
+                                return (
+                                <ListGroup.Item key={i} style={{padding: 0}}>
+                                    <Row>
+                                        <Col lg={1} md={1}>
+                                            <Form.Check type="checkbox" style={{marginTop: 20}} id='default-checkbox' 
+                                                checked={checkboxStatus[volunteer._id]}
+                                                onChange={() => handleCheckboxAction(volunteer._id)}/>
+                                        </Col>
+                                        <Col id="best-match-item" lg={11} md={11} onClick={() => handleVolunteerClick(volunteer)}>
+                                            <div>
+                                                <h5 id="volunteer-name" style={{marginBottom: 0}}>
+                                                    {volunteer.first_name} {volunteer.last_name}
+                                                </h5>
+                                                {displayPrevMatched(volunteer)}
+                                            </div>
+                                            <div>
+                                                <p id="volunteer-location">{volunteer.offer.neighborhoods.join(', ')}</p>
+                                                <p id="volunteer-location" style={{float: 'right', marginTop: -25, marginRight: 10}}>
+                                                    {distance(volunteer)} miles
+                                                </p>
+                                            </div>
+                                            <div>
+                                                {displayResourceMatch(volunteer)}
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </ListGroup.Item>);
+                            }})}
+                        </ListGroup>
+                    </Col>
+                    <Col xs="12">
+                        <p id="requestCall" style={{marginTop: -15, marginBottom: 5}}>&nbsp;</p>
+                        <Button style={{marginTop: 10}} id="large-button" onClick={confirmSelection}>Select {volunteerCount()} Volunteers</Button>
+                        <Button style={{marginTop: 5}} id="large-button-empty" onClick={closePage}>Back</Button>
+                    </Col>
+                </Row>
+                <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
+                    <Toast.Body>Select a volunteer</Toast.Body>
+                </Toast>
+            </Modal.Body>
+        </Modal>
+
+        <Modal show={confirmModal} onHide={closeConfirmPage} style = {{marginTop: 5, paddingBottom: 40}}>
+            <Modal.Body style={{zoom: '90%'}}>
+                <Row style={{marginTop: 0}}>
+                   <Col xs="12" style = {{marginTop: 0, marginBottom: 5}}>
+                        <Modal.Title>Notify these volunteers? ({volunteerCount()})</Modal.Title>
+                    </Col>
+                    <Col xs="12" id="col-scroll">
                         <ListGroup variant="flush">
                             {displayedVolunteers.map((volunteer, i) => {
                                 if (volunteer.availability) {
                                 return (
                                 <ListGroup.Item key={i} action onClick={() => handleVolunteerClick(volunteer)}>
-                                    <div >
+                                    <div>
                                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
@@ -184,30 +254,26 @@ export default function BestMatches(props) {
                                         {displayResourceMatch(volunteer)}
                                     </div>
                                 </ListGroup.Item>);
-                                }})}
+                            }})}
                         </ListGroup>
-                        <Pagination
-                            className='justfiy-content-center'
-                            style = {{paddingTop: 15, marginTop: 50}}
-                            postsPerPage={volunteersPerPage}
-                            currPage={currentPage}
-                            totalPosts={Math.min(volunteersPerPage * 10, sortedVolunteers.length)}
-                            paginate={paginatePage}/>
+                    </Col>
+                    <Col xs="12">
+                        <p id="requestCall" style={{marginTop: -15, marginBottom: 5}}>&nbsp;</p>
+                        <Button style={{marginTop: 10}} id="large-button" onClick={submitForm}>Confirm</Button>
+                        <Button style={{marginTop: 5}} id="large-button-empty" onClick={closeConfirmPage}>Back</Button>
                     </Col>
                 </Row>
-                <VolunteerDetails show={volunteerDetailModal}
-                                    setVolunteerDetailsModal={setVolunteerDetailsModal}
-                                    currVolunteer={currVolunteer}
-                                    { ... props }
-                                    matching={true}/>
             </Modal.Body>
         </Modal>
-    )
+        <VolunteerDetails show={bestMatchVolunteer} setBestMatchVolunteer={setBestMatchVolunteer}
+                        currVolunteer={currVolunteer} { ... props } matching={true}/>
+    </>)
 }
 
 BestMatches.propTypes = {
     currRequest: PropTypes.object,
     topMatchesModal: PropTypes.bool,
     volunteers: PropTypes.array,
-    setTopMatchesModal: PropTypes.func
+    setTopMatchesModal: PropTypes.func,
+    setRequestDetailsModal: PropTypes.func
 };

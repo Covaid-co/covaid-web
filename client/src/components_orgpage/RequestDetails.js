@@ -101,7 +101,6 @@ export default function RequestDetails(props) {
             props.currRequest.admin_info.assignee !== '' && 
             props.currRequest.admin_info.assignee !== 'No one assigned') {
             setTopMatchesModal(true);
-            setNotes();
             props.setRequestDetailsModal(false);
         } else {
             setShowToast(true);
@@ -259,7 +258,7 @@ export default function RequestDetails(props) {
 
     const displayMatchVolunteer = (completeButton) => {
         return <>
-                <Button id="large-button" style={{marginTop: 15}} onClick={topMatch}>Match a volunteer</Button>
+                <Button id="large-button" style={{marginTop: 15}} onClick={topMatch}>Match volunteers</Button>
                 <Row style={{marginBottom: 10}}>
                     <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
                         <Button id='large-button-empty'style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 

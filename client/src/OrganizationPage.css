@@ -1,8 +1,20 @@
 #col-scroll {
     max-height: 500px;
     margin-bottom: 10px;
+    padding-right: 0px;
     overflow:scroll;
     -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+}
+
+#best-match-item {
+    cursor: pointer;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+#best-match-item:hover {
+    background-color: #f4f5f7;
 }
 
 .cluster-marker {
@@ -347,6 +359,7 @@ input {
     height: 19px;
 
     border: 1px solid #C4C4C4;
+    background-color: white;
     box-sizing: border-box;
     border-radius: 4px;
 }

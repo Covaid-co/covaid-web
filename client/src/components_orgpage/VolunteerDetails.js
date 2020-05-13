@@ -153,6 +153,7 @@ export default function VolunteerDetails(props) {
         }
         if (props.matching) {
             props.setTopMatchesModal(true);
+            props.setBestMatchVolunteer(false);
         }
     }
 
