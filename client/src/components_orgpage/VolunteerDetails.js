@@ -144,7 +144,6 @@ export default function VolunteerDetails(props) {
 
     const hidingVolunteerModal = () => {
         props.setVolunteerDetailsModal(false);
-        console.log("yo")
         setNotes();
         if (props.inVolunteer) {
             props.setVolunteersModal(true);
@@ -154,6 +153,7 @@ export default function VolunteerDetails(props) {
         }
         if (props.matching) {
             props.setTopMatchesModal(true);
+            props.setBestMatchVolunteer(false);
         }
     }
 
