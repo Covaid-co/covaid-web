@@ -39,6 +39,7 @@ exports.request_scheduler = function() {
                 console.log(e);
             }
         });
+    }
 };
 
 // const remindPendingRequests = () => {
