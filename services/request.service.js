@@ -37,6 +37,33 @@ exports.getRequests = async function(query) {
 }
 
 /**
+ * Get statistics for a volunteer given volunteer ID
+ */
+exports.getVolunteerStatistics = async function(id) {
+    return {total: 2, completed: 2}; 
+    const query = {
+        "status.volunteers.volunteer":  id
+    }
+    try { 
+        var requests = await RequestRepository.readRequest(query);
+        var statistics = {total: 0, completed: 0}; 
+        requests.forEach(request => {
+            request.status.volunteers.forEach(volunteer_obj => {
+                if (volunteer_obj.volunteer === id) {
+                    statistics['total'] = statistics['total'] + 1; 
+                    if (request.status.current_status === request_status.COMPLETED) {
+                        // volunteer_obj.current_status === volunteer_status.COMPLETE ??? 
+                        statistics['completed'] = statistics['completed'] + 1; 
+                    }
+                }
+            }); 
+        }); 
+    } catch (e) {
+        throw e;
+    }
+}
+
+/**
  * Get requests for a volunteer given a particuar request status
  */
 exports.getVolunteerRequests = async function(id, status) {
