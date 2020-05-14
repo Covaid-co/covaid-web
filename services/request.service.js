@@ -40,7 +40,7 @@ exports.getRequests = async function(query) {
  * Get statistics for a volunteer given volunteer ID
  */
 exports.getVolunteerStatistics = async function(id) {
-    return {total: 2, completed: 2}; 
+    // return {total: 2, completed: 2}; 
     const query = {
         "status.volunteers.volunteer":  id
     }
@@ -51,8 +51,9 @@ exports.getVolunteerStatistics = async function(id) {
             request.status.volunteers.forEach(volunteer_obj => {
                 if (volunteer_obj.volunteer === id) {
                     statistics['total'] = statistics['total'] + 1; 
-                    if (request.status.current_status === request_status.COMPLETED) {
-                        // volunteer_obj.current_status === volunteer_status.COMPLETE ??? 
+                    if (volunteer_obj.current_status === volunteer_status.COMPLETE) {
+                        // request.status.current_status === request_status.COMPLETED) -> request could be incomplete even if 
+                        // volunteer completed it   
                         statistics['completed'] = statistics['completed'] + 1; 
                     }
                 }
