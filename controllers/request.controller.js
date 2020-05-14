@@ -47,9 +47,7 @@ exports.handleGetVolunteerRequests = asyncWrapper(async (req, res) => {
  */
 exports.handleGetVolunteerStatistics = asyncWrapper(async (req, res) => {
     try {
-        var statistics = await RequestService.getVolunteerStatistics(req.id); 
-        // req.token.id ??? 
-
+        var statistics = await RequestService.getVolunteerStatistics(req.query.id); 
         res.send(statistics);
     } catch (e) {
         res.sendStatus(400);
