@@ -173,7 +173,7 @@ export default function VolunteerDetails(props) {
                     </Tooltip>
                     }
                     >
-                    <p id="regular-text-nomargin">Accepted: {statistics["completed"]}</p></OverlayTrigger>
+                    <p id="regular-text-nomargin">Completed {statistics["completed"]}</p></OverlayTrigger>
                     <h5 id="regular-text-bold" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
                     <Form>
                         <Form.Group controlId="email5" bssize="large">
