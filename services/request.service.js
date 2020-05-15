@@ -189,7 +189,10 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
         let request = (await RequestRepository.readRequest({_id: requestID}))[0]; // Find the relevant request
         console.log(request)
         // Given volunteer list, attach the volunteer as Pending if the volunteer does not already exist in the list (Will skip over volunteers who previously rejected a request)
-        let new_volunteers = volunteers.map(function (volunteer_id) {
+        //remove duplicate new volunteers by creating a set
+        let set_volunteers = new Set(volunteers);
+        set_volunteers = Array.from(set_volunteers)
+        let new_volunteers = set_volunteers.map(function (volunteer_id) {
             if (!request.status.volunteers || request.status.volunteers.length === 0 || request.status.volunteers.filter(volunteer => volunteer.volunteer === volunteer_id).length === 0) {
                 return {
                     current_status: volunteer_status.PENDING,

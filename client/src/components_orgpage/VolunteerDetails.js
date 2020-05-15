@@ -139,8 +139,6 @@ export default function VolunteerDetails(props) {
         }
     }
     if (Object.keys(props.currVolunteer).length > 0 && statistics) {
-
-    // if (Object.keys(props.currVolunteer).length > 0) {
         return (
             <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
