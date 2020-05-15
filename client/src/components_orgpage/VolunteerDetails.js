@@ -9,6 +9,7 @@ import { useFormFields } from "../libs/hooksLib";
 import { generateMapsURL } from '../Helpers';
 import { generateURL } from '../Helpers';
 import { updateAllRequests } from './OrganizationHelpers';
+import PropTypes from 'prop-types';
 
 /**
  * Volunteer Details Modal in Org portal
@@ -39,7 +40,8 @@ export default function VolunteerDetails(props) {
         else {
             fields.email5 = '';
         }
-    }, [props.currVolunteer, props.show])
+    // }, [props.currVolunteer, props.show])
+    }, [props.currVolunteer, props.volunteerDetailModal])
 
     const fetch_statistics = (id) => {
 		let params = {'id': id};
@@ -127,14 +129,20 @@ export default function VolunteerDetails(props) {
         if (props.inRequest) {
             props.setRequestDetailsModal(true);
         }
-        if (props.matching) {
+        if (props.matching && props.matching[0]) {
             props.setTopMatchesModal(true);
+            props.setBestMatchVolunteer(false);
+        }
+        if (props.matching && props.matching[1]) {
+            props.setConfirmModal(true);
             props.setBestMatchVolunteer(false);
         }
     }
     if (Object.keys(props.currVolunteer).length > 0 && statistics) {
+
+    // if (Object.keys(props.currVolunteer).length > 0) {
         return (
-            <Modal id="volunteer-details" show={props.show} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
+            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
                     <Modal.Title id="small-header">Volunteer Information</Modal.Title>
                 </Modal.Header>
@@ -195,7 +203,7 @@ export default function VolunteerDetails(props) {
         );
     } else {
         return (
-            <Modal id="volunteer-details" show={props.show} onHide={() => {
+            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
                     props.setVolunteerDetailsModal(false);
                     if (props.setVolunteersModal) {
                         props.setVolunteersModal(true);
@@ -211,3 +219,15 @@ export default function VolunteerDetails(props) {
         );
     }
 }
+
+VolunteerDetails.propTypes = {
+    currVolunteer: PropTypes.object,
+    inRequest: PropTypes.bool,
+    inVolunteer: PropTypes.bool,
+    volunteerDetailModal: PropTypes.bool,
+    setVolunteerDetailsModal: PropTypes.func,
+    setVolunteersModal: PropTypes.func,
+    setRequestDetailsModal: PropTypes.func,
+    setTopMatchesModal: PropTypes.func,
+    setBestMatchVolunteer: PropTypes.func
+};

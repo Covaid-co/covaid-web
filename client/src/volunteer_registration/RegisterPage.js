@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container'
 
 import NewLocationSetting from '../location_tools/NewLocationSetting';
 import GetLocation from '../location_tools/GetLocation';
+import NewLogin from '../components_modals/NewLogin';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import RegisterPage1 from './RegisterPage1';
@@ -23,12 +24,22 @@ import CurrentLocation from '../location_tools/CurrentLocation';
 export default function RegisterPage(props) {
     const [showModal, setShowModal] = useState(false);
     const [firstPage, setFirstPage] = useState({});
+    const [modalType, setModalType] = useState('');
     const [secondPage, setSecondPage] = useState({});
     const [justRegistered, setJustRegistered] = useState(false);
 
     useEffect(() => {
         setShowModal(false);
     }, [props.locationProps]);
+
+    const showModalType = (type) => {
+        setModalType(type);
+        setShowModal(true);
+    }
+
+    const handleHideModal = () => {
+        setShowModal(false);
+    }
 
     const volunteerFormInfo = () => {
         var topHeader = <DefaultHeader/>;
@@ -38,7 +49,7 @@ export default function RegisterPage(props) {
         return (
             <>
                 {topHeader}
-                <CurrentLocation locationProps={props.locationProps} showModal={() => setShowModal(true)}/>
+                <CurrentLocation locationProps={props.locationProps} showModal={() => showModalType('location')}/>
             </>
         )
     }
@@ -101,10 +112,21 @@ export default function RegisterPage(props) {
         }
     }
 
+    const getCurrentModal = () => {
+        var modal = <></>;
+        if (modalType === 'location') {
+            modal = <NewLocationSetting locationSubmit={props.onLocationSubmit} refreshLocation={props.refreshLocation}
+                                        showModal={showModal} hideModal={handleHideModal}/>
+        } else if (modalType === 'signin') {
+            modal = <NewLogin showModal={showModal} hideModal={handleHideModal}/>
+        }
+        return modal;
+    }
+
     if (justRegistered) {
         return ([
             <div className="App" key="1">
-                <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
+                <NavBar isLoggedIn={false} totalVolunteers={0} handleShowModal={showModalType}/>
                 <Container style={{maxWidth: 1500}}>
                     <Row>
                         <Col lg={3} md={2} sm={0}>
@@ -129,7 +151,7 @@ export default function RegisterPage(props) {
 
     return ([
 		<div className="App" key="1">
-			<NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true}/>
+			<NavBar isLoggedIn={false} handleShowModal={showModalType}/>
             <Container style={{maxWidth: 1500}}>
                 <Row>
                     <Col lg={3} md={2} sm={0}>
@@ -154,9 +176,8 @@ export default function RegisterPage(props) {
                     </Col>
                 </Row>
             </Container>
-            <NewLocationSetting locationSubmit={props.onLocationSubmit} refreshLocation={props.refreshLocation}
-                                showModal={showModal} hideModal={() => setShowModal(false)}/>
             <GetLocation isLoaded={props.isLoaded} onLocationSubmit={props.onLocationSubmit}/>
+            {getCurrentModal()}
 		</div>,
 		<Footer key="2"/>]
 	);

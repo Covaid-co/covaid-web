@@ -1,6 +1,17 @@
 import { generateURL, convertTime } from '../Helpers';
 import { request_status, volunteer_status } from '../constants';
 import fetch_a from '../util/fetch_auth';
+import { calcDistance } from '../Helpers';
+
+export const distance = (volunteer, request) => {
+    const latA = volunteer.latitude;
+    const longA = volunteer.longitude;
+    const latB = request.location_info.coordinates[1];
+    const longB = request.location_info.coordinates[0];
+    const meters = calcDistance(latA, longA, latB, longB);
+    const miles = meters * 0.00062137;
+    return Math.round(miles * 100) / 100;
+}
 
 export const sortFn = (x, y, direction) => {
     if (direction) {
@@ -199,6 +210,10 @@ export const fetchOrgRequests = async (id) => {
 
 export const filter_requests = (requests, type) => {
     return requests.filter(request => request.status.current_status === type);
+}
+
+export const filter_volunteers = (volunteers, status) => {
+    return volunteers.filter(volunteer => volunteer.current_status === status);
 }
 
 // Split all requests in unmatched, matched and completed requests

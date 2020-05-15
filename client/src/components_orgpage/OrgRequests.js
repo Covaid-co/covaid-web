@@ -118,7 +118,7 @@ export default function OrgRequests(props) {
                 </Dropdown>
             </Col>
             <Col xs={12}>
-                <p id="requestCall" style={{marginTop: 5, marginBottom: 0}}></p>
+                <p id="requestCall" style={{marginTop: -15, marginBottom: 0}}>&nbsp;</p>
             </Col>
             <Col xs={12} id="col-scroll">
                 <ListGroup variant="flush">
