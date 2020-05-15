@@ -45,6 +45,13 @@ export default function AccountInfo(props) {
                                 <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
                                     <b>Name:</b> {user.first_name + " " + user.last_name}
                                 </h5>
+                                <>
+                                    {user.pronouns === undefined || user.pronouns === '' || user.pronouns === ' ' ? '' :
+                                    <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
+                                        <b>Pronouns:</b> {user.pronouns} 
+                                    </h5>
+                                    }
+                                </>
                                 {phoneNum}
                                 <h5 id="regular-text" style={{marginTop: 0, marginBottom: 10, color: 'black'}}>
                                     <b>Email:</b> {user.email}
