@@ -35,7 +35,7 @@ export default function OrganizationMap(props) {
 	}
 
     return (
-        <Container id="newOfferContainer" style={{'display': 'block'}}>
+        <Container id="newOfferContainer" style={{'display': 'block', marginTop: 0}}>
             <Col xs={12} style={{padding: 0, marginBottom: 10}}>
                 <p id="small-header" style={{display: 'inline'}}>{props.width < 600 ? 'Map' : 'Organization Map'}</p>
                 <Button id={!volunteerMap ? "volunteer-not-selected" : "volunteer-selected"} onClick={() => setVolunteerMap(!volunteerMap)}>

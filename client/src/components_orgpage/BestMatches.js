@@ -6,22 +6,24 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Toast from 'react-bootstrap/Toast';
-import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import VolunteerDetails from './VolunteerDetails';
 import { useFormFields } from "../libs/hooksLib";
-import { formatName, distance, updateAllRequests } from './OrganizationHelpers';
-import { volunteer_status } from '../constants';
+import { distance, updateAllRequests } from './OrganizationHelpers';
 import { toastTime } from '../constants';
+import { notifiedVolunteers, unSelectedVolunteers, volunteerListGroup, bestMatchesTitle,
+        displayPrevMatched, displayResourceMatch, unselectButtonStyle } from './requestDetailsHelpers';
 
 /**
  * Finding best matches for a request
  */
 
 export default function BestMatches(props) {
+    const [unselected_volunteers, setUnselectedVolunteers] = useState([]);
+    const [notified_volunteers, setNotifiedVolunteers] = useState([]);
+
     const [bestMatchVolunteer, setBestMatchVolunteer] = useState(false);
-    const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [checkboxStatus, setCheckboxStatus] = useState({});
     const [showToast, setShowToast] = useState(false);
@@ -34,32 +36,24 @@ export default function BestMatches(props) {
     });
 
     useEffect(() => {
-        const found_volunteers = strictMatch();
-        found_volunteers.sort(function(a, b) {
-            return distance(a, props.currRequest) - distance(b, props.currRequest)
-        })
-        setDisplayedVolunteers(found_volunteers.slice(0, 20));
-        var checkboxStatusConstructionNoTasks = {};
-        props.volunteers.forEach(
-            function(volunteer) { 
-                checkboxStatusConstructionNoTasks[volunteer._id] = false;
-            }
-        );
-        setCheckboxStatus(checkboxStatusConstructionNoTasks);
-    }, [props.currRequest]);
-
-    const strictMatch = () => {
-        const needed_resources = props.currRequest.request_info ? props.currRequest.request_info.resource_request : [];
-        return props.volunteers.filter(volunteer => volunteer.offer.tasks.some(item => needed_resources.includes(item)))
-    }
-
-    const clearCheckBox = () => {
-        var temp_checkbox = JSON.parse(JSON.stringify(checkboxStatus));
-        displayedVolunteers.forEach(
+        const unselected = unSelectedVolunteers(props.currRequest, props.volunteers);
+        setUnselectedVolunteers(unselected);
+        const notified = notifiedVolunteers(props.currRequest, props.volunteers);
+        setNotifiedVolunteers(notified);
+        var temp_checkbox = {};
+        unselected.forEach(
             function(volunteer) { 
                 temp_checkbox[volunteer._id] = false;
             }
         );
+        setCheckboxStatus(temp_checkbox);
+    }, [props.currRequest, props.volunteers]);
+
+    const clearCheckBox = () => {
+        var temp_checkbox = JSON.parse(JSON.stringify(checkboxStatus));
+        for (const volunteer_id in temp_checkbox) {
+            temp_checkbox[volunteer_id] = false;
+        }
         setCheckboxStatus(temp_checkbox);
     }
 
@@ -74,54 +68,6 @@ export default function BestMatches(props) {
     const closeConfirmPage = () => {
         props.setTopMatchesModal(true);
         setConfirmModal(false);
-    }
-
-    // Display if volunteer was previously matched
-    const displayPrevMatched = (volunteer) => {
-        const volunteers = props.currRequest.status.volunteers;
-        const found = volunteers.find(vol => {
-            return volunteer._id === vol.volunteer && vol.current_status === volunteer_status.REJECTED;
-        });
-
-        if (found) {
-            return <h5 id="association-name" style={{color: '#FF4133'}}>
-                    Previously Matched
-                </h5>
-        }
-        return <></>;
-    }
-
-    const sortSelectedTask = (x, y) => {
-        const validX = props.currRequest && props.currRequest.request_info
-                    && props.currRequest.request_info.resource_request.length > 0
-                    && props.currRequest.request_info.resource_request.indexOf(x) !== -1;
-        
-        const validY = props.currRequest && props.currRequest.request_info
-                    && props.currRequest.request_info.resource_request.length > 0
-                    && props.currRequest.request_info.resource_request.indexOf(y) !== -1;
-        return (validX === validY) ? 0 : validX ? -1 : 1;
-    }
-
-    // Resource's that match between requester and volunteer
-    const displayResourceMatch = (volunteer) => {
-        if (volunteer.offer.tasks.length === 0) {
-            return <Badge id='task-info' style={{background: '#AE2F2F'}}>
-                    No tasks entered
-                </Badge>
-        } else { 
-            var tasks = volunteer.offer.tasks;
-            tasks.sort(sortSelectedTask);
-            return tasks.map((task, i) => {
-                if (props.currRequest
-                    && props.currRequest.request_info
-                    && props.currRequest.request_info.resource_request.length > 0
-                    &&  props.currRequest.request_info.resource_request.indexOf(task) !== -1) {
-                    return <Badge key={i} style={{background: '#2670FF'}} id='task-info'>{task}</Badge>
-                } else {
-                    return <Badge key={i} style={{background: '#cadaff'}} id='task-info'>{task}</Badge>
-                }
-            });
-        }
     }
 
     const handleVolunteerClick = (volunteer) => {
@@ -191,44 +137,17 @@ export default function BestMatches(props) {
             <Modal.Body style={{zoom: '90%'}}>
                 <Row style={{marginTop: 0}}>
                    <Col xs="12" style = {{marginTop: 0, marginBottom: 0}}>
-                        <Modal.Title>{formatName(props.currRequest.personal_info.requester_name)}'s Top Matches 
-                        <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0, fontSize: 15, marginTop: 6, float: 'right'}} 
+                        <Modal.Title>{bestMatchesTitle(props.currRequest, props.mode)}
+                        <Button variant="link" id="regular-text" style={unselectButtonStyle(volunteerCount)} 
                             onClick={()=>{setSelectedVolunteers([]); clearCheckBox()}}>Unselect All</Button>
                         </Modal.Title>
                         <p id="requestCall" style={{marginTop: -15, marginBottom: 0}}>&nbsp;</p>
                     </Col>
                     <Col xs="12" id="col-scroll">
                         <ListGroup variant="flush">
-                            {displayedVolunteers.map((volunteer, i) => {
-                                if (volunteer.availability) {
-                                return (
-                                <ListGroup.Item key={i} style={{padding: 0}}>
-                                    <Row>
-                                        <Col lg={1} md={1}>
-                                            <Form.Check type="checkbox" style={{marginTop: 35}} id='default-checkbox'
-                                                checked={checkboxStatus[volunteer._id]}
-                                                onChange={() => handleCheckboxAction(volunteer)}/>
-                                        </Col>
-                                        <Col id="best-match-item" lg={11} md={11} onClick={() => handleVolunteerClick(volunteer)}>
-                                            <div>
-                                                <h5 id="volunteer-name" style={{marginBottom: 0}}>
-                                                    {volunteer.first_name} {volunteer.last_name}
-                                                </h5>
-                                                {displayPrevMatched(volunteer)}
-                                            </div>
-                                            <div>
-                                                <p id="volunteer-location">{volunteer.offer.neighborhoods.join(', ')}</p>
-                                                <p id="volunteer-location" style={{float: 'right', marginTop: -25, marginRight: 10}}>
-                                                    {distance(volunteer, props.currRequest)} miles
-                                                </p>
-                                            </div>
-                                            <div>
-                                                {displayResourceMatch(volunteer)}
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </ListGroup.Item>);
-                            }})}
+                            {notified_volunteers.map(volunteer => volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick))}
+                            {unselected_volunteers.map(volunteer => 
+                                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, checkboxStatus, handleCheckboxAction))}
                         </ListGroup>
                     </Col>
                     <Col xs="12">
@@ -260,7 +179,7 @@ export default function BestMatches(props) {
                                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                                             {volunteer.first_name} {volunteer.last_name}
                                         </h5>
-                                        {displayPrevMatched(volunteer)}
+                                        {displayPrevMatched(volunteer, props.currRequest)}
                                     </div>
                                     <div>
                                         <p id="volunteer-location">{volunteer.offer.neighborhoods.join(', ')}</p>
@@ -269,7 +188,7 @@ export default function BestMatches(props) {
                                         </p>
                                     </div>
                                     <div>
-                                        {displayResourceMatch(volunteer)}
+                                        {displayResourceMatch(volunteer, props.currRequest)}
                                     </div>
                                 </ListGroup.Item>);
                             }})}
@@ -315,6 +234,7 @@ export default function BestMatches(props) {
 }
 
 BestMatches.propTypes = {
+    mode: PropTypes.number,
     currRequest: PropTypes.object,
     topMatchesModal: PropTypes.bool,
     volunteers: PropTypes.array,

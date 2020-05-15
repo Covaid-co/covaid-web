@@ -212,6 +212,10 @@ export const filter_requests = (requests, type) => {
     return requests.filter(request => request.status.current_status === type);
 }
 
+export const filter_volunteers = (volunteers, status) => {
+    return volunteers.filter(volunteer => volunteer.current_status === status);
+}
+
 // Split all requests in unmatched, matched and completed requests
 export const splitRequests = (requests) => {
     var unMatchedArr = filter_requests(requests, request_status.UNMATCHED);

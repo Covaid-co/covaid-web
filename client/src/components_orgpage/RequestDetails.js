@@ -13,13 +13,13 @@ import { useFormFields } from "../libs/hooksLib";
 import { formatName, updateAllRequests } from './OrganizationHelpers'
 import { toastTime, paymentOptions, current_tab, volunteer_status } from '../constants';
 import { generateURL, generateMapsURL } from '../Helpers';
+import { matchVolunteersButton, unmatchCompleteButtons, viewVolunteersInfo } from './requestDetailsHelpers';
 
 /**
  * Request Details Modal
  */
 
 export default function RequestDetails(props) {
-    const [currVolunteer, setCurrVolunteer] = useState({});
     const [topMatchesModal, setTopMatchesModal] = useState(false);
     const [assignee, setAssignee] = useState('No one assigned');
     const [deleteModal, setDeleteModal] = useState(false);
@@ -44,8 +44,7 @@ export default function RequestDetails(props) {
         fields.email2 = props.currRequest.admin_info.note;
         setPrevNote(props.currRequest.admin_info.note);
         updateAdminList();
-        findUser();
-    }, [props.currRequest, props.association]);
+    }, [props.currRequest, props.association, props.mode]);
 
     // Create link to requesters location
     const createMapsLink = () => {
@@ -73,32 +72,6 @@ export default function RequestDetails(props) {
         }
     }
 
-    // Find Volunteer attached to this request
-    const findUser = () => {
-        if (props.currRequest.status === undefined ||
-            props.currRequest.status.volunteers.length === 0 ||
-            props.mode === current_tab.UNMATCHED) {
-            setCurrVolunteer({});
-            return;
-        }
-        const params = { 'id': props.currRequest.status.volunteers[0].volunteer }
-        const url = generateURL( "/api/users/user?", params);
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        }).then((response) => {
-            if (response.ok) {
-                response.json().then(data => {
-                    if (data.length > 0) {
-                        setCurrVolunteer(data[0]);
-                    }
-                });
-            }
-        }).catch(e => {
-            alert(e);
-        });
-    }
-
     // Display Top Matches Modal if there is an admin attached
     const topMatch = () => {
         if (props.currRequest.admin_info.assignee && 
@@ -110,6 +83,11 @@ export default function RequestDetails(props) {
             setShowToast(true);
             setToastMessage('Please assign an admin to track this request');
         }
+    }
+
+    const viewEdit = () => {
+        setTopMatchesModal(true);
+        props.setRequestDetailsModal(false);
     }
 
     // Update current request and requests array
@@ -240,7 +218,6 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => response.json())
         .then(newRequest => {
-            console.log(newRequest)
             updateRequests(newRequest);
         }).catch(e => {
             alert(e);
@@ -259,116 +236,15 @@ export default function RequestDetails(props) {
         setReason(result);
     }
 
-    const displayMatchVolunteer = (completeButton) => {
-        return <>
-                <Button id="large-button" style={{marginTop: 15}} onClick={topMatch}>Match volunteers</Button>
-                <Row style={{marginBottom: 10}}>
-                    <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
-                        <Button id='large-button-empty'style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
-                                onClick={() => {setDeleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
-                            Remove Request
-                        </Button>
-                    </Col>
-                    <Col xs={6} style = {{padding: 0, paddingLeft: 4, paddingRight: 15}}>
-                        {completeButton}
-                    </Col>
-                </Row>
-                <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id="toastError">
-                    <Toast.Body>{toastMessage}</Toast.Body>
-                </Toast>    
-            </>;
-    }
+    // const openVolunteersModal = (volunteers, mode) => {
+    //     setSelectedVolunteers(volunteers);
+    //     setShowVolunteers(true);
+    //     setViewVolunteersMode(mode);
+    // }
 
-    const openVolunteersModal = (volunteers, mode) => {
-        setSelectedVolunteers(volunteers);
-        setShowVolunteers(true);
-        setViewVolunteersMode(mode);
-    }
-
-    const getVolunteers = (volunteers, status) => {
-        return volunteers.filter(volunteer => parseInt(volunteer.current_status) === status);
-    }
-
-    const viewVolunteers = () => {
-        switch (props.mode) {
-            case current_tab.MATCHED:
-                const volunteers = props.currRequest.status.volunteers;
-                const in_progress = volunteers.find(vol => vol.current_status === volunteer_status.IN_PROGRESS);
-                const pending = volunteers.find(vol => vol.current_status === volunteer_status.PENDING);
-                if (in_progress) {
-                    const in_progress_volunteers = getVolunteers(volunteers, volunteer_status.IN_PROGRESS);
-                    return (
-                            <>
-                                <div style={{textAlign: 'center'}}>
-                                    <Button variant="link" onClick={() => openVolunteersModal(in_progress_volunteers, volunteer_status.IN_PROGRESS)}>
-                                        <p id="regular-text-nomargin" style={{color: '#DB9327', marginTop: 10, marginBottom: 10}}><b>
-                                        {
-                                            in_progress_volunteers.length === 1 ?
-                                            "1 volunteer" 
-                                                :
-                                            in_progress_volunteers.length + " volunteers"
-                                        } working on this</b></p>
-                                     </Button>
-                                </div>
-                            </>
-                        );
-                } else {
-                    const pendingVolunteers = getVolunteers(volunteers, volunteer_status.PENDING);
-                    return (
-                        <>
-                            <div style={{textAlign: 'center'}}>
-                                <Button variant="link" onClick={() => openVolunteersModal(pendingVolunteers, volunteer_status.PENDING)}>
-                                <p id="regular-text-nomargin" style={{marginTop: 10, marginBottom: 10}}><b>Awaiting responses from {
-                                            pendingVolunteers.length === 1 ?
-                                            "1 volunteer" 
-                                                :
-                                            pendingVolunteers.length + " volunteers"
-                                        }</b></p>
-                                </Button>
-                            </div>
-                        </>
-                    );
-                }
-            default:
-                return <></>;
-        }
-    }
-
-    const modeButton = () => {
-        const completeButton = <Button id="large-button-empty" style={{borderColor: '#28a745', color: '#28a745'}} 
-                                        onClick={()=>{setConfirmCompleteModal(true); props.setRequestDetailsModal(false); setNotes();}}>
-                                    Mark Complete
-                                </Button>
-        if (props.mode === current_tab.UNMATCHED) {
-            return displayMatchVolunteer(completeButton);
-        } else {
-            return (<>
-                    {/* {Object.keys(currVolunteer).length > 0 ? 
-                        <Button id="large-button" style={{marginTop: 15}} onClick={() => {
-                                props.setVolunteerDetailsModal(true); 
-                                props.setCurrVolunteer(currVolunteer);
-                                props.setRequestDetailsModal(false);
-                                props.setInRequest(true);
-                            }}>
-                            View Volunteers's Information
-                        </Button>
-                        : <></>} */}
-                    {
-                        viewVolunteers()
-                    }
-                    <Row style={{marginBottom: 10}}>
-                        <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
-                            <Button id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
-                                    onClick={() => {setUnmatchModal(true); props.setRequestDetailsModal(false); setNotes();}}>
-                                Unmatch Request
-                            </Button>
-                        </Col>
-                        <Col xs={6} style = {{padding: 0, paddingLeft: 4, paddingRight:15}}>
-                                {completeButton}
-                        </Col>
-                    </Row>
-                </>);
-        }
+    const closeRequest = () => {
+        props.setRequestDetailsModal(false); 
+        setNotes();
     }
 
     const modeString = () => {
@@ -504,7 +380,12 @@ export default function RequestDetails(props) {
                     <p id="regular-text-nomargin">{props.currRequest.request_info.time} of {props.currRequest.request_info.date}</p>
                     {volunteerComments()}
                     <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
-                    {modeButton()}
+                    {matchVolunteersButton(props.mode, topMatch)}
+                    {viewVolunteersInfo(props.mode, props.currRequest, viewEdit)}
+                    {unmatchCompleteButtons(props.mode, closeRequest, setUnmatchModal, setConfirmCompleteModal)}
+                    <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
+                        <Toast.Body>{toastMessage}</Toast.Body>
+                    </Toast>
                 </Modal.Body>
             </Modal>
 
@@ -555,7 +436,7 @@ export default function RequestDetails(props) {
                     </Form>
                 </Modal.Body>
             </Modal>
-            <BestMatches { ... props} topMatchesModal={topMatchesModal} setTopMatchesModal={setTopMatchesModal} />
+            <BestMatches { ... props} topMatchesModal={topMatchesModal} setTopMatchesModal={setTopMatchesModal}/>
             <ViewVolunteersModal 
                 showVolunteers={showVolunteers} 
                 setShowVolunteers={setShowVolunteers} 
@@ -575,7 +456,6 @@ RequestDetails.propTypes = {
     mode: PropTypes.number,
     setRequestDetailsModal: PropTypes.func,
     setVolunteerDetailsModal: PropTypes.func,
-    setCurrVolunteer: PropTypes.func,
     setAllRequests: PropTypes.func,
     setInRequest: PropTypes.func,
     allRequests: PropTypes.array,

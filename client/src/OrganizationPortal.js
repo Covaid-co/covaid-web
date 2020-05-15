@@ -230,7 +230,7 @@ export default function OrganiationPortal(props) {
 								allRequests={allRequests} setInRequest={setInRequest}
 								setCurrRequest={setCurrRequest} setRequestDetailsModal={setRequestDetailsModal}/>
 						</Col>
-						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
+						<Col lg={6} md={12} sm={12}>
 							<OrganizationMap
 								requests={allRequests} volunteers={volunteers} mode={currTabNumber} allRequests={allRequests}
 								volunteerDetailModal={volunteerDetailModal} association={association}
