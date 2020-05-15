@@ -46,16 +46,6 @@ exports.getVolunteerStatistics = async function(id) {
     try { 
         var requests = await RequestRepository.readRequest(query);
         var statistics = {total: 0, completed: 0}; 
-        /*requests.forEach(request => {
-            request.status.volunteers.forEach(volunteer_obj => {
-                if (volunteer_obj.volunteer === id) {
-                    statistics['total'] = statistics['total'] + 1; 
-                    if (volunteer_obj.current_status === volunteer_status.COMPLETE) {
-                        statistics['completed'] = statistics['completed'] + 1; 
-                    }
-                }
-            }); 
-        });*/
         statistics['total'] = requests.length; 
         requests.forEach(request => {
             request.status.volunteers.forEach(volunteer_obj => { 
@@ -209,7 +199,6 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                     adminMessage: adminMessage
                 }
             }
-            console.log("WTF")
             console.log(request.status.volunteers)
         });
 
