@@ -37,6 +37,10 @@ export default function HomePage(props) {
     const [pageLoaded, setPageLoaded] = useState(false);
 
     useEffect(() => {
+        if (props.login === true) {
+            showModalType('signin');
+        }
+
         // Find 20 nearest volunteers once props are set
         if (props.latitude !== '' && props.longitude !== '' && props.currentAssoc) {
             let params = {'latitude': props.latitude, 'longitude': props.longitude}
@@ -57,7 +61,7 @@ export default function HomePage(props) {
         if (Object.keys(currentUser).length === 0 && Cookie.get('token')) {
             fetchUser();
         }
-    }, [props.latitude, props.longitude, props.currentAssoc, currentUser]);
+    }, [props.latitude, props.longitude, props.currentAssoc, currentUser, props.login]);
 
     const showModalType = (type) => {
         setModalType(type);

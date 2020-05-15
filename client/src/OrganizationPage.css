@@ -1,6 +1,6 @@
 #col-scroll {
     max-height: 500px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     /* padding-right: 15px; */
     overflow:scroll;
     -webkit-overflow-scrolling: touch;

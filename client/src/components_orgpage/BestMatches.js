@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,7 +11,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import VolunteerDetails from './VolunteerDetails';
 import { useFormFields } from "../libs/hooksLib";
-import { formatName, distance } from './OrganizationHelpers';
+import { formatName, distance, updateAllRequests } from './OrganizationHelpers';
 import { volunteer_status } from '../constants';
 import { toastTime } from '../constants';
 
@@ -19,16 +20,18 @@ import { toastTime } from '../constants';
  */
 
 export default function BestMatches(props) {
-    const [fields, handleFieldChange] = useFormFields({
-        adminMessage: ''
-    });
     const [bestMatchVolunteer, setBestMatchVolunteer] = useState(false);
     const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [checkboxStatus, setCheckboxStatus] = useState({});
     const [showToast, setShowToast] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false);
+    const [sendModal, setSendModal] = useState(false);
     const [selectedVolunteers, setSelectedVolunteers] = useState([]);
+    const [volunteer_count, setVolunteerCount] = useState(0);
+    const [fields, handleFieldChange] = useFormFields({
+        adminMessage: ''
+    });
 
     useEffect(() => {
         const found_volunteers = strictMatch();
@@ -63,6 +66,7 @@ export default function BestMatches(props) {
     const closePage = () => {
         props.setTopMatchesModal(false);
         props.setRequestDetailsModal(true);
+        setConfirmModal(false);
         setSelectedVolunteers([]);
         clearCheckBox();
     }
@@ -167,15 +171,16 @@ export default function BestMatches(props) {
             body: JSON.stringify(form)
         }).then((response) => response.json())
         .then(newRequest => {
-            // props.setCurrRequest(newRequest);
-            // // Update all requests array with the new updated request
-            // const newAllRequests = updateAllRequests(newRequest, props.allRequests);
-            // props.setAllRequests(newAllRequests);
+            props.setCurrRequest(newRequest);
+            // Update all requests array with the new updated request
+            const newAllRequests = updateAllRequests(newRequest, props.allRequests);
+            props.setAllRequests(newAllRequests);
 
-            // // Reset/close all modals 
-            // props.setVolunteerDetailsModal(false);
-            // props.setTopMatchesModal(false);
-            // props.setRequestDetailsModal(false);
+            setVolunteerCount(volunteerCount());
+            props.setRequestDetailsModal(false);
+            props.setTopMatchesModal(false);
+            setConfirmModal(false);
+            setSendModal(true);
         }).catch(e => {
             alert(e);
         });
@@ -187,8 +192,8 @@ export default function BestMatches(props) {
                 <Row style={{marginTop: 0}}>
                    <Col xs="12" style = {{marginTop: 0, marginBottom: 0}}>
                         <Modal.Title>{formatName(props.currRequest.personal_info.requester_name)}'s Top Matches 
-                        <a href="#" id="association-name" style={{margin: 0, fontSize: 15, marginTop: 6, float: 'right'}}
-                            onClick={()=>{setSelectedVolunteers([]); clearCheckBox();}}>Unselect All</a>
+                        <Button variant="link" id="regular-text" style={{color: '#2670FF', padding: 0, fontSize: 15, marginTop: 6, float: 'right'}} 
+                            onClick={()=>{setSelectedVolunteers([]); clearCheckBox()}}>Unselect All</Button>
                         </Modal.Title>
                         <p id="requestCall" style={{marginTop: -15, marginBottom: 0}}>&nbsp;</p>
                     </Col>
@@ -200,7 +205,7 @@ export default function BestMatches(props) {
                                 <ListGroup.Item key={i} style={{padding: 0}}>
                                     <Row>
                                         <Col lg={1} md={1}>
-                                            <Form.Check type="checkbox" style={{marginTop: 35}} id='default-checkbox' 
+                                            <Form.Check type="checkbox" style={{marginTop: 35}} id='default-checkbox'
                                                 checked={checkboxStatus[volunteer._id]}
                                                 onChange={() => handleCheckboxAction(volunteer)}/>
                                         </Col>
@@ -227,7 +232,7 @@ export default function BestMatches(props) {
                         </ListGroup>
                     </Col>
                     <Col xs="12">
-                        <p id="requestCall" style={{marginTop: -15, marginBottom: 5}}>&nbsp;</p>
+                        <p id="requestCall" style={{marginTop: -20, marginBottom: 5}}>&nbsp;</p>
                         <Button style={{marginTop: 10}} id="large-button" onClick={confirmSelection}>Select {volunteerCount()} Volunteers</Button>
                         <Button style={{marginTop: 5}} id="large-button-empty" onClick={closePage}>Back</Button>
                     </Col>
@@ -271,6 +276,7 @@ export default function BestMatches(props) {
                         </ListGroup>
                     </Col>
                     <Col xs="12">
+                        <p id="requestCall" style={{marginTop: -20, marginBottom: 5}}>&nbsp;</p>
                         <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>
                             Share any relevant information with these volunteers (optional):
                         </h5>
@@ -283,15 +289,28 @@ export default function BestMatches(props) {
                         </Form>
                     </Col>
                     <Col xs="12">
-                        <p id="requestCall" style={{marginTop: -15, marginBottom: 5}}>&nbsp;</p>
                         <Button style={{marginTop: 10}} id="large-button" onClick={submitForm}>Confirm</Button>
                         <Button style={{marginTop: 5}} id="large-button-empty" onClick={closeConfirmPage}>Back</Button>
                     </Col>
                 </Row>
             </Modal.Body>
         </Modal>
-        <VolunteerDetails show={bestMatchVolunteer} setBestMatchVolunteer={setBestMatchVolunteer} setConfirmModal={setConfirmModal}
-                        currVolunteer={currVolunteer} { ... props } matching={[props.topMatchesModal, confirmModal]} />
+
+        <Modal show={sendModal} onHide={() => {setSendModal(false); setSelectedVolunteers([]); clearCheckBox();}} size="sm">
+            <Modal.Header closeButton>
+                <Modal.Title>Request Sent!</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <p id="regular-text">
+                    {volunteer_count} volunteers have been notified.
+                </p>
+                <Button id="large-button" onClick={() => {setSendModal(false); setSelectedVolunteers([]); clearCheckBox();}}>
+                    Return to Dashboard
+                </Button>
+            </Modal.Body>
+        </Modal>
+        <VolunteerDetails { ... props } volunteerDetailModal={bestMatchVolunteer} setBestMatchVolunteer={setBestMatchVolunteer} 
+                        setConfirmModal={setConfirmModal} currVolunteer={currVolunteer} matching={[props.topMatchesModal, confirmModal]} />
     </>)
 }
 
@@ -300,5 +319,8 @@ BestMatches.propTypes = {
     topMatchesModal: PropTypes.bool,
     volunteers: PropTypes.array,
     setTopMatchesModal: PropTypes.func,
-    setRequestDetailsModal: PropTypes.func
+    setRequestDetailsModal: PropTypes.func,
+    setCurrRequest: PropTypes.func,
+    setAllRequests: PropTypes.func,
+    allRequests: PropTypes.array
 };

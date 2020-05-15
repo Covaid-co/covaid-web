@@ -2,10 +2,9 @@ import React, { useEffect, useState} from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
 import { useFormFields } from "../libs/hooksLib";
 import { generateMapsURL } from '../Helpers';
-import { updateAllRequests } from './OrganizationHelpers';
 
 /**
  * Volunteer Details Modal in Org portal
@@ -32,7 +31,7 @@ export default function VolunteerDetails(props) {
         } else {
             fields.email5 = '';
         }
-    }, [props.currVolunteer, props.show])
+    }, [props.currVolunteer, props.volunteerDetailModal])
  
     const handleChangeVerify = (event) => {
         event.persist();
@@ -114,9 +113,9 @@ export default function VolunteerDetails(props) {
         }
     }
 
-    if (Object.keys(props.currVolunteer).length > 0) {
+    // if (Object.keys(props.currVolunteer).length > 0) {
         return (
-            <Modal id="volunteer-details" show={props.show} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
+            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
                     <Modal.Title id="small-header">Volunteer Information</Modal.Title>
                 </Modal.Header>
@@ -156,21 +155,33 @@ export default function VolunteerDetails(props) {
                 </Modal.Body>
             </Modal>
         );
-    } else {
-        return (
-            <Modal id="volunteer-details" show={props.show} onHide={() => {
-                    props.setVolunteerDetailsModal(false);
-                    if (props.setVolunteersModal) {
-                        props.setVolunteersModal(true);
-                    }
-                }} style = {{marginTop: 40}}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Volunteer Information</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{padding: 24, paddingTop: 10}}>
-                    Loading...
-                </Modal.Body>
-            </Modal>
-        );
-    }
+    // } else {
+    //     return (
+    //         <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
+    //                 props.setVolunteerDetailsModal(false);
+    //                 if (props.setVolunteersModal) {
+    //                     props.setVolunteersModal(true);
+    //                 }
+    //             }} style = {{marginTop: 40}}>
+    //             <Modal.Header closeButton>
+    //                 <Modal.Title>Volunteer Information</Modal.Title>
+    //             </Modal.Header>
+    //             <Modal.Body style={{padding: 24, paddingTop: 10}}>
+    //                 Loading...
+    //             </Modal.Body>
+    //         </Modal>
+    //     );
+    // }
 }
+
+VolunteerDetails.propTypes = {
+    currVolunteer: PropTypes.object,
+    inRequest: PropTypes.bool,
+    inVolunteer: PropTypes.bool,
+    volunteerDetailModal: PropTypes.bool,
+    setVolunteerDetailsModal: PropTypes.func,
+    setVolunteersModal: PropTypes.func,
+    setRequestDetailsModal: PropTypes.func,
+    setTopMatchesModal: PropTypes.func,
+    setBestMatchVolunteer: PropTypes.func
+};

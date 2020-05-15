@@ -189,7 +189,7 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                     'status.volunteers': { $each: new_volunteers }
                 }, 
                 $set: {
-                    'admin_info.last_modified_time': new Date()
+                    'admin_info.last_modified': new Date()
                 }
             });
         } else {
@@ -243,7 +243,7 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
         // If there are volunteers that need to be removed
         if (removing_volunteers.length > 0) {
             var current_request = (await RequestRepository.readRequest({_id: requestID}))[0];
-            current_request.admin_info.last_modified_time = new Date();
+            current_request.admin_info.last_modified = new Date();
             current_request.status.volunteers.forEach(function(v, index, array) {
                 if (removing_volunteers.filter(volunteer_id => volunteer_id === v.volunteer).length !== 0) {
                     // update the volunteer status for volunteers that are being unmatched from the request
