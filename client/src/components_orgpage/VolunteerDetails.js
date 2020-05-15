@@ -173,6 +173,11 @@ export default function VolunteerDetails(props) {
                             </Badge>}
                     </div>
                     {displaySwitch()}
+                    <>
+                        {props.currVolunteer.pronouns === undefined || props.currVolunteer.pronouns === '' || props.currVolunteer.pronouns === ' ' ? '' :
+                        <p id="regular-text-nomargin">Pronouns: {props.currVolunteer.pronouns} </p>
+                        }
+                    </>
                     <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
                     <p id="regular-text-nomargin">{props.currVolunteer.email}</p>
                     <p id="regular-text-nomargin">{props.currVolunteer.phone}</p>

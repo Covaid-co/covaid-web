@@ -11,6 +11,15 @@ export default function OfferDetails(props) {
                 <Modal.Title id="small-header">{props.modalInfo.first_name}'s Offer</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <>
+                    {props.modalInfo.pronouns === undefined || props.modalInfo.pronouns === '' ? '' :
+                    <div>
+                        <h5 id="regular-text-bold" style={{marginBottom: 0}}>Pronouns:</h5>
+                        <p id="regular-text">{props.modalInfo.pronouns}</p> 
+                    </div> 
+                    }
+                </>
+
                 <h5 id="regular-text-bold" style={{marginBottom: 0}}>Neighborhoods:</h5>
                 <p id="regular-text">{props.modalInfo.offer.neighborhoods.join(', ')}</p>
                 <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Tasks:</h5>

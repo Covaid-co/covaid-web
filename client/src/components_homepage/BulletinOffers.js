@@ -14,7 +14,7 @@ export default function BulletinOffers({ displayedVolunteers, setModalInfo, setM
                 return (<ListGroup.Item key={i} action onClick={() => {setModalInfo({...user}); setModalOfferOpen(true)}}>
                     <div>
                         <h5 id="volunteer-name">
-                            {user.first_name}
+                            {user.first_name} 
                         </h5>
                         <h5 id="association-name">
                             {user.association_name === '' || user.association_name === 'Covaid' ? '' : user.association_name}
