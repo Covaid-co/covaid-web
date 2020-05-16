@@ -6,7 +6,7 @@ import Badge from 'react-bootstrap/Badge'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Dropdown from  'react-bootstrap/Dropdown'
-import { sortReq, filterReq, formatName, isInProgress } from './OrganizationHelpers';
+import { sortReq, filterReq, formatName, isInProgress, isInPending } from './OrganizationHelpers';
 import { convertTime } from '../Helpers';
 import { sort_types, current_tab } from '../constants';
 
@@ -85,8 +85,12 @@ export default function OrgRequests(props) {
             const in_progress = isInProgress(request);
             if (in_progress) {
                 return <Badge className='in-progress-task' style={{marginRight: 8}}>In Progress</Badge>;
-            } else {
-                return <Badge className='pending-task' style={{marginRight: 8}}>Pending</Badge>;
+            } else { 
+                if (isInPending(request)) {
+                    return <Badge className='pending-task' style={{marginRight: 8}}>Pending</Badge>;
+                } else {
+                    return <Badge className='pending-task' style={{marginRight: 8, color: "#DC3545", border: '1px solid #DC3545'}}>N/A</Badge>;
+                }
             }
         } else {
             return <></>;

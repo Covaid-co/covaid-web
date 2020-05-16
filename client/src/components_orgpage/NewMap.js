@@ -36,10 +36,10 @@ export default function NewMap(props) {
         if (props.association && props.association.name && props.association.name !== "Covaid") {
             setViewport({
                 ...viewport,
-                latitude: props.association.location.coordinates[1],
                 longitude: props.association.location.coordinates[0],
+                latitude: props.association.location.coordinates[1],
                 zoom: 10
-            })
+            });
         }
     }, [props.association])
     

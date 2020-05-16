@@ -240,6 +240,18 @@ export const isInProgress = (request) => {
     return in_progress;
 }
 
+// Check whether a request has pending volunteers
+export const isInPending = (request) => {
+    var pending = false;
+    const request_volunteers = request.status.volunteers;
+    for (var i = 0; i < request_volunteers.length; i++) {
+        if (request_volunteers[i].current_status === volunteer_status.PENDING) {
+            pending = true;
+        }
+    }
+    return pending;
+}
+
 // Update all requests array with the new update request
 export const updateAllRequests = (request, allRequests, remove) => {
     return allRequests.map(curr_request => {
