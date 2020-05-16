@@ -40,7 +40,7 @@ export default function OrgRequests(props) {
 
     const displayBadges = (request) => {
         // Completed Tab only
-        if (props.mode === 3) {
+        if (props.mode === current_tab.COMPLETED) {
             return <Badge id='task-info' style={{backgroundColor: "#28a745", border: '1px solid #28a745'}}>
                         {request.status.completed_reason ? request.status.completed_reason : "No reason selected"}
                 </Badge>

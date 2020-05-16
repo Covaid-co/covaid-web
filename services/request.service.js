@@ -187,8 +187,8 @@ async function handleGeneral(request) {
 exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
     try {
         let request = (await RequestRepository.readRequest({_id: requestID}))[0]; // Find the relevant request
-        console.log(request)
-        // Given volunteer list, attach the volunteer as Pending if the volunteer does not already exist in the list (Will skip over volunteers who previously rejected a request)
+        let volunteer_copy = request.status.volunteers
+        // Given volunteer list, change existing volunteers to pending if rematched, and add new volunteers as pending. 
         //remove duplicate new volunteers by creating a set
         let set_volunteers = new Set(volunteers);
         set_volunteers = Array.from(set_volunteers)
@@ -201,8 +201,17 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                     last_notified_time: new Date(),
                     adminMessage: adminMessage
                 }
+            } else if (request.status.volunteers.filter(volunteer => volunteer.volunteer === volunteer_id).length != 0){
+                let volunteer = volunteer_copy.filter(volunteer => volunteer.volunteer === volunteer_id)[0]
+                let index = volunteer_copy.indexOf(volunteer)
+                volunteer.current_status = volunteer_status.PENDING
+                volunteer.last_notified_time = new Date();
+                //if a new adminMessage is not given, keep the old message
+                if (adminMessage.length > 0) {
+                    volunteer.adminMessage = adminMessage
+                } 
+                volunteer_copy[index] = volunteer
             }
-            console.log(request.status.volunteers)
         });
 
         // Remove nulls
@@ -210,18 +219,15 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             if (volunteer) return volunteer
         });
 
-        // Update volunteer list and last modified time
-        if (new_volunteers.length > 0) {
-            await RequestRepository.updateRequest(requestID, {
-                $push: {
-                    'status.volunteers': { $each: new_volunteers }
-                }, 
+        //append new and old volunteers together     
+        let new_volunteers_list = [...volunteer_copy, ...new_volunteers]
+        if (new_volunteers_list.length > 0) {
+            await RequestRepository.updateRequest(requestID, { 
                 $set: {
+                    'status.volunteers': new_volunteers_list,
                     'admin_info.last_modified': new Date()
                 }
             });
-        } else {
-            return request;
         }
 
         // Update request status to be matched if there are volunteers attached to it
@@ -240,7 +246,8 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
-
+        console.log(updatedRequest.status.volunteers)
+        return updatedRequest;
         // TODO -> send emails
         // in progress
         // look @ attach volunteer to request function in master 
@@ -302,7 +309,8 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
                     array[index] = {
                         current_status: volunteer_status.REJECTED,
                         volunteer: v.volunteer,
-                        last_notified_time: new Date()
+                        last_notified_time: new Date(),
+                        adminMessage: v.adminMessage
                     }
                 }
             });
