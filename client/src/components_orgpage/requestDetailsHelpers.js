@@ -83,6 +83,9 @@ export const viewVolunteersInfo = (mode, curr_request, viewEdit) => {
                     </Button>
                 </div>);
         }
+    } else if (mode === current_tab.COMPLETED) {
+        return (
+            <></>);
     } else {
         return <></>
     }
@@ -235,15 +238,11 @@ export const notifiedVolunteers = (curr_request, volunteers) => {
     const in_progress = filter_volunteers(request_volunteers, volunteer_status.IN_PROGRESS);
     const pending = filter_volunteers(request_volunteers, volunteer_status.PENDING);
     var displayed_volunteers = [];
-
-    // If there is at least 1 in progress, the request is in progress
-    if (in_progress.length > 0) {
-        const in_progress_ids = in_progress.map(volunteer => volunteer.volunteer);
-        displayed_volunteers = volunteers.filter(volunteer => in_progress_ids.includes(volunteer._id));
-    } else if (pending.length > 0) {
-        const pending_ids = pending.map(volunteer => volunteer.volunteer);
-        displayed_volunteers = volunteers.filter(volunteer => pending_ids.includes(volunteer._id));
-    }
+    const in_progress_ids = in_progress.map(volunteer => volunteer.volunteer);
+    const pending_ids = pending.map(volunteer => volunteer.volunteer);
+    const in_progress_displayed = volunteers.filter(volunteer => in_progress_ids.includes(volunteer._id));
+    const pending_displayed = volunteers.filter(volunteer => pending_ids.includes(volunteer._id));
+    displayed_volunteers = in_progress_displayed.concat(pending_displayed);
     displayed_volunteers.sort(function(a, b) { return distance(a, curr_request) - distance(b, curr_request) });
     return displayed_volunteers;
 }

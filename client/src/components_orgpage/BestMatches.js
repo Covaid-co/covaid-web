@@ -35,9 +35,10 @@ export default function BestMatches(props) {
     const [fields, handleFieldChange] = useFormFields({
         adminMessage: ''
     });
+    const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
-        const unselected = unSelectedVolunteers(props.currRequest, props.volunteers);
+        const unselected = unSelectedVolunteers(props.currRequest, props.volunteers, strict);
         setUnselectedVolunteers(unselected);
         const notified = notifiedVolunteers(props.currRequest, props.volunteers);
         setNotifiedVolunteers(notified);
@@ -106,6 +107,7 @@ export default function BestMatches(props) {
     }
 
     const submitForm = () => {
+        setSubmitting(true);
         let form = {
             _id: props.currRequest._id,
             volunteers: selectedVolunteers.map(volunteer => volunteer._id),
@@ -122,7 +124,7 @@ export default function BestMatches(props) {
             // Update all requests array with the new updated request
             const newAllRequests = updateAllRequests(newRequest, props.allRequests);
             props.setAllRequests(newAllRequests);
-
+            setSubmitting(false);
             setVolunteerCount(volunteerCount());
             props.setRequestDetailsModal(false);
             props.setTopMatchesModal(false);
@@ -231,7 +233,7 @@ export default function BestMatches(props) {
                         </Form>
                     </Col>
                     <Col xs="12">
-                        <Button style={{marginTop: 10}} id="large-button" onClick={submitForm}>Confirm</Button>
+                        <Button disabled={submitting} style={{marginTop: 10}} id="large-button" onClick={submitForm}>Confirm</Button>
                         <Button style={{marginTop: 5}} id="large-button-empty" onClick={closeConfirmPage}>Back</Button>
                     </Col>
                 </Row>
