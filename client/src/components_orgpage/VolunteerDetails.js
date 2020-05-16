@@ -2,9 +2,14 @@ import React, { useEffect, useState} from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { useFormFields } from "../libs/hooksLib";
 import { generateMapsURL } from '../Helpers';
+import { generateURL } from '../Helpers';
+import { updateAllRequests } from './OrganizationHelpers';
+import PropTypes from 'prop-types';
 
 /**
  * Volunteer Details Modal in Org portal
@@ -14,6 +19,7 @@ export default function VolunteerDetails(props) {
     const [mapURL, setMapURL] = useState('');
     const [verified, setVerified] = useState(true);
     const [prevNote, setPrevNote] = useState('');
+    const [statistics, setStatistics] = useState();
     const [fields, handleFieldChange] = useFormFields({
         email5: "",
         adminDetails: ''
@@ -28,10 +34,30 @@ export default function VolunteerDetails(props) {
         if (props.currVolunteer.note) {
             fields.email5 = props.currVolunteer.note;
             setPrevNote(props.currVolunteer.note);
-        } else {
+        } if (props.currVolunteer._id) {
+            fetch_statistics(props.currVolunteer._id)
+        }
+        else {
             fields.email5 = '';
         }
+    // }, [props.currVolunteer, props.show])
     }, [props.currVolunteer, props.volunteerDetailModal])
+
+    const fetch_statistics = (id) => {
+		let params = {'id': id};
+		var url = generateURL( "/api/request/volunteerStatistics?", params);
+		fetch(url).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+                    setStatistics(data)
+                });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+	}
  
     const handleChangeVerify = (event) => {
         event.persist();
@@ -112,8 +138,7 @@ export default function VolunteerDetails(props) {
             props.setBestMatchVolunteer(false);
         }
     }
-
-    // if (Object.keys(props.currVolunteer).length > 0) {
+    if (Object.keys(props.currVolunteer).length > 0 && statistics) {
         return (
             <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
@@ -136,6 +161,25 @@ export default function VolunteerDetails(props) {
                     <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ""}</p>
                     <p id="regular-text-nomargin">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}</p>
                     <p id="regular-text-nomargin">Driver: {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 14}}>Volunteer Statistics:</h5>
+                    <OverlayTrigger
+                    placement = "left"
+                    overlay={
+                    <Tooltip >
+                        Total requests matched all time.
+                    </Tooltip>
+                    }
+                    >
+                    <p id="regular-text-nomargin">Matched: {statistics["total"]}</p></OverlayTrigger>
+                    <OverlayTrigger
+                    placement = "left"
+                    overlay={
+                    <Tooltip >
+                        Total requests completed.
+                    </Tooltip>
+                    }
+                    >
+                    <p id="regular-text-nomargin">Completed {statistics["completed"]}</p></OverlayTrigger>
                     <h5 id="regular-text-bold" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
                     <Form>
                         <Form.Group controlId="email5" bssize="large">
@@ -155,23 +199,23 @@ export default function VolunteerDetails(props) {
                 </Modal.Body>
             </Modal>
         );
-    // } else {
-    //     return (
-    //         <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
-    //                 props.setVolunteerDetailsModal(false);
-    //                 if (props.setVolunteersModal) {
-    //                     props.setVolunteersModal(true);
-    //                 }
-    //             }} style = {{marginTop: 40}}>
-    //             <Modal.Header closeButton>
-    //                 <Modal.Title>Volunteer Information</Modal.Title>
-    //             </Modal.Header>
-    //             <Modal.Body style={{padding: 24, paddingTop: 10}}>
-    //                 Loading...
-    //             </Modal.Body>
-    //         </Modal>
-    //     );
-    // }
+    } else {
+        return (
+            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
+                    props.setVolunteerDetailsModal(false);
+                    if (props.setVolunteersModal) {
+                        props.setVolunteersModal(true);
+                    }
+                }} style = {{marginTop: 40}}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Volunteer Information</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{padding: 24, paddingTop: 10}}>
+                    Loading...
+                </Modal.Body>
+            </Modal>
+        );
+    }
 }
 
 VolunteerDetails.propTypes = {

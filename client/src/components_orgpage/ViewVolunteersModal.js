@@ -45,7 +45,6 @@ export default function ViewVolunteersModal(props) {
     }
 
     const distance = (volunteer) => {
-        console.log(volunteer)
         const latA = volunteer.latlong[1];
         const longA = volunteer.latlong[0];
         const latB = props.currRequest.location_info.coordinates[1];

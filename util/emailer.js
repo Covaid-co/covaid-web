@@ -112,7 +112,7 @@ exports.sendPasswordLink = (email, userID, token) => {
         service: 'gmail',
         auth: {
               user: 'covaidco@gmail.com',
-              pass: 'supportyourcity_covaid_1?'
+              pass: 'covaid_platform_2020!'
         }
     });
 
@@ -149,7 +149,7 @@ exports.sendAssocPasswordLink = (email, assocID, token) => {
         service: 'gmail',
         auth: {
               user: 'covaidco@gmail.com',
-              pass: 'supportyourcity_covaid_1?'
+              pass: 'covaid_platform_2020!'
         }
     });
 
@@ -184,7 +184,7 @@ exports.sendRequestEmail = (request, recipient, assoc_email) => {
         service: 'gmail',
         auth: {
                user: 'covaidco@gmail.com',
-               pass: 'supportyourcity_covaid_1?'
+               pass: 'covaid_platform_2020!'
         }
     }); 
     
