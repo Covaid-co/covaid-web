@@ -428,6 +428,7 @@ export default function RequestDetails(props) {
                                 <option>No one in area</option>
                                 <option>Recurring request</option>
                                 <option>Referred to support</option>
+                                <option>Food Delivery Scheduled</option>
                             </Form.Control>
                         </Form.Group>
                         <Button type="submit" id="large-button" style={{backgroundColor: '#28a745', border: '1px solid #28a745'}}>

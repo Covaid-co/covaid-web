@@ -158,15 +158,16 @@ export const displayResourceMatch = (volunteer, curr_request) => {
 
 // List group item for volunteers in request details
 export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, checkboxStatus, handleCheckboxAction) => {
-    return (
+
+    if (checkboxStatus) {
+        return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
             <Row>
-                <Col lg={1} md={1}>
-                    {!checkboxStatus ? <Form.Check type="checkbox" style={{marginTop: 35}} id='default-checkbox' checked={true} readOnly/> :
-                     <Form.Check type="checkbox" style={{marginTop: 35}} id='default-checkbox'
-                                checked={checkboxStatus[volunteer._id]} onChange={() => handleCheckboxAction(volunteer)}/>}
+                <Col xs={1}>
+                    <Form.Check type="checkbox" style={{marginTop: 35}} id='default-checkbox'
+                                checked={checkboxStatus[volunteer._id]} onChange={() => handleCheckboxAction(volunteer)}/>
                 </Col>
-                <Col id="best-match-item" lg={11} md={11} onClick={() => handleVolunteerClick(volunteer)}>
+                <Col id="best-match-item" xs={11} onClick={() => handleVolunteerClick(volunteer)}>
                     <div>
                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                             {volunteer.first_name} {volunteer.last_name}
@@ -185,6 +186,47 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                 </Col>
             </Row>
         </ListGroup.Item>);
+    } else {
+        return (
+        <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
+            <Row>
+                <Col id="best-match-item" xs={12} onClick={() => handleVolunteerClick(volunteer)} style={{paddingLeft: 35}}>
+                    <div>
+                        <h5 id="volunteer-name" style={{marginBottom: 0}}>
+                            {volunteer.first_name} {volunteer.last_name}
+                        </h5>
+                        {displayPrevMatched(volunteer, curr_request)}
+                        <p id="volunteer-location" style={{float: 'right', marginTop: 0, marginRight: 10, marginBottom: 0}}>
+                            {distance(volunteer, curr_request)} miles
+                        </p>
+                    </div>
+                    <div>
+                        <p id="volunteer-location">
+                            {volunteer.offer.neighborhoods.join(', ')}
+                            {requestStatusBadge(curr_request, volunteer)}
+                        </p>
+                    </div>
+                    <div>
+                        {displayResourceMatch(volunteer, curr_request)}
+                    </div>
+                </Col>
+            </Row>
+        </ListGroup.Item>);
+    }
+}
+
+const requestStatusBadge = (curr_request, volunteer) => {
+    const request_volunteers = curr_request.status.volunteers;
+    const filtered = request_volunteers.filter(vol => vol.volunteer === volunteer._id);
+    if (filtered.length > 0) {
+        if (filtered[0].current_status === volunteer_status.PENDING) {
+            return <Badge className='pending-task' style={{marginTop: 6}}>Pending</Badge>
+        } else if (filtered[0].current_status === volunteer_status.IN_PROGRESS) {
+            return <Badge className='in-progress-task' style={{marginTop: 6, marginRight: 10, float: 'right'}}>In Progress</Badge>
+        }
+    } else {
+        return <></>
+    }
 }
 
 // Volunteers attached to a request that have been notified
@@ -207,7 +249,7 @@ export const notifiedVolunteers = (curr_request, volunteers) => {
 }
 
 // Volunteers attached to a request that are to be notified
-export const unSelectedVolunteers = (curr_request, volunteers) => {
+export const unSelectedVolunteers = (curr_request, volunteers, strict) => {
     const request_volunteers = curr_request.status.volunteers;
     const in_progress = filter_volunteers(request_volunteers, volunteer_status.IN_PROGRESS);
     const in_progress_ids = in_progress.map(volunteer => volunteer.volunteer);
@@ -216,7 +258,9 @@ export const unSelectedVolunteers = (curr_request, volunteers) => {
 
     const needed_resources = curr_request.request_info ? curr_request.request_info.resource_request : [];
     var displayed_volunteers = volunteers.filter(volunteer => !in_progress_ids.includes(volunteer._id) && !pending_ids.includes(volunteer._id));
-    displayed_volunteers = displayed_volunteers.filter(volunteer => volunteer.offer.tasks.some(item => needed_resources.includes(item)));
+    if (strict) {
+        displayed_volunteers = displayed_volunteers.filter(volunteer => volunteer.offer.tasks.some(item => needed_resources.includes(item)));
+    }
     displayed_volunteers = displayed_volunteers.filter(volunteer => volunteer.availability)
     displayed_volunteers.sort(function(a, b) { return distance(a, curr_request) - distance(b, curr_request) });
     displayed_volunteers = displayed_volunteers.slice(0, 20);

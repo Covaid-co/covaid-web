@@ -22,6 +22,7 @@ import { notifiedVolunteers, unSelectedVolunteers, volunteerListGroup, bestMatch
 export default function BestMatches(props) {
     const [unselected_volunteers, setUnselectedVolunteers] = useState([]);
     const [notified_volunteers, setNotifiedVolunteers] = useState([]);
+    const [strict, setStrict] = useState(true);
 
     const [bestMatchVolunteer, setBestMatchVolunteer] = useState(false);
     const [currVolunteer, setCurrVolunteer] = useState({});
@@ -132,15 +133,38 @@ export default function BestMatches(props) {
         });
     }
 
+    const changeStrict = () => {
+        const unselected = unSelectedVolunteers(props.currRequest, props.volunteers, !strict);
+        setUnselectedVolunteers(unselected);
+        setStrict(!strict)
+    }
+
     return (<>
         <Modal show={props.topMatchesModal} onHide={closePage} style = {{marginTop: 5, paddingBottom: 40}}>
             <Modal.Body style={{zoom: '90%'}}>
                 <Row style={{marginTop: 0}}>
-                   <Col xs="12" style = {{marginTop: 0, marginBottom: 0}}>
+                   <Col xs="12" style = {{marginTop: 0, marginBottom: 10}}>
                         <Modal.Title>{bestMatchesTitle(props.currRequest, props.mode)}
                         <Button variant="link" id="regular-text" style={unselectButtonStyle(volunteerCount)} 
                             onClick={()=>{setSelectedVolunteers([]); clearCheckBox()}}>Unselect All</Button>
                         </Modal.Title>
+                    </Col>
+                    <Col xs={9} style={{paddingRight: 0}}>
+                        <Form>
+                            <Form.Group bssize="large">
+                                <Form.Control id="filter-requests" placeholder="Search by name or neighborhood"/>
+                            </Form.Group>
+                        </Form>
+                    </Col>
+                    <Col xs={3}>
+                        <Form>
+                            <Form.Group controlId="preverify" bssize="large" style = {{marginBottom: 0, marginTop: 6}}>
+                                <Form.Check type="switch"  id="custom-switch" style={{color: '#2670FF', fontSize: 14}}
+                                    label={strict ? "Strict": "Non-Strict"} checked={strict} onChange={changeStrict}/>
+                            </Form.Group>
+                        </Form>
+                    </Col>
+                    <Col xs="12">
                         <p id="requestCall" style={{marginTop: -15, marginBottom: 0}}>&nbsp;</p>
                     </Col>
                     <Col xs="12" id="col-scroll">
@@ -172,7 +196,6 @@ export default function BestMatches(props) {
                     <Col xs="12" id="col-scroll">
                         <ListGroup variant="flush">
                             {selectedVolunteers.map((volunteer, i) => {
-                                if (volunteer.availability) {
                                 return (
                                 <ListGroup.Item key={i} action onClick={() => handleVolunteerClick(volunteer)}>
                                     <div>
@@ -191,7 +214,7 @@ export default function BestMatches(props) {
                                         {displayResourceMatch(volunteer, props.currRequest)}
                                     </div>
                                 </ListGroup.Item>);
-                            }})}
+                            })}
                         </ListGroup>
                     </Col>
                     <Col xs="12">
