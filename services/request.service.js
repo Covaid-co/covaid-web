@@ -246,7 +246,6 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
-        console.log(updatedRequest.status.volunteers)
         return updatedRequest;
         // TODO -> send emails
 
