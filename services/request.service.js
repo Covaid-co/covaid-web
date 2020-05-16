@@ -284,7 +284,8 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
                     array[index] = {
                         current_status: volunteer_status.REJECTED,
                         volunteer: v.volunteer,
-                        last_notified_time: new Date()
+                        last_notified_time: new Date(),
+                        adminMessage: v.adminMessage
                     }
                 }
             });
