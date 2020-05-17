@@ -139,8 +139,8 @@ export default function RequestPage(props) {
                     <Col lg={6} md={8} sm={12}>
                         <Container id="newOfferContainer" style={{marginBottom: 0}}>
                             {Object.keys(firstPage).length === 0 ?
-                                <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.locationProps.currentAssoc} translations={translatedStrings} language={language}/> :
-                                <RequestPage2 currentAssoc={props.locationProps.currentAssoc} handleSubmit={handleSubmit} translations={translatedStrings} language={language}/>}
+                                <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.locationProps.currentAssoc} translations={translatedStrings} language={language} volunteer={props.volunteer}/> :
+                                <RequestPage2 currentAssoc={props.locationProps.currentAssoc} handleSubmit={handleSubmit} translations={translatedStrings} language={language} volunteer={props.volunteer}/>}
                         </Container>
                     </Col>
                     <Col lg={3} md={2} sm={0}></Col>

@@ -27,13 +27,17 @@ export default function RequestPage1(props) {
     });
 
     useEffect(() => {
-        var resourcesFromAssoc = defaultResources;
-        if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
-            resourcesFromAssoc = props.currentAssoc.resources;
+        if (props.volunteer && props.volunteer.offer && props.volunteer.offer.tasks) {
+            setResources(setFalseObj(props.volunteer.offer.tasks));   
+        } else {
+            var resourcesFromAssoc = defaultResources;
+            if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
+                resourcesFromAssoc = props.currentAssoc.resources;
+            }
+            var tempAssoc = setFalseObj(resourcesFromAssoc);
+            setResources(tempAssoc);
         }
-        var tempAssoc = setFalseObj(resourcesFromAssoc);
-        setResources(tempAssoc);
-    }, [props.currentAssoc]);
+    }, [props.currentAssoc, props.volunteer]);
 
 
     const goToSecondPage = () => {
@@ -109,5 +113,6 @@ export default function RequestPage1(props) {
 
 RequestPage1.propTypes = {
     setFirstPage: PropTypes.func,
-    currentAssoc: PropTypes.object
+    currentAssoc: PropTypes.object,
+    volunteer: PropTypes.object
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Modal from 'react-bootstrap/Modal'
@@ -30,6 +30,7 @@ export default function RequestHelp(props) {
         }
         return generalRequestText;
     }
+
 
     const resetState = () => {
         props.hideModal();
@@ -130,7 +131,7 @@ export default function RequestHelp(props) {
                 </Modal.Header>
                 <Modal.Body>
                     {requestFormInfo()}
-                    <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.currentAssoc} translations={translatedStrings} language={language}/>
+                    <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.currentAssoc} translations={translatedStrings} language={language} volunteer={props.volunteer}/>
                 </Modal.Body>
             </Modal>
         )
