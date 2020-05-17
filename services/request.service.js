@@ -112,9 +112,9 @@ exports.createRequest = async function(request) {
         if (!new_request.volunteer) { 
             var data = {
                 sender: 'Covaid@covaid.co',
-                receiver: assoc.email,
+                receiver: assoc[0].email,
                 name: request.requester_first,
-                assoc: assoc.name,
+                assoc: assoc[0].name,
                 templateName: 'org_notification',
             };
             emailer.sendNotificationEmail(data)
@@ -130,7 +130,7 @@ exports.createRequest = async function(request) {
                     sender: "Covaid@covaid.co",
                     receiver: volunteer.email,
                     name: first_name,
-                    assoc: assoc.email,
+                    assoc: assoc[0].email,
                     templateName: 'volunteer_notification',
                 };
                 emailer.sendNotificationEmail(data);
@@ -301,7 +301,7 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                 sender: 'Covaid@covaid.co',
                 receiver: curr_volunteer.email,
                 name: firstName,
-                assoc: assoc.email,
+                assoc: assoc[0].email,
                 templateName: 'volunteer_notification',
             };
             emailer.sendNotificationEmail(data); 
@@ -371,39 +371,7 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
         // TODO -> send emails
         // In progress
         // Scenario: if a volunteer is unmatched from something, the organization has to be notified (+push notification)
-        // don't worry abt sending emails to unmatched volunteers
-        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
-
-        // Find admin
-        // If admin exists, send them an email 
-        var foundAdmin = false; 
-        for (var i = 0; i < assoc.admins.length; i++) { 
-            var admin = assoc.admins[i];
-            if (admin.name === updatedRequest.assignee) {
-                var data = {
-                    sender: 'Covaid@covaid.co',
-                    receiver: admin.email,
-                    name: updatedRequest.requester_first,
-                    action: 'accepted',
-                    templateName: 'admin_notification',
-                };
-                emailer.sendNotificationEmail(data);
-                foundAdmin = true; 
-                break;
-            }
-        }
-
-        // If no admin assigned to request, send email to association
-        if (!foundAdmin) {
-            var data = {
-                sender: 'Covaid@covaid.co',
-                receiver: assoc.email,
-                name: updatedRequest.requester_first,
-                action: 'accepted',
-                templateName: 'org_notification',
-            };
-            emailer.sendNotificationEmail(data)
-        }
+        await exports.notifyRequestStatusChangenotifyRequestStatusChange(updatedRequest, 'rejected'); 
         pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); 
 
         return updatedRequest;
@@ -579,9 +547,8 @@ exports.notifyRequestStatusChange = async function(updatedRequest, action) {
         // Find admin
         // If admin exists, send them an email 
         var foundAdmin = false; 
-        console.log(assoc.admins); 
-        for (var i = 0; i < assoc.admins.length; i++) {
-            var admin = assoc.admins[i];
+        for (var i = 0; i < assoc[0].admins.length; i++) {
+            var admin = assoc[0].admins[i];
             if (admin.name === updatedRequest.assignee) {
                 var data = {
                     sender: "Covaid@covaid.co",
@@ -600,7 +567,7 @@ exports.notifyRequestStatusChange = async function(updatedRequest, action) {
         if (!foundAdmin) {
             var data = {
                 sender: 'Covaid@covaid.co',
-                receiver: assoc.email,
+                receiver: assoc[0].email,
                 name: updatedRequest.requester_first,
                 action: action,
                 templateName: 'org_notification',
