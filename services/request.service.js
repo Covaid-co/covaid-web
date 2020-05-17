@@ -286,15 +286,8 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
         // TODO -> send emails
         // In progress
         // Scenario: when a volunteer is matched to a request -> send email to the volunteer (+ push notification) 
-        var assocEmail = 'covaidco@gmail.com';
-        var assocName = 'Covaid';
         var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
-        if (assoc) {
-            assocEmail = assoc.email; 
-            assocName = assoc.name; 
-        } // ***check*** see if this can be removed, default should be covaid 
-        // console.log("Hi"); 
-        // console.log(new_volunteers_list); 
+
         var volunteer_ids = []; 
         for (var i = 0; i < new_volunteers_list.length; i++) { // ***check*** if the right list is being used, forEach? 
             volunteer_ids.push(new_volunteers_list[i]._id); 
@@ -310,7 +303,7 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                 sender: 'Covaid@covaid.co',
                 receiver: curr_volunteer.email,
                 name: firstName,
-                assoc: assocEmail,
+                assoc: assoc.email,
                 templateName: 'volunteer_notification',
             };
             emailer.sendNotificationEmail(data); 
@@ -381,13 +374,8 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
         // In progress
         // Scenario: if a volunteer is unmatched from something, the organization has to be notified (+push notification)
         // don't worry abt sending emails to unmatched volunteers
-        var assocEmail = 'covaidco@gmail.com';
-        var assocName = 'Covaid';
         var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
-        if (assoc) {
-            assocEmail = assoc.email; 
-            assocName = assoc.name; 
-        }
+
         // Find admin
         // If admin exists, send them an email 
         var foundAdmin = false; 
@@ -411,7 +399,7 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
         if (!foundAdmin) {
             var data = {
                 sender: 'Covaid@covaid.co',
-                receiver: assocEmail,
+                receiver: assoc.email,
                 name: updatedRequest.requester_first,
                 action: 'accepted',
                 templateName: 'org_notification',
@@ -446,13 +434,7 @@ exports.acceptRequest = async function(volunteerID, requestID) {
 
         // Prepare email/pusher notifications
         // Find association, if exists (default to Covaid)
-        var assocEmail = 'covaidco@gmail.com';
-        var assocName = 'Covaid';
         var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
-        if (assoc) {
-            assocEmail = assoc.email; 
-            assocName = assoc.name; 
-        }
 
         // Find admin
         // If admin exists, send them an email 
@@ -477,7 +459,7 @@ exports.acceptRequest = async function(volunteerID, requestID) {
         if (!foundAdmin) {
             var data = {
                 sender: 'Covaid@covaid.co',
-                receiver: assocEmail,
+                receiver: assoc.email,
                 name: updatedRequest.requester_first,
                 action: 'accepted',
                 templateName: 'org_notification',
@@ -508,13 +490,7 @@ exports.rejectRequest = async function(volunteerID, requestID) {
 
         // Prepare email/pusher notifications
         // Find association, if exists (default to Covaid)
-        var assocEmail = 'covaidco@gmail.com';
-        var assocName = 'Covaid';
         var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
-        if (assoc) {
-            assocEmail = assoc.email; 
-            assocName = assoc.name; 
-        }
 
         // Find admin
         // If admin exists, send them an email 
@@ -539,7 +515,7 @@ exports.rejectRequest = async function(volunteerID, requestID) {
         if (!foundAdmin) {
             var data = {
                 sender: 'Covaid@covaid.co',
-                receiver: assocEmail,
+                receiver: assoc.email,
                 name: updatedRequest.requester_first,
                 action: 'rejected',
                 templateName: 'org_notification',
