@@ -133,6 +133,9 @@ export default function OrganiationPortal(props) {
 				}
 			)
 		});
+		channel.bind('request-details', function() {
+			fetch_requests(id);
+		});
 	}
 
 	function login(adminMode) {
