@@ -325,7 +325,8 @@ exports.acceptRequest = async function(volunteerID, requestID) {
         await RequestRepository.updateRequestComplex({'_id': requestID, 'status.volunteers.volunteer': volunteerID}, { 
             $set: {
                 "status.volunteers.$.current_status": volunteer_status.IN_PROGRESS,
-                "status.volunteers.$.last_notified_time": new Date()
+                "status.volunteers.$.last_notified_time": new Date(),
+                'admin_info.last_modified': new Date()
             }
         });
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
@@ -356,14 +357,28 @@ exports.rejectRequest = async function(volunteerID, requestID) {
 /**
  * Volunteer completing a request
  */
-exports.completeRequest = async function(volunteerID, requestID, reason, volunteer_comment) {
+exports.completeRequest = async function(volunteerID, requestID, reason, volunteer_comment, adminMode) {
     try {
+        if (adminMode) {
+             // Update a particular requests completion info
+             await RequestRepository.updateRequest(requestID, {
+                $set: {
+                    'status.current_status': request_status.COMPLETED,
+                    'status.completed_reason': reason,
+                    'status.completed_date': new Date(),
+                    'admin_info.last_modified': new Date()
+                }
+            });
+            return (await RequestRepository.readRequest({_id: requestID}))[0];
+        }
+
          // Update a particular volunteer's volunteer0request0status to complete and append any completion info
         await RequestRepository.updateRequestComplex({'_id': requestID, 'status.volunteers.volunteer': volunteerID}, { 
             $set: {
                 "status.volunteers.$.current_status": volunteer_status.COMPLETE,
                 "status.volunteers.$.volunteer_response": volunteer_comment,
-                "status.volunteers.$.last_notified_time": new Date()
+                "status.volunteers.$.last_notified_time": new Date(),
+                'admin_info.last_modified': new Date()
             }
         });
 
@@ -384,6 +399,7 @@ exports.completeRequest = async function(volunteerID, requestID, reason, volunte
                     'status.completed_date': new Date()
                 }
             });
+            updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
 
         // TODO -> Notify admins

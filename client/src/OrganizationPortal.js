@@ -182,7 +182,7 @@ export default function OrganiationPortal(props) {
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
 					<Container style={{maxWidth: 2000}}>
 						<Row>
-							<Col lg={7} md={7} sm={12}>
+							<Col lg={6} md={6} sm={12}>
 								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back,</h1>
 								<h1 id="home-heading" style={{marginTop: 0}}>{association.name}!</h1>
 								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
@@ -197,7 +197,7 @@ export default function OrganiationPortal(props) {
 									+ Add a link to your community&apos;s resources
 								</Button>
 							</Col>
-							<Col lg={5} md={5} sm={12} style={width < 768 ? {display: 'none'} : {display: 'block'}}>
+							<Col lg={6} md={6} sm={12} style={width < 768 ? {display: 'none'} : {display: 'block'}}>
 								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 20}}>
 									<h3 id="home-heading" style={{marginTop: 0, fontSize: 20}}>
 										Need a task done? {' '}
