@@ -431,42 +431,7 @@ exports.acceptRequest = async function(volunteerID, requestID) {
         // TODO -> Notify admins 
         // In progress
         // Scenario: when a volunteer accepts a request -> send email to admin 
-
-        // Prepare email/pusher notifications
-        // Find association, if exists (default to Covaid)
-        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
-
-        // Find admin
-        // If admin exists, send them an email 
-        var foundAdmin = false; 
-        for (var i = 0; i < assoc.admins.length; i++) {
-            var admin = assoc.admins[i];
-            if (admin.name === updatedRequest.assignee) {
-                var data = {
-                    sender: "Covaid@covaid.co",
-                    receiver: admin.email,
-                    name: updatedRequest.requester_first,
-                    action: 'accepted',
-                    templateName: "admin_notification",
-                };
-                emailer.sendNotificationEmail(data);
-                foundAdmin = true; 
-                break;
-            }
-        }
-
-        // If no admin assigned to request, send email to association
-        if (!foundAdmin) {
-            var data = {
-                sender: 'Covaid@covaid.co',
-                receiver: assoc.email,
-                name: updatedRequest.requester_first,
-                action: 'accepted',
-                templateName: 'org_notification',
-            };
-            emailer.sendNotificationEmail(data)
-        }
-
+        notifyRequestStatusChange(updatedRequest, 'accepted'); 
         // No push notification 
         
         return updatedRequest;
@@ -487,41 +452,7 @@ exports.rejectRequest = async function(volunteerID, requestID) {
         // TODO -> Notify admins
         // In progress
         // Scenario: when a volunteer is removed from a request -> send email to the admin (+ push notification) 
-
-        // Prepare email/pusher notifications
-        // Find association, if exists (default to Covaid)
-        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
-
-        // Find admin
-        // If admin exists, send them an email 
-        var foundAdmin = false; 
-        for (var i = 0; i < assoc.admins.length; i++) { // ***check*** assoc could be null
-            var admin = assoc.admins[i];
-            if (admin.name === updatedRequest.assignee) {
-                var data = {
-                    sender: 'Covaid@covaid.co',
-                    receiver: admin.email,
-                    name: updatedRequest.requester_first,
-                    action: 'rejected',
-                    templateName: 'admin_notification',
-                };
-                emailer.sendNotificationEmail(data);
-                foundAdmin = true; 
-                break;
-            }
-        }
-
-        // If no admin assigned to request, send email to association
-        if (!foundAdmin) {
-            var data = {
-                sender: 'Covaid@covaid.co',
-                receiver: assoc.email,
-                name: updatedRequest.requester_first,
-                action: 'rejected',
-                templateName: 'org_notification',
-            };
-            emailer.sendNotificationEmail(data)
-        }
+        notifyRequestStatusChange(updatedRequest, 'rejected'); 
 
         pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); // ***check*** if assoc_.id is valid, if not try updatedRequest.body.assoc_id
         // res.send('Request updated.'); -> include ?
@@ -615,6 +546,50 @@ exports.unmatchPendingVolunteers = async function(expiryTime) {
         for (var request in expiredVolunteers) {
             let volunteers = expiredVolunteers[request];
             await exports.unmatchVolunteers(request, volunteers);
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+/**
+ * Send email notif to admin when status of a request changes
+ */
+exports.notifyRequestStatusChange = async function(updatedRequest, action) {
+    try {
+        // Prepare email/pusher notifications
+        // Find association, if exists (default to Covaid)
+        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
+
+        // Find admin
+        // If admin exists, send them an email 
+        var foundAdmin = false; 
+        for (var i = 0; i < assoc.admins.length; i++) {
+            var admin = assoc.admins[i];
+            if (admin.name === updatedRequest.assignee) {
+                var data = {
+                    sender: "Covaid@covaid.co",
+                    receiver: admin.email,
+                    name: updatedRequest.requester_first,
+                    action: action,
+                    templateName: "admin_notification",
+                };
+                emailer.sendNotificationEmail(data);
+                foundAdmin = true; 
+                break;
+            }
+        }
+
+        // If no admin assigned to request, send email to association
+        if (!foundAdmin) {
+            var data = {
+                sender: 'Covaid@covaid.co',
+                receiver: assoc.email,
+                name: updatedRequest.requester_first,
+                action: action,
+                templateName: 'org_notification',
+            };
+            emailer.sendNotificationEmail(data)
         }
     } catch (e) {
         throw e;
