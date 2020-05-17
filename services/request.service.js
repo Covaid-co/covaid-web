@@ -14,6 +14,7 @@ const volunteer_status = {
 
 const RequestRepository = require('../repositories/request.repository');
 const AssociationService = require('./association.service');
+const UserService = require('./user.service');
 const emailer = require('../util/emailer');
 const Pusher = require('pusher');
 
@@ -444,6 +445,52 @@ exports.unmatchPendingVolunteers = async function(expiryTime) {
         for (var request in exipredVolunteers) {
             let volunteers = exipredVolunteers[request];
             await exports.unmatchVolunteers(request, volunteers);
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+/**
+ * Remind all volunteers who have an in-progress request to mark their request as completed
+ */
+exports.remindMatchedVolunteers = async function(notificationTime) {
+    try {
+        let allRequests = await RequestRepository.readRequest({});
+        var reminderVolunteers = [];
+        allRequests.forEach(request => {
+            request.status.volunteers.forEach(volunteer => {
+                if (volunteer.current_status === volunteer_status.IN_PROGRESS && volunteer.last_notified_time < new Date(Date.now() - expiryTime * 60 * 60 * 1000)) {
+                    if (reminderVolunteers[request._id]) {
+                        reminderVolunteers[request._id].push(volunteer.volunteer);
+                    } else {
+                        reminderVolunteers[request._id] = [volunteer.volunteer];
+                    }
+                }
+            });
+        });
+        var remindedVolunteers = new Set();
+        for (var request in reminderVolunteers) {
+            let volunteers = reminderVolunteers[request];
+            let users = await UserService.getUsersByUserIDs(volunteers);
+            for (var i = 0; i < users.length; i++) {
+                let user = users[i];
+                if (!remindedVolunteers.has(user.email)) {
+                    var data = {
+                        //sender's and receiver's email
+                        sender: "Covaid@covaid.co",
+                        receiver: user.email,
+                        templateName: "pending_notification",
+                    };
+                    emailer.sendNotificationEmail(data);
+                    remindedVolunteers.add(user.email);
+                }
+                await RequestRepository.updateRequestComplex({'_id': request, 'status.volunteers.volunteer': user._id}, { 
+                    $set: {
+                        "status.volunteers.$.last_notified_time": new Date()
+                    }
+                });
+            }
         }
     } catch (e) {
         throw e;

@@ -214,7 +214,7 @@ export default function OrganiationPortal(props) {
 										</Col>
 										<Col style={{paddingLeft: 5}}>
 											<Button id="large-button-empty" style={{marginTop: 0, paddingLeft: 5}} onClick={()=>{setBeaconView(true)}} >
-												View Live Beacons ({beacons.filter(beacon => beacon.beaconStatus===1).length})
+												Live Beacons ({beacons.filter(beacon => beacon.beaconStatus===1).length})
 											</Button>
 										</Col>
 									</Row>
