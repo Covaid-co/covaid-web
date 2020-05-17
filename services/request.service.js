@@ -281,20 +281,18 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
-        console.log(updatedRequest.status.volunteers)
         
         // TODO -> send emails
         // In progress
         // Scenario: when a volunteer is matched to a request -> send email to the volunteer (+ push notification) 
         var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
 
-        var volunteer_ids = []; 
-        for (var i = 0; i < new_volunteers_list.length; i++) { // ***check*** if the right list is being used, forEach? 
-            volunteer_ids.push(new_volunteers_list[i]._id); 
-        }
+        let new_volunteer_ids = new_volunteers_list.forEach(volunteer => {
+            return volunteer._id; 
+        }); 
 
-        new_volunteer_obj_list = await UserService.getUsersByUserIDs(volunteer_ids); // might be causing an error 
-        for (var i = 0; i < new_volunteer_obj_list.length; i++) { // ***check*** if the right list is being used, forEach? 
+        new_volunteer_obj_list = await UserService.getUsersByUserIDs(new_volunteer_ids);
+        for (var i = 0; i < new_volunteer_obj_list.length; i++) { 
             var curr_volunteer = new_volunteer_obj_list[i]; 
             var firstName = curr_volunteer.first_name;
             firstName = firstName.toLowerCase();
@@ -379,7 +377,7 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
         // Find admin
         // If admin exists, send them an email 
         var foundAdmin = false; 
-        for (var i = 0; i < assoc.admins.length; i++) { // ***check*** assoc could be null 
+        for (var i = 0; i < assoc.admins.length; i++) { 
             var admin = assoc.admins[i];
             if (admin.name === updatedRequest.assignee) {
                 var data = {
@@ -406,7 +404,7 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
             };
             emailer.sendNotificationEmail(data)
         }
-        pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); // ***check*** assoc could be null
+        pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); 
 
         return updatedRequest;
     } catch (e) {
@@ -454,7 +452,7 @@ exports.rejectRequest = async function(volunteerID, requestID) {
         // Scenario: when a volunteer is removed from a request -> send email to the admin (+ push notification) 
         notifyRequestStatusChange(updatedRequest, 'rejected'); 
 
-        pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); // ***check*** if assoc_.id is valid, if not try updatedRequest.body.assoc_id
+        pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); 
         // res.send('Request updated.'); -> include ?
         
         return updatedRequest;
