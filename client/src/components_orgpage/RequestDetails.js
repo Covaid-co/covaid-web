@@ -8,7 +8,7 @@ import Toast from 'react-bootstrap/Toast'
 import BestMatches from './BestMatches'
 import Badge from 'react-bootstrap/Badge'
 import Col from 'react-bootstrap/Col'
-import ViewVolunteersModal from './ViewVolunteersModal';
+import VolunteerDetails from './VolunteerDetails';
 import { useFormFields } from "../libs/hooksLib";
 import { formatName, updateAllRequests } from './OrganizationHelpers'
 import { toastTime, paymentOptions, current_tab, volunteer_status } from '../constants';
@@ -35,9 +35,8 @@ export default function RequestDetails(props) {
     const [fields, handleFieldChange] = useFormFields({
         email2: "",
     });
-    const [showVolunteers, setShowVolunteers] = useState(false);
-    const [selectedVolunteers, setSelectedVolunteers] = useState([]);
-    const [viewVolunteersMode, setViewVolunteersMode] = useState(-1);
+    const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
+    const [currVolunteer, setCurrVolunteer] = useState([]);
 
     useEffect(() => {
         setAssignee('No one assigned');
@@ -89,6 +88,15 @@ export default function RequestDetails(props) {
     const viewEdit = () => {
         setTopMatchesModal(true);
         props.setRequestDetailsModal(false);
+    }
+
+    const viewComplete = (volunteer_status) => {
+        setVolunteerDetailsModal(true);
+        props.setRequestDetailsModal(false);
+        let volunteer = props.volunteers.find(function (v) {
+            return v._id === volunteer_status.volunteer
+        });
+        setCurrVolunteer(volunteer);
     }
 
     // Update current request and requests array
@@ -192,9 +200,7 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => response.json())
         .then(request => {
-            props.setCurrRequest(request);
-            // Remove request from array
-            const newAllRequests = updateAllRequests(request, props.allRequests, true);
+            const newAllRequests = props.allRequests.filter(request => request._id !== request._id);
             props.setAllRequests(newAllRequests);
             setDeleteModal(false);
             props.setRequestDetailsModal(false);
@@ -314,7 +320,7 @@ export default function RequestDetails(props) {
         const found = volunteers.find(vol => {
             return vol.current_status === volunteer_status.COMPLETE;
         });
-        if (props.mode === current_tab.COMPLETED && found) {
+        if (props.mode === current_tab.COMPLETED && found && found.volunteer_response && found.volunteer_response.length > 0) {
             return <>
                 <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Volunteer's completion remarks:</h5>
                     <p id="regular-text-nomargin">"{found.volunteer_response}"</p>
@@ -347,6 +353,22 @@ export default function RequestDetails(props) {
         }
     }
 
+    const contactInfo = () => {
+        if (props.currRequest.personal_info.requester_email || props.currRequest.personal_info.requester_phone) {
+            return (<>
+                <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_email}</p>
+                <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_phone}</p></>
+            );
+        }
+        else {
+            return (<>
+            <p id="regular-text-nomargin" style={{color: "#EF6315"}}><b>Share contact directly with volunteer (i.e. from Notes)</b>
+            </p>
+            </>
+            );
+        }
+    } 
+
     return (
         <>
             <Modal show={props.requestDetailsModal} 
@@ -361,7 +383,7 @@ export default function RequestDetails(props) {
                 <Modal.Body>
                     <h5 id="regular-text-bold" style={{marginTop: 0, marginBottom: 5}}>Who's tracking this request:</h5>
                     {adminTracker()}
-                    <h5 id="regular-text-bold" style={{marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
+                    <h5 id="regular-text-bold" style={{marginTop: 13, marginBottom: 5}}>Notes:</h5>
                     <Form>
                         <Form.Group controlId="email2" bssize="large">
                             <Form.Control as="textarea" 
@@ -375,20 +397,24 @@ export default function RequestDetails(props) {
                     <Col xs={12} style={{padding: 0}}><p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p></Col>
                     <p id="name-details">{formatName(props.currRequest.personal_info.requester_name)}</p>
                     <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapsURL}>Click here</a></p>
-                    <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_email}</p>
-                    <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_phone}</p>
+                    {contactInfo()}
                     <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currRequest.personal_info.languages.join(', ')}</p>
                     {paymentText()}
                     <p id="regular-text-nomargin">Needs: {props.currRequest.request_info.resource_request.join(', ')}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currRequest.request_info.details}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Needed by:</h5>
-                    <p id="regular-text-nomargin">{props.currRequest.request_info.time} of {props.currRequest.request_info.date}</p>
+                    {
+                        (props.currRequest.request_info.date) ? 
+                        <p id="regular-text-nomargin">{props.currRequest.request_info.time} of {props.currRequest.request_info.date}</p>
+                        :
+                        <p id="regular-text-nomargin">N/A</p>
+                    }
                     {volunteerComments()}
                     <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
                     {matchVolunteersButton(props.mode, topMatch)}
-                    {viewVolunteersInfo(props.mode, props.currRequest, viewEdit)}
-                    {unmatchCompleteButtons(props.mode, closeRequest, setUnmatchModal, setConfirmCompleteModal)}
+                    {viewVolunteersInfo(props.mode, props.currRequest, viewEdit, viewComplete)}
+                    {unmatchCompleteButtons(props.mode, closeRequest, setUnmatchModal, setDeleteModal, setConfirmCompleteModal)}
                     <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>
@@ -444,13 +470,8 @@ export default function RequestDetails(props) {
                 </Modal.Body>
             </Modal>
             <BestMatches { ... props} topMatchesModal={topMatchesModal} setTopMatchesModal={setTopMatchesModal}/>
-            <ViewVolunteersModal 
-                showVolunteers={showVolunteers} 
-                setShowVolunteers={setShowVolunteers} 
-                volunteers={selectedVolunteers} 
-                currRequest={props.currRequest}
-                mode={viewVolunteersMode}
-                />
+            <VolunteerDetails { ... props } volunteerDetailModal={volunteerDetailModal} setVolunteerDetailsModal={setVolunteerDetailsModal} 
+                        currVolunteer={currVolunteer} inRequest={true} setRequestDetailsModal={props.setRequestDetailsModal} />
         </>
     );
 }

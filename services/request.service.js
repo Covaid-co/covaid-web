@@ -500,6 +500,7 @@ exports.updateRequestDetails = async function(requestID, updates) {
         updates["admin_info.last_modified"] = new Date()
         await RequestRepository.updateRequest(requestID, updates);
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+        pusher.trigger(updatedRequest.association, 'request-details', 'new details');
         return updatedRequest;
     } catch (e) {
         throw e;

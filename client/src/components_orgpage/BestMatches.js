@@ -10,7 +10,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import VolunteerDetails from './VolunteerDetails';
 import { useFormFields } from "../libs/hooksLib";
-import { distance, updateAllRequests } from './OrganizationHelpers';
+import { distance, updateAllRequests, filterVolunteers } from './OrganizationHelpers';
 import { toastTime } from '../constants';
 import { notifiedVolunteers, unSelectedVolunteers, volunteerListGroup, bestMatchesTitle,
         displayPrevMatched, displayResourceMatch, unselectButtonStyle } from './requestDetailsHelpers';
@@ -21,9 +21,10 @@ import { notifiedVolunteers, unSelectedVolunteers, volunteerListGroup, bestMatch
 
 export default function BestMatches(props) {
     const [unselected_volunteers, setUnselectedVolunteers] = useState([]);
+    const [filteredVolunteers, setFilteredVolunteers] = useState([]);
     const [notified_volunteers, setNotifiedVolunteers] = useState([]);
     const [strict, setStrict] = useState(true);
-
+    const [currQuery, setQuery] = useState('');
     const [bestMatchVolunteer, setBestMatchVolunteer] = useState(false);
     const [currVolunteer, setCurrVolunteer] = useState({});
     const [checkboxStatus, setCheckboxStatus] = useState({});
@@ -40,6 +41,7 @@ export default function BestMatches(props) {
     useEffect(() => {
         const unselected = unSelectedVolunteers(props.currRequest, props.volunteers, strict);
         setUnselectedVolunteers(unselected);
+        setFilteredVolunteers(unselected);
         const notified = notifiedVolunteers(props.currRequest, props.volunteers);
         setNotifiedVolunteers(notified);
         var temp_checkbox = {};
@@ -77,7 +79,7 @@ export default function BestMatches(props) {
         setBestMatchVolunteer(true);
     }
 
-    const handleCheckboxAction = (volunteer) => {
+    const handleCheckboxAction = (volunteer, event) => {
         var volunteers = [];
         if (!checkboxStatus[volunteer._id]) {
             volunteers = selectedVolunteers.concat(volunteer);
@@ -90,6 +92,16 @@ export default function BestMatches(props) {
         var temp_checkbox = JSON.parse(JSON.stringify(checkboxStatus));
         temp_checkbox[volunteer._id] = !checkboxStatus[volunteer._id];
         setCheckboxStatus(temp_checkbox);
+    }
+
+    const filterRequests = (e) => {
+        e.persist();
+        e.preventDefault();
+        e.stopPropagation();
+        var query = e.target.value.toLowerCase();
+        setQuery(query);
+        const filteredVolunteers = filterVolunteers(query, unselected_volunteers);
+        setFilteredVolunteers(filteredVolunteers);
     }
 
     const volunteerCount = () => {
@@ -138,7 +150,20 @@ export default function BestMatches(props) {
     const changeStrict = () => {
         const unselected = unSelectedVolunteers(props.currRequest, props.volunteers, !strict);
         setUnselectedVolunteers(unselected);
+        setFilteredVolunteers(unselected);
+        setQuery('');
         setStrict(!strict)
+    }
+
+    const displayFilteredVolunteers = () => {
+        if (filteredVolunteers.length > 0) {  
+            return filteredVolunteers.map(volunteer => 
+                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, checkboxStatus, handleCheckboxAction))
+        } else {
+            return  <p id="regular-text" style={{textAlign: "center", marginTop: 20}}>
+                            <strong>No matches, try broadening your search</strong> 
+                    </p>
+        }
     }
 
     return (<>
@@ -155,10 +180,10 @@ export default function BestMatches(props) {
                         </Form>
                         </Modal.Title>
                     </Col>
-                    <Col style={{paddingRight: 0}}>
+                    <Col>
                         <Form>
                             <Form.Group bssize="large">
-                                <Form.Control id="filter-requests" placeholder="Search by name or neighborhood"/>
+                                <Form.Control id="filter-requests" value={currQuery} placeholder="Search by name or neighborhood" onChange={filterRequests}/>
                             </Form.Group>
                         </Form>
                     </Col>
@@ -168,8 +193,7 @@ export default function BestMatches(props) {
                     <Col xs="12" id="col-scroll">
                         <ListGroup variant="flush">
                             {notified_volunteers.map(volunteer => volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick))}
-                            {unselected_volunteers.map(volunteer => 
-                                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, checkboxStatus, handleCheckboxAction))}
+                            {displayFilteredVolunteers()}
                         </ListGroup>
                     </Col>
                     <Col xs="12">
