@@ -624,20 +624,20 @@ exports.unmatchPendingVolunteers = async function(expiryTime) {
 
     try {
         let allRequests = await RequestRepository.readRequest({});
-        var exipredVolunteers = [];
+        var expiredVolunteers = [];
         allRequests.forEach(request => {
             request.status.volunteers.forEach(volunteer => {
                 if (volunteer.current_status === volunteer_status.PENDING && volunteer.last_notified_time < new Date(Date.now() - expiryTime * 60 * 60 * 1000)) {
-                    if (exipredVolunteers[request._id]) {
-                        exipredVolunteers[request._id].push(volunteer.volunteer);
+                    if (expiredVolunteers[request._id]) {
+                        expiredVolunteers[request._id].push(volunteer.volunteer);
                     } else {
-                        exipredVolunteers[request._id] = [volunteer.volunteer];
+                        expiredVolunteers[request._id] = [volunteer.volunteer];
                     }
                 }
             });
         });
-        for (var request in exipredVolunteers) {
-            let volunteers = exipredVolunteers[request];
+        for (var request in expiredVolunteers) {
+            let volunteers = expiredVolunteers[request];
             await exports.unmatchVolunteers(request, volunteers);
         }
     } catch (e) {
