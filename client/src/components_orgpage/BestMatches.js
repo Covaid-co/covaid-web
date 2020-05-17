@@ -155,6 +155,17 @@ export default function BestMatches(props) {
         setStrict(!strict)
     }
 
+    const displayFilteredVolunteers = () => {
+        if (filteredVolunteers.length > 0) {  
+            return filteredVolunteers.map(volunteer => 
+                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, checkboxStatus, handleCheckboxAction))
+        } else {
+            return  <p id="regular-text" style={{textAlign: "center", marginTop: 20}}>
+                            <strong>No matches, try broadening your search</strong> 
+                    </p>
+        }
+    }
+
     return (<>
         <Modal show={props.topMatchesModal} onHide={closePage} style = {{marginTop: 5, paddingBottom: 40}}>
             <Modal.Body style={{zoom: '90%'}}>
@@ -182,8 +193,7 @@ export default function BestMatches(props) {
                     <Col xs="12" id="col-scroll">
                         <ListGroup variant="flush">
                             {notified_volunteers.map(volunteer => volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick))}
-                            {filteredVolunteers.map(volunteer => 
-                                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, checkboxStatus, handleCheckboxAction))}
+                            {displayFilteredVolunteers()}
                         </ListGroup>
                     </Col>
                     <Col xs="12">

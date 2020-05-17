@@ -353,6 +353,22 @@ export default function RequestDetails(props) {
         }
     }
 
+    const contactInfo = () => {
+        if (props.currRequest.personal_info.requester_email || props.currRequest.personal_info.requester_phone) {
+            return (<>
+                <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_email}</p>
+                <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_phone}</p></>
+            );
+        }
+        else {
+            return (<>
+            <p id="regular-text-nomargin" style={{color: "#EF6315"}}><b>Share contact directly with volunteer (i.e. from Notes)</b>
+            </p>
+            </>
+            );
+        }
+    } 
+
     return (
         <>
             <Modal show={props.requestDetailsModal} 
@@ -367,7 +383,7 @@ export default function RequestDetails(props) {
                 <Modal.Body>
                     <h5 id="regular-text-bold" style={{marginTop: 0, marginBottom: 5}}>Who's tracking this request:</h5>
                     {adminTracker()}
-                    <h5 id="regular-text-bold" style={{marginTop: 13, marginBottom: 5}}>Your Notes:</h5>
+                    <h5 id="regular-text-bold" style={{marginTop: 13, marginBottom: 5}}>Notes:</h5>
                     <Form>
                         <Form.Group controlId="email2" bssize="large">
                             <Form.Control as="textarea" 
@@ -381,15 +397,19 @@ export default function RequestDetails(props) {
                     <Col xs={12} style={{padding: 0}}><p id="requestCall" style={{marginTop: -15, marginBottom: 15}}>&nbsp;</p></Col>
                     <p id="name-details">{formatName(props.currRequest.personal_info.requester_name)}</p>
                     <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapsURL}>Click here</a></p>
-                    <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_email}</p>
-                    <p id="regular-text-nomargin">{props.currRequest.personal_info.requester_phone}</p>
+                    {contactInfo()}
                     <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currRequest.personal_info.languages.join(', ')}</p>
                     {paymentText()}
                     <p id="regular-text-nomargin">Needs: {props.currRequest.request_info.resource_request.join(', ')}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currRequest.request_info.details}</p>
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Needed by:</h5>
-                    <p id="regular-text-nomargin">{props.currRequest.request_info.time} of {props.currRequest.request_info.date}</p>
+                    {
+                        (props.currRequest.request_info.date) ? 
+                        <p id="regular-text-nomargin">{props.currRequest.request_info.time} of {props.currRequest.request_info.date}</p>
+                        :
+                        <p id="regular-text-nomargin">N/A</p>
+                    }
                     {volunteerComments()}
                     <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
                     {matchVolunteersButton(props.mode, topMatch)}
