@@ -14,6 +14,7 @@ const volunteer_status = {
 
 const RequestRepository = require('../repositories/request.repository');
 const AssociationService = require('./association.service');
+const UserService = require('./user.service');
 const emailer = require('../util/emailer');
 const Pusher = require('pusher');
 
@@ -103,6 +104,40 @@ exports.createRequest = async function(request) {
             assignee: 'No one assigned'
         }
         console.log(new_request);
+
+        // In progress
+        // ***check*** if these scenarios are handled correctly 
+        // Scenario: when a request is created [no volunteer in body] -> send email to the association (+ push notif) 
+        var assoc = await AssociationService.getAssociation({'_id': request.association}); // ***check logic*** -> make sure it defaults to Covaid
+        if (!req.body.volunteer) { 
+            var data = {
+                sender: 'Covaid@covaid.co',
+                receiver: assoc.email,
+                name: request.requester_first,
+                assoc: assoc.name,
+                templateName: 'org_notification',
+            };
+            emailer.sendNotificationEmail(data)
+            pusher.trigger(request.association, 'general', "You have a new unmatched request!")
+        } else { // Scenario: when a request is created [volunteer in body] -> send email to volunteer (+ push notif) 
+            volunteers = [request.body.volunteer]
+
+            request.body.volunteer.forEach(volunteer => { // ***check*** 
+                var first_name = volunteer.first_name;
+                first_name = first_name.toLowerCase();
+                first_name = first_name[0].toUpperCase() + first_name.slice(1);
+                var data = {
+                    sender: "Covaid@covaid.co",
+                    receiver: volunteer.email,
+                    name: first_name,
+                    assoc: assoc.email,
+                    templateName: 'volunteer_notification',
+                };
+                emailer.sendNotificationEmail(data);
+                pusher.trigger(volunteer._id, 'direct-match', 'You have a new pending request!'); 
+            });             
+        }
+
         return await RequestRepository.createRequest(new_request);
     } catch (e) {
         console.log(e);
@@ -247,32 +282,34 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
         console.log(updatedRequest.status.volunteers)
-        return updatedRequest;
+        
         // TODO -> send emails
-        // in progress
-        // look @ attach volunteer to request function in master 
-        // leave this method for after Angela finishes the method 
-        var associationEmail = 'covaidco@gmail.com';
-        var associationName = 'Covaid';
-        if (updatedRequest.association) {
-            let association = (await AssociationService.getAssociation({'_id': updatedRequest.association}))[0];
-            associationEmail = association.email;
-            associationName = association.name;
-        }
-        updatedRequest.status.volunteers.forEach(volunteer => {
-            // Prepare email/pusher notifications
-            
-            var data = { // fix - is json being constructed correctly 
-                sender: "Covaid@covaid.co",
-                receiver: associationEmail,
-                name: volunteer.first_name + " " + volunteer.last_name, 
-                assoc: "AssociationName", //associationName, // fix 
-                action: "Action", // fix - add action, and any other data
-                templateName: "volunteer_notification",
+        // In progress
+        // Scenario: when a volunteer is matched to a request -> send email to the volunteer (+ push notification) 
+        var assocEmail = 'covaidco@gmail.com';
+        var assocName = 'Covaid';
+        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
+        if (assoc) {
+            assocEmail = assoc.email; 
+            assocName = assoc.name; 
+        } // ***check*** see if this can be removed, default should be covaid 
+
+        new_volunteer_obj_list = UserService.getUsersByUserIDs(new_volunteers_list); // might be causing an error 
+        for (var i = 0; i < new_volunteer_obj_list.length; i++) { // ***check*** if the right list is being used, forEach? 
+            var curr_volunteer = new_volunteer_obj_list[i]; 
+            var firstName = curr_volunteer.first_name;
+            firstName = firstName.toLowerCase();
+            firstName = firstName[0].toUpperCase() + firstName.slice(1);
+            var data = { // ***check*** should adminMessage be used here? 
+                sender: 'Covaid@covaid.co',
+                receiver: curr_volunteer.email,
+                name: firstName,
+                assoc: assocEmail,
+                templateName: 'volunteer_notification',
             };
-            emailer.sendNotificationEmail(data);
-            pusher.trigger(updatedRequest.association, 'matched-request', "You have been matched with a request!");
-        }); 
+            emailer.sendNotificationEmail(data); 
+            pusher.trigger(curr_volunteer._id, 'direct-match', updatedRequest._id);
+        }
 
         return updatedRequest;
     } catch (e) {
@@ -335,32 +372,49 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
         }
 
         // TODO -> send emails
-        // in progress
-
-        // if a volunteer is unmatched from something, the organization has to be notified
+        // In progress
+        // Scenario: if a volunteer is unmatched from something, the organization has to be notified (+push notification)
         // don't worry abt sending emails to unmatched volunteers
-
-        // Prepare email/pusher notifications
-        var volunteerEmail = 'covaidco@gmail.com';
-        var volunteerName = 'Covaid';
-        if (updatedRequest.association) { // fix 
-            let association = (await AssociationService.getAssociation({'_id': updatedRequest.association}))[0];
-            associationEmail = association.email;
-            associationName = association.name;
+        var assocEmail = 'covaidco@gmail.com';
+        var assocName = 'Covaid';
+        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
+        if (assoc) {
+            assocEmail = assoc.email; 
+            assocName = assoc.name; 
         }
-        var data = {
-            sender: "Covaid@covaid.co",
-            receiver: volunteer.email,
-            name: volunteer.first_name + " " + volunteer.last_name,
-            // assoc: "associationName", //associationName, // associationEmail ? fix 
-            action: "Action", // fix - add action, and any other data
-            templateName: "volunteer_notification",
-        };
-        emailer.sendNotificationEmail(data);
-        pusher.trigger(updatedRequest.association, 'unmatch-volunteer', "You have been unmatched from a request."); // fix 
+        // Find admin
+        // If admin exists, send them an email 
+        var foundAdmin = false; 
+        for (var i = 0; i < assoc.admins.length; i++) { // ***check*** assoc could be null 
+            var admin = assoc.admins[i];
+            if (admin.name === updatedRequest.assignee) {
+                var data = {
+                    sender: 'Covaid@covaid.co',
+                    receiver: admin.email,
+                    name: updatedRequest.requester_first,
+                    action: 'accepted',
+                    templateName: 'admin_notification',
+                };
+                emailer.sendNotificationEmail(data);
+                foundAdmin = true; 
+                break;
+            }
+        }
+
+        // If no admin assigned to request, send email to association
+        if (!foundAdmin) {
+            var data = {
+                sender: 'Covaid@covaid.co',
+                receiver: assocEmail,
+                name: updatedRequest.requester_first,
+                action: 'accepted',
+                templateName: 'org_notification',
+            };
+            emailer.sendNotificationEmail(data)
+        }
+        pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); // ***check*** assoc could be null
 
         return updatedRequest;
-
     } catch (e) {
         throw e;
     }
@@ -380,41 +434,52 @@ exports.acceptRequest = async function(volunteerID, requestID) {
         });
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
 
-        // TODO -> Notify admins
-        // in progress
+        // TODO -> Notify admins 
+        // In progress
+        // Scenario: when a volunteer accepts a request -> send email to admin 
+
         // Prepare email/pusher notifications
-        var associationEmail = 'covaidco@gmail.com';
-        var associationName = 'Covaid';
-
-        // find the person tracking (admin)
-        // send email to admin 
-        // if no admin, send email to association
-        // write a helper function for that for accept/reject/complete      
-        // if covaid -> look thru covaid's admin list    
-
-        // look for association first
-        // if association exists, (prob get rid of this check bc defaults to covaid)
-
-        // find admin tracking the request
-        // if admin, send to them
-        // otherwise send to association 
-        
-        
-        if (updatedRequest.association) {
-            let association = (await AssociationService.getAssociation({'_id': updatedRequest.association}))[0];
-            associationEmail = association.email;
-            associationName = association.name;
+        // Find association, if exists (default to Covaid)
+        var assocEmail = 'covaidco@gmail.com';
+        var assocName = 'Covaid';
+        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
+        if (assoc) {
+            assocEmail = assoc.email; 
+            assocName = assoc.name; 
         }
-        var data = { // fix - is json being constructed correctly 
-            sender: "Covaid@covaid.co",
-            receiver: associationEmail, // fix - should this be the person who is tracking the request
-            name: "", // fix - get admin name from requestID -- updatedRequest. look in model
-            assoc: associationName,
-            action: "Action", // fix - add action, and any other data
-            templateName: "admin_notification",
-        };
-        emailer.sendNotificationEmail(data);
-        // pusher.trigger(updatedRequest.association, 'accepted-request', "A request has been accepted by a volunteer!");
+
+        // Find admin
+        // If admin exists, send them an email 
+        var foundAdmin = false; 
+        for (var i = 0; i < assoc.admins.length; i++) {
+            var admin = assoc.admins[i];
+            if (admin.name === updatedRequest.assignee) {
+                var data = {
+                    sender: "Covaid@covaid.co",
+                    receiver: admin.email,
+                    name: updatedRequest.requester_first,
+                    action: 'accepted',
+                    templateName: "admin_notification",
+                };
+                emailer.sendNotificationEmail(data);
+                foundAdmin = true; 
+                break;
+            }
+        }
+
+        // If no admin assigned to request, send email to association
+        if (!foundAdmin) {
+            var data = {
+                sender: 'Covaid@covaid.co',
+                receiver: assocEmail,
+                name: updatedRequest.requester_first,
+                action: 'accepted',
+                templateName: 'org_notification',
+            };
+            emailer.sendNotificationEmail(data)
+        }
+
+        // No push notification 
         
         return updatedRequest;
     } catch (e) {
@@ -432,26 +497,52 @@ exports.rejectRequest = async function(volunteerID, requestID) {
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
 
         // TODO -> Notify admins
-        // in progress
+        // In progress
+        // Scenario: when a volunteer is removed from a request -> send email to the admin (+ push notification) 
+
         // Prepare email/pusher notifications
-        var associationEmail = 'covaidco@gmail.com';
-        var associationName = 'Covaid';
-        if (updatedRequest.association) {
-            let association = (await AssociationService.getAssociation({'_id': updatedRequest.association}))[0];
-            associationEmail = association.email;
-            associationName = association.name;
+        // Find association, if exists (default to Covaid)
+        var assocEmail = 'covaidco@gmail.com';
+        var assocName = 'Covaid';
+        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
+        if (assoc) {
+            assocEmail = assoc.email; 
+            assocName = assoc.name; 
         }
-        var data = { // fix - is json being constructed correctly 
-            sender: "Covaid@covaid.co",
-            receiver: associationEmail, // fix - should this be the person who is tracking the request
-            name: "AdminName", // fix - requester's name ******************
-            assoc: associationName,
-            action: "A request has been rejected by a volunteer", // fix - add action, and any other data --- leave blank 
-            templateName: "admin_notification",
-        };
-        // look @ old code 
-        emailer.sendNotificationEmail(data);
-        // pusher.trigger(updatedRequest.association, 'rejected-request', "A request has been rejected by a volunteer.");
+
+        // Find admin
+        // If admin exists, send them an email 
+        var foundAdmin = false; 
+        for (var i = 0; i < assoc.admins.length; i++) { // ***check*** assoc could be null
+            var admin = assoc.admins[i];
+            if (admin.name === updatedRequest.assignee) {
+                var data = {
+                    sender: 'Covaid@covaid.co',
+                    receiver: admin.email,
+                    name: updatedRequest.requester_first,
+                    action: 'rejected',
+                    templateName: 'admin_notification',
+                };
+                emailer.sendNotificationEmail(data);
+                foundAdmin = true; 
+                break;
+            }
+        }
+
+        // If no admin assigned to request, send email to association
+        if (!foundAdmin) {
+            var data = {
+                sender: 'Covaid@covaid.co',
+                receiver: assocEmail,
+                name: updatedRequest.requester_first,
+                action: 'rejected',
+                templateName: 'org_notification',
+            };
+            emailer.sendNotificationEmail(data)
+        }
+
+        pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); // ***check*** if assoc_.id is valid, if not try updatedRequest.body.assoc_id
+        // res.send('Request updated.'); -> include ?
         
         return updatedRequest;
     } catch (e) {
@@ -493,31 +584,11 @@ exports.completeRequest = async function(volunteerID, requestID, reason, volunte
         }
 
         // TODO -> Notify admins
-        // in progress
-        // Prepare email/pusher notifications
-        // ***** look in master 
-        // just notifiy org, not admin (probably) - check to make sure 
-        // request.controller.js on master 
-        // real-time notifs here to add to reject/accept 
-        var associationEmail = 'covaidco@gmail.com';
-        var associationName = 'Covaid';
-        if (updatedRequest.association) {
-            let association = (await AssociationService.getAssociation({'_id': updatedRequest.association}))[0];
-            associationEmail = association.email;
-            associationName = association.name;
-        }
-        var data = { // fix - is json being constructed correctly 
-            sender: "Covaid@covaid.co",
-            receiver: associationEmail, // fix - should this be the person who is tracking the request
-            name: "AdminName", // fix - get admin name from requestID
-            assoc: associationName,
-            action: "Action", // fix - add action, and any other data
-            templateName: "admin_notification",
-        };
-        emailer.sendNotificationEmail(data);
-        pusher.trigger(updatedRequest.association, 'volunteer-complete-request', "A request has been completed by a volunteer!");
-        
-        return updatedRequest;
+        // In progress
+        // Scenario: when a request is completed -> send a push notif to the association 
+        // No email         
+        pusher.trigger(updatedRequest.body.assoc_id, 'complete', request_id);
+        // res.send('Request updated.'); // include ?
 
         return updatedRequest;
     } catch (e) {
@@ -543,6 +614,8 @@ exports.updateRequestDetails = async function(requestID, updates) {
  * Unmatch pending volunteers who have been tied to a request for more than 48 hours
  */
 exports.unmatchPendingVolunteers = async function(expiryTime) {
+    // ***check*** are notifs required here 
+
     try {
         let allRequests = await RequestRepository.readRequest({});
         var exipredVolunteers = [];
