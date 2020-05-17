@@ -77,7 +77,7 @@ export default function BestMatches(props) {
         setBestMatchVolunteer(true);
     }
 
-    const handleCheckboxAction = (volunteer) => {
+    const handleCheckboxAction = (volunteer, event) => {
         var volunteers = [];
         if (!checkboxStatus[volunteer._id]) {
             volunteers = selectedVolunteers.concat(volunteer);

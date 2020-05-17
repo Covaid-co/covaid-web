@@ -8,7 +8,7 @@ import Toast from 'react-bootstrap/Toast'
 import BestMatches from './BestMatches'
 import Badge from 'react-bootstrap/Badge'
 import Col from 'react-bootstrap/Col'
-import ViewVolunteersModal from './ViewVolunteersModal';
+import VolunteerDetails from './VolunteerDetails';
 import { useFormFields } from "../libs/hooksLib";
 import { formatName, updateAllRequests } from './OrganizationHelpers'
 import { toastTime, paymentOptions, current_tab, volunteer_status } from '../constants';
@@ -35,9 +35,8 @@ export default function RequestDetails(props) {
     const [fields, handleFieldChange] = useFormFields({
         email2: "",
     });
-    const [showVolunteers, setShowVolunteers] = useState(false);
-    const [selectedVolunteers, setSelectedVolunteers] = useState([]);
-    const [viewVolunteersMode, setViewVolunteersMode] = useState(-1);
+    const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
+    const [currVolunteer, setCurrVolunteer] = useState([]);
 
     useEffect(() => {
         setAssignee('No one assigned');
@@ -89,6 +88,15 @@ export default function RequestDetails(props) {
     const viewEdit = () => {
         setTopMatchesModal(true);
         props.setRequestDetailsModal(false);
+    }
+
+    const viewComplete = (volunteer_status) => {
+        setVolunteerDetailsModal(true);
+        props.setRequestDetailsModal(false);
+        let volunteer = props.volunteers.find(function (v) {
+            return v._id === volunteer_status.volunteer
+        });
+        setCurrVolunteer(volunteer);
     }
 
     // Update current request and requests array
@@ -314,7 +322,7 @@ export default function RequestDetails(props) {
         const found = volunteers.find(vol => {
             return vol.current_status === volunteer_status.COMPLETE;
         });
-        if (props.mode === current_tab.COMPLETED && found) {
+        if (props.mode === current_tab.COMPLETED && found && found.volunteer_response && found.volunteer_response.length > 0) {
             return <>
                 <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Volunteer's completion remarks:</h5>
                     <p id="regular-text-nomargin">"{found.volunteer_response}"</p>
@@ -387,7 +395,7 @@ export default function RequestDetails(props) {
                     {volunteerComments()}
                     <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
                     {matchVolunteersButton(props.mode, topMatch)}
-                    {viewVolunteersInfo(props.mode, props.currRequest, viewEdit)}
+                    {viewVolunteersInfo(props.mode, props.currRequest, viewEdit, viewComplete)}
                     {unmatchCompleteButtons(props.mode, closeRequest, setUnmatchModal, setConfirmCompleteModal)}
                     <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
                         <Toast.Body>{toastMessage}</Toast.Body>
@@ -444,13 +452,8 @@ export default function RequestDetails(props) {
                 </Modal.Body>
             </Modal>
             <BestMatches { ... props} topMatchesModal={topMatchesModal} setTopMatchesModal={setTopMatchesModal}/>
-            <ViewVolunteersModal 
-                showVolunteers={showVolunteers} 
-                setShowVolunteers={setShowVolunteers} 
-                volunteers={selectedVolunteers} 
-                currRequest={props.currRequest}
-                mode={viewVolunteersMode}
-                />
+            <VolunteerDetails { ... props } volunteerDetailModal={volunteerDetailModal} setVolunteerDetailsModal={setVolunteerDetailsModal} 
+                        currVolunteer={currVolunteer} inRequest={true} setRequestDetailsModal={props.setRequestDetailsModal} />
         </>
     );
 }

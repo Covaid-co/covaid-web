@@ -57,7 +57,7 @@ export const unmatchCompleteButtons = (mode, closeRequest, setUnmatchModal, setC
     </Row>
 }
 
-export const viewVolunteersInfo = (mode, curr_request, viewEdit) => {
+export const viewVolunteersInfo = (mode, curr_request, viewEdit, viewComplete) => {
     if (mode === current_tab.MATCHED) {
         const volunteers = curr_request.status.volunteers;
         const in_progress = filter_volunteers(volunteers, volunteer_status.IN_PROGRESS);
@@ -84,8 +84,22 @@ export const viewVolunteersInfo = (mode, curr_request, viewEdit) => {
                 </div>);
         }
     } else if (mode === current_tab.COMPLETED) {
-        return (
-            <></>);
+        const volunteers = curr_request.status.volunteers;
+        const completed = filter_volunteers(volunteers, volunteer_status.COMPLETE);
+        if (completed.length > 0) {
+            // TODO -> UI for multiple completing volunteers
+            return (
+                    <div style={{textAlign: 'center'}}>
+                            <Button variant="link" style={{color: '#28a745', fontWeight: 'bold'}} onClick={() => viewComplete(completed[0])}>
+                                <p id="regular-text-nomargin" style={{marginTop: 10, marginBottom: 10, color: '#28a745'}}>
+                                    View volunteer who completed this request
+                                </p>
+                            </Button>
+                    </div>
+            );
+        } else {
+            return <></>;
+        }
     } else {
         return <></>
     }
@@ -168,7 +182,7 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
             <Row>
                 <Col xs={1}>
                     <Form.Check type="checkbox" style={{marginTop: 35}} id='default-checkbox'
-                                checked={checkboxStatus[volunteer._id]} onChange={() => handleCheckboxAction(volunteer)}/>
+                                checked={checkboxStatus[volunteer._id]} onChange={(event) => {handleCheckboxAction(volunteer, event)}}/>
                 </Col>
                 <Col id="best-match-item" xs={11} onClick={() => handleVolunteerClick(volunteer)}>
                     <div>
