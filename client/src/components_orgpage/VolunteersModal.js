@@ -34,6 +34,8 @@ export default function VolunteersModal(props) {
      }, [props.volunteers, props.association]);
 
     const filterRequests = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         var query = e.target.value.toLowerCase();
         setQuery(query);
         const filteredVolunteers = filterVolunteers(query, props.volunteers);

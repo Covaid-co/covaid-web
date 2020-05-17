@@ -200,9 +200,7 @@ export default function RequestDetails(props) {
             body: JSON.stringify(form)
         }).then((response) => response.json())
         .then(request => {
-            props.setCurrRequest(request);
-            // Remove request from array
-            const newAllRequests = updateAllRequests(request, props.allRequests, true);
+            const newAllRequests = props.allRequests.filter(request => request._id !== request._id);
             props.setAllRequests(newAllRequests);
             setDeleteModal(false);
             props.setRequestDetailsModal(false);
@@ -396,7 +394,7 @@ export default function RequestDetails(props) {
                     <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
                     {matchVolunteersButton(props.mode, topMatch)}
                     {viewVolunteersInfo(props.mode, props.currRequest, viewEdit, viewComplete)}
-                    {unmatchCompleteButtons(props.mode, closeRequest, setUnmatchModal, setConfirmCompleteModal)}
+                    {unmatchCompleteButtons(props.mode, closeRequest, setUnmatchModal, setDeleteModal, setConfirmCompleteModal)}
                     <Toast show={showToast} delay={toastTime} onClose={() => setShowToast(false)} autohide id='toastError'>
                         <Toast.Body>{toastMessage}</Toast.Body>
                     </Toast>

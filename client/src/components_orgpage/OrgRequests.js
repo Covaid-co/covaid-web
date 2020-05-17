@@ -26,6 +26,8 @@ export default function OrgRequests(props) {
     }, [props.requests, foundQuery]);
 
     const filterRequests = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         var query = e.target.value.toLowerCase();
         setQuery(query);
         const filteredRequests = filterReq(query, props.requests);

@@ -40,21 +40,34 @@ export const matchVolunteersButton = (mode, topMatch) => {
     return <></>
 }
 
-export const unmatchCompleteButtons = (mode, closeRequest, setUnmatchModal, setConfirmCompleteModal) => {
+export const unmatchCompleteButtons = (mode, closeRequest, setUnmatchModal, setDeleteModal, setConfirmCompleteModal) => {
+    var rightButton = <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
+                        <Button id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
+                                onClick={() => {setUnmatchModal(true); closeRequest();}}>
+                            Unmatch Request
+                        </Button>
+                    </Col>;
+
+    var leftButton = <Col xs={6} style = {{padding: 0, paddingLeft: 4, paddingRight:15}}>
+                        <Button id="large-button-empty" style={{borderColor: '#28a745', color: '#28a745'}} 
+                                onClick={()=>{setConfirmCompleteModal(true); closeRequest();}}>
+                            {mode === current_tab.COMPLETED ? 'Update Status' : 'Mark Complete'}
+                        </Button>
+                    </Col>;
+
+    if (mode === current_tab.UNMATCHED) {
+        rightButton = <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
+                        <Button id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
+                                onClick={() => {setDeleteModal(true); closeRequest();}}>
+                            Delete Request
+                        </Button>
+                    </Col>
+    }
+
     return <Row style={{marginBottom: 10}}>
-        <Col xs={6} style = {{padding: 0, paddingRight: 4, paddingLeft: 15}}>
-            <Button id='large-button-empty' style={{borderColor: '#DB4B4B', color: '#DB4B4B'}} 
-                    onClick={() => {setUnmatchModal(true); closeRequest();}}>
-                Unmatch Request
-            </Button>
-        </Col>
-        <Col xs={6} style = {{padding: 0, paddingLeft: 4, paddingRight:15}}>
-            <Button id="large-button-empty" style={{borderColor: '#28a745', color: '#28a745'}} 
-                    onClick={()=>{setConfirmCompleteModal(true); closeRequest();}}>
-                {mode === current_tab.COMPLETED ? 'Update Status' : 'Mark Complete'}
-            </Button>
-        </Col>
-    </Row>
+        {rightButton}
+        {leftButton}
+        </Row>
 }
 
 export const viewVolunteersInfo = (mode, curr_request, viewEdit, viewComplete) => {
@@ -108,7 +121,7 @@ export const viewVolunteersInfo = (mode, curr_request, viewEdit, viewComplete) =
 
 export const bestMatchesTitle = (curr_request, mode) => {
     if (mode === current_tab.UNMATCHED) {
-        return formatName(curr_request.personal_info.requester_name) + "'s Top Matches"
+        return "Top Matches";
     } else if (mode === current_tab.MATCHED) {
         return 'Edit Volunteer List';
     } else {
