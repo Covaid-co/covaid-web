@@ -13,6 +13,7 @@ import { useFormFields } from "../libs/hooksLib";
 import { formatName, updateAllRequests } from './OrganizationHelpers'
 import { toastTime, paymentOptions, current_tab, volunteer_status } from '../constants';
 import { generateURL, generateMapsURL } from '../Helpers';
+import fetch_a from '../util/fetch_auth';
 import { matchVolunteersButton, unmatchCompleteButtons, viewVolunteersInfo } from './requestDetailsHelpers';
 
 /**
@@ -126,11 +127,16 @@ export default function RequestDetails(props) {
         e.stopPropagation();
 
         let form = {
-            'request_id': props.currRequest._id,
             'reason': reason,
-            'assoc_id': props.association._id
+            'adminMode': true
         };
-        fetch('/api/request/completeRequest', {
+        var url = "/api/request/completeRequest?";
+        let params = {
+            'ID' : props.currRequest._id
+        }
+		var url = generateURL( "/api/request/completeRequest?", params);
+
+        fetch_a('org_token', url, {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
@@ -428,7 +434,7 @@ export default function RequestDetails(props) {
                                 <option>No one in area</option>
                                 <option>Recurring request</option>
                                 <option>Referred to support</option>
-                                <option>Food Delivery Scheduled</option>
+                                <option>Food delivery scheduled</option>
                             </Form.Control>
                         </Form.Group>
                         <Button type="submit" id="large-button" style={{backgroundColor: '#28a745', border: '1px solid #28a745'}}>

@@ -201,10 +201,10 @@ exports.rejectRequest = asyncWrapper(async (req, res) => {
 exports.completeARequest = asyncWrapper(async (req, res) => {
     const requestID = req.query.ID;
     const volunteerID = req.token.id;
-    const { body: { reason, volunteer_comment } } = req;
+    const { body: { reason, volunteer_comment, adminMode } } = req;
 
     try {
-        let updated_request = await RequestService.completeRequest(volunteerID, requestID, reason, volunteer_comment);
+        let updated_request = await RequestService.completeRequest(volunteerID, requestID, reason, volunteer_comment, adminMode);
         return res.status(200).send(updated_request);
     } catch (e) {
         console.log(e);

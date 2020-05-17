@@ -50,7 +50,7 @@ export default function MapModal(props) {
     return (
         <Modal show={props.showModal} size="lg" style={{marginTop: 10}} onHide={props.hideModal}>
             <Modal.Header closeButton>
-                <Modal.Title>{props.mobile ? 'Covaid Map' : 'Covaid Volunteer Map'} <Badge id='volunteerBadge'>{props.totalVolunteers} Volunteer</Badge></Modal.Title>
+                <Modal.Title>{props.mobile ? 'Covaid Map' : 'Covaid Volunteer Map'} <Badge id='volunteerBadge'>{props.totalVolunteers} Volunteers</Badge></Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <p id="regular-text">Covaid volunteers are nationwide! Spread the word so more people can get support!</p>

@@ -78,17 +78,21 @@ export default class Pins extends PureComponent {
     var requesterMarkers = requests.map((request, index) => {
         const lat = request.location_info.coordinates[1];
         const long = request.location_info.coordinates[0];
-        return  <Marker key={`requester-${index}`} longitude={long} latitude={lat}>
-                    <svg height={MARKER_SIZE} viewBox="0 0 24 24" onClick={() => onClick(request)}
-                        style={{
-                            cursor: 'pointer',
-                            fill: isInProgress(request) ? '#db9327': color,
-                            stroke: 'none',
-                            transform: `translate(${-MARKER_SIZE / 2}px,${-MARKER_SIZE}px)`
-                        }}>
-                        <path d={ICON} />
-                    </svg>
-                </Marker>
+        if (lat && long) {
+            return  <Marker key={`requester-${index}`} longitude={long} latitude={lat}>
+                        <svg height={MARKER_SIZE} viewBox="0 0 24 24" onClick={() => onClick(request)}
+                            style={{
+                                cursor: 'pointer',
+                                fill: isInProgress(request) ? '#db9327': color,
+                                stroke: 'none',
+                                transform: `translate(${-MARKER_SIZE / 2}px,${-MARKER_SIZE}px)`
+                            }}>
+                            <path d={ICON} />
+                        </svg>
+                    </Marker>
+        } else {
+            return <></>
+        }
     });
 
     if (this.props.requesterMap && this.props.volunteerMap) {

@@ -147,22 +147,18 @@ export default function BestMatches(props) {
                 <Row style={{marginTop: 0}}>
                    <Col xs="12" style = {{marginTop: 0, marginBottom: 10}}>
                         <Modal.Title>{bestMatchesTitle(props.currRequest, props.mode)}
-                        <Button variant="link" id="regular-text" style={unselectButtonStyle(volunteerCount)} 
-                            onClick={()=>{setSelectedVolunteers([]); clearCheckBox()}}>Unselect All</Button>
+                        <Form style={{float: "right"}}>
+                            <Form.Group controlId="preverify" bssize="large" style = {{marginBottom: 0, marginTop: 6}}>
+                                <Form.Check type="switch"  id="custom-switch" style={{color: '#2670FF', fontSize: 14}}
+                                    label={strict ? "Match on resource": "Match on resource"} checked={strict} onChange={changeStrict}/>
+                            </Form.Group>
+                        </Form>
                         </Modal.Title>
                     </Col>
-                    <Col xs={9} style={{paddingRight: 0}}>
+                    <Col style={{paddingRight: 0}}>
                         <Form>
                             <Form.Group bssize="large">
                                 <Form.Control id="filter-requests" placeholder="Search by name or neighborhood"/>
-                            </Form.Group>
-                        </Form>
-                    </Col>
-                    <Col xs={3}>
-                        <Form>
-                            <Form.Group controlId="preverify" bssize="large" style = {{marginBottom: 0, marginTop: 6}}>
-                                <Form.Check type="switch"  id="custom-switch" style={{color: '#2670FF', fontSize: 14}}
-                                    label={strict ? "Strict": "Non-Strict"} checked={strict} onChange={changeStrict}/>
                             </Form.Group>
                         </Form>
                     </Col>
@@ -178,7 +174,9 @@ export default function BestMatches(props) {
                     </Col>
                     <Col xs="12">
                         <p id="requestCall" style={{marginTop: -20, marginBottom: 5}}>&nbsp;</p>
-                        <Button style={{marginTop: 10}} id="large-button" onClick={confirmSelection}>Select {volunteerCount()} Volunteers</Button>
+                        <Button variant="link" id="large-button" style={unselectButtonStyle(volunteerCount)} 
+                        onClick={()=>{setSelectedVolunteers([]); clearCheckBox()}}>Unselect All</Button>
+                        <Button style={{marginTop: 5}} id="large-button" onClick={confirmSelection}>Select {volunteerCount()} Volunteers</Button>
                         <Button style={{marginTop: 5}} id="large-button-empty" onClick={closePage}>Back</Button>
                     </Col>
                 </Row>

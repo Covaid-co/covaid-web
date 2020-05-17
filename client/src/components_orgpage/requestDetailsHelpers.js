@@ -104,9 +104,9 @@ export const bestMatchesTitle = (curr_request, mode) => {
 
 export const unselectButtonStyle = (volunteerCount) => {
     if (volunteerCount() === 0) {
-        return {color: '#cadaff', padding: 0, fontSize: 15, marginTop: 6, float: 'right'};
+        return {color: '#cadaff',  backgroundColor: 'transparent'};
     }
-    return {color: '#2670FF', padding: 0, fontSize: 15, marginTop: 6, float: 'right'};
+    return {color: '#2670FF',  backgroundColor: 'transparent'};
 }
 
 // Display if volunteer was previously matched
