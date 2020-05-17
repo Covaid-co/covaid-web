@@ -109,7 +109,7 @@ exports.createRequest = async function(request) {
         // ***check*** if these scenarios are handled correctly 
         // Scenario: when a request is created [no volunteer in body] -> send email to the association (+ push notif) 
         var assoc = await AssociationService.getAssociation({'_id': request.association}); // ***check logic*** -> make sure it defaults to Covaid
-        if (!req.body.volunteer) { 
+        if (!new_request.volunteer) { 
             var data = {
                 sender: 'Covaid@covaid.co',
                 receiver: assoc.email,
