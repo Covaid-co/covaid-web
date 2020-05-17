@@ -430,7 +430,7 @@ exports.acceptRequest = async function(volunteerID, requestID) {
         // TODO -> Notify admins 
         // In progress
         // Scenario: when a volunteer accepts a request -> send email to admin 
-        notifyRequestStatusChange(updatedRequest, 'accepted'); 
+        await exports. notifyRequestStatusChange(updatedRequest, 'accepted'); 
         // No push notification 
         
         return updatedRequest;
@@ -451,7 +451,7 @@ exports.rejectRequest = async function(volunteerID, requestID) {
         // TODO -> Notify admins
         // In progress
         // Scenario: when a volunteer is removed from a request -> send email to the admin (+ push notification) 
-        notifyRequestStatusChange(updatedRequest, 'rejected'); 
+        await exports.notifyRequestStatusChangenotifyRequestStatusChange(updatedRequest, 'rejected'); 
 
         pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); 
         // res.send('Request updated.'); -> include ?
@@ -513,8 +513,9 @@ exports.completeRequest = async function(volunteerID, requestID, reason, volunte
         // TODO -> Notify admins
         // In progress
         // Scenario: when a request is completed -> send a push notif to the association 
-        // No email         
-        pusher.trigger(updatedRequest.body.assoc_id, 'complete', request_id);
+        // No email      
+        console.log(updatedRequest);    
+        pusher.trigger(updatedRequest.association, 'complete', requestID);
         // res.send('Request updated.'); // include ?
 
         return updatedRequest;
@@ -578,6 +579,7 @@ exports.notifyRequestStatusChange = async function(updatedRequest, action) {
         // Find admin
         // If admin exists, send them an email 
         var foundAdmin = false; 
+        console.log(assoc.admins); 
         for (var i = 0; i < assoc.admins.length; i++) {
             var admin = assoc.admins[i];
             if (admin.name === updatedRequest.assignee) {
