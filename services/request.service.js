@@ -293,8 +293,14 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             assocEmail = assoc.email; 
             assocName = assoc.name; 
         } // ***check*** see if this can be removed, default should be covaid 
+        // console.log("Hi"); 
+        // console.log(new_volunteers_list); 
+        var volunteer_ids = []; 
+        for (var i = 0; i < new_volunteers_list.length; i++) { // ***check*** if the right list is being used, forEach? 
+            volunteer_ids.push(new_volunteers_list[i]._id); 
+        }
 
-        new_volunteer_obj_list = UserService.getUsersByUserIDs(new_volunteers_list); // might be causing an error 
+        new_volunteer_obj_list = await UserService.getUsersByUserIDs(volunteer_ids); // might be causing an error 
         for (var i = 0; i < new_volunteer_obj_list.length; i++) { // ***check*** if the right list is being used, forEach? 
             var curr_volunteer = new_volunteer_obj_list[i]; 
             var firstName = curr_volunteer.first_name;
