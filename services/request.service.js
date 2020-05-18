@@ -572,7 +572,7 @@ exports.notifyRequestStatusChange = async function(updatedRequest, action) {
                 sender: 'Covaid@covaid.co',
                 receiver: assoc[0].email,
                 name: requesterName,
-                action: action,
+                assoc: assoc.name,
                 templateName: 'org_notification',
             };
             emailer.sendNotificationEmail(data)
