@@ -491,7 +491,7 @@ exports.remindMatchedVolunteers = async function(notificationTime) {
         var reminderVolunteers = [];
         allRequests.forEach(request => {
             request.status.volunteers.forEach(volunteer => {
-                if (volunteer.current_status === volunteer_status.IN_PROGRESS && volunteer.last_notified_time < new Date(Date.now() - expiryTime * 60 * 60 * 1000)) {
+                if (volunteer.current_status === volunteer_status.IN_PROGRESS && volunteer.last_notified_time < new Date(Date.now() - notificationTime * 60 * 60 * 1000)) {
                     if (reminderVolunteers[request._id]) {
                         reminderVolunteers[request._id].push(volunteer.volunteer);
                     } else {
