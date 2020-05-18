@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import MapGL, { Popup, NavigationControl, FullscreenControl }  from 'react-map-gl';
 import useSupercluster from 'use-supercluster';
 import Pins from './pins';
@@ -8,6 +9,7 @@ export default function NewMap(props) {
     const mapRef = useRef();
     const [popupInfo, setPopupInfo] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [currRequest, setCurrRequest] = useState({});
     const [viewport, setViewport] = useState({
         latitude: 38.7528233,
         longitude: -98.1970437,
@@ -19,7 +21,6 @@ export default function NewMap(props) {
     });
     const [mapBoxToken, setMapBoxToken] = useState('');
 
-
     useEffect(() => {
         fetch('/api/apikey/mapbox').then((response) => {
             if (response.ok) {
@@ -28,17 +29,17 @@ export default function NewMap(props) {
                    setIsLoaded(true);
                 });
             } else {
-                console.log("Error");
+                alert("Error");
             }
         });
 
         if (props.association && props.association.name && props.association.name !== "Covaid") {
             setViewport({
                 ...viewport,
-                latitude: props.association.location.coordinates[1],
                 longitude: props.association.location.coordinates[0],
+                latitude: props.association.location.coordinates[1],
                 zoom: 10
-            })
+            });
         }
     }, [props.association])
     
@@ -57,6 +58,17 @@ export default function NewMap(props) {
     };
 
     const onClickMarker = (obj) => {
+        // Request obj
+        if (obj.location_info) {
+            setCurrRequest(obj);
+            obj = {
+                    'name': obj.personal_info.requester_name,
+                    'latitude': obj.location_info.coordinates[1],
+                    'longitude': obj.location_info.coordinates[0]
+                }
+        } else {
+            obj['name'] = obj.first_name;
+        }
         setPopupInfo(obj);
     }
 
@@ -104,9 +116,7 @@ export default function NewMap(props) {
 
     return (
         <MapGL {...viewport} mapStyle="mapbox://styles/mapbox/light-v9" onViewportChange={setViewport} mapboxApiAccessToken={mapBoxToken}>
-            <Pins requests={props.requests} volunteers={props.volunteers} onClick={onClickMarker}
-                  requesterMap={props.requesterMap} volunteerMap={props.volunteerMap} mode={props.mode}
-                  unmatched={props.unmatched} matched={props.matched} completed={props.completed}/>
+            <Pins { ...props } onClick={onClickMarker}/>
             <div style={navStyle}>
                 <NavigationControl/>
             </div>
@@ -114,22 +124,20 @@ export default function NewMap(props) {
                 <FullscreenControl/>
             </div>
             {popupInfo && (
-                <Popup
-                    tipSize={5}
-                    anchor="top"
+                <Popup tipSize={5} anchor="top" closeOnClick={false}
                     longitude={popupInfo.longitude}
                     latitude={popupInfo.latitude}
-                    closeOnClick={false}
                     onClose={() => setPopupInfo(null)}>
-                    <InfoMarker info={popupInfo} style={{color: 'black'}} 
-                                setVolunteerDetailsModal={props.setVolunteerDetailsModal} 
-                                setCurrVolunteer={props.setCurrVolunteer}
-                                setRequestDetailsModal={props.setRequestDetailsModal} 
-                            	setCurrRequest={props.setCurrRequest}
-                                setPopupInfo = {setPopupInfo}
-                                setInRequest={props.setInRequest}/>
+                    <InfoMarker info={popupInfo} request={currRequest} style={{color: 'black'}} { ...props } setPopupInfo = {setPopupInfo}/>
                 </Popup>
             )}
         </MapGL>
     );
 }
+
+
+NewMap.propTypes = {
+    volunteers: PropTypes.array,
+    association: PropTypes.object,
+    public: PropTypes.bool
+};

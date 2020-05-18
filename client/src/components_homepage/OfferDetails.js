@@ -28,8 +28,8 @@ export default function OfferDetails(props) {
                 })}
                 <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                 <p id="regular-text">{props.modalInfo.offer.details}</p>
-                <Button id="large-button" style={{marginTop: 15}} onClick={() => {props.setModalOfferOpen(false); props.handleShowRequestHelp();}}>
-                    Request Help!
+                <Button id="large-button" style={{marginTop: 15}} onClick={() => {props.setModalOfferOpen(false); props.handleShowRequestHelp(props.modalInfo);}}>
+                    Request support!
                 </Button>
             </Modal.Body>
             <Modal.Footer>

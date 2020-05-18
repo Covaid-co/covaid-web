@@ -19,7 +19,7 @@ export default function VolunteersModal(props) {
     const [noTasks, setNoTasks] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [currQuery, setQuery] = useState('');
-    const volunteersPerPage = 10;
+    const volunteersPerPage = 5;
 
     useEffect(() => {
         setFilteredVolunteers(props.volunteers);
@@ -34,6 +34,8 @@ export default function VolunteersModal(props) {
      }, [props.volunteers, props.association]);
 
     const filterRequests = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         var query = e.target.value.toLowerCase();
         setQuery(query);
         const filteredVolunteers = filterVolunteers(query, props.volunteers);

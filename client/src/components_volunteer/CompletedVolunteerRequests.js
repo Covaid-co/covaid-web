@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { request_status, volunteer_status } from '../constants';
 
 export default function CompletedVolunteerRequests(props) {
 
@@ -20,6 +21,7 @@ export default function CompletedVolunteerRequests(props) {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState(0);
     const [currRequest, setCurrRequest] = useState({});
+    const [volunteerSpecificInfo, setVolunteerSpecificInfo] = useState({});
 
     useEffect(() => {
         setCompletedRequests(props.completedRequests.reverse());
@@ -34,22 +36,32 @@ export default function CompletedVolunteerRequests(props) {
         </>
     }
 
+    const handleRequestClick = (request) => {
+        setCurrRequest({...request}); 
+        setModalOpen(true); 
+        setModalMode(volunteer_status.COMPLETED);
+        let volunteerSpecific = request.status.volunteers.filter(function(volunteer) {
+            return volunteer.volunteer === props.user._id;
+        });
+        setVolunteerSpecificInfo(volunteerSpecific);
+    }
+
     return (
         <>
             <ListGroup variant="flush">
-                {completedRequests.map((request, i) => {
-                    var completedDate = new Date(request.completed_date);
+                {completedRequests.map((request, i) => { 
+                    var completedDate = new Date(request.status.completed_date);
                         return (
-                        <ListGroup.Item action onClick={() => {setCurrRequest({...request}); setModalOpen(true); setModalMode(3)}}>
+                        <ListGroup.Item action onClick={() => {handleRequestClick(request)}}>
                             <div >
                                 <h5 id="volunteer-name">
-                                    <b>{request.requester_first}</b>
+                                    <b>{request.personal_info.requester_name}</b>
                                 </h5>
                             </div>
                             <Row>
                                 <Col lg={10} md={8} sm={6}>
                                     <div>
-                                    {request.resource_request.map((task, i) => {
+                                    {request.request_info.resource_request.map((task, i) => {
                                             return <Badge key={i} id='task-info'>{task}</Badge>
                                         })}
                                     </div>
@@ -61,12 +73,12 @@ export default function CompletedVolunteerRequests(props) {
                                 </Col>
                             </Row>
                             <div style={{display: 'inline-block', width: '100%', marginTop: 10}}>
-                                <p style={{float: 'left', marginBottom: 0}} id="regular-text">Completed on: {request.completed_date ? completedDate.toLocaleDateString('en-US') : "N/A"}</p>
+                                <p style={{float: 'left', marginBottom: 0}} id="regular-text">Completed on: {request.status.completed_date ? completedDate.toLocaleDateString('en-US') : "N/A"}</p>
                             </div>
                         </ListGroup.Item>);
                         })}
             </ListGroup>
-            <RequestInfo modalOpen={modalOpen} modalMode={modalMode} setModalOpen={setModalOpen} currRequest={currRequest} />
+            <RequestInfo modalOpen={modalOpen} modalMode={modalMode} setModalOpen={setModalOpen} currRequest={currRequest} volunteerSpecificInfo={volunteerSpecificInfo}/>
         </>
     )
 }

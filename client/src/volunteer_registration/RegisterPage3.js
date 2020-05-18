@@ -76,10 +76,10 @@ export default function RegisterPage3(props) {
             }
         }
         
-        if (captcha === false) {
-            setToastMessage('Captcha not checked');
-            valid = false;
-        }
+        // if (captcha === false) {
+        //     setToastMessage('Captcha not checked');
+        //     valid = false;
+        // }
 
         if (valid === false) {
             setShowToast(true);
@@ -114,9 +114,9 @@ export default function RegisterPage3(props) {
                         })}
                     </Col>
                 </Row>
-                <ReCAPTCHA sitekey="6LeZmeQUAAAAALo6YR9A7H-f7EZsYj3c0KJ189Ev"
+                {/* <ReCAPTCHA sitekey="6LeZmeQUAAAAALo6YR9A7H-f7EZsYj3c0KJ189Ev"
                             onChange={() => {setCaptcha(true)}}
-                            style = {{marginBottom: 0, marginTop: 20}}/>
+                            style = {{marginBottom: 0, marginTop: 20}}/> */}
                 <Button id="large-button" style={{marginTop: 15}} type="submit">Sign up!</Button>
             </Form>
             <p id="pagenum-text">Page 3 of 3</p>

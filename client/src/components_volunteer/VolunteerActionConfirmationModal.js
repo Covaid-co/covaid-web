@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal' 
 import Form from 'react-bootstrap/Form'
 import { useFormFields } from "../libs/hooksLib";
+import fetch_a from '../util/fetch_auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function VolunteerActionConfirmationModal(props) {
@@ -19,19 +20,21 @@ export default function VolunteerActionConfirmationModal(props) {
     // Update request completion details on backend
     // Callback to parent modal
     const complete = () => {
-        const requester_id = props.currRequest._id;
-        const volunteer_id = props.currRequest.status.volunteer;
-        const assoc_id = props.currRequest.association;
-
         let form = {
-            'request_id': requester_id,
-            'volunteer_id': volunteer_id,
-            'reason': 'Volunteer Completed',
+            'reason': 'Volunteer completed',
             'volunteer_comment': fields.comment,
-            'assoc_id': assoc_id
         };
 
-        fetch('/api/request/completeRequest', {
+        var url = "/api/request/completeRequest?";
+        let params = {
+            'ID' : props.currRequest._id
+        }
+        let query = Object.keys(params)
+                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                .join('&');
+        url += query;
+ 
+        fetch_a('token', url, {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
@@ -54,16 +57,16 @@ export default function VolunteerActionConfirmationModal(props) {
         const requester_id = props.currRequest._id;
         const volunteer_id = props.currRequest.status.volunteer;
 
-        let form = {
-            'request_id': requester_id,
-            'volunteer_id': volunteer_id,
-            'assoc_id': props.currRequest.association
-        };
-
-        fetch('/api/request/removeVolunteerFromRequest', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
+        var url = "/api/request/rejectRequest?";
+        let params = {
+            'ID' : props.currRequest._id
+        }
+        let query = Object.keys(params)
+                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                .join('&');
+        url += query;
+        fetch_a('token', url, {
+            method: 'put'
         }).then((response) => {
             if (response.ok) {
                 props.setShowConfirmationModal(false); 

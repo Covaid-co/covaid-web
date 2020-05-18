@@ -1,3 +1,9 @@
 const AssociationRepository = require('../repositories/association.repository');
 
-// TODO
+exports.getAssociation = async function(query) {
+    try {
+        return await AssociationRepository.readAssociation(query);
+    } catch (e) {
+        throw e;
+    }
+}

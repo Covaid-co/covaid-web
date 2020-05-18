@@ -50,13 +50,15 @@ exports.sendNotificationEmail = (data) => {
     };
 
     //send the email
-    sgMail.send(msg, (error, result) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Email sent!");
-        }
-      });
+    if (process.env.PROD){
+        sgMail.send(msg, (error, result) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Email sent!");
+            }
+        });
+    }
 }
 
 exports.sendBeaconEmail = (data) => {
