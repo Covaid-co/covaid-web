@@ -103,39 +103,6 @@ exports.createRequest = async function(request) {
             last_modified: new Date(),
             assignee: 'No one assigned'
         }
-        // console.log(new_request);
-
-        // In progress
-        // ***check*** if these scenarios are handled correctly 
-        // Scenario: when a request is created [no volunteer in body] -> send email to the association (+ push notif) 
-        var assoc = await AssociationService.getAssociation({'_id': request.association}); 
-        if (!new_request.volunteer) { 
-            var data = {
-                sender: 'Covaid@covaid.co',
-                receiver: assoc[0].email,
-                name: request.requester_first,
-                assoc: assoc[0].name,
-                templateName: 'org_notification',
-            };
-            emailer.sendNotificationEmail(data)
-        } else { // Scenario: when a request is created [volunteer in body] -> send email to volunteer (+ push notif) 
-            volunteers = [request.body.volunteer]
-
-            request.body.volunteer.forEach(volunteer => { 
-                var first_name = volunteer.first_name;
-                first_name = first_name.toLowerCase();
-                first_name = first_name[0].toUpperCase() + first_name.slice(1);
-                var data = {
-                    sender: "Covaid@covaid.co",
-                    receiver: volunteer.email,
-                    name: first_name,
-                    assoc: assoc[0].email,
-                    templateName: 'volunteer_notification',
-                };
-                emailer.sendNotificationEmail(data); 
-            });             
-        }
-
         return await RequestRepository.createRequest(new_request);
     } catch (e) {
         console.log(e);
@@ -240,7 +207,7 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                 volunteer.current_status = volunteer_status.PENDING
                 volunteer.last_notified_time = new Date();
                 //if a new adminMessage is not given, keep the old message
-                if (adminMessage.length > 0) {
+                if (adminMessage && adminMessage.length > 0) {
                     volunteer.adminMessage = adminMessage
                 } 
                 volunteer_copy[index] = volunteer
@@ -279,9 +246,7 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
-        
-        // TODO -> send emails   
-        // In progress
+
         // Scenario: when a volunteer is matched to a request -> send email to the volunteer (+ push notification) 
         var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); 
 
@@ -303,8 +268,8 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                 assoc: assoc[0].email,
                 templateName: 'volunteer_notification',  
             };
-            emailer.sendNotificationEmail(data);  
-            // pusher.trigger(curr_volunteer._id, 'direct-match', updatedRequest._id); // ***fix*** 
+            emailer.sendNotificationEmail(data);
+            pusher.trigger(new_volunteer_ids[i], 'direct-match', 'You have a new pending request!');
         }
  
         return updatedRequest;
@@ -366,12 +331,8 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
-   
-        // TODO -> send emails
-        // In progress
-        // Scenario: if a volunteer is unmatched from something, the organization has to be notified (+push notification)
+
         await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
-        pusher.trigger(updatedRequest.association, 'general', 'A volunteer has been unmatched from a request!'); 
 
         return updatedRequest;
     } catch (e) {
@@ -394,11 +355,8 @@ exports.acceptRequest = async function(volunteerID, requestID) {
         });
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
 
-        // TODO -> Notify admins 
-        // In progress
         // Scenario: when a volunteer accepts a request -> send email to admin 
-        await exports. notifyRequestStatusChange(updatedRequest, 'accepted'); 
-        // No push notification 
+        await exports.notifyRequestStatusChange(updatedRequest, 'accepted'); 
         
         return updatedRequest;
     } catch (e) {
@@ -415,13 +373,8 @@ exports.rejectRequest = async function(volunteerID, requestID) {
         await exports.unmatchVolunteers(requestID, [volunteerID]);
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
 
-        // TODO -> Notify admins
-        // In progress
         // Scenario: when a volunteer is removed from a request -> send email to the admin (+ push notification) 
-        await exports.notifyRequestStatusChangenotifyRequestStatusChange(updatedRequest, 'rejected'); 
-
-        pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); 
-        // res.send('Request updated.'); -> include ?
+        await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
         
         return updatedRequest;
     } catch (e) {
@@ -476,11 +429,8 @@ exports.completeRequest = async function(volunteerID, requestID, reason, volunte
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
-
-        // TODO -> Notify admins
-        // In progress
-        // Scenario: when a request is completed -> send a push notif to the association 
-        // No email      
+        
+        // Scenario: when a request is completed -> send a push notif to the association     
         pusher.trigger(updatedRequest.association, 'complete', requestID);
 
         return updatedRequest;
