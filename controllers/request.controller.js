@@ -46,9 +46,15 @@ exports.handleGetVolunteerRequests = asyncWrapper(async (req, res) => {
  * Handle requests to get volunteer statistics given a volunteer's id
  */
 exports.handleGetVolunteerStatistics = asyncWrapper(async (req, res) => {
+    let id_list = req.query.id_list.split(",");
     try {
-        var statistics = await RequestService.getVolunteerStatistics(req.query.id); 
-        res.send(statistics);
+        var statistics = {};
+        id_list.forEach(async id => {
+            statistics[id] = await RequestService.getVolunteerStatistics(id);
+            if (Object.keys(statistics).length == id_list.length) {
+                res.send(statistics)
+            }
+        })
     } catch (e) {
         res.sendStatus(400);
     }
