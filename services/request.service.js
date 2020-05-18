@@ -483,6 +483,52 @@ exports.unmatchPendingVolunteers = async function(expiryTime) {
 }
 
 /**
+ * Remind all volunteers who have an in-progress request to mark their request as completed
+ */
+exports.remindMatchedVolunteers = async function(notificationTime) {
+    try {
+        let allRequests = await RequestRepository.readRequest({});
+        var reminderVolunteers = [];
+        allRequests.forEach(request => {
+            request.status.volunteers.forEach(volunteer => {
+                if (volunteer.current_status === volunteer_status.IN_PROGRESS && volunteer.last_notified_time < new Date(Date.now() - notificationTime * 60 * 60 * 1000)) {
+                    if (reminderVolunteers[request._id]) {
+                        reminderVolunteers[request._id].push(volunteer.volunteer);
+                    } else {
+                        reminderVolunteers[request._id] = [volunteer.volunteer];
+                    }
+                }
+            });
+        });
+        var remindedVolunteers = new Set();
+        for (var request in reminderVolunteers) {
+            let volunteers = reminderVolunteers[request];
+            let users = await UserService.getUsersByUserIDs(volunteers);
+            for (var i = 0; i < users.length; i++) {
+                let user = users[i];
+                if (!remindedVolunteers.has(user.email)) {
+                    var data = {
+                        //sender's and receiver's email
+                        sender: "Covaid@covaid.co",
+                        receiver: user.email,
+                        templateName: "pending_notification",
+                    };
+                    emailer.sendNotificationEmail(data);
+                    remindedVolunteers.add(user.email);
+                }
+                await RequestRepository.updateRequestComplex({'_id': request, 'status.volunteers.volunteer': user._id}, { 
+                    $set: {
+                        "status.volunteers.$.last_notified_time": new Date()
+                    }
+                });
+            }
+        }
+    } catch (e) {
+        throw e;
+    }
+} 
+
+/**
  * Send email notif to admin when status of a request changes
  */
 exports.notifyRequestStatusChange = async function(updatedRequest, action) {  
