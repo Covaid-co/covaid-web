@@ -103,12 +103,12 @@ exports.createRequest = async function(request) {
             last_modified: new Date(),
             assignee: 'No one assigned'
         }
-        console.log(new_request);
+        // console.log(new_request);
 
         // In progress
         // ***check*** if these scenarios are handled correctly 
         // Scenario: when a request is created [no volunteer in body] -> send email to the association (+ push notif) 
-        var assoc = await AssociationService.getAssociation({'_id': request.association}); // ***check logic*** -> make sure it defaults to Covaid
+        var assoc = await AssociationService.getAssociation({'_id': request.association}); 
         if (!new_request.volunteer) { 
             var data = {
                 sender: 'Covaid@covaid.co',
@@ -118,11 +118,10 @@ exports.createRequest = async function(request) {
                 templateName: 'org_notification',
             };
             emailer.sendNotificationEmail(data)
-            pusher.trigger(request.association, 'general', "You have a new unmatched request!")
         } else { // Scenario: when a request is created [volunteer in body] -> send email to volunteer (+ push notif) 
             volunteers = [request.body.volunteer]
 
-            request.body.volunteer.forEach(volunteer => { // ***check*** 
+            request.body.volunteer.forEach(volunteer => { 
                 var first_name = volunteer.first_name;
                 first_name = first_name.toLowerCase();
                 first_name = first_name[0].toUpperCase() + first_name.slice(1);
@@ -133,8 +132,7 @@ exports.createRequest = async function(request) {
                     assoc: assoc[0].email,
                     templateName: 'volunteer_notification',
                 };
-                emailer.sendNotificationEmail(data);
-                pusher.trigger(volunteer._id, 'direct-match', 'You have a new pending request!'); 
+                emailer.sendNotificationEmail(data); 
             });             
         }
 
@@ -219,7 +217,7 @@ async function handleGeneral(request) {
 /**
  * Match a list of volunteers to a request
  */
-exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
+exports.matchVolunteers = async function(requestID, volunteers, adminMessage) { 
     try {
         let request = (await RequestRepository.readRequest({_id: requestID}))[0]; // Find the relevant request
         let volunteer_copy = request.status.volunteers
@@ -282,37 +280,38 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
         
-        // TODO -> send emails
+        // TODO -> send emails   
         // In progress
         // Scenario: when a volunteer is matched to a request -> send email to the volunteer (+ push notification) 
-        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
+        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); 
 
-        let new_volunteer_ids = new_volunteers_list.forEach(volunteer => {
-            return volunteer._id; 
-        }); 
-
+        var new_volunteer_ids = []; 
+        for (var i = 0; i < new_volunteers_list.length; i++) { // make this a forEach 
+            new_volunteer_ids.push(new_volunteers_list[i].volunteer); 
+        }     
+   
         new_volunteer_obj_list = await UserService.getUsersByUserIDs(new_volunteer_ids);
         for (var i = 0; i < new_volunteer_obj_list.length; i++) { 
             var curr_volunteer = new_volunteer_obj_list[i]; 
             var firstName = curr_volunteer.first_name;
             firstName = firstName.toLowerCase();
             firstName = firstName[0].toUpperCase() + firstName.slice(1);
-            var data = { // ***check*** should adminMessage be used here? 
+            var data = { 
                 sender: 'Covaid@covaid.co',
-                receiver: curr_volunteer.email,
+                receiver: curr_volunteer.email, 
                 name: firstName,
                 assoc: assoc[0].email,
-                templateName: 'volunteer_notification',
+                templateName: 'volunteer_notification',  
             };
-            emailer.sendNotificationEmail(data); 
-            pusher.trigger(curr_volunteer._id, 'direct-match', updatedRequest._id);
+            emailer.sendNotificationEmail(data);  
+            // pusher.trigger(curr_volunteer._id, 'direct-match', updatedRequest._id); // ***fix*** 
         }
-
+ 
         return updatedRequest;
     } catch (e) {
         throw e;
     }
-}
+} 
 
 /**
  * Unmatch all attached volunteers from a list
@@ -367,12 +366,12 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
         }
-
+   
         // TODO -> send emails
         // In progress
         // Scenario: if a volunteer is unmatched from something, the organization has to be notified (+push notification)
-        await exports.notifyRequestStatusChangenotifyRequestStatusChange(updatedRequest, 'rejected'); 
-        pusher.trigger(assoc._id, 'general', 'A volunteer has been unmatched from a request!'); 
+        await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
+        pusher.trigger(updatedRequest.association, 'general', 'A volunteer has been unmatched from a request!'); 
 
         return updatedRequest;
     } catch (e) {
@@ -482,9 +481,7 @@ exports.completeRequest = async function(volunteerID, requestID, reason, volunte
         // In progress
         // Scenario: when a request is completed -> send a push notif to the association 
         // No email      
-        console.log(updatedRequest);    
         pusher.trigger(updatedRequest.association, 'complete', requestID);
-        // res.send('Request updated.'); // include ?
 
         return updatedRequest;
     } catch (e) {
@@ -511,7 +508,6 @@ exports.updateRequestDetails = async function(requestID, updates) {
  * Unmatch pending volunteers who have been tied to a request for more than 48 hours
  */
 exports.unmatchPendingVolunteers = async function(expiryTime) {
-    // ***check*** are notifs required here 
 
     try {
         let allRequests = await RequestRepository.readRequest({});
@@ -539,37 +535,47 @@ exports.unmatchPendingVolunteers = async function(expiryTime) {
 /**
  * Send email notif to admin when status of a request changes
  */
-exports.notifyRequestStatusChange = async function(updatedRequest, action) {
+exports.notifyRequestStatusChange = async function(updatedRequest, action) {  
     try {
         // Prepare email/pusher notifications
         // Find association, if exists (default to Covaid)
-        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); // ***check logic*** -> make sure it defaults to Covaid
+        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); 
+
+        var requesterName = updatedRequest.requester_first;
+        if (!requesterName) {
+            requesterName = updatedRequest.personal_info.requester_name;  
+        }
+
+        var adminName = updatedRequest.assignee; 
+        if (!adminName) {
+            adminName = updatedRequest.admin_info.assignee; 
+        }
 
         // Find admin
         // If admin exists, send them an email 
         var foundAdmin = false; 
         for (var i = 0; i < assoc[0].admins.length; i++) {
             var admin = assoc[0].admins[i];
-            if (admin.name === updatedRequest.assignee) {
+            if (admin.name === adminName) {
                 var data = {
                     sender: "Covaid@covaid.co",
-                    receiver: admin.email,
-                    name: updatedRequest.requester_first,
+                    receiver: admin.email, 
+                    name: requesterName, 
                     action: action,
                     templateName: "admin_notification",
                 };
                 emailer.sendNotificationEmail(data);
-                foundAdmin = true; 
+                foundAdmin = true;  
                 break;
-            }
+            }  
         }
 
         // If no admin assigned to request, send email to association
-        if (!foundAdmin) {
+        if (!foundAdmin) { 
             var data = {
                 sender: 'Covaid@covaid.co',
                 receiver: assoc[0].email,
-                name: updatedRequest.requester_first,
+                name: requesterName,
                 action: action,
                 templateName: 'org_notification',
             };
