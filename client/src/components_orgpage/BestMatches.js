@@ -55,12 +55,12 @@ export default function BestMatches(props) {
         setCheckboxStatus(temp_checkbox);
 
         var list = []; 
-        for (var i = 0; i < unselected.length; i++) {
-            list.push(unselected[i]._id); 
-        }
-        for (var i = 0; i < notified.length; i++) {
-            list.push(notified[i]._id); 
-        }
+        unselected.forEach(volunteer => {
+            list.push(volunteer._id); 
+        }); 
+        notified.forEach(volunteer => {
+            list.push(volunteer._id); 
+        })
 
         fetch_statistics(list); 
 
