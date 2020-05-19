@@ -190,13 +190,7 @@ export const displayResourceMatch = (volunteer, curr_request) => {
 
 // List group item for volunteers in request details
 export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, checkboxStatus, handleCheckboxAction, statistics) => {
-    //var statsjson = JSON.stringify(statistics); 
-    // var total = statsjson[volunteer._id].total; 
-    //var completed = statsjson[volunteer._id].completed; 
-    var statsjson = JSON.stringify(statistics); 
-    var total = 10; 
-    var completed = 25; 
-    if (checkboxStatus) {
+    if (checkboxStatus && statistics) {
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
             <Row>
@@ -217,25 +211,8 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                             {distance(volunteer, curr_request)} miles
                         </p>
                     </div>
-
-                    <OverlayTrigger
-                    placement = "left"
-                    overlay={
-                    <Tooltip >
-                        Total requests matched all time.
-                    </Tooltip>
-                    }
-                    >
-                    <p id="regular-text-nomargin">Matched:  {statsjson}</p></OverlayTrigger>
-                    <OverlayTrigger
-                    placement = "left"
-                    overlay={
-                    <Tooltip >
-                        Total requests completed.
-                    </Tooltip>
-                    }
-                    >
-                    <p id="regular-text-nomargin">Completed: {statsjson}</p></OverlayTrigger>
+                    <p id="regular-text-nomargin">Matched: {statistics["total"]}</p>
+                    <p id="regular-text-nomargin">Completed: {statistics["completed"]}</p>
 
                     <div>
                         {displayResourceMatch(volunteer, curr_request)}
