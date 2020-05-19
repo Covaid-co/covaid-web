@@ -5,6 +5,7 @@ exports.readUsers = async function (query) {
         var users = await User.find(query);
         return users;
     } catch (e) {
+        console.log("is this shit working???")
         throw Error('Error while querying requests');
     }
 }

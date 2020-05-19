@@ -13,6 +13,7 @@ const volunteer_status = {
 }
 
 const RequestRepository = require('../repositories/request.repository');
+const UserRepository = require('../repositories/user.repository');
 const AssociationService = require('./association.service');
 const UserService = require('./user.service');
 const emailer = require('../util/emailer');
@@ -44,7 +45,11 @@ exports.getBestMatches = async function(request_id, strict) {
     /**
      * - Filter out volunteers that are pending/ in progress / completed
      * - return dictionary of unselected and notified volunteers
+     * Pass in the volunteers bc that needs to be found anyways and theres no reason to refetch
      */
+    console.log("May 19, 2020")
+    console.log("-------------------------------------------------------------------------------------")
+    console.log(request_id)
     try {
         var bestMatches = {}
         let request = (await RequestRepository.readRequest({_id: request_id}))[0]; // Find the relevant request
@@ -56,7 +61,34 @@ exports.getBestMatches = async function(request_id, strict) {
         });
         notified = await UserService.getUsersByUserIDs(notified);
         bestMatches["notified"] = notified;
-        console.log(bestMatches)
+        const needed_resources = request.request_info ? request.request_info.resource_request : [];
+        /**
+         * anyone who wasnt selected before
+         * sorted by distance
+         * make sure that the volunteer belongs to the org
+         */
+        if (strict) {
+            console.log("-------------------------------------------------------------------")
+            const query = {
+                offer: {
+                    details: 'I am a college student who can pick up/drop off supplies (ex. masks, food, etc) in the Naperville area. '
+                },
+                first_name : "Angela",
+                location : { $near : request.location_info.coordinates, $maxDistance: 0.10 },
+                // "location": "[-120.5969758, 35.2454989]",
+                // location: {$near: [101.87496361606, 3.5223726347222], $maxDistance: 20}
+                "offer.details": 'I am a college student who can pick up/drop off supplies (ex. masks, food, etc) in the Naperville area. '
+            }
+            var closest = [];
+            await UserRepository.readUsers(query).then(data => {
+                console.log(data)
+                closest = data;
+            }
+            );
+            console.log("excuse me")
+            console.log(closest)
+        }
+        // console.log(bestMatches)
         return bestMatches
         // return await RequestRepository.readRequest(query);
     } catch (e) {

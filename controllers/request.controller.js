@@ -35,8 +35,9 @@ exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
  */
 exports.handleGetBestMatches = asyncWrapper(async (req, res) => {
     try {
+        console.log(req.query.volunteers)
         var matches = await RequestService.getBestMatches(req.query.request_id, req.query.strict);
-        res.send(matches);
+        res.send({"hi":"hey"});
     } catch (e) {
         res.sendStatus(400);
     }

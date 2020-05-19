@@ -63,8 +63,9 @@ export default function BestMatches(props) {
         }
 
         fetchStatistics(list);
-        
-        fetchBestMatches();
+        if (props.currRequest._id && props.volunteers) {
+            fetchBestMatches();
+        }
 
     }, [props.currRequest, props.volunteers]);
 
@@ -73,9 +74,11 @@ export default function BestMatches(props) {
 		var url = generateURL( "/api/request/bestMatches?", params);
 		fetch(url).then((response) => {
             if (response.ok) {
+                //filter out any volunteers that aren't part of the org for some reason
                 // response.json().then(data => {
                 //     console.log("best matches API")
                 //     console.log(data)
+                // check here to see if its in the volunteer list, bc for some reason, getting error when passing props.
                 // });
             } else {
                 console.log("Error")

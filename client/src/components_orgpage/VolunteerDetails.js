@@ -107,7 +107,6 @@ export default function VolunteerDetails(props) {
             alert(e);
         });
     }
-
     const displaySwitch = () => {
         return (<Form>
                     <Form.Group controlId="preverify" bssize="large" style = {{marginBottom: 0, marginTop: 2}}>
