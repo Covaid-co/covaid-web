@@ -38,6 +38,33 @@ exports.getRequests = async function(query) {
 }
 
 /**
+ * Get a list of best matches for a request.
+ */ 
+exports.getBestMatches = async function(request_id, strict) {
+    /**
+     * - Filter out volunteers that are pending/ in progress / completed
+     * - return dictionary of unselected and notified volunteers
+     */
+    try {
+        var bestMatches = {}
+        let request = (await RequestRepository.readRequest({_id: request_id}))[0]; // Find the relevant request
+        let notified = request.status.volunteers.map(function (volunteer) {
+            if (volunteer.current_status == volunteer_status.PENDING || volunteer.current_status == volunteer_status.IN_PROGRESS ||
+                 volunteer.current_status == volunteer_status.COMPLETE) {
+                     return (volunteer.volunteer)
+                 }
+        });
+        notified = await UserService.getUsersByUserIDs(notified);
+        bestMatches["notified"] = notified;
+        console.log(bestMatches)
+        return bestMatches
+        // return await RequestRepository.readRequest(query);
+    } catch (e) {
+        throw e;
+    }
+}
+
+/**
  * Get statistics for a volunteer given volunteer ID
  */
 exports.getVolunteerStatistics = async function(id) {
@@ -189,7 +216,7 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
         let request = (await RequestRepository.readRequest({_id: requestID}))[0]; // Find the relevant request
         let volunteer_copy = request.status.volunteers
         // Given volunteer list, change existing volunteers to pending if rematched, and add new volunteers as pending. 
-        //remove duplicate new volunteers by creating a set
+        // remove duplicate new volunteers by creating a set
         let set_volunteers = new Set(volunteers);
         set_volunteers = Array.from(set_volunteers)
         let new_volunteers = set_volunteers.map(function (volunteer_id) {

@@ -21,7 +21,7 @@ import { notifiedVolunteers, unSelectedVolunteers, volunteerListGroup, bestMatch
  */
 
 export default function BestMatches(props) {
-    const [unselected_volunteers, setUnselectedVolunteers] = useState([]);
+    const [unselectedVolunteers, setUnselectedVolunteers] = useState([]);
     const [filteredVolunteers, setFilteredVolunteers] = useState([]);
     const [notified_volunteers, setNotifiedVolunteers] = useState([]);
     const [strict, setStrict] = useState(true);
@@ -61,11 +61,29 @@ export default function BestMatches(props) {
         for (var i = 0; i < notified.length; i++) {
             list.push(notified[i]._id); 
         }
-        console.log(list); console.log("all of them");
 
-        fetch_statistics(list); 
+        fetchStatistics(list);
+        
+        fetchBestMatches();
 
     }, [props.currRequest, props.volunteers]);
+
+    const fetchBestMatches= () => {
+		let params = {'request_id': props.currRequest._id, 'strict': strict};
+		var url = generateURL( "/api/request/bestMatches?", params);
+		fetch(url).then((response) => {
+            if (response.ok) {
+                // response.json().then(data => {
+                //     console.log("best matches API")
+                //     console.log(data)
+                // });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+	}
 
     const clearCheckBox = () => {
         var temp_checkbox = JSON.parse(JSON.stringify(checkboxStatus));
@@ -114,7 +132,7 @@ export default function BestMatches(props) {
         e.stopPropagation();
         var query = e.target.value.toLowerCase();
         setQuery(query);
-        const filteredVolunteers = filterVolunteers(query, unselected_volunteers);
+        const filteredVolunteers = filterVolunteers(query, unselectedVolunteers);
         setFilteredVolunteers(filteredVolunteers);
     }
 
@@ -180,11 +198,10 @@ export default function BestMatches(props) {
         }
     }
 
-    const fetch_statistics = (id_list) => {
+    const fetchStatistics = (id_list) => {
 		let params = {'id_list': id_list};
 		var url = generateURL( "/api/request/volunteerStatistics?", params);
 		fetch(url).then((response) => {
-            console.log(response)
             if (response.ok) {
                 response.json().then(data => {
                     setStatistics(data) 
@@ -195,7 +212,6 @@ export default function BestMatches(props) {
         }).catch((e) => {
             console.log(e)
         });
-        //setStatistics(0)
 	}
 
     return (<>

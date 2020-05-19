@@ -31,6 +31,18 @@ exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
 });
 
 /**
+ * Handle list of best matches for a request
+ */
+exports.handleGetBestMatches = asyncWrapper(async (req, res) => {
+    try {
+        var matches = await RequestService.getBestMatches(req.query.request_id, req.query.strict);
+        res.send(matches);
+    } catch (e) {
+        res.sendStatus(400);
+    }
+});
+
+/**
  * Handle requests to get all requests tied to a user
  */
 exports.handleGetVolunteerRequests = asyncWrapper(async (req, res) => {
