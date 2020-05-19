@@ -189,7 +189,7 @@ export const displayResourceMatch = (volunteer, curr_request) => {
 
 
 // List group item for volunteers in request details
-export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, checkboxStatus, handleCheckboxAction, statistics) => {
+export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, statistics, checkboxStatus, handleCheckboxAction) => {
     if (checkboxStatus && statistics) {
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
@@ -203,9 +203,7 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                             {volunteer.first_name} {volunteer.last_name} &nbsp;&nbsp;
                         </h5>
-
-                        <span>Matched: {statistics["total"]}, Completed: {statistics["completed"]}</span>
-                        
+                        <span id = "volunteer-location">Matched: {statistics["total"]}, Completed: {statistics["completed"]}</span>                        
                         {displayPrevMatched(volunteer, curr_request)}
                     </div>
                     <div>
@@ -221,15 +219,16 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                 </Col>
             </Row>
         </ListGroup.Item>);
-    } else {
+    } else if (statistics){
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
             <Row>
                 <Col id="best-match-item" xs={12} onClick={() => handleVolunteerClick(volunteer)} style={{paddingLeft: 35}}>
                     <div>
                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
-                            {volunteer.first_name} {volunteer.last_name}
+                            {volunteer.first_name} {volunteer.last_name} &nbsp;&nbsp;
                         </h5>
+                        <span id = "volunteer-location">Matched: {statistics["total"]}, Completed: {statistics["completed"]}</span>
                         {displayPrevMatched(volunteer, curr_request)}
                         <p id="volunteer-location" style={{float: 'right', marginTop: 0, marginRight: 10, marginBottom: 0}}>
                             {distance(volunteer, curr_request)} miles

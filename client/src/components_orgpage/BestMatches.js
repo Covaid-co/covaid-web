@@ -172,7 +172,7 @@ export default function BestMatches(props) {
     const displayFilteredVolunteers = () => {
         if (filteredVolunteers.length > 0) {  
             return filteredVolunteers.map(volunteer => 
-                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, checkboxStatus, handleCheckboxAction, statistics[volunteer._id]))
+                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, statistics[volunteer._id], checkboxStatus, handleCheckboxAction))
         } else {
             return  <p id="regular-text" style={{textAlign: "center", marginTop: 20}}>
                             <strong>No matches, try broadening your search</strong> 
