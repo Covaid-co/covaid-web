@@ -54,14 +54,13 @@ export default function BestMatches(props) {
         );
         setCheckboxStatus(temp_checkbox);
 
-        var list = []; //unselected.concat(notified); 
+        var list = []; 
         for (var i = 0; i < unselected.length; i++) {
             list.push(unselected[i]._id); 
         }
         for (var i = 0; i < notified.length; i++) {
             list.push(notified[i]._id); 
         }
-        console.log(list); console.log("all of them");
 
         fetch_statistics(list); 
 
@@ -184,7 +183,6 @@ export default function BestMatches(props) {
 		let params = {'id_list': id_list};
 		var url = generateURL( "/api/request/volunteerStatistics?", params);
 		fetch(url).then((response) => {
-            console.log(response)
             if (response.ok) {
                 response.json().then(data => {
                     setStatistics(data) 
@@ -195,7 +193,6 @@ export default function BestMatches(props) {
         }).catch((e) => {
             console.log(e)
         });
-        //setStatistics(0)
 	}
 
     return (<>
