@@ -9,6 +9,7 @@ import Toast from 'react-bootstrap/Toast';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import VolunteerDetails from './VolunteerDetails';
+import { generateURL } from '../Helpers';
 import { useFormFields } from "../libs/hooksLib";
 import { distance, updateAllRequests, filterVolunteers } from './OrganizationHelpers';
 import { toastTime } from '../constants';
@@ -33,6 +34,7 @@ export default function BestMatches(props) {
     const [sendModal, setSendModal] = useState(false);
     const [selectedVolunteers, setSelectedVolunteers] = useState([]);
     const [volunteer_count, setVolunteerCount] = useState(0);
+    const [statistics, setStatistics] = useState();
     const [fields, handleFieldChange] = useFormFields({
         adminMessage: ''
     });
@@ -51,6 +53,18 @@ export default function BestMatches(props) {
             }
         );
         setCheckboxStatus(temp_checkbox);
+
+        var list = []; //unselected.concat(notified); 
+        for (var i = 0; i < unselected.length; i++) {
+            list.push(unselected[i]._id); 
+        }
+        for (var i = 0; i < notified.length; i++) {
+            list.push(notified[i]._id); 
+        }
+        console.log(list); console.log("all of them");
+
+        fetch_statistics(list); 
+
     }, [props.currRequest, props.volunteers]);
 
     const clearCheckBox = () => {
@@ -158,13 +172,31 @@ export default function BestMatches(props) {
     const displayFilteredVolunteers = () => {
         if (filteredVolunteers.length > 0) {  
             return filteredVolunteers.map(volunteer => 
-                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, checkboxStatus, handleCheckboxAction))
+                volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, checkboxStatus, handleCheckboxAction, statistics[volunteer._id]))
         } else {
             return  <p id="regular-text" style={{textAlign: "center", marginTop: 20}}>
                             <strong>No matches, try broadening your search</strong> 
                     </p>
         }
     }
+
+    const fetch_statistics = (id_list) => {
+		let params = {'id_list': id_list};
+		var url = generateURL( "/api/request/volunteerStatistics?", params);
+		fetch(url).then((response) => {
+            console.log(response)
+            if (response.ok) {
+                response.json().then(data => {
+                    setStatistics(data) 
+                });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+        //setStatistics(0)
+	}
 
     return (<>
         <Modal show={props.topMatchesModal} onHide={closePage} style = {{marginTop: 5, paddingBottom: 40}}>
@@ -192,7 +224,7 @@ export default function BestMatches(props) {
                     </Col>
                     <Col xs="12" id="col-scroll">
                         <ListGroup variant="flush">
-                            {notified_volunteers.map(volunteer => volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick))}
+                            {notified_volunteers.map(volunteer => volunteerListGroup(volunteer, props.currRequest, handleVolunteerClick, statistics[volunteer._id]))}
                             {displayFilteredVolunteers()}
                         </ListGroup>
                     </Col>

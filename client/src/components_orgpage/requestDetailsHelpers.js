@@ -8,6 +8,8 @@ import Badge from 'react-bootstrap/Badge';
 import { generateURL } from '../Helpers';
 import { current_tab, volunteer_status } from '../constants';
 import { filter_volunteers, distance, formatName } from './OrganizationHelpers';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 // Find a volunteer attached to this request
 export const findAttachedVolunteer = async (curr_request, mode) => {
@@ -187,8 +189,13 @@ export const displayResourceMatch = (volunteer, curr_request) => {
 
 
 // List group item for volunteers in request details
-export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, checkboxStatus, handleCheckboxAction) => {
-
+export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, checkboxStatus, handleCheckboxAction, statistics) => {
+    //var statsjson = JSON.stringify(statistics); 
+    // var total = statsjson[volunteer._id].total; 
+    //var completed = statsjson[volunteer._id].completed; 
+    var statsjson = JSON.stringify(statistics); 
+    var total = 10; 
+    var completed = 25; 
     if (checkboxStatus) {
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
@@ -210,6 +217,26 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                             {distance(volunteer, curr_request)} miles
                         </p>
                     </div>
+
+                    <OverlayTrigger
+                    placement = "left"
+                    overlay={
+                    <Tooltip >
+                        Total requests matched all time.
+                    </Tooltip>
+                    }
+                    >
+                    <p id="regular-text-nomargin">Matched:  {statsjson}</p></OverlayTrigger>
+                    <OverlayTrigger
+                    placement = "left"
+                    overlay={
+                    <Tooltip >
+                        Total requests completed.
+                    </Tooltip>
+                    }
+                    >
+                    <p id="regular-text-nomargin">Completed: {statsjson}</p></OverlayTrigger>
+
                     <div>
                         {displayResourceMatch(volunteer, curr_request)}
                     </div>
