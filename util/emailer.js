@@ -50,7 +50,7 @@ exports.sendNotificationEmail = (data) => {
     };
 
     //send the email
-    if (process.env.PROD){
+    if (process.env.PROD || process.env.EMAILSANDBOX){
         sgMail.send(msg, (error, result) => {
             if (error) {
                 console.log(error);
