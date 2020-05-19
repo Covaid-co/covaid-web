@@ -330,9 +330,8 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
                 }
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+            await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
         }
-
-        await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
 
         return updatedRequest;
     } catch (e) {
@@ -425,11 +424,11 @@ exports.completeRequest = async function(volunteerID, requestID, reason, volunte
                 }
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+            // Scenario: when a request is completed -> send a push notif to the association     
+            pusher.trigger(updatedRequest.association, 'complete', requestID);
+            await exports.notifyRequestStatusChange(updatedRequest, 'completed'); 
         }
         
-        // Scenario: when a request is completed -> send a push notif to the association     
-        pusher.trigger(updatedRequest.association, 'complete', requestID);
-
         return updatedRequest;
     } catch (e) {
         throw e;
