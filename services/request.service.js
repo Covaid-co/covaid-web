@@ -565,18 +565,6 @@ exports.notifyRequestStatusChange = async function(updatedRequest, action) {
                 break;
             }  
         }
-
-        // If no admin assigned to request, send email to association
-        if (!foundAdmin) { 
-            var data = {
-                sender: 'Covaid@covaid.co',
-                receiver: assoc[0].email,
-                name: requesterName,
-                assoc: assoc.name,
-                templateName: 'org_notification',
-            };
-            emailer.sendNotificationEmail(data)
-        }
     } catch (e) {
         throw e;
     }
