@@ -201,8 +201,11 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                 <Col id="best-match-item" xs={11} onClick={() => handleVolunteerClick(volunteer)}>
                     <div>
                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
-                            {volunteer.first_name} {volunteer.last_name}
+                            {volunteer.first_name} {volunteer.last_name} &nbsp;&nbsp;
                         </h5>
+
+                        <span>Matched: {statistics["total"]}, Completed: {statistics["completed"]}</span>
+                        
                         {displayPrevMatched(volunteer, curr_request)}
                     </div>
                     <div>
@@ -211,8 +214,6 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                             {distance(volunteer, curr_request)} miles
                         </p>
                     </div>
-                    <p id="regular-text-nomargin">Matched: {statistics["total"]}</p>
-                    <p id="regular-text-nomargin">Completed: {statistics["completed"]}</p>
 
                     <div>
                         {displayResourceMatch(volunteer, curr_request)}
@@ -234,6 +235,7 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                             {distance(volunteer, curr_request)} miles
                         </p>
                     </div>
+                    
                     <div>
                         <p id="volunteer-location">
                             {volunteer.offer.neighborhoods.join(', ')}
