@@ -372,9 +372,6 @@ exports.rejectRequest = async function(volunteerID, requestID) {
         // Unmatch the volunteer from the request
         await exports.unmatchVolunteers(requestID, [volunteerID]);
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
-
-        // Scenario: when a volunteer is removed from a request -> send email to the admin (+ push notification) 
-        await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
         
         return updatedRequest;
     } catch (e) {
