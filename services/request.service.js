@@ -191,9 +191,11 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
         // Given volunteer list, change existing volunteers to pending if rematched, and add new volunteers as pending. 
         //remove duplicate new volunteers by creating a set
         let set_volunteers = new Set(volunteers);
-        set_volunteers = Array.from(set_volunteers)
+        set_volunteers = Array.from(set_volunteers);
+        var volunteers_to_be_notified = [];
         let new_volunteers = set_volunteers.map(function (volunteer_id) {
             if (!request.status.volunteers || request.status.volunteers.length === 0 || request.status.volunteers.filter(volunteer => volunteer.volunteer === volunteer_id).length === 0) {
+                volunteers_to_be_notified.push(volunteer_id);
                 return {
                     current_status: volunteer_status.PENDING,
                     volunteer: volunteer_id,
@@ -201,8 +203,9 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                     last_notified_time: new Date(),
                     adminMessage: adminMessage
                 }
-            } else if (request.status.volunteers.filter(volunteer => volunteer.volunteer === volunteer_id).length != 0){
-                let volunteer = volunteer_copy.filter(volunteer => volunteer.volunteer === volunteer_id)[0]
+            } else if (request.status.volunteers.filter(volunteer => volunteer.volunteer === volunteer_id).length != 0) {
+                let volunteer = volunteer_copy.filter(volunteer => volunteer.volunteer === volunteer_id)[0];
+                volunteers_to_be_notified.push(volunteer_id);
                 let index = volunteer_copy.indexOf(volunteer)
                 volunteer.current_status = volunteer_status.PENDING
                 volunteer.last_notified_time = new Date();
@@ -248,14 +251,9 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
         }
 
         // Scenario: when a volunteer is matched to a request -> send email to the volunteer (+ push notification) 
-        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association}); 
-
-        var new_volunteer_ids = []; 
-        for (var i = 0; i < new_volunteers_list.length; i++) { // make this a forEach 
-            new_volunteer_ids.push(new_volunteers_list[i].volunteer); 
-        }     
+        var assoc = await AssociationService.getAssociation({'_id': updatedRequest.association});   
    
-        new_volunteer_obj_list = await UserService.getUsersByUserIDs(new_volunteer_ids);
+        new_volunteer_obj_list = await UserService.getUsersByUserIDs(volunteers_to_be_notified);
         for (var i = 0; i < new_volunteer_obj_list.length; i++) { 
             var curr_volunteer = new_volunteer_obj_list[i]; 
             var firstName = curr_volunteer.first_name;
