@@ -191,11 +191,10 @@ export const displayResourceMatch = (volunteer, curr_request) => {
 // List group item for volunteers in request details
 export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, statistics, checkboxStatus, handleCheckboxAction) => {
     if (checkboxStatus && statistics) {
-        var styleTag = 'inline';
-        if (statistics['completed'] && (statistics['completed'] === '0')) { 
-            styleTag = 'none'; 
+        var styleTag = 'none';
+        if (statistics['completed'] && (statistics['completed'].toString(10)).localeCompare('0') ) { 
+            styleTag = 'inline'; 
         } 
-        console.log(styleTag); 
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
             <Row>
@@ -217,8 +216,9 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                         </Tooltip>
                         }
                         >
-                        <Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge>
+                        <span style={{display: styleTag}}><Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge></span>
                         </OverlayTrigger>
+                        
                         {displayPrevMatched(volunteer, curr_request)}
                     </div>
                     <div>
@@ -235,6 +235,10 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
             </Row>
         </ListGroup.Item>);
     } else if (statistics){
+        var styleTag = 'none';
+        if (statistics['completed'] && (statistics['completed'].toString(10)).localeCompare('0') ) { 
+            styleTag = 'inline'; 
+        } 
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
             <Row>
@@ -251,7 +255,7 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                         </Tooltip>
                         }
                         >
-                        <Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge>
+                        <span style={{display: styleTag}}><Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge></span>
                         </OverlayTrigger>
                         {displayPrevMatched(volunteer, curr_request)}
                         <p id="volunteer-location" style={{float: 'right', marginTop: 0, marginRight: 10, marginBottom: 0}}>
