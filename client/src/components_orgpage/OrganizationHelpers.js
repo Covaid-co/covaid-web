@@ -39,6 +39,8 @@ const parseByType = (type, request) => {
         return new Date(request.request_info.date);
     } else if (type === 'Last Updated') {
         return new Date(request.admin_info.last_modified);
+    } else if (type === 'Admin') {
+        return request.admin_info.assignee && request.admin_info.assignee.length > 0 ? request.admin_info.assignee : 'No one assigned';
     } else {
         return new Date(request.time_posted);
     }

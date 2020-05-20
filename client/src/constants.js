@@ -61,4 +61,4 @@ export const current_tab = {
     COMPLETED: 2
 }
 
-export const sort_types = ['Name', 'Needed By', 'Last Updated', 'Time Posted'];
+export const sort_types = ['Name', 'Needed By', 'Last Updated', 'Time Posted', 'Admin'];
