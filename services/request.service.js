@@ -267,7 +267,7 @@ exports.matchVolunteers = async function(requestID, volunteers, adminMessage) {
                 templateName: 'volunteer_notification',  
             };
             emailer.sendNotificationEmail(data);
-            pusher.trigger(new_volunteer_ids[i], 'direct-match', 'You have a new pending request!');
+            pusher.trigger(volunteers_to_be_notified[i], 'direct-match', 'You have a new pending request!');
         }
  
         return updatedRequest;
