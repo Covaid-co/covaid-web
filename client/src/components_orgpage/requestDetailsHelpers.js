@@ -191,6 +191,11 @@ export const displayResourceMatch = (volunteer, curr_request) => {
 // List group item for volunteers in request details
 export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, statistics, checkboxStatus, handleCheckboxAction) => {
     if (checkboxStatus && statistics) {
+        var styleTag = 'inline';
+        if (statistics['completed'] && (statistics['completed'] === '0')) { 
+            styleTag = 'none'; 
+        } 
+        console.log(styleTag); 
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
             <Row>
@@ -203,7 +208,17 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                             {volunteer.first_name} {volunteer.last_name} &nbsp;&nbsp;
                         </h5>
-                        <span id = "volunteer-location">Matched: {statistics["total"]}, Completed: {statistics["completed"]}</span>                        
+
+                        <OverlayTrigger
+                        placement = "right"
+                        overlay={
+                        <Tooltip >
+                            Total requests completed.
+                        </Tooltip>
+                        }
+                        >
+                        <Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge>
+                        </OverlayTrigger>
                         {displayPrevMatched(volunteer, curr_request)}
                     </div>
                     <div>
@@ -228,7 +243,16 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
                             {volunteer.first_name} {volunteer.last_name} &nbsp;&nbsp;
                         </h5>
-                        <span id = "volunteer-location">Matched: {statistics["total"]}, Completed: {statistics["completed"]}</span>
+                        <OverlayTrigger
+                        placement = "right"
+                        overlay={
+                        <Tooltip >
+                            Total requests completed.
+                        </Tooltip>
+                        }
+                        >
+                        <Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge>
+                        </OverlayTrigger>
                         {displayPrevMatched(volunteer, curr_request)}
                         <p id="volunteer-location" style={{float: 'right', marginTop: 0, marginRight: 10, marginBottom: 0}}>
                             {distance(volunteer, curr_request)} miles
