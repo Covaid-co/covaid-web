@@ -31,16 +31,17 @@ export default function VolunteerDetails(props) {
             setMapURL(tempURL);
             setVerified(props.currVolunteer.preVerified);
         }
-        if (props.currVolunteer.note) {
+        if (props.currVolunteer.note && props.currVolunteer.note.length > 0) {
             fields.email5 = props.currVolunteer.note;
             setPrevNote(props.currVolunteer.note);
-        } if (props.currVolunteer._id) {
+        } else {
+            fields.email5 = '';
+            setPrevNote('');
+        }
+        if (props.currVolunteer._id) {
             var list = [];
             list.push(props.currVolunteer._id)
             fetch_statistics(list)
-        }
-        else {
-            fields.email5 = '';
         }
     }, [props.currVolunteer, props.volunteerDetailModal])
 
@@ -101,6 +102,13 @@ export default function VolunteerDetails(props) {
         }).then((response) => {
             if (!response.ok) {
                 alert("unable to attach");
+            } else {
+                var copyVolunteers = props.volunteers.map(volunteer =>
+                    volunteer._id === props.currVolunteer._id
+                      ? { ...volunteer, note: form.note }
+                      : volunteer
+                  );
+                props.setVolunteers(copyVolunteers);
             }
         }).catch(e => {
             alert(e);

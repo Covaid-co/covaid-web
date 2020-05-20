@@ -471,7 +471,7 @@ export default function RequestDetails(props) {
             </Modal>
             <BestMatches { ... props} topMatchesModal={topMatchesModal} setTopMatchesModal={setTopMatchesModal}/>
             <VolunteerDetails { ... props } volunteerDetailModal={volunteerDetailModal} setVolunteerDetailsModal={setVolunteerDetailsModal} 
-                        currVolunteer={currVolunteer} inRequest={true} setRequestDetailsModal={props.setRequestDetailsModal} />
+                        currVolunteer={currVolunteer} inRequest={true} setRequestDetailsModal={props.setRequestDetailsModal} setVolunteers={props.setVolunteers} volunteers={props.volunteers} />
         </>
     );
 }

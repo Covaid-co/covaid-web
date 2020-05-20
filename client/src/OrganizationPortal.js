@@ -280,6 +280,7 @@ export default function OrganiationPortal(props) {
 								setAllRequests={setAllRequests}
 								mode={currTabNumber}
 								volunteers={volunteers}
+								setVolunteers={setVolunteers}
 								admin={admin}
 								setInRequest={setInRequest}/>
 				<BeaconCreation beaconModal={beaconModal}
