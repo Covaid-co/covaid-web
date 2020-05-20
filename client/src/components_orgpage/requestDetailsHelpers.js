@@ -211,12 +211,12 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                         <OverlayTrigger
                         placement = "right"
                         overlay={
-                        <Tooltip >
+                        <Tooltip id="tooltip-right">
                             Total requests completed.
                         </Tooltip>
                         }
                         >
-                        <span style={{display: styleTag}}><Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge></span>
+                        <span style={{display: styleTag}}><Badge key={0} style={{background: '#28A745', marginTop: 0, marginRight: 0, marginLeft: -8, paddingLeft: 8, paddingRight: 8, textAlign: 'center'}} id='task-info'>{statistics['completed']}</Badge></span>
                         </OverlayTrigger>
                         
                         {displayPrevMatched(volunteer, curr_request)}

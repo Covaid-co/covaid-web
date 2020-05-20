@@ -26,7 +26,6 @@ export default function VolunteerDetails(props) {
     });
 
     useEffect(() => {
-        console.log(props.currVolunteer._id)
         if (props.currVolunteer.latlong) {
             const tempURL = generateMapsURL(props.currVolunteer.latlong[1], props.currVolunteer.latlong[0]);
             setMapURL(tempURL);
@@ -49,7 +48,6 @@ export default function VolunteerDetails(props) {
 		let params = {'id_list': id_list};
 		var url = generateURL( "/api/request/volunteerStatistics?", params);
 		fetch(url).then((response) => {
-            console.log(response)
             if (response.ok) {
                 response.json().then(data => {
                     setStatistics(data)
