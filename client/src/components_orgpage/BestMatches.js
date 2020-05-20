@@ -268,7 +268,7 @@ export default function BestMatches(props) {
             </Modal.Header>
             <Modal.Body>
                 <p id="regular-text">
-                    {volunteer_count} volunteers have been notified.
+                    {volunteer_count === 1 ? volunteer_count + " volunteer has been notified" : volunteer_count + " volunteers have been notified"}
                 </p>
                 <Button id="large-button" onClick={() => {setSendModal(false); setSelectedVolunteers([]); clearCheckBox();}}>
                     Return to Dashboard
