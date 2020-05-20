@@ -8,6 +8,8 @@ import Badge from 'react-bootstrap/Badge';
 import { generateURL } from '../Helpers';
 import { current_tab, volunteer_status } from '../constants';
 import { filter_volunteers, distance, formatName } from './OrganizationHelpers';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 // Find a volunteer attached to this request
 export const findAttachedVolunteer = async (curr_request, mode) => {
@@ -187,9 +189,12 @@ export const displayResourceMatch = (volunteer, curr_request) => {
 
 
 // List group item for volunteers in request details
-export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, checkboxStatus, handleCheckboxAction) => {
-
-    if (checkboxStatus) {
+export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick, statistics, checkboxStatus, handleCheckboxAction) => {
+    if (checkboxStatus && statistics) {
+        var styleTag = 'none';
+        if (statistics['completed'] && (statistics['completed'].toString(10)).localeCompare('0') ) { 
+            styleTag = 'inline'; 
+        } 
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
             <Row>
@@ -200,8 +205,20 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                 <Col id="best-match-item" xs={11} onClick={() => handleVolunteerClick(volunteer)}>
                     <div>
                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
-                            {volunteer.first_name} {volunteer.last_name}
+                            {volunteer.first_name} {volunteer.last_name} &nbsp;&nbsp;
                         </h5>
+
+                        <OverlayTrigger
+                        placement = "right"
+                        overlay={
+                        <Tooltip >
+                            Total requests completed.
+                        </Tooltip>
+                        }
+                        >
+                        <span style={{display: styleTag}}><Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge></span>
+                        </OverlayTrigger>
+                        
                         {displayPrevMatched(volunteer, curr_request)}
                     </div>
                     <div>
@@ -210,26 +227,42 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                             {distance(volunteer, curr_request)} miles
                         </p>
                     </div>
+
                     <div>
                         {displayResourceMatch(volunteer, curr_request)}
                     </div>
                 </Col>
             </Row>
         </ListGroup.Item>);
-    } else {
+    } else if (statistics){
+        var styleTag = 'none';
+        if (statistics['completed'] && (statistics['completed'].toString(10)).localeCompare('0') ) { 
+            styleTag = 'inline'; 
+        } 
         return (
         <ListGroup.Item key={volunteer._id} style={{padding: 0}}>
             <Row>
                 <Col id="best-match-item" xs={12} onClick={() => handleVolunteerClick(volunteer)} style={{paddingLeft: 35}}>
                     <div>
                         <h5 id="volunteer-name" style={{marginBottom: 0}}>
-                            {volunteer.first_name} {volunteer.last_name}
+                            {volunteer.first_name} {volunteer.last_name} &nbsp;&nbsp;
                         </h5>
+                        <OverlayTrigger
+                        placement = "right"
+                        overlay={
+                        <Tooltip >
+                            Total requests completed.
+                        </Tooltip>
+                        }
+                        >
+                        <span style={{display: styleTag}}><Badge key={0} style={{background: '#28A745'}} id='task-info'>{statistics['completed']}</Badge></span>
+                        </OverlayTrigger>
                         {displayPrevMatched(volunteer, curr_request)}
                         <p id="volunteer-location" style={{float: 'right', marginTop: 0, marginRight: 10, marginBottom: 0}}>
                             {distance(volunteer, curr_request)} miles
                         </p>
                     </div>
+                    
                     <div>
                         <p id="volunteer-location">
                             {volunteer.offer.neighborhoods.join(', ')}

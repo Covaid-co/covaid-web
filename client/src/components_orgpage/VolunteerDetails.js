@@ -26,6 +26,7 @@ export default function VolunteerDetails(props) {
     });
 
     useEffect(() => {
+        console.log(props.currVolunteer._id)
         if (props.currVolunteer.latlong) {
             const tempURL = generateMapsURL(props.currVolunteer.latlong[1], props.currVolunteer.latlong[0]);
             setMapURL(tempURL);
@@ -35,18 +36,20 @@ export default function VolunteerDetails(props) {
             fields.email5 = props.currVolunteer.note;
             setPrevNote(props.currVolunteer.note);
         } if (props.currVolunteer._id) {
-            fetch_statistics(props.currVolunteer._id)
+            var list = [];
+            list.push(props.currVolunteer._id)
+            fetch_statistics(list)
         }
         else {
             fields.email5 = '';
         }
-    // }, [props.currVolunteer, props.show])
     }, [props.currVolunteer, props.volunteerDetailModal])
 
-    const fetch_statistics = (id) => {
-		let params = {'id': id};
+    const fetch_statistics = (id_list) => {
+		let params = {'id_list': id_list};
 		var url = generateURL( "/api/request/volunteerStatistics?", params);
 		fetch(url).then((response) => {
+            console.log(response)
             if (response.ok) {
                 response.json().then(data => {
                     setStatistics(data)
@@ -138,7 +141,8 @@ export default function VolunteerDetails(props) {
             props.setBestMatchVolunteer(false);
         }
     }
-    if (Object.keys(props.currVolunteer).length > 0 && statistics) {
+
+    if (Object.keys(props.currVolunteer).length > 0 && statistics && statistics[props.currVolunteer._id]) {
         return (
             <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
@@ -175,7 +179,7 @@ export default function VolunteerDetails(props) {
                     </Tooltip>
                     }
                     >
-                    <p id="regular-text-nomargin">Matched: {statistics["total"]}</p></OverlayTrigger>
+                    <p id="regular-text-nomargin">Matched: {statistics[props.currVolunteer._id].total}</p></OverlayTrigger>
                     <OverlayTrigger
                     placement = "left"
                     overlay={
@@ -184,7 +188,7 @@ export default function VolunteerDetails(props) {
                     </Tooltip>
                     }
                     >
-                    <p id="regular-text-nomargin">Completed {statistics["completed"]}</p></OverlayTrigger>
+                    <p id="regular-text-nomargin">Completed: {statistics[props.currVolunteer._id].completed}</p></OverlayTrigger>
                     <h5 id="regular-text-bold" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
                     <Form>
                         <Form.Group controlId="email5" bssize="large">
