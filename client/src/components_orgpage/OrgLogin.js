@@ -10,8 +10,15 @@ import Container from 'react-bootstrap/Container'
 import Cookie from 'js-cookie'
 import orgImg from '../assets/orgNew.png'
 import requestsImg from '../assets/requests.png'
+import topMatches from '../assets/topmatches.png'
 import mapsImg from '../assets/mapscreen.png'
-import orgscreenImg from '../assets/orgscreen.png'
+
+import pitt from '../assets/pitt.png'
+import bmore from '../assets/bmore.png'
+import char from '../assets/char.png'
+import del from '../assets/delaware.png'
+import ccom from '../assets/ccom.png'
+
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer';
 import GetStarted from './GetStarted';
@@ -166,6 +173,61 @@ export default function OrgLogin(props) {
                     <p id="requestCall" style={{marginTop: 30, marginBottom: 0}}>&nbsp;</p>
                 </Col>
             </Row>
+            <Row style={{marginTop: 80, marginBottom: 100, paddingLeft: '10%', paddingRight: '10%'}}>
+                <Col xs={12} id="org-feature-container">
+                    <h1 id="home-sub-heading">Our Current Partners</h1>
+                </Col>
+                <Col md={4} id="partner">
+                    <div className="inner-partner" style={{backgroundImage: `url(${pitt})`, backgroundSize: 'cover', backgroundPosition: 'center'}}
+                        onClick={() => {window.open('https://www.pittsburghmutualaid.com/')}}>
+                        <h1 id="partner-heading">Pittsburgh Mutual Aid</h1>
+                    </div>
+                </Col>
+                <Col md={4} id="partner">
+                    <div className="inner-partner" style={{backgroundImage: `url(${bmore})`, backgroundSize: 'cover', backgroundPosition: 'center'}}
+                        onClick={() => {window.open('https://www.facebook.com/bmoremutualaid/')}}>
+                        <h1 id="partner-heading">Baltimore Mutual Aid</h1>
+                    </div>
+                </Col>
+                <Col md={4} id="partner">
+                    <div className="inner-partner" style={{backgroundImage: `url(${char})`, backgroundSize: 'cover', backgroundPosition: 'center'}}
+                        onClick={() => {window.open('https://www.covid-gca.org/')}}>
+                        <h1 id="partner-heading">Greater Charlotte Area Mutual Aid</h1>
+                    </div>
+                </Col>
+                <Col md={4} id="partner">
+                    <div className="inner-partner" style={{backgroundImage: `url(${del})`, backgroundSize: 'cover', backgroundPosition: 'center'}}
+                        onClick={() => {window.open('https://www.facebook.com/groups/200572921276575/')}}>
+                        <h1 id="partner-heading">Delaware Mutual Aid</h1>
+                    </div>
+                </Col>
+                <Col md={4} id="partner">
+                    <div className="inner-partner" style={{backgroundImage: `url(${ccom})`, backgroundSize: 'cover', backgroundPosition: 'center'}}
+                        onClick={() => {window.open('https://ccomcovid.wixsite.com/covid')}}>
+                        <h1 id="partner-heading">CCOM COVID-19 Task Force</h1>
+                    </div>
+                </Col>
+                <Col md={4} id="partner">
+                    <div className="inner-partner">
+                        <h1 id="partner-heading">Indy Neighbor Response Team</h1>
+                    </div>
+                </Col>
+                {/* <Col md={4} id="partner">
+                    <div className="inner-partner">
+                        <h1 id="partner-heading">Team HBV</h1>
+                    </div>
+                </Col>
+                <Col md={4} id="partner">
+                    <div className="inner-partner">
+                        <h1 id="partner-heading">Sunshine Pinellas Mutual Aid</h1>
+                    </div>
+                </Col>
+                <Col md={4} id="partner">
+                    <div className="inner-partner">
+                        <h1 id="partner-heading">Evanston Mutual Aid</h1>
+                    </div>
+                </Col> */}
+            </Row>
             <Row style={{marginTop: 15}}>
                 <Col md={6} id="requests-feature-mobile">
                     <h1 id="home-sub-heading">Track Requests</h1>
@@ -192,14 +254,22 @@ export default function OrgLogin(props) {
                     <img id="request-img" alt="" src={mapsImg}></img>
                 </Col>
             </Row>
-            <Row style={{marginTop: 50, marginBottom: 100}}>
-                <Col xs={12} id="org-feature-container">
-                    <h1 id="home-sub-heading">Organization Portal</h1>
-                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0,  marginBottom: 0}}>Use the Organization Portal as the one-stop-shop for managing your mutual aid.</p>
+            <Row style={{marginTop: 45}}>
+                <Col md={6} id="requests-feature-mobile">
+                    <h1 id="home-sub-heading">Match Volunteers</h1>
+                    <p id="home-subheading" style={{fontSize: 16, paddingRight: 0, marginBottom: 0}}>Easily match and notify volunteers in your organization to 
+                        requests based on the recommended volunteers we offer.</p>
                 </Col>
-                <Col xs={12} style={{textAlign: 'center'}}>
-                    <img id="orgscreen-img" alt="" src={orgscreenImg}></img>
+                <Col md={6} id="requests-feature-container" style={{textAlign: 'center'}}>
+                    <img id="request-img" alt="" src={topMatches}></img>
                 </Col>
+                <Col md={6} id="feature-container">
+                    <h1 id="home-sub-heading" style={{marginTop: 140}}>Match Volunteers</h1>
+                    <p id="home-subheading" style={{fontSize: 16}}>Easily match and notify volunteers in your organization to 
+                        requests based on the recommended volunteers we offer.</p>
+                </Col>
+            </Row>
+            <Row style={{marginTop: 80, marginBottom: 100}}>
                 <Col xs={12} id="org-feature-container">
                     <h1 id="home-sub-heading">Take your next step</h1>
                     <p id="home-subheading" style={{fontSize: 20, paddingRight: 0,  marginBottom: 0}}>We’re excited to work 
