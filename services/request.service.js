@@ -330,9 +330,8 @@ exports.unmatchVolunteers = async function(requestID, volunteers) {
                 }
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+            await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
         }
-
-        await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
 
         return updatedRequest;
     } catch (e) {
@@ -372,9 +371,6 @@ exports.rejectRequest = async function(volunteerID, requestID) {
         // Unmatch the volunteer from the request
         await exports.unmatchVolunteers(requestID, [volunteerID]);
         let updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
-
-        // Scenario: when a volunteer is removed from a request -> send email to the admin (+ push notification) 
-        await exports.notifyRequestStatusChange(updatedRequest, 'rejected'); 
         
         return updatedRequest;
     } catch (e) {
@@ -428,11 +424,11 @@ exports.completeRequest = async function(volunteerID, requestID, reason, volunte
                 }
             });
             updatedRequest = (await RequestRepository.readRequest({_id: requestID}))[0];
+            // Scenario: when a request is completed -> send a push notif to the association     
+            pusher.trigger(updatedRequest.association, 'complete', requestID);
+            await exports.notifyRequestStatusChange(updatedRequest, 'completed'); 
         }
         
-        // Scenario: when a request is completed -> send a push notif to the association     
-        pusher.trigger(updatedRequest.association, 'complete', requestID);
-
         return updatedRequest;
     } catch (e) {
         throw e;
@@ -564,18 +560,6 @@ exports.notifyRequestStatusChange = async function(updatedRequest, action) {
                 foundAdmin = true;  
                 break;
             }  
-        }
-
-        // If no admin assigned to request, send email to association
-        if (!foundAdmin) { 
-            var data = {
-                sender: 'Covaid@covaid.co',
-                receiver: assoc[0].email,
-                name: requesterName,
-                assoc: assoc.name,
-                templateName: 'org_notification',
-            };
-            emailer.sendNotificationEmail(data)
         }
     } catch (e) {
         throw e;

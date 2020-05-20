@@ -1,3 +1,35 @@
+.inner-partner {
+    height: 100px;
+    border: 1px solid #7F7F7F;
+    border-radius: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+}
+
+#partner {
+    height: 120px;
+    padding: 20px;
+}
+
+.inner-partner:hover{
+    border: 1px solid #2670FF;
+}
+
+.inner-partner:hover #partner-heading{
+    color: #2670FF;
+}
+
+#partner-heading {
+    font-family: "Montserrat";
+    font-size: 24px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-weight: bold;
+    color: black;
+}
+
 #col-scroll {
     max-height: 500px;
     margin-bottom: 0px;
@@ -79,8 +111,8 @@ input {
 
 #org-feature-container {
     text-align: center;
-    padding-right: 350px;
-    padding-left: 350px;
+    padding-right: 200px;
+    padding-left: 200px;
 }
 
 #orgscreen-img {
@@ -90,8 +122,8 @@ input {
 
 @media (max-width:1150px) {
     #org-feature-container {
-        padding-right: 300px;
-        padding-left: 300px;
+        padding-right: 200px;
+        padding-left: 200px;
     }
 
     #orgscreen-img {
