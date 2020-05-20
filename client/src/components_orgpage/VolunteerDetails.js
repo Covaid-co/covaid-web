@@ -3,8 +3,13 @@ import Badge from 'react-bootstrap/Badge';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { useFormFields } from "../libs/hooksLib";
-import { generateMapsURL, moveFromToArr } from '../Helpers';
+import { generateMapsURL } from '../Helpers';
+import { generateURL } from '../Helpers';
+import { updateAllRequests } from './OrganizationHelpers';
+import PropTypes from 'prop-types';
 
 /**
  * Volunteer Details Modal in Org portal
@@ -14,6 +19,7 @@ export default function VolunteerDetails(props) {
     const [mapURL, setMapURL] = useState('');
     const [verified, setVerified] = useState(true);
     const [prevNote, setPrevNote] = useState('');
+    const [statistics, setStatistics] = useState();
     const [fields, handleFieldChange] = useFormFields({
         email5: "",
         adminDetails: ''
@@ -28,11 +34,31 @@ export default function VolunteerDetails(props) {
         if (props.currVolunteer.note) {
             fields.email5 = props.currVolunteer.note;
             setPrevNote(props.currVolunteer.note);
-        } else {
+        } if (props.currVolunteer._id) {
+            fetch_statistics(props.currVolunteer._id)
+        }
+        else {
             fields.email5 = '';
         }
-    }, [props.currVolunteer])
+    // }, [props.currVolunteer, props.show])
+    }, [props.currVolunteer, props.volunteerDetailModal])
 
+    const fetch_statistics = (id) => {
+		let params = {'id': id};
+		var url = generateURL( "/api/request/volunteerStatistics?", params);
+		fetch(url).then((response) => {
+            if (response.ok) {
+                response.json().then(data => {
+                    setStatistics(data)
+                });
+            } else {
+                console.log("Error")
+            }
+        }).catch((e) => {
+            console.log(e)
+        });
+	}
+ 
     const handleChangeVerify = (event) => {
         event.persist();
         setVerified(!verified);
@@ -49,61 +75,13 @@ export default function VolunteerDetails(props) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
         }).then((response) => {
-            if (response.ok) {
-                console.log("updated verify status");
-            } else {
+            if (!response.ok) {
                 alert("unable to attach");
             }
         }).catch(e => {
             alert(e);
         });
     };
-
-    const matchVolunteer = () => {
-        const requester_id = props.currRequest._id;
-        const volunteer_id = props.currVolunteer._id;
-        const volunteer_email = props.currVolunteer.email;
-        const assoc_id = props.currRequest.association;
-        const volunteer_name = props.currVolunteer.first_name
-        var first_name = volunteer_name;
-        first_name = first_name.toLowerCase();
-        first_name = first_name[0].toUpperCase() + first_name.slice(1);
-
-        let form = {
-            'request_id': requester_id,
-            'volunteer_id': volunteer_id,
-            'volunteer_email': volunteer_email,
-            'volunteer_name': first_name,
-            'association': assoc_id,
-            'adminDetails': fields.adminDetails
-        };
-
-        fetch('/api/request/attachVolunteerToRequest', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        }).then((response) => {
-            if (response.ok) {
-                const newRequest = {
-                    ...props.currRequest,
-                    'status': {
-                        'current_status': 'in_progress',
-                        'volunteer': volunteer_id
-                    },
-                    'volunteer_status': 'pending'
-                }
-                props.setCurrRequest(newRequest);
-                moveFromToArr(newRequest, props.unmatched, props.setUnmatched, props.matched, props.setMatched);
-                props.setVolunteerDetailsModal(false);
-                props.setTopMatchesModal(false);
-                props.setRequestDetailsModal(false);
-            } else {
-                alert("unable to attach");
-            }
-        }).catch((e) => {
-            alert('could not attach');
-        });
-    }
 
     // Not currently updating all other states
     const setNotes = () =>{
@@ -120,13 +98,11 @@ export default function VolunteerDetails(props) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form)
         }).then((response) => {
-            if (response.ok) {
-                console.log("updated_note");
-            } else {
+            if (!response.ok) {
                 alert("unable to attach");
             }
-        }).catch((e) => {
-            console.log(e);
+        }).catch(e => {
+            alert(e);
         });
     }
 
@@ -144,21 +120,27 @@ export default function VolunteerDetails(props) {
                 </Form>);
     }
 
-    if (Object.keys(props.currVolunteer).length > 0) {
+    const hidingVolunteerModal = () => {
+        props.setVolunteerDetailsModal(false);
+        setNotes();
+        if (props.inVolunteer) {
+            props.setVolunteersModal(true);
+        }
+        if (props.inRequest) {
+            props.setRequestDetailsModal(true);
+        }
+        if (props.matching && props.matching[0]) {
+            props.setTopMatchesModal(true);
+            props.setBestMatchVolunteer(false);
+        }
+        if (props.matching && props.matching[1]) {
+            props.setConfirmModal(true);
+            props.setBestMatchVolunteer(false);
+        }
+    }
+    if (Object.keys(props.currVolunteer).length > 0 && statistics) {
         return (
-            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
-                    props.setVolunteerDetailsModal(false);
-                    setNotes();
-                    if (props.inVolunteer) {
-                        props.setVolunteersModal(true);
-                    }
-                    if (props.inRequest) {
-                        props.setRequestDetailsModal(true);
-                    }
-                    if (props.matching) {
-                        props.setTopMatchesModal(true);
-                    }
-                }} style = {{marginTop: 10, paddingBottom: 40}}>
+            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={hidingVolunteerModal} style = {{marginTop: 10, paddingBottom: 40}}>
                 <Modal.Header closeButton>
                     <Modal.Title id="small-header">Volunteer Information</Modal.Title>
                 </Modal.Header>
@@ -173,12 +155,36 @@ export default function VolunteerDetails(props) {
                             </Badge>}
                     </div>
                     {displaySwitch()}
+                    <>
+                        {props.currVolunteer.pronouns === undefined || props.currVolunteer.pronouns === '' || props.currVolunteer.pronouns === ' ' ? '' :
+                        <p id="regular-text-nomargin">Pronouns: {props.currVolunteer.pronouns} </p>
+                        }
+                    </>
                     <p id="regular-text-nomargin">Location: <a target="_blank" rel="noopener noreferrer" href={mapURL}>Click here</a></p>
                     <p id="regular-text-nomargin">{props.currVolunteer.email}</p>
                     <p id="regular-text-nomargin">{props.currVolunteer.phone}</p>
                     <p id="regular-text-nomargin" style={{marginTop: 14}}>Languages: {props.currVolunteer.languages ? props.currVolunteer.languages.join(', ') : ""}</p>
                     <p id="regular-text-nomargin">Neighborhoods: {props.currVolunteer.offer ? props.currVolunteer.offer.neighborhoods.join(', ') : ""}</p>
                     <p id="regular-text-nomargin">Driver: {props.currVolunteer.offer ? (props.currVolunteer.offer.car ? ' Yes': ' No') : ""}</p>
+                    <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 14}}>Volunteer Statistics:</h5>
+                    <OverlayTrigger
+                    placement = "left"
+                    overlay={
+                    <Tooltip >
+                        Total requests matched all time.
+                    </Tooltip>
+                    }
+                    >
+                    <p id="regular-text-nomargin">Matched: {statistics["total"]}</p></OverlayTrigger>
+                    <OverlayTrigger
+                    placement = "left"
+                    overlay={
+                    <Tooltip >
+                        Total requests completed.
+                    </Tooltip>
+                    }
+                    >
+                    <p id="regular-text-nomargin">Completed {statistics["completed"]}</p></OverlayTrigger>
                     <h5 id="regular-text-bold" style={{marginBottom: 8, marginTop: 16}}>Notes:</h5>
                     <Form>
                         <Form.Group controlId="email5" bssize="large">
@@ -195,57 +201,9 @@ export default function VolunteerDetails(props) {
                     }) : ""}
                     <h5 id="regular-text-bold" style={{marginBottom: 0, marginTop: 16}}>Details:</h5>
                     <p id="regular-text-nomargin"> {props.currVolunteer.offer ? props.currVolunteer.offer.details : ""}</p>
-                    {props.matching ? 
-                        <>
-                            <h5 id="regular-text-bold" style={{marginBottom: 5, marginTop: 16}}>Share any relevant information with volunteer (optional):</h5>
-                            <Form>
-                                <Form.Group controlId="adminDetails" bssize="large">
-                                    <Form.Control as="textarea" 
-                                                rows="3"
-                                                placeholder="Message to volunteer"
-                                                value={fields.adminDetails ? fields.adminDetails : ''} 
-                                                onChange={handleFieldChange}/>
-                                </Form.Group>
-                            </Form>
-                        </>
-                        :
-                        <></>
-                    }
-                    {props.matching ? <Button id="large-button" onClick={matchVolunteer}>Match with {props.currVolunteer.first_name}</Button> : <></>}
                 </Modal.Body>
             </Modal>
         );
-    } else if (props.currRequest && props.currRequest.status === undefined) {
-        return (
-            <Modal id="volunteer-details-matching" show={props.volunteerDetailModal} onHide={() => {
-                    props.setVolunteerDetailsModal(false);
-                    if (props.setVolunteersModal) {
-                        props.setVolunteersModal(true);
-                    }
-                }} style = {{marginTop: 40}}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Volunteer Information</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{padding: 24, paddingTop: 10}}>
-                    Loading...
-                </Modal.Body>
-            </Modal>
-        );
-    } else if (props.currRequest && props.currRequest.status.volunteer === "manual" && props.currRequest.manual_match) {
-        return (
-            <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => props.setVolunteerDetailsModal(false)} style = {{marginTop: 40}}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{props.currRequest.manual_match.name}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <h5 id="regular-text-bold" style={{marginBottom: 3}}>Information</h5>
-                    <p id="regular-text-nomargin">Email: {props.currRequest.manual_match.email}</p>
-                    <p id="regular-text-nomargin">Phone: {props.currRequest.manual_match.phone}</p>
-                    <h5 id="regular-text-bold" style={{marginBottom: 3, marginTop: 16}}>Details:</h5>
-                    <p id="regular-text-nomargin"> {props.currRequest.manual_match.details}</p>
-                </Modal.Body>
-            </Modal>
-        )
     } else {
         return (
             <Modal id="volunteer-details" show={props.volunteerDetailModal} onHide={() => {
@@ -264,3 +222,15 @@ export default function VolunteerDetails(props) {
         );
     }
 }
+
+VolunteerDetails.propTypes = {
+    currVolunteer: PropTypes.object,
+    inRequest: PropTypes.bool,
+    inVolunteer: PropTypes.bool,
+    volunteerDetailModal: PropTypes.bool,
+    setVolunteerDetailsModal: PropTypes.func,
+    setVolunteersModal: PropTypes.func,
+    setRequestDetailsModal: PropTypes.func,
+    setTopMatchesModal: PropTypes.func,
+    setBestMatchVolunteer: PropTypes.func
+};

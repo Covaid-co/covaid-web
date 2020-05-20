@@ -10,7 +10,6 @@ import './changelog/ChangeLog.css'
 import './styling/NewHomePage.css';
 
 import Verify from './components_homepage/Verify'
-import Welcome from './components_homepage/Welcome'
 import RequestPage from './request_help/RequestPage'
 import ResetPassword from './ResetPassword'
 import ResetAssociationPassword from './ResetAssociationPassword'
@@ -210,6 +209,22 @@ function App() {
                             onLocationSubmit={onLocationSubmit} refreshLocation={refreshLocation}/>
     }
 
+    const homePageComp = (props, login) => {
+        return <HomePage { ...props }
+                        refreshLocation={refreshLocation}
+                        onLocationSubmit={onLocationSubmit}
+                        latitude={latitude}
+                        longitude={longitude}
+                        currentAssoc={currentAssoc}
+                        neighborhoods={neighborhoods}
+                        locality={locality}
+                        state={state}
+                        isLoaded={isLoaded}
+                        zipcode={zipcode}
+                        resources={resources}
+                        login={login}/>
+    }
+
     return (
         <ToastProvider>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -219,7 +234,6 @@ function App() {
                 <Route exact path="/organizationPortal" component={OrganizationPortal}/>
                 <Route exact path="/volunteerPortal" component={VolunteerPortal}/>
                 <Route exact path="/verify" component={Verify}/>
-                <Route exact path="/welcome" component={Welcome}/>
                 <Route exact path="/pgh-request" render={(props) => requestPage(props, 'pitt')}/>
                 <Route exact path="/ccom-request" render={(props) => requestPage(props, 'ccom')}/>
                 <Route exact path="/charlotte-request" render={(props) => requestPage(props, 'charlotte')}/>
@@ -234,30 +248,9 @@ function App() {
                 <Route exact path="/orgPasswordReset" component={OrgReset} />
                 <Route exact path="/updates" component={ChangeLog}/>
                 <Route exact path="/submit-updates" component={SubmitChangeLog}/>
-                <Route path="/" component={(props) => <HomePage { ...props }
-                        refreshLocation={refreshLocation}
-                        onLocationSubmit={onLocationSubmit}
-                        latitude={latitude}
-                        longitude={longitude}
-                        currentAssoc={currentAssoc}
-                        neighborhoods={neighborhoods}
-                        locality={locality}
-                        state={state}
-                        isLoaded={isLoaded}
-                        zipcode={zipcode}
-                        resources={resources}/>}/>
-                <Route path="*" component={(props) => <HomePage { ...props }
-                        refreshLocation={refreshLocation}
-                        onLocationSubmit={onLocationSubmit}
-                        latitude={latitude}
-                        longitude={longitude}
-                        currentAssoc={currentAssoc}
-                        neighborhoods={neighborhoods}
-                        locality={locality}
-                        state={state}
-                        isLoaded={isLoaded}
-                        zipcode={zipcode}
-                        resources={resources}/>}/>
+                <Route exact path="/volunteer-signin" component={(props) => homePageComp(props, true)}/>
+                <Route path="/" component={homePageComp}/>
+                <Route path="*" component={homePageComp}/>
             </Switch>
         </Router>
         </ToastProvider>

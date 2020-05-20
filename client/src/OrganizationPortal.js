@@ -23,7 +23,7 @@ import OrgResourcesModal from './components_orgpage/OrgResourcesModal';
 import LiveBeaconView from './components_orgpage/LiveBeaconView'
 import OrganizationRequestBoard from './components_orgpage/OrganizationRequestBoard';
 import OrganizationMap from './components_orgpage/OrganizationMap';
-import { fetchBeacons, fetchOrgVolunteers, getName, fetchOrgRequests, splitRequests } from './components_orgpage/OrganizationHelpers'
+import { fetchBeacons, fetchOrgVolunteers, getName, fetchOrgRequests } from './components_orgpage/OrganizationHelpers'
 import './OrganizationPage.css'
 
 
@@ -31,7 +31,7 @@ export default function OrganiationPortal(props) {
 
 	const { addToast } = useToasts()
 	const [pageLoaded, setPageLoaded] = useState(false);
-	const [currTabNumber, setCurrTab] = useState(1); 
+	const [currTabNumber, setCurrTab] = useState(0); 
 	const [showLogin, setShowLogin] = useState(false); 
 	const [association, setAssociation] = useState({});
 	const [volunteers, setVolunteers] = useState([]);
@@ -40,14 +40,33 @@ export default function OrganiationPortal(props) {
 	const [beaconModal, setBeaconModal] = useState(false);
 	const [resourceModal, setResourceModal] = useState(false);
 	const [allRequests, setAllRequests] = useState([]);
-	const [unmatched, setUnmatched] = useState([]);
-	const [matched, setMatched] = useState([]);
-	const [completed, setCompleted] = useState([]);
 	const [beacons, setBeacons] = useState([]);
 	const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
 	const [requestDetailsModal, setRequestDetailsModal] = useState(false);
 	const [currVolunteer, setCurrVolunteer] = useState({});
-	const [currRequest, setCurrRequest] = useState({});
+	const [currRequest, setCurrRequest] = useState({
+		admin_info: {
+			assignee: '1'
+		},
+		status: {
+			current_status: 1,
+			volunteers: []
+		},
+		personal_info: {
+			requester_name: '1',
+			requester_email: '1',
+			languages: ['English']
+		},
+		request_info: {
+			resource_request: ['1'],
+			payment: 1,
+			details: '1',
+			time: '1',
+			date: '1'
+		},
+		association: "5e88cf8a6ea53ef574d1b80c",
+		location_info: {coordinates: [1, 1]}
+	});
 
 	const [admin, setAdmin] = useState({});
 
@@ -56,6 +75,16 @@ export default function OrganiationPortal(props) {
 
 	const [inRequest, setInRequest] = useState(false);
 	const [inVolunteer, setInVolunteer] = useState(false);
+
+	useEffect(() => {
+		if (Cookie.get("admin_token") && Cookie.get("org_token")) {
+			login(true);
+		} else if (Cookie.get("org_token")) {
+			login(false);
+		} else {
+			setShowLogin(true);
+		}
+	}, []);
 
 	window.addEventListener("resize", () => {
         setWidth(window.innerWidth);
@@ -71,18 +100,14 @@ export default function OrganiationPortal(props) {
 			.then((adminResponse) => {
 				setAdmin(adminResponse);
 				setPageLoaded(true);
-			}).catch((e) => {
-				console.log(e);
+			}).catch(e => {
+				alert(e);
 			});
 	}
 
 	const fetch_requests = (id) => {
 		fetchOrgRequests(id).then((requests) => {
 			setAllRequests(requests);
-			const {unmatched, matched, completed} = splitRequests(requests);
-			setUnmatched(unmatched);
-			setMatched(matched);
-			setCompleted(completed);
 		});
 	}
 
@@ -93,7 +118,7 @@ export default function OrganiationPortal(props) {
 		});
 		var channel = pusher.subscribe(id);
 		channel.bind('general', function(data) {
-			fetch_requests(id)
+			fetch_requests(id);
 			addToast(data, {
 					appearance: 'info',
 					autoDismiss: true
@@ -101,12 +126,15 @@ export default function OrganiationPortal(props) {
 			)
 		});
 		channel.bind('complete', function() {
-			fetch_requests(id)
+			fetch_requests(id);
 			addToast("Someone completed a request!", {
 					appearance: 'success',
 					autoDismiss: true
 				}
 			)
+		});
+		channel.bind('request-details', function() {
+			fetch_requests(id);
 		});
 	}
 
@@ -136,20 +164,10 @@ export default function OrganiationPortal(props) {
 				} else {
 					setPageLoaded(true);
 				}
-			}).catch((error) => {
-				console.error(error);
+			}).catch(e => {
+				alert(e);
 			});
 	}
-
-	useEffect(() => {
-		if (Cookie.get("admin_token") && Cookie.get("org_token")) {
-			login(true);
-		} else if (Cookie.get("org_token")) {
-			login(false);
-		} else {
-			setShowLogin(true);
-		}
-	}, []);
 
 
 	if (beaconView) {
@@ -165,9 +183,9 @@ export default function OrganiationPortal(props) {
 					setAdmin={setAdmin} orgPortal={true} first_name={getName(admin, association)} handleShowModal={() => {}}/>
 			<div style ={{zoom: '95%'}}>
 				<Jumbotron fluid id="jumbo-volunteer" style={{paddingBottom: 50, paddingTop: 60}}>
-					<Container style={{maxWidth: 1500}}>
+					<Container style={{maxWidth: 2000}}>
 						<Row>
-							<Col lg={7} md={7} sm={12}>
+							<Col lg={6} md={6} sm={12}>
 								<h1 id="home-heading" style={{marginTop: 0}}>Welcome back,</h1>
 								<h1 id="home-heading" style={{marginTop: 0}}>{association.name}!</h1>
 								<p id="regular-text" style={{fontSize: 20, marginBottom: 40}}>This is your organization portal, a place for you to manage volunteers and requests in your area</p>
@@ -182,7 +200,7 @@ export default function OrganiationPortal(props) {
 									+ Add a link to your community&apos;s resources
 								</Button>
 							</Col>
-							<Col lg={5} md={5} sm={12} style={width < 768 ? {display: 'none'} : {display: 'block'}}>
+							<Col lg={6} md={6} sm={12} style={width < 768 ? {display: 'none'} : {display: 'block'}}>
 								<Container id="newOfferContainer" style={{width: "75%", marginBottom: 0, position: "absolute", marginTop: 20}}>
 									<h3 id="home-heading" style={{marginTop: 0, fontSize: 20}}>
 										Need a task done? {' '}
@@ -199,7 +217,7 @@ export default function OrganiationPortal(props) {
 										</Col>
 										<Col style={{paddingLeft: 5}}>
 											<Button id="large-button-empty" style={{marginTop: 0, paddingLeft: 5}} onClick={()=>{setBeaconView(true)}} >
-												View Live Beacons ({beacons.filter(beacon => beacon.beaconStatus===1).length})
+												Live Beacons ({beacons.filter(beacon => beacon.beaconStatus===1).length})
 											</Button>
 										</Col>
 									</Row>
@@ -211,14 +229,13 @@ export default function OrganiationPortal(props) {
 				<Container style={{maxWidth: 2000}}>
 					<Row className="justify-content-md-center">
 						<Col lg={6} md={12} sm={12} style={{marginTop: -44}}>
-							<OrganizationRequestBoard currTabNumber={currTabNumber} setCurrTab={setCurrTab}
-								unmatched={unmatched} matched={matched} completed={completed} setInRequest={setInRequest}
+							<OrganizationRequestBoard currTabNumber={currTabNumber} setCurrTab={setCurrTab} 
+								allRequests={allRequests} setInRequest={setInRequest}
 								setCurrRequest={setCurrRequest} setRequestDetailsModal={setRequestDetailsModal}/>
 						</Col>
-						<Col lg={6} md={12} sm={12} style={{marginTop: 10}}>
+						<Col lg={6} md={12} sm={12}>
 							<OrganizationMap
-								requests={allRequests} volunteers={volunteers} mode={currTabNumber}
-								unmatched={unmatched} matched={matched} completed={completed}
+								requests={allRequests} volunteers={volunteers} mode={currTabNumber} allRequests={allRequests}
 								volunteerDetailModal={volunteerDetailModal} association={association}
 								setVolunteerDetailsModal={setVolunteerDetailsModal} width={width}
 								currVolunteer={currVolunteer} setCurrVolunteer={setCurrVolunteer}
@@ -259,12 +276,8 @@ export default function OrganiationPortal(props) {
 								currRequest={currRequest}
 								setCurrRequest={setCurrRequest}
 								association={association}
-								unmatched={unmatched}
-								matched={matched}
-								completed={completed}
-								setUnmatched={setUnmatched}
-								setMatched={setMatched}
-								setCompleted={setCompleted}
+								allRequests={allRequests}
+								setAllRequests={setAllRequests}
 								mode={currTabNumber}
 								volunteers={volunteers}
 								admin={admin}

@@ -1,5 +1,17 @@
 import { generateURL, convertTime } from '../Helpers';
+import { request_status, volunteer_status } from '../constants';
 import fetch_a from '../util/fetch_auth';
+import { calcDistance } from '../Helpers';
+
+export const distance = (volunteer, request) => {
+    const latA = volunteer.latitude;
+    const longA = volunteer.longitude;
+    const latB = request.location_info.coordinates[1];
+    const longB = request.location_info.coordinates[0];
+    const meters = calcDistance(latA, longA, latB, longB);
+    const miles = meters * 0.00062137;
+    return Math.round(miles * 100) / 100;
+}
 
 export const sortFn = (x, y, direction) => {
     if (direction) {
@@ -20,54 +32,26 @@ export const sortFn = (x, y, direction) => {
     return 0;
 }
 
-export const sortReq = (type, filteredRequests, name, need, updated, posted) => {
-    var temp = JSON.parse(JSON.stringify(filteredRequests));
-    if (type === 'name') {
-        temp.sort(function(a, b) {
-            const x = String(a.requester_first.toLowerCase())
-            const y = String(b.requester_first.toLowerCase())
-            return sortFn(x, y, name);
-        });
-    } else if (type === 'need') {
-        temp.sort(function(a, b) {
-            const x = new Date(a.date);
-            const y = new Date(b.date);
-            return sortFn(x, y, need);
-        });
-    } else if (type === 'updated') {
-        for (var i = 0; i < temp.length; i++) {
-            if (!temp[i].last_modified && temp[i].time_posted) {
-                temp[i].last_modified = temp[i].time_posted;
-            }
-        }
-        temp.sort(function(a, b) {
-            var x = new Date();
-            x.setFullYear(2000);
-            if (a.last_modified) {
-                x = new Date(a.last_modified);
-            }
-            var y = new Date();
-            y.setFullYear(2000);
-            if (b.last_modified) {
-                y = new Date(b.last_modified);
-            }
-            return sortFn(x, y, updated);
-        });
+const parseByType = (type, request) => {
+    if (type === 'Name') {
+        return request.personal_info.requester_name.toLowerCase();
+    } else if (type === 'Needed By') {
+        return new Date(request.request_info.date);
+    } else if (type === 'Last Updated') {
+        return new Date(request.admin_info.last_modified);
     } else {
-        temp.sort(function(a, b) {
-            var x = new Date();
-            x.setFullYear(2000);
-            if (a.time_posted) {
-                x = new Date(a.time_posted);
-            }
-            var y = new Date();
-            y.setFullYear(2000);
-            if (b.time_posted) {
-                y = new Date(b.time_posted);
-            }
-            return sortFn(x, y, posted);
-        });
+        return new Date(request.time_posted);
     }
+}
+
+// Sort requests based on the sort type
+export const sortReq = (type, filteredRequests) => {
+    var temp = JSON.parse(JSON.stringify(filteredRequests));
+    temp.sort((request_a, request_b) => {
+        const x = parseByType(type, request_a);
+        const y = parseByType(type, request_b);
+        return sortFn(x, y, true);
+    });
     return temp;
 }
 
@@ -102,30 +86,40 @@ export const filterVolunteers = (query, volunteers) => {
 }
 
 // Request filtering based on query from admin
-export const filterReq = (query, unmatched) => {
-    var filtered = unmatched;
+export const filterReq = (query, requests) => {
+    var filtered_requests = requests;
     if (!(!query || query === "")) {
-        filtered = unmatched.filter(p => {
-            var dup = JSON.parse(JSON.stringify(p.resource_request));
-            dup.push('groceries');
-            var emailMatch = p.requester_email ? String(p.requester_email.toLowerCase()).startsWith(query): false;
-            var firstNameMatch = String(p.requester_first.toLowerCase()).startsWith(query);
-            var lastNameMatch = p.requester_last ? String(p.requester_last.toLowerCase()).startsWith(query) : false;
-            var ass = (p.assignee) ? String(p.assignee.toLowerCase()).startsWith(query) : false;
-            for (var i = 0; i < dup.length; i++) {
-                if (String(dup[i]).toLowerCase().startsWith(query)) {
+        filtered_requests = requests.filter(r => {
+            // Resource list
+            var resources = JSON.parse(JSON.stringify(r.request_info.resource_request));
+            resources.push('groceries');
+
+            // Requester email
+            const email = r.personal_info.requester_email;
+            const email_match = email ? String(email.toLowerCase()).startsWith(query): false;
+            
+            // Requester name
+            const name = String(r.personal_info.requester_name.toLowerCase());
+            const name_match = name.startsWith(query);
+
+            // Admin name
+            const admin_name = String(r.admin_info.assignee.toLowerCase());
+            const admin_match = admin_name.startsWith(query);
+
+            for (var i = 0; i < resources.length; i++) {
+                if (String(resources[i]).toLowerCase().startsWith(query)) {
                     return true;
                 }
             }
-            return emailMatch || firstNameMatch || lastNameMatch || ass;
+            return email_match || name_match || admin_match;
         });
     }
-    filtered.sort(function(a, b) {
-        const x = new Date(a.date);
-        const y = new Date(b.date);
+    filtered_requests.sort(function(a, b) {
+        const x = new Date(a.admin_info.last_modified);
+        const y = new Date(b.admin_info.last_modified);
         return sortFn(x, y, true);
     });
-    return filtered;
+    return filtered_requests;
 }
 
 const capitalize = (s) => {
@@ -214,27 +208,59 @@ export const fetchOrgRequests = async (id) => {
     return data;
 }
 
+export const filter_requests = (requests, type) => {
+    return requests.filter(request => request.status.current_status === type);
+}
+
+export const filter_volunteers = (volunteers, status) => {
+    return volunteers.filter(volunteer => volunteer.current_status === status);
+}
+
 // Split all requests in unmatched, matched and completed requests
-export const splitRequests = (data) => {
-    var unMatchedArr = [];
-    var matchedArr = [];
-    var completedArr = [];
-    for (var i = 0; i < data.length; i++) {
-        if (data[i].status) {
-            if (data[i].status.current_status === 'in_progress') {
-                matchedArr.push(data[i]);
-            } else if (data[i].status.current_status === 'incomplete' || data[i].status.current_status === 'pending') {
-                unMatchedArr.push(data[i]);
-            } else {
-                completedArr.push(data[i]);
-            }
-        } else {
-            unMatchedArr.push(data[i]);
-        }
-    }
+export const splitRequests = (requests) => {
+    var unMatchedArr = filter_requests(requests, request_status.UNMATCHED);
+    var matchedArr = filter_requests(requests, request_status.MATCHED);
+    var completedArr = filter_requests(requests, request_status.COMPLETED);
     return {
         unmatched: unMatchedArr,
         matched: matchedArr,
         completed: completedArr
     }
 }
+
+// Check whether a request has a volunteer in progress or not
+export const isInProgress = (request) => {
+    var in_progress = false;
+    const request_volunteers = request.status.volunteers;
+    for (var i = 0; i < request_volunteers.length; i++) {
+        if (request_volunteers[i].current_status === volunteer_status.IN_PROGRESS) {
+            in_progress = true;
+        }
+    }
+    return in_progress;
+}
+
+// Check whether a request has pending volunteers
+export const isInPending = (request) => {
+    var pending = false;
+    const request_volunteers = request.status.volunteers;
+    for (var i = 0; i < request_volunteers.length; i++) {
+        if (request_volunteers[i].current_status === volunteer_status.PENDING) {
+            pending = true;
+        }
+    }
+    return pending;
+}
+
+// Update all requests array with the new update request
+export const updateAllRequests = (request, allRequests, remove) => {
+    return allRequests.map(curr_request => {
+        if (curr_request._id === request._id) {
+            if (remove) {
+                return;
+            }
+            return request;
+        }
+        return curr_request;
+    })
+} 

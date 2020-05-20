@@ -15,6 +15,7 @@ import Col from 'react-bootstrap/Col'
 
 import CurrentVolunteerRequests from './components_volunteer/CurrentVolunteerRequests';
 import CompletedVolunteerRequests from './components_volunteer/CompletedVolunteerRequests';
+import { request_status, volunteer_status } from './constants';
 import { generateURL } from './Helpers';
 import NavBar from './components/NavBar'
 import VolunteerLogin from './components_volunteer/VolunteerLogin'
@@ -87,7 +88,7 @@ export default function VolunteerPortal(props) {
 				});
 				var channel = pusher.subscribe(user._id);
 				channel.bind('direct-match', function(data) {
-					fetchRequests('pending', setPendingRequests);
+					fetchRequests(volunteer_status.PENDING, setPendingRequests);
 					addToast('You have a new pending request!',
 						{
 							appearance: 'info',
@@ -97,9 +98,9 @@ export default function VolunteerPortal(props) {
 				});
 
 				// Fetch requests
-				fetchRequests('pending', setPendingRequests);
-				fetchRequests('accepted', setAcceptedRequests);
-				fetchRequests('completed', setCompletedRequests);
+				fetchRequests(volunteer_status.PENDING, setPendingRequests);
+				fetchRequests(volunteer_status.IN_PROGRESS, setAcceptedRequests);
+				fetchRequests(volunteer_status.COMPLETE, setCompletedRequests);
 
 				// Featch beacons
 				fetchBeacons();
@@ -123,7 +124,7 @@ export default function VolunteerPortal(props) {
 
 	// State change (Accepted -> Complete)
 	const completeAnInProgressRequest = (request) => {
-		request.completed_date = Date.now()
+		request.status.completed_date = Date.now()
 		setAcceptedRequests(acceptedRequests.filter(acceptedRequest => acceptedRequest._id !== request._id))
 		setCompletedRequests(completedRequests.concat(request))
 		setTabNum(3);

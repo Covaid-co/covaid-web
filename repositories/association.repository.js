@@ -10,9 +10,9 @@ exports.createAssociation = async function (association) {
     }
 }
 
-exports.readAssociation = async function (query, limit) {
+exports.readAssociation = async function (query) {
     try {
-        var associations = await Association.find(query).limit(limit);
+        var associations = await Association.find(query);
         return associations;
     } catch (e) {
         throw Error('Error while querying associations');

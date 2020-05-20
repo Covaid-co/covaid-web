@@ -136,8 +136,8 @@
 
 
 .custom-control-input:checked~.custom-control-label::before {
-  background-color: #314CCE;
-  border-color: #314CCE;
+  background-color: #2670FF;
+  border-color: #2670FF;
 }
 
 @media (min-width: 576px) {

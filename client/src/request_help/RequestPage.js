@@ -57,20 +57,29 @@ export default function RequestPage(props) {
 
     const handleSubmit = (secondPage) => {
         let form = {
-            'requester_first': firstPage.name,
-            'requester_phone': firstPage.phone,
-            'requester_email': firstPage.email,
-            'details': secondPage.details,
-            'payment': secondPage.payment,
-            'resource_request': firstPage.resources,
-            'languages': secondPage.languages,
-            'association': assoc_id,
-            'time': secondPage.time,
-            'date': secondPage.date,
-            'latitude': props.locationProps.latitude,
-            'longitude': props.locationProps.longitude,
-            'volunteer': props.volunteer,
-            'status': "pending"
+            request: {
+                personal_info: {
+                    'requester_name': firstPage.name,
+                    'requester_phone': firstPage.phone,
+                    'requester_email': firstPage.email,
+                    'languages': secondPage.languages,
+                },
+                request_info: {
+                    'resource_request': firstPage.resources,
+                    'details': secondPage.details,
+                    'payment': secondPage.payment,
+                    'time': secondPage.time,
+                    'date': secondPage.date,
+                },
+                location_info: {
+                    'type': 'Point',
+                    'coordinates': [props.locationProps.longitude, props.locationProps.latitude]
+                },
+                association: assoc_id,
+                status: {
+                    volunteer: props.volunteer
+                }
+            }
         };
 
         fetch('/api/request/create_request', {
@@ -130,8 +139,8 @@ export default function RequestPage(props) {
                     <Col lg={6} md={8} sm={12}>
                         <Container id="newOfferContainer" style={{marginBottom: 0}}>
                             {Object.keys(firstPage).length === 0 ?
-                                <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.locationProps.currentAssoc} translations={translatedStrings} language={language}/> :
-                                <RequestPage2 currentAssoc={props.locationProps.currentAssoc} handleSubmit={handleSubmit} translations={translatedStrings} language={language}/>}
+                                <RequestPage1 setFirstPage={setFirstPage} currentAssoc={props.locationProps.currentAssoc} translations={translatedStrings} language={language} volunteer={props.volunteer}/> :
+                                <RequestPage2 currentAssoc={props.locationProps.currentAssoc} handleSubmit={handleSubmit} translations={translatedStrings} language={language} volunteer={props.volunteer}/>}
                         </Container>
                     </Col>
                     <Col lg={3} md={2} sm={0}></Col>

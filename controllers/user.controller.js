@@ -7,7 +7,7 @@ const distance_tools = require('../util/distance_tools');
 const asyncWrapper = require("../util/asyncWrapper")
 var jwt = require('jwt-simple');
 
-const UserService = '../services/user.service';
+const UserService = require('../services/user.service');
 
 // Helper function to determine whether an email is valid
 function validateEmailAccessibility(email){
@@ -55,6 +55,20 @@ const sendVerifyEmail = (userID, user) => {
 	};
 	emailer.sendVerificationEmail(data);
 }
+
+/**
+ * Get users by ID list
+ */
+exports.getUsersByIds = asyncWrapper(async (req, res) => {
+	try {
+		const ids = req.query.ids;
+		const users = await UserService.getUsersByUserIDs(ids.split(","));
+		return res.status(200).send(users);
+	} catch (e) {
+		console.log(e);
+		return res.status(400).send(e);
+	}
+});
 
 /**
  * Handle requests to register a user
