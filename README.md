@@ -23,7 +23,7 @@ npm install -g create-react-app
 Copy the repo
 
 ```
-git clone https://github.com/debanik1997/covaid
+git clone https://github.com/Covaid-co/covaid-web
 cd covaid
 ```
 
