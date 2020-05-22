@@ -234,7 +234,7 @@ export const volunteerListGroup = (volunteer, curr_request, handleVolunteerClick
                 </Col>
             </Row>
         </ListGroup.Item>);
-    } else if (statistics){
+    } else if (statistics) {
         var styleTag = 'none';
         if (statistics['completed'] && (statistics['completed'].toString(10)).localeCompare('0') ) { 
             styleTag = 'inline'; 

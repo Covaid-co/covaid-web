@@ -159,13 +159,21 @@ export default function BestMatches(props) {
             alert(e);
         });
     }
-
+ 
     const changeStrict = () => {
         const unselected = unSelectedVolunteers(props.currRequest, props.volunteers, !strict);
         setUnselectedVolunteers(unselected);
         setFilteredVolunteers(unselected);
         setQuery('');
-        setStrict(!strict)
+        setStrict(!strict);
+        var list = []; 
+        unselected.forEach(volunteer => {
+            list.push(volunteer._id); 
+        }); 
+        notified_volunteers.forEach(volunteer => {
+            list.push(volunteer._id); 
+        })
+        fetch_statistics(list); 
     }
 
     const displayFilteredVolunteers = () => {

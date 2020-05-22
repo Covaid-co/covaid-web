@@ -20,11 +20,4 @@ router.put('/rejectRequest', auth.required, request_controller.rejectRequest);
 router.put('/completeRequest', auth.required, request_controller.completeARequest);
 router.put('/updateRequestDetails', request_controller.updateRequestDetails);
 
-
-router.put('/attachVolunteerToRequest', request_controller.attachVolunteer);
-router.put('/removeVolunteerFromRequest', request_controller.removeVolunteer);
-router.put('/set_assignee', request_controller.setAssignee);
-router.put('/set_notes', request_controller.setNotes);
-router.put('/set_delete', request_controller.setDelete);
-
 module.exports = router;

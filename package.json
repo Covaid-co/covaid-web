@@ -4,7 +4,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "test": "mocha --recursive --exit || true"
   },
   "author": "Debanik Purkayastha",
   "license": "ISC",
@@ -12,13 +13,16 @@
     "@googlemaps/google-maps-services-js": "^2.4.2",
     "@sendgrid/mail": "^7.0.0",
     "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "express-session": "^1.17.0",
+    "faker": "^4.1.0",
     "google-spreadsheet": "^3.0.10",
     "jwt-simple": "^0.5.6",
+    "mocha": "^7.1.2",
     "moment": "2.18.1",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.5",
@@ -28,6 +32,8 @@
     "nodemon": "^1.19.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "pusher": "^3.0.1"
+    "pusher": "^3.0.1",
+    "sinon": "^9.0.2",
+    "supertest": "^4.0.2"
   }
 }
