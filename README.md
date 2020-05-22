@@ -45,10 +45,10 @@ npm start
 
 ### General Project Breakdown
 
-Generally, the project is broken down into the client and server. The server runs locally on localhost:5000 and the client runs on localhost:3000. To access the front end, just paste the client url into your browser. 
+Generally, the project is broken down into the client and server. The server runs locally on localhost:5000 and the client runs on localhost:3000. To access the front end, just paste the client url into your browser.
 
 ### Detailed Project Breakdown (Important Files)
-    
+
     ├── package.json                   # Packages being used for server
     ├── client                         # Frontend for Coviad
     │   ├── package.json               # Packages being used for client
@@ -57,16 +57,16 @@ Generally, the project is broken down into the client and server. The server run
     │       ├── App.js                 # Main file for frontend
     │       ├── Homepage.js            # Main landing page
     │       ├── components_homepage    # Components used in landing page
-    │       ├── OrganizationPortal.js  # Main organization page 
+    │       ├── OrganizationPortal.js  # Main organization page
     │       ├── components_orgpage     # Components used in organization page
-    │       ├── VolunteerPortal.js     # Main volunteer page 
+    │       ├── VolunteerPortal.js     # Main volunteer page
     │       ├── location_tools         # Frontend tools to assist with location
     ├── config                         # Necessary server config files
     ├── controllers                    # Backend controllers
     ├── models                         # Models with information regarding 'business logic'
     ├── repositories                   # DB commands
     ├── routes                         # API endpoints
-    ├── scheduler                      # Node-Cron jobs 
+    ├── scheduler                      # Node-Cron jobs
     ├── services                       # Relevant services for managing workflows
     ├── util                           # Utility files (Emailer, Google Sheets integration)
     ├── index.js                       # Main server file

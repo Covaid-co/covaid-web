@@ -5,7 +5,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "test": "mocha --recursive --exit || true"
+    "test": "mocha --recursive --exit || true",
+    "format": "prettier --write '**/*.{js,json,css,md}'",
+    "format:check": "prettier --list-different '**/*.{js,json,css,md}'"
   },
   "author": "Debanik Purkayastha",
   "license": "ISC",

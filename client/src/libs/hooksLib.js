@@ -5,12 +5,12 @@ export function useFormFields(initialState) {
 
   return [
     fields,
-    function(event) {
+    function (event) {
       setValues({
         ...fields,
-        [event.target.id]: event.target.value
+        [event.target.id]: event.target.value,
       });
     },
-    setValues
+    setValues,
   ];
 }
