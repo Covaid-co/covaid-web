@@ -106,7 +106,7 @@ export default function Footer() {
               style={{ color: "#2670FF" }}
               target="_blank"
               rel="noopener noreferrer"
-              href="https://github.com/debanik1997/corona-aid"
+              href="https://github.com/Covaid-co/covaid-web"
             >
               Github
             </a>
