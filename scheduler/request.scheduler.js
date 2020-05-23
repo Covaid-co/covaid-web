@@ -10,7 +10,7 @@ exports.request_scheduler = function () {
       console.log("unmatching");
       try {
         // Unmatch all pending volunteers who are still tied to a request
-        await RequestService.unmatchPendingVolunteers(48);
+        await RequestService.unmatchPendingVolunteers(24);
       } catch (e) {
         console.log(e);
       }
