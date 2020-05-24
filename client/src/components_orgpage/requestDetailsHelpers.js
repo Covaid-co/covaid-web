@@ -518,6 +518,6 @@ export const unSelectedVolunteers = (curr_request, volunteers, strict) => {
   displayed_volunteers.sort(function (a, b) {
     return distance(a, curr_request) - distance(b, curr_request);
   });
-  displayed_volunteers = displayed_volunteers.slice(0, 20);
+  
   return displayed_volunteers;
 };
