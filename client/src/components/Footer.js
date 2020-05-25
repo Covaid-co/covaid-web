@@ -60,110 +60,58 @@ export default function Footer() {
             <Navbar style={{ paddingLeft: 0, paddingBottom: 0 }}>
               <Navbar.Brand
                 id="navbar-brand"
-                style={{ paddingLeft: 0, color: "#7B7B7B", marginLeft: 0 }}
+                style={{ paddingLeft: 0, color: "#7B7B7B", marginLeft: 0, marginTop: 20 }}
               >
                 covaid
               </Navbar.Brand>
             </Navbar>
+          </Col>
+          <Col xs="10" style={{textAlign: 'right', marginTop: 50}}>
             <Button
               variant="link"
-              id="regular-text"
-              style={{ color: "#2670FF", padding: 0 }}
-              onClick={() => setCurrModal("faq")}
+              id="footer-link"
+              onClick={() => window.open(currURL + "/faq", "_self")}
             >
               FAQ
             </Button>
-            <br />
             <Button
               variant="link"
-              id="regular-text"
-              style={{ color: "#2670FF", padding: 0, marginTop: -8 }}
+              id="footer-link"
               onClick={() => (window.location.href = currURL + "/updates")}
             >
               Updates
             </Button>
-            <br />
             <Button
               variant="link"
-              id="regular-text"
-              style={{ color: "#2670FF", padding: 0, marginTop: -8 }}
+              id="footer-link"
               onClick={() => setCurrModal("feedback")}
             >
               Send feedback
             </Button>
-          </Col>
-          <Col
-            xs={2}
-            style={{
-              padding: 20,
-              paddingLeft: 0,
-              paddingTop: 80,
-              paddingRight: 0,
-            }}
-          >
-            <a
-              id="regular-text"
-              style={{ color: "#2670FF" }}
+            {/* <a
+              id="footer-link"
               target="_blank"
               rel="noopener noreferrer"
               href="https://github.com/Covaid-co/covaid-web"
             >
               Github
             </a>
-            <br />
             <a
-              id="regular-text"
-              style={{ color: "#2670FF" }}
+              id="footer-link"
               target="_blank"
               rel="noopener noreferrer"
               href="https://www.facebook.com/covaidco"
             >
               Facebook
             </a>
-            <br />
             <a
-              id="regular-text"
-              style={{ color: "#2670FF" }}
+              id="footer-link"
               target="_blank"
               rel="noopener noreferrer"
               href="https://www.instagram.com/covaidmutualaid/"
             >
               Instagram
-            </a>
-            <br />
-          </Col>
-          <Col xs={4} style={{ padding: 20, paddingLeft: 100, paddingTop: 37 }}>
-            <p
-              id="regular-text"
-              style={{ color: "#7B7B7B", fontWeight: "bold" }}
-            >
-              Current Partners
-            </p>
-            {linkObject(
-              "https://www.facebook.com/bmoremutualaid/",
-              "Baltimore Mutual Aid"
-            )}
-            {linkObject(
-              "https://www.pittsburghmutualaid.com/",
-              "Pittsburgh Mutual Aid"
-            )}
-            {linkObject(
-              "https://www.covid-gca.org/",
-              "Greater Charlotte Area Mutual Aid"
-            )}
-          </Col>
-          <Col xs={4} style={{ padding: 20, paddingLeft: 20, paddingTop: 78 }}>
-            {linkObject(
-              "https://www.facebook.com/groups/200572921276575/",
-              "Delaware Mutual Aid"
-            )}
-            {linkObject(
-              "https://ccomcovid.wixsite.com/covid",
-              "CCOM COVID-19 Task Force"
-            )}
-            <p id="regular-text" style={{ marginBottom: 0 }}>
-              Indy COVID-19 Neighbor Response Team
-            </p>
+            </a> */}
           </Col>
         </Row>
       </Container>

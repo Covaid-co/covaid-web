@@ -10,6 +10,7 @@ import Col from "react-bootstrap/Col";
 
 import CitySupport from "./components_homepage/CitySupport";
 import CommunityBulletin from "./components_homepage/CommunityBulletin";
+import Feedback from "./components_modals/Feedback";
 import NewLogin from "./components_modals/NewLogin";
 import RequestHelp from "./request_help/RequestModal";
 import NavBar from "./components/NavBar";
@@ -23,6 +24,7 @@ import {
   supportButton,
   volunteerButton,
 } from "./HomePageHelpers";
+import home from "./assets/home.png";
 import "./HomePage.css";
 
 /**
@@ -137,6 +139,8 @@ export default function HomePage(props) {
           }}
         />
       );
+    } else if (modalType === 'feedback') {
+      modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
     } else if (modalType === "signin") {
       modal = <NewLogin showModal={showModal} hideModal={handleHideModal} />;
     } else if (modalType === "request") {
@@ -164,9 +168,11 @@ export default function HomePage(props) {
         pageLoaded={pageLoaded}
         isLoggedIn={loggedIn}
         first_name={currentUser.first_name}
-        handleShowModal={showModalType}
       />
       <Jumbotron fluid id="jumbo">
+        <div id="feedback">
+          <div id="feedback-tab" onClick={() => {showModalType('feedback')}}>Feedback</div>
+        </div>
         <Container id="jumboContainer">
           <Row>
             <Col md={6} id="jumbo-text">
@@ -178,14 +184,17 @@ export default function HomePage(props) {
               {volunteerButton(loggedIn)}
               <br />
               <Button
-                variant="link"
-                id="underlined-link"
+                // variant="link"
+                id="resources-button"
                 onClick={() => showModalType("resources")}
               >
-                <u>View COVID-19 Resources</u>
+                COVID-19 Resources
               </Button>
             </Col>
-            <Col md={6} id="community-bulletin">
+            <Col md={6} style={{ marginTop: 50 }}>
+              <img id="org-img" alt="" src={home}></img>
+            </Col>
+            {/* <Col md={6} id="community-bulletin">
               <p id="location-text">
                 Volunteers around
                 <button
@@ -206,7 +215,7 @@ export default function HomePage(props) {
                 }
               />
               {cantFindLink(props.currentAssoc, updateRequestHelpMode)}
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </Jumbotron>
@@ -214,12 +223,12 @@ export default function HomePage(props) {
         isLoaded={props.isLoaded}
         onLocationSubmit={props.onLocationSubmit}
       />
-      <Container
+      {/* <Container
         id={loggedIn ? "location-container-logged" : "location-container"}
       >
         <CitySupport currentAssoc={props.currentAssoc} />
-      </Container>
-      <Container id="jumboContainer" className={"mobile-bulletin-container"}>
+      </Container> */}
+      {/* <Container id="jumboContainer" className={"mobile-bulletin-container"}>
         <Col xs={12} id="mobile-bulletin">
           <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
           <p
@@ -261,10 +270,10 @@ export default function HomePage(props) {
           />
           {cantFindLink(props.currentAssoc, updateRequestHelpMode)}
         </Col>
-      </Container>
+      </Container> */}
       {getCurrentModal()}
     </div>,
-    <Footer key="2" />,
+    // <Footer key="2" />,
   ];
 }
 

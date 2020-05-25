@@ -8,8 +8,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 
-import AboutUs from "../components_modals/AboutUs";
-import HowItWorks from "../components_modals/HowItWorks";
+import NewLogin from "../components_modals/NewLogin";
 import MapModal from "../components_modals/MapModal";
 import Donate from "../components_modals/Donate";
 import { currURL } from "../constants";
@@ -97,21 +96,21 @@ export default function CovaidNavbar(props) {
         rightNav = (
           <Form
             inline
-            style={{ display: "block", marginRight: "5%", marginBottom: 3 }}
+            style={{ display: "block", marginRight: "8%", marginBottom: 3, marginTop: 10 }}
           >
             <Button
               variant="outline-light"
               id="login-button"
-              onClick={() => props.handleShowModal("signin")}
+              onClick={() => setCurrModal("signin")}
             >
-              Sign In
+              Log In
             </Button>
             <Button
               variant="outline-light"
               id="register-button"
               onClick={() => window.open(currURL + "/volunteer", "_self")}
             >
-              Volunteer Registration
+              Sign Up
             </Button>
           </Form>
         );
@@ -120,7 +119,8 @@ export default function CovaidNavbar(props) {
           <Form inline id="getStarted" style={{ display: "block" }}>
             <Button
               id="large-button-empty"
-              onClick={() => props.handleShowModal("signin")}
+              onClick={() => setCurrModal("signin")}
+
               style={{ marginTop: 0, marginBottom: 5 }}
             >
               Volunteer Login
@@ -144,17 +144,10 @@ export default function CovaidNavbar(props) {
 
   const getCurrentModal = () => {
     var res = <></>;
-    if (modalName === "about") {
+    if (modalName === 'signin')  {
       res = (
-        <AboutUs showModal={showModal} hideModal={() => setShowModal(false)} />
-      );
-    } else if (modalName === "faq") {
-      res = (
-        <HowItWorks
-          showModal={showModal}
-          hideModal={() => setShowModal(false)}
-        />
-      );
+        <NewLogin showModal={showModal} hideModal={() => setShowModal(false)} />
+      )
     } else if (modalName === "donate") {
       res = (
         <Donate showModal={showModal} hideModal={() => setShowModal(false)} />
@@ -208,6 +201,18 @@ export default function CovaidNavbar(props) {
   return (
     <>
       <Navbar
+        expand="md"
+        id="banner"
+      >
+        <span style={{cursor: 'pointer', fontWeight: 600}}>Check out our first blog post!</span>
+        <span id="view-banner" style={{cursor: 'pointer', fontWeight: 600}}>
+          View →
+        </span>
+        <span id="close-banner">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" shapeRendering="geometricPrecision" style={{color: 'currentcolor'}}><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+        </span>
+      </Navbar>
+      <Navbar
         collapseOnSelect
         onToggle={(e) => setToggled(e)}
         variant="light"
@@ -232,33 +237,39 @@ export default function CovaidNavbar(props) {
           <Nav className="mr-auto">
             <Nav.Link
               className={toggled ? "navBorderToggled" : "navbar-element"}
-              onClick={() => setCurrModal("about")}
+              href={currURL + "/about"}
             >
               <p id={toggled ? "navLinkToggled" : "navLink"}>About us</p>
             </Nav.Link>
             <Nav.Link
-              className={toggled ? "navBorderToggled" : "navbar-border-element"}
+              className={toggled ? "navBorderToggled" : "navbar-element"}
               href={currURL + "/organizationPortal"}
             >
-              <p id={toggled ? "navLinkToggled" : "navLinkBorder"}>
+              <p id={toggled ? "navLinkToggled" : "navLink"}>
                 Organizations
               </p>
             </Nav.Link>
             <Nav.Link
               className={toggled ? "navBorderToggled" : "navbar-element"}
-              onClick={() => setCurrModal("faq")}
+              href={currURL + "/faq"}
             >
-              <p id={toggled ? "navLinkToggled" : "navLink"}>FAQs</p>
+              <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
             </Nav.Link>
             <Nav.Link
               className={toggled ? "navBorderToggled" : "navbar-element"}
-              onClick={() => setCurrModal("donate")}
+              href={currURL + "/donate"}
             >
               <p id={toggled ? "navLinkToggled" : "navLink"}>Donate</p>
             </Nav.Link>
-            <Nav.Link className="volunteer-badge-web">
-              {volunteerBadge("desktop")}
+            <Nav.Link
+              className={toggled ? "navBorderToggled" : "navbar-element"}
+              onClick={() => setCurrModal("map")}
+            >
+              <p id={toggled ? "navLinkToggled" : "navLink"}>Volunteer Map</p>
             </Nav.Link>
+            {/* <Nav.Link className="volunteer-badge-web">
+              {volunteerBadge("desktop")}
+            </Nav.Link> */}
           </Nav>
           {rightNav}
         </Navbar.Collapse>
@@ -275,6 +286,5 @@ CovaidNavbar.propTypes = {
   orgAdmin: PropTypes.bool,
   first_name: PropTypes.string,
   totalVolunteers: PropTypes.number,
-  handleShowModal: PropTypes.func,
   setAdmin: PropTypes.func,
 };

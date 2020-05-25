@@ -26,7 +26,7 @@ export const supportButton = (currentAssoc, updateRequestHelpMode) => {
       onClick={() => updateRequestHelpMode("general")}
       id="request-button"
     >
-      Request support
+      I need help →
     </Button>
   );
   if (currentAssoc && currentAssoc.name === "Baltimore Mutual Aid") {

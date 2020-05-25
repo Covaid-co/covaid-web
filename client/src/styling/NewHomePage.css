@@ -28,6 +28,10 @@
   src: url("../fonts/inter/Inter-Bold-slnt=0.ttf");
 }
 
+::selection {
+  background: #fac6c6; /* WebKit/Blink Browsers */
+}
+
 #home-heading {
   font-family: "Montserrat";
   font-size: 48px;
@@ -52,10 +56,30 @@
   border-radius: 12px;
   background-color: #2670ff;
   border: 1px solid #2670ff;
-  height: 50px;
+  font-size: 20px;
+  height: 60px;
   padding-left: 30px;
   padding-right: 30px;
   margin-bottom: 5px;
+}
+
+#resources-button {
+  font-family: "Inter";
+  font-weight: 600;
+  border-radius: 12px;
+  background-color: white;
+  color: #2670ff;
+  border: 1px solid #2670ff;
+  font-size: 20px;
+  height: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 5px;
+}
+
+#request-button:hover {
+  background-color: white;
+  color: #2670ff;
 }
 
 #medium-button-solid {
@@ -184,7 +208,7 @@
   font-size: 34px;
   margin-right: 30px;
   padding-top: 0px;
-  margin-top: -3px;
+  margin-top: 8px;
 }
 
 #home {
@@ -192,18 +216,22 @@
 }
 
 .navbar-element {
-  margin-left: 20px;
+  margin-left: 13px;
 }
 
 #navLink {
   font-family: "Inter";
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   white-space: nowrap;
   color: rgb(109, 109, 109);
-  margin-top: 18px;
+  margin-top: 4px;
   margin-bottom: 0px;
   padding: 0px;
+}
+
+#navLink:hover {
+  color: #2670ff;
 }
 
 .navbar-border-element {
@@ -219,8 +247,9 @@
   padding-bottom: 7px;
   padding-left: 10px;
   padding-right: 10px;
-  font-size: 14px;
+  font-size: 16px;
   color: rgb(109, 109, 109);
+  font-weight: 500;
   /* text-decoration: underline;  */
 }
 
@@ -231,7 +260,7 @@
   border-radius: 20px;
   font-size: 14px;
   padding-top: 7.5px;
-  margin-top: 14px;
+  margin-top: 8px;
   margin-left: 10px;
   color: white;
   background-color: #2670ff;
@@ -263,21 +292,21 @@
   background-color: transparent;
   border-color: transparent;
   font-family: "Inter";
-  font-size: 14px;
+  font-size: 16px;
   height: 40px;
   padding-left: 15px;
   padding-right: 15px;
   margin-top: -3px;
-  color: #2670ff;
+  color: rgb(109, 109, 109);
 }
 
 #register-button {
   border-radius: 8px;
-  border-color: #2670ff;
-  color: #2670ff;
+  background-color: #2670ff;
+  color: white;
   font-family: "Inter";
-  font-size: 14px;
-  height: 32px;
+  font-size: 16px;
+  height: 36px;
   padding-left: 15px;
   padding-right: 15px;
   margin-top: -4px;

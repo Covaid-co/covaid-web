@@ -17,6 +17,9 @@ import OrganizationPortal from "./OrganizationPortal";
 import VolunteerPortal from "./VolunteerPortal";
 import OrgAdminRegister from "./components_orgpage/OrgAdminRegister";
 import OrgReset from "./components_orgpage/OrgReset";
+import AboutUs from "./components_homepage/AboutUs";
+import FAQ from "./components_homepage/FAQ";
+import Donate from "./components_homepage/Donate";
 import RegisterPage from "./volunteer_registration/RegisterPage";
 import ChangeLog from "./changelog/ChangeLog";
 import SubmitChangeLog from "./changelog/SubmitChangeLog";
@@ -317,6 +320,9 @@ function App() {
             component={ResetAssociationPassword}
           />
           <Route exact path="/orgAdmin" component={OrgAdminRegister} />
+          <Route exact path="/about" component={AboutUs} />
+          <Route exact path="/faq" component={FAQ} />
+          <Route exact path="/donate" component={Donate} />
           <Route exact path="/orgPasswordReset" component={OrgReset} />
           <Route exact path="/updates" component={ChangeLog} />
           <Route exact path="/submit-updates" component={SubmitChangeLog} />
