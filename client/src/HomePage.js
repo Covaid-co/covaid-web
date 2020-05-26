@@ -19,6 +19,8 @@ import GetLocation from "./location_tools/GetLocation";
 import HelpfulLinks from "./components_modals/HelpfulLinks";
 import NewLocationSetting from "./location_tools/NewLocationSetting";
 import { generateURL } from "./Helpers";
+import { currURL } from "./constants";
+
 import {
   cantFindLink,
   supportButton,
@@ -186,9 +188,9 @@ export default function HomePage(props) {
               <Button
                 // variant="link"
                 id="resources-button"
-                onClick={() => showModalType("resources")}
+                onClick={() => window.open(currURL + "/information-hub", "_self")}
               >
-                COVID-19 Resources
+                COVID-19 Information Hub
               </Button>
             </Col>
             <Col md={6} style={{ marginTop: 50 }}>
