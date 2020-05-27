@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "api/index.js",
+      "use": "@now/node"
+    },
+    {
       "src": "client/package.json",
       "use": "@now/static-build",
       "config": {
@@ -10,6 +14,10 @@
     }
   ],
   "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.js"
+    },
     {
       "src": "/(.*)",
       "dest": "/client/$1",
