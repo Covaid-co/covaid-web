@@ -13,9 +13,11 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/client/$1",
-      "continue": true
+      "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "client/static/$1"
     }
   ]
 }
