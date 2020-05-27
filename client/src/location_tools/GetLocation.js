@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import Modal from "react-bootstrap/Modal";
@@ -18,6 +18,7 @@ import { toastTime } from "../constants";
 export default function GetLocation(props) {
   const [locationString, setLocationString] = useState("");
   const [showInvalid, setShowInvalid] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,8 +29,20 @@ export default function GetLocation(props) {
     });
   };
 
+  useEffect(() => {
+    if (props.isLoaded) {
+      setIsOpen(!props.isLoaded);
+    }
+  }, []);
+
   return (
-    <Modal show={!props.isLoaded} style={{ marginTop: 90 }} onHide={() => {}}>
+    <Modal
+      show={isOpen}
+      style={{ marginTop: 90 }}
+      onHide={() => {
+        setIsOpen(false);
+      }}
+    >
       <Modal.Header>
         <Modal.Title>Looking for your location...</Modal.Title>
         <Spinner
