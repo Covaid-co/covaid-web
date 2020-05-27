@@ -8,8 +8,8 @@ import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 
 export default function RequestDetailMapModal(props) {
     const [viewport, setViewport] = useState({
-            latitude: props.currRequest.latitude,
-            longitude: props.currRequest.longitude,
+            latitude: props.currRequest.location_info.coordinates[1],
+            longitude: props.currRequest.location_info.coordinates[0],
             zoom: 15,  
             bearing: 0,
             pitch: 0,
@@ -17,8 +17,8 @@ export default function RequestDetailMapModal(props) {
             height: 400
         });
 
-    const [lat, setLat] = useState(props.currRequest.latitude);
-    const [long, setLong] = useState(props.currRequest.longitude);
+    const [lat, setLat] = useState(props.currRequest.location_info.coordinates[1]);
+    const [long, setLong] = useState(props.currRequest.location_info.coordinates[0]);
     const [isLoaded, setIsLoaded] = useState(false);
 
     const navStyle = {
