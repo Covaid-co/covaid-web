@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "name": "covaid",
+  "alias": "covaid.now.sh",
   "builds": [
     {
       "src": "api/src/index.js",
@@ -22,10 +24,6 @@
       "src": "/(.*)",
       "dest": "/client/$1",
       "continue": true
-    },
-    {
-      "src": "/client/src/serviceWorker.js",
-      "dest": "client/serviceWorker.js"
     },
     {
       "src": "/(.*)",
