@@ -26,6 +26,52 @@
       "continue": true
     },
     {
+      "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "client/static/$1"
+    },
+    {
+      "src": "/asset/images/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=604800"
+      },
+      "dest": "client/asset/images/$1"
+    },
+    {
+      "src": "/asset/icon/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=604800"
+      },
+      "dest": "client/asset/icon/$1"
+    },
+    {
+      "src": "/asset/partners/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=604800"
+      },
+      "dest": "client/asset/partners/$1"
+    },
+    {
+      "src": "/asset/subcategories/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=604800"
+      },
+      "dest": "client/asset/subcategories/$1"
+    },
+    {
+      "src": "/asset/manifest.json",
+      "dest": "client/asset/manifest.json"
+    },
+    {
+      "src": "/client/src/service-worker.js",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "client/service-worker.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "client/index.html"
     }
