@@ -22,6 +22,14 @@
       "src": "/(.*)",
       "dest": "/client/$1",
       "continue": true
+    },
+    {
+      "src": "/client/src/serviceWorker.js",
+      "dest": "client/serviceWorker.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "client/index.html"
     }
   ]
 }
