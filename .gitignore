@@ -17,7 +17,7 @@ config/client_secret.json
 /coverage
 
 # production
-/build
+client/build
 
 # misc
 .DS_Store

@@ -1,0 +1,98 @@
+{
+  "version": 2,
+  "name": "covaid",
+  "alias": "covaid.now.sh",
+  "env": {
+    "PUSHER_APP_ID": "980270",
+    "PUSHER_APP_KEY": "ed72954a8d404950e3c8",
+    "PUSHER_APP_SECRET": "983997455a3cce28a447",
+    "PUSHER_APP_CLUSTER": "us2",
+    "GOOGLE_MAPS_API_KEY": "AIzaSyBiUGJ9R8IyMpwC_oB3Pmjyzr4QqxC2a08",
+    "MAPBOX_TOKEN": "pk.eyJ1IjoibGlqZWZmcmV5MzkiLCJhIjoiY2s5MGUwMDNmMDBzdDNsbzFoY2VmZWNzOCJ9.8k5L4gUP4EF9AhvSylaIvw"
+  },
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@now/node"
+    },
+    {
+      "src": "client/package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/config/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/controllers/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/models/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/routes/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/scheduler/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/services/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/test/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/util/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=0"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "client/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "client/index.html"
+    }
+  ]
+}
