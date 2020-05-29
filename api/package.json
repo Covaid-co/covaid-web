@@ -2,9 +2,9 @@
   "name": "corona-aid",
   "version": "1.0.0",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "heroku-postbuild": "cd ../client && npm install && npm run build",
     "test": "mocha --recursive --exit || true",
     "format": "prettier --write '**/*.{js,json,css,md}'",
     "format:check": "prettier --list-different '**/*.{js,json,css,md}'"
