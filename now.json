@@ -25,6 +25,10 @@
   ],
   "routes": [
     {
+      "src": "package.json",
+      "dest": "index.js"
+    },
+    {
       "src": "/config/(.*)",
       "headers": {
         "cache-control": "s-maxage=0"
