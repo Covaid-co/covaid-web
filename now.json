@@ -12,7 +12,7 @@
   },
   "builds": [
     {
-      "src": "index.js",
+      "src": "api/src/index.js",
       "use": "@now/node"
     },
     {
@@ -25,64 +25,11 @@
   ],
   "routes": [
     {
-      "src": "package.json",
-      "dest": "index.js"
-    },
-    {
-      "src": "/config/(.*)",
+      "src": "/api/(.*)",
       "headers": {
         "cache-control": "s-maxage=0"
       },
-      "dest": "index.js"
-    },
-    {
-      "src": "/controllers/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "index.js"
-    },
-    {
-      "src": "/models/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "index.js"
-    },
-    {
-      "src": "/routes/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "index.js"
-    },
-    {
-      "src": "/scheduler/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "index.js"
-    },
-    {
-      "src": "/services/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "index.js"
-    },
-    {
-      "src": "/test/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "index.js"
-    },
-    {
-      "src": "/util/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "index.js"
+      "dest": "api/src/index.js"
     },
     {
       "src": "/static/(.*)",
