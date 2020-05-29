@@ -1,63 +1,59 @@
 .CalendarDay__selected_span {
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-  background: #2670FF ;
-  color: white; 
-  border: 1px solid #2670FF;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  background: #2670ff;
+  color: white;
+  border: 1px solid #2670ff;
 }
 
 .CalendarDay__selected {
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-  background: #2670FF;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  background: #2670ff;
   color: white;
 }
-
 
 .CalendarDay__selected:hover {
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-  background: #2670FF;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  background: #2670ff;
   color: white;
 }
-
 
 .CalendarDay__hovered_span:hover,
 .CalendarDay__hovered_span {
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-  background: #2670FF;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  background: #2670ff;
   color: white;
 }
 
-
 .DateInput_input {
-    font-weight: 200;
-    font-size: 19px;
-    line-height: 24px;
-    color: #484848;
-    background-color: #fff;
-    width: 100%;
-    padding: 11px 11px 9px;
-    border: 0;
-    border-top: 0;
-    border-right: 0;
-    border-bottom: 2px solid transparent;
-    border-left: 0;
-    border-radius: 0;
-    text-align: center;
+  font-weight: 200;
+  font-size: 19px;
+  line-height: 24px;
+  color: #484848;
+  background-color: #fff;
+  width: 100%;
+  padding: 11px 11px 9px;
+  border: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 2px solid transparent;
+  border-left: 0;
+  border-radius: 0;
+  text-align: center;
 }
 
 .DateInput .DateInput_1 {
   text-align: center;
-  margin: auto
+  margin: auto;
 }
 
-
 #dates_button {
-  text-align:center;
+  text-align: center;
 }

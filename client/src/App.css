@@ -11,7 +11,7 @@
   color: black;
   margin-top: 100px;
   height: 180px;
-  border-top: 1px solid #dee2e6; 
+  border-top: 1px solid #dee2e6;
 }
 
 #root {
@@ -26,7 +26,8 @@
   pointer-events: none;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -47,7 +48,7 @@ html, body {
 
 .form-check-input {
   position: absolute;
-  margin-top: .2rem;
+  margin-top: 0.2rem;
 }
 
 .suggestion {
@@ -79,7 +80,7 @@ html, body {
 }
 
 .nav-item.nav-link.active {
-  color: #1652F0 !important;
+  color: #1652f0 !important;
 }
 
 .nav-item.nav-link {
