@@ -7,7 +7,6 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
 import LocationMap from './LocationMap';
 import Toast from "react-bootstrap/Toast";
 import Button from "react-bootstrap/Button";
@@ -15,6 +14,8 @@ import { toastTime, currURL } from "../constants";
 import RequestPage1 from "./RequestPage1";
 import RequestPage2 from "./RequestPage2";
 import RequestConfirmation from './RequestConfirmation';
+import OrgHeader from "../association_request_headers/OrgHeader";
+import DefaultHeader from "../association_request_headers/DefaultHeader";
 import { translations } from "../translations/translations";
 import LocalizedStrings from "react-localization";
 import "./request.css";
@@ -54,7 +55,7 @@ export default function NewRequestPage(props) {
   };
 
   const confirmLocation = (step) => {
-    if (props.zipcode === '' || locationString === '') {
+    if (locationString === '') {
       setShowInvalid(true);
       setToastMessage('Please enter a location');
     } else {
@@ -66,7 +67,7 @@ export default function NewRequestPage(props) {
   const organizationText = () => {
     if (props.association === null || Object.keys(props.association).length === 0) {
       return <>
-        <p id="subtitle-small" style={{marginTop: 0}}>
+        <p id="subtitle-small">
           Covaid is not working with any mutual aid programs in your area.
         </p>
         <p id="info" style={{marginTop: 20}}>
@@ -88,11 +89,14 @@ export default function NewRequestPage(props) {
     }
   }
 
-  const submitRequest = () => {
-    var assoc_id =
-    props.association &&
+  const associationExists = () => {
+    return props.association &&
     props.association._id &&
-    props.association._id.length > 0
+    props.association._id.length > 0;
+  }
+
+  const submitRequest = () => {
+    var assoc_id = associationExists()
       ? props.association._id
       : "5e88cf8a6ea53ef574d1b80c";
 
@@ -130,10 +134,7 @@ export default function NewRequestPage(props) {
     })
       .then((response) => {
         if (response.ok) {
-          console.log("Request successfully created");
           setStepNum(5);
-        } else {
-          console.log("Request not successful");
         }
       })
       .catch((e) => {
@@ -141,7 +142,25 @@ export default function NewRequestPage(props) {
       });
   };
 
+  const associationName = () => {
+    return associationExists() ? props.association.name : 'we';
+  }
+
   const stepText = () => {
+    var topHeader = <DefaultHeader/>;
+    if (
+      props.association &&
+      Object.keys(props.association).length > 0
+    ) {
+      topHeader = (
+        <OrgHeader
+          assoc={props.association}
+          translations={translatedStrings}
+          language={language}
+        />
+      );
+    }
+
     if (step_num === 0) {
       return <>
         <p id="title">
@@ -151,7 +170,7 @@ export default function NewRequestPage(props) {
           Set your location
         </p>
         <p id="info">
-          We ask for your location so that can match you with organization volunteers in the area.
+          We ask for your location so that {associationName()} can best match you to volunteers in your area.
         </p>
         <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
           <InputGroup id="set-location" bssize="large">
@@ -160,22 +179,21 @@ export default function NewRequestPage(props) {
               value={locationString}
               onChange={(e) => setLocationString(e.target.value)}
             />
-            {/* <InputGroup.Append>
+            <InputGroup.Append>
               <Button variant="outline-secondary" id="location-change-button" onClick={handleSubmit}>Set Location</Button>
-            </InputGroup.Append> */}
+            </InputGroup.Append>
           </InputGroup>
         </Form>
         <Button
           id="large-button"
-          style={{ marginTop: 15 }}
-          onClick={() => {confirmLocation(1)}}
+          style={{ marginTop: 15, marginBottom: 30 }}
+          onClick={() => (props.org !== "" ? confirmLocation(2) : confirmLocation(1))}
         >
           Next
         </Button>
         </>
     } else if (step_num === 1) {
       return <>
-        {/* <Button id="back-button" onClick={() => setStepNum(0)}>←</Button> */}
         {organizationText()}
         <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
           <InputGroup id="set-location" bssize="large">
@@ -191,7 +209,7 @@ export default function NewRequestPage(props) {
         </Form>
         <Button
           id="large-button"
-          style={{ marginTop: 15 }}
+          style={{ marginTop: 15, marginBottom: 30 }}
           onClick={() => {confirmLocation(2)}}
         >
           Next
@@ -206,12 +224,7 @@ export default function NewRequestPage(props) {
         <p id="subtitle">
           Create a request
         </p>
-        <p id="info">
-          Given your request, we will try and match you with a volunteer in your area.
-        </p>
-        <p id="info">
-          For those who would rather call in a request, please call <font style={{color: '#2670FF'}}>(401) 526-8243</font>
-        </p>
+        {topHeader}
       </>
     } else if (step_num === 3) {
       return <>
@@ -222,12 +235,7 @@ export default function NewRequestPage(props) {
         <p id="subtitle">
           Create a request
         </p>
-        <p id="info">
-          Given your request, we will try and match you with a volunteer in your area.
-        </p>
-        <p id="info">
-          For those who would rather call in a request, please call <font style={{color: '#2670FF'}}>(401) 526-8243</font>
-        </p>
+        {topHeader}
       </>
     } else if (step_num === 4) {
       return <>
@@ -266,9 +274,12 @@ export default function NewRequestPage(props) {
       return <LocationMap locationInfo={{longitude: props.longitude, latitude: props.latitude}}/>
     } else if (step_num === 2) {
       return (
-        <Row style={{marginTop: 20}}>
-          <Col sm={0} md={0} lg={2}></Col>
-          <Col sm={12} md={12} lg={8}>
+        <Row id={associationExists() ? 'text-row' : ''}>
+          <Col sm={1} md={0} lg={2}></Col>
+          <Col sm={10} md={12} lg={8}>
+            <p id="border-top">
+              &nbsp;
+            </p>
             <RequestPage1
               setFirstPage={setFirstPage}
               first_page={first_page}
@@ -282,9 +293,12 @@ export default function NewRequestPage(props) {
       )
     } else if (step_num === 3) {
       return (
-        <Row style={{marginTop: 20}}>
+        <Row>
           <Col sm={0} md={0} lg={2}></Col>
           <Col sm={12} md={12} lg={8}>
+            <p id="border-top">
+              &nbsp;
+            </p>
             <RequestPage2
               currentAssoc={props.association}
               second_page={second_page}
@@ -297,7 +311,10 @@ export default function NewRequestPage(props) {
         </Row>
       )
     } else if (step_num === 4) {
-      return (
+      return (<>
+        <p id="border-top" style={associationExists() ? {marginTop: 70} : {marginTop: 0}}>
+          &nbsp;
+        </p>
         <RequestConfirmation
           first_page={first_page}
           setFirstPage={setFirstPage}
@@ -308,42 +325,55 @@ export default function NewRequestPage(props) {
           language={language}
           submitRequest={submitRequest}
         />
+      </>
       )
     }
     return <></>
   }
 
+  const toastObj = () => {
+    return <Toast
+      show={showInvalid}
+      delay={toastTime}
+      onClose={() => setShowInvalid(false)}
+      autohide
+      id="toastError"
+      style={{ marginBottom: -50, marginRight: 0 }}
+    >
+      <Toast.Body>{toast_message}</Toast.Body>
+    </Toast>
+  }
+
   return [
     <div className="App" key="1">
-      <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} />
-      <Container style={{ maxWidth: 1500 }}>
+      <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} simplified={true} />
+      <Container style={{ maxWidth: 2500, marginBottom: 50 }}>
         <Row>
           <Col lg={6} md={6} sm={12} id="left-container">
-            <Row style={{marginTop: 70}}>
-              <Col sm={0} md={1} lg={2}></Col>
-              <Col xs={8}>
-                {stepText()}
-                <Toast
-                  show={showInvalid}
-                  delay={toastTime}
-                  onClose={() => setShowInvalid(false)}
-                  autohide
-                  id="toastError"
-                  style={{ marginBottom: -50, marginRight: 0 }}
-                >
-                  <Toast.Body>{toast_message}</Toast.Body>
-                </Toast>
-              </Col>
-              <Col xs={2}></Col>
-            </Row>
+            {associationExists() ? 
+              <Row id="text-row" style={step_num === 2 || step_num === 3 ? {marginTop: 0} : {}}>
+                <Col xl={1} lg={1} md={0} sm={0} ></Col>
+                <Col xl={10} lg={10} md={12} sm={12}>
+                  {stepText()}
+                  {toastObj()}
+                </Col>
+              </Row> : 
+              <Row id="text-row">
+                <Col sm={1} md={1} lg={2}></Col>
+                <Col xl={8} lg={8} md={10} sm={10}>
+                  {stepText()}
+                  {toastObj()}
+                </Col>
+              </Row>
+            }
           </Col>
-          <Col lg={6} md={6} sm={0} style={{marginTop: 50, paddingLeft: 40}}>
+          <Col lg={6} md={6} sm={0} id="right-container">
             {mapRequest()}
           </Col>
         </Row>
       </Container>
-    </div>,
-    <Footer key="2" />,
+    </div>
+    // <Footer key="2" />,
   ];
 }
 

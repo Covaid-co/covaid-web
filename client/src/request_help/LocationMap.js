@@ -21,16 +21,18 @@ export default function LocationMap(props) {
   const [mapBoxToken, setMapBoxToken] = useState("");
 
   useEffect(() => {
-    fetch("/api/apikey/mapbox").then((response) => {
-      if (response.ok) {
-        response.json().then((key) => {
-          setMapBoxToken(key["mapbox"]);
-          setIsLoaded(true);
-        });
-      } else {
-        alert("Error");
-      }
-    });
+    if (mapBoxToken === "") {
+      fetch("/api/apikey/mapbox").then((response) => {
+        if (response.ok) {
+          response.json().then((key) => {
+            setMapBoxToken(key["mapbox"]);
+            setIsLoaded(true);
+          });
+        } else {
+          alert("Error");
+        }
+      });  
+    }
 
     if (
       props.locationInfo.latitude &&

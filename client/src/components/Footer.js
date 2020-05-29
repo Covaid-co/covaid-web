@@ -9,9 +9,14 @@ import HowItWorks from "../components_modals/HowItWorks";
 import Feedback from "../components_modals/Feedback";
 import { currURL } from "../constants";
 
-export default function Footer() {
+export default function Footer(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalName, setModalName] = useState("");
+  const [width, setWidth] = useState(window.innerWidth);
+
+  window.addEventListener("resize", () => {
+    setWidth(window.innerWidth);
+  });
 
   const getCurrentModal = () => {
     var modal = <></>;
@@ -28,7 +33,7 @@ export default function Footer() {
       );
     }
     return modal;
-  };
+  }
 
   return (
     <footer className="footer">
@@ -44,7 +49,7 @@ export default function Footer() {
               </Navbar.Brand>
             </Navbar>
           </Col>
-          <Col xl={10} lg={10} md={12} style={{textAlign: 'left', marginTop: 62, paddingLeft: 0}}>
+          <Col xl={10} lg={10} md={10} sm={12} style={{textAlign: 'left', marginTop: 62, paddingLeft: 0}}>
             <Button
               variant="link"
               id="footer-link"
@@ -62,9 +67,9 @@ export default function Footer() {
             <Button
               variant="link"
               id="footer-link"
-              onClick={() => (window.location.href = currURL + "/donate")}
+              onClick={() => {setModalName('feedback'); setShowModal(true)}}
             >
-              Donate
+              Feedback
             </Button>
             <i
               id="social-icon"
@@ -84,37 +89,6 @@ export default function Footer() {
               onClick={() => (window.location.href = "https://www.facebook.com/covaidco")}
               aria-hidden="true"
             ></i>
-            {/* <Button
-              variant="link"
-              id="footer-link"
-              onClick={() => setCurrModal("feedback")}
-            >
-              Send feedback
-            </Button> */}
-            {/* <a
-              id="footer-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/Covaid-co/covaid-web"
-            >
-              Github
-            </a>
-            <a
-              id="footer-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.facebook.com/covaidco"
-            >
-              Facebook
-            </a>
-            <a
-              id="footer-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.instagram.com/covaidmutualaid/"
-            >
-              Instagram
-            </a> */}
           </Col>
         </Row>
       </Container>

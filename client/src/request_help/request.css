@@ -1,8 +1,47 @@
 #left-container {
   border-right: 1px solid #cecece;
-  height: 450px;
+  height: inherit;
   margin-right: 0px;
+  margin-top: 30px;
+}
+
+#text-row {
+  margin-top: 90px;
+}
+
+#right-container {
   margin-top: 50px;
+  padding-left: 40px;
+}
+
+#border-top {
+  font-size: 16px;
+  border-bottom: 1px solid #dee2e6;
+  margin-top: -10px;
+  margin-bottom: 30px;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #left-container {
+    border-right: 0px;
+    /* height: 350px; */
+    /* margin-top: 20px; */
+  }
+
+  #text-row {
+    margin-top: 10px;
+  }
+
+  #right-container {
+    margin-top: 0px;
+    padding-left: 15px;
+    /* padding-top: 30px; */
+  }
+
+  #border-top {
+    display: block;
+  }
 }
 
 #back-button {
@@ -46,7 +85,7 @@
 #subtitle {
   font-family: "Montserrat";
   font-size: 28px;
-  margin-bottom: 0px;
+  margin-bottom: 15px;
   color: #2670FF;
   font-weight: bold;
   margin-top: -5px;

@@ -182,23 +182,22 @@ function App() {
         setAssocByOrg("5e909963a4141a039a6fc1e5");
       }
     }
-    const locationProps = {
-      latitude: latitude,
-      longitude: longitude,
-      currentAssoc: currentAssoc,
-      neighborhoods: neighborhoods,
-      locality: locality,
-      state: state,
-      zipcode: zipcode,
-    };
     return (
       <RegisterPage
         {...props}
         org={org}
-        locationProps={locationProps}
         isLoaded={isLoaded}
+        setLocationState={setLocationState}
+        googleApiKey={googleApiKey}
         onLocationSubmit={onLocationSubmit}
         refreshLocation={refreshLocation}
+        latitude={latitude}
+        longitude={longitude}
+        association={currentAssoc}
+        neighborhoods={neighborhoods}
+        locality={locality}
+        state={state}
+        zipcode={zipcode}
       />
     );
   };
@@ -214,31 +213,10 @@ function App() {
         setAssocByOrg("5e909963a4141a039a6fc1e5");
       }
     }
-    const locationProps = {
-      latitude: latitude,
-      longitude: longitude,
-      currentAssoc: currentAssoc,
-      neighborhoods: neighborhoods,
-      locality: locality,
-      state: state,
-      zipcode: zipcode,
-    };
-    return (
-      <RequestPage
-        {...props}
-        org={org}
-        locationProps={locationProps}
-        isLoaded={isLoaded}
-        onLocationSubmit={onLocationSubmit}
-        refreshLocation={refreshLocation}
-      />
-    );
-  };
-
-  const requestPage1 = (props) => {
     return (
       <NewRequestPage
         {...props}
+        org={org}
         onLocationSubmit={onLocationSubmit}
         setLocationState={setLocationState}
         googleApiKey={googleApiKey}
@@ -265,7 +243,7 @@ function App() {
         currentAssoc={currentAssoc}
         neighborhoods={neighborhoods}
         locality={locality}
-        state={state}
+        stateString={state}
         isLoaded={isLoaded}
         zipcode={zipcode}
         resources={resources}
@@ -311,7 +289,7 @@ function App() {
           <Route
             exact
             path="/request"
-            render={(props) => requestPage1(props)}
+            render={(props) => requestPage(props, "")}
           />
           <Route
             exact

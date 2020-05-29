@@ -30,7 +30,10 @@ export default function RegisterPage(props) {
 
   useEffect(() => {
     setShowModal(false);
-  }, [props.locationProps]);
+    if (props.googleApiKey !== "") {
+      props.setLocationState(props.googleApiKey); 
+    }
+  }, [props.googleApiKey]);
 
   const showModalType = (type) => {
     setModalType(type);
@@ -44,16 +47,17 @@ export default function RegisterPage(props) {
   const volunteerFormInfo = () => {
     var topHeader = <DefaultHeader />;
     if (
-      props.locationProps.currentAssoc &&
-      Object.keys(props.locationProps.currentAssoc).length > 0
+      props.association &&
+      Object.keys(props.association).length > 0
     ) {
-      topHeader = <OrgHeader assoc={props.locationProps.currentAssoc} />;
+      topHeader = <OrgHeader assoc={props.association} />;
     }
     return (
       <>
         {topHeader}
         <CurrentLocation
-          locationProps={props.locationProps}
+          locality={props.locality}
+          zipcode={props.zipcode}
           showModal={() => showModalType("location")}
         />
       </>
@@ -72,25 +76,25 @@ export default function RegisterPage(props) {
         location: {
           type: "Point",
           coordinates: [
-            props.locationProps.longitude,
-            props.locationProps.latitude,
+            props.longitude,
+            props.latitude,
           ],
         },
         offer: {
           details: secondPage.details,
           tasks: secondPage.tasks,
           neighborhoods: firstPage.neighborhoods,
-          state: props.locationProps.state,
+          state: props.stateString,
           car: secondPage.car,
           timesAvailable: secondPage.timesAvailable,
           canHelp: thirdPage.canHelp,
           helpDetails: thirdPage.helpDetails,
         },
-        association: props.locationProps.currentAssoc._id
-          ? props.locationProps.currentAssoc._id
+        association: props.association._id
+          ? props.association._id
           : "",
-        association_name: props.locationProps.currentAssoc.name
-          ? props.locationProps.currentAssoc.name
+        association_name: props.association.name
+          ? props.association.name
           : "",
         languages: ["English"],
         phone: firstPage.phone,
@@ -121,21 +125,21 @@ export default function RegisterPage(props) {
       return (
         <RegisterPage1
           setFirstPage={setFirstPage}
-          neighborhoods={props.locationProps.neighborhoods}
+          neighborhoods={props.neighborhoods}
         />
       );
     } else if (Object.keys(secondPage).length === 0) {
       return (
         <RegisterPage2
           setSecondPage={setSecondPage}
-          currentAssoc={props.locationProps.currentAssoc}
+          currentAssoc={props.association}
         />
       );
     } else {
       return (
         <RegisterPage3
           handleSubmit={handleSubmit}
-          currentAssoc={props.locationProps.currentAssoc}
+          currentAssoc={props.association}
         />
       );
     }
@@ -220,11 +224,11 @@ export default function RegisterPage(props) {
 }
 
 RegisterPage.propTypes = {
-  locationProps: PropTypes.shape({
-    currentAssoc: PropTypes.object,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    zipcode: PropTypes.string,
-    locality: PropTypes.string,
-  }),
+  association: PropTypes.object,
+  latitude: PropTypes.number,
+  longitude: PropTypes.number,
+  locality: PropTypes.string,
+  stateString: PropTypes.string,
+  zipcode: PropTypes.string,
+  neighborhoods: [PropTypes.string]
 };

@@ -207,7 +207,7 @@ export default function CovaidNavbar(props) {
 
   return (
     <>
-      <Navbar
+      {/* <Navbar
         expand="md"
         id="banner"
       >
@@ -218,7 +218,7 @@ export default function CovaidNavbar(props) {
         <span id="close-banner">
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" shapeRendering="geometricPrecision" style={{color: 'currentcolor'}}><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
         </span>
-      </Navbar>
+      </Navbar> */}
       <Navbar
         collapseOnSelect
         onToggle={(e) => setToggled(e)}
@@ -241,43 +241,56 @@ export default function CovaidNavbar(props) {
           />
         </Form>
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link
-              className={toggled ? "navBorderToggled" : "navbar-element"}
-              href={currURL + "/about"}
-            >
-              <p id={toggled ? "navLinkToggled" : "navLink"}>About us</p>
-            </Nav.Link>
-            <Nav.Link
-              className={toggled ? "navBorderToggled" : "navbar-element"}
-              href={currURL + "/organizationPortal"}
-            >
-              <p id={toggled ? "navLinkToggled" : "navLink"}>
-                Organizations
-              </p>
-            </Nav.Link>
-            <Nav.Link
-              className={toggled ? "navBorderToggled" : "navbar-element"}
-              href={currURL + "/faq"}
-            >
-              <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
-            </Nav.Link>
-            <Nav.Link
-              className={toggled ? "navBorderToggled" : "navbar-element"}
-              href={currURL + "/donate"}
-            >
-              <p id={toggled ? "navLinkToggled" : "navLink"}>Donate</p>
-            </Nav.Link>
-            <Nav.Link
-              className={toggled ? "navBorderToggled" : "navbar-element"}
-              onClick={() => setCurrModal("map")}
-            >
-              <p id={toggled ? "navLinkToggled" : "navLink"}>Volunteer Map</p>
-            </Nav.Link>
-            {/* <Nav.Link className="volunteer-badge-web">
-              {volunteerBadge("desktop")}
-            </Nav.Link> */}
-          </Nav>
+          {props.simplified ? 
+            <Nav className="mr-auto">
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                href={currURL + "/about"}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>About us</p>
+              </Nav.Link>
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                href={currURL + "/faq"}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
+              </Nav.Link>
+            </Nav> : 
+            <Nav className="mr-auto">
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                href={currURL + "/about"}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>About us</p>
+              </Nav.Link>
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                href={currURL + "/organizationPortal"}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                  Organizations
+                </p>
+              </Nav.Link>
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                href={currURL + "/faq"}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
+              </Nav.Link>
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                href={currURL + "/donate"}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>Donate</p>
+              </Nav.Link>
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                onClick={() => setCurrModal("map")}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>Volunteer Map</p>
+              </Nav.Link>
+            </Nav>
+          }
           {rightNav}
         </Navbar.Collapse>
       </Navbar>

@@ -278,7 +278,7 @@ export default function HomePage(props) {
       </Container> */}
       {getCurrentModal()}
     </div>,
-    <Footer key="2" />,
+    <Footer key="2" home={true}/>,
   ];
 }
 
