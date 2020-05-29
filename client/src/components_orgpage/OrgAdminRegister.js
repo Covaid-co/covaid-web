@@ -11,7 +11,7 @@ import orgImg from "../assets/orgNew.png";
 import NavBar from "../components/NavBar";
 import { validateEmail } from "../Helpers";
 import Cookie from "js-cookie";
-const queryString = require("query-string");
+const queryString = require("querystring");
 
 export default function OrgAdminRegister(props) {
   const [registered, setRegistered] = useState(false);
