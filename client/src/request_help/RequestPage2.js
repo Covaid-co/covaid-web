@@ -9,7 +9,7 @@ import NeededBy from "../components_homepage/NeededBy";
 import NewDetails from "../components_homepage/NewDetails";
 import NewPaymentMethod from "../components_homepage/NewPaymentMethod";
 import CheckForm from "../components/CheckForm";
-import { toastTime, languages } from "../constants";
+import { defaultResources, toastTime } from "../constants";
 import { setFalseObj, extractTrueObj } from "../Helpers";
 
 /**
@@ -20,8 +20,8 @@ export default function RequestPage2(props) {
   const [pendingSubmit, setPendingSubmit] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [languageChecked, setLanguageChecked] = useState({});
   const [selectedPayment, setSelectedIndex] = useState(0);
+  const [resources, setResources] = useState({});
   const [time, setTime] = useState("Morning");
   const [date, setDate] = useState(
     new Date(Date.now()).toLocaleString().split(",")[0]
@@ -31,31 +31,47 @@ export default function RequestPage2(props) {
   });
 
   useEffect(() => {
-    setLanguageChecked(setFalseObj(languages));
-  }, []);
+    var resourcesFromAssoc = defaultResources;
+    if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
+      resourcesFromAssoc = props.currentAssoc.resources;
+    }
+    var temp_resources = setFalseObj(resourcesFromAssoc);
+
+    if (Object.keys(props.second_page).length !== 0) {
+      fields.details = props.second_page.details;
+      setSelectedIndex(props.second_page.payment);
+      setTime(props.second_page.time);
+      setDate(props.second_page.date);
+      for (var i = 0; i < props.second_page.resources.length; i++) {
+        temp_resources[props.second_page.resources[i]] = true;
+      }
+    }
+    setResources(temp_resources);
+  }, [props.second_page]);
 
   const goToSubmit = () => {
     const valid = checkPage();
     if (valid) {
       setShowToast(false);
       setPendingSubmit(true);
-      const languages = extractTrueObj(languageChecked);
+      const resource_request = extractTrueObj(resources);
       const result = {
         details: fields.details,
         payment: selectedPayment,
-        languages: languages,
+        resources: resource_request,
         time: time,
         date: date,
       };
-      props.handleSubmit(result);
+      props.setStepNum(4);
+      props.setSecondPage(result);
     } else {
       setShowToast(true);
     }
   };
 
   const checkPage = () => {
-    if (Object.values(languageChecked).every((v) => v === false)) {
-      setToastMessage("No language selected");
+    if (Object.values(resources).every((v) => v === false)) {
+      setToastMessage("No task selected");
       return false;
     }
 
@@ -107,18 +123,19 @@ export default function RequestPage2(props) {
 
   return (
     <>
-      <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 0 }}>
-        {props.translations[props.language].WhatLanguageDoYouSpeak}
+      <h5 id="title-light">
+        Request Details
       </h5>
-      <p id="regular-text" style={{ marginBottom: 0 }}>
-        {props.translations[props.language].LanguageNotListed}
-      </p>
-      <CheckForm
-        obj={languageChecked}
-        setObj={setLanguageChecked}
-        translations={props.translations}
-        language={props.language}
-      />
+      {props.currentAssoc === null ? (
+        <></>
+      ) : (
+        <CheckForm
+          obj={resources}
+          setObj={setResources}
+          translations={props.translations}
+          language={props.language}
+        />
+      )}
       <NeededBy
         setTime={setTime}
         setDate={setDate}
@@ -142,12 +159,12 @@ export default function RequestPage2(props) {
       >
         {props.translations[props.language].SubmitRequest}
       </Button>
-      <p id="pagenum-text">Page 2 of 2</p>
       <Toast
         show={showToast}
         delay={toastTime}
         onClose={() => setShowToast(false)}
         autohide
+        style={{marginBottom: 60}}
         id="toastError"
       >
         <Toast.Body>{toastMessage}</Toast.Body>
@@ -157,6 +174,8 @@ export default function RequestPage2(props) {
 }
 
 RequestPage2.propTypes = {
-  handleSubmit: PropTypes.func,
-  currentAssoc: PropTypes.object,
+  setSecondPage: PropTypes.func,
+  setStepNum: PropTypes.func,
+  second_page: PropTypes.object,
+  currentAssoc: PropTypes.object
 };

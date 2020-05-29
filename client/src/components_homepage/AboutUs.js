@@ -8,6 +8,9 @@ import Jeff from "../assets/jeff.png";
 import Debanik from '../assets/Debanik.png'
 import Marissa from '../assets/marissa.jpeg'
 import Elle from '../assets/elle.png'
+import Trisha from '../assets/trisha.jpg'
+import Shresta from '../assets/shresta.jpg'
+import Matt from '../assets/matt.jpeg'
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -18,10 +21,13 @@ import Footer from "../components/Footer";
 
 export default function AboutUs() {
 
-  const names = ['Jeffrey Li', 'Debanik Purkayastha', 'Marissa Turkin', 'Elle Kolkin'];
+  const names = ['Jeffrey Li', 'Debanik Purkayastha', 'Marissa Turkin', 'Elle Kolkin', 'Trisha Ballakur', 'Shresta Bangaru',
+                 'Matthew McDermut'];
   const links = ['https://www.instagram.com/lijeffrey39/', 'https://www.instagram.com/debanik1997/', 
-                 'https://www.instagram.com/marissaturkin/', 'https://www.linkedin.com/mwlite/in/ellekolkin'];
-  const images = [Jeff, Debanik, Marissa, Elle];
+                 'https://www.instagram.com/marissaturkin/', 'https://www.linkedin.com/mwlite/in/ellekolkin',
+                 'https://www.linkedin.com/in/trisha-ballakur-070138187/', 'https://www.linkedin.com/in/shresta-bangaru-411134190/',
+                 'https://www.instagram.com/matthewmcd2/'];
+  const images = [Jeff, Debanik, Marissa, Elle, Trisha, Shresta, Matt];
 
   return (
     <div className="App">

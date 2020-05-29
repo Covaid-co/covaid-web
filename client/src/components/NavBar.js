@@ -98,6 +98,13 @@ export default function CovaidNavbar(props) {
             inline
             style={{ display: "block", marginRight: "8%", marginBottom: 3, marginTop: 10 }}
           >
+            {/* <Button
+              variant="outline-light"
+              id="login-button"
+              onClick={() => window.open('https://medium.com/@covaidco', '_self')}
+            >
+              Blog
+            </Button> */}
             <Button
               variant="outline-light"
               id="login-button"
@@ -110,7 +117,7 @@ export default function CovaidNavbar(props) {
               id="register-button"
               onClick={() => window.open(currURL + "/volunteer", "_self")}
             >
-              Sign Up
+              Volunteer Signup
             </Button>
           </Form>
         );

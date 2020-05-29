@@ -14,6 +14,24 @@ import Footer from "../components/Footer";
 export default function FAQ() {
   const [requester, setRequester] = useState(true);
 
+  const [tab, setTab] = useState(0);
+
+  const displayTab = (currTab) => {
+    if (tab === currTab) {
+      return { display: "block" };
+    } else {
+      return { display: "none" };
+    }
+  }
+
+  const selectedTab = (currTab) => {
+    if (tab === currTab) {
+      return 'tab-name-active';
+    } else {
+      return 'tab-name-inactive';
+    }
+  }
+
   return (
     <div className="App">
       <NavBar isLoggedIn={false} pageLoaded={true}/>
@@ -46,15 +64,16 @@ export default function FAQ() {
                 >
                   Volunteer
                 </Button> */}
-                <p id={requester ? "tab-name-active" : "tab-name-inactive"} onClick={() => setRequester(true)}>Requester</p>
-                <p id={!requester ? "tab-name-active" : "tab-name-inactive"} onClick={() => setRequester(false)}>Volunteer</p>
+                <p id={selectedTab(0)} onClick={() => setTab(0)}>Requester</p>
+                <p id={selectedTab(1)} onClick={() => setTab(1)}>Volunteer</p>
+                <p id={selectedTab(2)} onClick={() => setTab(2)}>Organization</p>
                 <p id="requestCall" style={{ marginTop: -25, marginBottom: 5 }}>
                   &nbsp;
                 </p>
               </Container>
               <Container
                 id="requester-tab"
-                style={requester ? { display: "block" } : { display: "none" }}
+                style={displayTab(0)}
               >
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
                   How can I get help?
@@ -109,7 +128,7 @@ export default function FAQ() {
 
               <Container
                 id="requester-tab"
-                style={requester ? { display: "none" } : { display: "block" }}
+                style={displayTab(1)}
               >
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
                   How do I sign up to volunteer?
@@ -167,6 +186,70 @@ export default function FAQ() {
                 <p style={{ fontSize: 14, marginTop: 0 }}>
                   We’re always looking to partner with other mutual aid groups!
                   Please reach out to us at covaidco@gmail.com.
+                </p>
+              </Container>
+
+              <Container
+                id="requester-tab"
+                style={displayTab(2)}
+              >
+                <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
+                  How can Covaid help my organization?
+                </h5>
+                <p style={{ fontSize: 14, marginTop: 0, marginLeft: 14 }}>
+                  We are proud to offer the Covaid platform to mutual aid organizers 
+                  around the United States. Whether you have an existing mutual aid 
+                  group or would like to start one, Covaid’s administrative dashboard 
+                  has custom-built features designed to help you facilitate grassroots 
+                  volunteer efforts in your community.
+                </p>
+                <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
+                  Why is Covaid better than spreadsheets?
+                </h5>
+                <p style={{ fontSize: 14, marginTop: 0 }}>
+                  Covaid is built from scratch to facilitate mutual aid work. The platform has the following key features:
+                  <ul>
+                    <li>Intuitive admin dashboards that let organizers track the status of requests</li>
+                    <li>Automated email notifications for volunteers and admins</li>
+                    <li>Smart matching between volunteers and requesters, optimized for task and geographic distance</li>
+                    <li>Custom portal for volunteers to modify their offer and view/accept new requests</li>
+                  </ul>
+                </p>
+                <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
+                  Is the Covaid platform free to use?
+                </h5>
+                <p style={{ fontSize: 14, marginTop: 0 }}>
+                  Yes!
+                </p>
+                <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
+                  Is Covaid secure/how are you protecting people’s information?
+                </h5>
+                <p style={{ fontSize: 14, marginTop: 0 }}>
+                  All data is stored securely in our database for only each organization to see. 
+                  Volunteer personal information is not visible publicly to anyone.
+                </p>
+                <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
+                  Does Covaid have to replace my organization’s current platform/workflow?
+                </h5>
+                <p style={{ fontSize: 14, marginTop: 0 }}>
+                  No. Covaid can be a standalone platform for facilitating mutual aid, but 
+                  it can also be used to supplement your existing spreadsheets and communication 
+                  tools. All volunteer and requester information gathered through Covaid can 
+                  be exported into spreadsheets.
+                </p>
+                <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
+                  If there’s no mutual aid group in my area, can I use Covaid to start one?
+                </h5>
+                <p style={{ fontSize: 14, marginTop: 0 }}>
+                  Absolutely! Our platform is open to new or existing organizations. 
+                  If you’re new to the world of mutual aid, we’re happy to help you get started!
+                </p>
+                <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
+                  I’m interested in partnering with you. What are the next steps?
+                </h5>
+                <p style={{ fontSize: 14, marginTop: 0 }}>
+                  Email us at covaidco@gmail.com! We’ll set up a meeting to get to know you, 
+                  show you how the platform works, and answer any questions you may have.
                 </p>
               </Container>
             </Row>

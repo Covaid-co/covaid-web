@@ -11,6 +11,7 @@ import "./styling/NewHomePage.css";
 
 import Verify from "./components_homepage/Verify";
 import RequestPage from "./request_help/RequestPage";
+import NewRequestPage from "./request_help/NewRequestPage";
 import ResetPassword from "./ResetPassword";
 import ResetAssociationPassword from "./ResetAssociationPassword";
 import OrganizationPortal from "./OrganizationPortal";
@@ -36,8 +37,8 @@ import {
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [latitude, setLatitude] = useState(40.4379259);
-  const [longitude, setLongitude] = useState(-79.9556424);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [totalVolunteers, setTotalVolunteers] = useState(0);
   const [associations, setAssociations] = useState([]);
   const [currentAssoc, setCurrentAssoc] = useState(null);
@@ -55,7 +56,7 @@ function App() {
         response.json().then((key) => {
           setGoogleApiKey(key["google"]);
           Geocode.setApiKey(key["google"]);
-          setLocationState(key["google"]);
+          // setLocationState(key["google"]);
         });
       } else {
         console.log("Error");
@@ -234,6 +235,25 @@ function App() {
     );
   };
 
+  const requestPage1 = (props) => {
+    return (
+      <NewRequestPage
+        {...props}
+        onLocationSubmit={onLocationSubmit}
+        setLocationState={setLocationState}
+        googleApiKey={googleApiKey}
+        latitude={latitude}
+        longitude={longitude}
+        association={currentAssoc}
+        neighborhoods={neighborhoods}
+        locality={locality}
+        state={state}
+        zipcode={zipcode}
+        resources={resources}
+      />
+    )
+  }
+
   const homePageComp = (props, login) => {
     return (
       <HomePage
@@ -291,7 +311,7 @@ function App() {
           <Route
             exact
             path="/request"
-            render={(props) => requestPage(props, "")}
+            render={(props) => requestPage1(props)}
           />
           <Route
             exact

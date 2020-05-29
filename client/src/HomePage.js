@@ -19,6 +19,7 @@ import GetLocation from "./location_tools/GetLocation";
 import HelpfulLinks from "./components_modals/HelpfulLinks";
 import NewLocationSetting from "./location_tools/NewLocationSetting";
 import { generateURL } from "./Helpers";
+import { currURL } from "./constants";
 import {
   cantFindLink,
   supportButton,
@@ -180,18 +181,22 @@ export default function HomePage(props) {
               <p id="home-subheading">
                 Covaid connects community volunteers with those who need support
               </p>
-              {supportButton(props.currentAssoc, updateRequestHelpMode)}{" "}
+              <Button
+                onClick={() => window.open(currURL + "/request", "_self")}
+                id="request-button"
+              >
+                I need help →
+              </Button>{" "}
               {volunteerButton(loggedIn)}
               <br />
               <Button
-                // variant="link"
                 id="resources-button"
-                onClick={() => showModalType("resources")}
+                onClick={() => window.open(currURL + "/volunteer", "_self")}
               >
-                COVID-19 Resources
+                Become a volunteer
               </Button>
             </Col>
-            <Col md={6} style={{ marginTop: 50 }}>
+            <Col md={6} style={{ marginTop: 0 }}>
               <img id="org-img" alt="" src={home}></img>
             </Col>
             {/* <Col md={6} id="community-bulletin">
@@ -219,10 +224,10 @@ export default function HomePage(props) {
           </Row>
         </Container>
       </Jumbotron>
-      <GetLocation
+      {/* <GetLocation
         isLoaded={props.isLoaded}
         onLocationSubmit={props.onLocationSubmit}
-      />
+      /> */}
       {/* <Container
         id={loggedIn ? "location-container-logged" : "location-container"}
       >
@@ -273,7 +278,7 @@ export default function HomePage(props) {
       </Container> */}
       {getCurrentModal()}
     </div>,
-    // <Footer key="2" />,
+    <Footer key="2" />,
   ];
 }
 
