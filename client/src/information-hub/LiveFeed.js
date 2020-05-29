@@ -24,6 +24,7 @@ class LiveFeed extends Component {
             cluster: "us2",
             forceTLS: true,
         });
+        
         var channel = pusher.subscribe('news-channel');
         channel.bind('update-news', data => {
             this.setState({
@@ -31,6 +32,7 @@ class LiveFeed extends Component {
               });
         });
     }
+
     render() {
             return (
                 <>
