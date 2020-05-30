@@ -229,8 +229,8 @@ function App() {
         zipcode={zipcode}
         resources={resources}
       />
-    )
-  }
+    );
+  };
 
   const homePageComp = (props, login) => {
     return (

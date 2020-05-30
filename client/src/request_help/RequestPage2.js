@@ -123,9 +123,7 @@ export default function RequestPage2(props) {
 
   return (
     <>
-      <h5 id="title-light">
-        Request Details
-      </h5>
+      <h5 id="title-light">Request Details</h5>
       {props.currentAssoc === null ? (
         <></>
       ) : (
@@ -164,7 +162,7 @@ export default function RequestPage2(props) {
         delay={toastTime}
         onClose={() => setShowToast(false)}
         autohide
-        style={{marginBottom: 60}}
+        style={{ marginBottom: 60 }}
         id="toastError"
       >
         <Toast.Body>{toastMessage}</Toast.Body>
@@ -177,5 +175,5 @@ RequestPage2.propTypes = {
   setSecondPage: PropTypes.func,
   setStepNum: PropTypes.func,
   second_page: PropTypes.object,
-  currentAssoc: PropTypes.object
+  currentAssoc: PropTypes.object,
 };

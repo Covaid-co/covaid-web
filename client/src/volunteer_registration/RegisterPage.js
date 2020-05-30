@@ -31,7 +31,7 @@ export default function RegisterPage(props) {
   useEffect(() => {
     setShowModal(false);
     if (props.googleApiKey !== "") {
-      props.setLocationState(props.googleApiKey); 
+      props.setLocationState(props.googleApiKey);
     }
   }, [props.googleApiKey]);
 
@@ -46,10 +46,7 @@ export default function RegisterPage(props) {
 
   const volunteerFormInfo = () => {
     var topHeader = <DefaultHeader />;
-    if (
-      props.association &&
-      Object.keys(props.association).length > 0
-    ) {
+    if (props.association && Object.keys(props.association).length > 0) {
       topHeader = <OrgHeader assoc={props.association} />;
     }
     return (
@@ -75,10 +72,7 @@ export default function RegisterPage(props) {
         availability: true,
         location: {
           type: "Point",
-          coordinates: [
-            props.longitude,
-            props.latitude,
-          ],
+          coordinates: [props.longitude, props.latitude],
         },
         offer: {
           details: secondPage.details,
@@ -90,12 +84,8 @@ export default function RegisterPage(props) {
           canHelp: thirdPage.canHelp,
           helpDetails: thirdPage.helpDetails,
         },
-        association: props.association._id
-          ? props.association._id
-          : "",
-        association_name: props.association.name
-          ? props.association.name
-          : "",
+        association: props.association._id ? props.association._id : "",
+        association_name: props.association.name ? props.association.name : "",
         languages: ["English"],
         phone: firstPage.phone,
       },
@@ -230,5 +220,5 @@ RegisterPage.propTypes = {
   locality: PropTypes.string,
   stateString: PropTypes.string,
   zipcode: PropTypes.string,
-  neighborhoods: [PropTypes.string]
+  neighborhoods: [PropTypes.string],
 };

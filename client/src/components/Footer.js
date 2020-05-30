@@ -33,23 +33,38 @@ export default function Footer(props) {
       );
     }
     return modal;
-  }
+  };
 
   return (
     <footer className="footer">
-      <Container style={{maxWidth: 2500}}>
+      <Container style={{ maxWidth: 2500 }}>
         <Row style={{ textAlign: "left", paddingBottom: 30 }}>
-          <Col xs={2} style={{ padding: 20, paddingRight: 0 }} id="footer-brand">
+          <Col
+            xs={2}
+            style={{ padding: 20, paddingRight: 0 }}
+            id="footer-brand"
+          >
             <Navbar style={{ paddingLeft: 0, paddingBottom: 0 }}>
               <Navbar.Brand
                 id="navbar-brand"
-                style={{ paddingLeft: 0, color: "#7B7B7B", marginLeft: 0, marginTop: 20 }}
+                style={{
+                  paddingLeft: 0,
+                  color: "#7B7B7B",
+                  marginLeft: 0,
+                  marginTop: 20,
+                }}
               >
                 covaid
               </Navbar.Brand>
             </Navbar>
           </Col>
-          <Col xl={10} lg={10} md={10} sm={12} style={{textAlign: 'left', marginTop: 62, paddingLeft: 0}}>
+          <Col
+            xl={10}
+            lg={10}
+            md={10}
+            sm={12}
+            style={{ textAlign: "left", marginTop: 62, paddingLeft: 0 }}
+          >
             <Button
               variant="link"
               id="footer-link"
@@ -67,26 +82,36 @@ export default function Footer(props) {
             <Button
               variant="link"
               id="footer-link"
-              onClick={() => {setModalName('feedback'); setShowModal(true)}}
+              onClick={() => {
+                setModalName("feedback");
+                setShowModal(true);
+              }}
             >
               Feedback
             </Button>
             <i
               id="social-icon"
               className="fa fa-2x fa-github"
-              onClick={() => (window.location.href = "https://github.com/Covaid-co")}
+              onClick={() =>
+                (window.location.href = "https://github.com/Covaid-co")
+              }
               aria-hidden="true"
             ></i>
             <i
               id="social-icon"
               className="fa fa-2x fa-instagram"
-              onClick={() => (window.location.href = "https://www.instagram.com/covaidmutualaid/")}
+              onClick={() =>
+                (window.location.href =
+                  "https://www.instagram.com/covaidmutualaid/")
+              }
               aria-hidden="true"
             ></i>
             <i
               id="social-icon"
               className="fa fa-2x fa-facebook-official"
-              onClick={() => (window.location.href = "https://www.facebook.com/covaidco")}
+              onClick={() =>
+                (window.location.href = "https://www.facebook.com/covaidco")
+              }
               aria-hidden="true"
             ></i>
           </Col>

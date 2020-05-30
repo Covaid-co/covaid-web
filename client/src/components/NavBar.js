@@ -96,7 +96,12 @@ export default function CovaidNavbar(props) {
         rightNav = (
           <Form
             inline
-            style={{ display: "block", marginRight: "8%", marginBottom: 3, marginTop: 10 }}
+            style={{
+              display: "block",
+              marginRight: "8%",
+              marginBottom: 3,
+              marginTop: 10,
+            }}
           >
             {/* <Button
               variant="outline-light"
@@ -127,7 +132,6 @@ export default function CovaidNavbar(props) {
             <Button
               id="large-button-empty"
               onClick={() => setCurrModal("signin")}
-
               style={{ marginTop: 0, marginBottom: 5 }}
             >
               Volunteer Login
@@ -151,10 +155,10 @@ export default function CovaidNavbar(props) {
 
   const getCurrentModal = () => {
     var res = <></>;
-    if (modalName === 'signin')  {
+    if (modalName === "signin") {
       res = (
         <NewLogin showModal={showModal} hideModal={() => setShowModal(false)} />
-      )
+      );
     } else if (modalName === "donate") {
       res = (
         <Donate showModal={showModal} hideModal={() => setShowModal(false)} />
@@ -241,7 +245,7 @@ export default function CovaidNavbar(props) {
           />
         </Form>
         <Navbar.Collapse id="basic-navbar-nav">
-          {props.simplified ? 
+          {props.simplified ? (
             <Nav className="mr-auto">
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
@@ -255,7 +259,8 @@ export default function CovaidNavbar(props) {
               >
                 <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
               </Nav.Link>
-            </Nav> : 
+            </Nav>
+          ) : (
             <Nav className="mr-auto">
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
@@ -267,9 +272,7 @@ export default function CovaidNavbar(props) {
                 className={toggled ? "navBorderToggled" : "navbar-element"}
                 href={currURL + "/organizationPortal"}
               >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  Organizations
-                </p>
+                <p id={toggled ? "navLinkToggled" : "navLink"}>Organizations</p>
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
@@ -290,7 +293,7 @@ export default function CovaidNavbar(props) {
                 <p id={toggled ? "navLinkToggled" : "navLink"}>Volunteer Map</p>
               </Nav.Link>
             </Nav>
-          }
+          )}
           {rightNav}
         </Navbar.Collapse>
       </Navbar>

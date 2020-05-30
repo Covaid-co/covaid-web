@@ -140,8 +140,10 @@ export default function HomePage(props) {
           }}
         />
       );
-    } else if (modalType === 'feedback') {
-      modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
+    } else if (modalType === "feedback") {
+      modal = (
+        <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
+      );
     } else if (modalType === "signin") {
       modal = <NewLogin showModal={showModal} hideModal={handleHideModal} />;
     } else if (modalType === "request") {
@@ -172,7 +174,14 @@ export default function HomePage(props) {
       />
       <Jumbotron fluid id="jumbo">
         <div id="feedback">
-          <div id="feedback-tab" onClick={() => {showModalType('feedback')}}>Feedback</div>
+          <div
+            id="feedback-tab"
+            onClick={() => {
+              showModalType("feedback");
+            }}
+          >
+            Feedback
+          </div>
         </div>
         <Container id="jumboContainer">
           <Row>
@@ -278,7 +287,7 @@ export default function HomePage(props) {
       </Container> */}
       {getCurrentModal()}
     </div>,
-    <Footer key="2" home={true}/>,
+    <Footer key="2" home={true} />,
   ];
 }
 
