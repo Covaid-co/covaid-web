@@ -1,5 +1,10 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import PropTypes from "prop-types";
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
 
 export default function Details(props) {
   return (
@@ -9,21 +14,24 @@ export default function Details(props) {
       style={{ marginBottom: 0, marginTop: 30 }}
     >
       <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
-        Details?
+        {translatedStrings[props.language].Details}
       </h5>
       <p style={{ fontSize: 14 }} id="regular-text">
-        Let us know more about you and how you can help (Please be specific)!
-        For example: If you're offering food, please let us know if you're
-        offering to cook food, donate food, or need to be reimbursed, etc. No
-        pressure, but any information helps us match you more quickly!
+        {translatedStrings[props.language].Details_Text}
       </p>
       <Form.Control
         as="textarea"
         rows="3"
         value={props.fields}
         onChange={props.handleFieldChange}
-        placeholder="I am a college student, and am happy to deliver food from stores or food banks in St. Louis County!"
+        placeholder={translatedStrings[props.language].Details_Example}
       />
     </Form.Group>
   );
 }
+
+Details.propTypes = {
+  language: PropTypes.string,
+  fields: PropTypes.string,
+  handleFieldChange: PropTypes.func,
+};

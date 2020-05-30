@@ -56,6 +56,8 @@ export default function CommunityBulletin(props) {
   return (
     <>
       <OfferDetails
+        switchToLanguage={props.switchToLanguage}
+        googleAPI={props.googleAPI}
         modalOfferOpen={modalOfferOpen}
         setModalOfferOpen={setModalOfferOpen}
         modalInfo={modalInfo}
@@ -92,6 +94,8 @@ export default function CommunityBulletin(props) {
 }
 
 CommunityBulletin.propTypes = {
+  switchToLanguage: PropTypes.string,
+  googleAPI: PropTypes.string,
   handleShowRequestHelp: PropTypes.func,
   volunteers: PropTypes.array,
   resources: PropTypes.array,

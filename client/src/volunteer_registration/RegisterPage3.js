@@ -12,6 +12,11 @@ import ReCAPTCHA from "react-google-recaptcha";
 import HelpOrganization from "./HelpOrganization";
 import { toastTime, defaultTerms } from "../constants";
 
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
 /**
  * Volunteer Registration (Page 3)
  */
@@ -106,13 +111,10 @@ export default function RegisterPage3(props) {
         />
 
         <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 4 }}>
-          Health
+          {translatedStrings[props.language].Health}
         </h5>
         <p id="regular-text" style={{ marginBottom: 20, fontSize: 14 }}>
-          For the your safety and the safety of all community members, please
-          check the boxes to complete the volunteer pledge. If you have any
-          questions about any of the choices, do not fill out the form and
-          contact us at covaidco@gmail.com.
+          {translatedStrings[props.language].RequestPage3_Text1}
         </p>
         <Row>
           <Col md={12}>
@@ -137,10 +139,10 @@ export default function RegisterPage3(props) {
                             onChange={() => {setCaptcha(true)}}
                             style = {{marginBottom: 0, marginTop: 20}}/> */}
         <Button id="large-button" style={{ marginTop: 15 }} type="submit">
-          Sign up!
+          {translatedStrings[props.language].RequestPage3_Text2}
         </Button>
       </Form>
-      <p id="pagenum-text">Page 3 of 3</p>
+      <p id="pagenum-text">{translatedStrings[props.language].Page3of3}</p>
       <Toast
         show={showToast}
         delay={toastTime}
@@ -158,4 +160,6 @@ RegisterPage3.propTypes = {
   handleSubmit: PropTypes.func,
   currentAssoc: PropTypes.object,
   neighborhoods: PropTypes.array,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

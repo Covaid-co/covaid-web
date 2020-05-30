@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { currURL } from "../constants";
 
 /**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
+/**
  * Text on homepage to show what who this city is supported by
  */
 
 export default function CitySupport(props) {
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    if (!!props.switchToLanguage) {
+      if (props.switchToLanguage !== "English") {
+        setLanguage("es");
+      } else {
+        setLanguage("en");
+      }
+    }
+  }, [props.switchToLanguage]);
+
   const associationText = () => {
     if (!props.currentAssoc || Object.keys(props.currentAssoc).length === 0) {
       return (
@@ -65,7 +85,7 @@ export default function CitySupport(props) {
     return (
       <div style={{ float: float }}>
         <p id="regular-text" style={{ marginBottom: 0 }}>
-          This city is supported by:
+          {translatedStrings[language].CitySupport}
         </p>
         <div>{associationText()}</div>
       </div>

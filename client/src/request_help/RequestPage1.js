@@ -9,7 +9,7 @@ import Toast from "react-bootstrap/Toast";
 
 import PhoneNumber from "../components/PhoneNumber";
 import CheckForm from "../components/CheckForm";
-import { defaultResources, toastTime } from "../constants";
+import { toastTime, languages } from "../constants";
 import { validateEmail, setFalseObj, extractTrueObj } from "../Helpers";
 
 /**
@@ -19,42 +19,39 @@ import { validateEmail, setFalseObj, extractTrueObj } from "../Helpers";
 export default function RequestPage1(props) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [resources, setResources] = useState({});
+  const [phone_number, setPhoneNumber] = useState("");
+  const [languageChecked, setLanguageChecked] = useState({});
   const [fields, handleFieldChange] = useFormFields({
     name_request: "",
     email: "",
   });
 
   useEffect(() => {
-    if (
-      props.volunteer &&
-      props.volunteer.offer &&
-      props.volunteer.offer.tasks
-    ) {
-      setResources(setFalseObj(props.volunteer.offer.tasks));
-    } else {
-      var resourcesFromAssoc = defaultResources;
-      if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
-        resourcesFromAssoc = props.currentAssoc.resources;
+    var lang_temp = setFalseObj(languages);
+    if (Object.keys(props.first_page).length !== 0) {
+      setPhoneNumber(props.first_page.phone);
+      fields.name_request = props.first_page.name;
+      fields.email = props.first_page.email;
+      setPhoneNumber(props.first_page.phone);
+      for (var i = 0; i < props.first_page.languages.length; i++) {
+        lang_temp[props.first_page.languages[i]] = true;
       }
-      var tempAssoc = setFalseObj(resourcesFromAssoc);
-      setResources(tempAssoc);
     }
-  }, [props.currentAssoc, props.volunteer]);
+    setLanguageChecked(lang_temp);
+  }, [props.currentAssoc, props.first_page]);
 
   const goToSecondPage = () => {
     const valid = checkPage();
     if (valid) {
       setShowToast(false);
-      const resource_request = extractTrueObj(resources);
+      const languages = extractTrueObj(languageChecked);
       const result = {
-        phone: phoneNumber,
+        phone: phone_number,
         name: fields.name_request,
         email: fields.email,
-        resources: resource_request,
+        languages: languages,
       };
-      console.log(result);
+      props.setStepNum(3);
       props.setFirstPage(result);
     } else {
       setShowToast(true);
@@ -63,22 +60,22 @@ export default function RequestPage1(props) {
 
   const checkPage = () => {
     var valid = true;
-    const phoneOnlyDigits = phoneNumber.replace(/\D/g, "").substring(0, 10);
+    const phoneOnlyDigits = phone_number.replace(/\D/g, "").substring(0, 10);
     if (fields.name_request.length === 0) {
-      setToastMessage("Enter a first name");
+      setToastMessage("Please enter a name");
       valid = false;
     } else if (phoneOnlyDigits.length === 0 && fields.email.length === 0) {
-      setToastMessage("Enter contact information");
+      setToastMessage("Please enter contact information");
       valid = false;
     } else if (
       phoneOnlyDigits.length !== 0 &&
       phoneOnlyDigits.length !== 10 &&
       validateEmail(fields.email) === false
     ) {
-      setToastMessage("Enter valid contact information");
+      setToastMessage("Please enter valid contact information");
       valid = false;
-    } else if (Object.values(resources).every((v) => v === false)) {
-      setToastMessage("No task selected");
+    } else if (Object.values(languageChecked).every((v) => v === false)) {
+      setToastMessage("Please select a language");
       valid = false;
     }
     return valid;
@@ -86,7 +83,7 @@ export default function RequestPage1(props) {
 
   return (
     <>
-      <h5 id="regular-text-bold">
+      <h5 id="title-light">
         {props.translations[props.language].personalInformation}
       </h5>
       <Row>
@@ -101,7 +98,7 @@ export default function RequestPage1(props) {
         </Col>
         <Col xs={12}>
           <PhoneNumber
-            phoneNumber={phoneNumber}
+            phoneNumber={phone_number}
             setPhoneNumber={setPhoneNumber}
             placeholder={props.translations[props.language].phone}
           />
@@ -122,34 +119,31 @@ export default function RequestPage1(props) {
           </p>
         </Col>
       </Row>
-      {props.currentAssoc === null ? (
-        <></>
-      ) : (
-        <>
-          <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 5 }}>
-            {props.translations[props.language].whatSupport}
-          </h5>
-          <CheckForm
-            obj={resources}
-            setObj={setResources}
-            translations={props.translations}
-            language={props.language}
-          />
-        </>
-      )}
+      <h5 id="subtitle-light" style={{ marginTop: 10, marginBottom: 5 }}>
+        {props.translations[props.language].WhatLanguageDoYouSpeak}
+      </h5>
+      <p id="regular-text" style={{ marginBottom: 5 }}>
+        {props.translations[props.language].LanguageNotListed}
+      </p>
+      <CheckForm
+        obj={languageChecked}
+        setObj={setLanguageChecked}
+        translations={props.translations}
+        language={props.language}
+      />
       <Button
         id="large-button"
-        style={{ marginTop: 15 }}
+        style={{ marginTop: 30 }}
         onClick={goToSecondPage}
       >
         {props.translations[props.language].Next}
       </Button>
-      <p id="pagenum-text">Page 1 of 2</p>
       <Toast
         show={showToast}
         delay={toastTime}
         onClose={() => setShowToast(false)}
         autohide
+        style={{ marginBottom: 60 }}
         id="toastError"
       >
         <Toast.Body>{toastMessage}</Toast.Body>
@@ -159,7 +153,8 @@ export default function RequestPage1(props) {
 }
 
 RequestPage1.propTypes = {
+  first_page: PropTypes.object,
   setFirstPage: PropTypes.func,
+  setStepNum: PropTypes.func,
   currentAssoc: PropTypes.object,
-  volunteer: PropTypes.object,
 };
