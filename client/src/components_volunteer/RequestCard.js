@@ -5,10 +5,15 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle, faClock, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { volunteer_status, defaultResources } from "../constants";
 
 export default function RequestCard(props) {
   const [loaded, setLoaded] = useState(false);
+  const [modalMode, setModalMode] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currRequest, setCurrRequest] = useState({});
   useEffect(() => {
     setLoaded(true);
   }, [props.request]);
@@ -78,42 +83,50 @@ export default function RequestCard(props) {
         return (
           <span
             style={{
-              height: 17,
-              width: 17,
+              display: 'inline-block',
               borderRadius: "50%",
               marginLeft: 5,
-              backgroundColor: props.color,
+              // backgroundColor: 'rgba(255, 89, 36, 0.26)',
+              color: props.color,
+              textAlign: "center",
+              height: 20,
+              width: 20,
             }}
           >
-            hi
+           <FontAwesomeIcon icon={faExclamationCircle} /> 
           </span>
         );
       case volunteer_status.IN_PROGRESS:
         return (
           <span
             style={{
-              height: 17,
-              width: 17,
+              display: 'inline-block',
               borderRadius: "50%",
               marginLeft: 5,
-              backgroundColor: props.color,
+              // backgroundColor: 'rgba(219, 147, 39, 0.26)',
+              color: props.color,
+              textAlign: "center",
+              height: 20,
+              width: 20,
             }}
           >
-            hi
+            <FontAwesomeIcon icon={faClock} /> 
           </span>
         );
       case volunteer_status.COMPLETE:
         return (
           <span
             style={{
-              height: 17,
-              width: 17,
+              display: 'inline-block',
               borderRadius: "50%",
               marginLeft: 5,
-              backgroundColor: props.color,
+              // backgroundColor: 'rgba(58, 189, 36, 0.26)',
+              textAlign: "center",
+              height: 20,
+              width: 20,
             }}
           >
-            hi
+            <FontAwesomeIcon style={{color: props.color}} icon={faCheck} />
           </span>
         );
       default:
@@ -131,7 +144,13 @@ export default function RequestCard(props) {
         marginBottom: 16,
         marginRight: 10,
         marginLeft: 10,
+        cursor: 'pointer'
       }}
+      onClick={() => {
+          setCurrRequest({ ...request });
+          setModalOpen(true);
+          setModalMode(2);
+        }}
     >
       <div style={{ marginTop: 20, marginLeft: 25, marginRight: 19 }}>
         <h1 id="volunteer-name" style={{ fontSize: 16, color: "#4F4F4F" }}>
@@ -145,6 +164,15 @@ export default function RequestCard(props) {
       <p id="regular-text" style={{ fontSize: 14, marginLeft: 25 }}>
         {resources()}
       </p>
+      <RequestInfo
+        modalOpen={modalOpen}
+        modalMode={modalMode}
+        setModalOpen={setModalOpen}
+        currRequest={currRequest}
+        acceptRequest={acceptRequest}
+        rejectRequest={rejectRequest}
+        completeARequest={completeARequest}
+      />
     </div>
   );
 }
