@@ -10,7 +10,6 @@ import Badge from "react-bootstrap/Badge";
 
 import NewLogin from "../components_modals/NewLogin";
 import MapModal from "../components_modals/MapModal";
-import Donate from "../components_modals/Donate";
 import { currURL } from "../constants";
 /**
  * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
@@ -30,7 +29,6 @@ export default function CovaidNavbar(props) {
   const [width, setWidth] = useState(window.innerWidth);
   const [modalName, setModalName] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [language, setLanguage] = useState("en");
 
   window.addEventListener("resize", () => {
     setWidth(window.innerWidth);
@@ -40,19 +38,14 @@ export default function CovaidNavbar(props) {
   });
 
   useEffect(() => {
-    if (props.pageLoaded) {
+    if (totalVolunteers === 0) {
       fetch("/api/users/totalUsers")
         .then((res) => res.json())
         .then((res) => {
           setTotalVolunteers(res.count);
         });
     }
-    if (props.switchToLanguage === "Español") {
-      setLanguage("es");
-    } else {
-      setLanguage("en");
-    }
-  }, [props.pageLoaded, props.switchToLanguage]);
+  }, [props.pageLoaded]);
 
   const logout = () => {
     if (props.orgPortal) {
@@ -68,182 +61,139 @@ export default function CovaidNavbar(props) {
     }
   };
 
-  var rightNav;
-  if (props.isLoggedIn) {
-    if (toggled) {
-      rightNav = (
-        <Form inline id="getStarted" style={{ display: "block" }}>
-          <Button
-            variant="outline-light"
-            id="login-button"
-            onClick={() => {
-              if (props.switchToLanguage === "Español") {
-                props.setSwithToLanguage("English");
-              } else {
-                props.setSwithToLanguage("Español");
-              }
-            }}
-          >
-            <span role="img" aria-label="sheep">
-              🌐{" "}
-            </span>{" "}
-            {props.switchToLanguage}
-          </Button>
-          <Button
-            variant="outline-danger"
-            id="logoutButton"
-            onClick={logout}
-            style={{ width: "100%" }}
-          >
-            {translatedStrings[language].Logout}
-          </Button>
-        </Form>
-      );
-    } else {
-      rightNav = (
-        <Form
-          inline
-          id="getStarted"
-          style={{ display: "block", marginRight: "5%", marginBottom: 3 }}
-        >
-          <Button
-            variant="outline-light"
-            id="login-button"
-            onClick={() => {
-              if (props.switchToLanguage === "Español") {
-                props.setSwithToLanguage("English");
-              } else {
-                props.setSwithToLanguage("Español");
-              }
-            }}
-          >
-            <span role="img" aria-label="sheep">
-              🌐{" "}
-            </span>{" "}
-            {props.switchToLanguage}
-          </Button>
-          {width > 767 ? (
-            <span id="hello-name">
-              {" "}
-              {translatedStrings[language].Hello} {props.first_name}
-            </span>
-          ) : (
-            <></>
-          )}
-          <Button variant="outline-danger" id="logoutButton" onClick={logout}>
-            {translatedStrings[language].Logout}
-          </Button>
-        </Form>
-      );
-    }
-  } else {
-    if (props.orgAdmin || props.orgPortal) {
-      rightNav = (
-        <Form inline id="getStarted" style={{ display: "block" }}>
-          <Button
-            variant="outline-light"
-            id="login-button"
-            onClick={() => {
-              if (props.switchToLanguage === "Español") {
-                props.setSwithToLanguage("English");
-              } else {
-                props.setSwithToLanguage("Español");
-              }
-            }}
-          >
-            <span role="img" aria-label="sheep">
-              🌐{" "}
-            </span>{" "}
-            {props.switchToLanguage}
-          </Button>
-        </Form>
-      );
-    } else {
-      if (width > 767) {
-        rightNav = (
-          <Form
-            inline
-            style={{ display: "block", marginRight: "5%", marginBottom: 3 }}
-          >
-            {/* <Button
-              variant="outline-light"
-              id="login-button"
-              onClick={() => {
-                if (props.switchToLanguage === "Español") {
-                  props.setSwithToLanguage("English");
-                } else {
-                  props.setSwithToLanguage("Español");
-                }
+  const translateButton = () => {
+    return (
+      <Button
+        variant="outline-light"
+        id="login-button"
+        onClick={() => {
+          if (props.language === "es") {
+            props.setLanguage("en");
+          } else {
+            props.setLanguage("es");
+          }
+        }}
+      >
+        <span role="img" aria-label="sheep">
+          🌐{" "}
+        </span>{" "}
+        {props.language === "en" ? "English" : "Español"}
+      </Button>
+    );
+  };
+
+  const rightNav = () => {
+    if (!props.isLoggedIn) {
+      if (props.simplified) {
+        if (width > 767) {
+          return <div style={{ marginRight: "8%" }}>{translateButton()}</div>;
+        } else {
+          return translateButton();
+        }
+      } else if (props.orgAdmin || props.orgPortal) {
+        return <></>;
+      } else {
+        if (width > 767) {
+          return (
+            <Form
+              inline
+              style={{
+                display: "block",
+                marginRight: "8%",
+                marginBottom: 3,
+                marginTop: 10,
               }}
             >
-              <span role="img" aria-label="sheep">
-                🌐{" "}
-              </span>{" "}
-              {props.switchToLanguage}
-            </Button> */}
-
+              {/* <Button
+                variant="outline-light"
+                id="login-button"
+                onClick={() => window.open('https://medium.com/@covaidco', '_self')}
+              >
+                Blog
+              </Button> */}
+              {translateButton()}
+              <Button
+                variant="outline-light"
+                id="login-button"
+                onClick={() => setCurrModal("signin")}
+              >
+                {translatedStrings[props.language].Signin}
+              </Button>
+              <Button
+                variant="outline-light"
+                id="register-button"
+                onClick={() => window.open(currURL + "/volunteer", "_self")}
+              >
+                {translatedStrings[props.language].VolunteerRegistration}
+              </Button>
+            </Form>
+          );
+        } else {
+          return (
+            <Form inline id="getStarted" style={{ display: "block" }}>
+              {translateButton()}
+              <Button
+                id="large-button-empty"
+                onClick={() => setCurrModal("signin")}
+                style={{ marginTop: 0, marginBottom: 5 }}
+              >
+                Volunteer Login
+              </Button>
+              <Button
+                id="large-button"
+                onClick={() => window.open(currURL + "/volunteer", "_self")}
+              >
+                Volunteer Signup
+              </Button>
+            </Form>
+          );
+        }
+      }
+    } else {
+      if (toggled) {
+        return (
+          <Form inline id="getStarted" style={{ display: "block" }}>
+            {translateButton()}
             <Button
-              variant="outline-light"
-              id="login-button"
-              onClick={() => setCurrModal("signin")}
+              variant="outline-danger"
+              id="logoutButton"
+              onClick={logout}
+              style={{ width: "100%" }}
             >
-              Log In
-            </Button>
-            <Button
-              variant="outline-light"
-              id="register-button"
-              onClick={() => window.open(currURL + "/volunteer", "_self")}
-            >
-              Volunteer Signup
+              {translatedStrings[props.language].Logout}
             </Button>
           </Form>
         );
       } else {
-        rightNav = (
-          <Form inline id="getStarted" style={{ display: "block" }}>
-            <Button
-              variant="outline-light"
-              onClick={() => {
-                if (props.switchToLanguage === "Español") {
-                  props.setSwithToLanguage("English");
-                } else {
-                  props.setSwithToLanguage("Español");
-                }
-              }}
-            >
-              <span role="img" aria-label="sheep">
-                🌐{" "}
-              </span>{" "}
-              {props.switchToLanguage}
-            </Button>
-            <Button
-              id="large-button-empty"
-              onClick={() => props.handleShowModal("signin")}
-              style={{ marginTop: 0, marginBottom: 5 }}
-            >
-              {translatedStrings[language].VolunteerLogin}
-            </Button>
-            <Button
-              id="large-button"
-              onClick={() => window.open(currURL + "/volunteer", "_self")}
-            >
-              {translatedStrings[language].VolunteerRegistration}
+        return (
+          <Form
+            inline
+            id="getStarted"
+            style={{ display: "block", marginRight: "5%", marginBottom: 3 }}
+          >
+            {props.orgPortal ? <></> : translateButton()}
+            {width > 767 ? (
+              <span id="hello-name">
+                {" "}
+                {translatedStrings[props.language].Hello} {props.first_name}
+              </span>
+            ) : (
+              <></>
+            )}
+            <Button variant="outline-danger" id="logoutButton" onClick={logout}>
+              {translatedStrings[props.language].Logout}
             </Button>
           </Form>
         );
       }
     }
-  }
+  };
 
   const getCurrentModal = () => {
     var res = <></>;
     if (modalName === "signin") {
       res = (
         <NewLogin showModal={showModal} hideModal={() => setShowModal(false)} />
-      );
-    } else if (modalName === "donate") {
-      res = (
-        <Donate showModal={showModal} hideModal={() => setShowModal(false)} />
       );
     } else if (modalName === "map") {
       res = (
@@ -255,6 +205,7 @@ export default function CovaidNavbar(props) {
         />
       );
     }
+    return res;
   };
 
   const setCurrModal = (name) => {
@@ -263,41 +214,18 @@ export default function CovaidNavbar(props) {
   };
 
   const volunteerBadge = (view) => {
-    if (totalVolunteers === 0) {
-      return <></>;
+    if (view === "mobile") {
+      return (
+        <Badge id="volunteer-mobile" onClick={() => setCurrModal("map")}>
+          {translatedStrings[props.language].VolunteerMap}
+        </Badge>
+      );
     } else {
-      const numVolunteers = props.orgPortal
-        ? props.totalVolunteers
-        : totalVolunteers;
-      if (props.orgPortal && props.isLoggedIn) {
-        if (view === "mobile") {
-          return (
-            <Badge id="volunteer-mobile">
-              {numVolunteers} {translatedStrings[language].Volunteer}
-            </Badge>
-          );
-        } else {
-          return (
-            <Badge id="volunteerBadge">
-              {numVolunteers} {translatedStrings[language].Volunteer}
-            </Badge>
-          );
-        }
-      } else {
-        if (view === "mobile") {
-          return (
-            <Badge id="volunteer-mobile" onClick={() => setCurrModal("map")}>
-              {translatedStrings[language].VolunteerMap}
-            </Badge>
-          );
-        } else {
-          return (
-            <Badge id="volunteerBadge" onClick={() => setCurrModal("map")}>
-              {translatedStrings[language].VolunteerMap}
-            </Badge>
-          );
-        }
-      }
+      return (
+        <Badge id="volunteerBadge" onClick={() => setCurrModal("map")}>
+          {translatedStrings[props.language].VolunteerMap}
+        </Badge>
+      );
     }
   };
 
@@ -343,7 +271,9 @@ export default function CovaidNavbar(props) {
                 className={toggled ? "navBorderToggled" : "navbar-element"}
                 href={currURL + "/about"}
               >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>About us</p>
+                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                  {translatedStrings[props.language].AboutUs}
+                </p>
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
@@ -358,13 +288,17 @@ export default function CovaidNavbar(props) {
                 className={toggled ? "navBorderToggled" : "navbar-element"}
                 href={currURL + "/about"}
               >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>About us</p>
+                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                  {translatedStrings[props.language].AboutUs}
+                </p>
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
                 href={currURL + "/organizationPortal"}
               >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>Organizations</p>
+                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                  {translatedStrings[props.language].Organizations}
+                </p>
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
@@ -376,17 +310,21 @@ export default function CovaidNavbar(props) {
                 className={toggled ? "navBorderToggled" : "navbar-element"}
                 href={currURL + "/donate"}
               >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>Donate</p>
+                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                  {translatedStrings[props.language].Donate}
+                </p>
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
                 onClick={() => setCurrModal("map")}
               >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>Volunteer Map</p>
+                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                  {translatedStrings[props.language].VolunteerMap}
+                </p>
               </Nav.Link>
             </Nav>
           )}
-          {rightNav}
+          {rightNav()}
         </Navbar.Collapse>
       </Navbar>
       {getCurrentModal()}
@@ -395,12 +333,13 @@ export default function CovaidNavbar(props) {
 }
 
 CovaidNavbar.propTypes = {
-  switchToLanguage: PropTypes.string,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
   orgPortal: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   pageLoaded: PropTypes.bool,
   orgAdmin: PropTypes.bool,
+  simplified: PropTypes.bool,
   first_name: PropTypes.string,
-  totalVolunteers: PropTypes.number,
   setAdmin: PropTypes.func,
 };

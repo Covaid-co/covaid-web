@@ -186,8 +186,8 @@ export default function OrganiationPortal(props) {
   } else if (showLogin === true) {
     return (
       <OrgLogin
-        setSwithToLanguage={props.setSwithToLanguage}
-        switchToLanguage={props.switchToLanguage}
+        setLanguage={props.setLanguage}
+        language={props.language}
         login={login}
         setShowLogin={setShowLogin}
         orgReset={props.location.orgReset}
@@ -199,8 +199,8 @@ export default function OrganiationPortal(props) {
   return [
     <div className="App" key="1">
       <NavBar
-        setSwithToLanguage={props.setSwithToLanguage}
-        switchToLanguage={props.switchToLanguage}
+        setLanguage={props.setLanguage}
+        language={props.language}
         pageLoaded={pageLoaded}
         isLoggedIn={true}
         totalVolunteers={volunteers.length}
@@ -411,6 +411,6 @@ export default function OrganiationPortal(props) {
 }
 
 OrganiationPortal.propTypes = {
-  setSwithToLanguage: PropTypes.func,
-  switchToLanguage: PropTypes.string,
+  language: PropTypes.string,
+  setLanguage: PropTypes.func,
 };

@@ -158,14 +158,14 @@ export default function VolunteerPortal(props) {
       <>
         <div className="App">
           <NavBar
-            setSwithToLanguage={props.setSwithToLanguage}
-            switchToLanguage={props.switchToLanguage}
+            setLanguage={props.setLanguage}
+            language={props.language}
             isLoggedIn={true}
             first_name={user.first_name}
           />
           <div id="bgImage"></div>
           <Jumbotron fluid id="jumbo-volunteer">
-            <Container style={{ maxWidth: 1500 }}>
+            <Container style={{ maxWidth: 2000 }}>
               <Row>
                 <Col lg={1} md={1} sm={0}></Col>
                 <Col>
@@ -225,7 +225,15 @@ export default function VolunteerPortal(props) {
                     tabNum === 1 ? { display: "block" } : { display: "none" }
                   }
                 >
-                  {foundUser ? <YourOffer user={user} /> : <></>}
+                  {foundUser ? (
+                    <YourOffer
+                      user={user}
+                      setLanguage={props.setLanguage}
+                      language={props.language}
+                    />
+                  ) : (
+                    <></>
+                  )}
                 </Container>
                 <Container
                   id="newOfferContainer"
@@ -294,6 +302,6 @@ export default function VolunteerPortal(props) {
 }
 
 VolunteerPortal.propTypes = {
-  setSwithToLanguage: PropTypes.func,
-  switchToLanguage: PropTypes.string,
+  language: PropTypes.string,
+  setLanguage: PropTypes.func,
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import PropTypes from "prop-types";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -11,9 +11,7 @@ import Footer from "../components/Footer";
  * About us/contributors page
  */
 
-export default function FAQ() {
-  const [requester, setRequester] = useState(true);
-
+export default function FAQ(props) {
   const [tab, setTab] = useState(0);
 
   const displayTab = (currTab) => {
@@ -34,7 +32,11 @@ export default function FAQ() {
 
   return (
     <div className="App">
-      <NavBar isLoggedIn={false} pageLoaded={true} />
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        isLoggedIn={false}
+      />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
           <Col md={5} id="login-container" style={{ paddingRight: 75 }}>
@@ -280,3 +282,8 @@ export default function FAQ() {
     </div>
   );
 }
+
+FAQ.propTypes = {
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
+};

@@ -19,7 +19,6 @@ import {
 } from "./location_tools/LocationHelpers";
 
 import Verify from "./components_homepage/Verify";
-import RequestPage from "./request_help/RequestPage";
 import NewRequestPage from "./request_help/NewRequestPage";
 import ResetPassword from "./ResetPassword";
 import ResetAssociationPassword from "./ResetAssociationPassword";
@@ -39,8 +38,6 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [totalVolunteers, setTotalVolunteers] = useState(0);
-  const [associations, setAssociations] = useState([]);
   const [currentAssoc, setCurrentAssoc] = useState(null);
   const [locality, setLocality] = useState("");
   const [neighborhoods, setNeighborhoods] = useState([]);
@@ -48,7 +45,8 @@ function App() {
   const [state, setState] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [googleApiKey, setGoogleApiKey] = useState("");
-  const [switchToLang, setSwithToLang] = useState("English");
+  const [language, setLanguage] = useState("en");
+  const languageObj = { setLanguage: setLanguage, language: language };
   const stateRef = useRef("");
 
   useEffect(() => {
@@ -57,18 +55,9 @@ function App() {
         response.json().then((key) => {
           setGoogleApiKey(key["google"]);
           Geocode.setApiKey(key["google"]);
-          // setLocationState(key["google"]);
         });
-      } else {
-        console.log("Error");
       }
     });
-
-    fetch("/api/users/totalUsers")
-      .then((res) => res.json())
-      .then((res) => {
-        setTotalVolunteers(res.count);
-      });
   }, []);
 
   const setLocationVariables = (neighborObj) => {
@@ -92,7 +81,6 @@ function App() {
   // Find association by lat long
   const findAssociation = (lat, long) => {
     findAssociations(lat, long).then((associations) => {
-      setAssociations(associations);
       if (associations.length > 0) {
         setResources(associations[0].resources);
         setCurrentAssoc(associations[0]);
@@ -186,6 +174,7 @@ function App() {
     return (
       <RegisterPage
         {...props}
+        {...languageObj}
         org={org}
         isLoaded={isLoaded}
         setLocationState={setLocationState}
@@ -217,6 +206,7 @@ function App() {
     return (
       <NewRequestPage
         {...props}
+        {...languageObj}
         org={org}
         onLocationSubmit={onLocationSubmit}
         setLocationState={setLocationState}
@@ -237,39 +227,11 @@ function App() {
     return (
       <HomePage
         {...props}
-        switchToLanguage={switchToLang}
+        language={language}
+        setLanguage={setLanguage}
         refreshLocation={refreshLocation}
         onLocationSubmit={onLocationSubmit}
-        latitude={latitude}
-        longitude={longitude}
-        currentAssoc={currentAssoc}
-        neighborhoods={neighborhoods}
-        locality={locality}
-        stateString={state}
-        isLoaded={isLoaded}
-        zipcode={zipcode}
-        resources={resources}
         login={login}
-      />
-    );
-  };
-
-  const volunteerPage = (props) => {
-    return (
-      <VolunteerPortal
-        {...props}
-        setSwithToLanguage={setSwithToLang}
-        switchToLanguage={switchToLang}
-      />
-    );
-  };
-
-  const orgPage = (props) => {
-    return (
-      <OrganizationPortal
-        {...props}
-        setSwithToLanguage={setSwithToLang}
-        switchToLanguage={switchToLang}
       />
     );
   };
@@ -286,8 +248,20 @@ function App() {
       ></link>
       <Router>
         <Switch>
-          <Route exact path="/organizationPortal" component={orgPage} />
-          <Route exact path="/volunteerPortal" component={volunteerPage} />
+          <Route
+            exact
+            path="/organizationPortal"
+            component={(props) => (
+              <OrganizationPortal {...props} {...languageObj} />
+            )}
+          />
+          <Route
+            exact
+            path="/volunteerPortal"
+            component={(props) => (
+              <VolunteerPortal {...props} {...languageObj} />
+            )}
+          />
           <Route exact path="/verify" component={Verify} />
           <Route
             exact
@@ -336,11 +310,27 @@ function App() {
             component={ResetAssociationPassword}
           />
           <Route exact path="/orgAdmin" component={OrgAdminRegister} />
-          <Route exact path="/about" component={AboutUs} />
-          <Route exact path="/faq" component={FAQ} />
-          <Route exact path="/donate" component={Donate} />
+          <Route
+            exact
+            path="/about"
+            component={(props) => <AboutUs {...props} {...languageObj} />}
+          />
+          <Route
+            exact
+            path="/faq"
+            component={(props) => <FAQ {...props} {...languageObj} />}
+          />
+          <Route
+            exact
+            path="/donate"
+            component={(props) => <Donate {...props} {...languageObj} />}
+          />
           <Route exact path="/orgPasswordReset" component={OrgReset} />
-          <Route exact path="/updates" component={ChangeLog} />
+          <Route
+            exact
+            path="/updates"
+            component={(props) => <ChangeLog {...props} {...languageObj} />}
+          />
           <Route exact path="/submit-updates" component={SubmitChangeLog} />
           <Route
             exact

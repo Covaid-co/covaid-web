@@ -17,12 +17,8 @@ import OrgHeader from "../association_volunteer_header/OrgHeader";
 import DefaultHeader from "../association_volunteer_header/DefaultHeader";
 import CurrentLocation from "../location_tools/CurrentLocation";
 
-/**
- * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
- */
 import LocalizedStrings from "react-localization";
 import { translations } from "../translations/translations";
-
 let translatedStrings = new LocalizedStrings({ translations });
 
 /**
@@ -35,19 +31,13 @@ export default function RegisterPage(props) {
   const [modalType, setModalType] = useState("");
   const [secondPage, setSecondPage] = useState({});
   const [justRegistered, setJustRegistered] = useState(false);
-  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     setShowModal(false);
     if (props.googleApiKey !== "") {
       props.setLocationState(props.googleApiKey);
     }
-    if (props.switchToLanguage === "Español") {
-      setLanguage("es");
-    } else {
-      setLanguage("en");
-    }
-  }, [props.googleApiKey, props.switchToLanguage]);
+  }, [props.googleApiKey]);
 
   const showModalType = (type) => {
     setModalType(type);
@@ -59,9 +49,20 @@ export default function RegisterPage(props) {
   };
 
   const volunteerFormInfo = () => {
-    var topHeader = <DefaultHeader />;
+    var topHeader = (
+      <DefaultHeader
+        language={props.language}
+        setLanguage={props.setLanguage}
+      />
+    );
     if (props.association && Object.keys(props.association).length > 0) {
-      topHeader = <OrgHeader assoc={props.association} />;
+      topHeader = (
+        <OrgHeader
+          assoc={props.association}
+          language={props.language}
+          setLanguage={props.setLanguage}
+        />
+      );
     }
     return (
       <>
@@ -105,8 +106,6 @@ export default function RegisterPage(props) {
       },
     };
 
-    // console.log(form);
-    // return
     fetch("/api/users/", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -129,7 +128,8 @@ export default function RegisterPage(props) {
       return (
         <RegisterPage1
           setFirstPage={setFirstPage}
-          setSwithToLanguage={props.setSwithToLanguage}
+          language={props.language}
+          setLanguage={props.setLanguage}
           neighborhoods={props.neighborhoods}
         />
       );
@@ -137,7 +137,8 @@ export default function RegisterPage(props) {
       return (
         <RegisterPage2
           setSecondPage={setSecondPage}
-          setSwithToLanguage={props.setSwithToLanguage}
+          language={props.language}
+          setLanguage={props.setLanguage}
           currentAssoc={props.association}
         />
       );
@@ -145,7 +146,8 @@ export default function RegisterPage(props) {
       return (
         <RegisterPage3
           handleSubmit={handleSubmit}
-          setSwithToLanguage={props.setSwithToLanguage}
+          language={props.language}
+          setLanguage={props.setLanguage}
           currentAssoc={props.association}
         />
       );
@@ -173,11 +175,9 @@ export default function RegisterPage(props) {
     return [
       <div className="App" key="1">
         <NavBar
-          setSwithToLanguage={props.setSwithToLanguage}
-          switchToLanguage={props.switchToLanguage}
+          setLanguage={props.setLanguage}
+          language={props.language}
           isLoggedIn={false}
-          totalVolunteers={0}
-          handleShowModal={showModalType}
         />
         <Container style={{ maxWidth: 1500 }}>
           <Row>
@@ -185,10 +185,10 @@ export default function RegisterPage(props) {
             <Col lg={6} md={8} sm={12}>
               <Container id="newOfferContainer" style={{ marginBottom: 0 }}>
                 <h1 id="small-header">
-                  {translatedStrings[language].CheckVerification}
+                  {translatedStrings[props.language].CheckVerification}
                 </h1>
                 <p id="regular-text" style={{ marginBottom: 5 }}>
-                  {translatedStrings[language].OnceVerified}
+                  {translatedStrings[props.language].OnceVerified}
                 </p>
               </Container>
             </Col>
@@ -203,10 +203,9 @@ export default function RegisterPage(props) {
   return [
     <div className="App" key="1">
       <NavBar
-        setSwithToLanguage={props.setSwithToLanguage}
-        switchToLanguage={props.switchToLanguage}
+        setLanguage={props.setLanguage}
+        language={props.language}
         isLoggedIn={false}
-        handleShowModal={showModalType}
       />
       <Container style={{ maxWidth: 1500 }}>
         <Row>
@@ -244,4 +243,6 @@ RegisterPage.propTypes = {
   stateString: PropTypes.string,
   zipcode: PropTypes.string,
   neighborhoods: [PropTypes.string],
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

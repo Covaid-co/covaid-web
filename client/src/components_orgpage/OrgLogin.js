@@ -152,8 +152,8 @@ export default function OrgLogin(props) {
   return (
     <div className="App">
       <NavBar
-        setSwithToLanguage={props.setSwithToLanguage}
-        switchToLanguage={props.switchToLanguage}
+        setLanguage={props.setLanguage}
+        language={props.language}
         isLoggedIn={false}
         totalVolunteers={0}
         orgPortal={true}
@@ -439,4 +439,6 @@ OrgLogin.propTypes = {
   orgReset: PropTypes.bool,
   setShowLogin: PropTypes.func,
   login: PropTypes.func,
+  language: PropTypes.string,
+  setLanguage: PropTypes.func,
 };

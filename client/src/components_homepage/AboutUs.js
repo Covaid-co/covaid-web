@@ -19,7 +19,7 @@ import Footer from "../components/Footer";
  * About us/contributors page
  */
 
-export default function AboutUs() {
+export default function AboutUs(props) {
   const names = [
     "Jeffrey Li",
     "Debanik Purkayastha",
@@ -42,7 +42,12 @@ export default function AboutUs() {
 
   return (
     <div className="App">
-      <NavBar isLoggedIn={false} pageLoaded={true} />
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        pageLoaded={true}
+        isLoggedIn={false}
+      />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
           <Col md={6} id="login-container" style={{ paddingRight: 75 }}>
@@ -104,7 +109,6 @@ export default function AboutUs() {
 }
 
 AboutUs.propTypes = {
-  orgReset: PropTypes.bool,
-  setShowLogin: PropTypes.func,
-  login: PropTypes.func,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

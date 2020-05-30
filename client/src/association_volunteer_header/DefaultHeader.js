@@ -10,35 +10,26 @@ import { translations } from "../translations/translations";
 let translatedStrings = new LocalizedStrings({ translations });
 
 export default function DefaultHeader(props) {
-  const [language, setLanguage] = useState("en");
-
-  useEffect(() => {
-    if (props.switchToLanguage === "Español") {
-      setLanguage("es");
-    } else {
-      setLanguage("en");
-    }
-  }, [props.switchToLanguage]);
   return (
     <>
       <h1 id="small-header">
-        {translatedStrings[language].VolunteerRegistration}
+        {translatedStrings[props.language].VolunteerRegistration}
       </h1>
       <p id="regular-text" style={{ marginBottom: 5 }}>
-        {translatedStrings[language].VolunteerRegistration_Text1}
+        {translatedStrings[props.language].VolunteerRegistration_Text1}
       </p>
       <p id="regular-text" style={{ fontStyle: "italic", marginTop: 0 }}>
-        {translatedStrings[language].VolunteerRegistration_Text2}{" "}
+        {translatedStrings[props.language].VolunteerRegistration_Text2}{" "}
         <strong id="hello-name" style={{ marginRight: 0 }}>
-          {translatedStrings[language].VolunteerRegistration_Text3}
+          {translatedStrings[props.language].VolunteerRegistration_Text3}
         </strong>{" "}
-        {translatedStrings[language].VolunteerRegistration_Text4}
+        {translatedStrings[props.language].VolunteerRegistration_Text4}
       </p>
     </>
   );
 }
 
 DefaultHeader.propTypes = {
-  setSwithToLanguage: PropTypes.func,
-  switchToLanguage: PropTypes.string,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

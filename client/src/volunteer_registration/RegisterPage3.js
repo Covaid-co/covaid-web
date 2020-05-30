@@ -12,9 +12,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import HelpOrganization from "./HelpOrganization";
 import { toastTime, defaultTerms } from "../constants";
 
-/**
- * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
- */
 import LocalizedStrings from "react-localization";
 import { translations } from "../translations/translations";
 
@@ -31,7 +28,6 @@ export default function RegisterPage3(props) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [canHelp, setCanHelp] = useState(false);
-  const [language, setLanguage] = useState("en");
   const [currentTerms, setCurrentTerms] = useState({
     0: false,
     1: false,
@@ -57,13 +53,8 @@ export default function RegisterPage3(props) {
           " and Covaid are strictly volunteer groups established to help during these extraordinary times created by the COVID-19 pandemic and agree to release and hold them harmless for any damages, financial or otherwise, which may occur during my services as a volunteer.",
       ];
       setTermSentences(termsList);
-      if (props.switchToLanguage === "Español") {
-        setLanguage("es");
-      } else {
-        setLanguage("en");
-      }
     }
-  }, [props.currentAssoc, props.switchToLanguage]);
+  }, [props.currentAssoc]);
 
   const handleTermChange = (event, task) => {
     setCurrentTerms((prev) => ({
@@ -120,10 +111,10 @@ export default function RegisterPage3(props) {
         />
 
         <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 4 }}>
-          {translatedStrings[language].Health}
+          {translatedStrings[props.language].Health}
         </h5>
         <p id="regular-text" style={{ marginBottom: 20, fontSize: 14 }}>
-          {translatedStrings[language].RequestPage3_Text1}
+          {translatedStrings[props.language].RequestPage3_Text1}
         </p>
         <Row>
           <Col md={12}>
@@ -148,10 +139,10 @@ export default function RegisterPage3(props) {
                             onChange={() => {setCaptcha(true)}}
                             style = {{marginBottom: 0, marginTop: 20}}/> */}
         <Button id="large-button" style={{ marginTop: 15 }} type="submit">
-          {translatedStrings[language].RequestPage3_Text2}
+          {translatedStrings[props.language].RequestPage3_Text2}
         </Button>
       </Form>
-      <p id="pagenum-text">{translatedStrings[language].Page3of3}</p>
+      <p id="pagenum-text">{translatedStrings[props.language].Page3of3}</p>
       <Toast
         show={showToast}
         delay={toastTime}
@@ -169,6 +160,6 @@ RegisterPage3.propTypes = {
   handleSubmit: PropTypes.func,
   currentAssoc: PropTypes.object,
   neighborhoods: PropTypes.array,
-  setSwithToLanguage: PropTypes.func,
-  switchToLanguage: PropTypes.string,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

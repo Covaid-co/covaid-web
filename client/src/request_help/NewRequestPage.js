@@ -33,7 +33,6 @@ export default function NewRequestPage(props) {
   const [second_page, setSecondPage] = useState({});
   const [step_num, setStepNum] = useState(0);
   const [toast_message, setToastMessage] = useState("");
-  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (props.googleApiKey !== "") {
@@ -159,7 +158,7 @@ export default function NewRequestPage(props) {
         <OrgHeader
           assoc={props.association}
           translations={translatedStrings}
-          language={language}
+          language={props.language}
         />
       );
     }
@@ -313,7 +312,7 @@ export default function NewRequestPage(props) {
               setStepNum={setStepNum}
               currentAssoc={props.association}
               translations={translatedStrings}
-              language={language}
+              language={props.language}
             />
           </Col>
         </Row>
@@ -330,7 +329,7 @@ export default function NewRequestPage(props) {
               setStepNum={setStepNum}
               setSecondPage={setSecondPage}
               translations={translatedStrings}
-              language={language}
+              language={props.language}
             />
           </Col>
         </Row>
@@ -351,7 +350,7 @@ export default function NewRequestPage(props) {
             setSecondPage={setSecondPage}
             currentAssoc={props.association}
             translations={translatedStrings}
-            language={language}
+            language={props.language}
             submitRequest={submitRequest}
           />
         </>
@@ -378,8 +377,9 @@ export default function NewRequestPage(props) {
   return [
     <div className="App" key="1">
       <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
         isLoggedIn={false}
-        totalVolunteers={0}
         orgPortal={true}
         simplified={true}
       />
@@ -418,6 +418,8 @@ export default function NewRequestPage(props) {
 }
 
 NewRequestPage.propTypes = {
+  language: PropTypes.string,
+  setLanguage: PropTypes.func,
   onLocationSubmit: PropTypes.func,
   setLocationState: PropTypes.func,
   googleApiKey: PropTypes.string,

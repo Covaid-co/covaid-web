@@ -29,7 +29,6 @@ export default function RegisterPage1(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [language, setLanguage] = useState("en");
   const [fields, handleFieldChange] = useFormFields({
     first_name: "",
     last_name: "",
@@ -41,12 +40,7 @@ export default function RegisterPage1(props) {
 
   useEffect(() => {
     setNeighborhoodsChecked(setTrueObj(props.neighborhoods));
-    if (props.switchToLanguage === "Español") {
-      setLanguage("es");
-    } else {
-      setLanguage("en");
-    }
-  }, [props.neighborhoods, props.switchToLanguage]);
+  }, [props.neighborhoods]);
 
   const goToSecondPage = () => {
     const valid = checkPage();
@@ -73,28 +67,28 @@ export default function RegisterPage1(props) {
     var valid = true;
     const phoneOnlyDigits = phoneNumber.replace(/\D/g, "").substring(0, 10);
     if (fields.first_name.length === 0) {
-      setToastMessage(translatedStrings[language].EnterFirstName);
+      setToastMessage(translatedStrings[props.language].EnterFirstName);
       valid = false;
     } else if (fields.last_name.length === 0) {
-      setToastMessage(translatedStrings[language].EnterLastName);
+      setToastMessage(translatedStrings[props.language].EnterLastName);
       valid = false;
     } else if (phoneOnlyDigits.length !== 10) {
-      setToastMessage(translatedStrings[language].EnterPhone);
+      setToastMessage(translatedStrings[props.language].EnterPhone);
       valid = false;
     } else if (
       fields.email.length === 0 ||
       validateEmail(fields.email) === false
     ) {
-      setToastMessage(translatedStrings[language].EnterEmail);
+      setToastMessage(translatedStrings[props.language].EnterEmail);
       valid = false;
     } else if (fields.password.length === 0) {
-      setToastMessage(translatedStrings[language].SetPassword);
+      setToastMessage(translatedStrings[props.language].SetPassword);
       valid = false;
     } else if (fields.password !== fields.confirmPassword) {
-      setToastMessage(translatedStrings[language].PasswordNotSame);
+      setToastMessage(translatedStrings[props.language].PasswordNotSame);
       valid = false;
     } else if (Object.values(neighborhoodsChecked).every((v) => v === false)) {
-      setToastMessage(translatedStrings[language].NoNeighborhood);
+      setToastMessage(translatedStrings[props.language].NoNeighborhood);
       valid = false;
     }
 
@@ -107,10 +101,10 @@ export default function RegisterPage1(props) {
   return (
     <>
       <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 10 }}>
-        {translatedStrings[language].Locality}
+        {translatedStrings[props.language].Locality}
       </h5>
       <p id="regular-text" style={{ marginBottom: 4, fontSize: 14 }}>
-        {translatedStrings[language].RegisterPage1_Text}
+        {translatedStrings[props.language].RegisterPage1_Text}
       </p>
       <CheckForm
         obj={neighborhoodsChecked}
@@ -118,7 +112,7 @@ export default function RegisterPage1(props) {
         disabled={true}
       />
       <h5 id="regular-text-bold" style={{ marginTop: 20 }}>
-        {translatedStrings[language].PersonalInfo}
+        {translatedStrings[props.language].PersonalInfo}
       </h5>
       <Row>
         <Col xs={6} style={{ paddingRight: "4px" }}>
@@ -126,7 +120,7 @@ export default function RegisterPage1(props) {
             <Form.Control
               value={fields.first}
               onChange={handleFieldChange}
-              placeholder={translatedStrings[language].FirstName}
+              placeholder={translatedStrings[props.language].FirstName}
             />
           </Form.Group>
         </Col>
@@ -135,7 +129,7 @@ export default function RegisterPage1(props) {
             <Form.Control
               value={fields.last}
               onChange={handleFieldChange}
-              placeholder={translatedStrings[language].LastName}
+              placeholder={translatedStrings[props.language].LastName}
             />
           </Form.Group>
         </Col>
@@ -144,7 +138,7 @@ export default function RegisterPage1(props) {
             <Form.Control
               value={fields.pronouns}
               onChange={handleFieldChange}
-              placeholder={translatedStrings[language].PreferredPronouns}
+              placeholder={translatedStrings[props.language].PreferredPronouns}
             />
           </Form.Group>
         </Col>
@@ -152,7 +146,7 @@ export default function RegisterPage1(props) {
           <PhoneNumber
             phoneNumber={phoneNumber}
             setPhoneNumber={setPhoneNumber}
-            placeholder={translatedStrings[language].Phone}
+            placeholder={translatedStrings[props.language].Phone}
           />
         </Col>
         <Col xs={12}>
@@ -160,14 +154,14 @@ export default function RegisterPage1(props) {
             <Form.Control
               value={fields.email}
               onChange={handleFieldChange}
-              placeholder={translatedStrings[language].Email}
+              placeholder={translatedStrings[props.language].Email}
             />
           </Form.Group>
         </Col>
         <Col xs={6} style={{ paddingRight: "4px" }}>
           <Form.Group controlId="password" bssize="large">
             <Form.Control
-              placeholder={translatedStrings[language].Password}
+              placeholder={translatedStrings[props.language].Password}
               value={fields.password}
               onChange={handleFieldChange}
               type="password"
@@ -178,7 +172,7 @@ export default function RegisterPage1(props) {
           <Form.Group controlId="confirmPassword" bssize="large">
             <Form.Control
               type="password"
-              placeholder={translatedStrings[language].ConfirmPassword}
+              placeholder={translatedStrings[props.language].ConfirmPassword}
               onChange={handleFieldChange}
               value={fields.confirmPassword}
             />
@@ -190,9 +184,9 @@ export default function RegisterPage1(props) {
         id="large-button-empty"
         onClick={goToSecondPage}
       >
-        {translatedStrings[language].Next}
+        {translatedStrings[props.language].Next}
       </Button>
-      <p id="pagenum-text">{translatedStrings[language].Page1of3}</p>
+      <p id="pagenum-text">{translatedStrings[props.language].Page1of3}</p>
       <Toast
         show={showToast}
         delay={toastTime}
@@ -209,6 +203,6 @@ export default function RegisterPage1(props) {
 RegisterPage1.propTypes = {
   setFirstPage: PropTypes.func,
   neighborhoods: PropTypes.array,
-  setSwithToLanguage: PropTypes.func,
-  switchToLanguage: PropTypes.string,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

@@ -57,6 +57,8 @@ const translations = {
     VolunteerReachOutSoon:
       "Your request has been saved and you should be contacted soon from a matched volunteer who can support you!",
     RequestSupport: "Request support",
+    INeedHelp: "I Need Help",
+    BecomeVolunteer: "Become a Volunteer",
     "Academic/Professional": "",
     Donate: "Donate",
     "Emotional Support": "Emotional Support",
@@ -73,8 +75,8 @@ const translations = {
     Organizations: "Organizations",
     FAQs: "FAQs",
     VolunteerMap: "Volunteer Map",
-    Signin: "Sign In",
-    VolunteerRegistration: "Volunteer Registration",
+    Signin: "Log In",
+    VolunteerRegistration: "Volunteer Signup",
     Volunteer: "Volunteer",
     Logout: "Logout",
     VolunteerLogin: "Volunteer Login",
@@ -266,6 +268,8 @@ const translations = {
     VolunteerReachOutSoon:
       "¡Su solicitud se ha guardado y pronto lo contactaremos de un voluntario compatible que pueda apoyarlo!",
     RequestSupport: "Solicitar apoyo",
+    INeedHelp: "Necesito Ayuda",
+    BecomeVolunteer: "Convertirse en Voluntario",
     "Academic/Professional": "Académico/Profesional",
     Donate: "Donar",
     "Emotional Support": "Apoyo emocional",

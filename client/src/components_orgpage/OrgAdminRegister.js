@@ -108,8 +108,7 @@ export default function OrgAdminRegister(props) {
   } else {
     return (
       <>
-        <NavBar isLoggedIn={false} orgAdmin={true} />
-        <Container style={{ maxWidth: 1500 }}>
+        <Container style={{ maxWidth: 2500 }}>
           <Row>
             <Col md={6} id="login-container">
               <h1 id="home-heading">Covaid for {name} Admins</h1>

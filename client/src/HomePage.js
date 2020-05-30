@@ -13,7 +13,6 @@ import Feedback from "./components_modals/Feedback";
 import NewLogin from "./components_modals/NewLogin";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import HelpfulLinks from "./components_modals/HelpfulLinks";
 import { currURL } from "./constants";
 import { volunteerButton } from "./HomePageHelpers";
 import home from "./assets/home.png";
@@ -31,9 +30,7 @@ export default function HomePage(props) {
   const [modalType, setModalType] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (props.login === true) {
@@ -43,20 +40,8 @@ export default function HomePage(props) {
     if (Object.keys(currentUser).length === 0 && Cookie.get("token")) {
       fetchUser();
     }
-
-    if (props.switchToLanguage === "English") {
-      setLanguage("en");
-    } else {
-      setLanguage("es");
-    }
     setPageLoaded(true);
-  }, [
-    props.latitude,
-    props.longitude,
-    props.currentAssoc,
-    currentUser,
-    props.login,
-  ]);
+  }, [currentUser, props.login]);
 
   const showModalType = (type) => {
     setModalType(type);
@@ -70,15 +55,7 @@ export default function HomePage(props) {
   // Find current modal component based on current modal type
   const getCurrentModal = () => {
     var modal = <></>;
-    if (modalType === "resources") {
-      modal = (
-        <HelpfulLinks
-          showModal={showModal}
-          hideModal={handleHideModal}
-          currentAssoc={props.currentAssoc}
-        />
-      );
-    } else if (modalType === "feedback") {
+    if (modalType === "feedback") {
       modal = (
         <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
       );
@@ -101,12 +78,11 @@ export default function HomePage(props) {
   return [
     <div key="1" className="App" style={{ height: "100%" }}>
       <NavBar
-        setSwithToLanguage={props.setSwithToLanguage}
-        switchToLanguage={props.switchToLanguage}
+        setLanguage={props.setLanguage}
+        language={props.language}
         pageLoaded={pageLoaded}
         isLoggedIn={loggedIn}
         first_name={currentUser.first_name}
-        handleShowModal={showModalType}
       />
       <Jumbotron fluid id="jumbo">
         <div id="feedback">
@@ -123,24 +99,24 @@ export default function HomePage(props) {
           <Row>
             <Col md={6} id="jumbo-text">
               <h1 id="home-heading">
-                {translatedStrings[language].HomePage_Title}
+                {translatedStrings[props.language].HomePage_Title}
               </h1>
               <p id="home-subheading">
-                {translatedStrings[language].HomePage_Subtitle}
+                {translatedStrings[props.language].HomePage_Subtitle}
               </p>
               <Button
                 onClick={() => window.open(currURL + "/request", "_self")}
                 id="request-button"
               >
-                I need help →
+                {translatedStrings[props.language].INeedHelp} →
               </Button>{" "}
-              {volunteerButton(loggedIn, language)}
+              {volunteerButton(loggedIn, props.language)}
               <br />
               <Button
                 id="resources-button"
                 onClick={() => window.open(currURL + "/volunteer", "_self")}
               >
-                Become a volunteer
+                {translatedStrings[props.language].BecomeVolunteer}
               </Button>
             </Col>
             <Col md={6} style={{ marginTop: 0 }}>
@@ -156,18 +132,9 @@ export default function HomePage(props) {
 }
 
 HomePage.propTypes = {
-  //    translatedStrings : PropTypes.node,
-  setSwithToLanguage: PropTypes.func,
-  switchToLanguage: PropTypes.string,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
   googleAPI: PropTypes.string,
   refreshLocation: PropTypes.func,
   onLocationSubmit: PropTypes.func,
-  latitude: PropTypes.number,
-  longitude: PropTypes.number,
-  neighborhoods: PropTypes.arrayOf(PropTypes.string),
-  locality: PropTypes.string,
-  zipcode: PropTypes.string,
-  currentAssoc: PropTypes.object,
-  isLoaded: PropTypes.bool,
-  resources: PropTypes.arrayOf(PropTypes.string),
 };
