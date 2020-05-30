@@ -17,6 +17,7 @@ import Col from "react-bootstrap/Col";
 import CurrentVolunteerRequests from "./components_volunteer/CurrentVolunteerRequests";
 import CompletedVolunteerRequests from "./components_volunteer/CompletedVolunteerRequests";
 import ProfileHeader from "./components_volunteer/ProfileHeader";
+import RequestDashboard from "./components_volunteer/RequestDashboard";
 import { request_status, volunteer_status } from "./constants";
 import { generateURL } from "./Helpers";
 import NavBar from "./components/NavBar";
@@ -165,8 +166,11 @@ export default function VolunteerPortal(props) {
           <p id="regular-text" style={{ fontSize: 16 }}>
             Respond to requests that have been delegated to you
           </p>
-          <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
-          {/* <RequestDashboard /> */}
+          <p id="requestCall" style={{ marginTop: 15, marginBottom: 34 }}></p>
+          <RequestDashboard 
+            pendingRequests={pendingRequests}
+            acceptedRequests={acceptedRequests} 
+            completedRequests={completedRequests} />
         </Container>
       );
     } else if (view === 'your-offer') {
