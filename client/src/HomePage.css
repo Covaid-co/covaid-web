@@ -301,6 +301,10 @@
 }
 
 @media (max-width: 960px) {
+  #banner {
+    height: 60px;
+  }
+
   #location-container-logged {
     margin-top: 110px;
   }
@@ -337,6 +341,7 @@
 }
 
 @media (max-width: 800px) {
+
   #jumboContainer {
     margin-left: 2%;
     margin-right: 2%;

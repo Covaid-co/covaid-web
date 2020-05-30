@@ -46,7 +46,7 @@ def run():
         count = 0
         for row in reader:
             count += 1
-            if (count <= 65 or count > 95):
+            if (count <= 95):
                 continue
             address = row[2]
             city = findCity(row[1])
