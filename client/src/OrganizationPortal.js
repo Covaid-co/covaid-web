@@ -82,13 +82,7 @@ export default function OrganiationPortal(props) {
   const [inVolunteer, setInVolunteer] = useState(false);
   //console.log(props.switchToLanguage);
   useEffect(() => {
-    if (Cookie.get("admin_token") && Cookie.get("org_token")) {
-      login(true);
-    } else if (Cookie.get("org_token")) {
-      login(false);
-    } else {
-      setShowLogin(true);
-    }
+    login(true);
   }, []);
 
   window.addEventListener("resize", () => {
@@ -163,11 +157,7 @@ export default function OrganiationPortal(props) {
           setVolunteers(volunteers);
         });
 
-        if (adminMode) {
-          fetchCurrentAdmin();
-        } else {
-          setPageLoaded(true);
-        }
+        setPageLoaded(true);
       })
       .catch((e) => {
         alert(e);
@@ -221,11 +211,8 @@ export default function OrganiationPortal(props) {
                 <h1 id="home-heading" style={{ marginTop: 0 }}>
                   Welcome to the demo portal
                 </h1>
-                <h1 id="home-heading" style={{ marginTop: 0 }}>
-                  {association.name}!
-                </h1>
                 <p id="regular-text" style={{ fontSize: 20, marginBottom: 40 }}>
-                This portal is for demo purposes only and real-time functionality as well as requester contacting is disabled.
+                This portal is for demo purposes only and matching functionality is disabled.
                 </p>
                 <Button
                   id="medium-button"
