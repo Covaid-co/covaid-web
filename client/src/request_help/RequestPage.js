@@ -41,6 +41,8 @@ export default function RequestPage(props) {
   const requestFormInfo = () => {
     var topHeader = (
       <DefaultHeader
+        setSwithToLanguage={props.setSwithToLanguage}
+        switchToLanguage={props.switchToLanguage}
         requestHeaderText={generalRequestText}
         translations={translatedStrings}
         language={language}
@@ -53,6 +55,8 @@ export default function RequestPage(props) {
     ) {
       topHeader = (
         <OrgHeader
+          setSwithToLanguage={props.setSwithToLanguage}
+          switchToLanguage={props.switchToLanguage}
           assoc={props.locationProps.currentAssoc}
           translations={translatedStrings}
           language={language}
@@ -131,7 +135,13 @@ export default function RequestPage(props) {
   if (completed) {
     return [
       <div className="App" key="1">
-        <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} />
+        <NavBar
+          setSwithToLanguage={props.setSwithToLanguage}
+          switchToLanguage={props.switchToLanguage}
+          isLoggedIn={false}
+          totalVolunteers={0}
+          orgPortal={true}
+        />
         <Container style={{ maxWidth: 1500 }}>
           <Row>
             <Col lg={3} md={2} sm={0}></Col>
@@ -155,7 +165,13 @@ export default function RequestPage(props) {
 
   return [
     <div className="App" key="1">
-      <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} />
+      <NavBar
+        setSwithToLanguage={props.setSwithToLanguage}
+        switchToLanguage={props.switchToLanguage}
+        isLoggedIn={false}
+        totalVolunteers={0}
+        orgPortal={true}
+      />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
           <Col lg={3} md={2} sm={0}></Col>
@@ -215,4 +231,6 @@ RequestPage.propTypes = {
     zipcode: PropTypes.string,
     locality: PropTypes.string,
   }),
+  setSwithToLanguage: PropTypes.func,
+  switchToLanguage: PropTypes.string,
 };

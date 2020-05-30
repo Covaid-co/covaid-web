@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Form from "react-bootstrap/Form";
 
+/**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
 export default function HelpOrganization(props) {
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    if (props.switchToLanguage === "Español") {
+      setLanguage("es");
+    } else {
+      setLanguage("en");
+    }
+  }, [props.switchToLanguage]);
+
   const assocName = (assoc) => {
     if (assoc) {
       if (Object.keys(assoc).length === 0) {
@@ -36,17 +54,16 @@ export default function HelpOrganization(props) {
       style={{ marginBottom: 20, marginTop: 0 }}
     >
       <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 5 }}>
-        Can you help {assocName(props.currentAssoc)}?
+        {translatedStrings[language].CanYouHelp} {assocName(props.currentAssoc)}
+        ?
       </h5>
       <p style={{ fontSize: 14, marginBottom: 7 }} id="regular-text">
-        We are always looking for volunteers to join the team! If you can help
-        with finding volunteers for those in need of support, please check the
-        box and fill out more details if you would like.
+        {translatedStrings[language].HelpOrganization_Text1}
       </p>
       <Form.Check
         type="checkbox"
         id="regular-text"
-        label="I can help with finding volunteers!"
+        label={translatedStrings[language].HelpOrganization_Text2}
         checked={props.canHelp}
         onChange={() => {
           props.setCanHelp(!props.canHelp);
@@ -59,7 +76,7 @@ export default function HelpOrganization(props) {
           rows="3"
           value={props.helpDetails}
           onChange={props.handleFieldChange}
-          placeholder="Any other information you would like us to know?"
+          placeholder={translatedStrings[language].HelpOrganization_Text3}
         />
       ) : (
         <></>
@@ -74,4 +91,6 @@ HelpOrganization.propTypes = {
   setCanHelp: PropTypes.func,
   helpDetails: PropTypes.string,
   handleFieldChange: PropTypes.func,
+  setSwithToLanguage: PropTypes.func,
+  switchToLanguage: PropTypes.string,
 };

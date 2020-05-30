@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import Pusher from "pusher-js";
+import PropTypes from "prop-types";
 import { useToasts } from "react-toast-notifications";
 import AccountInfo from "./components_volunteer/AccountInfo";
 import YourOffer from "./components_volunteer/YourOffer";
@@ -156,10 +157,15 @@ export default function VolunteerPortal(props) {
     return (
       <>
         <div className="App">
-          <NavBar isLoggedIn={true} first_name={user.first_name} />
+          <NavBar
+            setLanguage={props.setLanguage}
+            language={props.language}
+            isLoggedIn={true}
+            first_name={user.first_name}
+          />
           <div id="bgImage"></div>
           <Jumbotron fluid id="jumbo-volunteer">
-            <Container style={{ maxWidth: 1500 }}>
+            <Container style={{ maxWidth: 2000 }}>
               <Row>
                 <Col lg={1} md={1} sm={0}></Col>
                 <Col>
@@ -219,7 +225,15 @@ export default function VolunteerPortal(props) {
                     tabNum === 1 ? { display: "block" } : { display: "none" }
                   }
                 >
-                  {foundUser ? <YourOffer user={user} /> : <></>}
+                  {foundUser ? (
+                    <YourOffer
+                      user={user}
+                      setLanguage={props.setLanguage}
+                      language={props.language}
+                    />
+                  ) : (
+                    <></>
+                  )}
                 </Container>
                 <Container
                   id="newOfferContainer"
@@ -286,3 +300,8 @@ export default function VolunteerPortal(props) {
     return <></>;
   }
 }
+
+VolunteerPortal.propTypes = {
+  language: PropTypes.string,
+  setLanguage: PropTypes.func,
+};
