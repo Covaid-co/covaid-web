@@ -147,6 +147,10 @@ export default function NewRequestPage(props) {
       });
   };
 
+  const associationLink = () => {
+    return associationExists() ? props.association.homepage : "";
+  };
+
   const associationName = () => {
     return associationExists() ? props.association.name : "we";
   };
@@ -166,10 +170,16 @@ export default function NewRequestPage(props) {
     if (step_num === 0) {
       return (
         <>
+          <Button id="back-button"  onClick={() => window.open(currURL, "_self")}>
+            ←
+          </Button>
           <p id="title">Step 1 —</p>
           <p id="subtitle">Set your location</p>
           <p id="info">
-            We ask for your location so that {associationName()} can best match
+            We ask for your location so that {associationExists() ? 
+              <a href={associationLink()}>
+                {associationName()}
+              </a> : associationName()} can best match
             you to volunteers in your area.
           </p>
           <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
@@ -194,7 +204,7 @@ export default function NewRequestPage(props) {
             id="large-button"
             style={{ marginTop: 15, marginBottom: 30 }}
             onClick={() =>
-              props.org !== "" ? confirmLocation(2) : confirmLocation(1)
+              confirmLocation(2)
             }
           >
             Next
@@ -237,7 +247,7 @@ export default function NewRequestPage(props) {
     } else if (step_num === 2) {
       return (
         <>
-          <Button id="back-button" onClick={() => setStepNum(1)}>
+          <Button id="back-button" onClick={() => setStepNum(0)}>
             ←
           </Button>
           <p id="title">Step 2 —</p>

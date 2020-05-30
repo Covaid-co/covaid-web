@@ -114,9 +114,11 @@ export default function HomePage(props) {
               <br />
               <Button
                 id="resources-button"
-                onClick={() => window.open(currURL + "/volunteer", "_self")}
+                onClick={() =>
+                  window.open(currURL + "/information-hub", "_self")
+                }
               >
-                {translatedStrings[props.language].BecomeVolunteer}
+                COVID-19 Information Hub
               </Button>
             </Col>
             <Col md={6} style={{ marginTop: 0 }}>

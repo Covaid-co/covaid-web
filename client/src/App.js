@@ -32,6 +32,7 @@ import Donate from "./components_homepage/Donate";
 import RegisterPage from "./volunteer_registration/RegisterPage";
 import ChangeLog from "./changelog/ChangeLog";
 import SubmitChangeLog from "./changelog/SubmitChangeLog";
+import InformationHub from "./information-hub/InformationHub";
 import HomePage from "./HomePage";
 
 function App() {
@@ -332,6 +333,7 @@ function App() {
             component={(props) => <ChangeLog {...props} {...languageObj} />}
           />
           <Route exact path="/submit-updates" component={SubmitChangeLog} />
+          <Route exact path="/information-hub" component={InformationHub} />
           <Route
             exact
             path="/volunteer-signin"

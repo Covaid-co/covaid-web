@@ -79,9 +79,11 @@ export default function CovaidNavbar(props) {
           }
         }}
       >
-        <span role="img" aria-label="sheep">
-          🌐{" "}
-        </span>{" "}
+        <i
+          className="fa fa-globe"
+          aria-hidden="true"
+          style={{marginRight: 7}}
+        ></i>
         {props.language === "en" ? "English" : "Español"}
       </Button>
     );
