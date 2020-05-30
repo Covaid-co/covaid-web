@@ -373,6 +373,8 @@ export default function OrganiationPortal(props) {
           volunteerDetailModal={volunteerDetailModal}
           setVolunteerDetailsModal={setVolunteerDetailsModal}
           currVolunteer={currVolunteer}
+          volunteers={volunteers}
+          setVolunteers={setVolunteers}
           setVolunteersModal={setVolunteersModal}
           currRequest={currRequest}
           requestDetailsModal={requestDetailsModal}
@@ -395,6 +397,7 @@ export default function OrganiationPortal(props) {
           volunteers={volunteers}
           admin={admin}
           setInRequest={setInRequest}
+          setVolunteers={setVolunteers}
         />
         <BeaconCreation
           beaconModal={beaconModal}

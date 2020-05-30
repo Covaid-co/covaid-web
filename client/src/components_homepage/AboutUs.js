@@ -12,6 +12,7 @@ import Trisha from "../assets/trisha.jpg";
 import Shresta from "../assets/shresta.jpg";
 import Matt from "../assets/matt.jpeg";
 import Neely from "../assets/neely.jpg";
+import Ellie from "../assets/ellie.jpeg";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -53,6 +54,10 @@ export default function AboutUs(props) {
     "Neely Lee": {
       "link": "www.linkedin.com/in/neelylee",
       "image": Neely
+    },
+    "Ellie Sapiro": {
+      "link": "https://www.linkedin.com/in/ellie-sapiro/",
+      "image": Ellie
     }
   }
 
