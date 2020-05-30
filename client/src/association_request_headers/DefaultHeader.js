@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect }from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -7,6 +7,15 @@ export default function DefaultHeader(props) {
   const handleLanguageChange = (language) => {
     props.changeLanguage(language);
   };
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    if (props.switchToLanguage === "Español") {
+        setLanguage("es")
+    } else {
+        setLanguage("en")
+    }
+}, [props.switchToLanguage]);
 
   if (props.modal) {
     return (
@@ -29,7 +38,7 @@ export default function DefaultHeader(props) {
       <Row>
         <Col xs={9} sm={8}>
           <h1 id="small-header" style={{ marginTop: 4 }}>
-            {props.translations[props.language].RequestSupport}
+            {props.translations[language].RequestSupport}
           </h1>
         </Col>
         <Col xs={3} sm={4}>
@@ -45,6 +54,7 @@ export default function DefaultHeader(props) {
           >
             Español
           </Button>
+
         </Col>
       </Row>
       <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
@@ -53,7 +63,7 @@ export default function DefaultHeader(props) {
         id="request-calling"
         style={{ borderBottom: "0px solid", marginBottom: 0 }}
       >
-        {props.translations[props.language].call}:<br />
+        {props.translations[language].call}:<br />
         <span id="phoneNumber">(401) 526-8243</span>
       </p>
     </>

@@ -1,39 +1,42 @@
-import React from "react";
-import Modal from "react-bootstrap/Modal";
+import React, { useEffect, useState } from "react";
+import Modal from 'react-bootstrap/Modal'
+
+/**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from 'react-localization';
+import {translations} from '../translations/translations';
+
+let translatedStrings = new LocalizedStrings({translations});
 
 export default function AboutUs(props) {
-  return (
-    <Modal
-      show={props.showModal}
-      style={{ marginTop: 60 }}
-      onHide={props.hideModal}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>About Us</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p id="regular-text">
-          Hi! We're a group of college student/recent grads who want to play our
-          part in the fight against COVID-19.
-        </p>
-        <p id="regular-text">
-          Inspired by acts of mutual aid in our community, we created
-          <strong>
-            <font id="home" style={{ fontSize: 18 }}>
-              {" "}
-              covaid
-            </font>
-          </strong>
-          , a tool to assist elderly and immunocompromised groups in this time
-          of distress. We are neighbors that are truly concerned about our
-          community as well as those affected around the United States. With
-          this tool, we hope to give those most affected and vulnerable the help
-          they need.
-        </p>
-        <p id="regular-text">
-          <strong>Any questions?</strong> Just email us at covaidco@gmail.com
-        </p>
-      </Modal.Body>
-    </Modal>
-  );
+    const [language, setLanguage] = useState("en")
+
+    useEffect(() => {
+        if (props.switchToLanguage === "Español") {
+            setLanguage("es")
+        } else {
+            setLanguage("en")
+        }
+    }, [props.switchToLanguage]);
+
+    return (
+
+        <Modal show={props.showModal} style={{marginTop: 60}} onHide={props.hideModal}>
+            <Modal.Header closeButton>
+            <Modal.Title>{translatedStrings[language].AboutUs}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <p id="regular-text">{translatedStrings[language].AboutUs_Text1}
+                </p>
+                <p id="regular-text">
+                    {translatedStrings[language].AboutUs_Text2}<strong><font id="home" style={{fontSize: 18}}> covaid</font></strong>
+                    {translatedStrings[language].AboutUs_Text3}
+                </p>
+                <p id="regular-text">
+                    <strong>{translatedStrings[language].AboutUs_Question}</strong> {translatedStrings[language].AboutUs_Email} covaidco@gmail.com
+                </p>
+            </Modal.Body>
+        </Modal>
+    );
 }
