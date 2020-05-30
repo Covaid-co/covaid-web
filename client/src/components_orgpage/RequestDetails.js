@@ -534,7 +534,7 @@ export default function RequestDetails(props) {
                     onClick={() => {setShowRequestMapModal(true); props.setRequestDetailsModal(false);}} 
                     style={{ color: '#2670FF', padding: 0, marginBottom: 3, marginLeft: 3}}
                     variant="link">
-              Click here
+              View map
             </Button>
           </p>
           {contactInfo()}

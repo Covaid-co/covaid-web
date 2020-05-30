@@ -13,7 +13,7 @@ export default function RequestDetailMapModal(props) {
             zoom: 15,  
             bearing: 0,
             pitch: 0,
-            width: 400,
+            width: 468,
             height: 400
         });
 
@@ -63,7 +63,7 @@ export default function RequestDetailMapModal(props) {
     return (
         <>
             <Modal.Header closeButton>
-                <Modal.Title style={{margin: 'auto'}}>Request Location</Modal.Title>
+                <Modal.Title >Request Location</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <ReactMapGL
@@ -71,7 +71,7 @@ export default function RequestDetailMapModal(props) {
                     onViewportChange={setViewport}
                     mapboxApiAccessToken={props.mapboxAccessToken}
                     mapStyle="mapbox://styles/mapbox/light-v9"
-                    style={{margin: 'auto'}}>
+                    >
 
                     <div style={navStyle}>
                         <NavigationControl/>

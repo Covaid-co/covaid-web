@@ -252,7 +252,7 @@ export default function VolunteerDetails(props) {
                     variant="link" 
                     style={{color: '#2670FF', padding:0, marginBottom: 4}} 
                     onClick={handleOpenMap}>
-              Click here
+              View Map
             </Button>
           </p>
           <p id="regular-text-nomargin">{props.currVolunteer.email}</p>

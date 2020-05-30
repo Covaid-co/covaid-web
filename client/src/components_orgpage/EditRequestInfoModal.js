@@ -93,7 +93,6 @@ export default function EditRequestInfoModal(props) {
     const handleChangePayment = (event) => {
         event.persist();
         var result = event.target.value;
-        console.log(result);
         setPayment(result);
     }
 
@@ -226,7 +225,6 @@ export default function EditRequestInfoModal(props) {
           .then((response) => response.json())
           .then((newRequest) => {
             props.updateRequests(newRequest);
-            console.log("Success");
             props.setShowEditModal(false); 
             props.setRequestDetailsModal(true);
           })

@@ -15,7 +15,7 @@ export default function MapDetail(props) {
         zoom: 15,  
         bearing: 0,
         pitch: 0,
-        width: 400,
+        width: 468,
         height: 400
     });
 
@@ -68,15 +68,15 @@ export default function MapDetail(props) {
         return (
             <>
             <Modal.Header closeButton>
-                <Modal.Title style={{margin: 'auto'}}>Volunteer Location</Modal.Title>
+                <Modal.Title>Volunteer Location</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <ReactMapGL 
                     {...viewport}  
                     mapStyle="mapbox://styles/mapbox/light-v9" 
                     onViewportChange={setViewport} 
-                    mapboxApiAccessToken={props.mapBoxToken}
-                    style={{margin: 'auto'}}>
+                    mapboxApiAccessToken={props.mapBoxToken}>
+                    
 
                     <div style={navStyle}>
                         <NavigationControl/>
