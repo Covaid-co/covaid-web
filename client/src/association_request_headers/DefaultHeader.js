@@ -1,83 +1,15 @@
-<<<<<<< HEAD
 import React from "react";
-=======
-import React, { useState, useEffect }from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-
-export default function DefaultHeader(props) {
-  const handleLanguageChange = (language) => {
-    props.changeLanguage(language);
-  };
-  const [language, setLanguage] = useState("en");
-
-  useEffect(() => {
-    if (props.switchToLanguage === "Español") {
-        setLanguage("es")
-    } else {
-        setLanguage("en")
-    }
-}, [props.switchToLanguage]);
-
-  if (props.modal) {
-    return (
-      <>
-        <p id="regular-text">{props.requestHeaderText}</p>
-        <p
-          id="request-calling"
-          style={{ borderBottom: "0px solid", marginBottom: 0 }}
-        >
-          {" "}
-          For those who would rather call in a request, please call <br />
-          <span id="phoneNumber">(401) 526-8243</span>
-        </p>
-      </>
-    );
-  }
->>>>>>> origin/translation
 
 export default function DefaultHeader() {
   return (
     <>
-<<<<<<< HEAD
       <p id="info">
-        Given your request, we will try and match you with a volunteer in your area.
+        Given your request, we will try and match you with a volunteer in your
+        area.
       </p>
       <p id="info">
-        For those who would rather call in a request, please call <font style={{color: '#2670FF'}}>(401) 526-8243</font>
-=======
-      <Row>
-        <Col xs={9} sm={8}>
-          <h1 id="small-header" style={{ marginTop: 4 }}>
-            {props.translations[language].RequestSupport}
-          </h1>
-        </Col>
-        <Col xs={3} sm={4}>
-          <Button
-            id={props.language === "en" ? "selected" : "notSelected"}
-            onClick={() => handleLanguageChange("en")}
-          >
-            English
-          </Button>
-          <Button
-            id={props.language === "es" ? "selected" : "notSelected"}
-            onClick={() => handleLanguageChange("es")}
-          >
-            Español
-          </Button>
-
-        </Col>
-      </Row>
-      <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
-      <p id="regular-text">{props.requestHeaderText}</p>
-      <p
-        id="request-calling"
-        style={{ borderBottom: "0px solid", marginBottom: 0 }}
-      >
-        {props.translations[language].call}:<br />
-        <span id="phoneNumber">(401) 526-8243</span>
->>>>>>> origin/translation
+        For those who would rather call in a request, please call{" "}
+        <font style={{ color: "#2670FF" }}>(401) 526-8243</font>
       </p>
     </>
   );

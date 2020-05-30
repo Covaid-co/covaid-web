@@ -134,7 +134,7 @@ export default function HomePage(props) {
               >
                 I need help →
               </Button>{" "}
-              {volunteerButton(loggedIn)}
+              {volunteerButton(loggedIn, language)}
               <br />
               <Button
                 id="resources-button"
