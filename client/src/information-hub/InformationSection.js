@@ -1,7 +1,6 @@
 import React, { useEffect, useState, setState } from "react";
 import { generateURL } from "../Helpers";
 import Container from 'react-bootstrap/Container';
-import NewsCard from './NewsCard';
 import Col from "react-bootstrap/Col";
 
 export default function InformationSection(props) {
@@ -24,17 +23,18 @@ export default function InformationSection(props) {
 
     return (
         <>
+            <Col>
             <h5
                 id="section-headings"
                 style={{ fontSize: 28, fontWeight: "bold", color: "black"}}
             >
                 {props.sectionName}
             </h5>
-
+            </Col>
             <Container style = {{display: "grid", gridTemplateColumns: "33.33% 33.33% 33.33%", marginLeft: 0, paddingLeft: 0, marginRight: 0, paddingRight: 0, maxWidth: 2500}}>
                 {resources.map((resource, i) => {
                     return (
-                            <a href = {resource.url} target = "_blank" style = {{textDecoration: "none"}}>
+                            <a href = {resource.url} target = "_blank" rel="noopener noreferrer" style = {{textDecoration: "none"}}>
                                 <Container
                                     id="newOfferContainer"
                                     style={{ display: "block", margin: 10, overflowY: "auto", height: 150, width: "auto"}}
