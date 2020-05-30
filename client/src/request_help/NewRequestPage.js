@@ -170,6 +170,9 @@ export default function NewRequestPage(props) {
     if (step_num === 0) {
       return (
         <>
+          <Button id="back-button"  onClick={() => window.open(currURL, "_self")}>
+            ←
+          </Button>
           <p id="title">Step 1 —</p>
           <p id="subtitle">Set your location</p>
           <p id="info">
@@ -244,7 +247,7 @@ export default function NewRequestPage(props) {
     } else if (step_num === 2) {
       return (
         <>
-          <Button id="back-button" onClick={() => setStepNum(1)}>
+          <Button id="back-button" onClick={() => setStepNum(0)}>
             ←
           </Button>
           <p id="title">Step 2 —</p>

@@ -116,7 +116,7 @@ export default function HomePage(props) {
                 id="resources-button"
                 onClick={() => window.open("https://www.cdc.gov/coronavirus/2019-ncov/index.html", "_self")}
               >
-                Covid-19 Resources
+                COVID-19 Resources
               </Button>
             </Col>
             <Col md={6} style={{ marginTop: 0 }}>
