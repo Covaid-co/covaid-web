@@ -43,15 +43,6 @@ export default function InformationHub() {
           </Col>
           <Col md={2}></Col>
         </Row>
-        {/*<Row>
-        <Col md={2}>
-        </Col>
-        <Col id="login-container">
-            <LiveFeed />
-        </Col>
-        <Col md={2}>
-        </Col>
-      </Row>*/}
 
         <Row>
           <Col md={2}></Col>
