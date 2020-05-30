@@ -5,9 +5,9 @@
 .pnp.js
 
 .DS_Store
-node_modules/
+api/node_modules/
 client/node_modules/
-config/client_secret.json
+api/src/config/client_secret.js
 .env
 *.orig
 .idea/
@@ -26,8 +26,8 @@ client/build
 .env.test.local
 .env.production.local
 
-package-lock.json
-src/client/package-lock.json
+api/package-lock.json
+client/package-lock.json
 
 npm-debug.log*
 yarn-debug.log*
