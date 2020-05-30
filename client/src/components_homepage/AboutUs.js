@@ -11,6 +11,7 @@ import Elle from "../assets/elle.png";
 import Trisha from "../assets/trisha.jpg";
 import Shresta from "../assets/shresta.jpg";
 import Matt from "../assets/matt.jpeg";
+import Neely from "../assets/neely.jpg";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -20,25 +21,43 @@ import Footer from "../components/Footer";
  */
 
 export default function AboutUs(props) {
-  const names = [
-    "Jeffrey Li",
-    "Debanik Purkayastha",
-    "Marissa Turkin",
-    "Elle Kolkin",
-    "Trisha Ballakur",
-    "Shresta Bangaru",
-    "Matthew McDermut",
-  ];
-  const links = [
-    "https://www.instagram.com/lijeffrey39/",
-    "https://www.instagram.com/debanik1997/",
-    "https://www.instagram.com/marissaturkin/",
-    "https://www.linkedin.com/mwlite/in/ellekolkin",
-    "https://www.linkedin.com/in/trisha-ballakur-070138187/",
-    "https://www.linkedin.com/in/shresta-bangaru-411134190/",
-    "https://www.instagram.com/matthewmcd2/",
-  ];
-  const images = [Jeff, Debanik, Marissa, Elle, Trisha, Shresta, Matt];
+  const peoples = {
+    "Jeffrey Li": {
+      "link": "https://www.instagram.com/lijeffrey39/",
+      "image": Jeff
+    },
+    "Debanik Purkayastha": {
+      "link": "https://www.instagram.com/debanik1997/",
+      "image": Debanik
+    },
+    "Marissa Turkin": {
+      "link": "https://www.instagram.com/marissaturkin/",
+      "image": Marissa
+    },
+    "Elle Kolkin": {
+      "link": "https://www.linkedin.com/mwlite/in/ellekolkin",
+      "image": Elle
+    },
+    "Trisha Ballakur": {
+      "link": "https://www.linkedin.com/in/trisha-ballakur-070138187/",
+      "image": Trisha
+    },
+    "Shresta Bangaru": {
+      "link": "https://www.linkedin.com/in/shresta-bangaru-411134190/",
+      "image": Shresta
+    },
+    "Matthew McDermut": {
+      "link": "https://www.instagram.com/matthewmcd2/",
+      "image": Matt
+    },
+    "Neely Lee": {
+      "link": "www.linkedin.com/in/neelylee",
+      "image": Neely
+    }
+  }
+
+  const names = Object.keys(peoples)
+  names.sort();
 
   return (
     <div className="App">
@@ -86,11 +105,11 @@ export default function AboutUs(props) {
                     xs={6}
                     style={{ textAlign: "center" }}
                   >
-                    <img id="profile" alt="Avatar" src={images[i]}></img>
+                    <img id="profile" alt="Avatar" src={peoples[name]['image']}></img>
                     <br />
                     <a
                       id="profile-name"
-                      href={links[i]}
+                      href={peoples[name]['link']}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
