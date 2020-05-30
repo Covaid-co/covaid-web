@@ -219,14 +219,13 @@ export default function OrganiationPortal(props) {
             <Row>
               <Col lg={6} md={6} sm={12}>
                 <h1 id="home-heading" style={{ marginTop: 0 }}>
-                  Welcome back,
+                  Welcome to the demo portal
                 </h1>
                 <h1 id="home-heading" style={{ marginTop: 0 }}>
                   {association.name}!
                 </h1>
                 <p id="regular-text" style={{ fontSize: 20, marginBottom: 40 }}>
-                  This is your organization portal, a place for you to manage
-                  volunteers and requests in your area
+                This portal is for demo purposes only and real-time functionality as well as requester contacting is disabled.
                 </p>
                 <Button
                   id="medium-button"
