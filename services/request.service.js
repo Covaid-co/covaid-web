@@ -550,7 +550,7 @@ exports.updateRequestDetails = async function (requestID, updates) {
 exports.unmatchPendingVolunteers = async function (expiryTime) {
   try {
     let allRequests = await RequestRepository.readRequest({
-      "status.current_status": request_status.MATCHED
+      "status.current_status": request_status.MATCHED,
     });
     var expiredVolunteers = [];
     allRequests.forEach((request) => {

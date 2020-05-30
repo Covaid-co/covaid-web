@@ -96,7 +96,12 @@ export default function CovaidNavbar(props) {
         rightNav = (
           <Form
             inline
-            style={{ display: "block", marginRight: "8%", marginBottom: 3, marginTop: 10 }}
+            style={{
+              display: "block",
+              marginRight: "8%",
+              marginBottom: 3,
+              marginTop: 10,
+            }}
           >
             <Button
               variant="outline-light"
@@ -120,7 +125,6 @@ export default function CovaidNavbar(props) {
             <Button
               id="large-button-empty"
               onClick={() => setCurrModal("signin")}
-
               style={{ marginTop: 0, marginBottom: 5 }}
             >
               Volunteer Login
@@ -144,10 +148,10 @@ export default function CovaidNavbar(props) {
 
   const getCurrentModal = () => {
     var res = <></>;
-    if (modalName === 'signin')  {
+    if (modalName === "signin") {
       res = (
         <NewLogin showModal={showModal} hideModal={() => setShowModal(false)} />
-      )
+      );
     } else if (modalName === "donate") {
       res = (
         <Donate showModal={showModal} hideModal={() => setShowModal(false)} />
@@ -200,16 +204,29 @@ export default function CovaidNavbar(props) {
 
   return (
     <>
-      <Navbar
-        expand="md"
-        id="banner"
-      >
-        <span style={{cursor: 'pointer', fontWeight: 600}}>Check out our first blog post!</span>
-        <span id="view-banner" style={{cursor: 'pointer', fontWeight: 600}}>
+      <Navbar expand="md" id="banner">
+        <span style={{ cursor: "pointer", fontWeight: 600 }}>
+          Check out our first blog post!
+        </span>
+        <span id="view-banner" style={{ cursor: "pointer", fontWeight: 600 }}>
           View →
         </span>
         <span id="close-banner">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" shapeRendering="geometricPrecision" style={{color: 'currentcolor'}}><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+            shapeRendering="geometricPrecision"
+            style={{ color: "currentcolor" }}
+          >
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
         </span>
       </Navbar>
       <Navbar
@@ -245,9 +262,7 @@ export default function CovaidNavbar(props) {
               className={toggled ? "navBorderToggled" : "navbar-element"}
               href={currURL + "/organizationPortal"}
             >
-              <p id={toggled ? "navLinkToggled" : "navLink"}>
-                Organizations
-              </p>
+              <p id={toggled ? "navLinkToggled" : "navLink"}>Organizations</p>
             </Nav.Link>
             <Nav.Link
               className={toggled ? "navBorderToggled" : "navbar-element"}

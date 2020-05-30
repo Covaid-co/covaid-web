@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -16,24 +16,29 @@ export default function FAQ() {
 
   return (
     <div className="App">
-      <NavBar isLoggedIn={false} pageLoaded={true}/>
+      <NavBar isLoggedIn={false} pageLoaded={true} />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
-          <Col md={5} id="login-container" style={{paddingRight: 75}}>
+          <Col md={5} id="login-container" style={{ paddingRight: 75 }}>
             <h1 id="home-heading">Frequently Asked Questions</h1>
             <p id="regular-text">
               Covaid is a nationwide mutual aid platform founded to provide
-              volunteer support during the COVID-19 outbreak. We strive to be
-              a resource primarily for those who are most impacted by the
+              volunteer support during the COVID-19 outbreak. We strive to be a
+              resource primarily for those who are most impacted by the
               pandemic, such as the elderly and immunocompromised.
             </p>
             <p id="regular-text">
-              <strong>Any questions?</strong> Just email us at covaidco@gmail.com
+              <strong>Any questions?</strong> Just email us at
+              covaidco@gmail.com
             </p>
           </Col>
-          <Col md={7} id="login-container" style={{marginTop: 30, paddingRight: 50}}>
+          <Col
+            md={7}
+            id="login-container"
+            style={{ marginTop: 30, paddingRight: 50 }}
+          >
             <Row>
-              <Container style={{ padding: 0, marginLeft: 0, width: '100%' }}>
+              <Container style={{ padding: 0, marginLeft: 0, width: "100%" }}>
                 {/* <Button
                   id={requester ? "tab-button-selected" : "tab-button"}
                   onClick={() => setRequester(true)}
@@ -46,8 +51,18 @@ export default function FAQ() {
                 >
                   Volunteer
                 </Button> */}
-                <p id={requester ? "tab-name-active" : "tab-name-inactive"} onClick={() => setRequester(true)}>Requester</p>
-                <p id={!requester ? "tab-name-active" : "tab-name-inactive"} onClick={() => setRequester(false)}>Volunteer</p>
+                <p
+                  id={requester ? "tab-name-active" : "tab-name-inactive"}
+                  onClick={() => setRequester(true)}
+                >
+                  Requester
+                </p>
+                <p
+                  id={!requester ? "tab-name-active" : "tab-name-inactive"}
+                  onClick={() => setRequester(false)}
+                >
+                  Volunteer
+                </p>
                 <p id="requestCall" style={{ marginTop: -25, marginBottom: 5 }}>
                   &nbsp;
                 </p>
@@ -173,7 +188,7 @@ export default function FAQ() {
           </Col>
         </Row>
       </Container>
-      <Footer key="2"/>
+      <Footer key="2" />
     </div>
   );
 }

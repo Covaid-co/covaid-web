@@ -9,7 +9,7 @@ const Schema = mongoose.Schema;
  * 2 = podcast
  */
 
- /*
+/*
  * For sectionID:
  * 0 = The Basics on Coronavirus
  * 1 = Necessities: Food and Jobs

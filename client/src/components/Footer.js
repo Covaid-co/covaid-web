@@ -60,13 +60,18 @@ export default function Footer() {
             <Navbar style={{ paddingLeft: 0, paddingBottom: 0 }}>
               <Navbar.Brand
                 id="navbar-brand"
-                style={{ paddingLeft: 0, color: "#7B7B7B", marginLeft: 0, marginTop: 20 }}
+                style={{
+                  paddingLeft: 0,
+                  color: "#7B7B7B",
+                  marginLeft: 0,
+                  marginTop: 20,
+                }}
               >
                 covaid
               </Navbar.Brand>
             </Navbar>
           </Col>
-          <Col xs="10" style={{textAlign: 'right', marginTop: 50}}>
+          <Col xs="10" style={{ textAlign: "right", marginTop: 50 }}>
             <Button
               variant="link"
               id="footer-link"
