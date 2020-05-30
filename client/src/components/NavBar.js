@@ -242,7 +242,21 @@ export default function CovaidNavbar(props) {
           View →
         </span>
         <span id="close-banner">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" shapeRendering="geometricPrecision" style={{color: 'currentcolor'}}><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+            shapeRendering="geometricPrecision"
+            style={{ color: "currentcolor" }}
+          >
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
         </span>
       </Navbar> */}
       <Navbar
