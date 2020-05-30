@@ -4,7 +4,10 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "test": "mocha --recursive --exit || true",
+    "format": "prettier --write '**/*.{js,json,css,md}'",
+    "format:check": "prettier --list-different '**/*.{js,json,css,md}'"
   },
   "author": "Debanik Purkayastha",
   "license": "ISC",
@@ -12,25 +15,30 @@
     "@googlemaps/google-maps-services-js": "^2.4.2",
     "@sendgrid/mail": "^7.0.0",
     "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "express-session": "^1.17.0",
-    "fs": "0.0.1-security",
+    "faker": "^4.1.0",
     "google-spreadsheet": "^3.0.10",
-    "hogan.js": "^3.0.2",
     "jwt-simple": "^0.5.6",
     "moment": "2.18.1",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.5",
     "morgan": "^1.9.1",
+    "newsapi": "^2.4.0",
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.6",
     "nodemon": "^1.19.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pusher": "^3.0.1",
-    "react-map-gl": "^5.2.3"
+    "sinon": "^9.0.2",
+    "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "prettier": "2.0.5"
   }
 }

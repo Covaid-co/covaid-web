@@ -1,359 +1,399 @@
+.inner-partner {
+  height: 100px;
+  border: 1px solid #7f7f7f;
+  border-radius: 10px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: pointer;
+}
+
+#partner {
+  height: 120px;
+  padding: 20px;
+}
+
+.inner-partner:hover {
+  border: 1px solid #2670ff;
+}
+
+.inner-partner:hover #partner-heading {
+  color: #2670ff;
+}
+
+#partner-heading {
+  font-family: "Montserrat";
+  font-size: 24px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-weight: bold;
+  color: black;
+}
+
 #col-scroll {
-    max-height: 500px;
-    margin-bottom: 10px;
-    overflow:scroll;
-    -webkit-overflow-scrolling: touch;
+  max-height: 500px;
+  margin-bottom: 0px;
+  /* padding-right: 15px; */
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+}
+
+#best-match-item {
+  cursor: pointer;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+#best-match-item:hover {
+  background-color: #f4f5f7;
 }
 
 .cluster-marker {
-    color: #fff;
-    background: #2670FF;
-    border-radius: 50%;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  color: #fff;
+  background: #2670ff;
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .dropdown-sort {
-    width: 100%;
-    background-color: transparent;
-    border-color: #2670FF;
-    color: #2670FF;
-    border-radius: 8px;
-    font-weight: 700;
-    font-family: "Inter";
-    height: 39px;
+  width: 100%;
+  background-color: transparent;
+  border-color: #2670ff;
+  color: #2670ff;
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: "Inter";
+  height: 39px;
 }
 
 .dropdown-sort:hover {
-    background-color: #2670FF;
-    color: white;
+  background-color: #2670ff;
+  color: white;
 }
 
 input {
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 #filter-requests {
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 #name-details {
-    font-family: "Inter";
-    font-weight: bold;
-    font-size: 20px;
-    margin-bottom: -3px;
+  font-family: "Inter";
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: -3px;
 }
 
 #emailOrg.form-control {
-    border-radius: 12px;
-    width: 300px;
+  border-radius: 12px;
+  width: 300px;
 }
 
 #passOrg.form-control {
-    border-radius: 12px;
-    width: 300px;
+  border-radius: 12px;
+  width: 300px;
 }
 
 #home-sub-heading {
-    font-family: "Montserrat";
-    font-size: 28px;
-    margin-bottom: 10px;
-    margin-top: 30px;
-    font-weight: bold;
-    color: black;
+  font-family: "Montserrat";
+  font-size: 28px;
+  margin-bottom: 10px;
+  margin-top: 30px;
+  font-weight: bold;
+  color: black;
 }
 
 #org-feature-container {
-    text-align: center;
-    padding-right: 350px;
-    padding-left: 350px;
+  text-align: center;
+  padding-right: 200px;
+  padding-left: 200px;
 }
 
 #orgscreen-img {
-    width: 900px;
-    margin-top: 40px;
+  width: 900px;
+  margin-top: 40px;
 }
 
-@media (max-width:1150px) {
-    #org-feature-container {
-        padding-right: 300px;
-        padding-left: 300px;
-    }
+@media (max-width: 1150px) {
+  #org-feature-container {
+    padding-right: 200px;
+    padding-left: 200px;
+  }
 
-    #orgscreen-img {
-        width: 800px;
-    }
+  #orgscreen-img {
+    width: 800px;
+  }
 }
 
-@media (max-width:1000px) {
-    #org-feature-container {
-        padding-right: 250px;
-        padding-left: 250px;
-    }
+@media (max-width: 1000px) {
+  #org-feature-container {
+    padding-right: 250px;
+    padding-left: 250px;
+  }
 
-    #orgscreen-img {
-        width: 750px;
-    }
+  #orgscreen-img {
+    width: 750px;
+  }
 }
 
-@media (max-width:900px) {
-    #org-feature-container {
-        padding-right: 200px;
-        padding-left: 200px;
-    }
+@media (max-width: 900px) {
+  #org-feature-container {
+    padding-right: 200px;
+    padding-left: 200px;
+  }
 
-    #orgscreen-img {
-        width: 700px;
-    }
+  #orgscreen-img {
+    width: 700px;
+  }
 }
 
-@media (max-width:768px) {
-    #org-feature-container {
-        padding-right: 100px;
-        padding-left: 100px;
-    }
+@media (max-width: 768px) {
+  #org-feature-container {
+    padding-right: 100px;
+    padding-left: 100px;
+  }
 
-    #orgscreen-img {
-        width: 600px;
-    }
+  #orgscreen-img {
+    width: 600px;
+  }
 }
 
-@media (max-width:605px) {
-    #org-feature-container {
-        padding-right: 50px;
-        padding-left: 50px;
-    }
+@media (max-width: 605px) {
+  #org-feature-container {
+    padding-right: 50px;
+    padding-left: 50px;
+  }
 
-    #orgscreen-img {
-        width: 500px;
-    }
+  #orgscreen-img {
+    width: 500px;
+  }
 }
 
-@media (max-width:578px) {
-    #org-feature-container {
-        padding-right: 30px;
-        padding-left: 30px;
-    }
+@media (max-width: 578px) {
+  #org-feature-container {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
 
-    #orgscreen-img {
-        width: 470px;
-    }
+  #orgscreen-img {
+    width: 470px;
+  }
 }
-
 
 @media (max-width: 460px) {
-    #orgscreen-img {
-        width: 360px;
-    }
+  #orgscreen-img {
+    width: 360px;
+  }
 }
 
-
-
 .pending-task {
-    float: right;
-    height: 25px;
-    border-radius: 40px;
-    background: transparent;
-    color: #8A8A8A;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    border: 1px solid #8A8A8A;
-    box-sizing: border-box;
-    margin-top: 2px;
-    margin-left: 8px !important;
-    padding-bottom: 0;
-    padding-top: 6px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
+  float: right;
+  height: 25px;
+  border-radius: 40px;
+  background: transparent;
+  color: #8a8a8a;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  border: 1px solid #8a8a8a;
+  box-sizing: border-box;
+  margin-top: 2px;
+  margin-left: 8px !important;
+  padding-bottom: 0;
+  padding-top: 6px;
+  display: inline-block;
+
+  flex: none;
+  order: 0;
+  align-self: flex-start;
+  vertical-align: middle;
 }
 
 .in-progress-task {
-    float: right;
-    height: 25px;
-    border-radius: 40px;
-    background: transparent;
-    color: #DB9327;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    border: 1px solid #DB9327;
-    box-sizing: border-box;
-    margin-top: 2px;
-    margin-left: 8px !important;
-    padding-bottom: 0;
-    padding-top: 6px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
+  float: right;
+  height: 25px;
+  border-radius: 40px;
+  background: transparent;
+  color: #db9327;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  border: 1px solid #db9327;
+  box-sizing: border-box;
+  margin-top: 2px;
+  margin-left: 8px !important;
+  padding-bottom: 0;
+  padding-top: 6px;
+  display: inline-block;
+
+  flex: none;
+  order: 0;
+  align-self: flex-start;
+  vertical-align: middle;
 }
 
 .no-match-task {
-    float: right;
-    height: 25px;
-    border-radius: 40px;
-    background: transparent;
-    color: #dc3545;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    border: 1px solid #dc3545;
-    box-sizing: border-box;
-    margin-top: 2px;
-    margin-left: 8px !important;
-    padding-bottom: 0;
-    padding-top: 6px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
+  float: right;
+  height: 25px;
+  border-radius: 40px;
+  background: transparent;
+  color: #dc3545;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  border: 1px solid #dc3545;
+  box-sizing: border-box;
+  margin-top: 2px;
+  margin-left: 8px !important;
+  padding-bottom: 0;
+  padding-top: 6px;
+  display: inline-block;
+
+  flex: none;
+  order: 0;
+  align-self: flex-start;
+  vertical-align: middle;
 }
 
 .active-beacon {
-    float: right;
-    height: 25px;
-    border-radius: 40px;
-    background: transparent;
-    color: #28a745;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    border: 1px solid #28a745;
-    box-sizing: border-box;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    margin-left: 8px !important;
-    padding-bottom: 0;
-    padding-top: 6px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
-  }
-  
-  .inactive-beacon {
-    float: right;
-    height: 25px;
-    border-radius: 40px;
-    background: transparent;
-    color: #dc3545;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    border: 1px solid #dc3545;
-    box-sizing: border-box;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    margin-left: 8px !important;
-    padding-bottom: 0;
-    padding-top: 6px;
-    display: inline-block;
-  
-    flex: none;
-    order: 0;
-    align-self: flex-start;
-    vertical-align: middle;
-  }
+  float: right;
+  height: 25px;
+  border-radius: 40px;
+  background: transparent;
+  color: #28a745;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  border: 1px solid #28a745;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  margin-left: 8px !important;
+  padding-bottom: 0;
+  padding-top: 6px;
+  display: inline-block;
+
+  flex: none;
+  order: 0;
+  align-self: flex-start;
+  vertical-align: middle;
+}
+
+.inactive-beacon {
+  float: right;
+  height: 25px;
+  border-radius: 40px;
+  background: transparent;
+  color: #dc3545;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  border: 1px solid #dc3545;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  margin-left: 8px !important;
+  padding-bottom: 0;
+  padding-top: 6px;
+  display: inline-block;
+
+  flex: none;
+  order: 0;
+  align-self: flex-start;
+  vertical-align: middle;
+}
 
 #resources-link {
-    color: #2670FF;
-    font-family: 'Inter';
-    text-decoration: underline;
-    margin-top: 10px;
-    text-align: left;
-    padding-left: 0px;
+  color: #2670ff;
+  font-family: "Inter";
+  text-decoration: underline;
+  margin-top: 10px;
+  text-align: left;
+  padding-left: 0px;
 }
 
 #volunteer-not-selected {
-    height: 28px;
-    border-radius: 40px;
-    background: white;
-    border: 1px solid #2670FF;
-    color: #2670FF;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    margin: 4px 8px 4px 0px;
-    font-size: 16px;
-    float: right;
-    padding-top: 1px;
-    display: inline-block
+  height: 28px;
+  border-radius: 40px;
+  background: white;
+  border: 1px solid #2670ff;
+  color: #2670ff;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  margin: 4px 8px 4px 0px;
+  font-size: 16px;
+  float: right;
+  padding-top: 1px;
+  display: inline-block;
 }
 
 #requester-not-selected {
-    height: 28px;
-    border-radius: 40px;
-    background: white;
-    border: 1px solid #DB4B4B;
-    color: #DB4B4B;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    margin: 4px 8px 4px 0px;
-    font-size: 16px;
-    float: right;
-    padding-top: 1px;
-    display: inline-block
+  height: 28px;
+  border-radius: 40px;
+  background: white;
+  border: 1px solid #db4b4b;
+  color: #db4b4b;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  margin: 4px 8px 4px 0px;
+  font-size: 16px;
+  float: right;
+  padding-top: 1px;
+  display: inline-block;
 }
 
-
 #volunteer-selected {
-    height: 28px;
-    border-radius: 40px;
-    background: #2670FF;
-    border: 1px solid #2670FF;
-    color: white;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    margin: 4px 8px 4px 0px;
-    font-size: 16px;
-    float: right;
-    padding-top: 1px;
-    display: inline-block
+  height: 28px;
+  border-radius: 40px;
+  background: #2670ff;
+  border: 1px solid #2670ff;
+  color: white;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  margin: 4px 8px 4px 0px;
+  font-size: 16px;
+  float: right;
+  padding-top: 1px;
+  display: inline-block;
 }
 
 #requester-selected {
-    height: 28px;
-    border-radius: 40px;
-    background: #DB4B4B;
-    border: 1px solid #DB4B4B;
-    color: white;
-    font-size: 13px;
-    font-family: "Inter";
-    font-weight: bold;
-    margin: 4px 8px 4px 0px;
-    font-size: 16px;
-    float: right;
-    padding-top: 1px;
-    display: inline-block;
+  height: 28px;
+  border-radius: 40px;
+  background: #db4b4b;
+  border: 1px solid #db4b4b;
+  color: white;
+  font-size: 13px;
+  font-family: "Inter";
+  font-weight: bold;
+  margin: 4px 8px 4px 0px;
+  font-size: 16px;
+  float: right;
+  padding-top: 1px;
+  display: inline-block;
 }
 
 #default-checkbox {
-    width: 19px;
-    height: 19px;
+  width: 19px;
+  height: 19px;
 
-    border: 1px solid #C4C4C4;
-    box-sizing: border-box;
-    border-radius: 4px;
+  border: 1px solid #c4c4c4;
+  background-color: white;
+  box-sizing: border-box;
+  border-radius: 4px;
 }
 
-.form-check-label { 
-    font-family: "Inter";
-    font-size: 13px;
-    color: #7F7F7F;
- }
-
+.form-check-label {
+  font-family: "Inter";
+  font-size: 13px;
+  color: #7f7f7f;
+}

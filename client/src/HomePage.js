@@ -1,163 +1,142 @@
 import React, { useState, useEffect } from "react";
-import Container from 'react-bootstrap/Container';
-import Jumbotron from 'react-bootstrap/Jumbotron';
-import Button from 'react-bootstrap/Button'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import LocalizedStrings from "react-localization";
+import fetch_a from "./util/fetch_auth";
+import PropTypes from "prop-types";
+import Cookie from "js-cookie";
+import Container from "react-bootstrap/Container";
+import Jumbotron from "react-bootstrap/Jumbotron";
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
-import CitySupport from './components_homepage/CitySupport';
-import NewOffers from './NewOffers';
-import NewRegister from './NewRegister';
-import NewLogin from './NewLogin';
-import RequestHelp from './RequestHelp';
-import GetLocation from './components_homepage/GetLocation';
-import HelpfulLinks from './components_modals/HelpfulLinks';
-import NewLocationSetting from './location_tools/NewLocationSetting';
-import { generateURL } from './Helpers'
-import { defaultResources } from './constants'
-import './HomePage.css';
+import Feedback from "./components_modals/Feedback";
+import NewLogin from "./components_modals/NewLogin";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import { currURL } from "./constants";
+import { volunteerButton } from "./HomePageHelpers";
+import home from "./assets/home.png";
+import "./HomePage.css";
+import { translations } from "./translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
+/**
+ * Main Homepage Component for covaid
+ */
 
 export default function HomePage(props) {
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+  const [pageLoaded, setPageLoaded] = useState(false);
 
-    const [mode, setMode] = useState('general');
-    const [modalInfo, setModalInfo] = useState({});
-    const [volunteers, setVolunteers] = useState([]);
-    const [resources, setResources] = useState([]);
-
-    useEffect(() => {
-        let params = {'latitude': props.state.latitude, 'longitude': props.state.longitude}
-        var url = generateURL("/api/users/all?", params);
-        async function fetchData() {
-            const response = await fetch(url);
-            response.json().then((data) => {
-                const res = data.filter(volunteer => volunteer.offer.tasks.length > 0);
-                setVolunteers(res.slice(0, Math.min(res.length, 20)));
-            });
-        }
-
-        if (props.state.latitude && 
-            props.state.longitude && 
-            JSON.stringify(props.state.currentAssoc.resources) !== JSON.stringify(resources)) {
-            fetchData();
-        }
-
-        if (Object.keys(props.state.currentAssoc).length > 0) {
-            setResources(props.state.currentAssoc.resources);
-        } else {
-            setResources(defaultResources);
-        }
-    }, [props.state.currentAssoc]);
-
-
-    var cantFindLink = <></>;
-    if (props.state.currentAssoc.name === "Baltimore Mutual Aid") {
-      cantFindLink = <Button variant="link" onClick={() => updateRequestHelpMode('general')} id="general-request-link">
-                      Can't find what you're looking for? Click here.
-                    </Button>
+  useEffect(() => {
+    if (props.login === true) {
+      showModalType("signin");
     }
 
-    function updateRequestHelpMode(mode, modalInfo) {
-        props.handleShowModal('request');
-        setMode(mode);
-        setModalInfo(modalInfo);
+    if (Object.keys(currentUser).length === 0 && Cookie.get("token")) {
+      fetchUser();
     }
+    setPageLoaded(true);
+  }, [currentUser, props.login]);
 
-    const supportButton = () => {
-        var helpButton = <Button onClick={() => updateRequestHelpMode('general')} id="request-button" >
-                            Request support
-                        </Button>
-        if (props.state.currentAssoc.name === "Baltimore Mutual Aid") {
-            helpButton = <></>;
-        }
-        return helpButton;
+  const showModalType = (type) => {
+    setModalType(type);
+    setShowModal(true);
+  };
+
+  const handleHideModal = () => {
+    setShowModal(false);
+  };
+
+  // Find current modal component based on current modal type
+  const getCurrentModal = () => {
+    var modal = <></>;
+    if (modalType === "feedback") {
+      modal = (
+        <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
+      );
+    } else if (modalType === "signin") {
+      modal = <NewLogin showModal={showModal} hideModal={handleHideModal} />;
     }
+    return modal;
+  };
 
-    const volunteerButton = () => {
-        var volButton = <Button onClick={props.setVolunteerPortal} id="request-button" style={{marginRight: 15}}>
-                            Volunteer portal
-                        </Button>
-        if (!props.state.isLoggedIn) {
-            volButton = <></>;
-        }
-        return volButton;
-    }
+  // Get current user based on token
+  const fetchUser = () => {
+    fetch_a("token", "/api/users/current")
+      .then((response) => response.json())
+      .then((user) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+      });
+  };
 
-    const getCurrentModal = () => {
-        var modal = <></>;
-        if (props.state.modalType === 'resources') {
-            modal = <HelpfulLinks showModal={props.state.showModal} 
-                                  hideModal={props.handleHideModal}
-                                  associationCity={props.state.currentAssoc.city}
-                                  associationLinks={props.state.currentAssoc.links}/>;
-        }  else if (props.state.modalType === 'location') {
-            modal = <NewLocationSetting locationSubmit={props.onLocationSubmit}
-                                        refreshLocation={props.refreshLocation}
-                                        showModal={props.state.showModal} 
-                                        hideModal={props.handleHideModal}/>
-        } else if (props.state.modalType === 'signin') {
-            modal = <NewLogin showModal={props.state.showModal} hideModal={props.handleHideModal}/>
-        } else if (props.state.modalType === 'register') {
-            modal = <NewRegister showModal={props.state.showModal} 
-                                 hideModal={props.handleHideModal}
-                                 state={props.state}
-                                 setState={props.setState}/>
-        } else if (props.state.modalType === 'request') {
-            modal = <RequestHelp requestHelpMode={mode} 
-                                 showModal={props.state.showModal} 
-                                 hideModal={props.handleHideModal}
-                                 state={props.state} 
-                                 volunteer={modalInfo}/>
-        }
-        return modal;
-    }
-
-    return (
-        <div>
-            <Jumbotron fluid id="jumbo">
-                <Container id="jumboContainer">
-                    <Row>
-                        <Col md={6} id="jumbo-text">
-                            <h1 id="home-heading">Mutual aid for COVID&#8209;19</h1>
-                            <p id="home-subheading">Covaid connects community volunteers with those who need support</p>
-                            {supportButton()}{' '}
-                            {volunteerButton()}
-                            <br />
-                            <Button variant="link" id="underlined-link" onClick={() => props.handleShowModal('resources')}>
-                                <u>View COVID-19 Resources</u>
-                            </Button>
-                        </Col>
-                        <Col md={6} id="community-bulletin">
-                            <p id='location-text'>Volunteers around 
-                                <button id="change-location" onClick={() => props.handleShowModal('location')}> {props.state.locality}</button>
-                            </p>
-                            <p id="volunteer-info">Click an offer below for more info</p>
-                            <NewOffers volunteers={volunteers} state={props.state} resources={resources} mobile={false}
-                                        handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}/>
-                            {cantFindLink}
-                        </Col>
-                    </Row>
-                </Container>
-            </Jumbotron>
-            <GetLocation isLoaded={props.state.isLoaded}
-                        onLocationSubmit={props.onLocationSubmit}/>
-            <Container id={props.state.isLoggedIn ? "location-container-logged" : "location-container"}>
-                <CitySupport state={props.state} associations={props.state.associations}/>
-            </Container>
-            <Container id="jumboContainer" className={"mobile-bulletin-container"}>
-                <Col xs={12} id="mobile-bulletin">
-                    <p id="requestCall" style={{marginTop: 15, marginBottom: 10}}></p>
-                    <p id='location-text' style={{color: 'black', float: 'left', width: '100%', fontSize: "5vw"}}>Volunteers around 
-                        <button id="change-location" onClick={() => props.handleShowModal('location')}> {props.state.locality}</button>
-                    </p>
-                    <p id="volunteer-info" style={{color: 'black', float: 'left', width: '100%', fontSize: "3vw"}}>
-                        Click an offer below for more info
-                    </p>
-                    <NewOffers volunteers={volunteers} state={props.state} resources={resources} mobile={true}
-                                handleShowRequestHelp={(modalInfo) => updateRequestHelpMode('bulletin', modalInfo)}/>
-                    {cantFindLink}
-                </Col>
-            </Container>
-            {getCurrentModal()}
+  return [
+    <div key="1" className="App" style={{ height: "100%" }}>
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        pageLoaded={pageLoaded}
+        isLoggedIn={loggedIn}
+        first_name={currentUser.first_name}
+      />
+      <Jumbotron fluid id="jumbo">
+        <div id="feedback">
+          <div
+            id="feedback-tab"
+            onClick={() => {
+              showModalType("feedback");
+            }}
+          >
+            Feedback
+          </div>
         </div>
-    );
+        <Container id="jumboContainer">
+          <Row>
+            <Col md={6} id="jumbo-text">
+              <h1 id="home-heading">
+                {translatedStrings[props.language].HomePage_Title}
+              </h1>
+              <p id="home-subheading">
+                {translatedStrings[props.language].HomePage_Subtitle}
+              </p>
+              <Button
+                onClick={() => window.open(currURL + "/request", "_self")}
+                id="request-button"
+              >
+                {translatedStrings[props.language].INeedHelp} →
+              </Button>{" "}
+              {volunteerButton(loggedIn, props.language)}
+              <br />
+              <Button
+                id="resources-button"
+                onClick={() =>
+                  window.open(currURL + "/information-hub", "_self")
+                }
+              >
+                COVID-19 Information Hub
+              </Button>
+            </Col>
+            <Col md={6} style={{ marginTop: 0 }}>
+              <img id="org-img" alt="" src={home}></img>
+            </Col>
+          </Row>
+        </Container>
+      </Jumbotron>
+      {getCurrentModal()}
+    </div>,
+    <Footer key="2" home={true} />,
+  ];
 }
+
+HomePage.propTypes = {
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
+  googleAPI: PropTypes.string,
+  refreshLocation: PropTypes.func,
+  onLocationSubmit: PropTypes.func,
+};
