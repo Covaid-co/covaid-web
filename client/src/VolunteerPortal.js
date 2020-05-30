@@ -16,6 +16,7 @@ import Col from "react-bootstrap/Col";
 
 import CurrentVolunteerRequests from "./components_volunteer/CurrentVolunteerRequests";
 import CompletedVolunteerRequests from "./components_volunteer/CompletedVolunteerRequests";
+import ProfileHeader from "./components_volunteer/ProfileHeader";
 import { request_status, volunteer_status } from "./constants";
 import { generateURL } from "./Helpers";
 import NavBar from "./components/NavBar";
@@ -35,6 +36,7 @@ export default function VolunteerPortal(props) {
   const [beacons, setBeacons] = useState([]);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [view, setView] = useState('request-dashboard');
   const { addToast } = useToasts();
 
   // fetch requests given a status, update frontend state using 'requestStateChanger'
@@ -153,6 +155,37 @@ export default function VolunteerPortal(props) {
     fetchUser();
   }, []);
 
+  const mainContentView = () => {
+    if (view === 'request-dashboard') {
+      return (
+        <Container id="volunteer-info" style={{ marginTop: 50 }}>
+          <h1 id="home-heading" style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}>
+            Request Dashboard
+          </h1>
+          <p id="regular-text" style={{ fontSize: 16 }}>
+            Respond to requests that have been delegated to you
+          </p>
+          <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
+          {/* <RequestDashboard /> */}
+        </Container>
+      );
+    } else if (view === 'your-offer') {
+      return (
+        <Container id="volunteer-info" style={{ marginTop: 50 }}>
+          <h1 id="home-heading" style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}>
+            Your Offer
+          </h1>
+          <p id="regular-text" style={{ fontSize: 16 }}>
+            Customize your volunteer experience
+          </p>
+          <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
+        </Container>
+      );
+    } else {
+      return <></>
+    }
+  }
+
   if (foundUser) {
     return (
       <>
@@ -161,34 +194,20 @@ export default function VolunteerPortal(props) {
             setLanguage={props.setLanguage}
             language={props.language}
             isLoggedIn={true}
+            mode={'volunteer'}
             first_name={user.first_name}
+            last_name={user.last_name}
+            setView={setView}
           />
-          <div id="bgImage"></div>
           <Jumbotron fluid id="jumbo-volunteer">
-            <Container style={{ maxWidth: 2000 }}>
-              <Row>
-                <Col lg={1} md={1} sm={0}></Col>
-                <Col>
-                  <h1 id="home-heading" style={{ marginTop: 0 }}>
-                    Welcome back, {user.first_name}!
-                  </h1>
-                  <p id="regular-text" style={{ fontSize: 20 }}>
-                    This is your volunteer portal, a place for you to manage
-                    your offer and handle requests
-                  </p>
-                  <Button
-                    id="medium-button"
-                    onClick={() => {
-                      setShowAccountModal(true);
-                    }}
-                  >
-                    View Profile Information
-                  </Button>{" "}
-                </Col>
-              </Row>
-            </Container>
+            <ProfileHeader 
+              user={user}
+              setShowAccountModal={setShowAccountModal}
+            />
           </Jumbotron>
-          <Container id="volunteer-info" style={{ marginTop: 50 }}>
+          {mainContentView()}
+
+          {/* <Container id="volunteer-info" style={{ marginTop: 50 }}>
             <Row className="justify-content-md-center">
               <Col lg={1}></Col>
               <Col lg={6} md={10} sm={12} style={{ marginTop: -20 }}>
@@ -284,7 +303,7 @@ export default function VolunteerPortal(props) {
               </Col>
               <Col lg={1}></Col>
             </Row>
-          </Container>
+          </Container> */}
         </div>
         <Footer />
         <AccountInfo

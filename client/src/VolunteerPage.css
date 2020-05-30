@@ -16,6 +16,15 @@
   }
 }
 
+#profile-pic {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  float: left;
+  object-fit: cover;
+}
+
 .active-beacon {
   float: right;
   height: 25px;

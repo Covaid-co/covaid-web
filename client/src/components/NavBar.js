@@ -24,6 +24,7 @@ let translatedStrings = new LocalizedStrings({ translations });
  */
 
 export default function CovaidNavbar(props) {
+  const [mode, setMode] = useState('');
   const [toggled, setToggled] = useState(false);
   const [totalVolunteers, setTotalVolunteers] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
@@ -38,6 +39,10 @@ export default function CovaidNavbar(props) {
   });
 
   useEffect(() => {
+    if (props.mode === 'volunteer') {
+      setMode('volunteer');
+      return;
+    }
     if (totalVolunteers === 0) {
       fetch("/api/users/totalUsers")
         .then((res) => res.json())
@@ -45,7 +50,7 @@ export default function CovaidNavbar(props) {
           setTotalVolunteers(res.count);
         });
     }
-  }, [props.pageLoaded]);
+  }, [props.pageLoaded, props.mode]);
 
   const logout = () => {
     if (props.orgPortal) {
@@ -82,7 +87,7 @@ export default function CovaidNavbar(props) {
     );
   };
 
-  const rightNav = () => {
+  const rightNav = (mode) => {
     if (!props.isLoggedIn) {
       if (props.simplified) {
         if (width > 767) {
@@ -150,6 +155,10 @@ export default function CovaidNavbar(props) {
         }
       }
     } else {
+      if (mode === 'volunteer') {
+        // TODO: Add dropdown with profile info
+        return <></>
+      }
       if (toggled) {
         return (
           <Form inline id="getStarted" style={{ display: "block" }}>
@@ -229,20 +238,51 @@ export default function CovaidNavbar(props) {
     }
   };
 
+  if (mode === 'volunteer') {
+    return (
+      <>
+        <Navbar
+          collapseOnSelect
+          onToggle={(e) => setToggled(e)}
+          variant="light"
+          expand="md"
+          id="custom-navbar"
+        >
+          <Navbar.Brand
+            href={currURL}
+            id="navbar-brand"
+            style={width < 767 ? { marginTop: 12 } : {}}
+          >
+            covaid
+          </Navbar.Brand>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                onClick={() => {props.setView('request-dashboard')}}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                  Request Dashboard
+                </p>
+              </Nav.Link>
+              <Nav.Link
+                className={toggled ? "navBorderToggled" : "navbar-element"}
+                onClick={() => {props.setView('your-offer')}}
+              >
+                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                  Your Offer
+                </p>
+              </Nav.Link>
+            </Nav>
+          {rightNav(mode)}
+        </Navbar.Collapse>
+        </Navbar>
+      </>
+    )
+  }
+
   return (
     <>
-      {/* <Navbar
-        expand="md"
-        id="banner"
-      >
-        <span style={{cursor: 'pointer', fontWeight: 600}}>Check out our first blog post!</span>
-        <span id="view-banner" style={{cursor: 'pointer', fontWeight: 600}}>
-          View →
-        </span>
-        <span id="close-banner">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" shapeRendering="geometricPrecision" style={{color: 'currentcolor'}}><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
-        </span>
-      </Navbar> */}
       <Navbar
         collapseOnSelect
         onToggle={(e) => setToggled(e)}
