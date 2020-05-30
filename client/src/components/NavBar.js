@@ -30,6 +30,7 @@ export default function CovaidNavbar(props) {
   const [width, setWidth] = useState(window.innerWidth);
   const [modalName, setModalName] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [tab, setTab] = useState(0);
 
   window.addEventListener("resize", () => {
     setWidth(window.innerWidth);
@@ -238,6 +239,14 @@ export default function CovaidNavbar(props) {
     }
   };
 
+  const selectedTab = (currTab) => {
+    if (tab === currTab) {
+      return "nav-tab-name-active";
+    } else {
+      return "nav-tab-name-inactive";
+    }
+  };
+
   if (mode === 'volunteer') {
     return (
       <>
@@ -256,23 +265,13 @@ export default function CovaidNavbar(props) {
             covaid
           </Navbar.Brand>
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => {props.setView('request-dashboard')}}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
+            <Nav className="mr-auto">              
+                <p id={selectedTab(0)} onClick={() => {setTab(0); props.setView('request-dashboard');}}>
                   Request Dashboard
                 </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => {props.setView('your-offer')}}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
+                <p id={selectedTab(1)} onClick={() => {setTab(1); props.setView('your-offer');}}>
                   Your Offer
                 </p>
-              </Nav.Link>
             </Nav>
           {rightNav(mode)}
         </Navbar.Collapse>
