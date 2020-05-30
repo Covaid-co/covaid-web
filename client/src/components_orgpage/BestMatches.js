@@ -75,7 +75,7 @@ export default function BestMatches(props) {
       list.push(volunteer._id);
     });
 
-    fetch_statistics(list);
+    fetch_statistics(list.slice(0, 20));
   }, [props.currRequest, props.volunteers]);
 
   const clearCheckBox = () => {

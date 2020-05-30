@@ -143,7 +143,7 @@ export default function RequestPage1(props) {
         delay={toastTime}
         onClose={() => setShowToast(false)}
         autohide
-        style={{marginBottom: 60}}
+        style={{ marginBottom: 60 }}
         id="toastError"
       >
         <Toast.Body>{toastMessage}</Toast.Body>
@@ -156,5 +156,5 @@ RequestPage1.propTypes = {
   first_page: PropTypes.object,
   setFirstPage: PropTypes.func,
   setStepNum: PropTypes.func,
-  currentAssoc: PropTypes.object
+  currentAssoc: PropTypes.object,
 };

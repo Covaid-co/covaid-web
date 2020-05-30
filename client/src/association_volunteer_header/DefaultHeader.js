@@ -1,21 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-export default function DefaultHeader() {
+/**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
+export default function DefaultHeader(props) {
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    if (props.switchToLanguage === "Español") {
+      setLanguage("es");
+    } else {
+      setLanguage("en");
+    }
+  }, [props.switchToLanguage]);
   return (
     <>
-      <h1 id="small-header">Volunteer Registration</h1>
+      <h1 id="small-header">
+        {translatedStrings[language].VolunteerRegistration}
+      </h1>
       <p id="regular-text" style={{ marginBottom: 5 }}>
-        Creating an account allows you to be listed as a volunteer in your area.
-        Once logged in, you will be able to update your availability and
-        indicate what you are offering.
+        {translatedStrings[language].VolunteerRegistration_Text1}
       </p>
       <p id="regular-text" style={{ fontStyle: "italic", marginTop: 0 }}>
-        Your contact information will{" "}
+        {translatedStrings[language].VolunteerRegistration_Text2}{" "}
         <strong id="hello-name" style={{ marginRight: 0 }}>
-          never
+          {translatedStrings[language].VolunteerRegistration_Text3}
         </strong>{" "}
-        be publicly visible.
+        {translatedStrings[language].VolunteerRegistration_Text4}
       </p>
     </>
   );
 }
+
+DefaultHeader.propTypes = {
+  setSwithToLanguage: PropTypes.func,
+  switchToLanguage: PropTypes.string,
+};

@@ -46,8 +46,8 @@
 
 #back-button {
   background-color: white;
-  border: 1px solid #2670FF;
-  color: #2670FF;
+  border: 1px solid #2670ff;
+  color: #2670ff;
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -62,7 +62,7 @@
   font-family: "Montserrat";
   font-size: 28px;
   margin-bottom: 0px;
-  color: #4F4F4F;
+  color: #4f4f4f;
   font-weight: bold;
 }
 
@@ -70,7 +70,7 @@
   font-family: "Inter";
   font-size: 20px;
   margin-bottom: 10px;
-  color: #4F4F4F;
+  color: #4f4f4f;
   font-weight: 600;
 }
 
@@ -78,7 +78,7 @@
   font-family: "Inter";
   font-size: 16px;
   margin-bottom: 10px;
-  color: #4F4F4F;
+  color: #4f4f4f;
   font-weight: 600;
 }
 
@@ -86,7 +86,7 @@
   font-family: "Montserrat";
   font-size: 28px;
   margin-bottom: 15px;
-  color: #2670FF;
+  color: #2670ff;
   font-weight: bold;
   margin-top: -5px;
   line-height: 30px;
@@ -96,7 +96,7 @@
   font-family: "Montserrat";
   font-size: 20px;
   margin-bottom: 0px;
-  color: #4F4F4F;
+  color: #4f4f4f;
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: -10px;
@@ -104,13 +104,13 @@
 
 #info {
   font-family: "Inter";
-  color: #7F7F7F;
+  color: #7f7f7f;
   margin-top: 10px;
   margin-bottom: 20px;
 }
 
 #location-change-button {
-  color: #7F7F7F;
+  color: #7f7f7f;
   /* border-color: #7F7F7F; */
   border: 1px solid #c3cad2;
   border-left: 0px;

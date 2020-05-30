@@ -3,6 +3,8 @@ import { useToasts } from "react-toast-notifications";
 import fetch_a from "./util/fetch_auth";
 import Pusher from "pusher-js";
 
+import PropTypes from "prop-types";
+
 import Container from "react-bootstrap/Container";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
@@ -78,7 +80,7 @@ export default function OrganiationPortal(props) {
 
   const [inRequest, setInRequest] = useState(false);
   const [inVolunteer, setInVolunteer] = useState(false);
-
+  //console.log(props.switchToLanguage);
   useEffect(() => {
     if (Cookie.get("admin_token") && Cookie.get("org_token")) {
       login(true);
@@ -184,6 +186,8 @@ export default function OrganiationPortal(props) {
   } else if (showLogin === true) {
     return (
       <OrgLogin
+        setSwithToLanguage={props.setSwithToLanguage}
+        switchToLanguage={props.switchToLanguage}
         login={login}
         setShowLogin={setShowLogin}
         orgReset={props.location.orgReset}
@@ -195,6 +199,8 @@ export default function OrganiationPortal(props) {
   return [
     <div className="App" key="1">
       <NavBar
+        setSwithToLanguage={props.setSwithToLanguage}
+        switchToLanguage={props.switchToLanguage}
         pageLoaded={pageLoaded}
         isLoggedIn={true}
         totalVolunteers={volunteers.length}
@@ -387,7 +393,6 @@ export default function OrganiationPortal(props) {
           setAllRequests={setAllRequests}
           mode={currTabNumber}
           volunteers={volunteers}
-          setVolunteers={setVolunteers}
           admin={admin}
           setInRequest={setInRequest}
         />
@@ -404,3 +409,8 @@ export default function OrganiationPortal(props) {
     <Footer key="2" />,
   ];
 }
+
+OrganiationPortal.propTypes = {
+  setSwithToLanguage: PropTypes.func,
+  switchToLanguage: PropTypes.string,
+};

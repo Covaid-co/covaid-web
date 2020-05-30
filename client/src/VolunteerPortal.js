@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import Pusher from "pusher-js";
+import PropTypes from "prop-types";
 import { useToasts } from "react-toast-notifications";
 import AccountInfo from "./components_volunteer/AccountInfo";
 import YourOffer from "./components_volunteer/YourOffer";
@@ -156,7 +157,12 @@ export default function VolunteerPortal(props) {
     return (
       <>
         <div className="App">
-          <NavBar isLoggedIn={true} first_name={user.first_name} />
+          <NavBar
+            setSwithToLanguage={props.setSwithToLanguage}
+            switchToLanguage={props.switchToLanguage}
+            isLoggedIn={true}
+            first_name={user.first_name}
+          />
           <div id="bgImage"></div>
           <Jumbotron fluid id="jumbo-volunteer">
             <Container style={{ maxWidth: 1500 }}>
@@ -286,3 +292,8 @@ export default function VolunteerPortal(props) {
     return <></>;
   }
 }
+
+VolunteerPortal.propTypes = {
+  setSwithToLanguage: PropTypes.func,
+  switchToLanguage: PropTypes.string,
+};

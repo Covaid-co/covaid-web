@@ -151,7 +151,13 @@ export default function OrgLogin(props) {
 
   return (
     <div className="App">
-      <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} />
+      <NavBar
+        setSwithToLanguage={props.setSwithToLanguage}
+        switchToLanguage={props.switchToLanguage}
+        isLoggedIn={false}
+        totalVolunteers={0}
+        orgPortal={true}
+      />
       <Container style={{ maxWidth: 1500 }}>
         <Row>
           <Col md={6} id="login-container">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LocalizedStrings from "react-localization";
 import fetch_a from "./util/fetch_auth";
 import PropTypes from "prop-types";
 import Cookie from "js-cookie";
@@ -8,25 +9,18 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import CitySupport from "./components_homepage/CitySupport";
-import CommunityBulletin from "./components_homepage/CommunityBulletin";
 import Feedback from "./components_modals/Feedback";
 import NewLogin from "./components_modals/NewLogin";
-import RequestHelp from "./request_help/RequestModal";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import GetLocation from "./location_tools/GetLocation";
 import HelpfulLinks from "./components_modals/HelpfulLinks";
-import NewLocationSetting from "./location_tools/NewLocationSetting";
-import { generateURL } from "./Helpers";
 import { currURL } from "./constants";
-import {
-  cantFindLink,
-  supportButton,
-  volunteerButton,
-} from "./HomePageHelpers";
+import { volunteerButton } from "./HomePageHelpers";
 import home from "./assets/home.png";
 import "./HomePage.css";
+import { translations } from "./translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
 
 /**
  * Main Homepage Component for covaid
@@ -38,40 +32,24 @@ export default function HomePage(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
 
-  const [mode, setMode] = useState("general");
-  const [modalInfo, setModalInfo] = useState({});
-  const [volunteers, setVolunteers] = useState([]);
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
     if (props.login === true) {
       showModalType("signin");
     }
 
-    // Find 20 nearest volunteers once props are set
-    if (props.latitude !== "" && props.longitude !== "" && props.currentAssoc) {
-      let params = { latitude: props.latitude, longitude: props.longitude };
-      var url = generateURL("/api/users/all?", params);
-      fetch(url)
-        .then((response) => {
-          if (response.ok) {
-            response.json().then((data) => {
-              const res = data.filter(
-                (volunteer) => volunteer.offer.tasks.length > 0
-              );
-              setVolunteers(res.slice(0, Math.min(res.length, 20)));
-              setPageLoaded(true);
-            });
-          }
-        })
-        .catch((e) => {
-          alert(e);
-        });
-    }
-
     if (Object.keys(currentUser).length === 0 && Cookie.get("token")) {
       fetchUser();
     }
+
+    if (props.switchToLanguage === "English") {
+      setLanguage("en");
+    } else {
+      setLanguage("es");
+    }
+    setPageLoaded(true);
   }, [
     props.latitude,
     props.longitude,
@@ -89,26 +67,6 @@ export default function HomePage(props) {
     setShowModal(false);
   };
 
-  // Show request modal in either general or bulletin mode
-  function updateRequestHelpMode(mode, modalInfo) {
-    showModalType("request");
-    setMode(mode);
-    setModalInfo(modalInfo);
-  }
-
-  // Get current user based on token
-  const fetchUser = () => {
-    fetch_a("token", "/api/users/current")
-      .then((response) => response.json())
-      .then((user) => {
-        setCurrentUser(user);
-        setLoggedIn(true);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   // Find current modal component based on current modal type
   const getCurrentModal = () => {
     var modal = <></>;
@@ -120,66 +78,55 @@ export default function HomePage(props) {
           currentAssoc={props.currentAssoc}
         />
       );
-    } else if (modalType === "location") {
+    } else if (modalType === "feedback") {
       modal = (
-        <NewLocationSetting
-          locationSubmit={props.onLocationSubmit}
-          refreshLocation={props.refreshLocation}
-          showModal={showModal}
-          hideModal={handleHideModal}
-        />
+        <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
       );
-    } else if (modalType === "location-request") {
-      modal = (
-        <NewLocationSetting
-          locationSubmit={props.onLocationSubmit}
-          refreshLocation={props.refreshLocation}
-          showModal={showModal}
-          hideModal={() => {
-            setModalType("request");
-          }}
-        />
-      );
-    } else if (modalType === 'feedback') {
-      modal = <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
     } else if (modalType === "signin") {
       modal = <NewLogin showModal={showModal} hideModal={handleHideModal} />;
-    } else if (modalType === "request") {
-      modal = (
-        <RequestHelp
-          requestHelpMode={mode}
-          showModal={showModal}
-          hideModal={handleHideModal}
-          locality={props.locality}
-          zipcode={props.zipcode}
-          volunteer={modalInfo}
-          currentAssoc={props.currentAssoc}
-          latitude={props.latitude}
-          longitude={props.longitude}
-          showModalType={showModalType}
-        />
-      );
     }
     return modal;
+  };
+
+  // Get current user based on token
+  const fetchUser = () => {
+    fetch_a("token", "/api/users/current")
+      .then((response) => response.json())
+      .then((user) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+      });
   };
 
   return [
     <div key="1" className="App" style={{ height: "100%" }}>
       <NavBar
+        setSwithToLanguage={props.setSwithToLanguage}
+        switchToLanguage={props.switchToLanguage}
         pageLoaded={pageLoaded}
         isLoggedIn={loggedIn}
         first_name={currentUser.first_name}
+        handleShowModal={showModalType}
       />
       <Jumbotron fluid id="jumbo">
         <div id="feedback">
-          <div id="feedback-tab" onClick={() => {showModalType('feedback')}}>Feedback</div>
+          <div
+            id="feedback-tab"
+            onClick={() => {
+              showModalType("feedback");
+            }}
+          >
+            Feedback
+          </div>
         </div>
         <Container id="jumboContainer">
           <Row>
             <Col md={6} id="jumbo-text">
-              <h1 id="home-heading">Mutual aid for COVID&#8209;19</h1>
+              <h1 id="home-heading">
+                {translatedStrings[language].HomePage_Title}
+              </h1>
               <p id="home-subheading">
-                Covaid connects community volunteers with those who need support
+                {translatedStrings[language].HomePage_Subtitle}
               </p>
               <Button
                 onClick={() => window.open(currURL + "/request", "_self")}
@@ -199,90 +146,20 @@ export default function HomePage(props) {
             <Col md={6} style={{ marginTop: 0 }}>
               <img id="org-img" alt="" src={home}></img>
             </Col>
-            {/* <Col md={6} id="community-bulletin">
-              <p id="location-text">
-                Volunteers around
-                <button
-                  id="change-location"
-                  onClick={() => showModalType("location")}
-                >
-                  {" "}
-                  {props.locality}
-                </button>
-              </p>
-              <p id="volunteer-info">Click an offer below for more info</p>
-              <CommunityBulletin
-                volunteers={volunteers}
-                resources={props.resources}
-                mobile={false}
-                handleShowRequestHelp={(modalInfo) =>
-                  updateRequestHelpMode("bulletin", modalInfo)
-                }
-              />
-              {cantFindLink(props.currentAssoc, updateRequestHelpMode)}
-            </Col> */}
           </Row>
         </Container>
       </Jumbotron>
-      {/* <GetLocation
-        isLoaded={props.isLoaded}
-        onLocationSubmit={props.onLocationSubmit}
-      /> */}
-      {/* <Container
-        id={loggedIn ? "location-container-logged" : "location-container"}
-      >
-        <CitySupport currentAssoc={props.currentAssoc} />
-      </Container> */}
-      {/* <Container id="jumboContainer" className={"mobile-bulletin-container"}>
-        <Col xs={12} id="mobile-bulletin">
-          <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
-          <p
-            id="location-text"
-            style={{
-              color: "black",
-              float: "left",
-              width: "100%",
-              fontSize: "5vw",
-            }}
-          >
-            Volunteers around
-            <button
-              id="change-location"
-              onClick={() => showModalType("location")}
-            >
-              {" "}
-              {props.locality}
-            </button>
-          </p>
-          <p
-            id="volunteer-info"
-            style={{
-              color: "black",
-              float: "left",
-              width: "100%",
-              fontSize: "3vw",
-            }}
-          >
-            Click an offer below for more info
-          </p>
-          <CommunityBulletin
-            volunteers={volunteers}
-            resources={props.resources}
-            mobile={true}
-            handleShowRequestHelp={(modalInfo) =>
-              updateRequestHelpMode("bulletin", modalInfo)
-            }
-          />
-          {cantFindLink(props.currentAssoc, updateRequestHelpMode)}
-        </Col>
-      </Container> */}
       {getCurrentModal()}
     </div>,
-    <Footer key="2" home={true}/>,
+    <Footer key="2" home={true} />,
   ];
 }
 
 HomePage.propTypes = {
+  //    translatedStrings : PropTypes.node,
+  setSwithToLanguage: PropTypes.func,
+  switchToLanguage: PropTypes.string,
+  googleAPI: PropTypes.string,
   refreshLocation: PropTypes.func,
   onLocationSubmit: PropTypes.func,
   latitude: PropTypes.number,

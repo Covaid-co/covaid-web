@@ -11,6 +11,14 @@ import { defaultResources, toastTime, availability } from "../constants";
 import { setFalseObj, extractTrueObj } from "../Helpers";
 
 /**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
+/**
  * Volunteer Registration (Page 2)
  */
 
@@ -20,6 +28,7 @@ export default function RegisterPage2(props) {
   const [hasCar, setHasCar] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [language, setLanguage] = useState("en");
   const [fields, handleFieldChange] = useFormFields({
     details: "",
   });
@@ -32,7 +41,12 @@ export default function RegisterPage2(props) {
       setTaskChecked(setFalseObj(defaultResources));
     }
     setAvailabilityChecked(setFalseObj(availability));
-  }, [props.currentAssoc]);
+    if (props.switchToLanguage === "Español") {
+      setLanguage("es");
+    } else {
+      setLanguage("en");
+    }
+  }, [props.currentAssoc, props.switchToLanguage]);
 
   const goToThirdPage = () => {
     const valid = checkPage();
@@ -74,29 +88,34 @@ export default function RegisterPage2(props) {
   return (
     <>
       <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 5 }}>
-        What resources can you offer?
+        {translatedStrings[language].RequestPage2_Text1}
       </h5>
       <CheckForm obj={taskChecked} setObj={setTaskChecked} />
       <h5
         id="regular-text-bold"
         style={{ marginTop: "24px", marginBottom: "4px" }}
       >
-        Can you drive?
+        {translatedStrings[language].RequestPage2_Text2}
       </h5>
       <NewHasCar hasCar={hasCar} setHasCar={setHasCar} />
       <h5 id="regular-text-bold" style={{ marginTop: "24px", marginBottom: 5 }}>
-        What is your general availability?
+        {translatedStrings[language].RequestPage2_Text3}
       </h5>
       <CheckForm obj={availabilityChecked} setObj={setAvailabilityChecked} />
-      <Details fields={fields.details} handleFieldChange={handleFieldChange} />
+      <Details
+        setSwithToLanguage={props.setSwithToLanguage}
+        switchToLanguage={props.switchToLanguage}
+        fields={fields.details}
+        handleFieldChange={handleFieldChange}
+      />
       <Button
         style={{ marginTop: 30 }}
         id="large-button-empty"
         onClick={goToThirdPage}
       >
-        Next
+        {translatedStrings[language].Next}
       </Button>
-      <p id="pagenum-text">Page 2 of 3</p>
+      <p id="pagenum-text">{translatedStrings[language].Page2of3}</p>
       <Toast
         show={showToast}
         delay={toastTime}
@@ -113,4 +132,6 @@ export default function RegisterPage2(props) {
 RegisterPage2.propTypes = {
   setSecondPage: PropTypes.func,
   currentAssoc: PropTypes.object,
+  setSwithToLanguage: PropTypes.func,
+  switchToLanguage: PropTypes.string,
 };

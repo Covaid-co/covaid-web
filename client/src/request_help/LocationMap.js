@@ -2,10 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Marker } from "react-map-gl";
 import { MARKER_SIZE, ICON } from "../constants";
-import MapGL, {
-  NavigationControl,
-  FullscreenControl,
-} from "react-map-gl";
+import MapGL, { NavigationControl, FullscreenControl } from "react-map-gl";
 
 export default function LocationMap(props) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -31,17 +28,14 @@ export default function LocationMap(props) {
         } else {
           alert("Error");
         }
-      });  
+      });
     }
 
-    if (
-      props.locationInfo.latitude &&
-      props.locationInfo.longitude 
-    ) {
+    if (props.locationInfo.latitude && props.locationInfo.longitude) {
       setViewport({
         ...viewport,
-        longitude:  props.locationInfo.longitude,
-        latitude: props.locationInfo.latitude ,
+        longitude: props.locationInfo.longitude,
+        latitude: props.locationInfo.latitude,
         zoom: 11,
       });
     }
@@ -72,7 +66,7 @@ export default function LocationMap(props) {
       onViewportChange={setViewport}
       mapboxApiAccessToken={mapBoxToken}
     >
-      {props.locationInfo.longitude && props.locationInfo.latitude ?
+      {props.locationInfo.longitude && props.locationInfo.latitude ? (
         <Marker
           longitude={props.locationInfo.longitude}
           latitude={props.locationInfo.latitude}
@@ -89,7 +83,10 @@ export default function LocationMap(props) {
           >
             <path d={ICON} />
           </svg>
-        </Marker> : <></>}
+        </Marker>
+      ) : (
+        <></>
+      )}
       <div style={navStyle}>
         <NavigationControl />
       </div>

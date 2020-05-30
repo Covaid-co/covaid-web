@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cookie from "js-cookie";
 import { useFormFields } from "../libs/hooksLib";
 
@@ -13,10 +13,28 @@ import { validateEmail } from "../Helpers";
 import { currURL } from "../constants";
 
 /**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
+/**
  * Login modal for volunteers
  */
 
 export default function NewLogin(props) {
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    if (props.switchToLanguage === "Español") {
+      setLanguage("es");
+    } else {
+      setLanguage("en");
+    }
+  }, [props.switchToLanguage]);
+
   const [mode, setMode] = useState(true);
   const [fields, handleFieldChange] = useFormFields({
     email: "",
@@ -92,7 +110,9 @@ export default function NewLogin(props) {
         style={{ marginTop: 110 }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Volunteer Login</Modal.Title>
+          <Modal.Title>
+            {translatedStrings[language].VolunteerLogin}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -110,7 +130,7 @@ export default function NewLogin(props) {
               <Col xs={12}>
                 <Form.Group controlId="password" bssize="large">
                   <Form.Control
-                    placeholder="Password"
+                    placeholder={translatedStrings[language].Password}
                     value={fields.password}
                     onChange={handleFieldChange}
                     type="password"
@@ -124,7 +144,7 @@ export default function NewLogin(props) {
               disabled={!validateForm()}
               type="submit"
             >
-              Sign In
+              {translatedStrings[language].Signin}
             </Button>
             <Button
               id="large-button-empty"
@@ -132,7 +152,7 @@ export default function NewLogin(props) {
                 setMode(!mode);
               }}
             >
-              Reset your password
+              {translatedStrings[language].ResetPassword}
             </Button>
           </Form>
         </Modal.Body>

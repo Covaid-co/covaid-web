@@ -428,6 +428,45 @@ export const volunteerListGroup = (
         </Row>
       </ListGroup.Item>
     );
+  } else {
+    return (
+      <ListGroup.Item key={volunteer._id} style={{ padding: 0 }}>
+        <Row>
+          <Col
+            id="best-match-item"
+            xs={12}
+            onClick={() => handleVolunteerClick(volunteer)}
+            style={{ paddingLeft: 35 }}
+          >
+            <div>
+              <h5 id="volunteer-name" style={{ marginBottom: 0 }}>
+                {volunteer.first_name} {volunteer.last_name} &nbsp;&nbsp;
+              </h5>
+              {displayPrevMatched(volunteer, curr_request)}
+              <p
+                id="volunteer-location"
+                style={{
+                  float: "right",
+                  marginTop: 0,
+                  marginRight: 10,
+                  marginBottom: 0,
+                }}
+              >
+                {distance(volunteer, curr_request)} miles
+              </p>
+            </div>
+
+            <div>
+              <p id="volunteer-location">
+                {volunteer.offer.neighborhoods.join(", ")}
+                {requestStatusBadge(curr_request, volunteer)}
+              </p>
+            </div>
+            <div>{displayResourceMatch(volunteer, curr_request)}</div>
+          </Col>
+        </Row>
+      </ListGroup.Item>
+    );
   }
 };
 
@@ -518,6 +557,5 @@ export const unSelectedVolunteers = (curr_request, volunteers, strict) => {
   displayed_volunteers.sort(function (a, b) {
     return distance(a, curr_request) - distance(b, curr_request);
   });
-  displayed_volunteers = displayed_volunteers.slice(0, 20);
-  return displayed_volunteers;
+  return displayed_volunteers.slice(0, 100);
 };

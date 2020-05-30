@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -22,36 +22,41 @@ export default function FAQ() {
     } else {
       return { display: "none" };
     }
-  }
+  };
 
   const selectedTab = (currTab) => {
     if (tab === currTab) {
-      return 'tab-name-active';
+      return "tab-name-active";
     } else {
-      return 'tab-name-inactive';
+      return "tab-name-inactive";
     }
-  }
+  };
 
   return (
     <div className="App">
-      <NavBar isLoggedIn={false} pageLoaded={true}/>
+      <NavBar isLoggedIn={false} pageLoaded={true} />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
-          <Col md={5} id="login-container" style={{paddingRight: 75}}>
+          <Col md={5} id="login-container" style={{ paddingRight: 75 }}>
             <h1 id="home-heading">Frequently Asked Questions</h1>
             <p id="regular-text">
               Covaid is a nationwide mutual aid platform founded to provide
-              volunteer support during the COVID-19 outbreak. We strive to be
-              a resource primarily for those who are most impacted by the
+              volunteer support during the COVID-19 outbreak. We strive to be a
+              resource primarily for those who are most impacted by the
               pandemic, such as the elderly and immunocompromised.
             </p>
             <p id="regular-text">
-              <strong>Any questions?</strong> Just email us at covaidco@gmail.com
+              <strong>Any questions?</strong> Just email us at
+              covaidco@gmail.com
             </p>
           </Col>
-          <Col md={7} id="login-container" style={{marginTop: 30, paddingRight: 50}}>
+          <Col
+            md={7}
+            id="login-container"
+            style={{ marginTop: 30, paddingRight: 50 }}
+          >
             <Row>
-              <Container style={{ padding: 0, marginLeft: 0, width: '100%' }}>
+              <Container style={{ padding: 0, marginLeft: 0, width: "100%" }}>
                 {/* <Button
                   id={requester ? "tab-button-selected" : "tab-button"}
                   onClick={() => setRequester(true)}
@@ -64,17 +69,20 @@ export default function FAQ() {
                 >
                   Volunteer
                 </Button> */}
-                <p id={selectedTab(0)} onClick={() => setTab(0)}>Requester</p>
-                <p id={selectedTab(1)} onClick={() => setTab(1)}>Volunteer</p>
-                <p id={selectedTab(2)} onClick={() => setTab(2)}>Organization</p>
+                <p id={selectedTab(0)} onClick={() => setTab(0)}>
+                  Requester
+                </p>
+                <p id={selectedTab(1)} onClick={() => setTab(1)}>
+                  Volunteer
+                </p>
+                <p id={selectedTab(2)} onClick={() => setTab(2)}>
+                  Organization
+                </p>
                 <p id="requestCall" style={{ marginTop: -25, marginBottom: 5 }}>
                   &nbsp;
                 </p>
               </Container>
-              <Container
-                id="requester-tab"
-                style={displayTab(0)}
-              >
+              <Container id="requester-tab" style={displayTab(0)}>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
                   How can I get help?
                 </h5>
@@ -126,10 +134,7 @@ export default function FAQ() {
                 </p>
               </Container>
 
-              <Container
-                id="requester-tab"
-                style={displayTab(1)}
-              >
+              <Container id="requester-tab" style={displayTab(1)}>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
                   How do I sign up to volunteer?
                 </h5>
@@ -189,74 +194,89 @@ export default function FAQ() {
                 </p>
               </Container>
 
-              <Container
-                id="requester-tab"
-                style={displayTab(2)}
-              >
+              <Container id="requester-tab" style={displayTab(2)}>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
                   How can Covaid help my organization?
                 </h5>
                 <p style={{ fontSize: 14, marginTop: 0, marginLeft: 14 }}>
-                  We are proud to offer the Covaid platform to mutual aid organizers 
-                  around the United States. Whether you have an existing mutual aid 
-                  group or would like to start one, Covaid’s administrative dashboard 
-                  has custom-built features designed to help you facilitate grassroots 
-                  volunteer efforts in your community.
+                  We are proud to offer the Covaid platform to mutual aid
+                  organizers around the United States. Whether you have an
+                  existing mutual aid group or would like to start one, Covaid’s
+                  administrative dashboard has custom-built features designed to
+                  help you facilitate grassroots volunteer efforts in your
+                  community.
                 </p>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Why is Covaid better than spreadsheets?
                 </h5>
                 <p style={{ fontSize: 14, marginTop: 0 }}>
-                  Covaid is built from scratch to facilitate mutual aid work. The platform has the following key features:
+                  Covaid is built from scratch to facilitate mutual aid work.
+                  The platform has the following key features:
                   <ul>
-                    <li>Intuitive admin dashboards that let organizers track the status of requests</li>
-                    <li>Automated email notifications for volunteers and admins</li>
-                    <li>Smart matching between volunteers and requesters, optimized for task and geographic distance</li>
-                    <li>Custom portal for volunteers to modify their offer and view/accept new requests</li>
+                    <li>
+                      Intuitive admin dashboards that let organizers track the
+                      status of requests
+                    </li>
+                    <li>
+                      Automated email notifications for volunteers and admins
+                    </li>
+                    <li>
+                      Smart matching between volunteers and requesters,
+                      optimized for task and geographic distance
+                    </li>
+                    <li>
+                      Custom portal for volunteers to modify their offer and
+                      view/accept new requests
+                    </li>
                   </ul>
                 </p>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Is the Covaid platform free to use?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
-                  Yes!
-                </p>
+                <p style={{ fontSize: 14, marginTop: 0 }}>Yes!</p>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Is Covaid secure/how are you protecting people’s information?
                 </h5>
                 <p style={{ fontSize: 14, marginTop: 0 }}>
-                  All data is stored securely in our database for only each organization to see. 
-                  Volunteer personal information is not visible publicly to anyone.
+                  All data is stored securely in our database for only each
+                  organization to see. Volunteer personal information is not
+                  visible publicly to anyone.
                 </p>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
-                  Does Covaid have to replace my organization’s current platform/workflow?
+                  Does Covaid have to replace my organization’s current
+                  platform/workflow?
                 </h5>
                 <p style={{ fontSize: 14, marginTop: 0 }}>
-                  No. Covaid can be a standalone platform for facilitating mutual aid, but 
-                  it can also be used to supplement your existing spreadsheets and communication 
-                  tools. All volunteer and requester information gathered through Covaid can 
-                  be exported into spreadsheets.
+                  No. Covaid can be a standalone platform for facilitating
+                  mutual aid, but it can also be used to supplement your
+                  existing spreadsheets and communication tools. All volunteer
+                  and requester information gathered through Covaid can be
+                  exported into spreadsheets.
                 </p>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
-                  If there’s no mutual aid group in my area, can I use Covaid to start one?
+                  If there’s no mutual aid group in my area, can I use Covaid to
+                  start one?
                 </h5>
                 <p style={{ fontSize: 14, marginTop: 0 }}>
-                  Absolutely! Our platform is open to new or existing organizations. 
-                  If you’re new to the world of mutual aid, we’re happy to help you get started!
+                  Absolutely! Our platform is open to new or existing
+                  organizations. If you’re new to the world of mutual aid, we’re
+                  happy to help you get started!
                 </p>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
-                  I’m interested in partnering with you. What are the next steps?
+                  I’m interested in partnering with you. What are the next
+                  steps?
                 </h5>
                 <p style={{ fontSize: 14, marginTop: 0 }}>
-                  Email us at covaidco@gmail.com! We’ll set up a meeting to get to know you, 
-                  show you how the platform works, and answer any questions you may have.
+                  Email us at covaidco@gmail.com! We’ll set up a meeting to get
+                  to know you, show you how the platform works, and answer any
+                  questions you may have.
                 </p>
               </Container>
             </Row>
           </Col>
         </Row>
       </Container>
-      <Footer key="2"/>
+      <Footer key="2" />
     </div>
   );
 }
