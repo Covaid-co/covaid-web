@@ -10,6 +10,10 @@ import Details from "../components_homepage/Details";
 import { defaultResources, toastTime, availability } from "../constants";
 import { setFalseObj, extractTrueObj } from "../Helpers";
 
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+let translatedStrings = new LocalizedStrings({ translations });
+
 /**
  * Volunteer Registration (Page 2)
  */
@@ -74,29 +78,33 @@ export default function RegisterPage2(props) {
   return (
     <>
       <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 5 }}>
-        What resources can you offer?
+        {translatedStrings[props.language].RequestPage2_Text1}
       </h5>
       <CheckForm obj={taskChecked} setObj={setTaskChecked} />
       <h5
         id="regular-text-bold"
         style={{ marginTop: "24px", marginBottom: "4px" }}
       >
-        Can you drive?
+        {translatedStrings[props.language].RequestPage2_Text2}
       </h5>
       <NewHasCar hasCar={hasCar} setHasCar={setHasCar} />
       <h5 id="regular-text-bold" style={{ marginTop: "24px", marginBottom: 5 }}>
-        What is your general availability?
+        {translatedStrings[props.language].RequestPage2_Text3}
       </h5>
       <CheckForm obj={availabilityChecked} setObj={setAvailabilityChecked} />
-      <Details fields={fields.details} handleFieldChange={handleFieldChange} />
+      <Details
+        language={props.language}
+        fields={fields.details}
+        handleFieldChange={handleFieldChange}
+      />
       <Button
         style={{ marginTop: 30 }}
         id="large-button-empty"
         onClick={goToThirdPage}
       >
-        Next
+        {translatedStrings[props.language].Next}
       </Button>
-      <p id="pagenum-text">Page 2 of 3</p>
+      <p id="pagenum-text">{translatedStrings[props.language].Page2of3}</p>
       <Toast
         show={showToast}
         delay={toastTime}
@@ -113,4 +121,6 @@ export default function RegisterPage2(props) {
 RegisterPage2.propTypes = {
   setSecondPage: PropTypes.func,
   currentAssoc: PropTypes.object,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

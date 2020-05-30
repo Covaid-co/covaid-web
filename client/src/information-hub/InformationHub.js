@@ -14,12 +14,16 @@ import InformationSection from "./InformationSection";
  * Changelog/updates page for keeping track of covaid updates
  */
 
-export default function InformationHub() {
+export default function InformationHub(props) {
   useEffect(() => {}, []);
 
   return (
     <div className="App">
-      <NavBar isLoggedIn={false} pageLoaded={true} />
+      <NavBar
+        simplified={true}
+        language={'en'}
+        setLanguage={() => {}}
+      />
       <div id="bgImageLong"></div>
       <Container
         style={{

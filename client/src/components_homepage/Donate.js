@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -11,10 +11,14 @@ import Footer from "../components/Footer";
  * About us/contributors page
  */
 
-export default function Donate() {
+export default function Donate(props) {
   return (
     <div className="App">
-      <NavBar isLoggedIn={false} pageLoaded={true} />
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        isLoggedIn={false}
+      />
       <Container style={{ maxWidth: 2500, marginBottom: 100 }}>
         <Row>
           <Col md={6} id="login-container" style={{ paddingRight: 60 }}>
@@ -52,3 +56,8 @@ export default function Donate() {
     </div>
   );
 }
+
+Donate.propTypes = {
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
+};

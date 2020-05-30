@@ -211,6 +211,8 @@ export default function YourOffer(props) {
           <CheckForm obj={resources} setObj={setResources} />
           <Details
             fields={fields.details}
+            setLanguage={props.setLanguage}
+            language={props.language}
             handleFieldChange={handleFieldChange}
           />
           {updateButton}

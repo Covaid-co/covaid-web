@@ -9,9 +9,14 @@ import HowItWorks from "../components_modals/HowItWorks";
 import Feedback from "../components_modals/Feedback";
 import { currURL } from "../constants";
 
-export default function Footer() {
+export default function Footer(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalName, setModalName] = useState("");
+  const [width, setWidth] = useState(window.innerWidth);
+
+  window.addEventListener("resize", () => {
+    setWidth(window.innerWidth);
+  });
 
   const getCurrentModal = () => {
     var modal = <></>;
@@ -30,33 +35,15 @@ export default function Footer() {
     return modal;
   };
 
-  const setCurrModal = (name) => {
-    setShowModal(true);
-    setModalName(name);
-  };
-
-  const linkObject = (url, name) => {
-    return (
-      <>
-        <a
-          id="regular-text"
-          style={{ marginBottom: 0 }}
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {name}
-        </a>
-        <br />
-      </>
-    );
-  };
-
   return (
     <footer className="footer">
-      <Container>
+      <Container style={{ maxWidth: 2500 }}>
         <Row style={{ textAlign: "left", paddingBottom: 30 }}>
-          <Col xs={2} style={{ padding: 20, paddingRight: 0 }}>
+          <Col
+            xs={2}
+            style={{ padding: 20, paddingRight: 0 }}
+            id="footer-brand"
+          >
             <Navbar style={{ paddingLeft: 0, paddingBottom: 0 }}>
               <Navbar.Brand
                 id="navbar-brand"
@@ -71,7 +58,13 @@ export default function Footer() {
               </Navbar.Brand>
             </Navbar>
           </Col>
-          <Col xs="10" style={{ textAlign: "right", marginTop: 50 }}>
+          <Col
+            xl={10}
+            lg={10}
+            md={10}
+            sm={12}
+            style={{ textAlign: "left", marginTop: 62, paddingLeft: 0 }}
+          >
             <Button
               variant="link"
               id="footer-link"
@@ -89,34 +82,38 @@ export default function Footer() {
             <Button
               variant="link"
               id="footer-link"
-              onClick={() => setCurrModal("feedback")}
+              onClick={() => {
+                setModalName("feedback");
+                setShowModal(true);
+              }}
             >
-              Send feedback
+              Feedback
             </Button>
-            {/* <a
-              id="footer-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/Covaid-co/covaid-web"
-            >
-              Github
-            </a>
-            <a
-              id="footer-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.facebook.com/covaidco"
-            >
-              Facebook
-            </a>
-            <a
-              id="footer-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.instagram.com/covaidmutualaid/"
-            >
-              Instagram
-            </a> */}
+            <i
+              id="social-icon"
+              className="fa fa-2x fa-github"
+              onClick={() =>
+                (window.location.href = "https://github.com/Covaid-co")
+              }
+              aria-hidden="true"
+            ></i>
+            <i
+              id="social-icon"
+              className="fa fa-2x fa-instagram"
+              onClick={() =>
+                (window.location.href =
+                  "https://www.instagram.com/covaidmutualaid/")
+              }
+              aria-hidden="true"
+            ></i>
+            <i
+              id="social-icon"
+              className="fa fa-2x fa-facebook-official"
+              onClick={() =>
+                (window.location.href = "https://www.facebook.com/covaidco")
+              }
+              aria-hidden="true"
+            ></i>
           </Col>
         </Row>
       </Container>

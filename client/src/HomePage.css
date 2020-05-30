@@ -10,6 +10,8 @@
   color: #2670ff;
   padding-right: 5px;
   padding-left: 5px;
+  /* margin-top: -5px; */
+  padding-top: 0px;
 }
 
 #feedback {
@@ -19,6 +21,7 @@
   height: 250px;
   margin-left: -3px;
   margin-bottom: -3px;
+  z-index: 10;
 }
 
 #feedback-tab {
@@ -274,6 +277,10 @@
 }
 
 @media (max-width: 960px) {
+  #banner {
+    height: 60px;
+  }
+
   #location-container-logged {
     margin-top: 110px;
   }
@@ -310,6 +317,7 @@
 }
 
 @media (max-width: 800px) {
+
   #jumboContainer {
     margin-left: 2%;
     margin-right: 2%;
@@ -386,8 +394,13 @@
     width: 380px;
   }
 
-  .footer {
+  #footer-brand {
     display: none;
+  }
+
+  .footer {
+    margin-bottom: 50px;
+    /* margin-top: -100px; */
   }
 
   #jumbo {
@@ -401,8 +414,9 @@
 
   #jumboContainer {
     height: 260px;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 8%;
+    margin-right: 8%;
+    margin-top: 50px;
   }
 
   #location-container {
@@ -474,6 +488,12 @@
   #location-container-logged {
     margin-top: 50px;
   }
+
+  #jumboContainer {
+    height: 260px;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
 }
 
 @media (max-width: 578px) {
@@ -508,7 +528,9 @@
   }
 
   #jumboContainer {
-    height: 320px;
+    height: 200px;
+    margin-left: 0%;
+    margin-right: 0%;
   }
 
   #location-container {
@@ -545,7 +567,7 @@
 
 @media (max-width: 345px) {
   #jumboContainer {
-    height: 360px;
+    height: 200px;
   }
 
   #location-container {

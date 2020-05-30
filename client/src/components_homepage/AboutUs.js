@@ -8,6 +8,11 @@ import Jeff from "../assets/jeff.png";
 import Debanik from "../assets/Debanik.png";
 import Marissa from "../assets/marissa.jpeg";
 import Elle from "../assets/elle.png";
+import Trisha from "../assets/trisha.jpg";
+import Shresta from "../assets/shresta.jpg";
+import Matt from "../assets/matt.jpeg";
+import Neely from "../assets/neely.jpg";
+import Ellie from "../assets/ellie.jpeg";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -16,24 +21,57 @@ import Footer from "../components/Footer";
  * About us/contributors page
  */
 
-export default function AboutUs() {
-  const names = [
-    "Jeffrey Li",
-    "Debanik Purkayastha",
-    "Marissa Turkin",
-    "Elle Kolkin",
-  ];
-  const links = [
-    "https://www.instagram.com/lijeffrey39/",
-    "https://www.instagram.com/debanik1997/",
-    "https://www.instagram.com/marissaturkin/",
-    "https://www.linkedin.com/mwlite/in/ellekolkin",
-  ];
-  const images = [Jeff, Debanik, Marissa, Elle];
+export default function AboutUs(props) {
+  const peoples = {
+    "Jeffrey Li": {
+      "link": "https://www.instagram.com/lijeffrey39/",
+      "image": Jeff
+    },
+    "Debanik Purkayastha": {
+      "link": "https://www.instagram.com/debanik1997/",
+      "image": Debanik
+    },
+    "Marissa Turkin": {
+      "link": "https://www.instagram.com/marissaturkin/",
+      "image": Marissa
+    },
+    "Elle Kolkin": {
+      "link": "https://www.linkedin.com/mwlite/in/ellekolkin",
+      "image": Elle
+    },
+    "Trisha Ballakur": {
+      "link": "https://www.linkedin.com/in/trisha-ballakur-070138187/",
+      "image": Trisha
+    },
+    "Shresta Bangaru": {
+      "link": "https://www.linkedin.com/in/shresta-bangaru-411134190/",
+      "image": Shresta
+    },
+    "Matthew McDermut": {
+      "link": "https://www.instagram.com/matthewmcd2/",
+      "image": Matt
+    },
+    "Neely Lee": {
+      "link": "www.linkedin.com/in/neelylee",
+      "image": Neely
+    },
+    "Ellie Sapiro": {
+      "link": "https://www.linkedin.com/in/ellie-sapiro/",
+      "image": Ellie
+    }
+  }
+
+  const names = Object.keys(peoples)
+  names.sort();
 
   return (
     <div className="App">
-      <NavBar isLoggedIn={false} pageLoaded={true} />
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        pageLoaded={true}
+        isLoggedIn={false}
+      />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
           <Col md={6} id="login-container" style={{ paddingRight: 75 }}>
@@ -72,11 +110,11 @@ export default function AboutUs() {
                     xs={6}
                     style={{ textAlign: "center" }}
                   >
-                    <img id="profile" alt="Avatar" src={images[i]}></img>
+                    <img id="profile" alt="Avatar" src={peoples[name]['image']}></img>
                     <br />
                     <a
                       id="profile-name"
-                      href={links[i]}
+                      href={peoples[name]['link']}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -95,7 +133,6 @@ export default function AboutUs() {
 }
 
 AboutUs.propTypes = {
-  orgReset: PropTypes.bool,
-  setShowLogin: PropTypes.func,
-  login: PropTypes.func,
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

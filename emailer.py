@@ -6,7 +6,7 @@ import csv
 def sendEmail(receiver_address, city, org_name):
     mail_content = '''
     Hi ''' + org_name + ''',<br><br>
-    My name is Jeffrey, and I'm a senior at Carnegie Mellon University. I've recently been working 
+    My name is Debanik, and I'm a senior at Johns Hopkins University. I've recently been working 
     on a software platform called <a href="https://www.covaid.co/organizationPortal">Covaid</a> that intends 
     to organize and simplify the volunteer/requester matching workflow for mutual aid groups.<br><br>
     Our team came across the fantastic work your group is doing in ''' + city + ''' – we're trying 
@@ -15,7 +15,7 @@ def sendEmail(receiver_address, city, org_name):
     be able to provide on what we could be doing better in the mutual aid world. If you're 
     open to a 20-minute Zoom call sometime this week, please let us know!<br><br>
     In solidarity,<br>
-    Jeffrey Li'''
+    Debanik Purkayastha'''
 
     sender_address = 'covaidco@gmail.com'
     sender_pass = 'covaid_platform_2020!'
@@ -46,12 +46,12 @@ def run():
         count = 0
         for row in reader:
             count += 1
-            if (count < 35 or count > 65):
+            if (count <= 95):
                 continue
-            address = row[3]
+            address = row[2]
             city = findCity(row[1])
             org_name = row[0]
-            print(count, city)
+            print(count, city, org_name, address)
             sendEmail(address, city, org_name)
 
     # sendEmail('lijeffrey39@gmail.com', 'Pittsburgh', 'Pittsburgh Mutual Aid')

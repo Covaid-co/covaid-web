@@ -40,6 +40,6 @@
     "supertest": "^4.0.2"
   },
   "devDependencies": {
-    "prettier": "^2.0.5"
+    "prettier": "2.0.5"
   }
 }

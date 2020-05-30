@@ -28,6 +28,13 @@
   src: url("../fonts/inter/Inter-Bold-slnt=0.ttf");
 }
 
+#social-icon {
+  color: #2670ff;
+  cursor: pointer;
+  margin-right: 15px;
+  float: right;
+}
+
 ::selection {
   background: #fac6c6; /* WebKit/Blink Browsers */
 }
@@ -58,10 +65,16 @@
   border: 1px solid #2670ff;
   font-size: 20px;
   height: 60px;
+  width: 300px;
   padding-left: 30px;
   padding-right: 30px;
   margin-bottom: 5px;
 }
+
+/* #resources-button:hover {
+  background-color: #2670ff;
+  color: white;
+} */
 
 #resources-button {
   font-family: "Inter";
@@ -72,15 +85,16 @@
   border: 1px solid #2670ff;
   font-size: 20px;
   height: 60px;
+  width: 300px;
   padding-left: 20px;
   padding-right: 20px;
   margin-top: 5px;
 }
 
-#request-button:hover {
+/* #request-button:hover {
   background-color: white;
   color: #2670ff;
-}
+} */
 
 #medium-button-solid {
   font-family: "Inter";
@@ -216,7 +230,7 @@
 }
 
 .navbar-element {
-  margin-left: 13px;
+  margin-left: 8px;
 }
 
 #navLink {
