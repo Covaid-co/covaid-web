@@ -37,7 +37,7 @@ export default function VolunteerPortal(props) {
   const [beacons, setBeacons] = useState([]);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [loginError, setLoginError] = useState(false);
-  const [view, setView] = useState('request-dashboard');
+  const [view, setView] = useState("request-dashboard");
   const { addToast } = useToasts();
 
   // fetch requests given a status, update frontend state using 'requestStateChanger'
@@ -157,26 +157,33 @@ export default function VolunteerPortal(props) {
   }, []);
 
   const mainContentView = () => {
-    if (view === 'request-dashboard') {
+    if (view === "request-dashboard") {
       return (
         <Container id="volunteer-info" style={{ marginTop: 50 }}>
-          <h1 id="home-heading" style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}>
+          <h1
+            id="home-heading"
+            style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
+          >
             Request Dashboard
           </h1>
           <p id="regular-text" style={{ fontSize: 16 }}>
             Respond to requests that have been delegated to you
           </p>
           <p id="requestCall" style={{ marginTop: 15, marginBottom: 34 }}></p>
-          <RequestDashboard 
+          <RequestDashboard
             pendingRequests={pendingRequests}
-            acceptedRequests={acceptedRequests} 
-            completedRequests={completedRequests} />
+            acceptedRequests={acceptedRequests}
+            completedRequests={completedRequests}
+          />
         </Container>
       );
-    } else if (view === 'your-offer') {
+    } else if (view === "your-offer") {
       return (
         <Container id="volunteer-info" style={{ marginTop: 50 }}>
-          <h1 id="home-heading" style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}>
+          <h1
+            id="home-heading"
+            style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
+          >
             Your Offer
           </h1>
           <p id="regular-text" style={{ fontSize: 16 }}>
@@ -186,9 +193,9 @@ export default function VolunteerPortal(props) {
         </Container>
       );
     } else {
-      return <></>
+      return <></>;
     }
-  }
+  };
 
   if (foundUser) {
     return (
@@ -198,13 +205,13 @@ export default function VolunteerPortal(props) {
             setLanguage={props.setLanguage}
             language={props.language}
             isLoggedIn={true}
-            mode={'volunteer'}
+            mode={"volunteer"}
             first_name={user.first_name}
             last_name={user.last_name}
             setView={setView}
           />
           <Jumbotron fluid id="jumbo-volunteer">
-            <ProfileHeader 
+            <ProfileHeader
               user={user}
               setShowAccountModal={setShowAccountModal}
             />

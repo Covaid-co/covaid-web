@@ -24,7 +24,7 @@ let translatedStrings = new LocalizedStrings({ translations });
  */
 
 export default function CovaidNavbar(props) {
-  const [mode, setMode] = useState('');
+  const [mode, setMode] = useState("");
   const [toggled, setToggled] = useState(false);
   const [totalVolunteers, setTotalVolunteers] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
@@ -40,8 +40,8 @@ export default function CovaidNavbar(props) {
   });
 
   useEffect(() => {
-    if (props.mode === 'volunteer') {
-      setMode('volunteer');
+    if (props.mode === "volunteer") {
+      setMode("volunteer");
       return;
     }
     if (totalVolunteers === 0) {
@@ -83,7 +83,7 @@ export default function CovaidNavbar(props) {
         <i
           className="fa fa-globe"
           aria-hidden="true"
-          style={{marginRight: 7}}
+          style={{ marginRight: 7 }}
         ></i>
         {props.language === "en" ? "English" : "Español"}
       </Button>
@@ -158,9 +158,9 @@ export default function CovaidNavbar(props) {
         }
       }
     } else {
-      if (mode === 'volunteer') {
+      if (mode === "volunteer") {
         // TODO: Add dropdown with profile info
-        return <></>
+        return <></>;
       }
       if (toggled) {
         return (
@@ -249,7 +249,7 @@ export default function CovaidNavbar(props) {
     }
   };
 
-  if (mode === 'volunteer') {
+  if (mode === "volunteer") {
     return (
       <>
         <Navbar
@@ -267,19 +267,31 @@ export default function CovaidNavbar(props) {
             covaid
           </Navbar.Brand>
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">              
-                <p id={selectedTab(0)} onClick={() => {setTab(0); props.setView('request-dashboard');}}>
-                  Request Dashboard
-                </p>
-                <p id={selectedTab(1)} onClick={() => {setTab(1); props.setView('your-offer');}}>
-                  Your Offer
-                </p>
+            <Nav className="mr-auto">
+              <p
+                id={selectedTab(0)}
+                onClick={() => {
+                  setTab(0);
+                  props.setView("request-dashboard");
+                }}
+              >
+                Request Dashboard
+              </p>
+              <p
+                id={selectedTab(1)}
+                onClick={() => {
+                  setTab(1);
+                  props.setView("your-offer");
+                }}
+              >
+                Your Offer
+              </p>
             </Nav>
-          {rightNav(mode)}
-        </Navbar.Collapse>
+            {rightNav(mode)}
+          </Navbar.Collapse>
         </Navbar>
       </>
-    )
+    );
   }
 
   return (

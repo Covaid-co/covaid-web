@@ -23,40 +23,40 @@ import Footer from "../components/Footer";
 export default function AboutUs(props) {
   const peoples = {
     "Jeffrey Li": {
-      "link": "https://www.instagram.com/lijeffrey39/",
-      "image": Jeff
+      link: "https://www.instagram.com/lijeffrey39/",
+      image: Jeff,
     },
     "Debanik Purkayastha": {
-      "link": "https://www.instagram.com/debanik1997/",
-      "image": Debanik
+      link: "https://www.instagram.com/debanik1997/",
+      image: Debanik,
     },
     "Marissa Turkin": {
-      "link": "https://www.instagram.com/marissaturkin/",
-      "image": Marissa
+      link: "https://www.instagram.com/marissaturkin/",
+      image: Marissa,
     },
     "Elle Kolkin": {
-      "link": "https://www.linkedin.com/mwlite/in/ellekolkin",
-      "image": Elle
+      link: "https://www.linkedin.com/mwlite/in/ellekolkin",
+      image: Elle,
     },
     "Trisha Ballakur": {
-      "link": "https://www.linkedin.com/in/trisha-ballakur-070138187/",
-      "image": Trisha
+      link: "https://www.linkedin.com/in/trisha-ballakur-070138187/",
+      image: Trisha,
     },
     "Shresta Bangaru": {
-      "link": "https://www.linkedin.com/in/shresta-bangaru-411134190/",
-      "image": Shresta
+      link: "https://www.linkedin.com/in/shresta-bangaru-411134190/",
+      image: Shresta,
     },
     "Matthew McDermut": {
-      "link": "https://www.instagram.com/matthewmcd2/",
-      "image": Matt
+      link: "https://www.instagram.com/matthewmcd2/",
+      image: Matt,
     },
     "Neely Lee": {
-      "link": "www.linkedin.com/in/neelylee",
-      "image": Neely
-    }
-  }
+      link: "www.linkedin.com/in/neelylee",
+      image: Neely,
+    },
+  };
 
-  const names = Object.keys(peoples)
+  const names = Object.keys(peoples);
   names.sort();
 
   return (
@@ -105,11 +105,15 @@ export default function AboutUs(props) {
                     xs={6}
                     style={{ textAlign: "center" }}
                   >
-                    <img id="profile" alt="Avatar" src={peoples[name]['image']}></img>
+                    <img
+                      id="profile"
+                      alt="Avatar"
+                      src={peoples[name]["image"]}
+                    ></img>
                     <br />
                     <a
                       id="profile-name"
-                      href={peoples[name]['link']}
+                      href={peoples[name]["link"]}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

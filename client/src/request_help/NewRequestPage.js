@@ -170,17 +170,22 @@ export default function NewRequestPage(props) {
     if (step_num === 0) {
       return (
         <>
-          <Button id="back-button"  onClick={() => window.open(currURL, "_self")}>
+          <Button
+            id="back-button"
+            onClick={() => window.open(currURL, "_self")}
+          >
             ←
           </Button>
           <p id="title">Step 1 —</p>
           <p id="subtitle">Set your location</p>
           <p id="info">
-            We ask for your location so that {associationExists() ? 
-              <a href={associationLink()}>
-                {associationName()}
-              </a> : associationName()} can best match
-            you to volunteers in your area.
+            We ask for your location so that{" "}
+            {associationExists() ? (
+              <a href={associationLink()}>{associationName()}</a>
+            ) : (
+              associationName()
+            )}{" "}
+            can best match you to volunteers in your area.
           </p>
           <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
             <InputGroup id="set-location" bssize="large">
@@ -203,9 +208,7 @@ export default function NewRequestPage(props) {
           <Button
             id="large-button"
             style={{ marginTop: 15, marginBottom: 30 }}
-            onClick={() =>
-              confirmLocation(2)
-            }
+            onClick={() => confirmLocation(2)}
           >
             Next
           </Button>
