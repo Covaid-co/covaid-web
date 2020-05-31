@@ -686,5 +686,5 @@ RequestDetails.propTypes = {
   allRequests: PropTypes.array,
   requestDetailsModal: PropTypes.bool,
   volunteers: PropTypes.array,
-  setVolunteers: PropTypes.func
+  setVolunteers: PropTypes.func,
 };

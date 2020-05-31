@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RequestCard from "./RequestCard";
 import { volunteer_status } from "../constants";
- 
+
 export default function RequestColumn(props) {
   const [loaded, setLoaded] = useState(false);
   const [title, setTitle] = useState("");

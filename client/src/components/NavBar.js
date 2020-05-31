@@ -252,15 +252,16 @@ export default function CovaidNavbar(props) {
   if (mode === "volunteer") {
     return (
       <>
-        <Navbar
-          expand="md"
-          id="banner"
-        >
-          <span style={{cursor: 'pointer', fontWeight: 600}}>
-            Exclusive for Volunteers: Join the free Markk app and get gift cards from Postmates, Amazon, Target and more.
+        <Navbar expand="md" id="banner">
+          <span style={{ cursor: "pointer", fontWeight: 600 }}>
+            Exclusive for Volunteers: Join the free Markk app and get gift cards
+            from Postmates, Amazon, Target and more.
           </span>
-          <span id="view-banner" style={{cursor: 'pointer', fontWeight: 600}}
-            onClick={() => window.open('http://www.getmarkk.com/volunteer')}>
+          <span
+            id="view-banner"
+            style={{ cursor: "pointer", fontWeight: 600 }}
+            onClick={() => window.open("http://www.getmarkk.com/volunteer")}
+          >
             Read More →
           </span>
           <span id="close-banner">
@@ -325,36 +326,40 @@ export default function CovaidNavbar(props) {
 
   return (
     <>
-      {props.isLoggedIn ?
-      <Navbar
-        expand="md"
-        id="banner"
-      >
-        <span style={{cursor: 'pointer', fontWeight: 600}}>
-          Exclusive for Volunteers: Join the free Markk app and get gift cards from Postmates, Amazon, Target and more.
-        </span>
-        <span id="view-banner" style={{cursor: 'pointer', fontWeight: 600}}
-          onClick={() => window.open('http://www.getmarkk.com/volunteer')}>
-          Read More →
-        </span>
-        <span id="close-banner">
-          <svg
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-            shapeRendering="geometricPrecision"
-            style={{ color: "currentcolor" }}
+      {props.isLoggedIn ? (
+        <Navbar expand="md" id="banner">
+          <span style={{ cursor: "pointer", fontWeight: 600 }}>
+            Exclusive for Volunteers: Join the free Markk app and get gift cards
+            from Postmates, Amazon, Target and more.
+          </span>
+          <span
+            id="view-banner"
+            style={{ cursor: "pointer", fontWeight: 600 }}
+            onClick={() => window.open("http://www.getmarkk.com/volunteer")}
           >
-            <path d="M18 6L6 18"></path>
-            <path d="M6 6l12 12"></path>
-          </svg>
-        </span>
-      </Navbar> : <></>}
+            Read More →
+          </span>
+          <span id="close-banner">
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+              shapeRendering="geometricPrecision"
+              style={{ color: "currentcolor" }}
+            >
+              <path d="M18 6L6 18"></path>
+              <path d="M6 6l12 12"></path>
+            </svg>
+          </span>
+        </Navbar>
+      ) : (
+        <></>
+      )}
       <Navbar
         collapseOnSelect
         onToggle={(e) => setToggled(e)}

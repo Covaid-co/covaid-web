@@ -233,9 +233,7 @@ export default function RequestInfo(props) {
     <>
       <Modal
         show={props.modalOpen}
-        onHide={
-          props.closeModal
-        }
+        onHide={props.closeModal}
         style={{ marginTop: 10, paddingBottom: 50 }}
       >
         <Modal.Header closeButton>{header}</Modal.Header>

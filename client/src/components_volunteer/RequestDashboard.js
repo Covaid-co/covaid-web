@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import RequestColumn from "./RequestColumn";
 import { volunteer_status } from "../constants";
- 
+
 export default function RequestDashboard(props) {
   useEffect(() => {}, [props.user]);
   return (

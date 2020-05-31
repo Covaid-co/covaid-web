@@ -52,14 +52,14 @@ export default function AboutUs(props) {
       image: Matt,
     },
     "Neely Lee": {
-      "link": "www.linkedin.com/in/neelylee",
-      "image": Neely
+      link: "www.linkedin.com/in/neelylee",
+      image: Neely,
     },
     "Ellie Sapiro": {
-      "link": "https://www.linkedin.com/in/ellie-sapiro/",
-      "image": Ellie
-    }
-  }
+      link: "https://www.linkedin.com/in/ellie-sapiro/",
+      image: Ellie,
+    },
+  };
 
   const names = Object.keys(peoples);
   names.sort();

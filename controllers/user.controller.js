@@ -470,5 +470,4 @@ exports.resetPassword = asyncWrapper(async (req, res) => {
 exports.getImage = asyncWrapper(async (req, res) => {
   const id = req.query.id;
   console.log(id);
-  
 });

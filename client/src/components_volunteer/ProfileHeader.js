@@ -20,13 +20,11 @@ export default function ProfileHeader(props) {
     fetch(url, {
       method: "get",
     })
-      .then((response) => {
-        
-      })
+      .then((response) => {})
       .catch((e) => {
         console.log(e);
       });
-  }
+  };
 
   useEffect(() => {
     if (props.user.association_name && props.user.association_name.length > 0) {
@@ -39,7 +37,15 @@ export default function ProfileHeader(props) {
       <Row>
         <Col lg={1} md={1} sm={0}></Col>
         <Col>
-          <Image src={image} id="profile-pic" style={{ marginRight: 30, boxShadow: "0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1)" }} />
+          <Image
+            src={image}
+            id="profile-pic"
+            style={{
+              marginRight: 30,
+              boxShadow:
+                "0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1)",
+            }}
+          />
           <div style={{ marginTop: 15 }}>
             <h1
               id="home-heading"
@@ -67,9 +73,6 @@ export default function ProfileHeader(props) {
           </Button>{" "}
         </Col>
       </Row>
-      {/* <Row>
-          <ImageDropper />
-      </Row> */}
     </Container>
   );
 }

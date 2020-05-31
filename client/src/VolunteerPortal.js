@@ -118,8 +118,8 @@ export default function VolunteerPortal(props) {
       });
   };
 
-  const prepend = (element, array = []) => 
-                  !element ? [] : Array.of(element, ...array);
+  const prepend = (element, array = []) =>
+    !element ? [] : Array.of(element, ...array);
 
   // State change (Pending -> In Progress)
   const moveRequestFromPendingToInProgress = (request) => {
@@ -215,7 +215,7 @@ export default function VolunteerPortal(props) {
         <div className="App">
           <NavBar
             setLanguage={props.setLanguage}
-            language={'en'}
+            language={"en"}
             isLoggedIn={true}
             mode={"volunteer"}
             first_name={user.first_name}
