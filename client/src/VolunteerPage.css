@@ -35,6 +35,12 @@
   object-fit: cover;
 }
 
+.fileContainer .deleteImage {
+  font-weight: 600;
+  background-color: red !important;
+  font-size: 15px !important;
+}
+
 .active-beacon {
   float: right;
   height: 25px;

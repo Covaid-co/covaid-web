@@ -221,6 +221,8 @@ export default function VolunteerPortal(props) {
             first_name={user.first_name}
             last_name={user.last_name}
             setView={setView}
+            pageLoaded={true}
+            isLoggedIn={true}
           />
           <Jumbotron fluid id="jumbo-volunteer">
             <ProfileHeader
