@@ -490,5 +490,5 @@ BestMatches.propTypes = {
   setCurrRequest: PropTypes.func,
   setAllRequests: PropTypes.func,
   allRequests: PropTypes.array,
-  setVolunteers: PropTypes.func
+  setVolunteers: PropTypes.func,
 };
