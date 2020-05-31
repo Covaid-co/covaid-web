@@ -10,6 +10,7 @@ import { generateMapsURL } from "../Helpers";
 import { generateURL } from "../Helpers";
 import { updateAllRequests } from "./OrganizationHelpers";
 import PropTypes from "prop-types";
+import MapDetail from './VolunteerDetailsLocationMap';
 
 /**
  * Volunteer Details Modal in Org portal
@@ -25,7 +26,23 @@ export default function VolunteerDetails(props) {
     adminDetails: "",
   });
 
+  const [mapBoxToken, setMapBoxToken] = useState('');
+  const [lat, setLat] = useState(props.currVolunteer.latitude);
+  const [long, setLong] = useState(props.currVolunteer.longitude);
+  const [showMapModal, setShowMapModal] = useState(false);
+
   useEffect(() => {
+    fetch('/api/apikey/mapbox').then((response) => {
+        if (response.ok) {
+            response.json().then(key => {
+               setMapBoxToken(key['mapbox']);
+               setLat(props.currVolunteer.latitude);
+               setLong(props.currVolunteer.longitude);
+            });
+        } else {
+            console.log("Error");
+        }
+    });
     if (props.currVolunteer.latlong) {
       const tempURL = generateMapsURL(
         props.currVolunteer.latlong[1],
@@ -168,12 +185,18 @@ export default function VolunteerDetails(props) {
     }
   };
 
+  const handleOpenMap = () => {
+    setShowMapModal(true);
+    props.setVolunteerDetailsModal(false);
+  };
+
   if (
     Object.keys(props.currVolunteer).length > 0 &&
     statistics &&
     statistics[props.currVolunteer._id]
   ) {
     return (
+      <>
       <Modal
         id="volunteer-details"
         show={props.volunteerDetailModal}
@@ -225,10 +248,13 @@ export default function VolunteerDetails(props) {
             )}
           </>
           <p id="regular-text-nomargin">
-            Location:{" "}
-            <a target="_blank" rel="noopener noreferrer" href={mapURL}>
-              Click here
-            </a>
+            Location: 
+            <Button id="regular-text" 
+                    variant="link" 
+                    style={{color: '#2670FF', padding:0, marginBottom: 4}} 
+                    onClick={handleOpenMap}>
+              View Map
+            </Button>
           </p>
           <p id="regular-text-nomargin">{props.currVolunteer.email}</p>
           <p id="regular-text-nomargin">{props.currVolunteer.phone}</p>
@@ -306,6 +332,12 @@ export default function VolunteerDetails(props) {
           </p>
         </Modal.Body>
       </Modal>
+      <Modal  show={showMapModal} 
+              onHide={() => {setShowMapModal(false); props.setVolunteerDetailsModal(true);}} 
+              style = {{marginTop: 10, paddingBottom: 50}}>
+          <MapDetail currVolunteer={props.currVolunteer} mapBoxToken={mapBoxToken}/>
+      </Modal>
+      </>
     );
   } else {
     return (

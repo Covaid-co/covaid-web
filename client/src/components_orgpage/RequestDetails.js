@@ -25,6 +25,9 @@ import {
   viewVolunteersInfo,
 } from "./requestDetailsHelpers";
 
+import EditRequestInfoModal from "./EditRequestInfoModal";
+import RequestDetailMapModal from "./RequestDetailMap";
+
 /**
  * Request Details Modal
  */
@@ -46,14 +49,32 @@ export default function RequestDetails(props) {
   });
   const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
   const [currVolunteer, setCurrVolunteer] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showRequestMapModal, setShowRequestMapModal] = useState(false);
+  const [mapboxAccessToken, setMapboxAccessToken] = useState('');
 
   useEffect(() => {
+    fetch('/api/apikey/mapbox').then((response) => {
+        if (response.ok) {
+            response.json().then(key => {
+                setMapboxAccessToken(key['mapbox']);
+            });
+        } else {
+            console.log("Error");
+        }
+    }); 
     setAssignee("No one assigned");
     createMapsLink();
     fields.email2 = props.currRequest.admin_info.note;
     setPrevNote(props.currRequest.admin_info.note);
     updateAdminList();
   }, [props.currRequest, props.association, props.mode]);
+
+  // Close Edit Request Modal
+  const handleCloseEditModal = () => {
+        setShowEditModal(false); 
+        props.setRequestDetailsModal(true); 
+  };
 
   // Create link to requesters location
   const createMapsLink = () => {
@@ -508,10 +529,13 @@ export default function RequestDetails(props) {
             {formatName(props.currRequest.personal_info.requester_name)}
           </p>
           <p id="regular-text-nomargin">
-            Location:{" "}
-            <a target="_blank" rel="noopener noreferrer" href={mapsURL}>
-              Click here
-            </a>
+            Location: 
+            <Button id="regular-text" 
+                    onClick={() => {setShowRequestMapModal(true); props.setRequestDetailsModal(false);}} 
+                    style={{ color: '#2670FF', padding: 0, marginBottom: 3, marginLeft: 3}}
+                    variant="link">
+              View map
+            </Button>
           </p>
           {contactInfo()}
           <p id="regular-text-nomargin" style={{ marginTop: 14 }}>
@@ -565,6 +589,24 @@ export default function RequestDetails(props) {
             <Toast.Body>{toastMessage}</Toast.Body>
           </Toast>
         </Modal.Body>
+        <Modal.Footer>
+            <Button id="regular-text" onClick={() => {setShowEditModal(true); props.setRequestDetailsModal(false);}} 
+                style={{margin: "auto", display: "block", color: '#2670FF'}}variant="link">
+                Edit Info
+            </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal size={"lg"} show={showEditModal} onHide={handleCloseEditModal}  style = {{marginTop: 10, paddingBottom: 50}}>
+          <EditRequestInfoModal updateRequests={updateRequests} 
+                                currRequest={props.currRequest} 
+                                mapboxAccessToken={mapboxAccessToken} 
+                                setShowEditModal={setShowEditModal} 
+                                setRequestDetailsModal={props.setRequestDetailsModal} />
+      </Modal>
+
+      <Modal  show={showRequestMapModal} onHide={() => {setShowRequestMapModal(false); props.setRequestDetailsModal(true);}} style = {{marginTop: 10, paddingBottom: 50}}>
+          <RequestDetailMapModal currRequest={props.currRequest} mapboxAccessToken={mapboxAccessToken}/>
       </Modal>
 
       <Modal
