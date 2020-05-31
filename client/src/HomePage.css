@@ -139,6 +139,7 @@
 
 #jumbo {
   margin-bottom: 60px;
+  padding-bottom: 210px;
 }
 
 #jumboContainer {
@@ -356,7 +357,7 @@
 
   #login-container {
     padding-left: 50px;
-    padding-right: 50px;
+    padding-right: 30px;
   }
 
   #requests-feature-container {
@@ -408,6 +409,7 @@
 
   #jumbo {
     margin-bottom: 0px;
+    padding-bottom: 300px;
   }
 
   #jumbo-text {
@@ -464,12 +466,15 @@
 
   #jumbo {
     padding-top: 10px;
+    padding-bottom: 200px;
   }
 }
 
 @media (max-width: 605px) {
   #login-container {
     padding-left: 30px;
+    padding-right: 20px !important;
+    padding-top: 10px;
   }
 
   #requests-feature-container {
@@ -500,6 +505,11 @@
 }
 
 @media (max-width: 578px) {
+  #jumbo {
+    padding-bottom: 350px;
+    padding-bottom: 250px;
+  }
+
   #login-container {
     padding-left: 20px;
   }
@@ -526,14 +536,17 @@
 
   #jumbo-text {
     margin-top: 10px;
-    padding-right: 30px;
+    padding-right: 50px;
     padding-left: 50px;
   }
 
   #jumboContainer {
     height: 200px;
+    margin-top: 10px;
     margin-left: 0%;
     margin-right: 0%;
+    padding: 0px;
+    /* padding-right: 20px; */
   }
 
   #location-container {

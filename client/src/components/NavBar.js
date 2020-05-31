@@ -324,7 +324,7 @@ export default function CovaidNavbar(props) {
           covaid
         </Navbar.Brand>
         <Form inline className="volunteer-badge-mobile">
-          {volunteerBadge("mobile")}
+          {/* {volunteerBadge("mobile")} */}
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
             id={toggled ? "toggledNav1" : "nav1"}

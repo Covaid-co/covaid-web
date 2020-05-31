@@ -75,7 +75,7 @@ export default function HomePage(props) {
   };
 
   return [
-    <div key="1" className="App" style={{ height: "calc(100% - 180px)" }}>
+    <div key="1" className="App" style={{ height: "100%" }}>
       <NavBar
         setLanguage={props.setLanguage}
         language={props.language}
@@ -132,8 +132,9 @@ export default function HomePage(props) {
         </Container>
       </Jumbotron>
       {getCurrentModal()}
+      <Footer key="2" home={true} style={{position: 'absolute', bottom: 0}} />
     </div>,
-    <Footer key="2" home={true} />,
+    // <Footer key="2" home={true} />,
   ];
 }
 
