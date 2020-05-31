@@ -65,7 +65,7 @@ export default function ProfileHeader(props) {
 
   return (
     <>
-      <Container style={{ maxWidth: 2000 }}>
+      <div style={{ maxWidth: 2000 }}>
         <Row>
           <Col lg={1} md={1} sm={0}></Col>
           <Col>
@@ -80,34 +80,40 @@ export default function ProfileHeader(props) {
               }}
               onClick={() => setShowUploader(true)}
             />
-            <div style={{ marginTop: 15 }}>
+            {/* </Col>
+          <Col style={{ marginTop: 15 }}> */}
+            <Row>
               <h1
                 id="home-heading"
                 style={{ marginTop: 0, fontSize: 28, color: "#4F4F4F" }}
               >
                 {props.user.first_name} {props.user.last_name}
               </h1>
+            </Row>
+            <Row>
               <p id="regular-text" style={{ fontSize: 16 }}>
-                {association}
+                {association ? association : "No association detected"}
               </p>
-            </div>
-            <Button
-              id="medium-button"
-              style={{
-                paddingLeft: 34,
-                paddingRight: 34,
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}
-              onClick={() => {
-                props.setShowAccountModal(true);
-              }}
-            >
-              Edit Profile
-            </Button>{" "}
+            </Row>
+            <Row>
+              <Button
+                id="medium-button"
+                style={{
+                  paddingLeft: 34,
+                  paddingRight: 34,
+                  paddingTop: 10,
+                  paddingBottom: 10,
+                }}
+                onClick={() => {
+                  props.setShowAccountModal(true);
+                }}
+              >
+                Edit Profile
+              </Button>{" "}
+            </Row>
           </Col>
         </Row>
-      </Container>
+      </div>
       <Modal
         show={showUploader}
         onHide={() => {

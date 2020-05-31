@@ -161,6 +161,7 @@ export default function YourOffer(props) {
       style={{
         marginTop: 20,
       }}
+      disabled={!availability}
       onClick={() => {
         console.log(props.user.offer);
         setIsEditing(true);
@@ -234,7 +235,10 @@ export default function YourOffer(props) {
           <Toast.Body>{toastMessage}</Toast.Body>
         </Toast>
 
-        <h3 id="large-text-bold" style={{ marginBottom: 5 }}>
+        <h3
+          id="your-offer-header-detail"
+          style={{ color: "#4F4F4F", marginTop: 32, marginBottom: 16 }}
+        >
           Details
         </h3>
         <p id="requestCall" style={{ marginTop: -15, marginBottom: 15 }}>
