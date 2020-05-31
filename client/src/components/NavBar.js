@@ -158,10 +158,6 @@ export default function CovaidNavbar(props) {
         }
       }
     } else {
-      if (mode === "volunteer") {
-        // TODO: Add dropdown with profile info
-        return <></>;
-      }
       if (toggled) {
         return (
           <Form inline id="getStarted" style={{ display: "block" }}>
