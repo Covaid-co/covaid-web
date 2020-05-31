@@ -295,7 +295,12 @@ export default function VolunteerPortal(props) {
       </>
     );
   } else if (loginError) {
-    return <VolunteerLogin />;
+    return (
+      <VolunteerLogin
+        setLanguage={props.setLanguage}
+        language={props.language}
+      />
+    );
   } else {
     return <></>;
   }

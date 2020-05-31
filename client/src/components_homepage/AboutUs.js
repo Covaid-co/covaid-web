@@ -40,7 +40,7 @@ export default function AboutUs(props) {
       image: Elle,
     },
     "Trisha Ballakur": {
-      link: "https://www.linkedin.com/in/trisha-ballakur-070138187/",
+      link: "https://github.com/trishaBallakur",
       image: Trisha,
     },
     "Shresta Bangaru": {
