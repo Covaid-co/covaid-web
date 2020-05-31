@@ -25,7 +25,7 @@ export default function YourOffer(props) {
   const [toastMessage, setToastMessage] = useState("");
   const [availability, setAvailability] = useState(false);
   const [resources, setResources] = useState({});
-  const [isPublish, setIsPublish] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const [isUnPublish, setIsUnPublish] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
 
@@ -173,9 +173,9 @@ export default function YourOffer(props) {
       <Button
         id="large-button"
         style={{ marginTop: 20 }}
-        onClick={() => handleUpdate(true, setIsPublish)}
+        onClick={() => handleUpdate(true, setIsActive)}
       >
-        {isPublish ? spinnerComponent : publishText}
+        {isActive ? spinnerComponent : publishText}
       </Button>
     );
   }

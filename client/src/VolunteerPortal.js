@@ -202,6 +202,20 @@ export default function VolunteerPortal(props) {
             Customize your volunteer experience
           </p>
           <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
+          <Container
+            id="newOfferContainer"
+            style={tabNum === 1 ? { display: "block" } : { display: "none" }}
+          >
+            {foundUser ? (
+              <YourOffer
+                user={user}
+                setLanguage={props.setLanguage}
+                language={props.language}
+              />
+            ) : (
+              <></>
+            )}
+          </Container>
         </Container>
       );
     } else {
