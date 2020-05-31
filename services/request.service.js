@@ -156,7 +156,6 @@ async function handleDirectMatch(request) {
     name: first_name,
     assoc: associationEmail,
     templateName: "volunteer_notification",
-    phone: volunteer.phone,
   };
   emailer.sendNotificationEmail(data);
   pusher.trigger(
@@ -612,7 +611,6 @@ exports.remindMatchedVolunteers = async function (notificationTime) {
             sender: "Covaid@covaid.co",
             receiver: user.email,
             templateName: "pending_notification",
-            phone: user.phone,
           };
           emailer.sendNotificationEmail(data);
           remindedVolunteers.add(user.email);
