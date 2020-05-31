@@ -41,6 +41,13 @@
   font-size: 15px !important;
 }
 
+#vertical-line{
+  display: inline;
+  border-left: 1px solid #dee2e6;
+  height: 600px;
+  float: left;
+}
+
 .active-beacon {
   float: right;
   height: 25px;

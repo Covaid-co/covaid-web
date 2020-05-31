@@ -86,11 +86,9 @@ export default function VolunteerBeacons(props) {
         <>
           <p
             id="regular-text"
-            style={{ color: "black", textAlign: "center", marginTop: 20 }}
+            style={{ color: "#CECECE", fontWeight: 600, marginTop: 20 }}
           >
-            <strong style={{ fontSize: 18 }}>
-              There are no active beacons from your group at the moment
-            </strong>
+            Nothing to share at the moment
           </p>
         </>
       );

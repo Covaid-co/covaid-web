@@ -26,6 +26,7 @@ import VolunteerBeacons from "./components_volunteer/VolunteerBeacons";
 import "./VolunteerPage.css";
 import fetch_a from "./util/fetch_auth";
 import Footer from "./components/Footer";
+import { useWindowDimensions } from "./libs/hooksLib";
 
 export default function VolunteerPortal(props) {
   const [tabNum, setTabNum] = useState(1);
@@ -38,6 +39,7 @@ export default function VolunteerPortal(props) {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [view, setView] = useState("request-dashboard");
+  const { height, width } = useWindowDimensions();
   const { addToast } = useToasts();
 
   // fetch requests given a status, update frontend state using 'requestStateChanger'
@@ -165,7 +167,7 @@ export default function VolunteerPortal(props) {
   const mainContentView = () => {
     if (view === "request-dashboard") {
       return (
-        <Container id="volunteer-info" style={{ marginTop: 50 }}>
+        <Container id="volunteer-info" style={{ marginTop: 50, marginBottom: width < 980 ? 30 : 0 }}>
           <h1
             id="home-heading"
             style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
@@ -191,7 +193,7 @@ export default function VolunteerPortal(props) {
       );
     } else if (view === "your-offer") {
       return (
-        <Container id="volunteer-info" style={{ marginTop: 50 }}>
+        <Container id="volunteer-info" style={{ marginTop: 50, marginBottom: width < 980 ? 30 : 0 }}>
           <h1
             id="home-heading"
             style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
@@ -226,7 +228,7 @@ export default function VolunteerPortal(props) {
             isLoggedIn={true}
           />
           <div class="flex-container">
-            <div style={{ width: "75%", float: "left" }}>
+            <div style={{ width: width < 980 ? "100%" : "75%", float: "left"}}>
               <Jumbotron fluid id="jumbo-volunteer">
                 <ProfileHeader
                   user={user}
@@ -235,18 +237,18 @@ export default function VolunteerPortal(props) {
               </Jumbotron>
               {mainContentView()}
             </div>
+            <span style={{display: width < 980 ? 'none' : 'inline'}} id="vertical-line"></span>
             <div
               style={{
-                width: "25%",
+                width: width < 980 ? "100%" : "23%",
                 float: "left",
-                borderLeft: "1px solid #dee2e6",
-                height: "100%",
+                height: "100%"
               }}
             >
               <Container>
                 <h1
                   id="home-heading"
-                  style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
+                  style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F"}}
                 >
                   Important Information
                 </h1>
@@ -258,106 +260,14 @@ export default function VolunteerPortal(props) {
                   id="requestCall"
                   style={{ marginTop: 30, marginBottom: 10 }}
                 ></p>
-              </Container>
-            </div>
-          </div>
-          {/* <Container id="volunteer-info" style={{ marginTop: 50 }}>
-            <Row className="justify-content-md-center">
-              <Col lg={1}></Col>
-              <Col lg={6} md={10} sm={12} style={{ marginTop: -20 }}>
-                <Container style={{ padding: 0, marginLeft: 0 }}>
-                  <Button
-                    id={tabNum === 1 ? "tab-button-selected" : "tab-button"}
-                    onClick={() => {
-                      setTabNum(1);
-                    }}
-                  >
-                    Your Offer
-                  </Button>
-                  <Button
-                    id={tabNum === 2 ? "tab-button-selected" : "tab-button"}
-                    onClick={() => {
-                      setTabNum(2);
-                    }}
-                  >
-                    Pending ({pendingRequests.length}) / Active (
-                    {acceptedRequests.length})
-                  </Button>
-                  <Button
-                    id={tabNum === 3 ? "tab-button-selected" : "tab-button"}
-                    onClick={() => {
-                      setTabNum(3);
-                    }}
-                  >
-                    Completed ({completedRequests.length})
-                  </Button>
-                </Container>
-                <Container
-                  id="newOfferContainer"
-                  style={
-                    tabNum === 1 ? { display: "block" } : { display: "none" }
-                  }
-                >
-                  {foundUser ? (
-                    <YourOffer
-                      user={user}
-                      setLanguage={props.setLanguage}
-                      language={props.language}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </Container>
-                <Container
-                  id="newOfferContainer"
-                  style={
-                    tabNum === 2 ? { display: "block" } : { display: "none" }
-                  }
-                >
-                  <CurrentVolunteerRequests
-                    user={user}
-                    pendingRequests={pendingRequests}
-                    acceptedRequests={acceptedRequests}
-                    moveRequestFromPendingToInProgress={
-                      moveRequestFromPendingToInProgress
-                    }
-                    rejectAPendingRequest={rejectAPendingRequest}
-                    completeAnInProgressRequest={completeAnInProgressRequest}
-                  />
-                </Container>
-                <Container
-                  id="newOfferContainer"
-                  style={
-                    tabNum === 3 ? { display: "block" } : { display: "none" }
-                  }
-                >
-                  <CompletedVolunteerRequests
-                    user={user}
-                    completedRequests={completedRequests}
-                  />
-                </Container>
-              </Col>
-              <Col lg={4} md={10} sm={12} style={{ marginTop: 0 }}>
-                <h5
-                  id="volunteer-offer-status"
-                  style={{ fontSize: 24, fontWeight: "bold", color: "black" }}
-                >
-                  Organization Beacons
-                </h5>
-                <Container
-                  id="newOfferContainer"
-                  style={{ display: "block", marginTop: 10 }}
-                >
-                  <VolunteerBeacons
+                <VolunteerBeacons
                     beacons={beacons}
                     volunteer={user}
                     fetchBeacons={fetchBeacons}
                   />
-                </Container>
-              </Col>
-              <Col lg={1}></Col>
-            </Row>
-          </Container> */}
+              </Container>
+            </div>
+          </div>
         </div>
         <Footer />
         <AccountInfo

@@ -39,6 +39,24 @@ export default function RequestCard(props) {
     props.completeAnInProgressRequest(currRequest);
   };
 
+  const helpNeeded = () => {
+    let volunteers_needed = props.request.status.volunteer_quota;
+    var matchedVolunteers = 0;
+    props.request.status.volunteers.forEach((volunteer_status_obj) => {
+      if (volunteer_status_obj.volunteer !== props.user._id) {
+        if (
+          parseInt(volunteer_status_obj.current_status) ===
+            volunteer_status.IN_PROGRESS ||
+          parseInt(volunteer_status_obj.current_status) ===
+            volunteer_status.COMPLETE
+        ) {
+          matchedVolunteers += 1;
+        }
+      }
+    });
+    return matchedVolunteers < volunteers_needed;
+  };
+
   if (!loaded) {
     return <></>;
   }
@@ -78,11 +96,12 @@ export default function RequestCard(props) {
   }
   const name = () => {
     if (props.requestStatus === volunteer_status.PENDING) {
-      return "New request";
+      if (helpNeeded()) return "New request";
+      else return "Someone else is on it"
     } else {
-      if (props.request.personal_info.requester_name.length > 10) {
-        return props.request.personal_info.requester_name.slice(0, 10) + "...";
-      }
+      // if (props.request.personal_info.requester_name.length > 10) {
+      //   return props.request.personal_info.requester_name.slice(0, 10) + "...";
+      // }
       return props.request.personal_info.requester_name;
     }
   };
@@ -101,22 +120,41 @@ export default function RequestCard(props) {
   const statusBubble = () => {
     switch (props.requestStatus) {
       case volunteer_status.PENDING:
-        return (
-          <span
-            style={{
-              display: "inline-block",
-              borderRadius: "50%",
-              marginLeft: 5,
-              // backgroundColor: 'rgba(255, 89, 36, 0.26)',
-              color: props.color,
-              textAlign: "center",
-              height: 20,
-              width: 20,
-            }}
-          >
-            <FontAwesomeIcon icon={faExclamationCircle} />
-          </span>
-        );
+        if (helpNeeded()) {
+          return (
+            <span
+              style={{
+                display: "inline-block",
+                borderRadius: "50%",
+                marginLeft: 5,
+                // backgroundColor: 'rgba(255, 89, 36, 0.26)',
+                color: props.color,
+                textAlign: "center",
+                height: 20,
+                width: 20,
+              }}
+            >
+              <FontAwesomeIcon icon={faExclamationCircle} />
+            </span>
+          );
+        } else {
+          return (
+            <span
+              style={{
+                display: "inline-block",
+                borderRadius: "50%",
+                marginLeft: 5,
+                // backgroundColor: 'rgba(255, 89, 36, 0.26)',
+                color: '#7F7F7F',
+                textAlign: "center",
+                height: 20,
+                width: 20,
+              }}
+            >
+              <FontAwesomeIcon icon={faCheck} />
+            </span>
+          );
+        }
       case volunteer_status.IN_PROGRESS:
         return (
           <span
@@ -181,28 +219,29 @@ export default function RequestCard(props) {
           border: "1px solid #CECECE",
           boxSizing: "border-box",
           borderRadius: "0px 0px 6px 6px",
-          borderTop: "2px solid " + props.color,
+          borderTop: "2px solid " + (helpNeeded() ? props.color : '#7F7F7F'),
           marginBottom: 16,
           marginRight: 10,
           marginLeft: 10,
-          cursor: "pointer",
+          cursor: helpNeeded() ? "pointer" : "auto",
         }}
+        disabled ={!helpNeeded()}
         onClick={() => {
-          handleRequestClick();
+          if (helpNeeded()) handleRequestClick();
         }}
       >
         <div style={{ marginTop: 20, marginLeft: 25, marginRight: 19 }}>
-          <h1 id="volunteer-name" style={{ fontSize: 16, color: "#4F4F4F" }}>
+          <h1 id="volunteer-name" style={{ fontSize: 16, color: "#4F4F4F", textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '85%', whiteSpace: 'nowrap', display: 'inline-block' }}>
             {name()}
           </h1>
-          <p id="regular-text" style={{ fontSize: 14, float: "right" }}>
-            {date()}
+          <span id="regular-text" style={{ fontSize: 14, float: "right", whiteSpace: 'nowrap' }}>
+            {/* {date()} */}
             {statusBubble()}
-          </p>
+          </span>
         </div>
-        <p id="regular-text" style={{ fontSize: 14, marginLeft: 25 }}>
+        <span id="regular-text" style={{ fontSize: 14, marginLeft: 25, textOverflow: 'ellipsis', overflow: 'hidden',  maxWidth: '85%', whiteSpace: 'nowrap', display: 'inline-block' }}>
           {resources()}
-        </p>
+        </span>
       </div>
       <RequestInfo
         modalOpen={modalOpen}

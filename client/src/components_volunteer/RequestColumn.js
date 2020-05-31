@@ -14,17 +14,17 @@ export default function RequestColumn(props) {
   useEffect(() => {
     switch (props.requestStatus) {
       case volunteer_status.PENDING:
-        setTitle("Requires Action (" + props.requests.length + ")");
+        setTitle("New (" + props.requests.length + ")");
         setColor("#EB5757");
         setLoaded(true);
         break;
       case volunteer_status.IN_PROGRESS:
-        setTitle("In Progress (" + props.requests.length + ")");
+        setTitle("Active (" + props.requests.length + ")");
         setColor("#DB9327");
         setLoaded(true);
         break;
       case volunteer_status.COMPLETE:
-        setTitle("Completed (" + props.requests.length + ")");
+        setTitle("Complete (" + props.requests.length + ")");
         setColor("#3ABD24");
         setLoaded(true);
         break;
@@ -63,7 +63,7 @@ export default function RequestColumn(props) {
     <>
       <p
         id="regular-text"
-        style={{ fontSize: 16, color: "#4F4F4F", fontWeight: 600 }}
+        style={{ fontSize: 16, color: "#4F4F4F", fontWeight: 600, display: props.notitle ? 'none' : 'block' }}
       >
         {title}
       </p>
