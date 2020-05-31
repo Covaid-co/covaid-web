@@ -14,9 +14,6 @@ import Container from "react-bootstrap/Container";
 import Cookie from "js-cookie";
 import orgImg from "../assets/orgNew.png";
 import NavBar from "../components/NavBar";
-import AboutUs from "../components_modals/AboutUs";
-import HowItWorks from "../components_modals/HowItWorks";
-import Feedback from "../components_modals/Feedback";
 import Footer from "../components/Footer";
 
 export default function OrgLogin(props) {
@@ -24,9 +21,6 @@ export default function OrgLogin(props) {
     emailOrg: "",
     passOrg: "",
   });
-
-  const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,39 +56,14 @@ export default function OrgLogin(props) {
       });
   };
 
-  const getCurrentModal = () => {
-    var modal = <></>;
-    if (modalType === 1) {
-      modal = (
-        <AboutUs showModal={showModal} hideModal={() => setShowModal(false)} />
-      );
-    } else if (modalType === 2) {
-      modal = (
-        <HowItWorks
-          showModal={showModal}
-          hideModal={() => setShowModal(false)}
-        />
-      );
-    } else if (modalType === 4) {
-      modal = (
-        <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
-      );
-    }
-    return modal;
-  };
-
-  const handleShowModal = (type) => {
-    setModalType(type);
-    setShowModal(true);
-  };
-
   return (
     <>
       <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        pageLoaded={true}
         isLoggedIn={false}
-        totalVolunteers={0}
-        orgPortal={true}
-        handleShowModal={handleShowModal}
+        simplified={true}
       />
       <Container style={{ maxWidth: 1500 }}>
         <Row>
@@ -148,7 +117,6 @@ export default function OrgLogin(props) {
           </Col>
         </Row>
       </Container>
-      {getCurrentModal()}
       <Footer key="2" handleShowModal={() => {}} />
     </>
   );

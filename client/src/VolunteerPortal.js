@@ -167,7 +167,10 @@ export default function VolunteerPortal(props) {
   const mainContentView = () => {
     if (view === "request-dashboard") {
       return (
-        <Container id="volunteer-info" style={{ marginTop: 50, marginBottom: width < 980 ? 30 : 0 }}>
+        <Container
+          id="volunteer-info"
+          style={{ marginTop: 50, marginBottom: width < 980 ? 30 : 0 }}
+        >
           <h1
             id="home-heading"
             style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
@@ -193,7 +196,10 @@ export default function VolunteerPortal(props) {
       );
     } else if (view === "your-offer") {
       return (
-        <Container id="volunteer-info" style={{ marginTop: 50, marginBottom: width < 980 ? 30 : 0 }}>
+        <Container
+          id="volunteer-info"
+          style={{ marginTop: 50, marginBottom: width < 980 ? 30 : 0 }}
+        >
           <h1
             id="home-heading"
             style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
@@ -228,7 +234,7 @@ export default function VolunteerPortal(props) {
             isLoggedIn={true}
           />
           <div class="flex-container">
-            <div style={{ width: width < 980 ? "100%" : "75%", float: "left"}}>
+            <div style={{ width: width < 980 ? "100%" : "75%", float: "left" }}>
               <Jumbotron fluid id="jumbo-volunteer">
                 <ProfileHeader
                   user={user}
@@ -237,18 +243,21 @@ export default function VolunteerPortal(props) {
               </Jumbotron>
               {mainContentView()}
             </div>
-            <span style={{display: width < 980 ? 'none' : 'inline'}} id="vertical-line"></span>
+            <span
+              style={{ display: width < 980 ? "none" : "inline" }}
+              id="vertical-line"
+            ></span>
             <div
               style={{
                 width: width < 980 ? "100%" : "23%",
                 float: "left",
-                height: "100%"
+                height: "100%",
               }}
             >
               <Container>
                 <h1
                   id="home-heading"
-                  style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F"}}
+                  style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
                 >
                   Important Information
                 </h1>
@@ -261,10 +270,10 @@ export default function VolunteerPortal(props) {
                   style={{ marginTop: 30, marginBottom: 10 }}
                 ></p>
                 <VolunteerBeacons
-                    beacons={beacons}
-                    volunteer={user}
-                    fetchBeacons={fetchBeacons}
-                  />
+                  beacons={beacons}
+                  volunteer={user}
+                  fetchBeacons={fetchBeacons}
+                />
               </Container>
             </div>
           </div>
@@ -278,7 +287,12 @@ export default function VolunteerPortal(props) {
       </>
     );
   } else if (loginError) {
-    return <VolunteerLogin />;
+    return (
+      <VolunteerLogin
+        setLanguage={props.setLanguage}
+        language={props.language}
+      />
+    );
   } else {
     return <></>;
   }

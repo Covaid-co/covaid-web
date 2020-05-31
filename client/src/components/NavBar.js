@@ -184,8 +184,13 @@ export default function CovaidNavbar(props) {
             style={{ display: "block", marginRight: "5%", marginBottom: 3 }}
           >
             {props.orgPortal ? <></> : translateButton()}
-            {width > 767 ? (
-              <span id="hello-name">
+            {width > 767 && !props.orgPortal ? (
+              <span
+                id="hello-name"
+                onClick={() =>
+                  window.open(currURL + "/volunteerPortal", "_self")
+                }
+              >
                 {" "}
                 {translatedStrings[props.language].Hello} {props.first_name}
               </span>
@@ -326,7 +331,7 @@ export default function CovaidNavbar(props) {
 
   return (
     <>
-      {props.isLoggedIn ? (
+      {props.isLoggedIn && !props.orgPortal ? (
         <Navbar expand="md" id="banner">
           <span style={{ cursor: "pointer", fontWeight: 600 }}>
             Exclusive for Volunteers: Join the free Markk app and get gift cards

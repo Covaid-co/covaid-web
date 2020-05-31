@@ -14,7 +14,6 @@ import NewLogin from "./components_modals/NewLogin";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { currURL } from "./constants";
-import { volunteerButton } from "./HomePageHelpers";
 import home from "./assets/home.png";
 import "./HomePage.css";
 import { translations } from "./translations/translations";
@@ -98,7 +97,7 @@ export default function HomePage(props) {
         <Container id="jumboContainer">
           <Row>
             <Col md={6} id="jumbo-text">
-              <h1 id="home-heading">
+              <h1 id="home-heading" style={{ marginTop: 25 }}>
                 {translatedStrings[props.language].HomePage_Title}
               </h1>
               <p id="home-subheading">
@@ -108,9 +107,12 @@ export default function HomePage(props) {
                 onClick={() => window.open(currURL + "/request", "_self")}
                 id="request-button"
               >
-                {translatedStrings[props.language].INeedHelp} →
+                {/* {translatedStrings[props.language].INeedHelp} → */}
+                <font style={{ float: "left" }}>
+                  {translatedStrings[props.language].INeedHelp}
+                </font>
+                <font style={{ float: "right" }}>→</font>
               </Button>{" "}
-              {volunteerButton(loggedIn, props.language)}
               <br />
               <Button
                 id="resources-button"
@@ -119,9 +121,12 @@ export default function HomePage(props) {
                 }
               >
                 COVID-19 Information Hub
+                {/* <font style={{fontSize: 24, marginTop: -5, marginLeft: 5}}>
+                  ›
+                </font> */}
               </Button>
             </Col>
-            <Col md={6} style={{ marginTop: 0 }}>
+            <Col md={6} style={{ marginTop: 0, textAlign: "center" }}>
               <img id="org-img" alt="" src={home}></img>
             </Col>
           </Row>

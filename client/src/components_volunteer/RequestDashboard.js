@@ -34,32 +34,32 @@ export default function RequestDashboard(props) {
   if (width < 980) {
     return (
       <>
-      <p
-        id={selectedTab(0)}
-        onClick={() => {
-          setTab(0);
-        }}
-      >
-        New
-      </p>
-      <p
-        id={selectedTab(1)}
-        onClick={() => {
-          setTab(1);
-        }}
-      >
-        Active
-      </p>
-      <p
-        id={selectedTab(2)}
-        onClick={() => {
-          setTab(2);
-        }}
-      >
-        Complete
-      </p>
-      <Container id="requester-tab" style={displayTab(0)}>
-        <RequestColumn
+        <p
+          id={selectedTab(0)}
+          onClick={() => {
+            setTab(0);
+          }}
+        >
+          New
+        </p>
+        <p
+          id={selectedTab(1)}
+          onClick={() => {
+            setTab(1);
+          }}
+        >
+          Active
+        </p>
+        <p
+          id={selectedTab(2)}
+          onClick={() => {
+            setTab(2);
+          }}
+        >
+          Complete
+        </p>
+        <Container id="requester-tab" style={displayTab(0)}>
+          <RequestColumn
             requests={props.pendingRequests}
             notitle={true}
             requestStatus={volunteer_status.PENDING}
@@ -71,8 +71,8 @@ export default function RequestDashboard(props) {
             completeAnInProgressRequest={props.completeAnInProgressRequest}
           />
         </Container>
-      <Container id="requester-tab" style={displayTab(1)}>
-        <RequestColumn
+        <Container id="requester-tab" style={displayTab(1)}>
+          <RequestColumn
             requests={props.acceptedRequests}
             notitle={true}
             requestStatus={volunteer_status.IN_PROGRESS}
@@ -83,15 +83,15 @@ export default function RequestDashboard(props) {
             rejectAPendingRequest={props.rejectAPendingRequest}
             completeAnInProgressRequest={props.completeAnInProgressRequest}
           />
-      </Container>
-      <Container id="requester-tab" style={displayTab(2)}>
-        <RequestColumn
+        </Container>
+        <Container id="requester-tab" style={displayTab(2)}>
+          <RequestColumn
             requests={props.completedRequests}
             notitle={true}
             requestStatus={volunteer_status.COMPLETE}
             user={props.user}
           />
-      </Container>
+        </Container>
       </>
     );
   }

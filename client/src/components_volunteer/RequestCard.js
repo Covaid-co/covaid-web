@@ -97,7 +97,7 @@ export default function RequestCard(props) {
   const name = () => {
     if (props.requestStatus === volunteer_status.PENDING) {
       if (helpNeeded()) return "New request";
-      else return "Someone else is on it"
+      else return "Someone else is on it";
     } else {
       // if (props.request.personal_info.requester_name.length > 10) {
       //   return props.request.personal_info.requester_name.slice(0, 10) + "...";
@@ -145,7 +145,7 @@ export default function RequestCard(props) {
                 borderRadius: "50%",
                 marginLeft: 5,
                 // backgroundColor: 'rgba(255, 89, 36, 0.26)',
-                color: '#7F7F7F',
+                color: "#7F7F7F",
                 textAlign: "center",
                 height: 20,
                 width: 20,
@@ -219,27 +219,52 @@ export default function RequestCard(props) {
           border: "1px solid #CECECE",
           boxSizing: "border-box",
           borderRadius: "0px 0px 6px 6px",
-          borderTop: "2px solid " + (helpNeeded() ? props.color : '#7F7F7F'),
+          borderTop: "2px solid " + (helpNeeded() ? props.color : "#7F7F7F"),
           marginBottom: 16,
           marginRight: 10,
           marginLeft: 10,
           cursor: helpNeeded() ? "pointer" : "auto",
         }}
-        disabled ={!helpNeeded()}
+        disabled={!helpNeeded()}
         onClick={() => {
           if (helpNeeded()) handleRequestClick();
         }}
       >
         <div style={{ marginTop: 20, marginLeft: 25, marginRight: 19 }}>
-          <h1 id="volunteer-name" style={{ fontSize: 16, color: "#4F4F4F", textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '85%', whiteSpace: 'nowrap', display: 'inline-block' }}>
+          <h1
+            id="volunteer-name"
+            style={{
+              fontSize: 16,
+              color: "#4F4F4F",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              maxWidth: "85%",
+              whiteSpace: "nowrap",
+              display: "inline-block",
+            }}
+          >
             {name()}
           </h1>
-          <span id="regular-text" style={{ fontSize: 14, float: "right", whiteSpace: 'nowrap' }}>
+          <span
+            id="regular-text"
+            style={{ fontSize: 14, float: "right", whiteSpace: "nowrap" }}
+          >
             {/* {date()} */}
             {statusBubble()}
           </span>
         </div>
-        <span id="regular-text" style={{ fontSize: 14, marginLeft: 25, textOverflow: 'ellipsis', overflow: 'hidden',  maxWidth: '85%', whiteSpace: 'nowrap', display: 'inline-block' }}>
+        <span
+          id="regular-text"
+          style={{
+            fontSize: 14,
+            marginLeft: 25,
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            maxWidth: "85%",
+            whiteSpace: "nowrap",
+            display: "inline-block",
+          }}
+        >
           {resources()}
         </span>
       </div>
