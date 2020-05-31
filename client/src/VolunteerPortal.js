@@ -213,7 +213,7 @@ export default function VolunteerPortal(props) {
     return (
       <>
         <div className="App">
-          <div ></div>
+          <div></div>
           <NavBar
             setLanguage={props.setLanguage}
             language={"en"}
@@ -226,17 +226,24 @@ export default function VolunteerPortal(props) {
             isLoggedIn={true}
           />
           <div class="flex-container">
-            <div style={{width: '75%', float: 'left'}}>
-            <Jumbotron fluid id="jumbo-volunteer">
-              <ProfileHeader
-                user={user}
-                setShowAccountModal={setShowAccountModal}
-              />
-            </Jumbotron>
-            {mainContentView()}
+            <div style={{ width: "75%", float: "left" }}>
+              <Jumbotron fluid id="jumbo-volunteer">
+                <ProfileHeader
+                  user={user}
+                  setShowAccountModal={setShowAccountModal}
+                />
+              </Jumbotron>
+              {mainContentView()}
             </div>
-            <div style={{width: '25%', float: 'left', borderLeft: "1px solid #dee2e6", height: '100%'}}>
-            <Container>
+            <div
+              style={{
+                width: "25%",
+                float: "left",
+                borderLeft: "1px solid #dee2e6",
+                height: "100%",
+              }}
+            >
+              <Container>
                 <h1
                   id="home-heading"
                   style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
@@ -244,10 +251,14 @@ export default function VolunteerPortal(props) {
                   Important Information
                 </h1>
                 <p id="regular-text" style={{ fontSize: 16 }}>
-                  Messages from your organization, Covaid updates, and miscellaneous resources
+                  Messages from your organization, Covaid updates, and
+                  miscellaneous resources
                 </p>
-                <p id="requestCall" style={{ marginTop: 30, marginBottom: 10 }}></p>
-            </Container>
+                <p
+                  id="requestCall"
+                  style={{ marginTop: 30, marginBottom: 10 }}
+                ></p>
+              </Container>
             </div>
           </div>
           {/* <Container id="volunteer-info" style={{ marginTop: 50 }}>

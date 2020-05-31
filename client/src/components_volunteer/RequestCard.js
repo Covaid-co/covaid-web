@@ -81,7 +81,7 @@ export default function RequestCard(props) {
       return "New request";
     } else {
       if (props.request.personal_info.requester_name.length > 10) {
-        return props.request.personal_info.requester_name.slice(0, 10) + '...'
+        return props.request.personal_info.requester_name.slice(0, 10) + "...";
       }
       return props.request.personal_info.requester_name;
     }
@@ -91,9 +91,7 @@ export default function RequestCard(props) {
   };
   const date = () => {
     if (props.requestStatus === volunteer_status.COMPLETE) {
-      return (
-        getFormattedDate(new Date(props.request.status.completed_date))
-      );
+      return getFormattedDate(new Date(props.request.status.completed_date));
     } else {
       return (
         "Due: " + getFormattedDate(new Date(props.request.request_info.date))
