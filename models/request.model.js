@@ -19,6 +19,7 @@ let RequestInfo = new Schema(
     details: String,
     time: String,
     date: String,
+    behalf: Boolean
   },
   { noId: true }
 );

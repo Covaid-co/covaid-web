@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
+import Alert from "react-bootstrap/Alert";
 
 import PhoneNumber from "../components/PhoneNumber";
 import CheckForm from "../components/CheckForm";
@@ -21,6 +22,7 @@ export default function RequestPage1(props) {
   const [toastMessage, setToastMessage] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
   const [languageChecked, setLanguageChecked] = useState({});
+  const [on_behalf, setOnBehalf] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     name_request: "",
     email: "",
@@ -50,6 +52,7 @@ export default function RequestPage1(props) {
         name: fields.name_request,
         email: fields.email,
         languages: languages,
+        behalf: on_behalf
       };
       props.setStepNum(3);
       props.setFirstPage(result);
@@ -119,6 +122,24 @@ export default function RequestPage1(props) {
           </p>
         </Col>
       </Row>
+      <div style={{display: 'table', marginBottom: 5}}>
+        <Form.Check
+          type="checkbox"
+          style={{ marginTop: 0, marginRight: 5, display: 'inline' }}
+          id="default-checkbox"
+          checked={on_behalf}
+          onChange={() => {
+            setOnBehalf(!on_behalf)
+          }}
+        />
+        <p style={{ display: 'table-cell', verticalAlign: 'middle' }} id="behalf-text" onClick={() => {
+            setOnBehalf(!on_behalf)
+          }}>Request on behalf of someone else</p>
+      </div>
+      <Alert style={{ marginBottom: 20, display: on_behalf ? 'block' : 'none' }} variant={"warning"}>
+        Please fill in the fields above with information pertaining to the person in need of support. 
+        If you’d like us to contact you, please leave ur contact in the details on the next page.
+      </Alert>
       <h5 id="subtitle-light" style={{ marginTop: 10, marginBottom: 5 }}>
         {props.translations[props.language].WhatLanguageDoYouSpeak}
       </h5>

@@ -53,6 +53,7 @@ export const paymentOptions = [
   "Call ahead to store and pay (Best option)",
   "Have volunteer pay and reimburse when delivered",
   "N/A",
+  "Donation (Only if absolutely necessary)"
 ];
 export const defaultTerms = [
   "I have not traveled out-of-country in the past 14 days",

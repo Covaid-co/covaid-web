@@ -7,6 +7,8 @@ import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 
 import NewLogin from "../components_modals/NewLogin";
 import MapModal from "../components_modals/MapModal";
@@ -63,24 +65,64 @@ export default function CovaidNavbar(props) {
 
   const translateButton = () => {
     return (
-      <Button
-        variant="outline-light"
-        id="login-button"
-        onClick={() => {
-          if (props.language === "es") {
-            props.setLanguage("en");
-          } else {
-            props.setLanguage("es");
-          }
-        }}
-      >
-        <i
-          className="fa fa-globe"
-          aria-hidden="true"
-          style={{ marginRight: 7 }}
-        ></i>
-        {props.language === "en" ? "English" : "Español"}
-      </Button>
+      <Dropdown
+          key={'down'}
+          id={`dropdown-button-drop-down`}
+          drop={'down'}
+          variant="secondary"
+          style={{display:'inline'}}
+          className="mobileDrop"
+          title={` Drop ${'down'} `}
+        >
+          <Dropdown.Toggle size="sm" variant="secondary" id="languageButton">
+            <i
+              className="fa fa-globe"
+              aria-hidden="true"
+              style={{ marginRight: 7 }}
+            ></i>
+            {props.language === "en" ? "EN" : "ES"}
+          </Dropdown.Toggle>
+          <Dropdown.Menu style={{marginTop: 10}}>
+            <Dropdown.Item
+              onSelect={() => props.setLanguage('en')}
+              active={props.language === "en"}
+            >
+              {'English'}
+            </Dropdown.Item>
+            <Dropdown.Item
+              onSelect={() => props.setLanguage('es')}
+              active={props.language === "es"}
+            >
+              {'Español'}
+            </Dropdown.Item>
+          </Dropdown.Menu>
+      </Dropdown>
+      // <>
+      // <Button
+      //   variant="outline-light"
+      //   id="login-button"
+      //   onClick={() => {
+      //     if (props.language === "es") {
+      //       props.setLanguage("en");
+      //     } else {
+      //       props.setLanguage("es");
+      //     }
+      //   }}
+      // >
+      //   <i
+      //     className="fa fa-globe"
+      //     aria-hidden="true"
+      //     style={{ marginRight: 7 }}
+      //   ></i>
+      //   {props.language === "en" ? "Español" : "English"}
+      // </Button>
+      // <select name="cars" id="cars">
+      //   <option value="volvo">Volvo</option>
+      //   <option value="saab">Saab</option>
+      //   <option value="opel">Opel</option>
+      //   <option value="audi">Audi</option>
+      // </select>
+      // </>
     );
   };
 

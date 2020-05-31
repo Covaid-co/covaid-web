@@ -122,10 +122,7 @@ export default function HomePage(props) {
                   window.open(currURL + "/information-hub", "_self")
                 }
               >
-                COVID-19 Information Hub 
-                {/* <font style={{fontSize: 24, marginTop: -5, marginLeft: 5}}>
-                  ›
-                </font> */}
+                COVID-19 Information Hub
               </Button>
             </Col>
             <Col md={6} style={{ marginTop: 0, textAlign: 'center' }}>
