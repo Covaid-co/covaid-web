@@ -151,11 +151,26 @@
   margin-left: -18px;
   margin-bottom: 10px;
 }
-
+#status-change-description {
+  font-family: "Inter";
+  font-size: 14px;
+  line-height: 17px;
+}
 #volunteer-offer-status {
   font-family: "Montserrat";
   font-size: 20;
   font-weight: bold;
+}
+#offer-detail-response {
+  font-family: Inter;
+  font-size: 16px;
+  line-height: 19px;
+}
+#offer-detail-response-italic {
+  font-family: Inter;
+  font-size: 16px;
+  line-height: 19px;
+  font-style: italic;
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {

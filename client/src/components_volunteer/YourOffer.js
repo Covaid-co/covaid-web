@@ -9,11 +9,13 @@ import fetch_a from "../util/fetch_auth";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
+import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Toast from "react-bootstrap/Toast";
 import Alert from "react-bootstrap/Alert";
 import Details from "../components_homepage/Details";
+import NewCar from "../components_homepage/NewHasCar";
 
 import { generateURL, extractTrueObj } from "../Helpers";
 import { defaultResources, toastTime } from "../constants";
@@ -28,6 +30,8 @@ export default function YourOffer(props) {
   const [isActive, setIsActive] = useState(false);
   const [isUnPublish, setIsUnPublish] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [hasCar, setHasCar] = useState(false);
 
   // Helper function to update list state elements
   const setCurrentUserObject = (userList, fullList, setFunction) => {
@@ -45,6 +49,7 @@ export default function YourOffer(props) {
     // Fill in existing user info to state
     fields.details = props.user.offer.details;
     setAvailability(props.user.availability);
+    setHasCar(props.user.offer.car);
     async function getResources() {
       if (!props.user.association) {
         setCurrentUserObject(
@@ -72,6 +77,7 @@ export default function YourOffer(props) {
   function stateChange(setter, publish) {
     setTimeout(function () {
       setAvailability(publish);
+      setIsEditing(false);
       setter(false);
     }, 750);
   }
@@ -131,48 +137,70 @@ export default function YourOffer(props) {
   var visibleText = <></>;
   var publishButton = <></>;
   var updateButton = <></>;
+  var offerDetailsCol = <></>;
 
-  var updateText = "Update changes";
-  var publishText = "Publish your offer";
-  var unpublishText = "Unpublish your offer";
+  var updateText = "Save";
+  var editText = "Edit";
+  var publishText = "Mark as active";
+  var unpublishText = "Mark as inactive";
   var spinnerComponent = <Spinner animation="border" />;
+  const saveOfferButton = (
+    <Button
+      id="large-button"
+      style={{ marginTop: 20 }}
+      onClick={() => {
+        handleUpdate(true, setIsUpdate);
+      }}
+    >
+      {isUpdate ? spinnerComponent : updateText}
+    </Button>
+  );
+  const editOfferButton = (
+    <Button
+      id="large-button-empty"
+      style={{
+        marginTop: 20,
+      }}
+      onClick={() => {
+        console.log(props.user.offer);
+        setIsEditing(true);
+      }}
+    >
+      {editText}
+    </Button>
+  );
 
+  const statusChangeDescription = (
+    <p id="status-change-description" style={{ color: "#7f7f7f" }}>
+      Marking yourselve as active/inactive will notify the admins if you should
+      be matched to a request.
+    </p>
+  );
   if (availability) {
     // Render specific text if user is available
     visibleText = (
-      <h5 id="volunteer-offer-status" style={{ color: "#45A03D" }}>
-        *Your offer is currently live and on the community bulletin
+      <h5 id="volunteer-offer-status" style={{ color: "#2670FF" }}>
+        You are an active volunteer.
       </h5>
     );
     publishButton = (
       <Button
-        id="large-button-empty"
-        style={{ color: "#AE2F2F", borderColor: "#AE2F2F", marginTop: 5 }}
+        id="large-inactivate-button"
         onClick={() => handleUpdate(false, setIsUnPublish)}
       >
         {isUnPublish ? spinnerComponent : unpublishText}
       </Button>
     );
-    updateButton = (
-      <Button
-        id="large-button"
-        style={{ marginTop: 20 }}
-        onClick={() => handleUpdate(true, setIsUpdate)}
-      >
-        {isUpdate ? spinnerComponent : updateText}
-      </Button>
-    );
   } else {
     // Render specific test is user is unavailable
     visibleText = (
-      <h5 id="volunteer-offer-status" style={{ color: "#AE2F2F" }}>
-        *Your offer is currently inactive
+      <h5 id="volunteer-offer-status" style={{ color: "#EB5757" }}>
+        You are an inactive volunteer.
       </h5>
     );
     publishButton = (
       <Button
-        id="large-button"
-        style={{ marginTop: 20 }}
+        id="large-activate-button"
         onClick={() => handleUpdate(true, setIsActive)}
       >
         {isActive ? spinnerComponent : publishText}
@@ -183,6 +211,19 @@ export default function YourOffer(props) {
   return (
     <Row>
       <Col>
+        {/* <Alert
+          style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
+          variant={"danger"}
+          id="regular-text"
+        >
+          If you are showing any symptoms or have traveled in the past 2 weeks,
+          please refrain from marking yourself as available.
+        </Alert> */}
+        {visibleText}
+        {statusChangeDescription}
+        {publishButton}
+      </Col>
+      <Col>
         <Toast
           show={showToast}
           delay={toastTime}
@@ -192,32 +233,61 @@ export default function YourOffer(props) {
         >
           <Toast.Body>{toastMessage}</Toast.Body>
         </Toast>
-        <Alert
-          style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
-          variant={"danger"}
-          id="regular-text"
-        >
-          If you are showing any symptoms or have traveled in the past 2 weeks,
-          please refrain from marking yourself as available.
-        </Alert>
-        <Form onSubmit={handleUpdate} style={{ textAlign: "left" }}>
-          {visibleText}
-          <p id="requestCall" style={{ marginTop: -15, marginBottom: 15 }}>
-            &nbsp;
-          </p>
-          <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
-            What can you help with?
-          </h5>
-          <CheckForm obj={resources} setObj={setResources} />
-          <Details
-            fields={fields.details}
-            setLanguage={props.setLanguage}
-            language={props.language}
-            handleFieldChange={handleFieldChange}
-          />
-          {updateButton}
-          {publishButton}
-        </Form>
+
+        <h3 id="large-text-bold" style={{ marginBottom: 5 }}>
+          Details
+        </h3>
+        <p id="requestCall" style={{ marginTop: -15, marginBottom: 15 }}>
+          &nbsp;
+        </p>
+
+        {isEditing && (
+          <Form onSubmit={handleUpdate} style={{ textAlign: "left" }}>
+            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+              What can you help with?
+            </h5>
+
+            <CheckForm obj={resources} setObj={setResources} />
+            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+              Can you drive?
+            </h5>
+            <NewCar hasCar={hasCar} setHasCar={setHasCar} />
+            <Details
+              fields={fields.details}
+              setLanguage={props.setLanguage}
+              language={props.language}
+              handleFieldChange={handleFieldChange}
+            />
+            {saveOfferButton}
+          </Form>
+        )}
+        {!isEditing && (
+          <div>
+            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+              What can you help with?
+            </h5>
+            <p id="#offer-detail-response" style={{ color: "#7F7F7F" }}>
+              {Object.keys(resources)
+                .filter(function (id) {
+                  return resources[id];
+                })
+                .join(", ")}
+            </p>
+            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+              Can you drive?
+            </h5>
+            <p id="#offer-detail-response" style={{ color: "#7F7F7F" }}>
+              {hasCar ? "Yes" : "No"}
+            </p>
+            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+              Details?
+            </h5>
+            <p id="#offer-detail-response-italic" style={{ color: "#7F7F7F" }}>
+              {fields.details}
+            </p>
+            {editOfferButton}
+          </div>
+        )}
       </Col>
     </Row>
   );
