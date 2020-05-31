@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import RequestInfo from "./RequestInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle, faClock, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { volunteer_status, defaultResources } from "../constants";
@@ -14,9 +15,25 @@ export default function RequestCard(props) {
   const [modalMode, setModalMode] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [currRequest, setCurrRequest] = useState({});
+  const [volunteerSpecificInfo, setVolunteerSpecificInfo] = useState({});
   useEffect(() => {
     setLoaded(true);
   }, [props.request]);
+
+  // Callback to change VolunteerPortal state (Pending -> In Progress)
+  const acceptRequest = () => {
+    props.moveRequestFromPendingToInProgress(currRequest);
+  };
+
+  // Callback to change VolunteerPortal state (Reject (Disappear))
+  const rejectRequest = () => {
+    props.rejectAPendingRequest(currRequest);
+  };
+
+  // Callback to change VolunteerPortal state (In Progress -> Complete)
+  const completeARequest = () => {
+    props.completeAnInProgressRequest(currRequest);
+  };
 
   if (!loaded) {
     return <></>;
@@ -133,7 +150,27 @@ export default function RequestCard(props) {
         return <></>;
     }
   };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  }
+
+  const handleRequestClick = () => {
+    setCurrRequest({ ...props.request });
+    setModalOpen(true);
+    setModalMode(props.requestStatus);
+    let volunteerSpecific = props.request.status.volunteers.filter(function (
+      volunteer
+    ) {
+      return volunteer.volunteer === props.user._id;
+    });
+    if (volunteerSpecific.length === 1) {
+      setVolunteerSpecificInfo(volunteerSpecific[0]);
+    }
+  }
+
   return (
+    <>
     <div
       style={{
         height: "90px",
@@ -147,11 +184,9 @@ export default function RequestCard(props) {
         cursor: 'pointer'
       }}
       onClick={() => {
-          setCurrRequest({ ...request });
-          setModalOpen(true);
-          setModalMode(2);
-        }}
-    >
+          handleRequestClick()
+      }}
+      >
       <div style={{ marginTop: 20, marginLeft: 25, marginRight: 19 }}>
         <h1 id="volunteer-name" style={{ fontSize: 16, color: "#4F4F4F" }}>
           {name()}
@@ -164,15 +199,18 @@ export default function RequestCard(props) {
       <p id="regular-text" style={{ fontSize: 14, marginLeft: 25 }}>
         {resources()}
       </p>
-      <RequestInfo
-        modalOpen={modalOpen}
-        modalMode={modalMode}
-        setModalOpen={setModalOpen}
-        currRequest={currRequest}
-        acceptRequest={acceptRequest}
-        rejectRequest={rejectRequest}
-        completeARequest={completeARequest}
-      />
     </div>
+    <RequestInfo
+      modalOpen={modalOpen}
+      modalMode={modalMode}
+      setModalOpen={setModalOpen}
+      closeModal={closeModal}
+      currRequest={currRequest}
+      acceptRequest={acceptRequest}
+      rejectRequest={rejectRequest}
+      completeARequest={completeARequest}
+      volunteerSpecificInfo={volunteerSpecificInfo}
+    />
+    </>
   );
 }

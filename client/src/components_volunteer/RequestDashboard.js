@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import RequestColumn from "./RequestColumn";
 import { volunteer_status } from "../constants";
-
+ 
 export default function RequestDashboard(props) {
   useEffect(() => {}, [props.user]);
   return (
@@ -16,18 +16,31 @@ export default function RequestDashboard(props) {
         <RequestColumn
           requests={props.pendingRequests}
           requestStatus={volunteer_status.PENDING}
+          user={props.user}
+          moveRequestFromPendingToInProgress={
+            props.moveRequestFromPendingToInProgress
+          }
+          rejectAPendingRequest={props.rejectAPendingRequest}
+          completeAnInProgressRequest={props.completeAnInProgressRequest}
         />
       </Col>
       <Col style={{ paddingRight: 35 }}>
         <RequestColumn
           requests={props.acceptedRequests}
           requestStatus={volunteer_status.IN_PROGRESS}
+          user={props.user}
+          moveRequestFromPendingToInProgress={
+            props.moveRequestFromPendingToInProgress
+          }
+          rejectAPendingRequest={props.rejectAPendingRequest}
+          completeAnInProgressRequest={props.completeAnInProgressRequest}
         />
       </Col>
       <Col>
         <RequestColumn
           requests={props.completedRequests}
           requestStatus={volunteer_status.COMPLETE}
+          user={props.user}
         />
       </Col>
     </Row>

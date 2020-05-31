@@ -5,6 +5,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import { generateURL } from "../Helpers";
+import ImageDropper from "../components/ImageDropper";
 
 export default function ProfileHeader(props) {
   const [association, setAssociation] = useState("");
@@ -12,14 +14,25 @@ export default function ProfileHeader(props) {
     "https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg"
   );
 
+  const fetchProfilePic = (userID) => {
+    let params = { id: userID };
+    var url = generateURL("/api/users/image/?", params);
+    fetch(url, {
+      method: "get",
+    })
+      .then((response) => {
+        
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
   useEffect(() => {
     if (props.user.association_name && props.user.association_name.length > 0) {
       setAssociation(props.user.association_name);
     }
-    if (props.user.img) {
-      // setImage(props.user.img);
-      // fetch user profile pic from user/images api given props.user._id
-    }
+    fetchProfilePic(props.user._id);
   }, [props.user]);
   return (
     <Container style={{ maxWidth: 2000 }}>
@@ -54,6 +67,9 @@ export default function ProfileHeader(props) {
           </Button>{" "}
         </Col>
       </Row>
+      {/* <Row>
+          <ImageDropper />
+      </Row> */}
     </Container>
   );
 }

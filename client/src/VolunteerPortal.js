@@ -41,7 +41,7 @@ export default function VolunteerPortal(props) {
   const { addToast } = useToasts();
 
   // fetch requests given a status, update frontend state using 'requestStateChanger'
-  const fetchRequests = (status, requestStateChanger) => {
+  const fetchRequests = (status, requestStateChanger, reverse) => {
     let params = { status: status };
     var url = generateURL("/api/request/volunteerRequests?", params);
     fetch_a("token", url, {
@@ -50,6 +50,9 @@ export default function VolunteerPortal(props) {
       .then((response) => {
         if (response.ok) {
           response.json().then((data) => {
+            if (reverse) {
+              data = data.reverse();
+            }
             requestStateChanger(data);
           });
         } else {
@@ -105,7 +108,7 @@ export default function VolunteerPortal(props) {
         // Fetch requests
         fetchRequests(volunteer_status.PENDING, setPendingRequests);
         fetchRequests(volunteer_status.IN_PROGRESS, setAcceptedRequests);
-        fetchRequests(volunteer_status.COMPLETE, setCompletedRequests);
+        fetchRequests(volunteer_status.COMPLETE, setCompletedRequests, true);
 
         // Featch beacons
         fetchBeacons();
@@ -114,6 +117,9 @@ export default function VolunteerPortal(props) {
         setLoginError(true);
       });
   };
+
+  const prepend = (element, array = []) => 
+                  !element ? [] : Array.of(element, ...array);
 
   // State change (Pending -> In Progress)
   const moveRequestFromPendingToInProgress = (request) => {
@@ -147,7 +153,7 @@ export default function VolunteerPortal(props) {
         (acceptedRequest) => acceptedRequest._id !== request._id
       )
     );
-    setCompletedRequests(completedRequests.concat(request));
+    setCompletedRequests(prepend(request, completedRequests));
     setTabNum(3);
   };
 
@@ -174,6 +180,12 @@ export default function VolunteerPortal(props) {
             pendingRequests={pendingRequests}
             acceptedRequests={acceptedRequests}
             completedRequests={completedRequests}
+            user={user}
+            moveRequestFromPendingToInProgress={
+              moveRequestFromPendingToInProgress
+            }
+            rejectAPendingRequest={rejectAPendingRequest}
+            completeAnInProgressRequest={completeAnInProgressRequest}
           />
         </Container>
       );
@@ -203,7 +215,7 @@ export default function VolunteerPortal(props) {
         <div className="App">
           <NavBar
             setLanguage={props.setLanguage}
-            language={props.language}
+            language={'en'}
             isLoggedIn={true}
             mode={"volunteer"}
             first_name={user.first_name}

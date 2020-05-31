@@ -20,6 +20,7 @@
     "react-bootstrap": "^1.0.0-beta.17",
     "react-dates": "^21.8.0",
     "react-dom": "^16.13.0",
+    "react-dropzone": "^11.0.1",
     "react-geocode": "^0.2.1",
     "react-geolocated": "^3.0.1",
     "react-google-recaptcha": "^2.0.1",

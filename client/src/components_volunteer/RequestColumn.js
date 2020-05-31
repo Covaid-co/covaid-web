@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RequestCard from "./RequestCard";
 import { volunteer_status } from "../constants";
-
+ 
 export default function RequestColumn(props) {
   const [loaded, setLoaded] = useState(false);
   const [title, setTitle] = useState("");
@@ -45,6 +45,12 @@ export default function RequestColumn(props) {
             request={request}
             requestStatus={props.requestStatus}
             color={color}
+            user={props.user}
+            moveRequestFromPendingToInProgress={
+              props.moveRequestFromPendingToInProgress
+            }
+            rejectAPendingRequest={props.rejectAPendingRequest}
+            completeAnInProgressRequest={props.completeAnInProgressRequest}
           />
         );
       });

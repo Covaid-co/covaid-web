@@ -45,7 +45,6 @@ export default function RequestInfo(props) {
   useEffect(() => {
     // Generate map url given lat and long
     var tempURL = "https://www.google.com/maps/@";
-    console.log(props.currRequest);
     if (props.currRequest.location_info) {
       tempURL += props.currRequest.location_info.coordinates[1] + ",";
       tempURL += props.currRequest.location_info.coordinates[0] + ",15z";
@@ -185,7 +184,7 @@ export default function RequestInfo(props) {
         </Col>
       </Row>
     );
-  } else if (props.modalMode === volunteer_status.COMPLETED) {
+  } else if (props.modalMode === volunteer_status.COMPLETE) {
     header = <Modal.Title>Completed request</Modal.Title>;
     timeSpecific = <></>;
   }
@@ -234,9 +233,9 @@ export default function RequestInfo(props) {
     <>
       <Modal
         show={props.modalOpen}
-        onHide={() => {
-          props.setModalOpen(false);
-        }}
+        onHide={
+          props.closeModal
+        }
         style={{ marginTop: 10, paddingBottom: 50 }}
       >
         <Modal.Header closeButton>{header}</Modal.Header>
