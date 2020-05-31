@@ -80,6 +80,9 @@ export default function RequestCard(props) {
     if (props.requestStatus === volunteer_status.PENDING) {
       return "New request";
     } else {
+      if (props.request.personal_info.requester_name.length > 10) {
+        return props.request.personal_info.requester_name.slice(0, 10) + '...'
+      }
       return props.request.personal_info.requester_name;
     }
   };
@@ -89,7 +92,6 @@ export default function RequestCard(props) {
   const date = () => {
     if (props.requestStatus === volunteer_status.COMPLETE) {
       return (
-        "Completed: " +
         getFormattedDate(new Date(props.request.status.completed_date))
       );
     } else {
