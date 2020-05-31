@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const auth = require("../auth");
-
 const user_controller = require("../../controllers/user.controller");
 
 // POST
@@ -9,7 +8,6 @@ router.post("/login", auth.optional, user_controller.login);
 router.post("/resetpassword", user_controller.resetPassword);
 router.post("/emailpasswordresetlink", user_controller.emailPasswordResetLink);
 router.post("/verify", user_controller.verify);
-// router.put("/uploadImage", user_controller.uploadImage);
 
 // GET
 router.get("/current", auth.required, user_controller.current);
@@ -27,7 +25,6 @@ router.get(
   "/verifyresetlink/:id/:token",
   user_controller.verifyPasswordResetLink
 );
-router.get("/image", user_controller.getImage);
 
 // PUT
 router.put("/update", auth.required, user_controller.update);

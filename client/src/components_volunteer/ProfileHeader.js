@@ -8,29 +8,50 @@ import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 import { generateURL } from "../Helpers";
 import ImageUploader from "react-images-upload";
+import fetch_a from "../util/fetch_auth";
 
 export default function ProfileHeader(props) {
   const [association, setAssociation] = useState("");
   const [image, setImage] = useState(
     "https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg"
   );
+  const [uploadingImage, setUploadingImage] = useState({});
+  const [isUploaded, setIsUploaded] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
-
-  const fetchProfilePic = (userID) => {
-    let params = { id: userID };
-    var url = generateURL("/api/users/image/?", params);
-    fetch(url, {
-      method: "get",
-    })
-      .then((response) => {})
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  const [imageUrl, setImageUrl] = useState("http://localhost:5000/api/image/" + props.user._id);
 
   const onDrop = (pictureFiles, pictureDataURLs) => {
-    // TODO -> call api
+    setUploadingImage(pictureFiles[0]);
+    setIsUploaded(true);
   };
+
+  const upload = (e) =>{
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', uploadingImage);
+
+    fetch_a("token", '/api/image', {
+      method: 'POST',
+      body: formData
+    })
+    .then((response) => {
+      response.json().then((data) => {
+        window.location.reload(false);
+      })
+    })
+    .catch(err => alert('Error: ' + err));
+  }
+
+  const fetchProfilePic = (id) => {
+    fetch('api/image/' + id)
+    .then((response) => {
+      if (response.ok) {
+        setImageUrl("http://localhost:5000/api/image/" + props.user._id);
+      } else {
+        setImageUrl("https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg")
+      }
+    })
+  }
 
   useEffect(() => {
     if (props.user.association_name && props.user.association_name.length > 0) {
@@ -38,6 +59,7 @@ export default function ProfileHeader(props) {
     }
     fetchProfilePic(props.user._id);
   }, [props.user]);
+
   return (
     <>
       <Container style={{ maxWidth: 2000 }}>
@@ -45,7 +67,7 @@ export default function ProfileHeader(props) {
           <Col lg={1} md={1} sm={0}></Col>
           <Col>
             <Image
-              src={image}
+              src={imageUrl}
               id="profile-pic"
               style={{
                 marginRight: 30,
@@ -85,7 +107,7 @@ export default function ProfileHeader(props) {
       </Container>
       <Modal
         show={showUploader}
-        onHide={() => setShowUploader(false)}
+        onHide={() => {setShowUploader(false); setIsUploaded(false); setUploadingImage({});}}
         style={{ marginTop: 10, paddingBottom: 50 }}
       >
         <Modal.Header closeButton>
@@ -101,7 +123,7 @@ export default function ProfileHeader(props) {
             singleImage={true}
             withPreview={true}
           />
-          <Button id="large-button">Upload</Button>
+          <Button disabled={!isUploaded} id="large-button" onClick={upload}>Upload</Button>
         </Modal.Body>
       </Modal>
     </>

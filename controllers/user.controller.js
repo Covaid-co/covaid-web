@@ -1,5 +1,6 @@
 const Users = require("../models/user.model");
 const Association = require("../models/association.model");
+const ProfilePicture = require("../models/profile-picture.model");
 const passport = require("passport");
 const emailer = require("../util/emailer");
 const spreadsheets = require("../util/spreadsheet_tools");
@@ -465,9 +466,4 @@ exports.resetPassword = asyncWrapper(async (req, res) => {
     }
     res.sendStatus(200);
   });
-});
-
-exports.getImage = asyncWrapper(async (req, res) => {
-  const id = req.query.id;
-  console.log(id);
 });
