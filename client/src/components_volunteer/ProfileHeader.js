@@ -18,40 +18,43 @@ export default function ProfileHeader(props) {
   const [uploadingImage, setUploadingImage] = useState({});
   const [isUploaded, setIsUploaded] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
-  const [imageUrl, setImageUrl] = useState("http://localhost:5000/api/image/" + props.user._id);
+  const [imageUrl, setImageUrl] = useState(
+    "http://localhost:5000/api/image/" + props.user._id
+  );
 
   const onDrop = (pictureFiles, pictureDataURLs) => {
     setUploadingImage(pictureFiles[0]);
     setIsUploaded(true);
   };
 
-  const upload = (e) =>{
+  const upload = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file', uploadingImage);
+    formData.append("file", uploadingImage);
 
-    fetch_a("token", '/api/image', {
-      method: 'POST',
-      body: formData
+    fetch_a("token", "/api/image", {
+      method: "POST",
+      body: formData,
     })
-    .then((response) => {
-      response.json().then((data) => {
-        window.location.reload(false);
+      .then((response) => {
+        response.json().then((data) => {
+          window.location.reload(false);
+        });
       })
-    })
-    .catch(err => alert('Error: ' + err));
-  }
+      .catch((err) => alert("Error: " + err));
+  };
 
   const fetchProfilePic = (id) => {
-    fetch('api/image/' + id)
-    .then((response) => {
+    fetch("api/image/" + id).then((response) => {
       if (response.ok) {
         setImageUrl("http://localhost:5000/api/image/" + props.user._id);
       } else {
-        setImageUrl("https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg")
+        setImageUrl(
+          "https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg"
+        );
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (props.user.association_name && props.user.association_name.length > 0) {
@@ -107,7 +110,11 @@ export default function ProfileHeader(props) {
       </Container>
       <Modal
         show={showUploader}
-        onHide={() => {setShowUploader(false); setIsUploaded(false); setUploadingImage({});}}
+        onHide={() => {
+          setShowUploader(false);
+          setIsUploaded(false);
+          setUploadingImage({});
+        }}
         style={{ marginTop: 10, paddingBottom: 50 }}
       >
         <Modal.Header closeButton>
@@ -123,7 +130,9 @@ export default function ProfileHeader(props) {
             singleImage={true}
             withPreview={true}
           />
-          <Button disabled={!isUploaded} id="large-button" onClick={upload}>Upload</Button>
+          <Button disabled={!isUploaded} id="large-button" onClick={upload}>
+            Upload
+          </Button>
         </Modal.Body>
       </Modal>
     </>
