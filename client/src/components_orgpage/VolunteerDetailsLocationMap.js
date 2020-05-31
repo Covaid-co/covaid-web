@@ -16,7 +16,7 @@ export default function MapDetail(props) {
   const [viewport, setViewport] = useState({
     latitude: props.currVolunteer.latitude, //props.latlong[1],
     longitude: props.currVolunteer.longitude, //props.latlong[0],
-    zoom: 15,
+    zoom: 11,
     bearing: 0,
     pitch: 0,
     width: 468,

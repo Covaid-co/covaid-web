@@ -6,9 +6,7 @@ import Button from "react-bootstrap/Button";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { useFormFields } from "../libs/hooksLib";
-import { generateMapsURL } from "../Helpers";
 import { generateURL } from "../Helpers";
-import { updateAllRequests } from "./OrganizationHelpers";
 import PropTypes from "prop-types";
 import MapDetail from "./VolunteerDetailsLocationMap";
 
@@ -17,7 +15,6 @@ import MapDetail from "./VolunteerDetailsLocationMap";
  */
 
 export default function VolunteerDetails(props) {
-  const [mapURL, setMapURL] = useState("");
   const [verified, setVerified] = useState(true);
   const [prevNote, setPrevNote] = useState("");
   const [statistics, setStatistics] = useState();
@@ -27,8 +24,6 @@ export default function VolunteerDetails(props) {
   });
 
   const [mapBoxToken, setMapBoxToken] = useState("");
-  const [lat, setLat] = useState(props.currVolunteer.latitude);
-  const [long, setLong] = useState(props.currVolunteer.longitude);
   const [showMapModal, setShowMapModal] = useState(false);
 
   useEffect(() => {
@@ -36,21 +31,12 @@ export default function VolunteerDetails(props) {
       if (response.ok) {
         response.json().then((key) => {
           setMapBoxToken(key["mapbox"]);
-          setLat(props.currVolunteer.latitude);
-          setLong(props.currVolunteer.longitude);
         });
       } else {
         console.log("Error");
       }
     });
-    if (props.currVolunteer.latlong) {
-      const tempURL = generateMapsURL(
-        props.currVolunteer.latlong[1],
-        props.currVolunteer.latlong[0]
-      );
-      setMapURL(tempURL);
-      setVerified(props.currVolunteer.preVerified);
-    }
+    setVerified(props.currVolunteer.preVerified);
     if (props.currVolunteer.note && props.currVolunteer.note.length > 0) {
       fields.email5 = props.currVolunteer.note;
       setPrevNote(props.currVolunteer.note);
@@ -201,7 +187,7 @@ export default function VolunteerDetails(props) {
           id="volunteer-details"
           show={props.volunteerDetailModal}
           onHide={hidingVolunteerModal}
-          style={{ marginTop: 10, paddingBottom: 40 }}
+          style={{ marginTop: 10, paddingBottom: 40, zoom: '90%' }}
         >
           <Modal.Header closeButton>
             <Modal.Title id="small-header">Volunteer Information</Modal.Title>
@@ -247,7 +233,7 @@ export default function VolunteerDetails(props) {
                 </p>
               )}
             </>
-            <p id="regular-text-nomargin">
+            <p id="regular-text-nomargin" style={{marginBottom: -8}}>
               Location:
               <Button
                 id="regular-text"

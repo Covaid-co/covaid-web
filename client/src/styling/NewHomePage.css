@@ -433,12 +433,13 @@
 }
 
 #hello-name {
-  color: black;
+  color: #2670ff;
   font-weight: 600;
   font-family: "Inter";
   margin-right: 10px;
   font-size: 14px;
   position: relative;
+  cursor: pointer;
 }
 
 #logoutButton {

@@ -110,7 +110,7 @@ export default function HomePage(props) {
               >
                 {translatedStrings[props.language].INeedHelp} →
               </Button>{" "}
-              {volunteerButton(loggedIn, props.language)}
+              {/* {volunteerButton(loggedIn, props.language)} */}
               <br />
               <Button
                 id="resources-button"

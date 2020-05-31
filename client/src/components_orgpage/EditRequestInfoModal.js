@@ -129,7 +129,7 @@ export default function EditRequestInfoModal(props) {
           <Form.Label column sm={3}>
             <h4 id="regular-text-bold">Payment</h4>
           </Form.Label>
-          <Col sm={8} style={{ marginTop: 15 }}>
+          <Col sm={8} style={{ marginTop: 10 }}>
             <Form.Check
               checked={payment == 0}
               type="radio"
@@ -315,7 +315,7 @@ export default function EditRequestInfoModal(props) {
                     <Form.Label column sm={3}>
                       <h4 id="regular-text-bold">Location</h4>
                     </Form.Label>
-                    <Col sm={8} style={{ marginTop: 10 }}>
+                    <Col sm={8} style={{ marginTop: 13 }}>
                       <ReactMapGL
                         {...viewport}
                         onViewportChange={setViewport}
