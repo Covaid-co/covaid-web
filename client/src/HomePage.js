@@ -75,7 +75,7 @@ export default function HomePage(props) {
   };
 
   return [
-    <div key="1" className="App" style={{ height: "100%" }}>
+    <div key="1" className="App" style={{ height: "calc(100% - 180px)" }}>
       <NavBar
         setLanguage={props.setLanguage}
         language={props.language}
