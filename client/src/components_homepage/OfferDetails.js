@@ -1,10 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { set } from "mongoose";
+
+/**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
 
 export default function OfferDetails(props) {
+  var googleTranslate = require("google-translate")(props.googleAPI);
+  const userDetails = props.modalInfo.offer.details;
+  const [transDetails, setTransDetails] = useState("");
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    if (!!props.switchToLanguage) {
+      if (props.switchToLanguage !== "English") {
+        setLanguage("es");
+      } else {
+        setLanguage("en");
+      }
+    }
+
+    if (!!userDetails) {
+      translate();
+    }
+  }, [props.switchToLanguage, userDetails]);
+
+  const translate = () => {
+    console.log(language);
+    googleTranslate.translate(
+      props.modalInfo.offer.details,
+      language,
+      function (err, translation) {
+        if (!!translation) {
+          setTransDetails(translation.translatedText);
+        }
+      }
+    );
+  };
+
   return (
     <Modal
       show={props.modalOfferOpen}
@@ -24,7 +65,7 @@ export default function OfferDetails(props) {
           ) : (
             <div>
               <h5 id="regular-text-bold" style={{ marginBottom: 0 }}>
-                Pronouns:
+                {translatedStrings[language].Pronouns}
               </h5>
               <p id="regular-text">{props.modalInfo.pronouns}</p>
             </div>
@@ -32,13 +73,13 @@ export default function OfferDetails(props) {
         </>
 
         <h5 id="regular-text-bold" style={{ marginBottom: 0 }}>
-          Neighborhoods:
+          {translatedStrings[language].Neighborhoods}
         </h5>
         <p id="regular-text">
           {props.modalInfo.offer.neighborhoods.join(", ")}
         </p>
         <h5 id="regular-text-bold" style={{ marginBottom: 5, marginTop: 16 }}>
-          Tasks:
+          {translatedStrings[language].Tasks}
         </h5>
         {props.modalInfo.offer.tasks.map((task, i) => {
           return (
@@ -48,9 +89,10 @@ export default function OfferDetails(props) {
           );
         })}
         <h5 id="regular-text-bold" style={{ marginBottom: 0, marginTop: 16 }}>
-          Details:
+          {translatedStrings[language].Details}
         </h5>
-        <p id="regular-text">{props.modalInfo.offer.details}</p>
+
+        <p id="regular-text">{transDetails}</p>
         <Button
           id="large-button"
           style={{ marginTop: 15 }}
@@ -59,12 +101,12 @@ export default function OfferDetails(props) {
             props.handleShowRequestHelp(props.modalInfo);
           }}
         >
-          Request support!
+          {translatedStrings[language].RequestSupport}
         </Button>
       </Modal.Body>
       <Modal.Footer>
         <p id="regular-text" style={{ fontStyle: "italic", fontSize: 14 }}>
-          Be sure to coordinate a safe drop-off/interaction! Follow{" "}
+          {translatedStrings[language].OfferDetails_Reminder1}{" "}
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -73,8 +115,7 @@ export default function OfferDetails(props) {
             {" "}
             CDC guidelines{" "}
           </a>
-          on cleanliness and avoid as much contact as possible to prevent
-          further spread of virus.
+          {translatedStrings[language].OfferDetails_Reminder2}
         </p>
       </Modal.Footer>
     </Modal>

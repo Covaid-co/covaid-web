@@ -14,7 +14,7 @@ export default function CurrentLocation(props) {
         : "Current Location"}
       :
       <button id="change-location" onClick={props.showModal}>
-        {props.locationProps.locality + ", " + props.locationProps.zipcode}
+        {props.locality + ", " + props.zipcode}
         <FontAwesomeIcon
           style={{ color: "red", marginLeft: 5 }}
           icon={faMapMarkerAlt}

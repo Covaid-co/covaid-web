@@ -114,6 +114,7 @@ export default function VolunteerDetails(props) {
         if (!response.ok) {
           alert("unable to attach");
         } else {
+          // console.log(props.volunteers)
           var copyVolunteers = props.volunteers.map((volunteer) =>
             volunteer._id === props.currVolunteer._id
               ? { ...volunteer, note: form.note }
