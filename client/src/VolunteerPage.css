@@ -195,3 +195,36 @@
   margin-bottom: -3px;
   margin-top: 0px;
 }
+#large-activate-button {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 49px;
+  font-family: "Inter";
+  background-color: transparent;
+  border-color: #2670ff;
+  color: #2670ff;
+  border-radius: 8px;
+}
+#large-activate-button:hover {
+  color: white;
+  background-color: #2670ff;
+}
+
+#large-inactivate-button {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 49px;
+  font-family: "Inter";
+  background-color: transparent;
+  border-color: #ae2f2f;
+  color: #ae2f2f;
+  border-radius: 8px;
+}
+#large-inactivate-button:hover {
+  color: white;
+  background-color: #ae2f2f;
+}
