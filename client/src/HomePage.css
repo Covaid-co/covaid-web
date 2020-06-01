@@ -17,7 +17,7 @@
 #feedback {
   position: fixed;
   right: 0;
-  bottom: 150px;
+  bottom: 180px;
   height: 250px;
   margin-left: -3px;
   margin-bottom: -3px;
@@ -115,6 +115,33 @@
   cursor: pointer;
 }
 
+#tab-name-active-requests {
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 600;
+  color: #4f4f4f;
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  width: 100px;
+  border-bottom: 4px solid #2670ff;
+  cursor: pointer;
+  text-align: center;
+}
+
+#tab-name-inactive-requests {
+  color: #c1c1c1;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Inter";
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  width: 100px;
+  cursor: pointer;
+  text-align: center;
+}
+
 #nav-tab-name-active {
   color: black;
   font-family: "Inter";
@@ -163,12 +190,13 @@
 
 #jumbo {
   margin-bottom: 60px;
+  padding-bottom: 210px;
 }
 
 #jumboContainer {
   margin-left: 7%;
   margin-right: 7%;
-  max-width: 1500px;
+  max-width: 2500px;
   height: 290px;
 }
 
@@ -219,7 +247,7 @@
 }
 
 #org-img {
-  width: 480px;
+  width: 500px;
 }
 
 @media (max-width: 1150px) {
@@ -366,6 +394,19 @@
 }
 
 @media (max-width: 768px) {
+  #mobile-footer {
+    display: block;
+    margin-bottom: 50px;
+  }
+  #desktop-footer {
+    padding-bottom: 50px;
+  }
+
+  #footer-content {
+    padding-left: 0px !important;
+    /* padding-right: 0px !important; */
+  }
+
   #feedback {
     display: none;
   }
@@ -376,7 +417,7 @@
 
   #login-container {
     padding-left: 50px;
-    padding-right: 50px;
+    padding-right: 30px;
   }
 
   #requests-feature-container {
@@ -422,12 +463,13 @@
   }
 
   .footer {
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
     /* margin-top: -100px; */
   }
 
   #jumbo {
     margin-bottom: 0px;
+    padding-bottom: 300px;
   }
 
   #jumbo-text {
@@ -484,12 +526,15 @@
 
   #jumbo {
     padding-top: 10px;
+    padding-bottom: 200px;
   }
 }
 
 @media (max-width: 605px) {
   #login-container {
     padding-left: 30px;
+    padding-right: 20px !important;
+    padding-top: 10px;
   }
 
   #requests-feature-container {
@@ -520,6 +565,11 @@
 }
 
 @media (max-width: 578px) {
+  #jumbo {
+    padding-bottom: 350px;
+    padding-bottom: 250px;
+  }
+
   #login-container {
     padding-left: 20px;
   }
@@ -546,14 +596,17 @@
 
   #jumbo-text {
     margin-top: 10px;
-    padding-right: 30px;
+    padding-right: 50px;
     padding-left: 50px;
   }
 
   #jumboContainer {
     height: 200px;
+    margin-top: 10px;
     margin-left: 0%;
     margin-right: 0%;
+    padding: 0px;
+    /* padding-right: 20px; */
   }
 
   #location-container {

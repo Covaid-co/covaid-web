@@ -63,38 +63,36 @@
   border-radius: 12px;
   background-color: #2670ff;
   border: 1px solid #2670ff;
-  font-size: 20px;
-  height: 60px;
+  font-size: 22px;
+  height: 70px;
   width: 300px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 25px;
   margin-bottom: 5px;
+  margin-top: 30px;
 }
-
-/* #resources-button:hover {
-  background-color: #2670ff;
-  color: white;
-} */
 
 #resources-button {
   font-family: "Inter";
   font-weight: 600;
   border-radius: 12px;
-  background-color: white;
+  background-color: transparent;
   color: #2670ff;
   border: 1px solid #2670ff;
   font-size: 20px;
-  height: 60px;
+  height: 50px;
   width: 300px;
-  padding-left: 20px;
+  padding-left: 15px;
   padding-right: 20px;
   margin-top: 5px;
+  border: 0px;
+  text-align: left;
+  text-decoration: underline;
 }
 
-/* #request-button:hover {
-  background-color: white;
-  color: #2670ff;
-} */
+#resources-button:focus {
+  box-shadow: none;
+}
 
 #medium-button-solid {
   font-family: "Inter";
@@ -142,7 +140,7 @@
 #small-header {
   font-family: "Montserrat";
   font-weight: bold;
-  color: black;
+  color: #4f4f4f;
   font-size: 24px;
 }
 
@@ -163,7 +161,7 @@
   font-family: "Inter";
   font-size: 16px;
   font-weight: 600;
-  color: black;
+  color: #4f4f4f;
 }
 
 #volunteer-info {
@@ -352,6 +350,26 @@
   background-color: white;
 }
 
+#languageButton::after {
+  content: none;
+}
+
+#languageButton:focus {
+  box-shadow: none;
+}
+
+#languageButton {
+  background-color: transparent;
+  color: rgb(109, 109, 109);
+  font-family: "Inter";
+  padding-right: 0px;
+  padding-left: 0px;
+  font-size: 16px;
+  padding-bottom: 7px;
+  height: 36px;
+  border: 0px;
+}
+
 #filterButton {
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 1);
@@ -432,17 +450,19 @@
 }
 
 #hello-name {
-  color: black;
+  color: #2670ff;
   font-weight: 600;
   font-family: "Inter";
   margin-right: 10px;
-  font-size: 14px;
+  font-size: 16px;
   position: relative;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
 #logoutButton {
   font-family: "Inter";
-  font-size: 14px;
+  font-size: 16px;
   margin-top: -1px;
   color: #dc3545;
 }
@@ -551,8 +571,10 @@ textarea.form-control {
 .dropdown-menu.show {
   border-radius: 8px;
   border: transparent;
-  box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.15);
   margin-bottom: 20px;
+  left: -50px;
+  margin-top: 10px !important;
 }
 
 #toastError {

@@ -6,8 +6,6 @@ import React, { useState, useEffect } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Badge from "react-bootstrap/Badge";
-
 import VolunteerBeaconModal from "./VolunteerBeaconModal";
 
 export default function VolunteerBeacons(props) {
@@ -47,34 +45,15 @@ export default function VolunteerBeacons(props) {
     var end = new Date(beacon.beaconEndDate);
     var endString = monthNames[end.getMonth()] + " " + end.getDate();
 
-    return "Expires on " + endString;
+    return "Respond by " + endString;
   };
 
   // Render badge depending on whether beacon has been accepted by user
-  const getBadge = (beacon) => {
+  const accepted = (beacon) => {
     var volunteerData = beacon.volunteers.find((b) => {
       return b.volunteer_id === volunteer._id;
     });
-    if (volunteerData.response) {
-      return (
-        <Badge
-          className="in-progress-task"
-          style={{
-            marginTop: 0,
-            color: "#28a745",
-            border: "1px solid #28a745",
-          }}
-        >
-          Accepted
-        </Badge>
-      );
-    } else {
-      return (
-        <Badge className="in-progress-task" style={{ marginTop: 0 }}>
-          Not Accepted
-        </Badge>
-      );
-    }
+    return volunteerData.response;
   };
 
   if (loading) {
@@ -86,11 +65,9 @@ export default function VolunteerBeacons(props) {
         <>
           <p
             id="regular-text"
-            style={{ color: "black", textAlign: "center", marginTop: 20 }}
+            style={{ color: "#CECECE", fontWeight: 600, marginTop: 20 }}
           >
-            <strong style={{ fontSize: 18 }}>
-              There are no active beacons from your group at the moment
-            </strong>
+            Nothing to share at the moment
           </p>
         </>
       );
@@ -113,12 +90,16 @@ export default function VolunteerBeacons(props) {
                       setSelectedBeacon({ ...beacon });
                       setModalOpen(true);
                     }}
+                    style={{
+                      borderTop:
+                        "4px solid " +
+                        (accepted(beacon) ? "#3ABD24" : "#DB9327"),
+                    }}
                   >
                     <div>
-                      <h5 id="volunteer-name">{beacon.beaconName}</h5>
-                      <p style={{ float: "right", marginBottom: 0 }}>
-                        {getBadge(beacon)}
-                      </p>
+                      <h5 id="volunteer-name" style={{ color: "#4F4F4F" }}>
+                        {beacon.beaconName}
+                      </h5>
                     </div>
                     <div
                       style={{
@@ -128,17 +109,17 @@ export default function VolunteerBeacons(props) {
                         fontFamily: "Inter",
                       }}
                     >
-                      <p style={{ float: "left", marginBottom: 0 }}>
+                      <p id="regular-text" style={{ fontSize: 16 }}>
                         {formatDate(beacon)}
                       </p>
+                      {/* <p style={{ marginBottom: 0, float: 'right' }}>
+                        {getBadge(beacon)}
+                      </p> */}
                     </div>
                   </ListGroup.Item>
                 );
               })}
             </ListGroup>
-            <p id="requestCall" style={{ marginTop: -15, marginBottom: 15 }}>
-              &nbsp;
-            </p>
           </Col>
         </Row>
         <VolunteerBeaconModal

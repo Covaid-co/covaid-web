@@ -117,6 +117,7 @@ export default function NewRequestPage(props) {
           languages: first_page.languages,
         },
         request_info: {
+          behalf: first_page.behalf,
           resource_request: second_page.resources,
           details: second_page.details,
           payment: second_page.payment,

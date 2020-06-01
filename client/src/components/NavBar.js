@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Badge from "react-bootstrap/Badge";
+import Dropdown from "react-bootstrap/Dropdown";
 
 import NewLogin from "../components_modals/NewLogin";
 import MapModal from "../components_modals/MapModal";
@@ -30,6 +30,7 @@ export default function CovaidNavbar(props) {
   const [width, setWidth] = useState(window.innerWidth);
   const [modalName, setModalName] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [display_banner, setDisplayBanner] = useState(true);
   const [tab, setTab] = useState(0);
 
   window.addEventListener("resize", () => {
@@ -68,26 +69,68 @@ export default function CovaidNavbar(props) {
   };
 
   const translateButton = () => {
-    return (
-      <Button
-        variant="outline-light"
-        id="login-button"
-        onClick={() => {
-          if (props.language === "es") {
-            props.setLanguage("en");
-          } else {
-            props.setLanguage("es");
-          }
-        }}
+    return width > 767 ? (
+      <Dropdown
+        key={"down"}
+        id={`dropdown-button-drop-down`}
+        drop={"down"}
+        variant="secondary"
+        style={{ display: "inline" }}
+        className="mobileDrop"
+        title={` Drop ${"down"} `}
       >
-        <i
-          className="fa fa-globe"
-          aria-hidden="true"
-          style={{ marginRight: 7 }}
-        ></i>
-        {props.language === "en" ? "English" : "Español"}
-      </Button>
+        <Dropdown.Toggle size="sm" variant="secondary" id="languageButton">
+          <i
+            className="fa fa-globe"
+            aria-hidden="true"
+            style={{ marginRight: 7 }}
+          ></i>
+          {props.language === "en" ? "EN" : "ES"}
+        </Dropdown.Toggle>
+        <Dropdown.Menu style={{ marginTop: 10 }}>
+          <Dropdown.Item
+            onSelect={() => props.setLanguage("en")}
+            active={props.language === "en"}
+          >
+            {"English"}
+          </Dropdown.Item>
+          <Dropdown.Item
+            onSelect={() => props.setLanguage("es")}
+            active={props.language === "es"}
+          >
+            {"Español"}
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    ) : (
+      <></>
     );
+    // <>
+    // <Button
+    //   variant="outline-light"
+    //   id="login-button"
+    //   onClick={() => {
+    //     if (props.language === "es") {
+    //       props.setLanguage("en");
+    //     } else {
+    //       props.setLanguage("es");
+    //     }
+    //   }}
+    // >
+    //   <i
+    //     className="fa fa-globe"
+    //     aria-hidden="true"
+    //     style={{ marginRight: 7 }}
+    //   ></i>
+    //   {props.language === "en" ? "Español" : "English"}
+    // </Button>
+    // <select name="cars" id="cars">
+    //   <option value="volvo">Volvo</option>
+    //   <option value="saab">Saab</option>
+    //   <option value="opel">Opel</option>
+    //   <option value="audi">Audi</option>
+    // </select>
+    // </>
   };
 
   const rightNav = (mode) => {
@@ -158,10 +201,6 @@ export default function CovaidNavbar(props) {
         }
       }
     } else {
-      if (mode === "volunteer") {
-        // TODO: Add dropdown with profile info
-        return <></>;
-      }
       if (toggled) {
         return (
           <Form inline id="getStarted" style={{ display: "block" }}>
@@ -181,11 +220,25 @@ export default function CovaidNavbar(props) {
           <Form
             inline
             id="getStarted"
-            style={{ display: "block", marginRight: "5%", marginBottom: 3 }}
+            style={{
+              display: "block",
+              marginRight: "5%",
+              marginBottom: 3,
+              marginTop: 10,
+            }}
           >
-            {props.orgPortal ? <></> : translateButton()}
-            {width > 767 ? (
-              <span id="hello-name">
+            {props.orgPortal || mode === "volunteer" ? (
+              <></>
+            ) : (
+              translateButton()
+            )}
+            {width > 767 && !props.orgPortal ? (
+              <span
+                id="hello-name"
+                onClick={() =>
+                  window.open(currURL + "/volunteerPortal", "_self")
+                }
+              >
                 {" "}
                 {translatedStrings[props.language].Hello} {props.first_name}
               </span>
@@ -223,22 +276,6 @@ export default function CovaidNavbar(props) {
   const setCurrModal = (name) => {
     setShowModal(true);
     setModalName(name);
-  };
-
-  const volunteerBadge = (view) => {
-    if (view === "mobile") {
-      return (
-        <Badge id="volunteer-mobile" onClick={() => setCurrModal("map")}>
-          {translatedStrings[props.language].VolunteerMap}
-        </Badge>
-      );
-    } else {
-      return (
-        <Badge id="volunteerBadge" onClick={() => setCurrModal("map")}>
-          {translatedStrings[props.language].VolunteerMap}
-        </Badge>
-      );
-    }
   };
 
   const selectedTab = (currTab) => {
@@ -326,11 +363,12 @@ export default function CovaidNavbar(props) {
 
   return (
     <>
-      {props.isLoggedIn ? (
+      {props.isLoggedIn && !props.orgPortal && display_banner ? (
         <Navbar expand="md" id="banner">
           <span style={{ cursor: "pointer", fontWeight: 600 }}>
-            Exclusive for Volunteers: Join the free Markk app and get gift cards
-            from Postmates, Amazon, Target and more.
+            {width > 767
+              ? "Exclusive for Volunteers: Join the free Markk app and get gift cards from Postmates, Amazon, Target and more."
+              : "Join the Markk app and get free gift cards"}
           </span>
           <span
             id="view-banner"
@@ -339,7 +377,7 @@ export default function CovaidNavbar(props) {
           >
             Read More →
           </span>
-          <span id="close-banner">
+          <span id="close-banner" onClick={() => setDisplayBanner(false)}>
             <svg
               viewBox="0 0 24 24"
               width="18"
@@ -362,7 +400,12 @@ export default function CovaidNavbar(props) {
       )}
       <Navbar
         collapseOnSelect
-        onToggle={(e) => setToggled(e)}
+        onToggle={(e) => {
+          setToggled(e);
+          if (props.setToggle) {
+            props.setToggle(e);
+          }
+        }}
         variant="light"
         expand="md"
         id="custom-navbar"
@@ -375,7 +418,6 @@ export default function CovaidNavbar(props) {
           covaid
         </Navbar.Brand>
         <Form inline className="volunteer-badge-mobile">
-          {volunteerBadge("mobile")}
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
             id={toggled ? "toggledNav1" : "nav1"}

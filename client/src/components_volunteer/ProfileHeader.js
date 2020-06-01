@@ -65,9 +65,8 @@ export default function ProfileHeader(props) {
 
   return (
     <>
-      <div style={{ maxWidth: 2000 }}>
+      <div style={{ marginLeft: 35, maxWidth: 2000 }}>
         <Row>
-          <Col lg={1} md={1} sm={0}></Col>
           <Col>
             <Image
               src={imageUrl}
@@ -87,6 +86,7 @@ export default function ProfileHeader(props) {
                 style={{
                   marginTop: 20,
                   marginBottom: 0,
+                  display: "inline-block",
                   fontSize: 28,
                   color: "#4F4F4F",
                 }}
@@ -104,7 +104,9 @@ export default function ProfileHeader(props) {
                   marginBottom: 10,
                 }}
               >
-                {association ? association : "No association detected"}
+                {association && association.length > 0
+                  ? association
+                  : "Covaid Volunteer"}{" "}
               </p>
             </Row>
             <Row>

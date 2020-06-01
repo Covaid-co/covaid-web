@@ -31,6 +31,7 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
+  margin-left: 5%;
   float: left;
   object-fit: cover;
 }
@@ -39,6 +40,13 @@
   font-weight: 600;
   background-color: red !important;
   font-size: 15px !important;
+}
+
+#vertical-line {
+  display: inline;
+  border-left: 1px solid #dee2e6;
+  height: 600px;
+  float: left;
 }
 
 .active-beacon {
