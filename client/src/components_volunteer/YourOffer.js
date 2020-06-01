@@ -173,8 +173,7 @@ export default function YourOffer(props) {
 
   const statusChangeDescription = (
     <p id="status-change-description" style={{ color: "#7f7f7f" }}>
-      Activating/deactivating allows you to control whether or not you will be
-      matched with requests
+      Marking yourself as active will allow you to be matched with requests
     </p>
   );
   if (availability) {
