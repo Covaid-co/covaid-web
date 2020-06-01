@@ -127,9 +127,6 @@ export default function VolunteerBeacons(props) {
                 );
               })}
             </ListGroup>
-            <p id="requestCall" style={{ marginTop: -15, marginBottom: 15 }}>
-              &nbsp;
-            </p>
           </Col>
         </Row>
         <VolunteerBeaconModal

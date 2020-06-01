@@ -269,6 +269,7 @@ export default function RequestCard(props) {
         </span>
       </div>
       <RequestInfo
+        currUser={props.user}
         modalOpen={modalOpen}
         modalMode={modalMode}
         setModalOpen={setModalOpen}

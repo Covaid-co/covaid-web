@@ -12,6 +12,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import VolunteerActionConfirmationModal from "./VolunteerActionConfirmationModal";
 import { request_status, volunteer_status } from "../constants";
+import { calcDistance } from "../Helpers";
 
 export default function RequestInfo(props) {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -95,6 +96,20 @@ export default function RequestInfo(props) {
     props.completeARequest();
   };
 
+  const calculateDistance = () => {
+    if (props.currRequest.location_info && props.currUser.latlong) {
+      var long = props.currRequest.location_info.coordinates[0];
+      var lat = props.currRequest.location_info.coordinates[1];
+      var userLong = props.currUser.latlong[0];
+      var userLat = props.currUser.latlong[1];
+      var meters = calcDistance(lat, long, userLat, userLong);
+      const miles = meters * 0.00062137;
+      const distance = Math.round(miles);
+      return "~" + distance + " miles away";
+    }
+    return "N/A";
+  };
+
   // Render specific elements in modal, depending on view mode (pending, in_progress, complete)
   var header = <></>;
   var contactInfo = (
@@ -125,13 +140,9 @@ export default function RequestInfo(props) {
         {props.currRequest.request_info.date}
       </p> */}
       <h5 id="regular-text-bold" style={{ marginBottom: 3, marginTop: 16 }}>
-        Location:
+        Distance:
       </h5>
-      <p id="regular-text-bold">
-        <a target="_blank" rel="noopener noreferrer" href={mapURL}>
-          Click here
-        </a>
-      </p>
+      <p id="regular-text-nomargin">{calculateDistance()}</p>
     </>
   );
   var buttons = <></>;

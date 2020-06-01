@@ -548,7 +548,6 @@ export default function RequestDetails(props) {
             </Button>
           </div>
           <p id="regular-text-nomargin" style={{ marginBottom: -8 }}>
-            Location:
             <Button
               id="regular-text"
               onClick={() => {
@@ -563,7 +562,7 @@ export default function RequestDetails(props) {
               }}
               variant="link"
             >
-              View map
+              Location
             </Button>
           </p>
           {contactInfo()}
