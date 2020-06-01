@@ -3,9 +3,9 @@
 .pnp.js
 
 .DS_Store
-node_modules/
+api/node_modules
 client/node_modules/
-config/client_secret.json
+config/client_secret.js
 .env
 *.orig
 .idea/

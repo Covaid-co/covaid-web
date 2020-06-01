@@ -11,7 +11,7 @@ export default function CheckForm(props) {
   };
 
   const sortedObj = Object.keys(props.obj);
-  sortedObj.sort();
+  // sortedObj.sort();
 
   return (
     <>
