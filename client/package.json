@@ -16,7 +16,7 @@
     "google-maps-react": "^2.0.2",
     "google-translate": "^3.0.0",
     "js-cookie": "^2.2.1",
-    "moment": "2.18.1",
+    "moment": "^2.26.0",
     "pusher-js": "^5.1.1",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
@@ -33,7 +33,7 @@
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",
     "react-router-sitemap": "^1.2.0",
-    "react-scripts": "3.0.0",
+    "react-scripts": "^3.4.1",
     "react-select": "^3.1.0",
     "react-test-renderer": "^16.13.1",
     "react-tiny-link": "^3.2.0",
@@ -48,7 +48,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sitemap": "babel-node ./src/util/sitemap-generator.js",
-    "predeploy": "npm run sitemap"
+    "predeploy": "npm run sitemap",
+    "format": "prettier --write \"./**/*.{js,jsx,json,md}\"",
+    "format:check": "prettier --check \"./**/*.{js,jsx,json,md}\""
   },
   "browserslist": {
     "production": [
@@ -64,6 +66,7 @@
   },
   "proxy": "http://localhost:5000/",
   "devDependencies": {
-    "babel-cli": "^6.26.0"
+    "babel-cli": "^6.26.0",
+    "prettier": "^2.0.5"
   }
 }
