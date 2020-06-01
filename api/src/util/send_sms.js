@@ -9,7 +9,7 @@ exports.sendNotificationSMS = async function (data) {
     return "There is no recipient phone number specified. SMS notification failed.";
   }
   try {
-    var template = "Hi, " + data.name + "! ";
+    var template = "COVAID: Hi, " + data.name + "! ";
     if (data.templateName === "pending_notification") {
       template +=
         "Friendly reminder to mark any of your in-progress requests as completed once you fulfill the request. Thank you!";
