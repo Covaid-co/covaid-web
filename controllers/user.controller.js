@@ -398,9 +398,9 @@ exports.total_users = function (req, res) {
  */
 exports.update = function (req, res) {
   const id = req.token.id;
-  Users.findByIdAndUpdate(id, { $set: req.body }, function (err, offer) {
+  Users.findByIdAndUpdate(id, { $set: req.body }, {new: true}, function (err, user) {
     if (err) return next(err);
-    res.send("User updated.");
+    res.send(user);
   });
 };
 

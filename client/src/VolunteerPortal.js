@@ -233,6 +233,7 @@ export default function VolunteerPortal(props) {
             {foundUser ? (
               <YourOffer
                 user={user}
+                setUser={setUser}
                 setLanguage={props.setLanguage}
                 language={props.language}
               />

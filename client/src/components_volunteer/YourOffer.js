@@ -125,6 +125,10 @@ export default function YourOffer(props) {
         if (response.ok) {
           // Change the state to refect offer update
           stateChange(setter, publish);
+          response.json().then((user) => {
+            console.log(user);
+            props.setUser(user);
+          });
         } else {
           console.log("Update not successful");
         }
@@ -169,8 +173,8 @@ export default function YourOffer(props) {
 
   const statusChangeDescription = (
     <p id="status-change-description" style={{ color: "#7f7f7f" }}>
-      Marking yourselve as active/inactive will notify the admins if you should
-      be matched to a request.
+      Marking yourself as active/inactive allows you to control 
+      your availability as a volunteer
     </p>
   );
   if (availability) {
