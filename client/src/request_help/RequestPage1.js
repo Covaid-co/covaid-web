@@ -148,7 +148,7 @@ export default function RequestPage1(props) {
       >
         Please fill in the fields above with information pertaining to the
         person in need of support. If you’d like us to contact you, please leave
-        ur contact in the details on the next page.
+        your contact in the details on the next page
       </Alert>
       <h5 id="subtitle-light" style={{ marginTop: 10, marginBottom: 5 }}>
         {props.translations[props.language].WhatLanguageDoYouSpeak}
