@@ -173,8 +173,8 @@ export default function YourOffer(props) {
 
   const statusChangeDescription = (
     <p id="status-change-description" style={{ color: "#7f7f7f" }}>
-      Marking yourself as active/inactive allows you to control 
-      your availability as a volunteer
+      Marking yourself as active/inactive allows you to control your
+      availability as a volunteer
     </p>
   );
   if (availability) {
