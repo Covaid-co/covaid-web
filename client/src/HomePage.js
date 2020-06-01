@@ -26,15 +26,11 @@ let translatedStrings = new LocalizedStrings({ translations });
 
 export default function HomePage(props) {
   const [showModal, setShowModal] = useState(false);
-  const [width, setWidth] = useState(window.innerWidth);
+  const [toggle, setToggle] = useState(false);
   const [modalType, setModalType] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [pageLoaded, setPageLoaded] = useState(false);
-
-  window.addEventListener("resize", () => {
-    setWidth(window.innerWidth);
-  });
 
   useEffect(() => {
     if (props.login === true) {
@@ -79,7 +75,8 @@ export default function HomePage(props) {
       });
   };
 
-  return [
+  return (
+  <div style={{overflowX: 'hidden', height: '100%'} }>
     <div key="1" className="App" style={{ height: "100%" }}>
       <NavBar
         setLanguage={props.setLanguage}
@@ -87,6 +84,7 @@ export default function HomePage(props) {
         pageLoaded={pageLoaded}
         isLoggedIn={loggedIn}
         first_name={currentUser.first_name}
+        setToggle={setToggle}
       />
       <Jumbotron fluid id="jumbo">
         <div id="feedback">
@@ -137,10 +135,10 @@ export default function HomePage(props) {
         </Container>
       </Jumbotron>
       {getCurrentModal()}
-      <Footer key="2" home={true} style={{position: 'absolute', bottom: 0 }} id="mobile-footer"/>
-    </div>,
-    <Footer key="2" home={true} id="desktop-footer"/>,
-  ];
+      {/* <Footer key="2" home={true} style={{position: 'absolute', bottom: 0 }} id="mobile-footer"/> */}
+    </div>
+    <Footer key="2" home={true} id="desktop-footer" style={toggle ? {marginTop: 500} : {}}/>
+  </div>)
 }
 
 HomePage.propTypes = {

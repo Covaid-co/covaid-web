@@ -36,7 +36,7 @@ export default function Footer(props) {
   };
 
   return (
-    <footer className="footer" id={props.id}>
+    <footer className="footer" id={props.id} style={props.style}>
       <Container style={{ maxWidth: 2500 }}>
         <Row style={{ textAlign: "left", paddingBottom: 30 }}>
           <Col

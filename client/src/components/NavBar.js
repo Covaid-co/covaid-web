@@ -310,7 +310,12 @@ export default function CovaidNavbar(props) {
       )}
       <Navbar
         collapseOnSelect
-        onToggle={(e) => setToggled(e)}
+        onToggle={(e) => {
+          setToggled(e); 
+          if (props.setToggle) {
+            props.setToggle(e)
+          }
+        }}
         variant="light"
         expand="md"
         id="custom-navbar"

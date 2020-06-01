@@ -66,7 +66,7 @@
   font-size: 22px;
   height: 70px;
   width: 300px;
-  padding-left: 25px;
+  padding-left: 20px;
   padding-right: 25px;
   margin-bottom: 5px;
   margin-top: 30px;
@@ -81,13 +81,13 @@
   font-family: "Inter";
   font-weight: 600;
   border-radius: 12px;
-  background-color: white;
+  background-color: transparent;
   color: #2670ff;
   border: 1px solid #2670ff;
   font-size: 20px;
   height: 50px;
   width: 350px;
-  padding-left: 20px;
+  padding-left: 15px;
   padding-right: 20px;
   margin-top: 5px;
   border: 0px;

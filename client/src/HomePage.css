@@ -348,11 +348,12 @@
     margin-bottom: 50px;
   }
   #desktop-footer {
-    display: none;
+    padding-bottom: 50px;
   }
 
   #footer-content {
     padding-left: 0px !important;
+    /* padding-right: 0px !important; */
   }
 
   #feedback {
