@@ -11,9 +11,15 @@ export default function Details(props) {
     <Form.Group
       controlId="details"
       bssize="large"
-      style={{ marginBottom: 0, marginTop: 30 }}
+      style={{ marginBottom: 0, marginTop: 24 }}
     >
-      <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+      <h5
+        id="regular-text-bold"
+        style={{
+          color: "#4F4F4F",
+          marginBottom: 5,
+        }}
+      >
         {translatedStrings[props.language].Details}
       </h5>
       <p style={{ fontSize: 14 }} id="regular-text">
@@ -24,7 +30,9 @@ export default function Details(props) {
         rows="3"
         value={props.fields}
         onChange={props.handleFieldChange}
-        placeholder={translatedStrings[props.language].Details_Example}
+        placeholder={`e.g., "${
+          translatedStrings[props.language].Details_Example
+        }"`}
       />
     </Form.Group>
   );

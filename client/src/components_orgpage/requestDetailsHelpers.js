@@ -40,7 +40,7 @@ export const findAttachedVolunteer = async (curr_request, mode) => {
 export const matchVolunteersButton = (mode, topMatch) => {
   if (mode === current_tab.UNMATCHED) {
     return (
-      <Button id="large-button" style={{ marginTop: 15 }} onClick={topMatch}>
+      <Button id="large-button" style={{ marginTop: 30 }} onClick={topMatch}>
         Match volunteers
       </Button>
     );

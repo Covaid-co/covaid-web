@@ -57,7 +57,7 @@ const translations = {
     VolunteerReachOutSoon:
       "Your request has been saved and you should be contacted soon from a matched volunteer who can support you!",
     RequestSupport: "Request support",
-    INeedHelp: "I need help",
+    INeedHelp: "I need support",
     BecomeVolunteer: "Become a Volunteer",
     "Academic/Professional": "",
     Donate: "Donate",

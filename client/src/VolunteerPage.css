@@ -1,6 +1,6 @@
 #jumbo-volunteer {
   background-color: transparent;
-  padding-top: 70px;
+  padding-top: 58px;
   padding-bottom: 30px;
 }
 
@@ -24,6 +24,29 @@
     background-image: url("./assets/long_BG.png");
     background-size: cover;
   }
+}
+
+#profile-pic {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-left: 5%;
+  float: left;
+  object-fit: cover;
+}
+
+.fileContainer .deleteImage {
+  font-weight: 600;
+  background-color: red !important;
+  font-size: 15px !important;
+}
+
+#vertical-line {
+  display: inline;
+  border-left: 1px solid #dee2e6;
+  height: 600px;
+  float: left;
 }
 
 .active-beacon {
@@ -136,13 +159,6 @@
   margin-left: -18px;
   margin-bottom: 10px;
 }
-
-#volunteer-offer-status {
-  font-family: "Montserrat";
-  font-size: 20;
-  font-weight: bold;
-}
-
 .custom-control-input:checked ~ .custom-control-label::before {
   background-color: #2670ff;
   border-color: #2670ff;
@@ -164,4 +180,79 @@
   color: #7f7f7f;
   margin-bottom: -3px;
   margin-top: 0px;
+}
+#offer-save-button,
+#offer-edit-button {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 49px;
+  font-family: "Inter";
+  background-color: transparent;
+  border-color: #2670ff;
+  color: #2670ff;
+  border-radius: 8px;
+}
+#offer-save-button {
+  background-color: #2670ff;
+  color: white;
+}
+#offer-save-button:hover {
+  background-color: #2647ff;
+  transition: 0.5s;
+}
+#large-activate-button,
+#large-inactivate-button {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 49px;
+  font-family: "Inter";
+  background-color: transparent;
+  border-color: #ae2f2f;
+  color: #ae2f2f;
+  border-radius: 8px;
+}
+#large-activate-button {
+  border-color: #2670ff;
+  color: #2670ff;
+}
+#large-activate-button:hover {
+  color: white;
+  background-color: #2670ff;
+}
+#large-inactivate-button:hover {
+  color: white;
+  background-color: #ae2f2f;
+}
+#volunteer-main-content {
+  font-family: "Inter";
+  font-size: 16px;
+  margin-top: 0 !important;
+  margin-bottom: -30px;
+  color: #7f7f7f;
+  max-width: 1500px;
+  padding: 0px 32px 16px 32px;
+}
+#status-change-description {
+  font-family: "Inter";
+  font-size: 14px;
+  line-height: 17px;
+  margin-top: 4px;
+}
+#volunteer-offer-status {
+  font-family: "Montserrat";
+  font-size: 20;
+  font-weight: bold;
+}
+#offer-detail-response {
+  font-family: Inter;
+  font-size: 16px;
+  line-height: 19px;
+}
+#your-offer-header-detail {
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 20px;
 }

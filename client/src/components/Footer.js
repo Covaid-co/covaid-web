@@ -36,11 +36,11 @@ export default function Footer(props) {
   };
 
   return (
-    <footer className="footer">
+    <footer className="footer" id={props.id} style={props.style}>
       <Container style={{ maxWidth: 2500 }}>
         <Row style={{ textAlign: "left", paddingBottom: 30 }}>
           <Col
-            xs={2}
+            xs={1}
             style={{ padding: 20, paddingRight: 0 }}
             id="footer-brand"
           >
@@ -63,7 +63,8 @@ export default function Footer(props) {
             lg={10}
             md={10}
             sm={12}
-            style={{ textAlign: "left", marginTop: 62, paddingLeft: 0 }}
+            style={{ textAlign: "left", marginTop: 62, paddingLeft: 50 }}
+            id="footer-content"
           >
             <Button
               variant="link"

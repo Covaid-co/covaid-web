@@ -5,6 +5,10 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const mountRoutes = require("./routes");
+const multer = require("multer");
+const crypto = require("crypto");
+const GridFsStorage = require("multer-gridfs-storage");
+const imageRouter = require("./routes/image");
 
 const RequestScheduler = require("./scheduler/request.scheduler");
 const BeaconScheduler = require("./scheduler/beacon.scheduler");
@@ -45,6 +49,28 @@ mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
+// create storage engine
+const storage = new GridFsStorage({
+  url: mongoDB,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString("hex") + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: "uploads",
+        };
+        resolve(fileInfo);
+      });
+    });
+  },
+});
+
+const upload = multer({ storage });
+
 require("./models/association.model");
 require("./models/user.model");
 require("./config/passport");
@@ -61,6 +87,7 @@ app.use(
   })
 );
 
+app.use("/api/image", imageRouter(upload));
 mountRoutes(app);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

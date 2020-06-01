@@ -121,3 +121,10 @@
   background-color: #c3cad2;
   color: white;
 }
+
+#behalf-text {
+  font-family: "Inter";
+  font-size: 16px;
+  color: #7f7f7f;
+  cursor: default;
+}
