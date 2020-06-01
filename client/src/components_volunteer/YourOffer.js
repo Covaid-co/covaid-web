@@ -136,9 +136,7 @@ export default function YourOffer(props) {
 
   var visibleText = <></>;
   var publishButton = <></>;
-  var updateButton = <></>;
-  var offerDetailsCol = <></>;
-
+  var offerForm = <></>;
   var updateText = "Save";
   var editText = "Edit";
   var publishText = "Mark as active";
