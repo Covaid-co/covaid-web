@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Tooltip from "react-bootstrap/Tooltip";
+import Image from "react-bootstrap/Image";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { useFormFields } from "../libs/hooksLib";
 import { generateURL } from "../Helpers";
@@ -22,6 +23,9 @@ export default function VolunteerDetails(props) {
     email5: "",
     adminDetails: "",
   });
+  const [imageUrl, setImageUrl] = useState(
+    "https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg"
+  );
 
   const [mapBoxToken, setMapBoxToken] = useState("");
   const [showMapModal, setShowMapModal] = useState(false);
@@ -48,8 +52,21 @@ export default function VolunteerDetails(props) {
       var list = [];
       list.push(props.currVolunteer._id);
       fetch_statistics(list);
+      fetchProfilePic(props.currVolunteer._id);
     }
   }, [props.currVolunteer, props.volunteerDetailModal]);
+
+  const fetchProfilePic = (id) => {
+    fetch("api/image/" + id).then((response) => {
+      if (response.ok) {
+        setImageUrl("http://localhost:5000/api/image/" + id);
+      } else {
+        setImageUrl(
+          "https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg"
+        );
+      }
+    });
+  };
 
   const fetch_statistics = (id_list) => {
     let params = { id_list: id_list };
@@ -221,6 +238,19 @@ export default function VolunteerDetails(props) {
                 </Badge>
               )}
             </div>
+            <Image
+              src={imageUrl}
+              id="profile-pic"
+              style={{
+                marginRight: 30,
+                marginTop: -30,
+                float: 'right',
+                cursor: "pointer",
+                display: 'inline',
+                height: 120,
+                width: 120
+              }}
+            />
             {displaySwitch()}
             <>
               {props.currVolunteer.pronouns === undefined ||
@@ -234,14 +264,13 @@ export default function VolunteerDetails(props) {
               )}
             </>
             <p id="regular-text-nomargin" style={{ marginBottom: -8 }}>
-              Location:
               <Button
                 id="regular-text"
                 variant="link"
                 style={{ color: "#2670FF", padding: 0, marginBottom: 4 }}
                 onClick={handleOpenMap}
               >
-                View Map
+                Location
               </Button>
             </p>
             <p id="regular-text-nomargin">{props.currVolunteer.email}</p>
