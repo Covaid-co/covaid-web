@@ -143,8 +143,8 @@ export default function YourOffer(props) {
   var offerForm = <></>;
   var updateText = "Save";
   var editText = "Edit";
-  var publishText = "Mark active";
-  var unpublishText = "Mark inactive";
+  var publishText = "Activate";
+  var unpublishText = "Deactivate";
   var spinnerComponent = <Spinner animation="border" />;
   const saveOfferButton = (
     <Button
@@ -173,8 +173,8 @@ export default function YourOffer(props) {
 
   const statusChangeDescription = (
     <p id="status-change-description" style={{ color: "#7f7f7f" }}>
-      Marking yourself as active/inactive allows you to control your
-      availability as a volunteer
+      Activating/deactivating allows you to control whether or not you will be
+      matched with requests
     </p>
   );
   if (availability) {
