@@ -6,13 +6,6 @@ import React, { useState, useEffect } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Badge from "react-bootstrap/Badge";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faExclamationCircle,
-  faClock,
-  faCheck,
-} from "@fortawesome/free-solid-svg-icons";
 import VolunteerBeaconModal from "./VolunteerBeaconModal";
 
 export default function VolunteerBeacons(props) {
