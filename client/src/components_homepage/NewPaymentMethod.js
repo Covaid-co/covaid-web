@@ -22,6 +22,7 @@ export default function NewPaymentMethod(props) {
               <option>Call ahead to store and pay (Best option)</option>
               <option>Have volunteer pay and reimburse when delivered</option>
               <option>N/A</option>
+              <option>Donation (only if absolutely necessary)</option>
             </Form.Control>
           </Form.Group>
         </Col>

@@ -1,5 +1,6 @@
 const Users = require("../models/user.model");
 const Association = require("../models/association.model");
+const ProfilePicture = require("../models/profile-picture.model");
 const passport = require("passport");
 const emailer = require("../util/emailer");
 const spreadsheets = require("../util/spreadsheet_tools");
@@ -397,9 +398,12 @@ exports.total_users = function (req, res) {
  */
 exports.update = function (req, res) {
   const id = req.token.id;
-  Users.findByIdAndUpdate(id, { $set: req.body }, function (err, offer) {
+  Users.findByIdAndUpdate(id, { $set: req.body }, { new: true }, function (
+    err,
+    user
+  ) {
     if (err) return next(err);
-    res.send("User updated.");
+    res.send(user);
   });
 };
 
