@@ -143,8 +143,8 @@ export default function YourOffer(props) {
   var offerForm = <></>;
   var updateText = "Save";
   var editText = "Edit";
-  var publishText = "Mark as active";
-  var unpublishText = "Mark as inactive";
+  var publishText = "Mark active";
+  var unpublishText = "Mark inactive";
   var spinnerComponent = <Spinner animation="border" />;
   const saveOfferButton = (
     <Button
@@ -184,7 +184,7 @@ export default function YourOffer(props) {
         id="#your-offer-header-detail"
         style={{ fontWeight: "600", color: "#2670FF" }}
       >
-        You are an active volunteer.
+        You are an active volunteer
       </h5>
     );
     publishButton = (
@@ -202,7 +202,7 @@ export default function YourOffer(props) {
         id="your-offer-header-detail"
         style={{ fontWeight: "600", color: "#EB5757" }}
       >
-        You are an inactive volunteer.
+        You are an inactive volunteer
       </h5>
     );
     publishButton = (
