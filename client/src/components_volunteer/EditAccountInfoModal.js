@@ -416,7 +416,7 @@ export default function EditAccountInfoModal(props) {
     return (
       <>
         <Modal.Header closeButton>
-          <Modal.Title>Update your account information</Modal.Title>
+          <Modal.Title>Your Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container
@@ -432,69 +432,58 @@ export default function EditAccountInfoModal(props) {
             <Row>
               <Col>
                 <Form>
-                  <Form.Group as={Row} controlId="first_name">
-                    <Form.Label column sm={3}>
-                      <b>First name</b>
-                    </Form.Label>
-                    <Col sm={8}>
-                      <Form.Control
-                        value={fields.first_name}
-                        onChange={handleFieldChange}
-                      />
-                    </Col>
-                  </Form.Group>
+                  <Row>
+                    <Form.Group as={Row} controlId="first_name">
+                      <Col sm={8}>
+                        <Form.Control
+                          value={fields.first_name}
+                          onChange={handleFieldChange}
+                        />
+                      </Col>
+                    </Form.Group>
 
-                  <Form.Group as={Row} controlId="last_name">
-                    <Form.Label column sm={3}>
-                      <b>Last name</b>
-                    </Form.Label>
-                    <Col sm={8}>
-                      <Form.Control
-                        value={fields.last_name}
-                        onChange={handleFieldChange}
-                      />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="email">
-                    <Form.Label column sm={3}>
-                      <b>Email</b>
-                    </Form.Label>
-                    <Col sm={8}>
-                      <Form.Control
-                        value={fields.email}
-                        onChange={handleFieldChange}
-                      />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="phone">
-                    <Form.Label column sm={3}>
-                      <b>Phone</b>
-                    </Form.Label>
-                    <Col sm={8}>
-                      <Form.Control
-                        value={fields.phone}
-                        onChange={handleFieldChange}
-                      />
-                    </Col>
-                  </Form.Group>
-                  <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
-                    Current zipcode
-                  </h5>
-                  <InputGroup controlid="locationString" className="mb-3">
-                    <Form.Control
-                      placeholder="Zip code"
-                      onChange={(e) => setZip(e.target.value)}
-                      value={zip}
-                    />
-                    <InputGroup.Append>
-                      <Button
-                        variant="outline-secondary"
-                        onClick={updateLocation}
+                    <Form.Group as={Row} controlId="last_name">
+                      <Col sm={8}>
+                        <Form.Control
+                          value={fields.last_name}
+                          onChange={handleFieldChange}
+                        />
+                      </Col>
+                    </Form.Group>
+                  </Row>
+                  <Row>
+                    <Form.Group as={Row} controlId="email">
+                      <Col sm={8}>
+                        <Form.Control
+                          value={fields.email}
+                          onChange={handleFieldChange}
+                        />
+                      </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} controlId="phone">
+                      <Col sm={8}>
+                        <Form.Control
+                          value={fields.phone}
+                          onChange={handleFieldChange}
+                        />
+                      </Col>
+                    </Form.Group>
+                    <Col>
+                      <Form.Group
+                        as={Row}
+                        controlId="phone"
+                        controlid="locationString"
+                        className="mb-3"
                       >
-                        Update Zipcode
-                      </Button>
-                    </InputGroup.Append>
-                  </InputGroup>
+                        <Form.Control
+                          placeholder="Zip code"
+                          onChange={(e) => setZip(e.target.value)}
+                          value={zip}
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
                   <h5
                     id="regular-text-bold"
                     style={{ marginBottom: 5, marginTop: 20 }}
@@ -505,13 +494,7 @@ export default function EditAccountInfoModal(props) {
                     obj={languageChecked}
                     setObj={setLanguageChecked}
                   />
-                  <h5
-                    id="regular-text-bold"
-                    style={{ marginBottom: 5, marginTop: 20 }}
-                  >
-                    Can you drive?
-                  </h5>
-                  <NewCar hasCar={hasCar} setHasCar={setHasCar} />
+
                   <h5
                     id="regular-text-bold"
                     style={{ marginBottom: 5, marginTop: 20 }}
