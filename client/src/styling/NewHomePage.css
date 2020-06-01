@@ -455,15 +455,15 @@
   font-weight: 600;
   font-family: "Inter";
   margin-right: 10px;
-  margin-left: 10px;
-  font-size: 14px;
+  font-size: 16px;
   position: relative;
   cursor: pointer;
+  margin-left: 10px;
 }
 
 #logoutButton {
   font-family: "Inter";
-  font-size: 14px;
+  font-size: 16px;
   margin-top: -1px;
   color: #dc3545;
 }
