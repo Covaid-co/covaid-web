@@ -220,7 +220,11 @@ export default function CovaidNavbar(props) {
             id="getStarted"
             style={{ display: "block", marginRight: "5%", marginBottom: 3 }}
           >
-            {props.orgPortal ? <></> : translateButton()}
+            {props.orgPortal || mode === "volunteer" ? (
+              <></>
+            ) : (
+              translateButton()
+            )}
             {width > 767 && !props.orgPortal ? (
               <span
                 id="hello-name"
