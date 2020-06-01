@@ -12,6 +12,7 @@ import Footer from "../components/Footer";
  */
 
 export default function Donate(props) {
+  document.title = "Covaid | Donate";
   return (
     <div className="App">
       <NavBar

@@ -26,6 +26,7 @@ import Footer from "../components/Footer";
  */
 
 export default function AboutUs(props) {
+  document.title = "Covaid | About";
   const peoples = {
     "Jeffrey Li": {
       link: "https://www.instagram.com/lijeffrey39/",

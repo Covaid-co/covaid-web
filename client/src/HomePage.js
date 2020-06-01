@@ -35,6 +35,7 @@ export default function HomePage(props) {
     }
 
     setPageLoaded(true);
+    document.title = "Covaid";
   }, [props.login]);
 
   const showModalType = (type) => {

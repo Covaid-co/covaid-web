@@ -34,6 +34,7 @@ import {
 import "./OrganizationPage.css";
 
 export default function OrganiationPortal(props) {
+  document.title = "Covaid | Organization";
   const { addToast } = useToasts();
   const [pageLoaded, setPageLoaded] = useState(false);
   const [currTabNumber, setCurrTab] = useState(0);
