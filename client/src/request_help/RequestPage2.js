@@ -126,7 +126,7 @@ export default function RequestPage2(props) {
 
   return (
     <>
-      <h5 id="title-light">Request Details</h5>
+      <h5 id="title-light">{props.translations[props.language].RequestDetails}</h5>
       {props.currentAssoc === null ? (
         <></>
       ) : (

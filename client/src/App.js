@@ -304,6 +304,11 @@ function App() {
             path="/request"
             render={(props) => requestPage(props, "")}
           />
+          {/* <Route
+            exact
+            path="/:lang/request"
+            render={(props) => requestPage(props, "")}
+          /> */}
           <Route
             exact
             path="/pgh-volunteer"
@@ -380,6 +385,7 @@ function App() {
             path="/volunteer-signin"
             component={(props) => homePageComp(props, true)}
           />
+          {/* <Route path="/:lang" component={homePageComp} /> */}
           <Route path="/" component={homePageComp} />
           <Route path="*" component={homePageComp} />
         </Switch>

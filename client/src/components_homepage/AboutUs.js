@@ -101,10 +101,10 @@ export default function AboutUs(props) {
         <Row>
           <Col md={1} id="login-container"></Col>
           <Col md={10} id="login-container" style={{ textAlign: "center" }}>
-            <h1 id="home-heading" style={{ marginBottom: 40 }}>
+            <h1 id="home-heading" style={{ marginBottom: 40, fontSize: 60 }}>
               The People Behind<br></br>Covaid
             </h1>
-            <p id="regular-text" style={{ marginBottom: 40 }}>
+            <p id="regular-text" style={{ marginBottom: 40, fontSize: 20 }}>
               We're a group of college students/recent grads who want to play
               our part in the fight against COVID-19.
             </p>

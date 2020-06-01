@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookie from "js-cookie";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -24,6 +25,7 @@ let translatedStrings = new LocalizedStrings({ translations });
  */
 
 export default function CovaidNavbar(props) {
+  const history = useHistory();
   const [mode, setMode] = useState("");
   const [toggled, setToggled] = useState(false);
   const [totalVolunteers, setTotalVolunteers] = useState(0);
@@ -327,7 +329,7 @@ export default function CovaidNavbar(props) {
           id="custom-navbar"
         >
           <Navbar.Brand
-            href={currURL}
+            onClick={() => history.push("/")}
             id="navbar-brand"
             style={width < 767 ? { marginTop: 12 } : {}}
           >
@@ -411,7 +413,7 @@ export default function CovaidNavbar(props) {
         id="custom-navbar"
       >
         <Navbar.Brand
-          href={currURL}
+          onClick={() => history.push("/")}
           id="navbar-brand"
           style={width < 767 ? { marginTop: 12 } : {}}
         >
@@ -428,7 +430,7 @@ export default function CovaidNavbar(props) {
             <Nav className="mr-auto">
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
-                href={currURL + "/about"}
+                onClick={() => history.push("/about")}
               >
                 <p id={toggled ? "navLinkToggled" : "navLink"}>
                   {translatedStrings[props.language].AboutUs}
@@ -436,7 +438,7 @@ export default function CovaidNavbar(props) {
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
-                href={currURL + "/faq"}
+                onClick={() => history.push("/faq")}
               >
                 <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
               </Nav.Link>
@@ -445,7 +447,7 @@ export default function CovaidNavbar(props) {
             <Nav className="mr-auto">
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
-                href={currURL + "/about"}
+                onClick={() => history.push("/about")}
               >
                 <p id={toggled ? "navLinkToggled" : "navLink"}>
                   {translatedStrings[props.language].AboutUs}
@@ -453,7 +455,7 @@ export default function CovaidNavbar(props) {
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
-                href={currURL + "/organizationPortal"}
+                onClick={() => history.push("/organizationPortal")}
               >
                 <p id={toggled ? "navLinkToggled" : "navLink"}>
                   {translatedStrings[props.language].Organizations}
@@ -461,13 +463,13 @@ export default function CovaidNavbar(props) {
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
-                href={currURL + "/faq"}
+                onClick={() => history.push("/faq")}
               >
                 <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
               </Nav.Link>
               <Nav.Link
                 className={toggled ? "navBorderToggled" : "navbar-element"}
-                href={currURL + "/donate"}
+                onClick={() => history.push("/donate")}
               >
                 <p id={toggled ? "navLinkToggled" : "navLink"}>
                   {translatedStrings[props.language].Donate}

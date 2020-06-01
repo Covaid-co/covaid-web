@@ -246,7 +246,7 @@ export default function OrganiationPortal(props) {
                 >
                   View Volunteers
                 </Button>{" "}
-                <br />
+                {/* <br />
                 <Button
                   variant="link"
                   id="resources-link"
@@ -255,7 +255,7 @@ export default function OrganiationPortal(props) {
                   }}
                 >
                   + Add a link to your community&apos;s resources
-                </Button>
+                </Button> */}
               </Col>
               <Col
                 lg={6}
