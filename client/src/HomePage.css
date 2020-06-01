@@ -115,6 +115,57 @@
   cursor: pointer;
 }
 
+#tab-name-active-requests {
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 600;
+  color: #4f4f4f;
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  width: 100px;
+  border-bottom: 4px solid #2670ff;
+  cursor: pointer;
+  text-align: center;
+}
+
+#tab-name-inactive-requests {
+  color: #c1c1c1;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Inter";
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  width: 100px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#nav-tab-name-active {
+  color: black;
+  font-family: "Inter";
+  font-size: 16px;
+  color: #7f7f7f;
+  display: inline-block;
+  margin-bottom: -20px;
+  margin-right: 40px;
+  padding-bottom: 5px;
+  border-bottom: 4px solid #2670ff;
+  cursor: pointer;
+}
+
+#nav-tab-name-inactive {
+  color: #c1c1c1;
+  font-size: 16px;
+  font-family: "Inter";
+  display: inline-block;
+  margin-bottom: -10px;
+  margin-right: 40px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
 #profile-name:hover {
   color: #2670ff;
 }

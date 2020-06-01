@@ -1,5 +1,6 @@
 const Users = require("../models/user.model");
 const Association = require("../models/association.model");
+const ProfilePicture = require("../models/profile-picture.model");
 const passport = require("passport");
 const emailer = require("../util/emailer");
 const spreadsheets = require("../util/spreadsheet_tools");

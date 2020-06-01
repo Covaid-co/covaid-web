@@ -36,7 +36,11 @@ export default function FAQ(props) {
         setLanguage={props.setLanguage}
         language={props.language}
         isLoggedIn={props.isLoggedIn}
-        first_name={Object.keys(props.currentUser).length !== 0 ? props.currentUser.first_name : ""}
+        first_name={
+          Object.keys(props.currentUser).length !== 0
+            ? props.currentUser.first_name
+            : ""
+        }
       />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
@@ -288,5 +292,5 @@ FAQ.propTypes = {
   setLanguage: PropTypes.func,
   language: PropTypes.string,
   isLoggedIn: PropTypes.bool,
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
 };

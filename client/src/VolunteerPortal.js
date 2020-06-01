@@ -16,6 +16,8 @@ import Col from "react-bootstrap/Col";
 
 import CurrentVolunteerRequests from "./components_volunteer/CurrentVolunteerRequests";
 import CompletedVolunteerRequests from "./components_volunteer/CompletedVolunteerRequests";
+import ProfileHeader from "./components_volunteer/ProfileHeader";
+import RequestDashboard from "./components_volunteer/RequestDashboard";
 import { request_status, volunteer_status } from "./constants";
 import { generateURL } from "./Helpers";
 import NavBar from "./components/NavBar";
@@ -24,6 +26,7 @@ import VolunteerBeacons from "./components_volunteer/VolunteerBeacons";
 import "./VolunteerPage.css";
 import fetch_a from "./util/fetch_auth";
 import Footer from "./components/Footer";
+import { useWindowDimensions } from "./libs/hooksLib";
 
 export default function VolunteerPortal(props) {
   const [tabNum, setTabNum] = useState(1);
@@ -35,10 +38,12 @@ export default function VolunteerPortal(props) {
   const [beacons, setBeacons] = useState([]);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [view, setView] = useState("request-dashboard");
+  const { height, width } = useWindowDimensions();
   const { addToast } = useToasts();
 
   // fetch requests given a status, update frontend state using 'requestStateChanger'
-  const fetchRequests = (status, requestStateChanger) => {
+  const fetchRequests = (status, requestStateChanger, reverse) => {
     let params = { status: status };
     var url = generateURL("/api/request/volunteerRequests?", params);
     fetch_a("token", url, {
@@ -47,6 +52,9 @@ export default function VolunteerPortal(props) {
       .then((response) => {
         if (response.ok) {
           response.json().then((data) => {
+            if (reverse) {
+              data = data.reverse();
+            }
             requestStateChanger(data);
           });
         } else {
@@ -102,7 +110,7 @@ export default function VolunteerPortal(props) {
         // Fetch requests
         fetchRequests(volunteer_status.PENDING, setPendingRequests);
         fetchRequests(volunteer_status.IN_PROGRESS, setAcceptedRequests);
-        fetchRequests(volunteer_status.COMPLETE, setCompletedRequests);
+        fetchRequests(volunteer_status.COMPLETE, setCompletedRequests, true);
 
         // Featch beacons
         fetchBeacons();
@@ -111,6 +119,9 @@ export default function VolunteerPortal(props) {
         setLoginError(true);
       });
   };
+
+  const prepend = (element, array = []) =>
+    !element ? [] : Array.of(element, ...array);
 
   // State change (Pending -> In Progress)
   const moveRequestFromPendingToInProgress = (request) => {
@@ -144,7 +155,7 @@ export default function VolunteerPortal(props) {
         (acceptedRequest) => acceptedRequest._id !== request._id
       )
     );
-    setCompletedRequests(completedRequests.concat(request));
+    setCompletedRequests(prepend(request, completedRequests));
     setTabNum(3);
   };
 
@@ -153,138 +164,119 @@ export default function VolunteerPortal(props) {
     fetchUser();
   }, []);
 
+  const mainContentView = () => {
+    if (view === "request-dashboard") {
+      return (
+        <Container
+          id="volunteer-info"
+          style={{ marginTop: 50, marginBottom: width < 980 ? 30 : 0 }}
+        >
+          <h1
+            id="home-heading"
+            style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
+          >
+            Request Dashboard
+          </h1>
+          <p id="regular-text" style={{ fontSize: 16 }}>
+            Respond to requests that have been delegated to you
+          </p>
+          <p id="requestCall" style={{ marginTop: 15, marginBottom: 34 }}></p>
+          <RequestDashboard
+            pendingRequests={pendingRequests}
+            acceptedRequests={acceptedRequests}
+            completedRequests={completedRequests}
+            user={user}
+            moveRequestFromPendingToInProgress={
+              moveRequestFromPendingToInProgress
+            }
+            rejectAPendingRequest={rejectAPendingRequest}
+            completeAnInProgressRequest={completeAnInProgressRequest}
+          />
+        </Container>
+      );
+    } else if (view === "your-offer") {
+      return (
+        <Container
+          id="volunteer-info"
+          style={{ marginTop: 50, marginBottom: width < 980 ? 30 : 0 }}
+        >
+          <h1
+            id="home-heading"
+            style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
+          >
+            Your Offer
+          </h1>
+          <p id="regular-text" style={{ fontSize: 16 }}>
+            Customize your volunteer experience
+          </p>
+          <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
+        </Container>
+      );
+    } else {
+      return <></>;
+    }
+  };
+
   if (foundUser) {
     return (
       <>
         <div className="App">
+          <div></div>
           <NavBar
             setLanguage={props.setLanguage}
-            language={props.language}
+            language={"en"}
             isLoggedIn={true}
+            mode={"volunteer"}
             first_name={user.first_name}
+            last_name={user.last_name}
+            setView={setView}
+            pageLoaded={true}
+            isLoggedIn={true}
           />
-          <div id="bgImage"></div>
-          <Jumbotron fluid id="jumbo-volunteer">
-            <Container style={{ maxWidth: 2000 }}>
-              <Row>
-                <Col lg={1} md={1} sm={0}></Col>
-                <Col>
-                  <h1 id="home-heading" style={{ marginTop: 0 }}>
-                    Welcome back, {user.first_name}!
-                  </h1>
-                  <p id="regular-text" style={{ fontSize: 20 }}>
-                    This is your volunteer portal, a place for you to manage
-                    your offer and handle requests
-                  </p>
-                  <Button
-                    id="medium-button"
-                    onClick={() => {
-                      setShowAccountModal(true);
-                    }}
-                  >
-                    View Profile Information
-                  </Button>{" "}
-                </Col>
-              </Row>
-            </Container>
-          </Jumbotron>
-          <Container id="volunteer-info" style={{ marginTop: 50 }}>
-            <Row className="justify-content-md-center">
-              <Col lg={1}></Col>
-              <Col lg={6} md={10} sm={12} style={{ marginTop: -20 }}>
-                <Container style={{ padding: 0, marginLeft: 0 }}>
-                  <Button
-                    id={tabNum === 1 ? "tab-button-selected" : "tab-button"}
-                    onClick={() => {
-                      setTabNum(1);
-                    }}
-                  >
-                    Your Offer
-                  </Button>
-                  <Button
-                    id={tabNum === 2 ? "tab-button-selected" : "tab-button"}
-                    onClick={() => {
-                      setTabNum(2);
-                    }}
-                  >
-                    Pending ({pendingRequests.length}) / Active (
-                    {acceptedRequests.length})
-                  </Button>
-                  <Button
-                    id={tabNum === 3 ? "tab-button-selected" : "tab-button"}
-                    onClick={() => {
-                      setTabNum(3);
-                    }}
-                  >
-                    Completed ({completedRequests.length})
-                  </Button>
-                </Container>
-                <Container
-                  id="newOfferContainer"
-                  style={
-                    tabNum === 1 ? { display: "block" } : { display: "none" }
-                  }
+          <div class="flex-container">
+            <div style={{ width: width < 980 ? "100%" : "75%", float: "left" }}>
+              <Jumbotron fluid id="jumbo-volunteer" style={{ paddingTop: 50 }}>
+                <ProfileHeader
+                  user={user}
+                  setShowAccountModal={setShowAccountModal}
+                />
+              </Jumbotron>
+              {mainContentView()}
+            </div>
+            <span
+              style={{ display: width < 980 ? "none" : "inline" }}
+              id="vertical-line"
+            ></span>
+            <div
+              style={{
+                width: width < 980 ? "100%" : "23%",
+                float: "left",
+                height: "100%",
+              }}
+            >
+              <Container>
+                <h1
+                  id="home-heading"
+                  style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
                 >
-                  {foundUser ? (
-                    <YourOffer
-                      user={user}
-                      setLanguage={props.setLanguage}
-                      language={props.language}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </Container>
-                <Container
-                  id="newOfferContainer"
-                  style={
-                    tabNum === 2 ? { display: "block" } : { display: "none" }
-                  }
-                >
-                  <CurrentVolunteerRequests
-                    user={user}
-                    pendingRequests={pendingRequests}
-                    acceptedRequests={acceptedRequests}
-                    moveRequestFromPendingToInProgress={
-                      moveRequestFromPendingToInProgress
-                    }
-                    rejectAPendingRequest={rejectAPendingRequest}
-                    completeAnInProgressRequest={completeAnInProgressRequest}
-                  />
-                </Container>
-                <Container
-                  id="newOfferContainer"
-                  style={
-                    tabNum === 3 ? { display: "block" } : { display: "none" }
-                  }
-                >
-                  <CompletedVolunteerRequests
-                    user={user}
-                    completedRequests={completedRequests}
-                  />
-                </Container>
-              </Col>
-              <Col lg={4} md={10} sm={12} style={{ marginTop: 0 }}>
-                <h5
-                  id="volunteer-offer-status"
-                  style={{ fontSize: 24, fontWeight: "bold", color: "black" }}
-                >
-                  Organization Beacons
-                </h5>
-                <Container
-                  id="newOfferContainer"
-                  style={{ display: "block", marginTop: 10 }}
-                >
-                  <VolunteerBeacons
-                    beacons={beacons}
-                    volunteer={user}
-                    fetchBeacons={fetchBeacons}
-                  />
-                </Container>
-              </Col>
-              <Col lg={1}></Col>
-            </Row>
-          </Container>
+                  Important Information
+                </h1>
+                <p id="regular-text" style={{ fontSize: 16 }}>
+                  Messages from your organization, Covaid updates, and
+                  miscellaneous resources
+                </p>
+                <p
+                  id="requestCall"
+                  style={{ marginTop: 30, marginBottom: 10 }}
+                ></p>
+                <VolunteerBeacons
+                  beacons={beacons}
+                  volunteer={user}
+                  fetchBeacons={fetchBeacons}
+                />
+              </Container>
+            </div>
+          </div>
         </div>
         <Footer />
         <AccountInfo

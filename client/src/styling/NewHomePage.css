@@ -351,8 +351,8 @@
   background-color: white;
 }
 
-#languageButton::after { 
-  content: none; 
+#languageButton::after {
+  content: none;
 }
 
 #languageButton:focus {

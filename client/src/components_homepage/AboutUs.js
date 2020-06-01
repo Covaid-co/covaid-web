@@ -91,35 +91,23 @@ export default function AboutUs(props) {
         language={props.language}
         pageLoaded={true}
         isLoggedIn={props.isLoggedIn}
-        first_name={Object.keys(props.currentUser).length !== 0 ? props.currentUser.first_name : ""}
+        first_name={
+          Object.keys(props.currentUser).length !== 0
+            ? props.currentUser.first_name
+            : ""
+        }
       />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
-          <Col md={6} id="login-container" style={{ paddingRight: 75 }}>
-            <h1 id="home-heading">The People Behind Covaid</h1>
-            <p id="regular-text">
-              Hi! We're a group of college student/recent grads who want to play
+          <Col md={1} id="login-container"></Col>
+          <Col md={10} id="login-container" style={{ textAlign: "center" }}>
+            <h1 id="home-heading" style={{ marginBottom: 40 }}>
+              The People Behind<br></br>Covaid
+            </h1>
+            <p id="regular-text" style={{ marginBottom: 40 }}>
+              We're a group of college students/recent grads who want to play
               our part in the fight against COVID-19.
             </p>
-            <p id="regular-text">
-              Inspired by acts of mutual aid in our community, we created
-              <strong>
-                <font id="home" style={{ fontSize: 18 }}>
-                  {" "}
-                  covaid
-                </font>
-              </strong>
-              , a tool to assist elderly and immunocompromised groups in this
-              time of distress. We are neighbors that are truly concerned about
-              our community as well as those affected around the United States.
-              With this tool, we hope to give those most affected and vulnerable
-              the help they need.
-            </p>
-            {/* <p id="regular-text">
-              <strong>Any questions?</strong> Just email us at covaidco@gmail.com
-            </p> */}
-          </Col>
-          <Col md={6} style={{ marginTop: 30 }}>
             <Row>
               {names.map((name, i) => {
                 return (
@@ -150,6 +138,7 @@ export default function AboutUs(props) {
               })}
             </Row>
           </Col>
+          <Col md={1} id="login-container"></Col>
         </Row>
       </Container>
       <Footer key="2" />
@@ -161,5 +150,5 @@ AboutUs.propTypes = {
   setLanguage: PropTypes.func,
   language: PropTypes.string,
   isLoggedIn: PropTypes.bool,
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
 };

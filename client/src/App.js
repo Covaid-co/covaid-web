@@ -334,17 +334,38 @@ function App() {
           <Route
             exact
             path="/about"
-            component={(props) => <AboutUs {...props} {...languageObj} isLoggedIn={loggedIn} currentUser={currentUser}/>}
+            component={(props) => (
+              <AboutUs
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+              />
+            )}
           />
           <Route
             exact
             path="/faq"
-            component={(props) => <FAQ {...props} {...languageObj} isLoggedIn={loggedIn} currentUser={currentUser}/>}
+            component={(props) => (
+              <FAQ
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+              />
+            )}
           />
           <Route
             exact
             path="/donate"
-            component={(props) => <Donate {...props} {...languageObj} isLoggedIn={loggedIn} currentUser={currentUser}/>}
+            component={(props) => (
+              <Donate
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+              />
+            )}
           />
           <Route exact path="/orgPasswordReset" component={OrgReset} />
           <Route
