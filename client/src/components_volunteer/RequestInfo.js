@@ -117,13 +117,13 @@ export default function RequestInfo(props) {
   );
   var timeSpecific = (
     <>
-      <h5 id="regular-text-bold" style={{ marginBottom: 3, marginTop: 16 }}>
+      {/* <h5 id="regular-text-bold" style={{ marginBottom: 3, marginTop: 16 }}>
         Needed by:
       </h5>
       <p id="regular-text-nomargin">
         {props.currRequest.request_info.time} of{" "}
         {props.currRequest.request_info.date}
-      </p>
+      </p> */}
       <h5 id="regular-text-bold" style={{ marginBottom: 3, marginTop: 16 }}>
         Location:
       </h5>
