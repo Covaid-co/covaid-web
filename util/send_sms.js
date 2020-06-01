@@ -5,6 +5,9 @@ const twilioNumber = "+12513206732";
 const client = require("twilio")(accountSid, authToken);
 
 exports.sendNotificationSMS = async function (data) {
+  if (!data.phone) {
+    return "There is no recipient phone number specified. SMS notification failed.";
+  }
   try {
     var template = "Hi, " + data.name + "! ";
     if (data.templateName === "pending_notification") {
@@ -13,6 +16,9 @@ exports.sendNotificationSMS = async function (data) {
     } else if (data.templateName === "volunteer_notification") {
       template +=
         "Someone needs your support! Check your volunteer portal here. https://www.covaid.co/volunteerPortal";
+    } else {
+      template +=
+        "You have unread notifications! Check your volunteer portal here. https://www.covaid.co/volunteerPortal";
     }
     const msg = {
       body: template,
