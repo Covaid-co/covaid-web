@@ -5,7 +5,7 @@ const twilioNumber = "+12513206732";
 const client = require("twilio")(accountSid, authToken);
 
 exports.sendNotificationSMS = async function (data) {
-  if (!data.phone) {
+  if (data.phone === null || data.phone === "") {
     return "There is no recipient phone number specified. SMS notification failed.";
   }
   try {
