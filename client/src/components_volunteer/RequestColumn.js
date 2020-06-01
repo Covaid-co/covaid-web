@@ -63,7 +63,12 @@ export default function RequestColumn(props) {
     <>
       <p
         id="regular-text"
-        style={{ fontSize: 16, color: "#4F4F4F", fontWeight: 600 }}
+        style={{
+          marginLeft: 8,
+          fontSize: 16,
+          color: "#4F4F4F",
+          fontWeight: 600,
+        }}
       >
         {title}
       </p>

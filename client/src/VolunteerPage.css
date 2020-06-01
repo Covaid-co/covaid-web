@@ -1,6 +1,6 @@
 #jumbo-volunteer {
   background-color: transparent;
-  padding-top: 70px;
+  padding-top: 58px;
   padding-bottom: 30px;
 }
 
@@ -155,6 +155,7 @@
   font-family: "Inter";
   font-size: 14px;
   line-height: 17px;
+  margin-top: 4px;
 }
 #volunteer-offer-status {
   font-family: "Montserrat";
@@ -165,12 +166,6 @@
   font-family: Inter;
   font-size: 16px;
   line-height: 19px;
-}
-#offer-detail-response-italic {
-  font-family: Inter;
-  font-size: 16px;
-  line-height: 19px;
-  font-style: italic;
 }
 #your-offer-header-detail {
   font-family: Inter;
@@ -204,7 +199,6 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
   height: 49px;
   font-family: "Inter";
   background-color: transparent;
@@ -216,12 +210,38 @@
   color: white;
   background-color: #2670ff;
 }
-
-#large-inactivate-button {
+#offer-edit-button {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
+  height: 49px;
+  font-family: "Inter";
+  background-color: transparent;
+  border-color: #2670ff;
+  color: #2670ff;
+  border-radius: 8px;
+}
+#offer-save-button {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  height: 49px;
+  font-family: "Inter";
+  border-color: #2670ff;
+  background-color: #2670ff;
+  color: white;
+  border-radius: 8px;
+}
+#offer-save-button:hover {
+  background-color: #2647ff;
+  transition: 0.5s;
+}
+#large-inactivate-button {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
   height: 49px;
   font-family: "Inter";
   background-color: transparent;
@@ -232,4 +252,13 @@
 #large-inactivate-button:hover {
   color: white;
   background-color: #ae2f2f;
+}
+#volunteer-main-content {
+  font-family: "Inter";
+  font-size: 16px;
+  margin-top: 0 !important;
+  margin-bottom: -30px;
+  color: #7f7f7f;
+  max-width: 1500px;
+  padding: 0px 32px 16px 32px;
 }

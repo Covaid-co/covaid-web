@@ -80,18 +80,30 @@ export default function ProfileHeader(props) {
               }}
               onClick={() => setShowUploader(true)}
             />
-            {/* </Col>
-          <Col style={{ marginTop: 15 }}> */}
+
             <Row>
               <h1
                 id="home-heading"
-                style={{ marginTop: 0, fontSize: 28, color: "#4F4F4F" }}
+                style={{
+                  marginTop: 20,
+                  marginBottom: 0,
+                  fontSize: 28,
+                  color: "#4F4F4F",
+                }}
               >
                 {props.user.first_name} {props.user.last_name}
               </h1>
             </Row>
             <Row>
-              <p id="regular-text" style={{ fontSize: 16 }}>
+              <p
+                id="regular-text"
+                style={{
+                  marginLeft: 1,
+                  marginTop: 4,
+                  fontSize: 16,
+                  marginBottom: 10,
+                }}
+              >
                 {association ? association : "No association detected"}
               </p>
             </Row>

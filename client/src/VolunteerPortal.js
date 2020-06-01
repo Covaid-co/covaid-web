@@ -165,14 +165,21 @@ export default function VolunteerPortal(props) {
   const mainContentView = () => {
     if (view === "request-dashboard") {
       return (
-        <Container id="volunteer-info" style={{ marginTop: 50 }}>
+        <Container
+          id="volunteer-main-content"
+          style={{ marginTop: 50, marginRight: 0 }}
+        >
           <h1
             id="home-heading"
-            style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
+            style={{
+              marginTop: 0,
+              fontSize: 24,
+              color: "#4F4F4F",
+            }}
           >
             Request Dashboard
           </h1>
-          <p id="regular-text" style={{ fontSize: 16 }}>
+          <p id="regular-text" style={{ fontSize: 16, marginBottom: 20 }}>
             Respond to requests that have been delegated to you
           </p>
           <p id="requestCall" style={{ marginTop: 15, marginBottom: 34 }}></p>
@@ -191,31 +198,38 @@ export default function VolunteerPortal(props) {
       );
     } else if (view === "your-offer") {
       return (
-        <Container id="volunteer-info" style={{ marginTop: 50 }}>
+        <Container
+          id="volunteer-main-content"
+          style={{ marginTop: 50, marginBottom: 50, marginRight: 16 }}
+        >
           <h1
             id="home-heading"
             style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
           >
             Your Offer
           </h1>
-          <p id="regular-text" style={{ fontSize: 16 }}>
+          <p id="regular-text" style={{ fontSize: 16, marginBottom: 20 }}>
             Customize your volunteer experience
           </p>
-          <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
-          {/* <Container
-            id="newOfferContainer"
-            style={tabNum === 1 ? { display: "block" } : { display: "none" }}
-          > */}
-          {foundUser ? (
-            <YourOffer
-              user={user}
-              setLanguage={props.setLanguage}
-              language={props.language}
-            />
-          ) : (
-            <></>
-          )}
-          {/* </Container> */}
+          <p id="requestCall" style={{ marginTop: 15, marginBottom: 29 }}></p>
+          <Container
+            style={{
+              marginLeft: 0,
+              paddingLeft: 0,
+              marginRight: 180,
+              paddingRight: 0,
+            }}
+          >
+            {foundUser ? (
+              <YourOffer
+                user={user}
+                setLanguage={props.setLanguage}
+                language={props.language}
+              />
+            ) : (
+              <></>
+            )}
+          </Container>
         </Container>
       );
     } else {
@@ -226,7 +240,7 @@ export default function VolunteerPortal(props) {
   if (foundUser) {
     return (
       <>
-        <div className="App">
+        <div className="App" style={{ marginBottom: 30 }}>
           <div></div>
           <NavBar
             setLanguage={props.setLanguage}

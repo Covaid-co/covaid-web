@@ -146,7 +146,7 @@ export default function YourOffer(props) {
   var spinnerComponent = <Spinner animation="border" />;
   const saveOfferButton = (
     <Button
-      id="large-button"
+      id="offer-save-button"
       style={{ marginTop: 20 }}
       onClick={() => {
         handleUpdate(true, setIsUpdate);
@@ -157,15 +157,13 @@ export default function YourOffer(props) {
   );
   const editOfferButton = (
     <Button
-      id="large-button-empty"
+      id="offer-edit-button"
       style={{
-        marginTop: 20,
+        marginTop: 12,
+        opacity: availability ? 1 : 0.4,
       }}
       disabled={!availability}
-      onClick={() => {
-        console.log(props.user.offer);
-        setIsEditing(true);
-      }}
+      onClick={() => setIsEditing(true)}
     >
       {editText}
     </Button>
@@ -180,7 +178,10 @@ export default function YourOffer(props) {
   if (availability) {
     // Render specific text if user is available
     visibleText = (
-      <h5 id="volunteer-offer-status" style={{ color: "#2670FF" }}>
+      <h5
+        id="#your-offer-header-detail"
+        style={{ fontWeight: "600", color: "#2670FF" }}
+      >
         You are an active volunteer.
       </h5>
     );
@@ -195,7 +196,10 @@ export default function YourOffer(props) {
   } else {
     // Render specific test is user is unavailable
     visibleText = (
-      <h5 id="volunteer-offer-status" style={{ color: "#EB5757" }}>
+      <h5
+        id="your-offer-header-detail"
+        style={{ fontWeight: "600", color: "#EB5757" }}
+      >
         You are an inactive volunteer.
       </h5>
     );
@@ -212,6 +216,12 @@ export default function YourOffer(props) {
   return (
     <Row>
       <Col>
+        <Container style={{ marginLeft: 0, paddingLeft: 0, marginRight: 128 }}>
+          {visibleText}
+          {statusChangeDescription}
+          {publishButton}
+        </Container>
+
         {/* <Alert
           style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
           variant={"danger"}
@@ -220,9 +230,6 @@ export default function YourOffer(props) {
           If you are showing any symptoms or have traveled in the past 2 weeks,
           please refrain from marking yourself as available.
         </Alert> */}
-        {visibleText}
-        {statusChangeDescription}
-        {publishButton}
       </Col>
       <Col>
         <Toast
@@ -237,22 +244,45 @@ export default function YourOffer(props) {
 
         <h3
           id="your-offer-header-detail"
-          style={{ color: "#4F4F4F", marginTop: 32, marginBottom: 16 }}
+          style={{
+            color: "#4F4F4F",
+            opacity: availability ? 1 : 0.4,
+            marginTop: 4,
+            marginBottom: 12,
+          }}
         >
           Details
         </h3>
-        <p id="requestCall" style={{ marginTop: -15, marginBottom: 15 }}>
+        <p
+          id="requestCall"
+          style={{
+            opacity: availability ? 1 : 0.4,
+            marginTop: -16,
+            marginBottom: 16,
+          }}
+        >
           &nbsp;
         </p>
 
         {isEditing && (
           <Form onSubmit={handleUpdate} style={{ textAlign: "left" }}>
-            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+            <h5
+              id="regular-text-bold"
+              style={{
+                color: "#4F4F4F",
+                marginBottom: 8,
+              }}
+            >
               What can you help with?
             </h5>
-
             <CheckForm obj={resources} setObj={setResources} />
-            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+            <h5
+              id="regular-text-bold"
+              style={{
+                color: "#4F4F4F",
+                marginTop: 16,
+              }}
+            >
               Can you drive?
             </h5>
             <NewCar hasCar={hasCar} setHasCar={setHasCar} />
@@ -267,27 +297,61 @@ export default function YourOffer(props) {
         )}
         {!isEditing && (
           <div>
-            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+            <h5
+              id="regular-text-bold"
+              style={{
+                color: "#4F4F4F",
+                opacity: availability ? 1 : 0.4,
+                marginBottom: 5,
+              }}
+            >
               What can you help with?
             </h5>
-            <p id="#offer-detail-response" style={{ color: "#7F7F7F" }}>
+            <p
+              id="#offer-detail-response"
+              style={{ opacity: availability ? 1 : 0.4, color: "#7F7F7F" }}
+            >
               {Object.keys(resources)
                 .filter(function (id) {
                   return resources[id];
                 })
                 .join(", ")}
             </p>
-            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+            <h5
+              id="regular-text-bold"
+              style={{
+                opacity: availability ? 1 : 0.4,
+                color: "#4F4F4F",
+                marginBottom: 5,
+              }}
+            >
               Can you drive?
             </h5>
-            <p id="#offer-detail-response" style={{ color: "#7F7F7F" }}>
+            <p
+              id="#offer-detail-response"
+              style={{ opacity: availability ? 1 : 0.4, color: "#7F7F7F" }}
+            >
               {hasCar ? "Yes" : "No"}
             </p>
-            <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+            <h5
+              id="regular-text-bold"
+              style={{
+                opacity: availability ? 1 : 0.4,
+                color: "#4F4F4F",
+                marginBottom: 5,
+              }}
+            >
               Details?
             </h5>
-            <p id="#offer-detail-response-italic" style={{ color: "#7F7F7F" }}>
-              {fields.details}
+            <p
+              id="#offer-detail-response"
+              style={{
+                opacity: availability ? 1 : 0.4,
+                color: "#7F7F7F",
+                fontStyle: "italic",
+              }}
+            >
+              {`"${fields.details}"`}
             </p>
             {editOfferButton}
           </div>
