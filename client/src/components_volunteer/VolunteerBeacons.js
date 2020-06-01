@@ -97,10 +97,16 @@ export default function VolunteerBeacons(props) {
                       setSelectedBeacon({ ...beacon });
                       setModalOpen(true);
                     }}
-                    style={{borderTop: "4px solid " + (accepted(beacon) ? '#3ABD24' : "#DB9327")}}
+                    style={{
+                      borderTop:
+                        "4px solid " +
+                        (accepted(beacon) ? "#3ABD24" : "#DB9327"),
+                    }}
                   >
                     <div>
-                      <h5 id="volunteer-name" style={{color: '#4F4F4F'}}>{beacon.beaconName}</h5>
+                      <h5 id="volunteer-name" style={{ color: "#4F4F4F" }}>
+                        {beacon.beaconName}
+                      </h5>
                     </div>
                     <div
                       style={{

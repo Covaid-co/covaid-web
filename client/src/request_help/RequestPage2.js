@@ -62,6 +62,7 @@ export default function RequestPage2(props) {
         time: time,
         date: date,
       };
+      console.log(result);
       props.setStepNum(4);
       props.setSecondPage(result);
     } else {

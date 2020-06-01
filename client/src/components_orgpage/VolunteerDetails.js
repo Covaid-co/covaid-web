@@ -244,11 +244,11 @@ export default function VolunteerDetails(props) {
               style={{
                 marginRight: 30,
                 marginTop: -30,
-                float: 'right',
+                float: "right",
                 cursor: "pointer",
-                display: 'inline',
+                display: "inline",
                 height: 120,
-                width: 120
+                width: 120,
               }}
             />
             {displaySwitch()}

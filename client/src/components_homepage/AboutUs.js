@@ -7,12 +7,15 @@ import Container from "react-bootstrap/Container";
 import Jeff from "../assets/jeff.png";
 import Debanik from "../assets/Debanik.png";
 import Marissa from "../assets/marissa.jpeg";
-import Elle from "../assets/elle.png";
+import Elle from "../assets/elle.jpg";
 import Trisha from "../assets/trisha.jpg";
 import Shresta from "../assets/shresta.jpg";
 import Matt from "../assets/matt.jpeg";
 import Neely from "../assets/neely.jpg";
 import Ellie from "../assets/ellie.jpeg";
+import Eliza from "../assets/eliza.jpeg";
+import Daniella from "../assets/danielle.jpg";
+import Yoav from "../assets/yoav.jpg";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -58,6 +61,18 @@ export default function AboutUs(props) {
     "Ellie Sapiro": {
       link: "https://www.linkedin.com/in/ellie-sapiro/",
       image: Ellie,
+    },
+    "Eliza Kleban": {
+      link: "https://www.linkedin.com/in/eliza-kleban-429a421a3/",
+      image: Eliza,
+    },
+    "Danielle Serota": {
+      link: "https://www.instagram.com/danielle___eve/",
+      image: Daniella,
+    },
+    "Yoav Kadan": {
+      link: "",
+      image: Yoav,
     },
   };
 

@@ -235,7 +235,7 @@ export default function VolunteerPortal(props) {
           />
           <div class="flex-container">
             <div style={{ width: width < 980 ? "100%" : "75%", float: "left" }}>
-              <Jumbotron fluid id="jumbo-volunteer" style={{paddingTop: 50}}> 
+              <Jumbotron fluid id="jumbo-volunteer" style={{ paddingTop: 50 }}>
                 <ProfileHeader
                   user={user}
                   setShowAccountModal={setShowAccountModal}

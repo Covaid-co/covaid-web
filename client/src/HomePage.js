@@ -26,6 +26,7 @@ let translatedStrings = new LocalizedStrings({ translations });
 
 export default function HomePage(props) {
   const [showModal, setShowModal] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const [modalType, setModalType] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -74,68 +75,74 @@ export default function HomePage(props) {
       });
   };
 
-  return [
-    <div key="1" className="App" style={{ height: "calc(100% - 180px)" }}>
-      <NavBar
-        setLanguage={props.setLanguage}
-        language={props.language}
-        pageLoaded={pageLoaded}
-        isLoggedIn={loggedIn}
-        first_name={currentUser.first_name}
-      />
-      <Jumbotron fluid id="jumbo">
-        <div id="feedback">
-          <div
-            id="feedback-tab"
-            onClick={() => {
-              showModalType("feedback");
-            }}
-          >
-            Feedback
+  return (
+    <div style={{ overflowX: "hidden", height: "100%" }}>
+      <div key="1" className="App" style={{ height: "100%" }}>
+        <NavBar
+          setLanguage={props.setLanguage}
+          language={props.language}
+          pageLoaded={pageLoaded}
+          isLoggedIn={loggedIn}
+          first_name={currentUser.first_name}
+          setToggle={setToggle}
+        />
+        <Jumbotron fluid id="jumbo">
+          <div id="feedback">
+            <div
+              id="feedback-tab"
+              onClick={() => {
+                showModalType("feedback");
+              }}
+            >
+              Feedback
+            </div>
           </div>
-        </div>
-        <Container id="jumboContainer">
-          <Row>
-            <Col md={6} id="jumbo-text">
-              <h1 id="home-heading" style={{ marginTop: 25 }}>
-                {translatedStrings[props.language].HomePage_Title}
-              </h1>
-              <p id="home-subheading">
-                {translatedStrings[props.language].HomePage_Subtitle}
-              </p>
-              <Button
-                onClick={() => window.open(currURL + "/request", "_self")}
-                id="request-button"
-              >
-                {/* {translatedStrings[props.language].INeedHelp} → */}
-                <font style={{ float: "left" }}>
-                  {translatedStrings[props.language].INeedHelp}
-                </font>
-                <font style={{ float: "right" }}>→</font>
-              </Button>{" "}
-              <br />
-              <Button
-                id="resources-button"
-                onClick={() =>
-                  window.open(currURL + "/information-hub", "_self")
-                }
-              >
-                COVID-19 Information Hub
-                {/* <font style={{fontSize: 24, marginTop: -5, marginLeft: 5}}>
-                  ›
-                </font> */}
-              </Button>
-            </Col>
-            <Col md={6} style={{ marginTop: 0, textAlign: "center" }}>
-              <img id="org-img" alt="" src={home}></img>
-            </Col>
-          </Row>
-        </Container>
-      </Jumbotron>
-      {getCurrentModal()}
-    </div>,
-    <Footer key="2" home={true} />,
-  ];
+          <Container id="jumboContainer">
+            <Row>
+              <Col md={6} id="jumbo-text">
+                <h1 id="home-heading" style={{ marginTop: 25 }}>
+                  {translatedStrings[props.language].HomePage_Title}
+                </h1>
+                <p id="home-subheading">
+                  {translatedStrings[props.language].HomePage_Subtitle}
+                </p>
+                <Button
+                  onClick={() => window.open(currURL + "/request", "_self")}
+                  id="request-button"
+                >
+                  {/* {translatedStrings[props.language].INeedHelp} → */}
+                  <font style={{ float: "left" }}>
+                    {translatedStrings[props.language].INeedHelp}
+                  </font>
+                  <font style={{ float: "right" }}>→</font>
+                </Button>{" "}
+                <br />
+                <Button
+                  id="resources-button"
+                  onClick={() =>
+                    window.open(currURL + "/information-hub", "_self")
+                  }
+                >
+                  COVID-19 Information Hub
+                </Button>
+              </Col>
+              <Col md={6} style={{ marginTop: 0, textAlign: "center" }}>
+                <img id="org-img" alt="" src={home}></img>
+              </Col>
+            </Row>
+          </Container>
+        </Jumbotron>
+        {getCurrentModal()}
+        {/* <Footer key="2" home={true} style={{position: 'absolute', bottom: 0 }} id="mobile-footer"/> */}
+      </div>
+      <Footer
+        key="2"
+        home={true}
+        id="desktop-footer"
+        style={toggle ? { marginTop: 500 } : {}}
+      />
+    </div>
+  );
 }
 
 HomePage.propTypes = {

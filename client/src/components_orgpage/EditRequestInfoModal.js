@@ -157,6 +157,15 @@ export default function EditRequestInfoModal(props) {
               name="formHorizontalRadios"
               id="payment-option-2"
             />
+            <Form.Check
+              checked={payment == 3}
+              type="radio"
+              label={paymentOptions[3]}
+              value={3}
+              onChange={handleChangePayment}
+              name="formHorizontalRadios"
+              id="payment-option-3"
+            />
           </Col>
         </Form.Group>
       </fieldset>
