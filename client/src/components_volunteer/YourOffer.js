@@ -112,6 +112,7 @@ export default function YourOffer(props) {
     var resourceList = extractTrueObj(resources);
     let form = {
       "offer.tasks": resourceList,
+      "offer.car": hasCar,
       "offer.details": fields.details,
       availability: publish,
     };

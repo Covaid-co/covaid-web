@@ -2,7 +2,7 @@ require("dotenv").config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioNumber = "+12513206732";
-const client = require("twilio")(accountSid, authToken);
+const client = require("twilio");
 
 exports.sendNotificationSMS = async function (data) {
   if (data.phone === null || data.phone === "") {
@@ -27,16 +27,24 @@ exports.sendNotificationSMS = async function (data) {
     };
     //send the sms
     if (process.env.PROD) {
-      client.messages.create(msg, function (err, message) {
+      client(accountSid, authToken).messages.create(msg, function (
+        err,
+        message
+      ) {
         if (err) {
+          console.log(err);
+
           return err;
         } else {
           var log = "SMS notification sent! Message SID: " + message.sid;
+          console.log(log);
+
           return log;
         }
       });
     }
   } catch (e) {
+    console.log(e);
     throw e;
   }
 };
