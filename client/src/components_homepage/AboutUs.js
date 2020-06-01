@@ -94,8 +94,8 @@ export default function AboutUs(props) {
             <h1 id="home-heading" style={{ marginBottom: 40 }}>
               The People Behind<br></br>Covaid
             </h1>
-            <p id="regular-text" style={{ marginBottom: 40, fontWeight: 600 }}>
-              We're a group of college student/recent grads who want to play our
+            <p id="regular-text" style={{ marginBottom: 40 }}>
+              We're a group of college students/recent grads who want to play our
               part in the fight against COVID-19.
             </p>
             <Row>
