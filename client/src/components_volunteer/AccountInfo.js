@@ -53,7 +53,11 @@ export default function AccountInfo(props) {
         style={{ marginTop: 10, paddingBottom: 50 }}
         centered
       >
-        <EditAccountInfoModal translations={translations} user={user} />
+        <EditAccountInfoModal
+          language={props.language}
+          translations={translations}
+          user={user}
+        />
       </Modal>
       //   <Modal.Header closeButton>
       //   <Modal.Title id="small-header">Your Profile</Modal.Title>

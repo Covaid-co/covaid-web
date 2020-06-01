@@ -35,7 +35,7 @@ const translations = {
     "Shower/Laundry": "Shower/Laundry",
     Storage: "Storage",
     Next: "Next",
-    WhatLanguageDoYouSpeak: "Languages",
+    WhatLanguageDoYouSpeak: "What languages do you speak?",
     LanguageNotListed:
       "If language not listed, please mention in details section below",
     English: "English",

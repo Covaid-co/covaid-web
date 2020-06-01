@@ -312,6 +312,7 @@ export default function VolunteerPortal(props) {
         <Footer />
         <AccountInfo
           user={user}
+          language={props.language}
           showAccountModal={showAccountModal}
           setShowAccountModal={setShowAccountModal}
         />

@@ -50,29 +50,30 @@ export default function YourOffer(props) {
     fields.details = props.user.offer.details;
     setAvailability(props.user.availability);
     setHasCar(props.user.offer.car);
-    async function getResources() {
-      if (!props.user.association) {
-        setCurrentUserObject(
-          props.user.offer.tasks,
-          defaultResources,
-          setResources
-        );
-        return;
-      }
-      let params = { associationID: props.user.association };
-      var url = generateURL("/api/association/get_assoc/?", params);
-      const response = await fetch(url);
-      response.json().then((data) => {
-        setCurrentUserObject(
-          props.user.offer.tasks,
-          data.resources,
-          setResources
-        );
-      });
-    }
     getResources();
   }, [props.user]);
 
+  async function getResources() {
+    console.log("hi");
+    if (!props.user.association) {
+      setCurrentUserObject(
+        props.user.offer.tasks,
+        defaultResources,
+        setResources
+      );
+      return;
+    }
+    let params = { associationID: props.user.association };
+    var url = generateURL("/api/association/get_assoc/?", params);
+    const response = await fetch(url);
+    response.json().then((data) => {
+      setCurrentUserObject(
+        props.user.offer.tasks,
+        data.resources,
+        setResources
+      );
+    });
+  }
   // Update the state of offer, allow a 750 ms loading time
   function stateChange(setter, publish) {
     setTimeout(function () {
@@ -81,6 +82,13 @@ export default function YourOffer(props) {
       setter(false);
     }, 750);
   }
+
+  const handleBackButton = async () => {
+    getResources();
+    setHasCar(props.user.offer.car);
+    fields.details = props.user.offer.details;
+    setIsEditing(false);
+  };
 
   // Input validation
   const checkInputs = () => {
@@ -172,12 +180,16 @@ export default function YourOffer(props) {
     </Button>
   );
 
-  const statusChangeDescription = (
-    <p id="status-change-description" style={{ color: "#7f7f7f" }}>
-      Marking yourself as active will allow you to be matched with requests
-    </p>
-  );
+  var statusChangeDescription = <></>;
+
   if (availability) {
+    statusChangeDescription = (
+      <p id="status-change-description" style={{ color: "#7f7f7f" }}>
+        Having a busy day? By marking yourself as inactive, you will be
+        prevented from receiving any new request matches until you reactivate
+        your offer.
+      </p>
+    );
     // Render specific text if user is available
     visibleText = (
       <h5
@@ -196,6 +208,13 @@ export default function YourOffer(props) {
       </Button>
     );
   } else {
+    statusChangeDescription = (
+      <p id="status-change-description" style={{ color: "#7f7f7f" }}>
+        Ready to support your community? Mark yourself as active to begin
+        receiving match requests!
+      </p>
+    );
+
     // Render specific test is user is unavailable
     visibleText = (
       <h5
@@ -244,17 +263,34 @@ export default function YourOffer(props) {
           <Toast.Body>{toastMessage}</Toast.Body>
         </Toast>
 
-        <h3
-          id="your-offer-header-detail"
-          style={{
-            color: "#4F4F4F",
-            opacity: availability ? 1 : 0.4,
-            marginTop: 4,
-            marginBottom: 12,
-          }}
-        >
-          Details
-        </h3>
+        {!isEditing && (
+          <h3
+            id="your-offer-header-detail"
+            style={{
+              color: "#4F4F4F",
+              opacity: availability ? 1 : 0.4,
+              marginTop: 4,
+              marginBottom: 12,
+            }}
+          >
+            Details
+          </h3>
+        )}
+        {isEditing && (
+          <Button
+            id="back-button"
+            style={{
+              marginTop: 4,
+              marginBottom: 12,
+            }}
+            onClick={() => {
+              handleBackButton();
+            }}
+          >
+            ←
+          </Button>
+        )}
+
         <p
           id="requestCall"
           style={{

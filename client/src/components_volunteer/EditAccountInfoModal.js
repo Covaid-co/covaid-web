@@ -15,7 +15,6 @@ import { useFormFields } from "../libs/hooksLib";
 import { generateURL, validateEmail, extractTrueObj } from "../Helpers";
 
 import CheckForm from "../components/CheckForm";
-import NewCar from "../components_homepage/NewHasCar";
 import PhoneNumber from "../components/PhoneNumber";
 
 import Geocode from "react-geocode";
@@ -434,7 +433,7 @@ export default function EditAccountInfoModal(props) {
                 <Col xs={6}>
                   <Form.Group controlId="first_name" bssize="large">
                     <Form.Label id="regular-text-bold">
-                      <b>{props.translations["en"].FirstName}</b>
+                      <b>{props.translations[props.language].FirstName}</b>
                     </Form.Label>
                     <Form.Control
                       style={{
@@ -449,7 +448,7 @@ export default function EditAccountInfoModal(props) {
                 <Col xs={6}>
                   <Form.Group controlId="last_name" bssize="large">
                     <Form.Label id="regular-text-bold">
-                      <b>{props.translations["en"].LastName}</b>
+                      <b>{props.translations[props.language].LastName}</b>
                     </Form.Label>
                     <Form.Control
                       style={{
@@ -465,7 +464,7 @@ export default function EditAccountInfoModal(props) {
                 <Col xs={12}>
                   <Form.Group controlId="email" bssize="large">
                     <Form.Label id="regular-text-bold">
-                      <b>{props.translations["en"].email}</b>
+                      <b>{props.translations[props.language].email}</b>
                     </Form.Label>
                     <Form.Control
                       style={{
@@ -485,30 +484,16 @@ export default function EditAccountInfoModal(props) {
                       paddingBottom: 10,
                       marginBottom: 30,
                     }}
-                    label={props.translations["en"].phone}
+                    label={props.translations[props.language].phone}
                     labelID="regular-text-bold"
                     phoneNumber={phone}
                     setPhoneNumber={setPhone}
                   />
-                  {/* <Form.Group controlId="phone" bssize="large">
-                    <Form.Label id="regular-text-bold">
-                      <b>{props.label}</b>
-                    </Form.Label>
-                    <Form.Control
-                      style={{
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                        marginBottom: 30,
-                      }}
-                      value={fields.phone}
-                      onChange={handleFieldChange}
-                    />
-                  </Form.Group> */}
                 </Col>
 
                 <Col xs={12}>
                   <h5 id="regular-text-bold" style={{ marginBottom: 8 }}>
-                    What languages do you speak?
+                    {props.translations[props.language].WhatLanguageDoYouSpeak}
                   </h5>
                 </Col>
                 <Col xs={12} style={{ marginBottom: 2 }}>
@@ -524,22 +509,6 @@ export default function EditAccountInfoModal(props) {
                   />
                 </Col>
               </Row>
-
-              {/* <div
-                style={
-                  showChangeAssocModal
-                    ? { display: "block" }
-                    : { display: "none" }
-                }
-              >
-                <h5
-                  id="regular-text-bold"
-                  style={{ marginBottom: 5, marginTop: 20 }}
-                >
-                  Your location has changed, please update your tasks here!
-                </h5>
-                <CheckForm obj={resources} setObj={setResources} />
-              </div> */}
               {/*
                  <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
                     Current zipcode
@@ -566,9 +535,21 @@ export default function EditAccountInfoModal(props) {
               >
                 Save Changes
               </Button>
-              {/* <Button onClick={handleSubmit} id="request-button">
-                Update your info
-              </Button> */}
+              {/* <div
+                style={
+                  showChangeAssocModal
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+              >
+                <h5
+                  id="regular-text-bold"
+                  style={{ marginBottom: 5, marginTop: 20 }}
+                >
+                  Your location has changed, please update your tasks here!
+                </h5>
+                <CheckForm obj={resources} setObj={setResources} />
+              </div> */}
             </Form>
           </Container>
         </Modal.Body>

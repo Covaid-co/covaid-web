@@ -58,6 +58,10 @@
   font-weight: bold;
   margin-bottom: 20px;
 }
+#back-button:hover {
+  color: #2661f9;
+  border-color: #2661f9;
+}
 
 #title {
   font-family: "Montserrat";
