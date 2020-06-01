@@ -17,7 +17,8 @@ export default function Donate(props) {
       <NavBar
         setLanguage={props.setLanguage}
         language={props.language}
-        isLoggedIn={false}
+        isLoggedIn={props.isLoggedIn}
+        first_name={Object.keys(props.currentUser).length !== 0 ? props.currentUser.first_name : ""}
       />
       <Container style={{ maxWidth: 2500, marginBottom: 100 }}>
         <Row>
@@ -60,4 +61,6 @@ export default function Donate(props) {
 Donate.propTypes = {
   setLanguage: PropTypes.func,
   language: PropTypes.string,
+  isLoggedIn: PropTypes.bool,
+  currentUser: PropTypes.object
 };

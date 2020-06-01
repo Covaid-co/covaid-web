@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LocalizedStrings from "react-localization";
-import fetch_a from "./util/fetch_auth";
 import PropTypes from "prop-types";
-import Cookie from "js-cookie";
 import Container from "react-bootstrap/Container";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
@@ -28,8 +26,6 @@ export default function HomePage(props) {
   const [showModal, setShowModal] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
   const [pageLoaded, setPageLoaded] = useState(false);
 
   useEffect(() => {
@@ -37,11 +33,8 @@ export default function HomePage(props) {
       showModalType("signin");
     }
 
-    if (Object.keys(currentUser).length === 0 && Cookie.get("token")) {
-      fetchUser();
-    }
     setPageLoaded(true);
-  }, [currentUser, props.login]);
+  }, [props.login]);
 
   const showModalType = (type) => {
     setModalType(type);
@@ -65,16 +58,6 @@ export default function HomePage(props) {
     return modal;
   };
 
-  // Get current user based on token
-  const fetchUser = () => {
-    fetch_a("token", "/api/users/current")
-      .then((response) => response.json())
-      .then((user) => {
-        setCurrentUser(user);
-        setLoggedIn(true);
-      });
-  };
-
   return (
   <div style={{overflowX: 'hidden', height: '100%'} }>
     <div key="1" className="App" style={{ height: "100%" }}>
@@ -82,8 +65,8 @@ export default function HomePage(props) {
         setLanguage={props.setLanguage}
         language={props.language}
         pageLoaded={pageLoaded}
-        isLoggedIn={loggedIn}
-        first_name={currentUser.first_name}
+        isLoggedIn={props.isLoggedIn}
+        first_name={Object.keys(props.currentUser).length !== 0 ? props.currentUser.first_name : ""}
         setToggle={setToggle}
       />
       <Jumbotron fluid id="jumbo">
@@ -147,4 +130,6 @@ HomePage.propTypes = {
   googleAPI: PropTypes.string,
   refreshLocation: PropTypes.func,
   onLocationSubmit: PropTypes.func,
+  isLoggedIn: PropTypes.bool,
+  currentUser: PropTypes.object
 };

@@ -47,6 +47,8 @@ export default function RequestPage2(props) {
       }
     }
     setResources(temp_resources);
+    setTime("Morning");
+    setDate(new Date(Date.now()).toLocaleString().split(",")[0]);
   }, [props.second_page]);
 
   const goToSubmit = () => {
@@ -135,12 +137,12 @@ export default function RequestPage2(props) {
           language={props.language}
         />
       )}
-      <NeededBy
+      {/* <NeededBy
         setTime={setTime}
         setDate={setDate}
         translations={props.translations}
         language={props.language}
-      />
+      /> */}
       {paymentMethod()}
       {paymentAgreement}
       <NewDetails

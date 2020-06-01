@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ToastProvider } from "react-toast-notifications";
 import Geocode from "react-geocode";
+import fetch_a from "./util/fetch_auth";
+import Cookie from "js-cookie";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -50,6 +52,9 @@ function App() {
   const languageObj = { setLanguage: setLanguage, language: language };
   const stateRef = useRef("");
 
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+
   useEffect(() => {
     fetch("/api/apikey/google").then((response) => {
       if (response.ok) {
@@ -59,7 +64,20 @@ function App() {
         });
       }
     });
+    if (Object.keys(currentUser).length === 0 && Cookie.get("token")) {
+      fetchUser();
+    }
   }, []);
+
+  // Get current user based on token
+  const fetchUser = () => {
+    fetch_a("token", "/api/users/current")
+      .then((response) => response.json())
+      .then((user) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+      });
+  };
 
   const setLocationVariables = (neighborObj) => {
     setLocality(neighborObj["locality"]);
@@ -233,6 +251,8 @@ function App() {
         refreshLocation={refreshLocation}
         onLocationSubmit={onLocationSubmit}
         login={login}
+        isLoggedIn={loggedIn}
+        currentUser={currentUser}
       />
     );
   };
@@ -314,17 +334,17 @@ function App() {
           <Route
             exact
             path="/about"
-            component={(props) => <AboutUs {...props} {...languageObj} />}
+            component={(props) => <AboutUs {...props} {...languageObj} isLoggedIn={loggedIn} currentUser={currentUser}/>}
           />
           <Route
             exact
             path="/faq"
-            component={(props) => <FAQ {...props} {...languageObj} />}
+            component={(props) => <FAQ {...props} {...languageObj} isLoggedIn={loggedIn} currentUser={currentUser}/>}
           />
           <Route
             exact
             path="/donate"
-            component={(props) => <Donate {...props} {...languageObj} />}
+            component={(props) => <Donate {...props} {...languageObj} isLoggedIn={loggedIn} currentUser={currentUser}/>}
           />
           <Route exact path="/orgPasswordReset" component={OrgReset} />
           <Route

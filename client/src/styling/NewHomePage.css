@@ -72,11 +72,6 @@
   margin-top: 30px;
 }
 
-/* #resources-button:hover {
-  background-color: #2670ff;
-  color: white;
-} */
-
 #resources-button {
   font-family: "Inter";
   font-weight: 600;
@@ -86,7 +81,7 @@
   border: 1px solid #2670ff;
   font-size: 20px;
   height: 50px;
-  width: 350px;
+  width: 300px;
   padding-left: 15px;
   padding-right: 20px;
   margin-top: 5px;
@@ -95,10 +90,9 @@
   text-decoration: underline;
 }
 
-/* #request-button:hover {
-  background-color: white;
-  color: #2670ff;
-} */
+#resources-button:focus {
+  box-shadow: none;
+}
 
 #medium-button-solid {
   font-family: "Inter";
@@ -461,6 +455,7 @@
   font-weight: 600;
   font-family: "Inter";
   margin-right: 10px;
+  margin-left: 10px;
   font-size: 14px;
   position: relative;
   cursor: pointer;
@@ -579,6 +574,7 @@ textarea.form-control {
   border: transparent;
   box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.15);
   margin-bottom: 20px;
+  left: -50px;
   margin-top: 10px !important;
 }
 

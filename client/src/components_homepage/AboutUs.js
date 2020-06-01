@@ -16,6 +16,7 @@ import Ellie from "../assets/ellie.jpeg";
 import Eliza from "../assets/eliza.jpeg";
 import Daniella from "../assets/danielle.jpg";
 import Yoav from "../assets/yoav.jpg";
+import Sofia from "../assets/sofia.jpg";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -74,6 +75,10 @@ export default function AboutUs(props) {
       link: "",
       image: Yoav,
     },
+    "Sofia Kling": {
+      link: "",
+      image: Sofia,
+    },
   };
 
   const names = Object.keys(peoples);
@@ -85,7 +90,8 @@ export default function AboutUs(props) {
         setLanguage={props.setLanguage}
         language={props.language}
         pageLoaded={true}
-        isLoggedIn={false}
+        isLoggedIn={props.isLoggedIn}
+        first_name={Object.keys(props.currentUser).length !== 0 ? props.currentUser.first_name : ""}
       />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
@@ -154,4 +160,6 @@ export default function AboutUs(props) {
 AboutUs.propTypes = {
   setLanguage: PropTypes.func,
   language: PropTypes.string,
+  isLoggedIn: PropTypes.bool,
+  currentUser: PropTypes.object
 };
