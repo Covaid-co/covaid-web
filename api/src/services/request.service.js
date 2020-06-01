@@ -16,6 +16,7 @@ const RequestRepository = require("../repositories/request.repository");
 const AssociationService = require("./association.service");
 const UserService = require("./user.service");
 const emailer = require("../util/emailer");
+const messenger = require("../util/send_sms");
 const Pusher = require("pusher");
 
 const pusher = new Pusher({
@@ -253,7 +254,6 @@ exports.matchVolunteers = async function (requestID, volunteers, adminMessage) {
     new_volunteers = new_volunteers.filter(function (volunteer) {
       if (volunteer) return volunteer;
     });
-
     //append new and old volunteers together
     let new_volunteers_list = [...volunteer_copy, ...new_volunteers];
     if (new_volunteers_list.length > 0) {
@@ -264,7 +264,6 @@ exports.matchVolunteers = async function (requestID, volunteers, adminMessage) {
         },
       });
     }
-
     // Update request status to be matched if there are volunteers attached to it
     let updatedRequest = (
       await RequestRepository.readRequest({ _id: requestID })
@@ -288,7 +287,6 @@ exports.matchVolunteers = async function (requestID, volunteers, adminMessage) {
         await RequestRepository.readRequest({ _id: requestID })
       )[0];
     }
-
     // Scenario: when a volunteer is matched to a request -> send email to the volunteer (+ push notification)
     var assoc = await AssociationService.getAssociation({
       _id: updatedRequest.association,
@@ -308,8 +306,10 @@ exports.matchVolunteers = async function (requestID, volunteers, adminMessage) {
         name: firstName,
         assoc: assoc[0].email,
         templateName: "volunteer_notification",
+        phone: curr_volunteer.phone,
       };
       emailer.sendNotificationEmail(data);
+      messenger.sendNotificationSMS(data);
       pusher.trigger(
         volunteers_to_be_notified[i],
         "direct-match",
