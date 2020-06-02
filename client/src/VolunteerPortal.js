@@ -13,7 +13,7 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
+import Alert from "react-bootstrap/Alert";
 import CurrentVolunteerRequests from "./components_volunteer/CurrentVolunteerRequests";
 import CompletedVolunteerRequests from "./components_volunteer/CompletedVolunteerRequests";
 import ProfileHeader from "./components_volunteer/ProfileHeader";
@@ -266,7 +266,24 @@ export default function VolunteerPortal(props) {
           />
           <div class="flex-container">
             <div style={{ width: width < 980 ? "100%" : "75%", float: "left" }}>
-              <Jumbotron fluid id="jumbo-volunteer" style={{ paddingTop: 50 }}>
+              <Jumbotron
+                fluid
+                id="jumbo-volunteer"
+                style={{ marginLeft: 35, paddingTop: 10 }}
+              >
+                <Alert
+                  style={{
+                    marginLeft: "5%",
+                    marginRight: "5%",
+                    color: "#721c24",
+                  }}
+                  variant={"danger"}
+                  id="regular-text"
+                >
+                  If you are showing any symptoms or have traveled in the past 2
+                  weeks, please mark yourself as inactive and refrain from
+                  fulfilling requests.
+                </Alert>
                 <ProfileHeader
                   user={user}
                   setShowAccountModal={setShowAccountModal}

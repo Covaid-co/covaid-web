@@ -13,7 +13,6 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Toast from "react-bootstrap/Toast";
-import Alert from "react-bootstrap/Alert";
 import Details from "../components_homepage/Details";
 import NewCar from "../components_homepage/NewHasCar";
 
@@ -364,15 +363,6 @@ export default function YourOffer(props) {
           {statusChangeDescription}
           {publishButton}
         </Container>
-
-        {/* <Alert
-          style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
-          variant={"danger"}
-          id="regular-text"
-        >
-          If you are showing any symptoms or have traveled in the past 2 weeks,
-          please refrain from marking yourself as available.
-        </Alert> */}
       </Col>
       <Col>
         <Toast
