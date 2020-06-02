@@ -113,18 +113,14 @@ function App() {
   const setAssocByOrg = (id) => {
     let params = { associationID: id };
     var url = generateURL("/api/association/get_assoc/?", params);
-    fetch(url)
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((association) => {
-            setResources(association.resources);
-            setCurrentAssoc(association);
-          });
-        }
-      })
-      .catch((e) => {
-        alert(e);
-      });
+    fetch(url).then((response) => {
+      if (response.ok) {
+        response.json().then((association) => {
+          setResources(association.resources);
+          setCurrentAssoc(association);
+        });
+      }
+    });
   };
 
   // Find location attributes when page loads

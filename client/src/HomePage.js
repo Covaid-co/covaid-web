@@ -68,7 +68,7 @@ export default function HomePage(props) {
           language={props.language}
           pageLoaded={pageLoaded}
           isLoggedIn={props.isLoggedIn}
-          {... props}
+          {...props}
           first_name={
             Object.keys(props.currentUser).length !== 0
               ? props.currentUser.first_name

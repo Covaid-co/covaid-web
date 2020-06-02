@@ -160,7 +160,12 @@ export default function NewRequestPage(props) {
   };
 
   const stepText = () => {
-    var topHeader = <DefaultHeader translatedStrings={translatedStrings} language={props.language}/>;
+    var topHeader = (
+      <DefaultHeader
+        translatedStrings={translatedStrings}
+        language={props.language}
+      />
+    );
     if (props.association && Object.keys(props.association).length > 0) {
       topHeader = (
         <OrgHeader
@@ -174,10 +179,7 @@ export default function NewRequestPage(props) {
     if (step_num === 0) {
       return (
         <>
-          <Button
-            id="back-button"
-            onClick={() => history.push("/")}
-          >
+          <Button id="back-button" onClick={() => history.push("/")}>
             ←
           </Button>
           <p id="title">{translatedStrings[props.language].Step} 1 —</p>
@@ -280,10 +282,10 @@ export default function NewRequestPage(props) {
             ←
           </Button>
           <p id="title">{translatedStrings[props.language].Step} 3 -</p>
-          <p id="subtitle">{translatedStrings[props.language].ConfirmRequest}</p>
-          <p id="info">
-          {translatedStrings[props.language].LastStep}
+          <p id="subtitle">
+            {translatedStrings[props.language].ConfirmRequest}
           </p>
+          <p id="info">{translatedStrings[props.language].LastStep}</p>
         </>
       );
     } else if (step_num === 5) {

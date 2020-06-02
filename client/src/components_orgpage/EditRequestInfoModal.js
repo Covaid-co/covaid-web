@@ -9,7 +9,13 @@ import Button from "react-bootstrap/Button";
 
 import { useFormFields } from "../libs/hooksLib";
 import { validateEmail, extractTrueObj } from "../Helpers";
-import { MARKER_SIZE, ICON, paymentOptions, languages } from "../constants";
+import {
+  MARKER_SIZE,
+  ICON,
+  paymentOptions,
+  languages,
+  defaultResources,
+} from "../constants";
 import CheckForm from "../components/CheckForm";
 
 import ReactMapGL, { Marker, NavigationControl } from "react-map-gl";
@@ -51,15 +57,6 @@ export default function EditRequestInfoModal(props) {
   );
   const [time, setTime] = useState(props.currRequest.request_info.time);
   const [date, setDate] = useState(props.currRequest.request_info.date);
-
-  const defaultNeedsList = [
-    "Food/Groceries",
-    "Medication",
-    "Donate",
-    "Emotional Support",
-    "Academic/Professional",
-    "Misc.",
-  ];
 
   const setCurrentRequestObject = (userList, fullList, setFunction) => {
     for (var i = 0; i < fullList.length; i++) {
@@ -258,11 +255,19 @@ export default function EditRequestInfoModal(props) {
       languages,
       setLanguageChecked
     );
-    setCurrentRequestObject(
-      props.currRequest.request_info.resource_request,
-      defaultNeedsList,
-      setNeedsChecked
-    );
+    if (props.association && Object.keys(props.association).length > 0) {
+      setCurrentRequestObject(
+        props.currRequest.request_info.resource_request,
+        props.association.resources,
+        setNeedsChecked
+      );
+    } else {
+      setCurrentRequestObject(
+        props.currRequest.request_info.resource_request,
+        defaultResources,
+        setNeedsChecked
+      );
+    }
   }, [props.currRequest]);
 
   if (isLoaded) {

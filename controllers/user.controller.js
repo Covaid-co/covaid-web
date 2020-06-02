@@ -421,26 +421,29 @@ exports.delete = function (req, res) {
 exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
   if (req.body.email !== undefined) {
     var emailAddress = req.body.email;
-    Users.findOne({ email: emailAddress }, function (err, user) {
-      if (err) {
-        return res.sendStatus(403);
+    Users.findOne(
+      { email: { $regex: new RegExp(emailAddress, "i") } },
+      function (err, user) {
+        if (err) {
+          return res.sendStatus(403);
+        }
+        const today = new Date();
+        const expirationDate = new Date(today);
+        expirationDate.setMinutes(today.getMinutes() + 5);
+        if (user) {
+          var payload = {
+            id: user._id, // User ID from database
+            email: emailAddress,
+          };
+          var secret = user.hash;
+          var token = jwt.encode(payload, secret);
+          emailer.sendPasswordLink(emailAddress, payload.id, token);
+          res.sendStatus(200);
+        } else {
+          return res.status(403).send("No accounts with that email");
+        }
       }
-      const today = new Date();
-      const expirationDate = new Date(today);
-      expirationDate.setMinutes(today.getMinutes() + 5);
-      if (user) {
-        var payload = {
-          id: user._id, // User ID from database
-          email: emailAddress,
-        };
-        var secret = user.hash;
-        var token = jwt.encode(payload, secret);
-        emailer.sendPasswordLink(emailAddress, payload.id, token);
-        res.sendStatus(200);
-      } else {
-        return res.status(403).send("No accounts with that email");
-      }
-    });
+    );
   } else {
     return res.status(422).send("Email address is missing.");
   }

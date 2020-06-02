@@ -26,6 +26,7 @@ let translatedStrings = new LocalizedStrings({ translations });
 
 export default function NewLogin(props) {
   const [language, setLanguage] = useState("en");
+  const [show_toast, setShowToast] = useState(false);
 
   useEffect(() => {
     if (props.switchToLanguage === "Español") {
@@ -57,27 +58,23 @@ export default function NewLogin(props) {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            Cookie.set("token", data.user.token);
-            props.hideModal();
-            window.location.href = currURL + "/volunteerPortal";
-          });
-        } else {
-          if (response.status === 403) {
-            alert(
-              "Check your email for a verification link prior to logging in."
-            );
-          } else if (response.status === 401) {
-            alert("Incorrect password.");
-          }
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          Cookie.set("token", data.user.token);
+          props.hideModal();
+          window.location.href = currURL + "/volunteerPortal";
+        });
+      } else {
+        if (response.status === 403) {
+          alert(
+            "Check your email for a verification link prior to logging in."
+          );
+        } else if (response.status === 401) {
+          alert("Incorrect password.");
         }
-      })
-      .catch((e) => {
-        alert(e);
-      });
+      }
+    });
   };
 
   const handleSubmitForgot = async (e) => {
@@ -90,14 +87,15 @@ export default function NewLogin(props) {
       body: JSON.stringify(form),
     })
       .then((response) => {
-        if (response.ok) {
-          alert("Check your email for password link!");
-        } else {
-          alert("Error sending link!");
+        if (!response.ok) {
+          throw Error("err");
         }
       })
-      .catch((e) => {
-        console.log(e);
+      .then(() => {
+        props.hideModal();
+      })
+      .catch(() => {
+        setShowToast(true);
       });
   };
 
@@ -152,7 +150,7 @@ export default function NewLogin(props) {
                 setMode(!mode);
               }}
             >
-              {translatedStrings[language].ResetPassword}
+              Forgot your password?
             </Button>
           </Form>
         </Modal.Body>
@@ -163,6 +161,8 @@ export default function NewLogin(props) {
       <ResetPassword
         showModal={props.showModal}
         hideModal={() => setMode(!mode)}
+        show_toast={show_toast}
+        setShowToast={setShowToast}
         handleSubmitForgot={handleSubmitForgot}
         fields={fields}
         handleFieldChange={handleFieldChange}
