@@ -398,7 +398,18 @@ export default function CovaidNavbar(props) {
           </span>
         </Navbar>
       ) : (
-        <></>
+        <Navbar expand="md" id="blmbanner">
+          <span style={{ cursor: "pointer", fontWeight: 600 }}>
+            {width > 767 ? "We stand with the Black Lives Matter Movement" : "We stand with the BLM Movement" }
+          </span>
+          <span
+            id="view-banner"
+            style={{ cursor: "pointer", fontWeight: 600 }}
+            onClick={() => window.open("https://blacklivesmatters.carrd.co/")}
+          >
+            Resources →
+          </span>
+        </Navbar>
       )}
       <Navbar
         collapseOnSelect
