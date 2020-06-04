@@ -14,6 +14,10 @@
   padding-top: 0px;
 }
 
+#donate-footer {
+  margin-top: -100px;
+}
+
 #feedback {
   position: fixed;
   right: 0;
@@ -414,6 +418,10 @@
   }
   #desktop-footer {
     padding-bottom: 50px;
+  }
+
+  #donate-footer {
+    margin-top: 50px;
   }
 
   #footer-content {

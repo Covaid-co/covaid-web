@@ -12,11 +12,6 @@ import { currURL } from "../constants";
 export default function Footer(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalName, setModalName] = useState("");
-  const [width, setWidth] = useState(window.innerWidth);
-
-  window.addEventListener("resize", () => {
-    setWidth(window.innerWidth);
-  });
 
   const getCurrentModal = () => {
     var modal = <></>;

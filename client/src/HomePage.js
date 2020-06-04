@@ -62,7 +62,7 @@ export default function HomePage(props) {
 
   return (
     <div style={{ overflowX: "hidden", height: "100%" }}>
-      <div key="1" className="App" style={{ height: "100%" }}>
+      <div className="App" style={{ height: "100%" }}>
         <NavBar
           setLanguage={props.setLanguage}
           language={props.language}
@@ -122,8 +122,6 @@ export default function HomePage(props) {
         {getCurrentModal()}
       </div>
       <Footer
-        key="2"
-        home={true}
         id="desktop-footer"
         style={toggle ? { marginTop: 500 } : {}}
       />
