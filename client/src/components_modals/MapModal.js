@@ -3,10 +3,24 @@ import Badge from "react-bootstrap/Badge";
 import Modal from "react-bootstrap/Modal";
 import NewMap from "../components_orgpage/NewMap";
 
+/**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
 export default function MapModal(props) {
   const [volunteers, setVolunteers] = useState([]);
+  const [language, setLanguage] = useState("en");
 
   useEffect(() => {
+    if (props.switchToLanguage === "Español") {
+      setLanguage("es");
+    } else {
+      setLanguage("en");
+    }
     if (volunteers.length === 0) {
       fetch("api/users/actual_all", {
         method: "get",
@@ -46,7 +60,7 @@ export default function MapModal(props) {
           console.log(e);
         });
     }
-  }, [volunteers]);
+  }, [volunteers, props.switchToLanguage]);
 
   return (
     <Modal
@@ -58,14 +72,13 @@ export default function MapModal(props) {
       <Modal.Header closeButton>
         <Modal.Title>
           {props.mobile ? "Covaid Map" : "Covaid Volunteer Map"}{" "}
-          <Badge id="volunteerBadge">{props.totalVolunteers} Volunteers</Badge>
+          <Badge id="volunteerBadge">
+            {props.totalVolunteers} {translatedStrings[language].Volunteer}
+          </Badge>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p id="regular-text">
-          Covaid volunteers are nationwide! Spread the word so more people can
-          get support!
-        </p>
+        <p id="regular-text">{translatedStrings[language].Volunteer_Text}</p>
         <NewMap volunteers={volunteers} public={true} />
       </Modal.Body>
     </Modal>

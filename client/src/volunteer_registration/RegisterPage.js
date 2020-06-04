@@ -17,6 +17,10 @@ import OrgHeader from "../association_volunteer_header/OrgHeader";
 import DefaultHeader from "../association_volunteer_header/DefaultHeader";
 import CurrentLocation from "../location_tools/CurrentLocation";
 
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+let translatedStrings = new LocalizedStrings({ translations });
+
 /**
  * Volunteer Registration Main Page
  */
@@ -30,7 +34,10 @@ export default function RegisterPage(props) {
 
   useEffect(() => {
     setShowModal(false);
-  }, [props.locationProps]);
+    if (props.googleApiKey !== "") {
+      props.setLocationState(props.googleApiKey);
+    }
+  }, [props.googleApiKey]);
 
   const showModalType = (type) => {
     setModalType(type);
@@ -42,18 +49,27 @@ export default function RegisterPage(props) {
   };
 
   const volunteerFormInfo = () => {
-    var topHeader = <DefaultHeader />;
-    if (
-      props.locationProps.currentAssoc &&
-      Object.keys(props.locationProps.currentAssoc).length > 0
-    ) {
-      topHeader = <OrgHeader assoc={props.locationProps.currentAssoc} />;
+    var topHeader = (
+      <DefaultHeader
+        language={props.language}
+        setLanguage={props.setLanguage}
+      />
+    );
+    if (props.association && Object.keys(props.association).length > 0) {
+      topHeader = (
+        <OrgHeader
+          assoc={props.association}
+          language={props.language}
+          setLanguage={props.setLanguage}
+        />
+      );
     }
     return (
       <>
         {topHeader}
         <CurrentLocation
-          locationProps={props.locationProps}
+          locality={props.locality}
+          zipcode={props.zipcode}
           showModal={() => showModalType("location")}
         />
       </>
@@ -71,34 +87,25 @@ export default function RegisterPage(props) {
         availability: true,
         location: {
           type: "Point",
-          coordinates: [
-            props.locationProps.longitude,
-            props.locationProps.latitude,
-          ],
+          coordinates: [props.longitude, props.latitude],
         },
         offer: {
           details: secondPage.details,
           tasks: secondPage.tasks,
           neighborhoods: firstPage.neighborhoods,
-          state: props.locationProps.state,
+          state: props.stateString,
           car: secondPage.car,
           timesAvailable: secondPage.timesAvailable,
           canHelp: thirdPage.canHelp,
           helpDetails: thirdPage.helpDetails,
         },
-        association: props.locationProps.currentAssoc._id
-          ? props.locationProps.currentAssoc._id
-          : "",
-        association_name: props.locationProps.currentAssoc.name
-          ? props.locationProps.currentAssoc.name
-          : "",
+        association: props.association._id ? props.association._id : "",
+        association_name: props.association.name ? props.association.name : "",
         languages: ["English"],
         phone: firstPage.phone,
       },
     };
 
-    // console.log(form);
-    // return
     fetch("/api/users/", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -121,21 +128,27 @@ export default function RegisterPage(props) {
       return (
         <RegisterPage1
           setFirstPage={setFirstPage}
-          neighborhoods={props.locationProps.neighborhoods}
+          language={props.language}
+          setLanguage={props.setLanguage}
+          neighborhoods={props.neighborhoods}
         />
       );
     } else if (Object.keys(secondPage).length === 0) {
       return (
         <RegisterPage2
           setSecondPage={setSecondPage}
-          currentAssoc={props.locationProps.currentAssoc}
+          language={props.language}
+          setLanguage={props.setLanguage}
+          currentAssoc={props.association}
         />
       );
     } else {
       return (
         <RegisterPage3
           handleSubmit={handleSubmit}
-          currentAssoc={props.locationProps.currentAssoc}
+          language={props.language}
+          setLanguage={props.setLanguage}
+          currentAssoc={props.association}
         />
       );
     }
@@ -162,9 +175,9 @@ export default function RegisterPage(props) {
     return [
       <div className="App" key="1">
         <NavBar
+          setLanguage={props.setLanguage}
+          language={props.language}
           isLoggedIn={false}
-          totalVolunteers={0}
-          handleShowModal={showModalType}
         />
         <Container style={{ maxWidth: 1500 }}>
           <Row>
@@ -172,11 +185,10 @@ export default function RegisterPage(props) {
             <Col lg={6} md={8} sm={12}>
               <Container id="newOfferContainer" style={{ marginBottom: 0 }}>
                 <h1 id="small-header">
-                  Check your email for a verification link!
+                  {translatedStrings[props.language].CheckVerification}
                 </h1>
                 <p id="regular-text" style={{ marginBottom: 5 }}>
-                  Once verified, you will be able to post an offer to support
-                  your community directly from your volunteer portal.
+                  {translatedStrings[props.language].OnceVerified}
                 </p>
               </Container>
             </Col>
@@ -190,7 +202,11 @@ export default function RegisterPage(props) {
 
   return [
     <div className="App" key="1">
-      <NavBar isLoggedIn={false} handleShowModal={showModalType} />
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        isLoggedIn={false}
+      />
       <Container style={{ maxWidth: 1500 }}>
         <Row>
           <Col lg={3} md={2} sm={0}></Col>
@@ -220,11 +236,13 @@ export default function RegisterPage(props) {
 }
 
 RegisterPage.propTypes = {
-  locationProps: PropTypes.shape({
-    currentAssoc: PropTypes.object,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    zipcode: PropTypes.string,
-    locality: PropTypes.string,
-  }),
+  association: PropTypes.object,
+  latitude: PropTypes.number,
+  longitude: PropTypes.number,
+  locality: PropTypes.string,
+  stateString: PropTypes.string,
+  zipcode: PropTypes.string,
+  neighborhoods: [PropTypes.string],
+  setLanguage: PropTypes.func,
+  language: PropTypes.string,
 };

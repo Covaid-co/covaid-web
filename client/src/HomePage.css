@@ -1,3 +1,189 @@
+#profile {
+  border-radius: 50%;
+  width: 160px;
+  margin-bottom: 8px;
+  margin-top: 25px;
+}
+
+#footer-link {
+  font-family: "Inter";
+  color: #2670ff;
+  padding-right: 5px;
+  padding-left: 5px;
+  /* margin-top: -5px; */
+  padding-top: 0px;
+}
+
+#feedback {
+  position: fixed;
+  right: 0;
+  bottom: 180px;
+  height: 250px;
+  margin-left: -3px;
+  margin-bottom: -3px;
+  z-index: 10;
+}
+
+#feedback-tab {
+  float: right;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  width: 90px;
+  height: 69px;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin-top: 60px;
+  margin-right: -45px;
+  padding-top: 5px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+#feedback-tab:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#banner {
+  width: 100%;
+  height: 40px;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  background-color: #2670ff;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-family: "Inter";
+  z-index: 100;
+}
+
+#blmbanner {
+  width: 100%;
+  height: 40px;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-family: "Inter";
+  z-index: 100;
+}
+
+#view-banner:before {
+  content: "";
+  display: inline-block;
+  border-left: 1px solid white;
+  height: 16px;
+  line-height: 1;
+  margin-left: 20px;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+#close-banner {
+  display: inline-flex;
+  color: white;
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  margin-top: 3px;
+}
+
+#profile-name {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  font-size: 18px;
+  display: inline-block;
+}
+
+#tab-name-active {
+  color: black;
+  font-weight: 600;
+  font-size: 24px;
+  font-family: "Montserrat";
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 40px;
+  border-bottom: 4px solid #2670ff;
+  cursor: pointer;
+}
+
+#tab-name-inactive {
+  color: #c1c1c1;
+  font-weight: 600;
+  font-size: 24px;
+  font-family: "Montserrat";
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+#tab-name-active-requests {
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 600;
+  color: #4f4f4f;
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  width: 100px;
+  border-bottom: 4px solid #2670ff;
+  cursor: pointer;
+  text-align: center;
+}
+
+#tab-name-inactive-requests {
+  color: #c1c1c1;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Inter";
+  display: inline-block;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  width: 100px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#nav-tab-name-active {
+  color: black;
+  font-family: "Inter";
+  font-size: 16px;
+  color: #7f7f7f;
+  display: inline-block;
+  margin-bottom: -20px;
+  margin-right: 40px;
+  padding-bottom: 5px;
+  border-bottom: 4px solid #2670ff;
+  cursor: pointer;
+}
+
+#nav-tab-name-inactive {
+  color: #c1c1c1;
+  font-size: 16px;
+  font-family: "Inter";
+  display: inline-block;
+  margin-bottom: -10px;
+  margin-right: 40px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+#profile-name:hover {
+  color: #2670ff;
+}
+
 .list-group-flush .list-group-item {
   padding-left: 10px;
 }
@@ -11,18 +197,20 @@
 }
 
 #jumbo-text {
-  margin-top: 10px;
-  padding-right: 80px;
+  margin-top: 0px;
+  padding-right: 20px;
+  padding-left: 70px;
 }
 
 #jumbo {
   margin-bottom: 60px;
+  padding-bottom: 210px;
 }
 
 #jumboContainer {
   margin-left: 7%;
   margin-right: 7%;
-  max-width: 1500px;
+  max-width: 2500px;
   height: 290px;
 }
 
@@ -73,7 +261,7 @@
 }
 
 #org-img {
-  width: 480px;
+  width: 500px;
 }
 
 @media (max-width: 1150px) {
@@ -155,6 +343,10 @@
 }
 
 @media (max-width: 960px) {
+  #banner {
+    height: 60px;
+  }
+
   #location-container-logged {
     margin-top: 110px;
   }
@@ -216,13 +408,30 @@
 }
 
 @media (max-width: 768px) {
+  #mobile-footer {
+    display: block;
+    margin-bottom: 50px;
+  }
+  #desktop-footer {
+    padding-bottom: 50px;
+  }
+
+  #footer-content {
+    padding-left: 0px !important;
+    /* padding-right: 0px !important; */
+  }
+
+  #feedback {
+    display: none;
+  }
+
   #orgpage-separator {
     margin-top: -65px;
   }
 
   #login-container {
     padding-left: 50px;
-    padding-right: 50px;
+    padding-right: 30px;
   }
 
   #requests-feature-container {
@@ -263,12 +472,18 @@
     width: 380px;
   }
 
-  .footer {
+  #footer-brand {
     display: none;
+  }
+
+  .footer {
+    /* margin-bottom: 50px; */
+    /* margin-top: -100px; */
   }
 
   #jumbo {
     margin-bottom: 0px;
+    padding-bottom: 300px;
   }
 
   #jumbo-text {
@@ -278,8 +493,9 @@
 
   #jumboContainer {
     height: 260px;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 8%;
+    margin-right: 8%;
+    margin-top: 50px;
   }
 
   #location-container {
@@ -324,12 +540,15 @@
 
   #jumbo {
     padding-top: 10px;
+    padding-bottom: 200px;
   }
 }
 
 @media (max-width: 605px) {
   #login-container {
     padding-left: 30px;
+    padding-right: 20px !important;
+    padding-top: 10px;
   }
 
   #requests-feature-container {
@@ -351,9 +570,20 @@
   #location-container-logged {
     margin-top: 50px;
   }
+
+  #jumboContainer {
+    height: 260px;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
 }
 
 @media (max-width: 578px) {
+  #jumbo {
+    padding-bottom: 350px;
+    padding-bottom: 250px;
+  }
+
   #login-container {
     padding-left: 20px;
   }
@@ -380,11 +610,17 @@
 
   #jumbo-text {
     margin-top: 10px;
-    padding-right: 30px;
+    padding-right: 50px;
+    padding-left: 50px;
   }
 
   #jumboContainer {
-    height: 320px;
+    height: 200px;
+    margin-top: 10px;
+    margin-left: 0%;
+    margin-right: 0%;
+    padding: 0px;
+    /* padding-right: 20px; */
   }
 
   #location-container {
@@ -397,6 +633,10 @@
 }
 
 @media (max-width: 460px) {
+  #blmbanner {
+    height: 60px;
+  }
+
   #location-container {
     margin-top: 50px;
   }
@@ -421,7 +661,7 @@
 
 @media (max-width: 345px) {
   #jumboContainer {
-    height: 360px;
+    height: 200px;
   }
 
   #location-container {

@@ -41,10 +41,22 @@ export default function RequestHelp(props) {
 
   const requestFormInfo = () => {
     var topHeader = (
-      <DefaultHeader requestHeaderText={requestHeaderText()} modal={true} />
+      <DefaultHeader
+        setSwithToLanguage={props.setSwithToLanguage}
+        switchToLanguage={props.switchToLanguage}
+        requestHeaderText={requestHeaderText()}
+        modal={true}
+      />
     );
     if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
-      topHeader = <OrgHeader assoc={props.currentAssoc} modal={true} />;
+      topHeader = (
+        <OrgHeader
+          etSwithToLanguage={props.setSwithToLanguage}
+          switchToLanguage={props.switchToLanguage}
+          assoc={props.currentAssoc}
+          modal={true}
+        />
+      );
     }
     return (
       <>
@@ -182,6 +194,8 @@ export default function RequestHelp(props) {
 }
 
 RequestHelp.propTypes = {
+  setSwithToLanguage: PropTypes.func,
+  switchToLanguage: PropTypes.string,
   showModalType: PropTypes.func,
   showModal: PropTypes.bool,
   hideModal: PropTypes.func,

@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { currURL } from "./constants";
+
+/**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "./translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
 
 // Can't find link (Request support) specific to Baltimore
 export const cantFindLink = (currentAssoc, updateRequestHelpMode) => {
@@ -19,24 +27,9 @@ export const cantFindLink = (currentAssoc, updateRequestHelpMode) => {
   return <></>;
 };
 
-// Request support Button specific to Baltimore
-export const supportButton = (currentAssoc, updateRequestHelpMode) => {
-  var helpButton = (
-    <Button
-      onClick={() => updateRequestHelpMode("general")}
-      id="request-button"
-    >
-      Request support
-    </Button>
-  );
-  if (currentAssoc && currentAssoc.name === "Baltimore Mutual Aid") {
-    helpButton = <></>;
-  }
-  return helpButton;
-};
-
 // Display Volunteer button if logged in
-export const volunteerButton = (loggedIn) => {
+export const volunteerButton = (loggedIn, language) => {
+  console.log(language);
   var volButton = (
     <Button
       onClick={() => {
@@ -45,7 +38,7 @@ export const volunteerButton = (loggedIn) => {
       id="request-button"
       style={{ marginRight: 15 }}
     >
-      Volunteer portal
+      {translations[language].VolunteerPortal}
     </Button>
   );
   if (!loggedIn) {

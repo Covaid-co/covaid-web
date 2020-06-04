@@ -15,6 +15,8 @@ const admin_routes = require("./api/association.admin.routes");
 const orgsignup_routes = require("./api/orgsignup.routes.js");
 const changelog_routes = require("./api/changelog.routes.js");
 const apikey_routes = require("./api/apikey_routes.js");
+const livenews_routes = require("./api/livenews.routes");
+const infohub_routes = require("./api/infohub.routes.js");
 
 router.use("/users", user_routes);
 router.use("/request", request_routes);
@@ -24,6 +26,8 @@ router.use("/association-admin", admin_routes);
 router.use("/orgsignup", orgsignup_routes);
 router.use("/changelog", changelog_routes);
 router.use("/apikey", apikey_routes);
+router.use("/news", livenews_routes);
+router.use("/infohub", infohub_routes);
 
 module.exports = (app) => {
   app.use("/api", router);

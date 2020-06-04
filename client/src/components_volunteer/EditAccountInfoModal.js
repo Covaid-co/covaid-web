@@ -538,7 +538,7 @@ export default function EditAccountInfoModal(props) {
                   <Row>
                     <Button
                       onClick={handleSubmit}
-                      id="request-button"
+                      id="large-button"
                       style={{ width: "100%", marginTop: 20 }}
                     >
                       Update your info

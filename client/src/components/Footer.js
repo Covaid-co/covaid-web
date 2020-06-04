@@ -9,9 +9,14 @@ import HowItWorks from "../components_modals/HowItWorks";
 import Feedback from "../components_modals/Feedback";
 import { currURL } from "../constants";
 
-export default function Footer() {
+export default function Footer(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalName, setModalName] = useState("");
+  const [width, setWidth] = useState(window.innerWidth);
+
+  window.addEventListener("resize", () => {
+    setWidth(window.innerWidth);
+  });
 
   const getCurrentModal = () => {
     var modal = <></>;
@@ -30,140 +35,86 @@ export default function Footer() {
     return modal;
   };
 
-  const setCurrModal = (name) => {
-    setShowModal(true);
-    setModalName(name);
-  };
-
-  const linkObject = (url, name) => {
-    return (
-      <>
-        <a
-          id="regular-text"
-          style={{ marginBottom: 0 }}
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {name}
-        </a>
-        <br />
-      </>
-    );
-  };
-
   return (
-    <footer className="footer">
-      <Container>
+    <footer className="footer" id={props.id} style={props.style}>
+      <Container style={{ maxWidth: 2500 }}>
         <Row style={{ textAlign: "left", paddingBottom: 30 }}>
-          <Col xs={2} style={{ padding: 20, paddingRight: 0 }}>
+          <Col
+            xs={1}
+            style={{ padding: 20, paddingRight: 0 }}
+            id="footer-brand"
+          >
             <Navbar style={{ paddingLeft: 0, paddingBottom: 0 }}>
               <Navbar.Brand
                 id="navbar-brand"
-                style={{ paddingLeft: 0, color: "#7B7B7B", marginLeft: 0 }}
+                style={{
+                  paddingLeft: 0,
+                  color: "#7B7B7B",
+                  marginLeft: 0,
+                  marginTop: 20,
+                }}
               >
                 covaid
               </Navbar.Brand>
             </Navbar>
+          </Col>
+          <Col
+            xl={10}
+            lg={10}
+            md={10}
+            sm={12}
+            style={{ textAlign: "left", marginTop: 62, paddingLeft: 50 }}
+            id="footer-content"
+          >
             <Button
               variant="link"
-              id="regular-text"
-              style={{ color: "#2670FF", padding: 0 }}
-              onClick={() => setCurrModal("faq")}
+              id="footer-link"
+              onClick={() => window.open(currURL + "/faq", "_self")}
             >
               FAQ
             </Button>
-            <br />
             <Button
               variant="link"
-              id="regular-text"
-              style={{ color: "#2670FF", padding: 0, marginTop: -8 }}
+              id="footer-link"
               onClick={() => (window.location.href = currURL + "/updates")}
             >
               Updates
             </Button>
-            <br />
             <Button
               variant="link"
-              id="regular-text"
-              style={{ color: "#2670FF", padding: 0, marginTop: -8 }}
-              onClick={() => setCurrModal("feedback")}
+              id="footer-link"
+              onClick={() => {
+                setModalName("feedback");
+                setShowModal(true);
+              }}
             >
-              Send feedback
+              Feedback
             </Button>
-          </Col>
-          <Col
-            xs={2}
-            style={{
-              padding: 20,
-              paddingLeft: 0,
-              paddingTop: 80,
-              paddingRight: 0,
-            }}
-          >
-            <a
-              id="regular-text"
-              style={{ color: "#2670FF" }}
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/Covaid-co/covaid-web"
-            >
-              Github
-            </a>
-            <br />
-            <a
-              id="regular-text"
-              style={{ color: "#2670FF" }}
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.facebook.com/covaidco"
-            >
-              Facebook
-            </a>
-            <br />
-            <a
-              id="regular-text"
-              style={{ color: "#2670FF" }}
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.instagram.com/covaidmutualaid/"
-            >
-              Instagram
-            </a>
-            <br />
-          </Col>
-          <Col xs={4} style={{ padding: 20, paddingLeft: 100, paddingTop: 37 }}>
-            <p
-              id="regular-text"
-              style={{ color: "#7B7B7B", fontWeight: "bold" }}
-            >
-              Current Partners
-            </p>
-            {linkObject(
-              "https://www.facebook.com/bmoremutualaid/",
-              "Baltimore Mutual Aid"
-            )}
-            {linkObject(
-              "https://www.pittsburghmutualaid.com/",
-              "Pittsburgh Mutual Aid"
-            )}
-            {linkObject(
-              "https://www.covid-gca.org/",
-              "Greater Charlotte Area Mutual Aid"
-            )}
-          </Col>
-          <Col xs={4} style={{ padding: 20, paddingLeft: 20, paddingTop: 78 }}>
-            {linkObject(
-              "https://www.facebook.com/groups/200572921276575/",
-              "Delaware Mutual Aid"
-            )}
-            {linkObject(
-              "https://ccomcovid.wixsite.com/covid",
-              "CCOM COVID-19 Task Force"
-            )}
-            <p id="regular-text" style={{ marginBottom: 0 }}>
-              Indy COVID-19 Neighbor Response Team
-            </p>
+            <i
+              id="social-icon"
+              className="fa fa-2x fa-github"
+              onClick={() =>
+                (window.location.href = "https://github.com/Covaid-co")
+              }
+              aria-hidden="true"
+            ></i>
+            <i
+              id="social-icon"
+              className="fa fa-2x fa-instagram"
+              onClick={() =>
+                (window.location.href =
+                  "https://www.instagram.com/covaidmutualaid/")
+              }
+              aria-hidden="true"
+            ></i>
+            <i
+              id="social-icon"
+              className="fa fa-2x fa-facebook-official"
+              onClick={() =>
+                (window.location.href = "https://www.facebook.com/covaidco")
+              }
+              aria-hidden="true"
+            ></i>
           </Col>
         </Row>
       </Container>

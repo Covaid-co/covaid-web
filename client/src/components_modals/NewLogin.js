@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cookie from "js-cookie";
 import { useFormFields } from "../libs/hooksLib";
 
@@ -13,10 +13,29 @@ import { validateEmail } from "../Helpers";
 import { currURL } from "../constants";
 
 /**
+ * If we can carry translated string from homepage.js, we can ignore this part and add props for all translatedStrings
+ */
+import LocalizedStrings from "react-localization";
+import { translations } from "../translations/translations";
+
+let translatedStrings = new LocalizedStrings({ translations });
+
+/**
  * Login modal for volunteers
  */
 
 export default function NewLogin(props) {
+  const [language, setLanguage] = useState("en");
+  const [show_toast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (props.switchToLanguage === "Español") {
+      setLanguage("es");
+    } else {
+      setLanguage("en");
+    }
+  }, [props.switchToLanguage]);
+
   const [mode, setMode] = useState(true);
   const [fields, handleFieldChange] = useFormFields({
     email: "",
@@ -39,27 +58,23 @@ export default function NewLogin(props) {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            Cookie.set("token", data.user.token);
-            props.hideModal();
-            window.location.href = currURL + "/volunteerPortal";
-          });
-        } else {
-          if (response.status === 403) {
-            alert(
-              "Check your email for a verification link prior to logging in."
-            );
-          } else if (response.status === 401) {
-            alert("Incorrect password.");
-          }
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          Cookie.set("token", data.user.token);
+          props.hideModal();
+          window.location.href = currURL + "/volunteerPortal";
+        });
+      } else {
+        if (response.status === 403) {
+          alert(
+            "Check your email for a verification link prior to logging in."
+          );
+        } else if (response.status === 401) {
+          alert("Incorrect password.");
         }
-      })
-      .catch((e) => {
-        alert(e);
-      });
+      }
+    });
   };
 
   const handleSubmitForgot = async (e) => {
@@ -72,14 +87,15 @@ export default function NewLogin(props) {
       body: JSON.stringify(form),
     })
       .then((response) => {
-        if (response.ok) {
-          alert("Check your email for password link!");
-        } else {
-          alert("Error sending link!");
+        if (!response.ok) {
+          throw Error("err");
         }
       })
-      .catch((e) => {
-        console.log(e);
+      .then(() => {
+        props.hideModal();
+      })
+      .catch(() => {
+        setShowToast(true);
       });
   };
 
@@ -92,7 +108,9 @@ export default function NewLogin(props) {
         style={{ marginTop: 110 }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Volunteer Login</Modal.Title>
+          <Modal.Title>
+            {translatedStrings[language].VolunteerLogin}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -110,7 +128,7 @@ export default function NewLogin(props) {
               <Col xs={12}>
                 <Form.Group controlId="password" bssize="large">
                   <Form.Control
-                    placeholder="Password"
+                    placeholder={translatedStrings[language].Password}
                     value={fields.password}
                     onChange={handleFieldChange}
                     type="password"
@@ -124,7 +142,7 @@ export default function NewLogin(props) {
               disabled={!validateForm()}
               type="submit"
             >
-              Sign In
+              {translatedStrings[language].Signin}
             </Button>
             <Button
               id="large-button-empty"
@@ -132,7 +150,7 @@ export default function NewLogin(props) {
                 setMode(!mode);
               }}
             >
-              Reset your password
+              Forgot your password?
             </Button>
           </Form>
         </Modal.Body>
@@ -143,6 +161,8 @@ export default function NewLogin(props) {
       <ResetPassword
         showModal={props.showModal}
         hideModal={() => setMode(!mode)}
+        show_toast={show_toast}
+        setShowToast={setShowToast}
         handleSubmitForgot={handleSubmitForgot}
         fields={fields}
         handleFieldChange={handleFieldChange}

@@ -8,6 +8,7 @@ exports.handleCreateBeacon = asyncWrapper(async (req, res) => {
   const {
     body: { beacon },
   } = req;
+  console.log(beacon); //REMOVE
   const auth_id = req.token.id;
   if (!beacon.beaconMessage) {
     return res.status(422).json({

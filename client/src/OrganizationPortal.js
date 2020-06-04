@@ -3,6 +3,8 @@ import { useToasts } from "react-toast-notifications";
 import fetch_a from "./util/fetch_auth";
 import Pusher from "pusher-js";
 
+import PropTypes from "prop-types";
+
 import Container from "react-bootstrap/Container";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
@@ -32,6 +34,7 @@ import {
 import "./OrganizationPage.css";
 
 export default function OrganiationPortal(props) {
+  document.title = "Covaid | Organization";
   const { addToast } = useToasts();
   const [pageLoaded, setPageLoaded] = useState(false);
   const [currTabNumber, setCurrTab] = useState(0);
@@ -78,7 +81,7 @@ export default function OrganiationPortal(props) {
 
   const [inRequest, setInRequest] = useState(false);
   const [inVolunteer, setInVolunteer] = useState(false);
-
+  //console.log(props.switchToLanguage);
   useEffect(() => {
     if (Cookie.get("admin_token") && Cookie.get("org_token")) {
       login(true);
@@ -184,6 +187,8 @@ export default function OrganiationPortal(props) {
   } else if (showLogin === true) {
     return (
       <OrgLogin
+        setLanguage={props.setLanguage}
+        language={props.language}
         login={login}
         setShowLogin={setShowLogin}
         orgReset={props.location.orgReset}
@@ -195,6 +200,8 @@ export default function OrganiationPortal(props) {
   return [
     <div className="App" key="1">
       <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
         pageLoaded={pageLoaded}
         isLoggedIn={true}
         totalVolunteers={volunteers.length}
@@ -240,7 +247,7 @@ export default function OrganiationPortal(props) {
                 >
                   View Volunteers
                 </Button>{" "}
-                <br />
+                {/* <br />
                 <Button
                   variant="link"
                   id="resources-link"
@@ -249,7 +256,7 @@ export default function OrganiationPortal(props) {
                   }}
                 >
                   + Add a link to your community&apos;s resources
-                </Button>
+                </Button> */}
               </Col>
               <Col
                 lg={6}
@@ -367,6 +374,8 @@ export default function OrganiationPortal(props) {
           volunteerDetailModal={volunteerDetailModal}
           setVolunteerDetailsModal={setVolunteerDetailsModal}
           currVolunteer={currVolunteer}
+          volunteers={volunteers}
+          setVolunteers={setVolunteers}
           setVolunteersModal={setVolunteersModal}
           currRequest={currRequest}
           requestDetailsModal={requestDetailsModal}
@@ -387,9 +396,9 @@ export default function OrganiationPortal(props) {
           setAllRequests={setAllRequests}
           mode={currTabNumber}
           volunteers={volunteers}
-          setVolunteers={setVolunteers}
           admin={admin}
           setInRequest={setInRequest}
+          setVolunteers={setVolunteers}
         />
         <BeaconCreation
           beaconModal={beaconModal}
@@ -404,3 +413,8 @@ export default function OrganiationPortal(props) {
     <Footer key="2" />,
   ];
 }
+
+OrganiationPortal.propTypes = {
+  language: PropTypes.string,
+  setLanguage: PropTypes.func,
+};

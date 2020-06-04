@@ -12,7 +12,7 @@ import { sortFn } from "../components_orgpage/OrganizationHelpers";
  * Changelog/updates page for keeping track of covaid updates
  */
 
-export default function ChangeLog() {
+export default function ChangeLog(props) {
   const [changeLog, setChangeLog] = useState([]);
 
   useEffect(() => {
@@ -55,7 +55,11 @@ export default function ChangeLog() {
 
   return [
     <div className="App" key="1">
-      <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} />
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        isLoggedIn={false}
+      />
       <Container style={{ maxWidth: 1500 }}>
         <Row>
           <Col lg={3} md={2} sm={0}></Col>

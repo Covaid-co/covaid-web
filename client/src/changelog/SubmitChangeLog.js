@@ -54,7 +54,6 @@ export default function ChangeLog() {
 
   return [
     <div className="App" key="1">
-      <NavBar isLoggedIn={false} totalVolunteers={0} orgPortal={true} />
       <Container style={{ maxWidth: 1500 }}>
         <Row>
           <Col lg={3} md={2} sm={0}></Col>

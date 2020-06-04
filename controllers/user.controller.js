@@ -1,5 +1,6 @@
 const Users = require("../models/user.model");
 const Association = require("../models/association.model");
+const ProfilePicture = require("../models/profile-picture.model");
 const passport = require("passport");
 const emailer = require("../util/emailer");
 const spreadsheets = require("../util/spreadsheet_tools");
@@ -397,9 +398,12 @@ exports.total_users = function (req, res) {
  */
 exports.update = function (req, res) {
   const id = req.token.id;
-  Users.findByIdAndUpdate(id, { $set: req.body }, function (err, offer) {
+  Users.findByIdAndUpdate(id, { $set: req.body }, { new: true }, function (
+    err,
+    user
+  ) {
     if (err) return next(err);
-    res.send("User updated.");
+    res.send(user);
   });
 };
 
@@ -417,26 +421,29 @@ exports.delete = function (req, res) {
 exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
   if (req.body.email !== undefined) {
     var emailAddress = req.body.email;
-    Users.findOne({ email: emailAddress }, function (err, user) {
-      if (err) {
-        return res.sendStatus(403);
+    Users.findOne(
+      { email: { $regex: new RegExp(emailAddress, "i") } },
+      function (err, user) {
+        if (err) {
+          return res.sendStatus(403);
+        }
+        const today = new Date();
+        const expirationDate = new Date(today);
+        expirationDate.setMinutes(today.getMinutes() + 5);
+        if (user) {
+          var payload = {
+            id: user._id, // User ID from database
+            email: emailAddress,
+          };
+          var secret = user.hash;
+          var token = jwt.encode(payload, secret);
+          emailer.sendPasswordLink(emailAddress, payload.id, token);
+          res.sendStatus(200);
+        } else {
+          return res.status(403).send("No accounts with that email");
+        }
       }
-      const today = new Date();
-      const expirationDate = new Date(today);
-      expirationDate.setMinutes(today.getMinutes() + 5);
-      if (user) {
-        var payload = {
-          id: user._id, // User ID from database
-          email: emailAddress,
-        };
-        var secret = user.hash;
-        var token = jwt.encode(payload, secret);
-        emailer.sendPasswordLink(emailAddress, payload.id, token);
-        res.sendStatus(200);
-      } else {
-        return res.status(403).send("No accounts with that email");
-      }
-    });
+    );
   } else {
     return res.status(422).send("Email address is missing.");
   }

@@ -472,6 +472,8 @@ export default function BestMatches(props) {
         setBestMatchVolunteer={setBestMatchVolunteer}
         setConfirmModal={setConfirmModal}
         currVolunteer={currVolunteer}
+        setVolunteers={props.setVolunteers}
+        volunteers={props.volunteers}
         matching={[props.topMatchesModal, confirmModal]}
       />
     </>
@@ -488,4 +490,5 @@ BestMatches.propTypes = {
   setCurrRequest: PropTypes.func,
   setAllRequests: PropTypes.func,
   allRequests: PropTypes.array,
+  setVolunteers: PropTypes.func,
 };
