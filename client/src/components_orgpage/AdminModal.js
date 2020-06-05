@@ -27,6 +27,8 @@ export default function AdminModal(props) {
     email3: "",
   });
 
+  const [geofences, handleGeofences] = useState([]);
+
   const newHandleSubmit = async (e) => {
     e.preventDefault();
     let form = {
@@ -227,13 +229,9 @@ export default function AdminModal(props) {
                         </Col> */}
           </Row>
         </Modal.Body>
-        <Modal.Header>
-          <Modal.Title style={{ marginLeft: 5 }}>Edit Organization Radius</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <GeofenceMap {...props}/>
-        </Modal.Body>
-
+          
+        <GeofenceMap {...props}/>
+        
         <Modal.Header>
           <Modal.Title style={{ marginLeft: 5 }}>
             Recruiting for admins

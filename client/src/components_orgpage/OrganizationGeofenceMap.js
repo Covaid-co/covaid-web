@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import MapGL, {
-  Popup,
-  NavigationControl,
-  FullscreenControl,
-} from "react-map-gl";
+import MapGL from '@urbica/react-map-gl';
+import NavigationControl from 'react-map-gl';
 import useSupercluster from "use-supercluster";
 import Pins from "./pins";
 import InfoMarker from "./InfoMarker";
-import {Editor, EditingMode, DrawPolygonMode,} from 'react-map-gl-draw';
+//import {Editor, EditingMode, DrawPolygonMode,} from 'react-map-gl-draw';
+import Draw from '@urbica/react-map-gl-draw';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 
 export default function GeofenceMap(props) {
@@ -19,15 +23,20 @@ export default function GeofenceMap(props) {
   const [viewport, setViewport] = useState({
     latitude: 38.7528233,
     longitude: -98.1970437,
-    zoom: 10,
+    zoom: 13,
     bearing: 0,
     pitch: 0,
-    width: "100%",
-    height: 450,
   });
   const [mapBoxToken, setMapBoxToken] = useState("");
   const [modeId, setModeId] = useState(null);
   const [modeHandler, setModeHandler] = useState(null);
+  
+  const [geofences, setGeofences] = useState({
+    type: "FeatureCollection",
+    features: []
+  });
+
+  const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
     fetch("/api/apikey/mapbox").then((response) => {
@@ -43,55 +52,94 @@ export default function GeofenceMap(props) {
 
     if (
       props.association &&
-      props.association.name &&
-      props.association.name !== "Covaid"
+      props.association.name
     ) {
-      setViewport({
-        ...viewport,
-        longitude: props.association.location.coordinates[0],
-        latitude: props.association.location.coordinates[1],
-        zoom: 10,
-      });
 
-    } console.log(props.association);
+      if (props.association.name !== "Covaid"){
+        setViewport({
+          ...viewport,
+          longitude: props.association.location.coordinates[0],
+          latitude: props.association.location.coordinates[1],
+          zoom: 10,
+        });
+      }
+      
+
+      if (props.association.geofences != undefined){
+        handleAddProperties();
+      } 
+    }
+
   }, [props.association]);
 
-  const fullscreenControlStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    padding: "10px",
-  };
-
-  const navStyle = {
-    position: "absolute",
-    top: 36,
-    left: 0,
-    padding: "10px",
-  };
-
-  const MODES = [
-    { id: 'drawPolygon', text: 'Draw Polygon', handler: DrawPolygonMode },
-    { id: 'editing', text: 'Edit Feature', handler: EditingMode },
-  ];
-
-  const _switchMode = evt => {
-      const newModeId = evt.target.value === modeId ? null : evt.target.value;
-      const mode = MODES.find(m => m.id === newModeId);
-      const newModeHandler = mode ? new mode.handler() : null;
-      setModeId(newModeId);
-      setModeHandler(newModeHandler);
-  };
-
-  const _renderToolbar = () => {
+  const _saveButton = () => {
     return (
-      <div style={{position: 'absolute', top: 0, right: 0, maxWidth: '320px'}}>
-        <select onChange={_switchMode}>
-          <option value="">--Please choose a draw mode--</option>
-          {MODES.map(mode => <option key={mode.id} value={mode.id}>{mode.text}</option>)}
-        </select>
-      </div>
+      
+        <Button variant="primary" 
+                size="sm"
+                onClick={hasChanged ? updateGeofence : null}
+                disabled={!hasChanged}
+                style={{marginLeft: "35px"}}
+        >
+          <b>Save</b>
+        </Button>
+     
     );
+  };
+
+  const handleAddProperties = () => {
+    const newGeofences = {
+      type: "FeatureCollection",
+      features: [],
+    }
+
+    props.association.geofences.features.map((feature) => {
+      const uFeature = {
+        type: feature.type,
+        properties: {},
+        geometry: feature.geometry
+      };
+
+      newGeofences.features.push(uFeature);
+    });
+
+    
+    setGeofences(
+      newGeofences
+    );
+  }
+
+  const handleChange = (data) => {
+    setGeofences(data);
+    setHasChanged(true);
+  };
+
+  const updateGeofence = async (e) => {
+    e.preventDefault();
+    let form = {
+      associationID: props.association._id,
+      geofences: geofences,
+    };
+
+    fetch("/api/association/update_geofences", {
+      method: "put",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setHasChanged(false);
+          props.setAssociation({
+            ...props.association,
+            geofences: geofences,
+          });
+        } else {
+          alert("unable to attach");
+        }
+      })
+      .catch((e) => {
+        alert(e);
+      });
   };
 
   if (!isLoaded) {
@@ -99,41 +147,40 @@ export default function GeofenceMap(props) {
   }
 
   return (
-    <MapGL
-      {...viewport}
-      mapStyle="mapbox://styles/mapbox/light-v9"
-      onViewportChange={setViewport}
-      mapboxApiAccessToken={mapBoxToken}
-    >
-      <div style={navStyle}>
-        <NavigationControl />
-      </div>
-      {popupInfo && (
-        <Popup
-          tipSize={5}
-          anchor="top"
-          closeOnClick={false}
-          longitude={popupInfo.longitude}
-          latitude={popupInfo.latitude}
-          onClose={() => setPopupInfo(null)}
+    <>
+      <Modal.Header>
+          <Modal.Title style={{ marginLeft: 5 }}>
+            <Row>
+              <Col xl={11}>
+                Organization Radius 
+              </Col>
+              <Col lg={1}>
+                {_saveButton()} 
+              </Col>
+            </Row>
+          </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+      
+        <MapGL
+          {...viewport}
+          style={{width: "100%", height: 450}}
+          mapStyle="mapbox://styles/mapbox/light-v10"
+          accessToken={mapBoxToken}
+          onViewportChange={setViewport}
         >
-          <InfoMarker
-            info={popupInfo}
-            request={currRequest}
-            style={{ color: "black" }}
-            {...props}
-            setPopupInfo={setPopupInfo}
+          
+          <Draw
+            data={geofences}
+            onChange={(data) => handleChange(data)}
+            pointControl={false}
+            lineStringControl={false}
+            combineFeaturesControl={false}
+            uncombineFeaturesControl={false}
           />
-        </Popup>
-      )}
-
-      <Editor
-          clickRadius={12}
-          mode={modeHandler}
-        />
-
-        {_renderToolbar()}
-    </MapGL>
+        </MapGL>
+      </Modal.Body>
+    </>
   );
 }
 
