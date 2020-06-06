@@ -5,6 +5,16 @@
   margin-top: 30px;
 }
 
+#outer {
+  margin-top: -60px;
+}
+
+#request-container {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 #text-row {
   margin-top: 90px;
 }
@@ -24,6 +34,10 @@
 }
 
 @media (max-width: 768px) {
+  #outer {
+    margin-top: 0px;
+  }
+
   #left-container {
     border-right: 0px;
     /* height: 350px; */
@@ -127,4 +141,10 @@
   font-size: 16px;
   color: #7f7f7f;
   cursor: default;
+}
+
+@media (max-width: 400px) {
+  #outer {
+    margin-top: 80px;
+  }
 }

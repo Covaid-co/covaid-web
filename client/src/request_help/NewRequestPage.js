@@ -401,35 +401,40 @@ export default function NewRequestPage(props) {
         orgPortal={true}
         simplified={true}
       />
-      <Container style={{ maxWidth: 2500, marginBottom: 50 }} id="request-container">
-        <Row>
-          <Col lg={6} md={6} sm={12} id="left-container">
-            {associationExists() ? (
-              <Row
-                id="text-row"
-                style={step_num === 2 || step_num === 3 ? { marginTop: 0 } : {}}
-              >
-                <Col xl={1} lg={1} md={0} sm={0}></Col>
-                <Col xl={10} lg={10} md={12} sm={12}>
-                  {stepText()}
-                  {toastObj()}
-                </Col>
-              </Row>
-            ) : (
-              <Row id="text-row">
-                <Col sm={1} md={1} lg={2}></Col>
-                <Col xl={8} lg={8} md={10} sm={10}>
-                  {stepText()}
-                  {toastObj()}
-                </Col>
-              </Row>
-            )}
-          </Col>
-          <Col lg={6} md={6} sm={0} id="right-container">
-            {mapRequest()}
-          </Col>
-        </Row>
-      </Container>
+      <div style={{height: '100vh'}} id="outer">
+        {/* <div style={{backgroundColor: 'yellow'}}>
+          Hellow
+        </div> */}
+        <Container style={{ maxWidth: 2500 }} id="request-container">
+          <Row>
+            <Col lg={6} md={6} sm={12} id="left-container">
+              {associationExists() ? (
+                <Row
+                  id="text-row"
+                  style={step_num === 2 || step_num === 3 ? { marginTop: 0 } : {}}
+                >
+                  <Col xl={1} lg={1} md={0} sm={0}></Col>
+                  <Col xl={10} lg={10} md={12} sm={12}>
+                    {stepText()}
+                    {toastObj()}
+                  </Col>
+                </Row>
+              ) : (
+                <Row id="text-row">
+                  <Col sm={1} md={1} lg={2}></Col>
+                  <Col xl={8} lg={8} md={10} sm={10}>
+                    {stepText()}
+                    {toastObj()}
+                  </Col>
+                </Row>
+              )}
+            </Col>
+            <Col lg={6} md={6} sm={0} id="right-container">
+              {mapRequest()}
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </div>,
     // <Footer key="2" />,
   ];
