@@ -72,6 +72,20 @@ exports.update_association = function (req, res) {
   });
 };
 
+// Update association geofences
+exports.update_geofences = function (req, res) {
+  const id = req.body.associationID;
+  const geofences = req.body.geofences;
+  Association.findByIdAndUpdate(
+    id,
+    { $set: { geofences: geofences } },
+    function (err) {
+      if (err) return next(err);
+      res.send("Association geofences have been updated.");
+    }
+  );
+};
+
 // Update whether association is recruiting for volunteers on backend
 exports.update_recruiting = function (req, res) {
   const id = req.body.associationID;

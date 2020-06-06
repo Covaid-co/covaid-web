@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 
 var adminSchema = new Schema({ name: String, email: String }, { noId: true });
 
+
 let AssociationSchema = new Schema({
   name: { type: String, required: true },
   homepage: { type: String, required: false },
@@ -30,6 +31,17 @@ let AssociationSchema = new Schema({
   recruiting: { type: Boolean },
   usesSpreadsheet: { type: Boolean, required: true },
   spreadsheetID: { type: String, required: false },
+
+  //geofences: Schema.Types.Mixed,
+  geofences: {
+    type: {type: String}, //FeatureCollection
+    features: [{
+      type: {type: String},
+      properties: {type: Schema.Types.Mixed, default: {}},
+      geometry: {type: Schema.Types.Mixed},
+    }],
+  },
+
 });
 
 AssociationSchema.methods.setPassword = function (password) {
