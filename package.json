@@ -16,6 +16,7 @@
     "@sendgrid/mail": "^7.0.0",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
@@ -41,7 +42,8 @@
     "react-test-renderer": "^16.13.1",
     "sinon": "^9.0.2",
     "supertest": "^4.0.2",
-    "twilio": "^3.44.0"
+    "twilio": "^3.44.0",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "prettier": "^2.0.5"
