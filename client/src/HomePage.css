@@ -14,6 +14,10 @@
   padding-top: 0px;
 }
 
+#donate-footer {
+  margin-top: -100px;
+}
+
 #feedback {
   position: fixed;
   right: 0;
@@ -416,6 +420,10 @@
     padding-bottom: 50px;
   }
 
+  #donate-footer {
+    margin-top: 50px;
+  }
+
   #footer-content {
     padding-left: 0px !important;
     /* padding-right: 0px !important; */
@@ -634,7 +642,7 @@
 
 @media (max-width: 460px) {
   #blmbanner {
-    height: 60px;
+    height: 65px;
   }
 
   #location-container {
