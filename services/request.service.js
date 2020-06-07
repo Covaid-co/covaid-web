@@ -195,7 +195,7 @@ async function handleGeneral(request) {
     assoc: associationName,
     templateName: "org_notification",
   };
-  // emailer.sendNotificationEmail(data);
+  emailer.sendNotificationEmail(data);
   pusher.trigger(
     request.association,
     "general",
