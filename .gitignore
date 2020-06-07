@@ -18,6 +18,7 @@ config/client_secret.json
 
 # production
 /build
+client/build
 
 # misc
 .DS_Store
