@@ -13,10 +13,12 @@ import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { generateURL } from "../Helpers";
+import GeofenceMap from "./OrganizationGeofenceMap";
 
 /**
  * Manage Organization Modal
  */
+
 
 export default function AdminModal(props) {
   const [addAdmin, setAddAdmin] = useState(false);
@@ -24,6 +26,8 @@ export default function AdminModal(props) {
     name3: "",
     email3: "",
   });
+
+  const [geofences, handleGeofences] = useState([]);
 
   const newHandleSubmit = async (e) => {
     e.preventDefault();
@@ -225,11 +229,16 @@ export default function AdminModal(props) {
                         </Col> */}
           </Row>
         </Modal.Body>
+          
+        <GeofenceMap {...props}/>
+        
         <Modal.Header>
           <Modal.Title style={{ marginLeft: 5 }}>
             Recruiting for admins
           </Modal.Title>
         </Modal.Header>
+
+        
         <Modal.Body>
           <Form>
             <Form.Group
@@ -254,6 +263,8 @@ export default function AdminModal(props) {
             </Form.Group>
           </Form>
         </Modal.Body>
+
+
         <Modal.Header>
           <Modal.Title style={{ marginLeft: 5 }}>Export to file</Modal.Title>
         </Modal.Header>
