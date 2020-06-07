@@ -4,7 +4,7 @@
   "alias": "covaid-web.now.sh",
   "builds": [
     {
-      "src": "index.js",
+      "src": "api/src/index.js",
       "use": "@now/node"
     },
     {
@@ -24,18 +24,11 @@
       "dest": "client/static/$1"
     },
     {
-      "src": "client/(.*)",
+      "src": "/(.*)",
       "headers": {
         "cache-control": "s-maxage=31536000,immutable"
       },
       "dest": "client/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=0"
-      },
-      "dest": "index.js"
     }
   ]
 }
