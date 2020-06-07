@@ -21,7 +21,7 @@
       "headers": {
         "cache-control": "s-maxage=0"
       },
-      "dest": "index.js"
+      "dest": "client/index.js"
     },
     {
       "src": "/static/(.*)",
