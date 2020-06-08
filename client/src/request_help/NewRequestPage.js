@@ -401,7 +401,10 @@ export default function NewRequestPage(props) {
         orgPortal={true}
         simplified={true}
       />
-      <Container style={{ maxWidth: 2500, marginBottom: 50 }} id="request-container">
+      <Container
+        style={{ maxWidth: 2500, marginBottom: 50 }}
+        id="request-container"
+      >
         <Row>
           <Col lg={6} md={6} sm={12} id="left-container">
             {associationExists() ? (

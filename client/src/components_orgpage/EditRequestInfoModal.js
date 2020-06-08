@@ -28,7 +28,9 @@ export default function EditRequestInfoModal(props) {
     details: props.currRequest.request_info.details,
   });
 
-  const [formattedPhone, setFormattedPhone] = useState(props.currRequest.personal_info.requester_phone);
+  const [formattedPhone, setFormattedPhone] = useState(
+    props.currRequest.personal_info.requester_phone
+  );
 
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -185,16 +187,12 @@ export default function EditRequestInfoModal(props) {
       valid = false;
     }
 
-    if (
-      strippedPhone.length !== 10 &&
-      fields.phone.length !== 0
-    ) {
+    if (strippedPhone.length !== 10 && fields.phone.length !== 0) {
       setToastMessage("Enter a valid phone number");
       valid = false;
     }
-    
-    if (validateEmail(fields.email) === false &&
-        fields.email.length !== 0) {
+
+    if (validateEmail(fields.email) === false && fields.email.length !== 0) {
       setToastMessage("Enter a valid email");
       valid = false;
     }
@@ -202,7 +200,7 @@ export default function EditRequestInfoModal(props) {
     if (fields.name.length === 0) {
       setToastMessage("Enter a name");
       valid = false;
-    } 
+    }
 
     if (valid === false) {
       setShowToast(true);
@@ -212,18 +210,24 @@ export default function EditRequestInfoModal(props) {
 
   const stripPhone = (phone) => {
     var strippedNumber = phone.replace(/[^0-9 ]/g, "");
-    return strippedNumber
+    return strippedNumber;
   };
 
   const formatPhone = (phone) => {
-    if (phone !== undefined && phone.length !== 0){
-      var stripped = stripPhone(phone)
-      var formattedPhone = ( "(" + stripped.slice(0,3) + ")" +
-                             "-" + stripped.slice(3,6) + "-" + stripped.slice(6,10));
+    if (phone !== undefined && phone.length !== 0) {
+      var stripped = stripPhone(phone);
+      var formattedPhone =
+        "(" +
+        stripped.slice(0, 3) +
+        ")" +
+        "-" +
+        stripped.slice(3, 6) +
+        "-" +
+        stripped.slice(6, 10);
       return formattedPhone;
     }
     return phone;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

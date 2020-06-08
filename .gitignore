@@ -18,6 +18,7 @@ config/client_secret.json
 
 # production
 /build
+client/build
 
 # misc
 .DS_Store
@@ -34,3 +35,5 @@ yarn-debug.log*
 yarn-error.log*
 sendgrid.env
 google.env
+
+.vercel
