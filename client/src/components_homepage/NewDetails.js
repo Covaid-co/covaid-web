@@ -7,10 +7,10 @@ import Col from "react-bootstrap/Col";
 export default function NewDetails(props) {
   return (
     <>
-      <h5 id="regular-text-bold" style={{ marginTop: "24px", marginBottom: 0 }}>
+      <h5 id="regular-text-bold" style={{ marginTop: "24px", marginBottom: 5 }}>
         {props.translations[props.language].DetailsAboutRequest}
       </h5>
-      <p style={{ fontSize: 14, marginBottom: 0 }} id="regular-text">
+      <p style={{ fontSize: 14, marginBottom: 5 }} id="regular-text">
         {props.translations[props.language].ComfortableSharingDetails}
       </p>
       <Row>

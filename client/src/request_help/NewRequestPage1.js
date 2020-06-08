@@ -144,7 +144,7 @@ export default function NewRequestPage1(props) {
 
   return (
     <>
-      <h5 id="title-light">
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
         {props.translations[props.language].RequestDetails}
       </h5>
       {props.currentAssoc === null ? (
@@ -177,11 +177,6 @@ export default function NewRequestPage1(props) {
           }}
         />
         <p
-          style={{
-            display: "table-cell",
-            verticalAlign: "middle",
-            fontSize: 14,
-          }}
           id="behalf-text"
           onClick={() => {
             setPriority(!high_priority);

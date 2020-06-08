@@ -26,10 +26,10 @@ export default function OrgHeader(props) {
         </a>
         .
       </p>
-      <p id="regular-text" style={{ fontSize: 15 }}>
+      {/* <p id="regular-text" style={{ fontSize: 15 }}>
         {props.translations[props.language].prioritizing} {props.assoc.city}{" "}
         {props.translations[props.language].areas}.
-      </p>
+      </p> */}
       <p id="regular-text" style={{ fontSize: 15 }}>
         {props.translations[props.language].formManage} {props.assoc.city}{" "}
         {props.translations[props.language].managedBy}.
@@ -45,7 +45,7 @@ export default function OrgHeader(props) {
         </span>
       </p>
       <p id="regular-text" style={{ fontSize: 15 }}>
-        {props.translations[props.language].questions}:<br />
+        {props.translations[props.language].questions}:{" "}
         <strong>{props.assoc.email}</strong>.
       </p>
       <p id="regular-text" style={{ fontSize: 15 }}>

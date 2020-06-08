@@ -184,9 +184,7 @@ export default function RequestPage1(props) {
         />
         <p
           style={{
-            display: "table-cell",
-            verticalAlign: "middle",
-            fontSize: 14,
+            paddingTop: 0,
           }}
           id="behalf-text"
           onClick={() => {
@@ -210,7 +208,7 @@ export default function RequestPage1(props) {
         Best way to reach you
       </h5>
       <Form.Group as={Row} controlId="contact">
-        <Col xs={12} style={{ marginTop: 5 }}>
+        <Col xs={12} style={{ marginTop: 3 }}>
           {contact_option.map((val, i) => {
             return (
               <div style={{ display: "table", marginBottom: 2 }} key={i}>
@@ -224,9 +222,6 @@ export default function RequestPage1(props) {
                 />
                 <p
                   style={{
-                    display: "table-cell",
-                    verticalAlign: "middle",
-                    fontSize: 14,
                     paddingTop: 2,
                   }}
                   id="behalf-text"
