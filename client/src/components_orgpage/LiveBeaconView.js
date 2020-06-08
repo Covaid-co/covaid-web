@@ -79,114 +79,105 @@ export default function LiveBeaconView(props) {
 
   return (
     <>
-      <div className="App">
-        <NavBar
-          isLoggedIn={true}
-          totalVolunteers={props.volunteers.length}
-          orgPortal={true}
-          first_name={props.association.name}
-          handleShowModal={() => {}}
-        />
-        <Jumbotron
-          fluid
-          id="jumbo-volunteer"
-          style={{ paddingBottom: 50, paddingTop: 60 }}
-        >
-          <Container style={{ maxWidth: 1500 }}>
-            <Row>
-              <Col style={{ marginTop: 165 }}>
-                <h1 id="home-heading" style={{ marginTop: 0 }}>
-                  Your Live Beacons
-                </h1>
-                <p id="regular-text" style={{ fontSize: 20, marginBottom: 40 }}>
-                  Beacons are your organization's way of sending mass
-                  notifications to your volunteers
-                </p>
+      <Jumbotron
+        fluid
+        id="jumbo-volunteer"
+        style={{ paddingBottom: 50, paddingTop: 60 }}
+      >
+        <Container style={{ maxWidth: 1500 }}>
+          <Row>
+            <Col style={{ marginTop: 165 }}>
+              <h1 id="home-heading" style={{ marginTop: 0 }}>
+                Your Live Beacons
+              </h1>
+              <p id="regular-text" style={{ fontSize: 20, marginBottom: 40 }}>
+                Beacons are your organization's way of sending mass
+                notifications to your volunteers
+              </p>
+              <Button
+                id="medium-button-solid"
+                onClick={() => {
+                  setBeaconModal(true);
+                }}
+              >
+                Create Beacon
+              </Button>
+              <br />
+              <Button
+                variant="link"
+                id="resources-link"
+                style={{ paddingLeft: 0 }}
+                onClick={() => {
+                  window.location.reload(false);
+                }}
+              >
+                Return to dashboard
+              </Button>
+            </Col>
+            <Col lg={1}></Col>
+            <Col lg={6} md={12} sm={12} style={{ marginTop: 30 }}>
+              <Container style={{ padding: 0, marginLeft: 0 }}>
                 <Button
-                  id="medium-button-solid"
+                  id={tabID(1)}
                   onClick={() => {
-                    setBeaconModal(true);
+                    setCurrTab(1);
                   }}
                 >
-                  Create Beacon
+                  Active
                 </Button>
-                <br />
                 <Button
-                  variant="link"
-                  id="resources-link"
-                  style={{ paddingLeft: 0 }}
+                  id={tabID(2)}
                   onClick={() => {
-                    window.location.reload(false);
+                    setCurrTab(2);
                   }}
                 >
-                  Return to dashboard
+                  Drafts
                 </Button>
-              </Col>
-              <Col lg={1}></Col>
-              <Col lg={6} md={12} sm={12} style={{ marginTop: 30 }}>
-                <Container style={{ padding: 0, marginLeft: 0 }}>
-                  <Button
-                    id={tabID(1)}
-                    onClick={() => {
-                      setCurrTab(1);
-                    }}
-                  >
-                    Active
-                  </Button>
-                  <Button
-                    id={tabID(2)}
-                    onClick={() => {
-                      setCurrTab(2);
-                    }}
-                  >
-                    Drafts
-                  </Button>
-                  <Button
-                    id={tabID(3)}
-                    onClick={() => {
-                      setCurrTab(3);
-                    }}
-                  >
-                    Complete
-                  </Button>
-                </Container>
-                <Container id="newOfferContainer" style={displayTab(1)}>
-                  <OrganizationBeacons
-                    beacons={activeBeacons}
-                    association={props.association}
-                    type={BeaconStatusEnum.active}
-                    move={move}
-                  />
-                </Container>
-                <Container id="newOfferContainer" style={displayTab(2)}>
-                  <OrganizationBeacons
-                    beacons={inactiveBeacons}
-                    association={props.association}
-                    type={BeaconStatusEnum.inactive}
-                    move={move}
-                  />
-                </Container>
-                <Container id="newOfferContainer" style={displayTab(3)}>
-                  <OrganizationBeacons
-                    beacons={completedBeacons}
-                    association={props.association}
-                    type={BeaconStatusEnum.complete}
-                    move={move}
-                  />
-                </Container>
-              </Col>
-            </Row>
-          </Container>
-        </Jumbotron>
+                <Button
+                  id={tabID(3)}
+                  onClick={() => {
+                    setCurrTab(3);
+                  }}
+                >
+                  Complete
+                </Button>
+              </Container>
+              <Container id="newOfferContainer" style={displayTab(1)}>
+                <OrganizationBeacons
+                  beacons={activeBeacons}
+                  association={props.association}
+                  type={BeaconStatusEnum.active}
+                  move={move}
+                />
+              </Container>
+              <Container id="newOfferContainer" style={displayTab(2)}>
+                <OrganizationBeacons
+                  beacons={inactiveBeacons}
+                  association={props.association}
+                  type={BeaconStatusEnum.inactive}
+                  move={move}
+                />
+              </Container>
+              <Container id="newOfferContainer" style={displayTab(3)}>
+                <OrganizationBeacons
+                  beacons={completedBeacons}
+                  association={props.association}
+                  type={BeaconStatusEnum.complete}
+                  move={move}
+                />
+              </Container>
+            </Col>
+          </Row>
+        </Container>
+      </Jumbotron>
 
-        <BeaconCreation
-          beaconModal={beaconModal}
-          setBeaconModal={setBeaconModal}
-          association={props.association}
-          volunteers={props.volunteers}
-          pushBeacon={createBeacon}
-        />
-      </div>
+      <BeaconCreation
+        beaconModal={beaconModal}
+        setBeaconModal={setBeaconModal}
+        association={props.association}
+        volunteers={props.volunteers}
+        pushBeacon={createBeacon}
+      />
     </>
   );
 }

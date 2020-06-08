@@ -5,8 +5,9 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
+import Toast from "react-bootstrap/Toast";
 import { validateEmail } from "../Helpers";
+import { toastTime } from "../constants";
 
 /**
  * Reset Password modal
@@ -43,13 +44,23 @@ export default function ResetPassword(props) {
             disabled={!validateEmail(props.fields.email)}
             type="submit"
           >
-            Send me a password reset link
+            Send reset link
           </Button>
           <Button id="large-button-empty" onClick={props.hideModal}>
             Back to login
           </Button>
         </Form>
       </Modal.Body>
+      <Toast
+        show={props.show_toast}
+        style={{ marginBottom: -50 }}
+        delay={toastTime}
+        onClose={() => props.setShowToast(false)}
+        autohide
+        id="toastError"
+      >
+        <Toast.Body>No account found with that email</Toast.Body>
+      </Toast>
     </Modal>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import LocalizedStrings from "react-localization";
 import PropTypes from "prop-types";
 import Container from "react-bootstrap/Container";
@@ -11,7 +12,6 @@ import Feedback from "./components_modals/Feedback";
 import NewLogin from "./components_modals/NewLogin";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import { currURL } from "./constants";
 import home from "./assets/home.png";
 import "./HomePage.css";
 import { translations } from "./translations/translations";
@@ -27,6 +27,7 @@ export default function HomePage(props) {
   const [toggle, setToggle] = useState(false);
   const [modalType, setModalType] = useState("");
   const [pageLoaded, setPageLoaded] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if (props.login === true) {
@@ -34,6 +35,7 @@ export default function HomePage(props) {
     }
 
     setPageLoaded(true);
+    document.title = "Covaid";
   }, [props.login]);
 
   const showModalType = (type) => {
@@ -60,12 +62,13 @@ export default function HomePage(props) {
 
   return (
     <div style={{ overflowX: "hidden", height: "100%" }}>
-      <div key="1" className="App" style={{ height: "100%" }}>
+      <div className="App" style={{ height: "100%" }}>
         <NavBar
           setLanguage={props.setLanguage}
           language={props.language}
           pageLoaded={pageLoaded}
           isLoggedIn={props.isLoggedIn}
+          {...props}
           first_name={
             Object.keys(props.currentUser).length !== 0
               ? props.currentUser.first_name
@@ -94,10 +97,9 @@ export default function HomePage(props) {
                   {translatedStrings[props.language].HomePage_Subtitle}
                 </p>
                 <Button
-                  onClick={() => window.open(currURL + "/request", "_self")}
+                  onClick={() => history.push("/request")}
                   id="request-button"
                 >
-                  {/* {translatedStrings[props.language].INeedHelp} → */}
                   <font style={{ float: "left" }}>
                     {translatedStrings[props.language].INeedHelp}
                   </font>
@@ -106,9 +108,7 @@ export default function HomePage(props) {
                 <br />
                 <Button
                   id="resources-button"
-                  onClick={() =>
-                    window.open(currURL + "/information-hub", "_self")
-                  }
+                  onClick={() => history.push("/information-hub")}
                 >
                   COVID-19 Information Hub
                 </Button>
@@ -121,12 +121,7 @@ export default function HomePage(props) {
         </Jumbotron>
         {getCurrentModal()}
       </div>
-      <Footer
-        key="2"
-        home={true}
-        id="desktop-footer"
-        style={toggle ? { marginTop: 500 } : {}}
-      />
+      <Footer id="desktop-footer" style={toggle ? { marginTop: 500 } : {}} />
     </div>
   );
 }

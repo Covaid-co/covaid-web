@@ -57,9 +57,9 @@ export default function VolunteerDetails(props) {
   }, [props.currVolunteer, props.volunteerDetailModal]);
 
   const fetchProfilePic = (id) => {
-    fetch("api/image/" + id).then((response) => {
+    fetch("/api/image/" + id).then((response) => {
       if (response.ok) {
-        setImageUrl("http://localhost:5000/api/image/" + id);
+        setImageUrl("/api/image/" + id);
       } else {
         setImageUrl(
           "https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg"
