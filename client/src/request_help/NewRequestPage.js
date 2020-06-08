@@ -14,6 +14,8 @@ import Button from "react-bootstrap/Button";
 import { toastTime, currURL } from "../constants";
 import RequestPage1 from "./RequestPage1";
 import RequestPage2 from "./RequestPage2";
+import NewRequestPage1 from "./NewRequestPage1";
+import NewRequestPage2 from "./NewRequestPage2";
 import RequestConfirmation from "./RequestConfirmation";
 import OrgHeader from "../association_request_headers/OrgHeader";
 import DefaultHeader from "../association_request_headers/DefaultHeader";
@@ -114,18 +116,20 @@ export default function NewRequestPage(props) {
     let form = {
       request: {
         personal_info: {
-          requester_name: first_page.name,
-          requester_phone: first_page.phone,
-          requester_email: first_page.email,
-          languages: first_page.languages,
+          requester_name: second_page.name,
+          requester_phone: second_page.phone,
+          requester_email: second_page.email,
+          languages: second_page.languages,
+          contact_option: second_page.contact_option
         },
         request_info: {
-          behalf: first_page.behalf,
-          resource_request: second_page.resources,
-          details: second_page.details,
-          payment: second_page.payment,
-          time: second_page.time,
-          date: second_page.date,
+          behalf: second_page.behalf,
+          resource_request: first_page.resources,
+          details: first_page.details,
+          payment: first_page.payment,
+          time: first_page.time,
+          date: first_page.date,
+          high_priority: first_page.high_priority
         },
         location_info: {
           type: "Point",
@@ -320,11 +324,11 @@ export default function NewRequestPage(props) {
       );
     } else if (step_num === 2) {
       return (
-        <Row id={associationExists() ? "text-row" : ""}>
+        <Row>
           <Col sm={1} md={0} lg={2}></Col>
           <Col sm={10} md={12} lg={8}>
             <p id="border-top">&nbsp;</p>
-            <RequestPage1
+            <NewRequestPage1
               setFirstPage={setFirstPage}
               first_page={first_page}
               setStepNum={setStepNum}
@@ -341,7 +345,7 @@ export default function NewRequestPage(props) {
           <Col sm={0} md={0} lg={2}></Col>
           <Col sm={12} md={12} lg={8}>
             <p id="border-top">&nbsp;</p>
-            <RequestPage2
+            <NewRequestPage2
               currentAssoc={props.association}
               second_page={second_page}
               setStepNum={setStepNum}

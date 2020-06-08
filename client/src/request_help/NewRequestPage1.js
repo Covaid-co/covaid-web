@@ -13,17 +13,17 @@ import { defaultResources, toastTime } from "../constants";
 import { setFalseObj, extractTrueObj } from "../Helpers";
 
 /**
- * Request support (Page 2)
+ * Request support (Page 1)
  */
 
-export default function RequestPage2(props) {
-  const [pendingSubmit, setPendingSubmit] = useState(false);
+export default function NewRequestPage1(props) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [selectedPayment, setSelectedIndex] = useState(0);
   const [resources, setResources] = useState({});
   const [resource_popup, setPopup] = useState({});
   const [time, setTime] = useState("Morning");
+  const [high_priority, setPriority] = useState(false);
   const [date, setDate] = useState(
     new Date(Date.now()).toLocaleString().split(",")[0]
   );
@@ -46,25 +46,23 @@ export default function RequestPage2(props) {
       setPopup(temp);
     }
 
-    if (Object.keys(props.second_page).length !== 0) {
-      fields.details = props.second_page.details;
-      setSelectedIndex(props.second_page.payment);
-      setTime(props.second_page.time);
-      setDate(props.second_page.date);
-      for (var i = 0; i < props.second_page.resources.length; i++) {
-        temp_resources[props.second_page.resources[i]] = true;
+    if (Object.keys(props.first_page).length !== 0) {
+      fields.details = props.first_page.details;
+      setSelectedIndex(props.first_page.payment);
+      setPriority(props.first_page.high_priority);
+      setTime(props.first_page.time);
+      setDate(props.first_page.date);
+      for (var i = 0; i < props.first_page.resources.length; i++) {
+        temp_resources[props.first_page.resources[i]] = true;
       }
     }
     setResources(temp_resources);
-    setTime("Morning");
-    setDate(new Date(Date.now()).toLocaleString().split(",")[0]);
-  }, [props.second_page]);
+  }, [props.first_page, props.currentAssoc]);
   
-  const goToSubmit = () => {
+  const goToSecondPage = () => {
     const valid = checkPage();
     if (valid) {
       setShowToast(false);
-      setPendingSubmit(true);
       const resource_request = extractTrueObj(resources);
       const result = {
         details: fields.details,
@@ -72,9 +70,10 @@ export default function RequestPage2(props) {
         resources: resource_request,
         time: time,
         date: date,
+        high_priority: high_priority
       };
-      props.setStepNum(4);
-      props.setSecondPage(result);
+      props.setStepNum(3);
+      props.setFirstPage(result);
     } else {
       setShowToast(true);
     }
@@ -111,34 +110,18 @@ export default function RequestPage2(props) {
     var payment = <NewPaymentMethod setSelectedIndex={setSelectedIndex} />;
     if (
       props.currentAssoc &&
-      props.currentAssoc._id === "5e843ab29ad8d24834c8edbf"
+      (props.currentAssoc._id === "5e843ab29ad8d24834c8edbf" ||  props.currentAssoc._id === "5ec59c04bcb4d4389861d588")
     ) {
       payment = <></>;
     }
-    payment = <></>;
     return payment;
   };
 
-  var agreement = <></>;
   var paymentAgreement = <></>;
   if (
     props.currentAssoc &&
     props.currentAssoc.name === "Baltimore Mutual Aid"
   ) {
-    agreement = (
-      <>
-        <Form.Check
-          type="checkbox"
-          id="regular-text"
-          label="This match program is being organized by private citizens for the 
-                                benefit of those in our community. By completing the sign up form to be 
-                                matched, you agree to accept all risk and responsibility and further 
-                                hold any facilitator associated with Baltimore Mutual Aid Network and/or 
-                                Covaid.co harmless. For any additional questions, please contact bmoremutualaid@gmail.com."
-          style={{ fontSize: 12, marginTop: 2 }}
-        />
-      </>
-    );
     paymentAgreement = (
       <p id="regular-text" style={{ fontSize: 14 }}>
         Baltimore Mutual Aid is not able to provide financial assistance at this
@@ -163,22 +146,42 @@ export default function RequestPage2(props) {
         />
       )}
       {displayResourcePopup()}
-      {paymentMethod()}
-      {paymentAgreement}
       <NewDetails
         fields={fields}
         handleFieldChange={handleFieldChange}
         translations={props.translations}
         language={props.language}
       />
-      {agreement}
+      {paymentMethod()}
+      {paymentAgreement}
+      <div style={{ display: "table", marginBottom: 0, marginTop: 10 }}>
+        <Form.Check
+          type="checkbox"
+          style={{ marginTop: 0, marginRight: 5, display: "inline" }}
+          id="default-checkbox"
+          checked={high_priority}
+          onChange={() => {
+            setPriority(!high_priority);
+          }}
+        />
+        <p
+          style={{ display: "table-cell", verticalAlign: "middle", fontSize: 14 }}
+          id="behalf-text"
+          onClick={() => {
+            setPriority(!high_priority);
+          }}
+        >
+          We aim to prioritize requests from individuals and families that identify as <font style={{fontWeight: 'bold'}}>POC, 
+          elderly, immunocompromised, or of veteran status</font>. Please check here if you identify with  
+          any of these so we can prioritize your request.
+        </p>
+      </div>
       <Button
         id="large-button"
-        disabled={pendingSubmit}
-        style={{ marginTop: 15 }}
-        onClick={goToSubmit}
+        style={{ marginTop: 20 }}
+        onClick={goToSecondPage}
       >
-        {props.translations[props.language].SubmitRequest}
+        {props.translations[props.language].Next}
       </Button>
       <Toast
         show={showToast}
@@ -194,9 +197,9 @@ export default function RequestPage2(props) {
   );
 }
 
-RequestPage2.propTypes = {
-  setSecondPage: PropTypes.func,
+NewRequestPage1.propTypes = {
+  setFirstPage: PropTypes.func,
   setStepNum: PropTypes.func,
-  second_page: PropTypes.object,
+  first_page: PropTypes.object,
   currentAssoc: PropTypes.object,
 };

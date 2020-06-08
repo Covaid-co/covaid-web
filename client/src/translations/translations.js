@@ -37,7 +37,7 @@ const translations = {
     Next: "Next",
     WhatLanguageDoYouSpeak: "Languages",
     LanguageNotListed:
-      "If language not listed, please mention in details section below",
+      "If language not listed, please mention in details section",
     English: "English",
     Spanish: "Spanish",
     French: "French",
@@ -48,11 +48,11 @@ const translations = {
     Afternoon: "Afternoon",
     Evening: "Evening",
     Night: "Night",
-    DetailsAboutRequest: "Details about request",
+    DetailsAboutRequest: "Request Details",
     ComfortableSharingDetails:
       "Use as much detail as you feel comfortable sharing, no judgements here",
     DetailExample:
-      'Example: "I\'m quarantined and need groceries for the week. Can they can be dropped off at 123 Main street?"',
+      'Ex: "I\'m quarantined with my family of 5 and need groceries for the week. Can they can be dropped off at my front door?"',
     ReceivedYourRequest: "We've received your request!",
     VolunteerReachOutSoon:
       "Your request has been saved and you should be contacted soon from a matched volunteer who can support you!",
@@ -219,7 +219,7 @@ const translations = {
     BehalfWarning:
       "Please fill in the fields above with information pertaining to the person in need of support. If you’d like us to contact you, please leave your contact in the details on the next page",
     ConfirmRequest: "Confirm request information",
-    RequestDetails: "Request Details",
+    RequestDetails: "Select Tasks for Support",
     ChangeLocation: "Change Location",
     LastStep:
       "This is your last step! Please make sure your request information is accurate.",

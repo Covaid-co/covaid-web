@@ -18,10 +18,11 @@ export default function NewDetails(props) {
           <Form.Group controlId="details">
             <Form.Control
               as="textarea"
-              rows="3"
+              rows="4"
               placeholder={props.translations[props.language].DetailExample}
               value={props.fields.details}
               onChange={props.handleFieldChange}
+              style={{fontSize: 14}}
             />
           </Form.Group>
         </Col>

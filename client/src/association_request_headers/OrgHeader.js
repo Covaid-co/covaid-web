@@ -14,7 +14,7 @@ export default function OrgHeader(props) {
 
   return (
     <>
-      <p id="regular-text">
+      <p id="regular-text" style={{fontSize: 15}}>
         {props.translations[props.language].intro}
         <a
           href={props.assoc.homepage}
@@ -26,22 +26,17 @@ export default function OrgHeader(props) {
         </a>
         .
       </p>
-      <p id="regular-text">
+      <p id="regular-text" style={{fontSize: 15}}>
         {props.translations[props.language].prioritizing} {props.assoc.city}{" "}
         {props.translations[props.language].areas}.
       </p>
-      <p id="regular-text">
+      <p id="regular-text" style={{fontSize: 15}}>
         {props.translations[props.language].formManage} {props.assoc.city}{" "}
         {props.translations[props.language].managedBy}.
       </p>
-      <p id="regular-text">
-        {props.translations[props.language].questions}:<br />
-        <strong>{props.assoc.email}</strong>.
-      </p>
-      <p id="regular-text">{props.translations[props.language].motto}</p>
       <p
         id="request-calling"
-        style={{ borderBottom: "0px solid", marginBottom: 0 }}
+        style={{ borderBottom: "0px solid", marginBottom: 0, fontSize: 15 }}
       >
         {props.translations[props.language].call}:
         <br />
@@ -49,6 +44,11 @@ export default function OrgHeader(props) {
           {props.assoc.phone ? props.assoc.phone : "(401) 526-8243"}
         </span>
       </p>
+      <p id="regular-text" style={{fontSize: 15}}>
+        {props.translations[props.language].questions}:<br />
+        <strong>{props.assoc.email}</strong>.
+      </p>
+      <p id="regular-text" style={{fontSize: 15}}>{props.translations[props.language].motto}</p>
     </>
   );
 }
