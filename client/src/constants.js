@@ -6,7 +6,7 @@ export const defaultResources = [
   "Academic/Professional",
   "Misc.",
 ];
-export const contact_option = ['Text', 'Phone Call', 'Email'];
+export const contact_option = ["Text", "Phone Call", "Email"];
 export const languages = ["English", "Spanish", "Chinese", "French", "Other"];
 export const cookieNames = [
   "latitude",

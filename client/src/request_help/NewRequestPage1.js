@@ -33,15 +33,24 @@ export default function NewRequestPage1(props) {
 
   useEffect(() => {
     var resourcesFromAssoc = defaultResources;
-    if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0 && props.currentAssoc.resources) {
+    if (
+      props.currentAssoc &&
+      Object.keys(props.currentAssoc).length > 0 &&
+      props.currentAssoc.resources
+    ) {
       resourcesFromAssoc = props.currentAssoc.resources;
     }
     var temp_resources = setFalseObj(resourcesFromAssoc);
 
-    if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0 && props.currentAssoc.resource_popup) {
+    if (
+      props.currentAssoc &&
+      Object.keys(props.currentAssoc).length > 0 &&
+      props.currentAssoc.resource_popup
+    ) {
       var temp = {};
       for (var i = 0; i < props.currentAssoc.resource_popup.length; i++) {
-        temp[props.currentAssoc.resource_popup[i][0]] = props.currentAssoc.resource_popup[i][1];
+        temp[props.currentAssoc.resource_popup[i][0]] =
+          props.currentAssoc.resource_popup[i][1];
       }
       setPopup(temp);
     }
@@ -58,7 +67,7 @@ export default function NewRequestPage1(props) {
     }
     setResources(temp_resources);
   }, [props.first_page, props.currentAssoc]);
-  
+
   const goToSecondPage = () => {
     const valid = checkPage();
     if (valid) {
@@ -70,7 +79,7 @@ export default function NewRequestPage1(props) {
         resources: resource_request,
         time: time,
         date: date,
-        high_priority: high_priority
+        high_priority: high_priority,
       };
       props.setStepNum(3);
       props.setFirstPage(result);
@@ -93,24 +102,27 @@ export default function NewRequestPage1(props) {
   };
 
   const displayResourcePopup = () => {
-    return Object.keys(resources).map(key => {
+    return Object.keys(resources).map((key) => {
       if (resources[key] && resource_popup[key]) {
-        return <Alert 
-          style={{ marginTop: 10, marginBottom: 0, fontSize: 14 }}
-          key={key}
-          variant={"warning"}
-        >
-          {resource_popup[key]}
-        </Alert>
+        return (
+          <Alert
+            style={{ marginTop: 10, marginBottom: 0, fontSize: 14 }}
+            key={key}
+            variant={"warning"}
+          >
+            {resource_popup[key]}
+          </Alert>
+        );
       }
     });
-  }
+  };
 
   const paymentMethod = () => {
     var payment = <NewPaymentMethod setSelectedIndex={setSelectedIndex} />;
     if (
       props.currentAssoc &&
-      (props.currentAssoc._id === "5e843ab29ad8d24834c8edbf" ||  props.currentAssoc._id === "5ec59c04bcb4d4389861d588")
+      (props.currentAssoc._id === "5e843ab29ad8d24834c8edbf" ||
+        props.currentAssoc._id === "5ec59c04bcb4d4389861d588")
     ) {
       payment = <></>;
     }
@@ -165,15 +177,23 @@ export default function NewRequestPage1(props) {
           }}
         />
         <p
-          style={{ display: "table-cell", verticalAlign: "middle", fontSize: 14 }}
+          style={{
+            display: "table-cell",
+            verticalAlign: "middle",
+            fontSize: 14,
+          }}
           id="behalf-text"
           onClick={() => {
             setPriority(!high_priority);
           }}
         >
-          We aim to prioritize requests from individuals and families that identify as <font style={{fontWeight: 'bold'}}>POC, 
-          elderly, immunocompromised, or of veteran status</font>. Please check here if you identify with  
-          any of these so we can prioritize your request.
+          We aim to prioritize requests from individuals and families that
+          identify as{" "}
+          <font style={{ fontWeight: "bold" }}>
+            POC, elderly, immunocompromised, or of veteran status
+          </font>
+          . Please check here if you identify with any of these so we can
+          prioritize your request.
         </p>
       </div>
       <Button

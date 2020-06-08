@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import Alert from "react-bootstrap/Alert";
-import Select from 'react-select';
+import Select from "react-select";
 
 import PhoneNumber from "../components/PhoneNumber";
 import CheckForm from "../components/CheckForm";
@@ -28,10 +28,12 @@ export default function RequestPage1(props) {
     email: "",
   });
   const [contact, setContact] = useState(0);
-  const language_options = languages.map(lang => {
-    return {value: lang, label: lang}
-  })
-  const [selectedLanguages, setLanguages] = useState({'selectedOptions': [{value: 'English', label: 'English'}]});
+  const language_options = languages.map((lang) => {
+    return { value: lang, label: lang };
+  });
+  const [selectedLanguages, setLanguages] = useState({
+    selectedOptions: [{ value: "English", label: "English" }],
+  });
 
   useEffect(() => {
     var lang_temp = [];
@@ -44,10 +46,10 @@ export default function RequestPage1(props) {
       setContact(props.second_page.contact_option);
       for (var i = 0; i < props.second_page.languages.length; i++) {
         const lang = props.second_page.languages[i];
-        lang_temp.push({value: lang, label: lang});
+        lang_temp.push({ value: lang, label: lang });
       }
     }
-    setLanguages({'selectedOptions': lang_temp});
+    setLanguages({ selectedOptions: lang_temp });
   }, [props.currentAssoc, props.second_page]);
 
   const goToSubmit = () => {
@@ -64,7 +66,7 @@ export default function RequestPage1(props) {
         email: fields.email,
         languages: languages,
         behalf: on_behalf,
-        contact_option: contact
+        contact_option: contact,
       };
       props.setStepNum(4);
       props.setSecondPage(result);
@@ -122,10 +124,10 @@ export default function RequestPage1(props) {
     var result = event.target.value;
     setContact(result);
   };
-  
+
   const handleChangeLanguage = (selectedOptions) => {
     setLanguages({ selectedOptions });
-  }
+  };
 
   return (
     <>
@@ -159,7 +161,12 @@ export default function RequestPage1(props) {
           </Form.Group>
           <p
             id="regular-text"
-            style={{ fontStyle: "italic", marginTop: 0, marginBottom: 10, fontSize: 14 }}
+            style={{
+              fontStyle: "italic",
+              marginTop: 0,
+              marginBottom: 10,
+              fontSize: 14,
+            }}
           >
             {props.translations[props.language].emailOrPhone}.
           </p>
@@ -176,7 +183,11 @@ export default function RequestPage1(props) {
           }}
         />
         <p
-          style={{ display: "table-cell", verticalAlign: "middle", fontSize: 14 }}
+          style={{
+            display: "table-cell",
+            verticalAlign: "middle",
+            fontSize: 14,
+          }}
           id="behalf-text"
           onClick={() => {
             setOnBehalf(!on_behalf);
@@ -186,7 +197,11 @@ export default function RequestPage1(props) {
         </p>
       </div>
       <Alert
-        style={{ marginBottom: 20, display: on_behalf ? "block" : "none", fontSize: 14 }}
+        style={{
+          marginBottom: 20,
+          display: on_behalf ? "block" : "none",
+          fontSize: 14,
+        }}
         variant={"warning"}
       >
         {props.translations[props.language].BehalfWarning}
@@ -197,25 +212,32 @@ export default function RequestPage1(props) {
       <Form.Group as={Row} controlId="contact">
         <Col xs={12} style={{ marginTop: 5 }}>
           {contact_option.map((val, i) => {
-            return <div style={{ display: "table", marginBottom: 2 }} key={i}>
-              <Form.Check
-                checked={contact == i}
-                type="radio"
-                value={i}
-                onChange={handleChangeContact}
-                name="formHorizontalRadios"
-                id={i}
-              />
-              <p
-                style={{ display: "table-cell", verticalAlign: "middle", fontSize: 14, paddingTop: 2 }}
-                id="behalf-text"
-                onClick={() => {
-                  setContact(i);
-                }}
-              >
-                {contact_option[i]}
-              </p>
-            </div>
+            return (
+              <div style={{ display: "table", marginBottom: 2 }} key={i}>
+                <Form.Check
+                  checked={contact == i}
+                  type="radio"
+                  value={i}
+                  onChange={handleChangeContact}
+                  name="formHorizontalRadios"
+                  id={i}
+                />
+                <p
+                  style={{
+                    display: "table-cell",
+                    verticalAlign: "middle",
+                    fontSize: 14,
+                    paddingTop: 2,
+                  }}
+                  id="behalf-text"
+                  onClick={() => {
+                    setContact(i);
+                  }}
+                >
+                  {contact_option[i]}
+                </p>
+              </div>
+            );
           })}
         </Col>
       </Form.Group>
@@ -233,11 +255,7 @@ export default function RequestPage1(props) {
         onChange={handleChangeLanguage}
       />
       {agreement}
-      <Button
-        id="large-button"
-        style={{ marginTop: 20 }}
-        onClick={goToSubmit}
-      >
+      <Button id="large-button" style={{ marginTop: 20 }} onClick={goToSubmit}>
         {props.translations[props.language].SubmitRequest}
       </Button>
       <Toast

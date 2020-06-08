@@ -187,7 +187,7 @@ function App() {
     } else if (org === "berkshire") {
       setAssocByOrg("5edbf9e3211f520d08ee977f");
     }
-  }
+  };
 
   const registerPage = (props, org) => {
     if (stateRef.current === "" && org !== "") {

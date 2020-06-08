@@ -22,7 +22,7 @@ export default function NewDetails(props) {
               placeholder={props.translations[props.language].DetailExample}
               value={props.fields.details}
               onChange={props.handleFieldChange}
-              style={{fontSize: 14}}
+              style={{ fontSize: 14 }}
             />
           </Form.Group>
         </Col>

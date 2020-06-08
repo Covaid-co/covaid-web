@@ -120,7 +120,7 @@ export default function NewRequestPage(props) {
           requester_phone: second_page.phone,
           requester_email: second_page.email,
           languages: second_page.languages,
-          contact_option: second_page.contact_option
+          contact_option: second_page.contact_option,
         },
         request_info: {
           behalf: second_page.behalf,
@@ -129,7 +129,7 @@ export default function NewRequestPage(props) {
           payment: first_page.payment,
           time: first_page.time,
           date: first_page.date,
-          high_priority: first_page.high_priority
+          high_priority: first_page.high_priority,
         },
         location_info: {
           type: "Point",
@@ -405,7 +405,10 @@ export default function NewRequestPage(props) {
         orgPortal={true}
         simplified={true}
       />
-      <Container style={{ maxWidth: 2500, marginBottom: 50 }} id="request-container">
+      <Container
+        style={{ maxWidth: 2500, marginBottom: 50 }}
+        id="request-container"
+      >
         <Row>
           <Col lg={6} md={6} sm={12} id="left-container">
             {associationExists() ? (

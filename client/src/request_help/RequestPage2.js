@@ -33,15 +33,24 @@ export default function RequestPage2(props) {
 
   useEffect(() => {
     var resourcesFromAssoc = defaultResources;
-    if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0 && props.currentAssoc.resources) {
+    if (
+      props.currentAssoc &&
+      Object.keys(props.currentAssoc).length > 0 &&
+      props.currentAssoc.resources
+    ) {
       resourcesFromAssoc = props.currentAssoc.resources;
     }
     var temp_resources = setFalseObj(resourcesFromAssoc);
 
-    if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0 && props.currentAssoc.resource_popup) {
+    if (
+      props.currentAssoc &&
+      Object.keys(props.currentAssoc).length > 0 &&
+      props.currentAssoc.resource_popup
+    ) {
       var temp = {};
       for (var i = 0; i < props.currentAssoc.resource_popup.length; i++) {
-        temp[props.currentAssoc.resource_popup[i][0]] = props.currentAssoc.resource_popup[i][1];
+        temp[props.currentAssoc.resource_popup[i][0]] =
+          props.currentAssoc.resource_popup[i][1];
       }
       setPopup(temp);
     }
@@ -59,7 +68,7 @@ export default function RequestPage2(props) {
     setTime("Morning");
     setDate(new Date(Date.now()).toLocaleString().split(",")[0]);
   }, [props.second_page]);
-  
+
   const goToSubmit = () => {
     const valid = checkPage();
     if (valid) {
@@ -94,18 +103,20 @@ export default function RequestPage2(props) {
   };
 
   const displayResourcePopup = () => {
-    return Object.keys(resources).map(key => {
+    return Object.keys(resources).map((key) => {
       if (resources[key] && resource_popup[key]) {
-        return <Alert 
-          style={{ marginTop: 10, marginBottom: 0, fontSize: 14 }}
-          key={key}
-          variant={"warning"}
-        >
-          {resource_popup[key]}
-        </Alert>
+        return (
+          <Alert
+            style={{ marginTop: 10, marginBottom: 0, fontSize: 14 }}
+            key={key}
+            variant={"warning"}
+          >
+            {resource_popup[key]}
+          </Alert>
+        );
       }
     });
-  }
+  };
 
   const paymentMethod = () => {
     var payment = <NewPaymentMethod setSelectedIndex={setSelectedIndex} />;
