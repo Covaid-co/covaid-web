@@ -313,8 +313,10 @@ exports.matchVolunteers = async function (requestID, volunteers, adminMessage) {
         smsRecipient: curr_volunteer.phone,
       };
       emailer.sendNotificationEmail(data);
-      const result = await messenger.sendVolunteerMatchText(data);
-      console.log("TWILIO RESPONSE: " + JSON.stringify(result));
+      if (curr_volunteer.allowSMS) {
+        const result = await messenger.sendVolunteerMatchText(data);
+        console.log("TWILIO RESPONSE: " + JSON.stringify(result));
+      }
       pusher.trigger(
         volunteers_to_be_notified[i],
         "direct-match",

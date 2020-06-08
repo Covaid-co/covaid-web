@@ -32,6 +32,7 @@ export default function YourOffer(props) {
   const [isUpdate, setIsUpdate] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [hasCar, setHasCar] = useState(false);
+  const [allowSMS, setAllowSMS] = useState(false);
 
   // Helper function to update list state elements
   const setCurrentUserObject = (userList, fullList, setFunction) => {
@@ -50,6 +51,7 @@ export default function YourOffer(props) {
     fields.details = props.user.offer.details;
     setAvailability(props.user.availability);
     setHasCar(props.user.offer.car);
+    setAllowSMS(props.user.allowSMS);
     async function getResources() {
       if (!props.user.association) {
         setCurrentUserObject(
@@ -114,8 +116,8 @@ export default function YourOffer(props) {
       "offer.tasks": resourceList,
       "offer.details": fields.details,
       availability: publish,
+      allowSMS: allowSMS,
     };
-
     fetch_a("token", "/api/users/update", {
       method: "put",
       headers: { "Content-Type": "application/json" },
@@ -214,6 +216,33 @@ export default function YourOffer(props) {
     );
   }
 
+  const handleChangeSMSPreference = (event) => {
+    event.persist();
+    setAllowSMS(!allowSMS);
+    console.log(allowSMS);
+  };
+
+  const SMSNotificationSwitch = (
+    <Form.Group
+      controlId="preverify"
+      bssize="large"
+      style={{ marginBottom: 0, marginTop: 12 }}
+    >
+      <Form.Check
+        type="switch"
+        id="custom-switch"
+        style={{ color: "#7F7F7F", fontSize: 14 }}
+        label={
+          allowSMS
+            ? "You will receive a text whenever you are matched to a request"
+            : "You will NOT be receiving texts from Covaid"
+        }
+        checked={allowSMS}
+        onChange={handleChangeSMSPreference}
+      />
+    </Form.Group>
+  );
+
   return (
     <Row>
       <Col>
@@ -223,14 +252,14 @@ export default function YourOffer(props) {
           {publishButton}
         </Container>
 
-        {/* <Alert
+        <Alert
           style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
           variant={"danger"}
           id="regular-text"
         >
           If you are showing any symptoms or have traveled in the past 2 weeks,
           please refrain from marking yourself as available.
-        </Alert> */}
+        </Alert>
       </Col>
       <Col>
         <Toast
@@ -293,6 +322,7 @@ export default function YourOffer(props) {
               language={props.language}
               handleFieldChange={handleFieldChange}
             />
+            {SMSNotificationSwitch}
             {saveOfferButton}
           </Form>
         )}
