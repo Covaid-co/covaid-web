@@ -9,7 +9,13 @@ import Button from "react-bootstrap/Button";
 
 import { useFormFields } from "../libs/hooksLib";
 import { validateEmail, extractTrueObj } from "../Helpers";
-import { MARKER_SIZE, ICON, paymentOptions, languages } from "../constants";
+import {
+  MARKER_SIZE,
+  ICON,
+  paymentOptions,
+  languages,
+  defaultResources,
+} from "../constants";
 import CheckForm from "../components/CheckForm";
 
 import ReactMapGL, { Marker, NavigationControl } from "react-map-gl";
@@ -21,6 +27,8 @@ export default function EditRequestInfoModal(props) {
     phone: props.currRequest.personal_info.requester_phone,
     details: props.currRequest.request_info.details,
   });
+
+  const [formattedPhone, setFormattedPhone] = useState(props.currRequest.personal_info.requester_phone);
 
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -51,15 +59,6 @@ export default function EditRequestInfoModal(props) {
   );
   const [time, setTime] = useState(props.currRequest.request_info.time);
   const [date, setDate] = useState(props.currRequest.request_info.date);
-
-  const defaultNeedsList = [
-    "Food/Groceries",
-    "Medication",
-    "Donate",
-    "Emotional Support",
-    "Academic/Professional",
-    "Misc.",
-  ];
 
   const setCurrentRequestObject = (userList, fullList, setFunction) => {
     for (var i = 0; i < fullList.length; i++) {
@@ -174,34 +173,57 @@ export default function EditRequestInfoModal(props) {
 
   const checkInputs = () => {
     var valid = true;
+    var strippedPhone = stripPhone(fields.phone);
+
+    if (Object.values(needsChecked).every((v) => v === false)) {
+      setToastMessage("Need to select a resource/need");
+      valid = false;
+    }
+
     if (Object.values(languageChecked).every((v) => v === false)) {
       setToastMessage("Need to select a language");
+      valid = false;
+    }
+
+    if (
+      strippedPhone.length !== 10 &&
+      fields.phone.length !== 0
+    ) {
+      setToastMessage("Enter a valid phone number");
+      valid = false;
+    }
+    
+    if (validateEmail(fields.email) === false &&
+        fields.email.length !== 0) {
+      setToastMessage("Enter a valid email");
       valid = false;
     }
 
     if (fields.name.length === 0) {
       setToastMessage("Enter a name");
       valid = false;
-    } else if (
-      /^\d+$/.test(fields.phone) &&
-      fields.phone.length !== 10 &&
-      fields.phone.length !== 0
-    ) {
-      setToastMessage("Enter a valid phone number");
-      valid = false;
-    } else if (
-      fields.email.length === 0 ||
-      validateEmail(fields.email) === false
-    ) {
-      setToastMessage("Enter a valid email");
-      valid = false;
-    }
+    } 
 
     if (valid === false) {
       setShowToast(true);
     }
     return valid;
   };
+
+  const stripPhone = (phone) => {
+    var strippedNumber = phone.replace(/[^0-9 ]/g, "");
+    return strippedNumber
+  };
+
+  const formatPhone = (phone) => {
+    if (phone !== undefined && phone.length !== 0){
+      var stripped = stripPhone(phone)
+      var formattedPhone = ( "(" + stripped.slice(0,3) + ")" +
+                             "-" + stripped.slice(3,6) + "-" + stripped.slice(6,10));
+      return formattedPhone;
+    }
+    return phone;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -218,7 +240,7 @@ export default function EditRequestInfoModal(props) {
       updates: {
         $set: {
           "personal_info.requester_name": fields.name,
-          "personal_info.requester_phone": fields.phone,
+          "personal_info.requester_phone": formatPhone(fields.phone),
           "personal_info.requester_email": fields.email,
           "request_info.details": fields.details,
           "location_info.coordinates": [long, lat],
@@ -258,11 +280,19 @@ export default function EditRequestInfoModal(props) {
       languages,
       setLanguageChecked
     );
-    setCurrentRequestObject(
-      props.currRequest.request_info.resource_request,
-      defaultNeedsList,
-      setNeedsChecked
-    );
+    if (props.association && Object.keys(props.association).length > 0) {
+      setCurrentRequestObject(
+        props.currRequest.request_info.resource_request,
+        props.association.resources,
+        setNeedsChecked
+      );
+    } else {
+      setCurrentRequestObject(
+        props.currRequest.request_info.resource_request,
+        defaultResources,
+        setNeedsChecked
+      );
+    }
   }, [props.currRequest]);
 
   if (isLoaded) {

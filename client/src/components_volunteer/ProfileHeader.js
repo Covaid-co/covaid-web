@@ -19,7 +19,7 @@ export default function ProfileHeader(props) {
   const [isUploaded, setIsUploaded] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
   const [imageUrl, setImageUrl] = useState(
-    "http://localhost:5000/api/image/" + props.user._id
+    "/api/image/" + props.user._id
   );
 
   const onDrop = (pictureFiles, pictureDataURLs) => {
@@ -45,9 +45,10 @@ export default function ProfileHeader(props) {
   };
 
   const fetchProfilePic = (id) => {
-    fetch("api/image/" + id).then((response) => {
+    fetch("/api/image/" + id).then((response) => {
       if (response.ok) {
-        setImageUrl("http://localhost:5000/api/image/" + props.user._id);
+        
+        setImageUrl("/api/image/" + props.user._id);
       } else {
         setImageUrl(
           "https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg"

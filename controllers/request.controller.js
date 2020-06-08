@@ -56,6 +56,7 @@ exports.createARequest = asyncWrapper(async (req, res) => {
   const {
     body: { request },
   } = req;
+  // const request = req.body;
   try {
     const new_request = await RequestService.createRequest(request);
     return new_request._id === null

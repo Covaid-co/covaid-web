@@ -113,18 +113,14 @@ function App() {
   const setAssocByOrg = (id) => {
     let params = { associationID: id };
     var url = generateURL("/api/association/get_assoc/?", params);
-    fetch(url)
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((association) => {
-            setResources(association.resources);
-            setCurrentAssoc(association);
-          });
-        }
-      })
-      .catch((e) => {
-        alert(e);
-      });
+    fetch(url).then((response) => {
+      if (response.ok) {
+        response.json().then((association) => {
+          setResources(association.resources);
+          setCurrentAssoc(association);
+        });
+      }
+    });
   };
 
   // Find location attributes when page loads
@@ -179,16 +175,24 @@ function App() {
     setLocationState(googleApiKey);
   };
 
+  const setOrg = (org) => {
+    if (org === "pitt") {
+      setAssocByOrg("5e843ab29ad8d24834c8edbf");
+    } else if (org === "ccom") {
+      setAssocByOrg("5eac6be7bd9e0369f78a0f28");
+    } else if (org === "charlotte") {
+      setAssocByOrg("5e909963a4141a039a6fc1e5");
+    } else if (org === "austin") {
+      setAssocByOrg("5edabb06b60b9b11e5c1be38");
+    } else if (org === "berkshire") {
+      setAssocByOrg("5edbf9e3211f520d08ee977f");
+    }
+  }
+
   const registerPage = (props, org) => {
     if (stateRef.current === "" && org !== "") {
       stateRef.current = org;
-      if (org === "pitt") {
-        setAssocByOrg("5e843ab29ad8d24834c8edbf");
-      } else if (org === "ccom") {
-        setAssocByOrg("5eac6be7bd9e0369f78a0f28");
-      } else if (org === "charlotte") {
-        setAssocByOrg("5e909963a4141a039a6fc1e5");
-      }
+      setOrg(org);
     }
     return (
       <RegisterPage
@@ -214,13 +218,7 @@ function App() {
   const requestPage = (props, org) => {
     if (stateRef.current === "" && org !== "") {
       stateRef.current = org;
-      if (org === "pitt") {
-        setAssocByOrg("5e843ab29ad8d24834c8edbf");
-      } else if (org === "ccom") {
-        setAssocByOrg("5eac6be7bd9e0369f78a0f28");
-      } else if (org === "charlotte") {
-        setAssocByOrg("5e909963a4141a039a6fc1e5");
-      }
+      setOrg(org);
     }
     return (
       <NewRequestPage
@@ -301,6 +299,16 @@ function App() {
           />
           <Route
             exact
+            path="/austin-request"
+            render={(props) => requestPage(props, "austin")}
+          />
+          <Route
+            exact
+            path="/berkshire-request"
+            render={(props) => requestPage(props, "berkshire")}
+          />
+          <Route
+            exact
             path="/request"
             render={(props) => requestPage(props, "")}
           />
@@ -318,6 +326,16 @@ function App() {
             exact
             path="/charlotte-volunteer"
             render={(props) => registerPage(props, "charlotte")}
+          />
+          <Route
+            exact
+            path="/austin-volunteer"
+            render={(props) => registerPage(props, "austin")}
+          />
+          <Route
+            exact
+            path="/berkshire-volunteer"
+            render={(props) => registerPage(props, "berkshire")}
           />
           <Route
             exact
@@ -380,6 +398,7 @@ function App() {
             path="/volunteer-signin"
             component={(props) => homePageComp(props, true)}
           />
+          {/* <Route path="/:lang" component={homePageComp} /> */}
           <Route path="/" component={homePageComp} />
           <Route path="*" component={homePageComp} />
         </Switch>

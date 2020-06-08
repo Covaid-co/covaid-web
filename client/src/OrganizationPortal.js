@@ -34,6 +34,7 @@ import {
 import "./OrganizationPage.css";
 
 export default function OrganiationPortal(props) {
+  document.title = "Covaid | Organization";
   const { addToast } = useToasts();
   const [pageLoaded, setPageLoaded] = useState(false);
   const [currTabNumber, setCurrTab] = useState(0);
@@ -176,12 +177,25 @@ export default function OrganiationPortal(props) {
 
   if (beaconView) {
     return (
+      <div className="App" key="1"> 
+        <NavBar
+          setLanguage={props.setLanguage}
+          language={props.language}
+          pageLoaded={pageLoaded}
+          isLoggedIn={true}
+          totalVolunteers={volunteers.length}
+          setAdmin={setAdmin}
+          orgPortal={true}
+          first_name={getName(admin, association)}
+          handleShowModal={() => {}}
+        />
       <LiveBeaconView
         volunteers={volunteers}
         association={association}
         setBeaconView={setBeaconView}
         beacons={beacons}
       />
+      </div>
     );
   } else if (showLogin === true) {
     return (
@@ -197,7 +211,7 @@ export default function OrganiationPortal(props) {
     return <></>;
   }
   return [
-    <div className="App" key="1">
+    <div className="App" key="1"> 
       <NavBar
         setLanguage={props.setLanguage}
         language={props.language}
@@ -246,7 +260,7 @@ export default function OrganiationPortal(props) {
                 >
                   View Volunteers
                 </Button>{" "}
-                <br />
+                {/* <br />
                 <Button
                   variant="link"
                   id="resources-link"
@@ -255,7 +269,7 @@ export default function OrganiationPortal(props) {
                   }}
                 >
                   + Add a link to your community&apos;s resources
-                </Button>
+                </Button> */}
               </Col>
               <Col
                 lg={6}

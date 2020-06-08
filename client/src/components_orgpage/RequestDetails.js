@@ -17,7 +17,7 @@ import {
   current_tab,
   volunteer_status,
 } from "../constants";
-import { generateURL, generateMapsURL } from "../Helpers";
+import { generateURL } from "../Helpers";
 import fetch_a from "../util/fetch_auth";
 import {
   matchVolunteersButton,
@@ -39,7 +39,6 @@ export default function RequestDetails(props) {
   const [unmatchModal, setUnmatchModal] = useState(false);
   const [confirmCompleteModal, setConfirmCompleteModal] = useState(false);
   const [reason, setReason] = useState("Volunteer Completed");
-  const [mapsURL, setMapsURL] = useState("");
   const [adminList, setAdminList] = useState([]);
   const [prevNote, setPrevNote] = useState("");
   const [showToast, setShowToast] = useState(false);
@@ -64,7 +63,6 @@ export default function RequestDetails(props) {
       }
     });
     setAssignee("No one assigned");
-    createMapsLink();
     fields.email2 = props.currRequest.admin_info.note;
     setPrevNote(props.currRequest.admin_info.note);
     updateAdminList();
@@ -74,16 +72,6 @@ export default function RequestDetails(props) {
   const handleCloseEditModal = () => {
     setShowEditModal(false);
     props.setRequestDetailsModal(true);
-  };
-
-  // Create link to requesters location
-  const createMapsLink = () => {
-    if (props.currRequest.location_info) {
-      const lat = props.currRequest.location_info.coordinates[1];
-      const long = props.currRequest.location_info.coordinates[0];
-      const tempURL = generateMapsURL(lat, long);
-      setMapsURL(tempURL);
-    }
   };
 
   // Update selection menu for list of admins
@@ -547,7 +535,7 @@ export default function RequestDetails(props) {
               Edit Request
             </Button>
           </div>
-          <p id="regular-text-nomargin" style={{ marginBottom: -8 }}>
+          <p id="regular-text-nomargin" style={{ marginBottom: -6 }}>
             <Button
               id="regular-text"
               onClick={() => {
@@ -558,11 +546,13 @@ export default function RequestDetails(props) {
                 color: "#2670FF",
                 padding: 0,
                 marginBottom: 3,
-                marginLeft: 3,
+                marginLeft: 0,
+                paddingLeft: 0,
+                textDecoration: "underline",
               }}
               variant="link"
             >
-              Location
+              Request Location
             </Button>
           </p>
           {contactInfo()}
@@ -642,6 +632,7 @@ export default function RequestDetails(props) {
           currRequest={props.currRequest}
           mapboxAccessToken={mapboxAccessToken}
           setShowEditModal={setShowEditModal}
+          association={props.association}
           setRequestDetailsModal={props.setRequestDetailsModal}
         />
       </Modal>

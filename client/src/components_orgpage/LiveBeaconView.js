@@ -79,14 +79,6 @@ export default function LiveBeaconView(props) {
 
   return (
     <>
-      <div className="App">
-        <NavBar
-          isLoggedIn={true}
-          totalVolunteers={props.volunteers.length}
-          orgPortal={true}
-          first_name={props.association.name}
-          handleShowModal={() => {}}
-        />
         <Jumbotron
           fluid
           id="jumbo-volunteer"
@@ -186,7 +178,6 @@ export default function LiveBeaconView(props) {
           volunteers={props.volunteers}
           pushBeacon={createBeacon}
         />
-      </div>
     </>
   );
 }

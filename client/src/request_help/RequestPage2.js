@@ -5,7 +5,6 @@ import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import Form from "react-bootstrap/Form";
 
-import NeededBy from "../components_homepage/NeededBy";
 import NewDetails from "../components_homepage/NewDetails";
 import NewPaymentMethod from "../components_homepage/NewPaymentMethod";
 import CheckForm from "../components/CheckForm";
@@ -64,7 +63,6 @@ export default function RequestPage2(props) {
         time: time,
         date: date,
       };
-      console.log(result);
       props.setStepNum(4);
       props.setSecondPage(result);
     } else {
@@ -126,7 +124,9 @@ export default function RequestPage2(props) {
 
   return (
     <>
-      <h5 id="title-light">Request Details</h5>
+      <h5 id="title-light">
+        {props.translations[props.language].RequestDetails}
+      </h5>
       {props.currentAssoc === null ? (
         <></>
       ) : (
@@ -137,12 +137,6 @@ export default function RequestPage2(props) {
           language={props.language}
         />
       )}
-      {/* <NeededBy
-        setTime={setTime}
-        setDate={setDate}
-        translations={props.translations}
-        language={props.language}
-      /> */}
       {paymentMethod()}
       {paymentAgreement}
       <NewDetails

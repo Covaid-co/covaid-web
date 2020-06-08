@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -12,12 +12,17 @@ import Footer from "../components/Footer";
  */
 
 export default function Donate(props) {
+  document.title = "Covaid | Donate";
+  const [toggle, setToggle] = useState(false);
+
   return (
-    <div className="App">
+    <div style={{ overflowX: "hidden", height: "100%" }}>
+      <div className="App" style={{ height: "100%" }}>
       <NavBar
         setLanguage={props.setLanguage}
         language={props.language}
         isLoggedIn={props.isLoggedIn}
+        setToggle={setToggle}
         first_name={
           Object.keys(props.currentUser).length !== 0
             ? props.currentUser.first_name
@@ -57,7 +62,8 @@ export default function Donate(props) {
           </Col>
         </Row>
       </Container>
-      <Footer key="2" />
+      </div>
+      <Footer id="donate-footer" style={toggle ? { marginTop: 500 } : {}} />
     </div>
   );
 }
