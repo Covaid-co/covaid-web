@@ -2,7 +2,10 @@ require("dotenv").config();
 var sid = process.env.TWILIO_ACCOUNT_SID;
 var token = process.env.TWILIO_AUTH_TOKEN;
 var from = "+12513206732";
-const client = require("twilio")(sid, token);
+const client = require("twilio")(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 const validator = require("validator");
 
 exports.sendVolunteerMatchText = async (data) => {
@@ -75,7 +78,6 @@ exports.sendVolunteerMatchText = async (data) => {
         messages[0].to;
       return response;
     } catch (error) {
-      throw error;
       console.log(error);
       response.desc = "**TESTING MODE** SMS notification failed to send!";
       return response;

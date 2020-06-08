@@ -103,9 +103,11 @@ describe("SMS Notifications -> ", function () {
             sid: "ACfe259de31150483a8c88012d611b92f0",
             token: authToken,
           };
-          expect(async () => {
-            await sms.sendVolunteerMatchText(data);
-          }).to.throw(new Error("Authenticate"));
+          const result = await sms.sendVolunteerMatchText(data);
+          expect(result.desc).to.equal(
+            "**TESTING MODE** SMS notification failed to send!"
+          );
+          expect(result.isValid).to.be.true;
         });
       });
       describe("Auth Token -> ", function () {
@@ -117,9 +119,11 @@ describe("SMS Notifications -> ", function () {
             token: "d67b903ec1870c2585e11a6d737b38ca",
           };
 
-          expect(async function () {
-            await sms.sendVolunteerMatchText(data);
-          }).to.throw(Error, "Authenticate");
+          const result = await sms.sendVolunteerMatchText(data);
+          expect(result.desc).to.equal(
+            "**TESTING MODE** SMS notification failed to send!"
+          );
+          expect(result.isValid).to.be.true;
         });
       });
     });
