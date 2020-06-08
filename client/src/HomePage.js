@@ -121,10 +121,7 @@ export default function HomePage(props) {
         </Jumbotron>
         {getCurrentModal()}
       </div>
-      <Footer
-        id="desktop-footer"
-        style={toggle ? { marginTop: 500 } : {}}
-      />
+      <Footer id="desktop-footer" style={toggle ? { marginTop: 500 } : {}} />
     </div>
   );
 }
