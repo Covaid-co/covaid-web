@@ -9,7 +9,7 @@ let UsersSchema = new Schema({
   last_name: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: false },
-  allowSMS: { type: Boolean, required: false },
+  allowSMS: { type: Boolean, required: false, default: false },
   availability: { type: Boolean, required: true },
   hash: { type: String, required: true },
   salt: { type: String, required: true },

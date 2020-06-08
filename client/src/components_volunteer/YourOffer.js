@@ -234,7 +234,7 @@ export default function YourOffer(props) {
         style={{ color: "#7F7F7F", fontSize: 14 }}
         label={
           allowSMS
-            ? "You will receive a text whenever you are matched to a request"
+            ? "Covaid will text you when you receive new requests"
             : "You will NOT be receiving texts from Covaid"
         }
         checked={allowSMS}
@@ -252,14 +252,14 @@ export default function YourOffer(props) {
           {publishButton}
         </Container>
 
-        <Alert
+        {/* <Alert
           style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
           variant={"danger"}
           id="regular-text"
         >
           If you are showing any symptoms or have traveled in the past 2 weeks,
           please refrain from marking yourself as available.
-        </Alert>
+        </Alert> */}
       </Col>
       <Col>
         <Toast
