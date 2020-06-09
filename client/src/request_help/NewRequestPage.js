@@ -287,6 +287,7 @@ export default function NewRequestPage(props) {
       return (
         <>
           {langSelection(() => setStepNum(2), false)}
+          {associationExists() ?  <></> : <div id="separator"></div>}
           <p id="title">{translatedStrings[props.language].Step} 3 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
@@ -297,7 +298,6 @@ export default function NewRequestPage(props) {
         <>
           {langSelection(() => setStepNum(3), true)}
           <div id="separator"></div>
-          {/* <p id="title">{translatedStrings[props.language].Step} 4 -</p> */}
           <p id="subtitle" style={{marginTop: 50}}>
             {translatedStrings[props.language].ConfirmRequest}
           </p>
@@ -418,16 +418,13 @@ export default function NewRequestPage(props) {
         simplified={true}
         request_page={true}
       />
-      <Container
-        style={{ maxWidth: 2500, marginBottom: 50 }}
-        id="request-container"
-      >
-        <Row>
-          <Col lg={6} md={6} sm={12} id="left-container">
-            {/* {associationExists() ? ( */}
+      <div id="outer">
+        <Container style={(step_num === 2) ? { maxWidth: 2500, marginTop: 20 } : { maxWidth: 2500 } } id={(step_num === 2) ? "": "request-container"}>
+          <Row>
+            <Col lg={6} md={6} sm={12} id="left-container">
               <Row
                 id="text-row"
-                style={step_num === 2 || step_num === 3 ? { marginTop: 0 } : {}}
+                style={step_num === 2 || step_num === 3 ? { marginTop: 20 } : {}}
               >
                 <Col xl={1} lg={1} md={0} sm={0}></Col>
                 <Col xl={10} lg={10} md={12} sm={12}>
@@ -435,21 +432,13 @@ export default function NewRequestPage(props) {
                   {toastObj()}
                 </Col>
               </Row>
-            {/* ) : (
-              <Row id="text-row">
-                <Col sm={1} md={1} lg={2}></Col>
-                <Col xl={8} lg={8} md={10} sm={10}>
-                  {stepText()}
-                  {toastObj()}
-                </Col>
-              </Row>
-            )} */}
-          </Col>
-          <Col lg={6} md={6} sm={0} id="right-container">
-            {mapRequest()}
-          </Col>
-        </Row>
-      </Container>
+            </Col>
+            <Col lg={6} md={6} sm={0} id="right-container">
+              {mapRequest()}
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </div>);
 }
 

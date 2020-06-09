@@ -10,9 +10,8 @@ import Alert from "react-bootstrap/Alert";
 import Select from "react-select";
 
 import PhoneNumber from "../components/PhoneNumber";
-import CheckForm from "../components/CheckForm";
 import { toastTime, languages, contact_option } from "../constants";
-import { validateEmail, setFalseObj, extractTrueObj } from "../Helpers";
+import { validateEmail } from "../Helpers";
 
 /**
  * Request support (Page 2)
@@ -148,33 +147,6 @@ export default function RequestPage1(props) {
       >
         {props.translations[props.language].emailOrPhone}.
       </p>
-      <Row>
-        <Col xs={12}>
-          <Form.Group controlId="name_request" bssize="large">
-            <Form.Control
-              value={fields.name_request}
-              onChange={handleFieldChange}
-              placeholder={props.translations[props.language].name}
-            />
-          </Form.Group>
-        </Col>
-        <Col xs={12}>
-          <PhoneNumber
-            phoneNumber={phone_number}
-            setPhoneNumber={setPhoneNumber}
-            placeholder={props.translations[props.language].phone}
-          />
-        </Col>
-        <Col xs={12}>
-          <Form.Group controlId="email" bssize="large">
-            <Form.Control
-              value={fields.email}
-              onChange={handleFieldChange}
-              placeholder={props.translations[props.language].email}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
       <div style={{ display: "table", marginBottom: 5 }}>
         <Form.Check
           type="checkbox"
@@ -207,6 +179,33 @@ export default function RequestPage1(props) {
       >
         {props.translations[props.language].BehalfWarning}
       </Alert>
+      <Row>
+        <Col xs={12}>
+          <Form.Group controlId="name_request" bssize="large">
+            <Form.Control
+              value={fields.name_request}
+              onChange={handleFieldChange}
+              placeholder={props.translations[props.language].name}
+            />
+          </Form.Group>
+        </Col>
+        <Col xs={12}>
+          <PhoneNumber
+            phoneNumber={phone_number}
+            setPhoneNumber={setPhoneNumber}
+            placeholder={props.translations[props.language].phone}
+          />
+        </Col>
+        <Col xs={12}>
+          <Form.Group controlId="email" bssize="large">
+            <Form.Control
+              value={fields.email}
+              onChange={handleFieldChange}
+              placeholder={props.translations[props.language].email}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
       <h5 id="subtitle-light" style={{ marginTop: 20, marginBottom: 0 }}>
         Best way to reach you
       </h5>
@@ -251,7 +250,7 @@ export default function RequestPage1(props) {
       />
       {agreement}
       <Button id="large-button" style={{ marginTop: 20 }} onClick={goToSubmit}>
-        {props.translations[props.language].SubmitRequest}
+        Review your Request
       </Button>
       <Toast
         show={showToast}

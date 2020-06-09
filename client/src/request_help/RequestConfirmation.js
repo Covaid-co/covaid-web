@@ -76,7 +76,7 @@ export default function RequestConfirmation(props) {
           style={{ marginTop: 20 }}
           onClick={props.submitRequest}
         >
-          Confirm
+          {props.translations[props.language].SubmitRequest}
         </Button>
       </Col>
     </Row>
