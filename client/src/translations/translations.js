@@ -219,7 +219,7 @@ const translations = {
     BehalfWarning:
       "Please fill in the fields above with information pertaining to the person in need of support. If you’d like us to contact you, please leave your contact in the details on the next page",
     ConfirmRequest: "Confirm request information",
-    RequestDetails: "Select Tasks for Support",
+    RequestDetails: "What can we help you with?",
     ChangeLocation: "Change Location",
     LastStep:
       "This is your last step! Please make sure your request information is accurate.",

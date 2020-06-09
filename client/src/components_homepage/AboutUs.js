@@ -18,6 +18,7 @@ import Daniella from "../assets/danielle.jpg";
 import Yoav from "../assets/yoav.jpg";
 import Sofia from "../assets/sofia.jpg";
 import Angela from "../assets/angela.jpg";
+import Jenny from "../assets/jenny.jpg";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -84,6 +85,10 @@ export default function AboutUs(props) {
     "Angela Luo": {
       link: "https://www.linkedin.com/in/al490/",
       image: Angela,
+    },
+    "Jenny Zang": {
+      link: "",
+      image: Jenny,
     },
   };
 

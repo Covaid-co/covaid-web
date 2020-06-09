@@ -12,8 +12,6 @@ import LocationMap from "./LocationMap";
 import Toast from "react-bootstrap/Toast";
 import Button from "react-bootstrap/Button";
 import { toastTime, currURL } from "../constants";
-import RequestPage1 from "./RequestPage1";
-import RequestPage2 from "./RequestPage2";
 import NewRequestPage1 from "./NewRequestPage1";
 import NewRequestPage2 from "./NewRequestPage2";
 import RequestConfirmation from "./RequestConfirmation";
@@ -279,6 +277,7 @@ export default function NewRequestPage(props) {
       return (
         <>
           {langSelection(() => setStepNum(0), false)}
+          {associationExists() ?  <></> : <div id="separator"></div>}
           <p id="title">{translatedStrings[props.language].Step} 2 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
@@ -288,7 +287,7 @@ export default function NewRequestPage(props) {
       return (
         <>
           {langSelection(() => setStepNum(2), false)}
-          <p id="title">{translatedStrings[props.language].Step} 2.5 —</p>
+          <p id="title">{translatedStrings[props.language].Step} 3 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
         </>
@@ -298,8 +297,8 @@ export default function NewRequestPage(props) {
         <>
           {langSelection(() => setStepNum(3), true)}
           <div id="separator"></div>
-          <p id="title">{translatedStrings[props.language].Step} 3 -</p>
-          <p id="subtitle">
+          {/* <p id="title">{translatedStrings[props.language].Step} 4 -</p> */}
+          <p id="subtitle" style={{marginTop: 50}}>
             {translatedStrings[props.language].ConfirmRequest}
           </p>
           <p id="info">{translatedStrings[props.language].LastStep}</p>
@@ -409,7 +408,7 @@ export default function NewRequestPage(props) {
     );
   };
 
-  return [
+  return (
     <div className="App" key="1">
       <NavBar
         setLanguage={props.setLanguage}
@@ -425,7 +424,7 @@ export default function NewRequestPage(props) {
       >
         <Row>
           <Col lg={6} md={6} sm={12} id="left-container">
-            {associationExists() ? (
+            {/* {associationExists() ? ( */}
               <Row
                 id="text-row"
                 style={step_num === 2 || step_num === 3 ? { marginTop: 0 } : {}}
@@ -436,7 +435,7 @@ export default function NewRequestPage(props) {
                   {toastObj()}
                 </Col>
               </Row>
-            ) : (
+            {/* ) : (
               <Row id="text-row">
                 <Col sm={1} md={1} lg={2}></Col>
                 <Col xl={8} lg={8} md={10} sm={10}>
@@ -444,16 +443,14 @@ export default function NewRequestPage(props) {
                   {toastObj()}
                 </Col>
               </Row>
-            )}
+            )} */}
           </Col>
           <Col lg={6} md={6} sm={0} id="right-container">
             {mapRequest()}
           </Col>
         </Row>
       </Container>
-    </div>,
-    // <Footer key="2" />,
-  ];
+    </div>);
 }
 
 NewRequestPage.propTypes = {
