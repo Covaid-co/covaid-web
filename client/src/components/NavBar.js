@@ -432,6 +432,8 @@ export default function CovaidNavbar(props) {
         >
           covaid
         </Navbar.Brand>
+        {!props.request_page ? 
+        <>
         <Form inline className="volunteer-badge-mobile">
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
@@ -499,7 +501,7 @@ export default function CovaidNavbar(props) {
             </Nav>
           )}
           {rightNav()}
-        </Navbar.Collapse>
+        </Navbar.Collapse></> : <></>}
       </Navbar>
       {getCurrentModal()}
     </>

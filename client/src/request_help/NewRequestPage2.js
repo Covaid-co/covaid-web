@@ -60,6 +60,9 @@ export default function RequestPage1(props) {
       for (var i = 0; i < selectedLanguages.selectedOptions.length; i++) {
         languages.push(selectedLanguages.selectedOptions[i].value);
       }
+      if (languages.length === 0) {
+        languages.push('English');
+      }
       const result = {
         phone: phone_number,
         name: fields.name_request,
@@ -131,9 +134,20 @@ export default function RequestPage1(props) {
 
   return (
     <>
-      <h5 id="title-light">
+      <h5 id="title-light" style={{marginBottom: 5}}>
         {props.translations[props.language].personalInformation}
       </h5>
+      <p
+        id="regular-text"
+        style={{
+          fontStyle: "italic",
+          marginTop: 0,
+          marginBottom: 5,
+          fontSize: 14,
+        }}
+      >
+        {props.translations[props.language].emailOrPhone}.
+      </p>
       <Row>
         <Col xs={12}>
           <Form.Group controlId="name_request" bssize="large">
@@ -159,17 +173,6 @@ export default function RequestPage1(props) {
               placeholder={props.translations[props.language].email}
             />
           </Form.Group>
-          <p
-            id="regular-text"
-            style={{
-              fontStyle: "italic",
-              marginTop: 0,
-              marginBottom: 10,
-              fontSize: 14,
-            }}
-          >
-            {props.translations[props.language].emailOrPhone}.
-          </p>
         </Col>
       </Row>
       <div style={{ display: "table", marginBottom: 5 }}>
@@ -237,11 +240,8 @@ export default function RequestPage1(props) {
         </Col>
       </Form.Group>
       <h5 id="subtitle-light" style={{ marginTop: 15, marginBottom: 5 }}>
-        {props.translations[props.language].WhatLanguageDoYouSpeak}
+        Preferred languages you speak
       </h5>
-      <p id="regular-text" style={{ marginBottom: 5, fontSize: 14 }}>
-        {props.translations[props.language].LanguageNotListed}
-      </p>
       <Select
         closeMenuOnSelect={true}
         defaultValue={selectedLanguages.selectedOptions}

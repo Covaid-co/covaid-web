@@ -9,7 +9,7 @@ import Alert from "react-bootstrap/Alert";
 import NewDetails from "../components_homepage/NewDetails";
 import NewPaymentMethod from "../components_homepage/NewPaymentMethod";
 import CheckForm from "../components/CheckForm";
-import { defaultResources, toastTime } from "../constants";
+import { defaultResources, toastTime, resource_popups } from "../constants";
 import { setFalseObj, extractTrueObj } from "../Helpers";
 
 /**
@@ -19,7 +19,7 @@ import { setFalseObj, extractTrueObj } from "../Helpers";
 export default function NewRequestPage1(props) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [selectedPayment, setSelectedIndex] = useState(0);
+  const [selectedPayment, setSelectedIndex] = useState(2);
   const [resources, setResources] = useState({});
   const [resource_popup, setPopup] = useState({});
   const [time, setTime] = useState("Morning");
@@ -53,6 +53,8 @@ export default function NewRequestPage1(props) {
           props.currentAssoc.resource_popup[i][1];
       }
       setPopup(temp);
+    } else {
+      setPopup(resource_popups);
     }
 
     if (Object.keys(props.first_page).length !== 0) {
@@ -126,6 +128,7 @@ export default function NewRequestPage1(props) {
     ) {
       payment = <></>;
     }
+    payment = <></>;
     return payment;
   };
 
@@ -178,6 +181,7 @@ export default function NewRequestPage1(props) {
         />
         <p
           id="behalf-text"
+          style={{fontSize: 14}}
           onClick={() => {
             setPriority(!high_priority);
           }}
@@ -185,7 +189,7 @@ export default function NewRequestPage1(props) {
           We aim to prioritize requests from individuals and families that
           identify as{" "}
           <font style={{ fontWeight: "bold" }}>
-            POC, elderly, immunocompromised, or of veteran status
+            BIPOC, elderly, immunocompromised, or of veteran status
           </font>
           . Please check here if you identify with any of these so we can
           prioritize your request.

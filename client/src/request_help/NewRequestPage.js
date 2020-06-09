@@ -180,12 +180,30 @@ export default function NewRequestPage(props) {
       );
     }
 
+    const langSelection = (clickFn, extraMargin) => {
+      return <div id={extraMargin ? "small-margin" : ""}>
+      <Button id="back-button" onClick={clickFn} style={{display: 'inline'}}>
+        ←
+      </Button>
+      <Button
+        id={props.language === "en" ? "volunteer-not-selected" : "volunteer-selected"}
+        onClick={()=>props.setLanguage("es")}
+      >
+        Spanish
+      </Button>
+      <Button
+        id={props.language === "en" ? "volunteer-selected" : "volunteer-not-selected"}
+        onClick={()=>props.setLanguage("en")}
+      >
+        English
+      </Button>
+    </div>}
+
     if (step_num === 0) {
       return (
         <>
-          <Button id="back-button" onClick={() => history.push("/")}>
-            ←
-          </Button>
+          {langSelection(() => history.push("/"), true)}
+          <div id="separator"></div>
           <p id="title">{translatedStrings[props.language].Step} 1 —</p>
           <p id="subtitle">{translatedStrings[props.language].SetLocation}</p>
           <p id="info">
@@ -260,9 +278,7 @@ export default function NewRequestPage(props) {
     } else if (step_num === 2) {
       return (
         <>
-          <Button id="back-button" onClick={() => setStepNum(0)}>
-            ←
-          </Button>
+          {langSelection(() => setStepNum(0), false)}
           <p id="title">{translatedStrings[props.language].Step} 2 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
@@ -271,9 +287,7 @@ export default function NewRequestPage(props) {
     } else if (step_num === 3) {
       return (
         <>
-          <Button id="back-button" onClick={() => setStepNum(2)}>
-            ←
-          </Button>
+          {langSelection(() => setStepNum(2), false)}
           <p id="title">{translatedStrings[props.language].Step} 2.5 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
@@ -282,9 +296,8 @@ export default function NewRequestPage(props) {
     } else if (step_num === 4) {
       return (
         <>
-          <Button id="back-button" onClick={() => setStepNum(3)}>
-            ←
-          </Button>
+          {langSelection(() => setStepNum(3), true)}
+          <div id="separator"></div>
           <p id="title">{translatedStrings[props.language].Step} 3 -</p>
           <p id="subtitle">
             {translatedStrings[props.language].ConfirmRequest}
@@ -404,6 +417,7 @@ export default function NewRequestPage(props) {
         isLoggedIn={false}
         orgPortal={true}
         simplified={true}
+        request_page={true}
       />
       <Container
         style={{ maxWidth: 2500, marginBottom: 50 }}
