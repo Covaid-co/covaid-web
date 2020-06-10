@@ -75,12 +75,16 @@ export default function YourOffer(props) {
 
   // Update the state of offer, allow a 750 ms loading time
   function stateChange(setter, publish) {
-    setTimeout(function () {
-      setAvailability(publish);
-      setIsEditing(false);
-      setter(false);
-    }, 750);
+    setAvailability(publish);
+    setter(false);
   }
+
+  const handleBackButton = async () => {
+    getResources();
+    setHasCar(props.user.offer.car);
+    fields.details = props.user.offer.details;
+    setIsEditing(false);
+  };
 
   // Input validation
   const checkInputs = () => {
@@ -112,6 +116,7 @@ export default function YourOffer(props) {
     var resourceList = extractTrueObj(resources);
     let form = {
       "offer.tasks": resourceList,
+      "offer.car": hasCar,
       "offer.details": fields.details,
       availability: publish,
     };
@@ -124,9 +129,9 @@ export default function YourOffer(props) {
       .then((response) => {
         if (response.ok) {
           // Change the state to refect offer update
+          setIsEditing(false);
           stateChange(setter, publish);
           response.json().then((user) => {
-            console.log(user);
             props.setUser(user);
           });
         } else {
@@ -140,7 +145,9 @@ export default function YourOffer(props) {
 
   var visibleText = <></>;
   var publishButton = <></>;
+  var headerOrBack = <></>;
   var offerForm = <></>;
+  var statusChangeDescription = <></>;
   var updateText = "Save";
   var editText = "Edit";
   var publishText = "Activate";
@@ -165,19 +172,23 @@ export default function YourOffer(props) {
         opacity: availability ? 1 : 0.4,
       }}
       disabled={!availability}
-      onClick={() => setIsEditing(true)}
+      onClick={() => {
+        setIsEditing(true);
+      }}
     >
       {editText}
     </Button>
   );
 
-  const statusChangeDescription = (
-    <p id="status-change-description" style={{ color: "#7f7f7f" }}>
-      Marking yourself as active will allow you to be matched with requests
-    </p>
-  );
   if (availability) {
     // Render specific text if user is available
+    statusChangeDescription = (
+      <p id="status-change-description" style={{ color: "#7f7f7f" }}>
+        Having a busy day? By marking yourself as inactive, you will be
+        prevented from receiving any new request matches until you reactivate
+        your offer.
+      </p>
+    );
     visibleText = (
       <h5
         id="#your-offer-header-detail"
@@ -196,6 +207,13 @@ export default function YourOffer(props) {
     );
   } else {
     // Render specific test is user is unavailable
+    statusChangeDescription = (
+      <p id="status-change-description" style={{ color: "#7f7f7f" }}>
+        Ready to support your community? Mark yourself as active to begin
+        receiving match requests!
+      </p>
+    );
+
     visibleText = (
       <h5
         id="your-offer-header-detail"
@@ -211,6 +229,128 @@ export default function YourOffer(props) {
       >
         {isActive ? spinnerComponent : publishText}
       </Button>
+    );
+  }
+  if (isEditing) {
+    headerOrBack = (
+      <Button
+        id="back-button"
+        style={{
+          marginTop: 4,
+          marginBottom: 12,
+        }}
+        onClick={() => {
+          handleBackButton();
+        }}
+      >
+        ←
+      </Button>
+    );
+    offerForm = (
+      <Form onSubmit={handleUpdate} style={{ textAlign: "left" }}>
+        <h5
+          id="regular-text-bold"
+          style={{
+            color: "#4F4F4F",
+            marginBottom: 8,
+          }}
+        >
+          What can you help with?
+        </h5>
+        <CheckForm obj={resources} setObj={setResources} />
+        <h5
+          id="regular-text-bold"
+          style={{
+            color: "#4F4F4F",
+            marginTop: 16,
+          }}
+        >
+          Can you drive?
+        </h5>
+        <NewCar hasCar={hasCar} setHasCar={setHasCar} />
+        <Details
+          fields={fields.details}
+          setLanguage={props.setLanguage}
+          language={props.language}
+          handleFieldChange={handleFieldChange}
+        />
+        {saveOfferButton}
+      </Form>
+    );
+  } else {
+    headerOrBack = (
+      <h3
+        id="your-offer-header-detail"
+        style={{
+          color: "#4F4F4F",
+          opacity: availability ? 1 : 0.4,
+          marginTop: 4,
+          marginBottom: 12,
+        }}
+      >
+        Details
+      </h3>
+    );
+    offerForm = (
+      <div>
+        <h5
+          id="regular-text-bold"
+          style={{
+            color: "#4F4F4F",
+            opacity: availability ? 1 : 0.4,
+            marginBottom: 5,
+          }}
+        >
+          What can you help with?
+        </h5>
+        <p
+          id="#offer-detail-response"
+          style={{ opacity: availability ? 1 : 0.4, color: "#7F7F7F" }}
+        >
+          {Object.keys(resources)
+            .filter(function (id) {
+              return resources[id];
+            })
+            .join(", ")}
+        </p>
+        <h5
+          id="regular-text-bold"
+          style={{
+            opacity: availability ? 1 : 0.4,
+            color: "#4F4F4F",
+            marginBottom: 5,
+          }}
+        >
+          Can you drive?
+        </h5>
+        <p
+          id="#offer-detail-response"
+          style={{ opacity: availability ? 1 : 0.4, color: "#7F7F7F" }}
+        >
+          {hasCar ? "Yes" : "No"}
+        </p>
+        <h5
+          id="regular-text-bold"
+          style={{
+            opacity: availability ? 1 : 0.4,
+            color: "#4F4F4F",
+            marginBottom: 5,
+          }}
+        >
+          Details?
+        </h5>
+        <p
+          id="#offer-detail-response"
+          style={{
+            opacity: availability ? 1 : 0.4,
+            color: "#7F7F7F",
+            fontStyle: "italic",
+          }}
+        >
+          {`"${fields.details}"`}
+        </p>
+        {editOfferButton}
+      </div>
     );
   }
 
@@ -242,18 +382,7 @@ export default function YourOffer(props) {
         >
           <Toast.Body>{toastMessage}</Toast.Body>
         </Toast>
-
-        <h3
-          id="your-offer-header-detail"
-          style={{
-            color: "#4F4F4F",
-            opacity: availability ? 1 : 0.4,
-            marginTop: 4,
-            marginBottom: 12,
-          }}
-        >
-          Details
-        </h3>
+        {headerOrBack}
         <p
           id="requestCall"
           style={{
@@ -264,99 +393,7 @@ export default function YourOffer(props) {
         >
           &nbsp;
         </p>
-
-        {isEditing && (
-          <Form onSubmit={handleUpdate} style={{ textAlign: "left" }}>
-            <h5
-              id="regular-text-bold"
-              style={{
-                color: "#4F4F4F",
-                marginBottom: 8,
-              }}
-            >
-              What can you help with?
-            </h5>
-            <CheckForm obj={resources} setObj={setResources} />
-            <h5
-              id="regular-text-bold"
-              style={{
-                color: "#4F4F4F",
-                marginTop: 16,
-              }}
-            >
-              Can you drive?
-            </h5>
-            <NewCar hasCar={hasCar} setHasCar={setHasCar} />
-            <Details
-              fields={fields.details}
-              setLanguage={props.setLanguage}
-              language={props.language}
-              handleFieldChange={handleFieldChange}
-            />
-            {saveOfferButton}
-          </Form>
-        )}
-        {!isEditing && (
-          <div>
-            <h5
-              id="regular-text-bold"
-              style={{
-                color: "#4F4F4F",
-                opacity: availability ? 1 : 0.4,
-                marginBottom: 5,
-              }}
-            >
-              What can you help with?
-            </h5>
-            <p
-              id="#offer-detail-response"
-              style={{ opacity: availability ? 1 : 0.4, color: "#7F7F7F" }}
-            >
-              {Object.keys(resources)
-                .filter(function (id) {
-                  return resources[id];
-                })
-                .join(", ")}
-            </p>
-            <h5
-              id="regular-text-bold"
-              style={{
-                opacity: availability ? 1 : 0.4,
-                color: "#4F4F4F",
-                marginBottom: 5,
-              }}
-            >
-              Can you drive?
-            </h5>
-            <p
-              id="#offer-detail-response"
-              style={{ opacity: availability ? 1 : 0.4, color: "#7F7F7F" }}
-            >
-              {hasCar ? "Yes" : "No"}
-            </p>
-            <h5
-              id="regular-text-bold"
-              style={{
-                opacity: availability ? 1 : 0.4,
-                color: "#4F4F4F",
-                marginBottom: 5,
-              }}
-            >
-              Details?
-            </h5>
-            <p
-              id="#offer-detail-response"
-              style={{
-                opacity: availability ? 1 : 0.4,
-                color: "#7F7F7F",
-                fontStyle: "italic",
-              }}
-            >
-              {`"${fields.details}"`}
-            </p>
-            {editOfferButton}
-          </div>
-        )}
+        {offerForm}
       </Col>
     </Row>
   );
