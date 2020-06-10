@@ -15,21 +15,19 @@ import { useFormFields } from "../libs/hooksLib";
 import { generateURL, validateEmail, extractTrueObj } from "../Helpers";
 
 import CheckForm from "../components/CheckForm";
-import NewCar from "../components_homepage/NewHasCar";
+import PhoneNumber from "../components/PhoneNumber";
 
 import Geocode from "react-geocode";
 
 export default function EditAccountInfoModal(props) {
   const [showChangeAssocModal, setShowChangeAssocModal] = useState(false);
-
   const [fields, handleFieldChange] = useFormFields({
     first_name: "",
     last_name: "",
     email: "",
-    phone: "",
     zip: "",
   });
-
+  const [phone, setPhone] = useState("");
   const [zip, setZip] = useState("");
   const [initialZip, setInitialZip] = useState("");
 
@@ -67,13 +65,7 @@ export default function EditAccountInfoModal(props) {
     "Misc.",
   ];
   const timeNames = ["Morning", "Afternoon", "Evening", "Weekdays", "Weekends"];
-  const languages = [
-    "English",
-    "Spanish",
-    "Mandarin",
-    "Cantonese",
-    "Other (Specify in details)",
-  ];
+  const languages = ["English", "Spanish", "Mandarin", "Cantonese", "Other"];
 
   const setCurrentUserObject = (userList, fullList, setFunction) => {
     for (var i = 0; i < fullList.length; i++) {
@@ -214,6 +206,7 @@ export default function EditAccountInfoModal(props) {
 
   const checkInputs = () => {
     var valid = true;
+
     if (Object.values(languageChecked).every((v) => v === false)) {
       setToastMessage("Need to select a language");
       valid = false;
@@ -229,9 +222,9 @@ export default function EditAccountInfoModal(props) {
       setToastMessage("Enter a last name");
       valid = false;
     } else if (
-      /^\d+$/.test(fields.phone) &&
-      fields.phone.length !== 10 &&
-      fields.phone.length !== 0
+      /^\d+$/.test(phone) &&
+      phone.length !== 10 &&
+      phone.length !== 0
     ) {
       setToastMessage("Enter a valid phone number");
       valid = false;
@@ -266,7 +259,7 @@ export default function EditAccountInfoModal(props) {
       first_name: fields.first_name,
       last_name: fields.last_name,
       email: fields.email,
-      phone: fields.phone,
+      phone,
       "offer.timesAvailable": selectedTimes,
       "offer.car": hasCar,
       "offer.neighborhoods": neighborhoods,
@@ -290,7 +283,7 @@ export default function EditAccountInfoModal(props) {
         first_name: fields.first_name,
         last_name: fields.last_name,
         email: fields.email,
-        phone: fields.phone,
+        phone,
         "offer.timesAvailable": selectedTimes,
         "offer.car": hasCar,
         languages: selectedLanguages,
@@ -334,7 +327,7 @@ export default function EditAccountInfoModal(props) {
           fields.first_name = props.user.first_name;
           fields.last_name = props.user.last_name;
           fields.email = props.user.email;
-          fields.phone = props.user.phone;
+          setPhone(props.user.phone);
           setLatLong(props.user.latlong);
           getZip(props.user.latlong);
           setAssociation(props.user.association);
@@ -359,6 +352,7 @@ export default function EditAccountInfoModal(props) {
                 defaultResources,
                 setResources
               );
+
               return;
             }
             let params = {
@@ -415,124 +409,151 @@ export default function EditAccountInfoModal(props) {
   if (isLoaded) {
     return (
       <>
-        <Modal.Header closeButton>
-          <Modal.Title>Your Profile</Modal.Title>
+        <Modal.Header
+          style={{
+            paddingTop: 17,
+            paddingBottom: 17,
+            marginLeft: 26,
+            marginRight: 26,
+          }}
+        >
+          <Modal.Title id="small-header">Your Profile</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Container
-            id="volunteer-info"
-            style={{
-              maxWidth: 2000,
-              marginBottom: 10,
-              marginLeft: 0,
-              marginRight: 0,
-              color: "black",
-            }}
-          >
-            <Row>
-              <Col>
-                <Form>
-                  <Row>
-                    <Form.Group as={Row} controlId="first_name">
-                      <Col sm={8}>
-                        <Form.Control
-                          value={fields.first_name}
-                          onChange={handleFieldChange}
-                        />
-                      </Col>
-                    </Form.Group>
+        <Modal.Body
+          style={{
+            paddingLeft: 26,
+            paddingRight: 26,
+            paddingTop: 20,
+            paddingBottom: 34,
+          }}
+        >
+          <Container style={{ padding: 0, margin: 0 }}>
+            <Form>
+              <Row>
+                <Col xs={6}>
+                  <Form.Group controlId="first_name" bssize="large">
+                    <Form.Label id="regular-text-bold">
+                      <b>{props.translations[props.language].FirstName}</b>
+                    </Form.Label>
+                    <Form.Control
+                      style={{
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                      }}
+                      value={fields.first_name}
+                      onChange={handleFieldChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={6}>
+                  <Form.Group controlId="last_name" bssize="large">
+                    <Form.Label id="regular-text-bold">
+                      <b>{props.translations[props.language].LastName}</b>
+                    </Form.Label>
+                    <Form.Control
+                      style={{
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        marginBottom: 16,
+                      }}
+                      value={fields.last_name}
+                      onChange={handleFieldChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12}>
+                  <Form.Group controlId="email" bssize="large">
+                    <Form.Label id="regular-text-bold">
+                      <b>{props.translations[props.language].email}</b>
+                    </Form.Label>
+                    <Form.Control
+                      style={{
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        marginBottom: 16,
+                      }}
+                      value={fields.email}
+                      onChange={handleFieldChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12}>
+                  <PhoneNumber
+                    style={{
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      marginBottom: 30,
+                    }}
+                    label={props.translations[props.language].phone}
+                    labelID="regular-text-bold"
+                    phoneNumber={phone}
+                    setPhoneNumber={setPhone}
+                  />
+                </Col>
 
-                    <Form.Group as={Row} controlId="last_name">
-                      <Col sm={8}>
-                        <Form.Control
-                          value={fields.last_name}
-                          onChange={handleFieldChange}
-                        />
-                      </Col>
-                    </Form.Group>
-                  </Row>
-                  <Row>
-                    <Form.Group as={Row} controlId="email">
-                      <Col sm={8}>
-                        <Form.Control
-                          value={fields.email}
-                          onChange={handleFieldChange}
-                        />
-                      </Col>
-                    </Form.Group>
-                    <Form.Group as={Row} controlId="phone">
-                      <Col sm={8}>
-                        <Form.Control
-                          value={fields.phone}
-                          onChange={handleFieldChange}
-                        />
-                      </Col>
-                    </Form.Group>
-                    <Col>
-                      <Form.Group
-                        as={Row}
-                        controlId="phone"
-                        controlid="locationString"
-                        className="mb-3"
-                      >
-                        <Form.Control
-                          placeholder="Zip code"
-                          onChange={(e) => setZip(e.target.value)}
-                          value={zip}
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  <h5
-                    id="regular-text-bold"
-                    style={{ marginBottom: 5, marginTop: 20 }}
-                  >
-                    What languages do you speak?
+                <Col xs={12}>
+                  <h5 id="regular-text-bold" style={{ marginBottom: 8 }}>
+                    {props.translations[props.language].WhatLanguageDoYouSpeak}
                   </h5>
+                </Col>
+                <Col xs={12} style={{ marginBottom: 2 }}>
+                  <h5 id="regular-text">
+                    If not listed, please mention in details section of your
+                    offer
+                  </h5>
+                </Col>
+                <Col xs={12}>
                   <CheckForm
                     obj={languageChecked}
                     setObj={setLanguageChecked}
                   />
-
-                  <h5
-                    id="regular-text-bold"
-                    style={{ marginBottom: 5, marginTop: 20 }}
-                  >
-                    What is your general availability?
+                </Col>
+              </Row>
+              {/*
+                 <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+                    Current zipcode
                   </h5>
-                  <CheckForm obj={times} setObj={setTimes} />
-
-                  <div
-                    style={
-                      showChangeAssocModal
-                        ? { display: "block" }
-                        : { display: "none" }
-                    }
-                  >
-                    <h5
-                      id="regular-text-bold"
-                      style={{ marginBottom: 5, marginTop: 20 }}
-                    >
-                      Your location has changed, please update your tasks here!
-                    </h5>
-                    <CheckForm obj={resources} setObj={setResources} />
-                  </div>
-                  <Row>
-                    <Button
-                      onClick={handleSubmit}
-                      id="large-button"
-                      style={{ width: "100%", marginTop: 20 }}
-                    >
-                      Update your info
-                    </Button>
-                  </Row>
-                  {/* <Button onClick={handleSubmit} id="request-button">Update your info</Button> */}
-                </Form>
-              </Col>
-            </Row>
+                  <InputGroup controlid="locationString" className="mb-3">
+                    <Form.Control
+                      placeholder="Zip code"
+                      onChange={(e) => setZip(e.target.value)}
+                      value={zip}
+                    />
+                    <InputGroup.Append>
+                      <Button
+                        variant="outline-secondary"
+                        onClick={updateLocation}
+                      >
+                        Update Zipcode
+                      </Button>
+                    </InputGroup.Append>
+                  </InputGroup> */}
+              <Button
+                onClick={handleSubmit}
+                id="large-button"
+                style={{ width: "100%", marginTop: 32 }}
+              >
+                Save Changes
+              </Button>
+              {/* <div
+                style={
+                  showChangeAssocModal
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+              >
+                <h5
+                  id="regular-text-bold"
+                  style={{ marginBottom: 5, marginTop: 20 }}
+                >
+                  Your location has changed, please update your tasks here!
+                </h5>
+                <CheckForm obj={resources} setObj={setResources} />
+              </div> */}
+            </Form>
           </Container>
         </Modal.Body>
+
         <Toast
           show={showToast}
           delay={1500}

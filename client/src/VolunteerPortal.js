@@ -266,7 +266,11 @@ export default function VolunteerPortal(props) {
           />
           <div class="flex-container">
             <div style={{ width: width < 980 ? "100%" : "75%", float: "left" }}>
-              <Jumbotron fluid id="jumbo-volunteer" style={{ paddingTop: 50 }}>
+              <Jumbotron
+                fluid
+                id="jumbo-volunteer"
+                style={{ marginLeft: 35, paddingTop: 10 }}
+              >
                 <ProfileHeader
                   user={user}
                   setShowAccountModal={setShowAccountModal}
@@ -275,7 +279,10 @@ export default function VolunteerPortal(props) {
               {mainContentView()}
             </div>
             <span
-              style={{ display: width < 980 ? "none" : "inline" }}
+              style={{
+                height: "95vh",
+                display: width < 980 ? "none" : "inline",
+              }}
               id="vertical-line"
             ></span>
             <div
@@ -288,11 +295,16 @@ export default function VolunteerPortal(props) {
               <Container>
                 <h1
                   id="home-heading"
-                  style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
+                  style={{
+                    marginTop: 72,
+                    marginBottom: 14,
+                    fontSize: 24,
+                    color: "#4F4F4F",
+                  }}
                 >
                   Important Information
                 </h1>
-                <p id="regular-text" style={{ fontSize: 16 }}>
+                <p id="regular-text" style={{ marginBottom: 28, fontSize: 16 }}>
                   Messages from your organization, Covaid updates, and
                   miscellaneous resources
                 </p>
@@ -312,6 +324,7 @@ export default function VolunteerPortal(props) {
         <Footer />
         <AccountInfo
           user={user}
+          language={props.language}
           showAccountModal={showAccountModal}
           setShowAccountModal={setShowAccountModal}
         />

@@ -64,7 +64,13 @@ export default function PhoneNumber(props) {
 
   return (
     <Form.Group controlId="phone" bssize="large">
+      {props.label && (
+        <Form.Label id={props.labelID}>
+          <b>{props.label}</b>
+        </Form.Label>
+      )}
       <Form.Control
+        style={props.style}
         placeholder={props.placeholder}
         value={props.phoneNumber}
         onKeyUp={handleChangePhone}

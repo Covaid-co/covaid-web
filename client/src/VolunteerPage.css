@@ -199,8 +199,13 @@
   color: white;
 }
 #offer-save-button:hover {
-  background-color: #2647ff;
+  background-color: #2661f9;
   transition: 0.5s;
+}
+#offer-edit-button:hover:enabled {
+  background-color: #2670ff;
+  color: white;
+  transition: 0.2s;
 }
 #large-activate-button,
 #large-inactivate-button {

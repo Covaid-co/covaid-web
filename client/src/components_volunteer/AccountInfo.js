@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EditAccountInfoModal from "./EditAccountInfoModal";
+import { translations } from "../translations/translations";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function AccountInfo(props) {
@@ -52,7 +53,11 @@ export default function AccountInfo(props) {
         style={{ marginTop: 10, paddingBottom: 50 }}
         centered
       >
-        <EditAccountInfoModal user={user} />
+        <EditAccountInfoModal
+          language={props.language}
+          translations={translations}
+          user={user}
+        />
       </Modal>
       // <Modal
       //   show={props.showAccountModal}

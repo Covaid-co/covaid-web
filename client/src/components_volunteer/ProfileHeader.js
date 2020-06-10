@@ -63,7 +63,7 @@ export default function ProfileHeader(props) {
 
   return (
     <>
-      <div style={{ marginLeft: 35, maxWidth: 2000 }}>
+      <div style={{ marginLeft: "5%", maxWidth: 2000 }}>
         <Row>
           <Col>
             <Image
@@ -87,6 +87,7 @@ export default function ProfileHeader(props) {
                   display: "inline-block",
                   fontSize: 28,
                   color: "#4F4F4F",
+                  textAlign: "left",
                 }}
               >
                 {props.user.first_name} {props.user.last_name}
@@ -121,7 +122,7 @@ export default function ProfileHeader(props) {
                 }}
               >
                 Edit Profile
-              </Button>{" "}
+              </Button>
             </Row>
           </Col>
         </Row>
