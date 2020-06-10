@@ -13,6 +13,7 @@ import Footer from "../components/Footer";
 
 export default function FAQ(props) {
   const [tab, setTab] = useState(0);
+  document.title = "Covaid | FAQ";
 
   const displayTab = (currTab) => {
     if (tab === currTab) {

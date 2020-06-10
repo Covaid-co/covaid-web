@@ -139,16 +139,14 @@ export default function RequestPage1(props) {
             setOnBehalf(!on_behalf);
           }}
         >
-          Request on behalf of someone else
+          {props.translations[props.language].OnBehalf}
         </p>
       </div>
       <Alert
         style={{ marginBottom: 20, display: on_behalf ? "block" : "none" }}
         variant={"warning"}
       >
-        Please fill in the fields above with information pertaining to the
-        person in need of support. If you’d like us to contact you, please leave
-        ur contact in the details on the next page.
+        {props.translations[props.language].BehalfWarning}
       </Alert>
       <h5 id="subtitle-light" style={{ marginTop: 10, marginBottom: 5 }}>
         {props.translations[props.language].WhatLanguageDoYouSpeak}

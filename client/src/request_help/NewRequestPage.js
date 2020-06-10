@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import Container from "react-bootstrap/Container";
@@ -27,6 +28,7 @@ import "./request.css";
 let translatedStrings = new LocalizedStrings({ translations });
 
 export default function NewRequestPage(props) {
+  const history = useHistory();
   const [locationString, setLocationString] = useState("");
   const [showInvalid, setShowInvalid] = useState(false);
   const [first_page, setFirstPage] = useState({});
@@ -42,6 +44,7 @@ export default function NewRequestPage(props) {
     if (props.zipcode !== "") {
       setLocationString(props.zipcode);
     }
+    document.title = "Request Support";
   }, [props.googleApiKey, props.zipcode]);
 
   const handleSubmit = (e) => {
@@ -157,7 +160,12 @@ export default function NewRequestPage(props) {
   };
 
   const stepText = () => {
-    var topHeader = <DefaultHeader />;
+    var topHeader = (
+      <DefaultHeader
+        translatedStrings={translatedStrings}
+        language={props.language}
+      />
+    );
     if (props.association && Object.keys(props.association).length > 0) {
       topHeader = (
         <OrgHeader
@@ -171,22 +179,19 @@ export default function NewRequestPage(props) {
     if (step_num === 0) {
       return (
         <>
-          <Button
-            id="back-button"
-            onClick={() => window.open(currURL, "_self")}
-          >
+          <Button id="back-button" onClick={() => history.push("/")}>
             ←
           </Button>
-          <p id="title">Step 1 —</p>
-          <p id="subtitle">Set your location</p>
+          <p id="title">{translatedStrings[props.language].Step} 1 —</p>
+          <p id="subtitle">{translatedStrings[props.language].SetLocation}</p>
           <p id="info">
-            We ask for your location so that{" "}
+            {translatedStrings[props.language].Step1Text1}{" "}
             {associationExists() ? (
               <a href={associationLink()}>{associationName()}</a>
             ) : (
               associationName()
             )}{" "}
-            can best match you to volunteers in your area.
+            {translatedStrings[props.language].Step1Text2}
           </p>
           <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
             <InputGroup id="set-location" bssize="large">
@@ -201,7 +206,7 @@ export default function NewRequestPage(props) {
                   id="location-change-button"
                   onClick={handleSubmit}
                 >
-                  Set Location
+                  {translatedStrings[props.language].SetLocationShort}
                 </Button>
               </InputGroup.Append>
             </InputGroup>
@@ -211,7 +216,7 @@ export default function NewRequestPage(props) {
             style={{ marginTop: 15, marginBottom: 30 }}
             onClick={() => confirmLocation(2)}
           >
-            Next
+            {translatedStrings[props.language].Next}
           </Button>
         </>
       );
@@ -232,7 +237,7 @@ export default function NewRequestPage(props) {
                   id="location-change-button"
                   onClick={handleSubmit}
                 >
-                  Change Location
+                  {translatedStrings[props.language].ChangeLocation}
                 </Button>
               </InputGroup.Append>
             </InputGroup>
@@ -244,7 +249,7 @@ export default function NewRequestPage(props) {
               confirmLocation(2);
             }}
           >
-            Next
+            {translatedStrings[props.language].Next}
           </Button>
         </>
       );
@@ -254,8 +259,8 @@ export default function NewRequestPage(props) {
           <Button id="back-button" onClick={() => setStepNum(0)}>
             ←
           </Button>
-          <p id="title">Step 2 —</p>
-          <p id="subtitle">Create a request</p>
+          <p id="title">{translatedStrings[props.language].Step} 2 —</p>
+          <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
         </>
       );
@@ -265,8 +270,8 @@ export default function NewRequestPage(props) {
           <Button id="back-button" onClick={() => setStepNum(2)}>
             ←
           </Button>
-          <p id="title">Step 2.5 —</p>
-          <p id="subtitle">Create a request</p>
+          <p id="title">{translatedStrings[props.language].Step} 2.5 —</p>
+          <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
         </>
       );
@@ -276,18 +281,17 @@ export default function NewRequestPage(props) {
           <Button id="back-button" onClick={() => setStepNum(3)}>
             ←
           </Button>
-          <p id="title">Step 3 -</p>
-          <p id="subtitle">Confirm request information</p>
-          <p id="info">
-            This is your last step! Please make sure your request information is
-            accurate.
+          <p id="title">{translatedStrings[props.language].Step} 3 -</p>
+          <p id="subtitle">
+            {translatedStrings[props.language].ConfirmRequest}
           </p>
+          <p id="info">{translatedStrings[props.language].LastStep}</p>
         </>
       );
     } else if (step_num === 5) {
       return (
         <>
-          <p id="title">Your Done!</p>
+          <p id="title">You're Done!</p>
           <p id="info">
             Our team will get back to you as soon as we can. Thank you for
             trusting Covaid with your needs.
@@ -397,7 +401,10 @@ export default function NewRequestPage(props) {
         orgPortal={true}
         simplified={true}
       />
-      <Container style={{ maxWidth: 2500, marginBottom: 50 }}>
+      <Container
+        style={{ maxWidth: 2500, marginBottom: 50 }}
+        id="request-container"
+      >
         <Row>
           <Col lg={6} md={6} sm={12} id="left-container">
             {associationExists() ? (

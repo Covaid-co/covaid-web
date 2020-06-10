@@ -153,26 +153,29 @@ exports.create_association = function (req, res) {
 exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
   if (req.body.email !== undefined) {
     var emailAddress = req.body.email;
-    Association.findOne({ email: emailAddress }, function (err, association) {
-      if (err) {
-        return res.sendStatus(403);
+    Association.findOne(
+      { email: { $regex: new RegExp(emailAddress, "i") } },
+      function (err, association) {
+        if (err) {
+          return res.sendStatus(403);
+        }
+        const today = new Date();
+        const expirationDate = new Date(today);
+        expirationDate.setMinutes(today.getMinutes() + 5);
+        if (association) {
+          var payload = {
+            id: association._id, // User ID from database
+            email: emailAddress,
+          };
+          var secret = association.hash;
+          var token = jwt.encode(payload, secret);
+          emailer.sendAssocPasswordLink(emailAddress, payload.id, token);
+          res.sendStatus(200);
+        } else {
+          return res.status(403).send("No accounts with that email");
+        }
       }
-      const today = new Date();
-      const expirationDate = new Date(today);
-      expirationDate.setMinutes(today.getMinutes() + 5);
-      if (association) {
-        var payload = {
-          id: association._id, // User ID from database
-          email: emailAddress,
-        };
-        var secret = association.hash;
-        var token = jwt.encode(payload, secret);
-        emailer.sendAssocPasswordLink(emailAddress, payload.id, token);
-        res.sendStatus(200);
-      } else {
-        return res.status(403).send("No accounts with that email");
-      }
-    });
+    );
   } else {
     return res.status(422).send("Email address is missing.");
   }

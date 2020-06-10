@@ -108,7 +108,11 @@ exports.createRequest = async function (request) {
     let new_request = request.status.volunteer
       ? await handleDirectMatch(request)
       : await handleGeneral(request); // if there is a volunteer attached to the request, create direct match. Otherwise, create general
-    new_request.time_posted = new Date();
+    if (new_request.time_posted) {
+      new_request.time_posted = Date.parse(new_request.time_posted);
+    } else {
+      new_request.time_posted = new Date();
+    }
     new_request["admin_info"] = {
       last_modified: new Date(),
       assignee: "No one assigned",
@@ -191,7 +195,7 @@ async function handleGeneral(request) {
     assoc: associationName,
     templateName: "org_notification",
   };
-  emailer.sendNotificationEmail(data);
+  // emailer.sendNotificationEmail(data);
   pusher.trigger(
     request.association,
     "general",

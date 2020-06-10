@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "name": "covaid-web",
+  "alias": "covaid-web.now.sh",
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@now/node"
+    },
+    {
+      "src": "client/package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "index.js"
+    },
+    {
+      "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "client/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=31536000,immutable"
+      },
+      "dest": "client/index.html"
+    }
+  ]
+}

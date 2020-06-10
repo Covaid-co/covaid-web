@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
-const queryString = require("query-string");
+const queryString = require("querystring");
 
 export default function Verify(props) {
   function verify() {

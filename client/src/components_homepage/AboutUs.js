@@ -17,7 +17,8 @@ import Eliza from "../assets/eliza.jpeg";
 import Daniella from "../assets/danielle.jpg";
 import Yoav from "../assets/yoav.jpg";
 import Sofia from "../assets/sofia.jpg";
-
+import Angela from "../assets/angela.jpg";
+import Ashwin from "../assets/ashwin.jpeg";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 
@@ -26,6 +27,7 @@ import Footer from "../components/Footer";
  */
 
 export default function AboutUs(props) {
+  document.title = "Covaid | About";
   const peoples = {
     "Jeffrey Li": {
       link: "https://www.instagram.com/lijeffrey39/",
@@ -79,6 +81,14 @@ export default function AboutUs(props) {
       link: "",
       image: Sofia,
     },
+    "Angela Luo": {
+      link: "https://www.linkedin.com/in/al490/",
+      image: Angela,
+    },
+    "Ashwin Saxena": {
+      link: "https://www.linkedin.com/in/ashwinsax/",
+      image: Ashwin,
+    },
   };
 
   const names = Object.keys(peoples);
@@ -101,10 +111,10 @@ export default function AboutUs(props) {
         <Row>
           <Col md={1} id="login-container"></Col>
           <Col md={10} id="login-container" style={{ textAlign: "center" }}>
-            <h1 id="home-heading" style={{ marginBottom: 40 }}>
+            <h1 id="home-heading" style={{ marginBottom: 40, fontSize: 60 }}>
               The People Behind<br></br>Covaid
             </h1>
-            <p id="regular-text" style={{ marginBottom: 40 }}>
+            <p id="regular-text" style={{ marginBottom: 40, fontSize: 20 }}>
               We're a group of college students/recent grads who want to play
               our part in the fight against COVID-19.
             </p>

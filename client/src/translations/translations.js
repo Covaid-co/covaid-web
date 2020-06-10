@@ -57,7 +57,7 @@ const translations = {
     VolunteerReachOutSoon:
       "Your request has been saved and you should be contacted soon from a matched volunteer who can support you!",
     RequestSupport: "Request support",
-    INeedHelp: "I need help",
+    INeedHelp: "I need support",
     BecomeVolunteer: "Become a Volunteer",
     "Academic/Professional": "",
     Donate: "Donate",
@@ -206,6 +206,23 @@ const translations = {
     OnceVerified:
       "Once verified, you will be able to post an offer to support your community directly from your volunteer portal.",
     VolunteerPortal: "Volunteer portal",
+    SetLocation: "Set your location",
+    Step: "Step",
+    Step1Text1: "We ask for your location so that",
+    Step1Text2: "can best match you to volunteers in your area.",
+    SetLocationShort: "Set location",
+    CreateRequest: "Create a request",
+    Step2Text1:
+      "Given your request, we will try and match you with a volunteer in your area.",
+    Step2Text2: "For those who would rather call in a request, please call ",
+    OnBehalf: "Request on behalf of someone else",
+    BehalfWarning:
+      "Please fill in the fields above with information pertaining to the person in need of support. If you’d like us to contact you, please leave your contact in the details on the next page",
+    ConfirmRequest: "Confirm request information",
+    RequestDetails: "Request Details",
+    ChangeLocation: "Change Location",
+    LastStep:
+      "This is your last step! Please make sure your request information is accurate.",
   },
   es: {
     intro:
@@ -420,6 +437,24 @@ const translations = {
     OnceVerified:
       "Una vez verificado, podrá publicar una oferta para apoyar a su comunidad directamente desde su portal de voluntarios.",
     VolunteerPortal: "Portal de voluntarios",
+    SetLocation: "Establece tu ubicación",
+    Step: "Paso",
+    Step1Text1: "Le pedimos su ubicación para que",
+    Step1Text2: "puede emparejarlo mejor con voluntarios en su área.",
+    SetLocationShort: "Escoger Localización",
+    CreateRequest: "Crear una solicitud",
+    Step2Text1:
+      "Ante su solicitud, intentaremos emparejarlo con un voluntario en su área.",
+    Step2Text2:
+      "Para aquellos que prefieren llamar en una solicitud, por favor llame ",
+    OnBehalf: "Solicitar en nombre de otra persona",
+    BehalfWarning:
+      "Complete los campos anteriores con información relacionada con la persona que necesita ayuda. Si desea que nos comuniquemos con usted, deje su contacto en los detalles de la página siguiente.",
+    ConfirmRequest: "Confirmar información de solicitud",
+    RequestDetails: "Pedir Detalles",
+    ChangeLocation: "Cambiar locación",
+    LastStep:
+      "Este es tu último paso! Asegúrese de que la información de su solicitud sea precisa.",
   },
 };
 export { translations };
