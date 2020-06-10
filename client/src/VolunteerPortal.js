@@ -185,10 +185,16 @@ export default function VolunteerPortal(props) {
           >
             Request Dashboard
           </h1>
-          <p id="regular-text" style={{ fontSize: 16, marginBottom: 20 }}>
+          <p
+            id="regular-text"
+            style={{ marginLeft: 1, fontSize: 16, marginBottom: 20 }}
+          >
             Respond to requests that have been delegated to you
           </p>
-          <p id="requestCall" style={{ marginTop: 15, marginBottom: 34 }}></p>
+          <p
+            id="requestCall"
+            style={{ marginTop: 15, marginBottom: 29, marginRight: -16 }}
+          ></p>
           <RequestDashboard
             pendingRequests={pendingRequests}
             acceptedRequests={acceptedRequests}
@@ -218,15 +224,20 @@ export default function VolunteerPortal(props) {
           >
             Your Offer
           </h1>
-          <p id="regular-text" style={{ fontSize: 16, marginBottom: 20 }}>
+          <p
+            id="regular-text"
+            style={{ marginLeft: 1, fontSize: 16, marginBottom: 20 }}
+          >
             Customize your volunteer experience
           </p>
-          <p id="requestCall" style={{ marginTop: 15, marginBottom: 29 }}></p>
+          <p
+            id="requestCall"
+            style={{ marginTop: 15, marginBottom: 29, marginRight: -16 }}
+          ></p>
           <Container
             style={{
               marginLeft: 0,
               paddingLeft: 0,
-              marginRight: 180,
               paddingRight: 0,
             }}
           >
@@ -264,12 +275,18 @@ export default function VolunteerPortal(props) {
             pageLoaded={true}
             isLoggedIn={true}
           />
+          <p id="requestCall" style={{ marginTop: -8, marginBottom: 0 }}></p>
           <div class="flex-container">
             <div style={{ width: width < 980 ? "100%" : "75%", float: "left" }}>
               <Jumbotron
                 fluid
                 id="jumbo-volunteer"
-                style={{ marginLeft: 35, paddingTop: 10 }}
+                style={{
+                  marginLeft: 35,
+                  paddingTop: 32,
+                  paddingBottom: 32,
+                  marginBottom: 16,
+                }}
               >
                 <ProfileHeader
                   user={user}
@@ -304,13 +321,12 @@ export default function VolunteerPortal(props) {
                 >
                   Important Information
                 </h1>
-                <p id="regular-text" style={{ marginBottom: 28, fontSize: 16 }}>
-                  Messages from your organization, Covaid updates, and
-                  miscellaneous resources
+                <p id="regular-text" style={{ fontSize: 16 }}>
+                  Messages from your organization
                 </p>
                 <p
                   id="requestCall"
-                  style={{ marginTop: 30, marginBottom: 10 }}
+                  style={{ marginTop: 20, marginBottom: 10 }}
                 ></p>
                 <VolunteerBeacons
                   beacons={beacons}

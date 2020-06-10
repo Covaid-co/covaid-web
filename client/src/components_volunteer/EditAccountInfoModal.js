@@ -411,8 +411,8 @@ export default function EditAccountInfoModal(props) {
       <>
         <Modal.Header
           style={{
-            paddingTop: 17,
-            paddingBottom: 17,
+            paddingTop: 16,
+            paddingBottom: 12,
             marginLeft: 26,
             marginRight: 26,
           }}

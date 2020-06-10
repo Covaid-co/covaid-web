@@ -50,28 +50,29 @@ export default function YourOffer(props) {
     fields.details = props.user.offer.details;
     setAvailability(props.user.availability);
     setHasCar(props.user.offer.car);
-    async function getResources() {
-      if (!props.user.association) {
-        setCurrentUserObject(
-          props.user.offer.tasks,
-          defaultResources,
-          setResources
-        );
-        return;
-      }
-      let params = { associationID: props.user.association };
-      var url = generateURL("/api/association/get_assoc/?", params);
-      const response = await fetch(url);
-      response.json().then((data) => {
-        setCurrentUserObject(
-          props.user.offer.tasks,
-          data.resources,
-          setResources
-        );
-      });
-    }
     getResources();
   }, [props.user]);
+
+  async function getResources() {
+    if (!props.user.association) {
+      setCurrentUserObject(
+        props.user.offer.tasks,
+        defaultResources,
+        setResources
+      );
+      return;
+    }
+    let params = { associationID: props.user.association };
+    var url = generateURL("/api/association/get_assoc/?", params);
+    const response = await fetch(url);
+    response.json().then((data) => {
+      setCurrentUserObject(
+        props.user.offer.tasks,
+        data.resources,
+        setResources
+      );
+    });
+  }
 
   // Update the state of offer, allow a 750 ms loading time
   function stateChange(setter, publish) {
@@ -201,6 +202,7 @@ export default function YourOffer(props) {
       <Button
         id="large-inactivate-button"
         onClick={() => handleUpdate(false, setIsUnPublish)}
+        style={{ marginBottom: 48 }}
       >
         {isUnPublish ? spinnerComponent : unpublishText}
       </Button>
@@ -356,13 +358,16 @@ export default function YourOffer(props) {
 
   return (
     <Row>
-      <Col>
-        <Container style={{ marginLeft: 0, paddingLeft: 0, marginRight: 128 }}>
-          {visibleText}
-          {statusChangeDescription}
-          {publishButton}
-        </Container>
-
+      <Col
+        xs={12}
+        sm={6}
+        md={6}
+        lg={6}
+        style={{ marginLeft: 0, paddingLeft: 16, marginRight: 80 }}
+      >
+        {visibleText}
+        {statusChangeDescription}
+        {publishButton}
         {/* <Alert
           style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
           variant={"danger"}
@@ -372,7 +377,7 @@ export default function YourOffer(props) {
           please refrain from marking yourself as available.
         </Alert> */}
       </Col>
-      <Col>
+      <Col style={{ alignContent: "left" }}>
         <Toast
           show={showToast}
           delay={toastTime}

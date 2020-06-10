@@ -168,8 +168,8 @@
   display: inline-block;
   margin-bottom: -20px;
   margin-right: 40px;
-  padding-bottom: 5px;
-  border-bottom: 4px solid #2670ff;
+  padding-bottom: 16px;
+  border-bottom: 3px solid #2670ff;
   cursor: pointer;
 }
 

@@ -93,6 +93,17 @@
 #resources-button:focus {
   box-shadow: none;
 }
+#small-button {
+  font-family: "Inter";
+  font-size: 14px;
+  background-color: transparent;
+  color: #2670ff;
+  border-color: #2670ff;
+  height: 36px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 8px;
+}
 
 #medium-button-solid {
   font-family: "Inter";
