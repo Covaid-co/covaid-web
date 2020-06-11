@@ -134,6 +134,59 @@ export default function CovaidNavbar(props) {
     // </select>
     // </>
   };
+  const Markk = () => {
+    return (
+      <Navbar expand="md" id="banner">
+        <span style={{ cursor: "pointer", fontWeight: 600 }}>
+          {width > 767
+            ? "Exclusive for Volunteers: Join the free Markk app and get gift cards from Postmates, Amazon, Target and more."
+            : "Join the Markk app and get free gift cards"}
+        </span>
+        <span
+          id="view-banner"
+          style={{ cursor: "pointer", fontWeight: 600 }}
+          onClick={() => window.open("http://www.getmarkk.com/volunteer")}
+        >
+          Read More →
+        </span>
+        <span id="close-banner" onClick={() => setDisplayBanner(false)}>
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+            shapeRendering="geometricPrecision"
+            style={{ color: "currentcolor" }}
+          >
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
+        </span>
+      </Navbar>
+    );
+  };
+  const BLM = () => {
+    return (
+      <Navbar
+        expand="md"
+        id="blmbanner"
+        onClick={() => window.open("https://blacklivesmatters.carrd.co/")}
+      >
+        <span style={{ cursor: "pointer", fontWeight: 600 }}>
+          {width > 767
+            ? "We stand with the Black Lives Matter Movement"
+            : "We stand with the BLM Movement"}
+        </span>
+        <span id="view-banner" style={{ cursor: "pointer", fontWeight: 600 }}>
+          Resources →
+        </span>
+      </Navbar>
+    );
+  };
 
   const rightNav = (mode) => {
     if (!props.isLoggedIn) {
@@ -204,6 +257,8 @@ export default function CovaidNavbar(props) {
       }
     } else {
       if (toggled) {
+        console.log("Width: " + width);
+
         return (
           <Form inline id="getStarted" style={{ display: "block" }}>
             {translateButton()}
@@ -218,6 +273,10 @@ export default function CovaidNavbar(props) {
           </Form>
         );
       } else {
+        console.log("Width: " + width);
+        console.log("ORG: " + props.orgPortal);
+        console.log("MODE: " + mode);
+
         return (
           <Form
             inline
@@ -230,7 +289,17 @@ export default function CovaidNavbar(props) {
             }}
           >
             {props.orgPortal || mode === "volunteer" ? (
-              <></>
+              <>
+                <p
+                  id={selectedTab(1)}
+                  onClick={() => {
+                    setTab(1);
+                    props.setView("your-offer");
+                  }}
+                >
+                  Your Offer
+                </p>
+              </>
             ) : (
               translateButton()
             )}
@@ -288,42 +357,17 @@ export default function CovaidNavbar(props) {
     }
   };
 
-  if (mode === "volunteer") {
-    return (
-      <>
-        <Navbar expand="md" id="banner">
-          <span style={{ cursor: "pointer", fontWeight: 600 }}>
-            Exclusive for Volunteers: Join the free Markk app and get gift cards
-            from Postmates, Amazon, Target and more.
-          </span>
-          <span
-            id="view-banner"
-            style={{ cursor: "pointer", fontWeight: 600 }}
-            onClick={() => window.open("http://www.getmarkk.com/volunteer")}
-          >
-            Read More →
-          </span>
-          <span id="close-banner">
-            <svg
-              viewBox="0 0 24 24"
-              width="18"
-              height="18"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              shapeRendering="geometricPrecision"
-              style={{ color: "currentcolor" }}
-            >
-              <path d="M18 6L6 18"></path>
-              <path d="M6 6l12 12"></path>
-            </svg>
-          </span>
-        </Navbar>
+  return (
+    <>
+      {props.isLoggedIn && !props.orgPortal && display_banner ? Markk() : BLM()}
+      {mode === "volunteer" ? (
         <Navbar
           collapseOnSelect
-          onToggle={(e) => setToggled(e)}
+          onToggle={(e) => {
+            if (props.setToggle) {
+              props.setToggle(e);
+            }
+          }}
           variant="light"
           expand="md"
           id="custom-navbar"
@@ -359,148 +403,97 @@ export default function CovaidNavbar(props) {
             {rightNav(mode)}
           </Navbar.Collapse>
         </Navbar>
-      </>
-    );
-  }
-
-  return (
-    <>
-      {props.isLoggedIn && !props.orgPortal && display_banner ? (
-        <Navbar expand="md" id="banner">
-          <span style={{ cursor: "pointer", fontWeight: 600 }}>
-            {width > 767
-              ? "Exclusive for Volunteers: Join the free Markk app and get gift cards from Postmates, Amazon, Target and more."
-              : "Join the Markk app and get free gift cards"}
-          </span>
-          <span
-            id="view-banner"
-            style={{ cursor: "pointer", fontWeight: 600 }}
-            onClick={() => window.open("http://www.getmarkk.com/volunteer")}
-          >
-            Read More →
-          </span>
-          <span id="close-banner" onClick={() => setDisplayBanner(false)}>
-            <svg
-              viewBox="0 0 24 24"
-              width="18"
-              height="18"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              shapeRendering="geometricPrecision"
-              style={{ color: "currentcolor" }}
-            >
-              <path d="M18 6L6 18"></path>
-              <path d="M6 6l12 12"></path>
-            </svg>
-          </span>
-        </Navbar>
       ) : (
         <Navbar
+          collapseOnSelect
+          onToggle={(e) => {
+            setToggled(e);
+            if (props.setToggle) {
+              props.setToggle(e);
+            }
+          }}
+          variant="light"
           expand="md"
-          id="blmbanner"
-          onClick={() => window.open("https://blacklivesmatters.carrd.co/")}
+          id="custom-navbar"
         >
-          <span style={{ cursor: "pointer", fontWeight: 600 }}>
-            {width > 767
-              ? "We stand with the Black Lives Matter Movement"
-              : "We stand with the BLM Movement"}
-          </span>
-          <span id="view-banner" style={{ cursor: "pointer", fontWeight: 600 }}>
-            Resources →
-          </span>
+          <Navbar.Brand
+            onClick={() => history.push("/")}
+            id="navbar-brand"
+            style={width < 767 ? { marginTop: 12 } : {}}
+          >
+            covaid
+          </Navbar.Brand>
+          <Form inline className="volunteer-badge-mobile">
+            <Navbar.Toggle
+              aria-controls="basic-navbar-nav"
+              id={toggled ? "toggledNav1" : "nav1"}
+            />
+          </Form>
+          <Navbar.Collapse id="basic-navbar-nav">
+            {props.simplified ? (
+              <Nav className="mr-auto">
+                <Nav.Link
+                  className={toggled ? "navBorderToggled" : "navbar-element"}
+                  onClick={() => history.push("/about")}
+                >
+                  <p id={toggled ? "navLinkToggled" : "navLink"}>
+                    {translatedStrings[props.language].AboutUs}
+                  </p>
+                </Nav.Link>
+                <Nav.Link
+                  className={toggled ? "navBorderToggled" : "navbar-element"}
+                  onClick={() => history.push("/faq")}
+                >
+                  <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
+                </Nav.Link>
+              </Nav>
+            ) : (
+              <Nav className="mr-auto">
+                <Nav.Link
+                  className={toggled ? "navBorderToggled" : "navbar-element"}
+                  onClick={() => history.push("/about")}
+                >
+                  <p id={toggled ? "navLinkToggled" : "navLink"}>
+                    {translatedStrings[props.language].AboutUs}
+                  </p>
+                </Nav.Link>
+                <Nav.Link
+                  className={toggled ? "navBorderToggled" : "navbar-element"}
+                  onClick={() => history.push("/organizationPortal")}
+                >
+                  <p id={toggled ? "navLinkToggled" : "navLink"}>
+                    {translatedStrings[props.language].Organizations}
+                  </p>
+                </Nav.Link>
+                <Nav.Link
+                  className={toggled ? "navBorderToggled" : "navbar-element"}
+                  onClick={() => history.push("/faq")}
+                >
+                  <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
+                </Nav.Link>
+                <Nav.Link
+                  className={toggled ? "navBorderToggled" : "navbar-element"}
+                  onClick={() => history.push("/donate")}
+                >
+                  <p id={toggled ? "navLinkToggled" : "navLink"}>
+                    {translatedStrings[props.language].Donate}
+                  </p>
+                </Nav.Link>
+                <Nav.Link
+                  className={toggled ? "navBorderToggled" : "navbar-element"}
+                  onClick={() => setCurrModal("map")}
+                >
+                  <p id={toggled ? "navLinkToggled" : "navLink"}>
+                    {translatedStrings[props.language].VolunteerMap}
+                  </p>
+                </Nav.Link>
+              </Nav>
+            )}
+            {rightNav()}
+          </Navbar.Collapse>
         </Navbar>
       )}
-      <Navbar
-        collapseOnSelect
-        onToggle={(e) => {
-          setToggled(e);
-          if (props.setToggle) {
-            props.setToggle(e);
-          }
-        }}
-        variant="light"
-        expand="md"
-        id="custom-navbar"
-      >
-        <Navbar.Brand
-          onClick={() => history.push("/")}
-          id="navbar-brand"
-          style={width < 767 ? { marginTop: 12 } : {}}
-        >
-          covaid
-        </Navbar.Brand>
-        <Form inline className="volunteer-badge-mobile">
-          <Navbar.Toggle
-            aria-controls="basic-navbar-nav"
-            id={toggled ? "toggledNav1" : "nav1"}
-          />
-        </Form>
-        <Navbar.Collapse id="basic-navbar-nav">
-          {props.simplified ? (
-            <Nav className="mr-auto">
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/about")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].AboutUs}
-                </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/faq")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
-              </Nav.Link>
-            </Nav>
-          ) : (
-            <Nav className="mr-auto">
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/about")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].AboutUs}
-                </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/organizationPortal")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].Organizations}
-                </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/faq")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/donate")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].Donate}
-                </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => setCurrModal("map")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].VolunteerMap}
-                </p>
-              </Nav.Link>
-            </Nav>
-          )}
-          {rightNav()}
-        </Navbar.Collapse>
-      </Navbar>
+
       {getCurrentModal()}
     </>
   );

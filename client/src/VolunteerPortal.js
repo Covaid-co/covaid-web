@@ -39,6 +39,7 @@ export default function VolunteerPortal(props) {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [view, setView] = useState("request-dashboard");
+  // const [toggle, setToggle] = useState(false);
   const { height, width } = useWindowDimensions();
   const { addToast } = useToasts();
 
@@ -266,6 +267,8 @@ export default function VolunteerPortal(props) {
           <div></div>
           <NavBar
             setLanguage={props.setLanguage}
+            // setToggle={setToggle}
+            simplified={true}
             language={"en"}
             isLoggedIn={true}
             mode={"volunteer"}
