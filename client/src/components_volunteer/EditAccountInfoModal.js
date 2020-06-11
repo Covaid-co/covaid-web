@@ -504,30 +504,12 @@ export default function EditAccountInfoModal(props) {
                 </Col>
                 <Col xs={12}>
                   <CheckForm
+                    sort={false}
                     obj={languageChecked}
                     setObj={setLanguageChecked}
                   />
                 </Col>
               </Row>
-              {/*
-                 <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
-                    Current zipcode
-                  </h5>
-                  <InputGroup controlid="locationString" className="mb-3">
-                    <Form.Control
-                      placeholder="Zip code"
-                      onChange={(e) => setZip(e.target.value)}
-                      value={zip}
-                    />
-                    <InputGroup.Append>
-                      <Button
-                        variant="outline-secondary"
-                        onClick={updateLocation}
-                      >
-                        Update Zipcode
-                      </Button>
-                    </InputGroup.Append>
-                  </InputGroup> */}
               <Button
                 onClick={handleSubmit}
                 id="large-button"
