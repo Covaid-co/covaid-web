@@ -586,6 +586,8 @@ textarea.form-control {
   margin-right: 10px;
   font-family: "Inter";
   color: black;
+  background: white;
+  z-index: 10;
   box-shadow: 0px -1px 10px -8px rgba(0, 0, 0, 0.7) !important;
 }
 

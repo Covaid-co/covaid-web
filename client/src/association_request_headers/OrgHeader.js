@@ -34,10 +34,7 @@ export default function OrgHeader(props) {
         {props.translations[props.language].formManage} {props.assoc.city}{" "}
         {props.translations[props.language].managedBy}.
       </p>
-      <p
-        id="request-calling"
-        style={{ borderBottom: "0px solid", marginBottom: 0, fontSize: 15 }}
-      >
+      <p id="regular-text" style={{ fontSize: 15 }}>
         {props.translations[props.language].call}:
         <br />
         <span id="phoneNumber">

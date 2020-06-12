@@ -186,6 +186,8 @@ function App() {
       setAssocByOrg("5edabb06b60b9b11e5c1be38");
     } else if (org === "berkshire") {
       setAssocByOrg("5edbf9e3211f520d08ee977f");
+    } else if (org === "evanston") {
+      setAssocByOrg("5ec59c04bcb4d4389861d588");
     }
   };
 
@@ -306,6 +308,11 @@ function App() {
             exact
             path="/berkshire-request"
             render={(props) => requestPage(props, "berkshire")}
+          />
+          <Route
+            exact
+            path="/evanston-request"
+            render={(props) => requestPage(props, "evanston")}
           />
           <Route
             exact

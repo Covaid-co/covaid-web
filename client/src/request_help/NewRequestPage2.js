@@ -60,7 +60,7 @@ export default function RequestPage1(props) {
         languages.push(selectedLanguages.selectedOptions[i].value);
       }
       if (languages.length === 0) {
-        languages.push('English');
+        languages.push("English");
       }
       const result = {
         phone: phone_number,
@@ -133,7 +133,7 @@ export default function RequestPage1(props) {
 
   return (
     <>
-      <h5 id="title-light" style={{marginBottom: 5}}>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
         {props.translations[props.language].personalInformation}
       </h5>
       <p
@@ -145,12 +145,12 @@ export default function RequestPage1(props) {
           fontSize: 14,
         }}
       >
-        {props.translations[props.language].emailOrPhone}.
+        {props.translations[props.language].emailOrPhone}
       </p>
       <div style={{ display: "table", marginBottom: 5 }}>
         <Form.Check
           type="checkbox"
-          style={{ marginTop: 0, marginRight: 5, display: "inline" }}
+          style={{ marginTop: 0, marginRight: 0, display: "inline" }}
           id="default-checkbox"
           checked={on_behalf}
           onChange={() => {
@@ -218,6 +218,7 @@ export default function RequestPage1(props) {
                   checked={contact == i}
                   type="radio"
                   value={i}
+                  style={{ marginRight: 0 }}
                   onChange={handleChangeContact}
                   name="formHorizontalRadios"
                   id={i}
@@ -250,14 +251,14 @@ export default function RequestPage1(props) {
       />
       {agreement}
       <Button id="large-button" style={{ marginTop: 20 }} onClick={goToSubmit}>
-        Review your Request
+        Review your request
       </Button>
       <Toast
         show={showToast}
         delay={toastTime}
         onClose={() => setShowToast(false)}
         autohide
-        style={{ marginBottom: 60 }}
+        style={{ marginBottom: 80, marginRight: 15 }}
         id="toastError"
       >
         <Toast.Body>{toastMessage}</Toast.Body>

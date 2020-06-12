@@ -104,19 +104,35 @@ export default function NewRequestPage1(props) {
   };
 
   const displayResourcePopup = () => {
-    return Object.keys(resources).map((key) => {
+    const text = Object.keys(resources).map((key) => {
       if (resources[key] && resource_popup[key]) {
         return (
-          <Alert
-            style={{ marginTop: 10, marginBottom: 0, fontSize: 14 }}
-            key={key}
-            variant={"warning"}
-          >
-            {resource_popup[key]}
-          </Alert>
+          <p style={{ marginBottom: 3 }}>
+            <font style={{ fontWeight: "bold" }}>{key + ": "}</font>
+            <font style={{ fontStyle: "italic" }}>{resource_popup[key]}</font>
+          </p>
         );
       }
     });
+
+    var found = false;
+    for (const key in resources) {
+      if (resources[key] && resource_popup[key]) {
+        found = true;
+      }
+    }
+
+    if (found) {
+      return (
+        <Alert
+          style={{ marginTop: 10, marginBottom: 0, fontSize: 14 }}
+          variant={"warning"}
+        >
+          {text}
+        </Alert>
+      );
+    }
+    return <></>;
   };
 
   const paymentMethod = () => {
@@ -181,7 +197,7 @@ export default function NewRequestPage1(props) {
         />
         <p
           id="behalf-text"
-          style={{fontSize: 14}}
+          style={{ fontSize: 14 }}
           onClick={() => {
             setPriority(!high_priority);
           }}
@@ -207,7 +223,7 @@ export default function NewRequestPage1(props) {
         delay={toastTime}
         onClose={() => setShowToast(false)}
         autohide
-        style={{ marginBottom: 60 }}
+        style={{ marginBottom: 80, marginRight: 15 }}
         id="toastError"
       >
         <Toast.Body>{toastMessage}</Toast.Body>

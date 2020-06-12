@@ -1,26 +1,42 @@
 #left-container {
   border-right: 1px solid #cecece;
   height: inherit;
-  margin-right: 0px;
   margin-top: 30px;
+  padding-right: 30px;
+}
+
+#right-container {
+  margin-top: 40px;
+  padding-bottom: 20px;
+  padding-left: 30px;
 }
 
 #outer {
-  /* margin-top: -60px; */
   margin-bottom: 50px;
-  /* margin-top: 10px; */
   height: 100vh;
-  margin-top: -30px;
+  margin-top: -50px;
+}
+
+#step-container {
+  max-width: 500px;
+  margin: auto;
+}
+
+#step2-container {
+  max-width: 450px;
+  margin: auto;
 }
 
 #request-container {
+  max-width: 3000px;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
 }
 
-#text-row {
-  margin-top: 0px;
+#request-container-step2 {
+  max-width: 3000px;
+  margin-top: 40px;
 }
 
 #separator {
@@ -29,12 +45,6 @@
 
 #small-margin {
   margin-top: 20px;
-}
-
-#right-container {
-  margin-top: 40px;
-  padding-left: 40px;
-  padding-bottom: 20px;
 }
 
 #border-top {
@@ -55,6 +65,14 @@
 }
 
 @media (max-width: 768px) {
+  #request-container-step2 {
+    margin-top: -15px;
+  }
+
+  #step2-container {
+    max-width: 500px;
+  }
+
   #request-container {
     transform: none;
     top: 0%;
@@ -69,8 +87,11 @@
 
   #left-container {
     border-right: 0px;
-    /* height: 350px; */
-    /* margin-top: 20px; */
+    padding-right: 15px;
+  }
+
+  #right-container {
+    padding-left: 15px;
   }
 
   #small-margin {

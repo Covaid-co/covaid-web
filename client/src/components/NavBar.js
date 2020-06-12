@@ -432,76 +432,80 @@ export default function CovaidNavbar(props) {
         >
           covaid
         </Navbar.Brand>
-        {!props.request_page ? 
-        <>
-        <Form inline className="volunteer-badge-mobile">
-          <Navbar.Toggle
-            aria-controls="basic-navbar-nav"
-            id={toggled ? "toggledNav1" : "nav1"}
-          />
-        </Form>
-        <Navbar.Collapse id="basic-navbar-nav">
-          {props.simplified ? (
-            <Nav className="mr-auto">
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/about")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].AboutUs}
-                </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/faq")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
-              </Nav.Link>
-            </Nav>
-          ) : (
-            <Nav className="mr-auto">
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/about")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].AboutUs}
-                </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/organizationPortal")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].Organizations}
-                </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/faq")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => history.push("/donate")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].Donate}
-                </p>
-              </Nav.Link>
-              <Nav.Link
-                className={toggled ? "navBorderToggled" : "navbar-element"}
-                onClick={() => setCurrModal("map")}
-              >
-                <p id={toggled ? "navLinkToggled" : "navLink"}>
-                  {translatedStrings[props.language].VolunteerMap}
-                </p>
-              </Nav.Link>
-            </Nav>
-          )}
-          {rightNav()}
-        </Navbar.Collapse></> : <></>}
+        {!props.request_page ? (
+          <>
+            <Form inline className="volunteer-badge-mobile">
+              <Navbar.Toggle
+                aria-controls="basic-navbar-nav"
+                id={toggled ? "toggledNav1" : "nav1"}
+              />
+            </Form>
+            <Navbar.Collapse id="basic-navbar-nav">
+              {props.simplified ? (
+                <Nav className="mr-auto">
+                  <Nav.Link
+                    className={toggled ? "navBorderToggled" : "navbar-element"}
+                    onClick={() => history.push("/about")}
+                  >
+                    <p id={toggled ? "navLinkToggled" : "navLink"}>
+                      {translatedStrings[props.language].AboutUs}
+                    </p>
+                  </Nav.Link>
+                  <Nav.Link
+                    className={toggled ? "navBorderToggled" : "navbar-element"}
+                    onClick={() => history.push("/faq")}
+                  >
+                    <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
+                  </Nav.Link>
+                </Nav>
+              ) : (
+                <Nav className="mr-auto">
+                  <Nav.Link
+                    className={toggled ? "navBorderToggled" : "navbar-element"}
+                    onClick={() => history.push("/about")}
+                  >
+                    <p id={toggled ? "navLinkToggled" : "navLink"}>
+                      {translatedStrings[props.language].AboutUs}
+                    </p>
+                  </Nav.Link>
+                  <Nav.Link
+                    className={toggled ? "navBorderToggled" : "navbar-element"}
+                    onClick={() => history.push("/organizationPortal")}
+                  >
+                    <p id={toggled ? "navLinkToggled" : "navLink"}>
+                      {translatedStrings[props.language].Organizations}
+                    </p>
+                  </Nav.Link>
+                  <Nav.Link
+                    className={toggled ? "navBorderToggled" : "navbar-element"}
+                    onClick={() => history.push("/faq")}
+                  >
+                    <p id={toggled ? "navLinkToggled" : "navLink"}>FAQ</p>
+                  </Nav.Link>
+                  <Nav.Link
+                    className={toggled ? "navBorderToggled" : "navbar-element"}
+                    onClick={() => history.push("/donate")}
+                  >
+                    <p id={toggled ? "navLinkToggled" : "navLink"}>
+                      {translatedStrings[props.language].Donate}
+                    </p>
+                  </Nav.Link>
+                  <Nav.Link
+                    className={toggled ? "navBorderToggled" : "navbar-element"}
+                    onClick={() => setCurrModal("map")}
+                  >
+                    <p id={toggled ? "navLinkToggled" : "navLink"}>
+                      {translatedStrings[props.language].VolunteerMap}
+                    </p>
+                  </Nav.Link>
+                </Nav>
+              )}
+              {rightNav()}
+            </Navbar.Collapse>
+          </>
+        ) : (
+          <></>
+        )}
       </Navbar>
       {getCurrentModal()}
     </>

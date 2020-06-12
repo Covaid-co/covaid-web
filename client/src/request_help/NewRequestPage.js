@@ -179,23 +179,38 @@ export default function NewRequestPage(props) {
     }
 
     const langSelection = (clickFn, extraMargin) => {
-      return <div id={extraMargin ? "small-margin" : ""}>
-      <Button id="back-button" onClick={clickFn} style={{display: 'inline'}}>
-        ←
-      </Button>
-      <Button
-        id={props.language === "en" ? "volunteer-not-selected" : "volunteer-selected"}
-        onClick={()=>props.setLanguage("es")}
-      >
-        Spanish
-      </Button>
-      <Button
-        id={props.language === "en" ? "volunteer-selected" : "volunteer-not-selected"}
-        onClick={()=>props.setLanguage("en")}
-      >
-        English
-      </Button>
-    </div>}
+      return (
+        <div id={extraMargin ? "small-margin" : ""}>
+          <Button
+            id="back-button"
+            onClick={clickFn}
+            style={{ display: "inline" }}
+          >
+            ←
+          </Button>
+          <Button
+            id={
+              props.language === "en"
+                ? "volunteer-not-selected"
+                : "volunteer-selected"
+            }
+            onClick={() => props.setLanguage("es")}
+          >
+            Spanish
+          </Button>
+          <Button
+            id={
+              props.language === "en"
+                ? "volunteer-selected"
+                : "volunteer-not-selected"
+            }
+            onClick={() => props.setLanguage("en")}
+          >
+            English
+          </Button>
+        </div>
+      );
+    };
 
     if (step_num === 0) {
       return (
@@ -277,7 +292,7 @@ export default function NewRequestPage(props) {
       return (
         <>
           {langSelection(() => setStepNum(0), false)}
-          {associationExists() ?  <></> : <div id="separator"></div>}
+          {associationExists() ? <></> : <div id="separator"></div>}
           <p id="title">{translatedStrings[props.language].Step} 2 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
@@ -287,7 +302,7 @@ export default function NewRequestPage(props) {
       return (
         <>
           {langSelection(() => setStepNum(2), false)}
-          {associationExists() ?  <></> : <div id="separator"></div>}
+          {associationExists() ? <></> : <div id="separator"></div>}
           <p id="title">{translatedStrings[props.language].Step} 3 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           {topHeader}
@@ -298,7 +313,7 @@ export default function NewRequestPage(props) {
         <>
           {langSelection(() => setStepNum(3), true)}
           <div id="separator"></div>
-          <p id="subtitle" style={{marginTop: 50}}>
+          <p id="subtitle" style={{ marginTop: 50 }}>
             {translatedStrings[props.language].ConfirmRequest}
           </p>
           <p id="info">{translatedStrings[props.language].LastStep}</p>
@@ -336,37 +351,31 @@ export default function NewRequestPage(props) {
       );
     } else if (step_num === 2) {
       return (
-        <Row>
-          <Col sm={1} md={0} lg={2}></Col>
-          <Col sm={10} md={12} lg={8}>
-            <p id="border-top">&nbsp;</p>
-            <NewRequestPage1
-              setFirstPage={setFirstPage}
-              first_page={first_page}
-              setStepNum={setStepNum}
-              currentAssoc={props.association}
-              translations={translatedStrings}
-              language={props.language}
-            />
-          </Col>
-        </Row>
+        <>
+          <p id="border-top">&nbsp;</p>
+          <NewRequestPage1
+            setFirstPage={setFirstPage}
+            first_page={first_page}
+            setStepNum={setStepNum}
+            currentAssoc={props.association}
+            translations={translatedStrings}
+            language={props.language}
+          />
+        </>
       );
     } else if (step_num === 3) {
       return (
-        <Row>
-          <Col sm={0} md={0} lg={2}></Col>
-          <Col sm={12} md={12} lg={8}>
-            <p id="border-top">&nbsp;</p>
-            <NewRequestPage2
-              currentAssoc={props.association}
-              second_page={second_page}
-              setStepNum={setStepNum}
-              setSecondPage={setSecondPage}
-              translations={translatedStrings}
-              language={props.language}
-            />
-          </Col>
-        </Row>
+        <>
+          <p id="border-top">&nbsp;</p>
+          <NewRequestPage2
+            currentAssoc={props.association}
+            second_page={second_page}
+            setStepNum={setStepNum}
+            setSecondPage={setSecondPage}
+            translations={translatedStrings}
+            language={props.language}
+          />
+        </>
       );
     } else if (step_num === 4) {
       return (
@@ -401,7 +410,7 @@ export default function NewRequestPage(props) {
         onClose={() => setShowInvalid(false)}
         autohide
         id="toastError"
-        style={{ marginBottom: -50, marginRight: 0 }}
+        style={{ marginBottom: 90, marginRight: 15 }}
       >
         <Toast.Body>{toast_message}</Toast.Body>
       </Toast>
@@ -419,27 +428,26 @@ export default function NewRequestPage(props) {
         request_page={true}
       />
       <div id="outer">
-        <Container style={(step_num === 2) ? { maxWidth: 2500, marginTop: 20 } : { maxWidth: 2500 } } id={(step_num === 2) ? "": "request-container"}>
+        <Container
+          id={step_num === 2 ? "request-container-step2" : "request-container"}
+        >
           <Row>
             <Col lg={6} md={6} sm={12} id="left-container">
-              <Row
-                id="text-row"
-                style={step_num === 2 || step_num === 3 ? { marginTop: 20 } : {}}
-              >
-                <Col xl={1} lg={1} md={0} sm={0}></Col>
-                <Col xl={10} lg={10} md={12} sm={12}>
-                  {stepText()}
-                  {toastObj()}
-                </Col>
-              </Row>
+              <div id="step-container">
+                {stepText()}
+                {toastObj()}
+              </div>
             </Col>
-            <Col lg={6} md={6} sm={0} id="right-container">
-              {mapRequest()}
+            <Col lg={6} md={6} sm={12} id="right-container">
+              <div id={step_num === 2 ? "step2-container" : "step-container"}>
+                {mapRequest()}
+              </div>
             </Col>
           </Row>
         </Container>
       </div>
-    </div>);
+    </div>
+  );
 }
 
 NewRequestPage.propTypes = {

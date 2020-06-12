@@ -209,7 +209,7 @@ const translations = {
     SetLocation: "Set your location",
     Step: "Step",
     Step1Text1: "We ask for your location so that",
-    Step1Text2: "can best match you to volunteers in your area.",
+    Step1Text2: "can best match you to volunteers in your area",
     SetLocationShort: "Set location",
     CreateRequest: "Create a request",
     Step2Text1:
