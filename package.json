@@ -14,6 +14,8 @@
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^2.4.2",
     "@sendgrid/mail": "^7.0.0",
+    "@turf/boolean-point-in-polygon": "^6.0.1",
+    "@turf/circle": "^6.0.1",
     "@turf/difference": "^6.0.1",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",

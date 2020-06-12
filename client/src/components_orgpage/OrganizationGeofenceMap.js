@@ -60,7 +60,7 @@ export default function GeofenceMap(props) {
           ...viewport,
           longitude: props.association.location.coordinates[0],
           latitude: props.association.location.coordinates[1],
-          zoom: 10,
+          zoom: 8,
         });
       }
       

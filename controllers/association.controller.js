@@ -5,6 +5,8 @@ const asyncWrapper = require("../util/asyncWrapper");
 var jwt = require("jwt-simple");
 const emailer = require("../util/emailer");
 const distance_tools = require("../util/distance_tools");
+var turf = require("@turf/boolean-point-in-polygon");
+var circle = require("@turf/circle");
 
 exports.add_resource_link = function (req, res) {
   const id = req.body.associationID;
@@ -220,9 +222,36 @@ exports.resetPassword = asyncWrapper(async (req, res) => {
   });
 });
 
+// exports.assoc_by_lat_long_radius = asyncWrapper(async (req, res) => {
+//   var latitude = req.query.latitude;
+//   var longitude = req.query.longitude;
+
+//   var associations = await Association.find({});
+//   var relevantAssociations = [];
+
+//   for (var i = 0; i < associations.length; i++) {
+//     var currentAssociation = associations[i];
+//     if (currentAssociation.name !== "Covaid") {
+//       var rad = currentAssociation.radius;
+//       var currentAssociationLat = currentAssociation.location.coordinates[1];
+//       var currentAssociationLong = currentAssociation.location.coordinates[0];
+//       var distance =
+//         distance_tools.calcDistance(
+//           latitude,
+//           longitude,
+//           currentAssociationLat,
+//           currentAssociationLong
+//         ) / 1609.34;
+//       if (distance <= rad) {
+//         relevantAssociations.push(currentAssociation);
+//       }
+//     }
+//   }
+//   res.send(relevantAssociations);
+// });
+
 exports.assoc_by_lat_long = asyncWrapper(async (req, res) => {
-  var latitude = req.query.latitude;
-  var longitude = req.query.longitude;
+  var req_coord = [req.query.longitude, req.query.latitude];
 
   var associations = await Association.find({});
   var relevantAssociations = [];
@@ -230,18 +259,12 @@ exports.assoc_by_lat_long = asyncWrapper(async (req, res) => {
   for (var i = 0; i < associations.length; i++) {
     var currentAssociation = associations[i];
     if (currentAssociation.name !== "Covaid") {
-      var rad = currentAssociation.radius;
-      var currentAssociationLat = currentAssociation.location.coordinates[1];
-      var currentAssociationLong = currentAssociation.location.coordinates[0];
-      var distance =
-        distance_tools.calcDistance(
-          latitude,
-          longitude,
-          currentAssociationLat,
-          currentAssociationLong
-        ) / 1609.34;
-      if (distance <= rad) {
-        relevantAssociations.push(currentAssociation);
+      var geofences = currentAssociation.geofences.features
+      for (var f = 0; f < geofences.length; f++) {
+        var currGeofence = geofences[f];
+        if (turf.default(req_coord, currGeofence)) {
+          relevantAssociations.push(currentAssociation);
+        }
       }
     }
   }
