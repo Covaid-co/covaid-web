@@ -162,7 +162,7 @@ const translations = {
     Locality: "We've identified the following as your primary locality",
     RegisterPage1_Text:
       "We use this so that you can be matched with neighbors in need of supportin your community! (If they seem unfamiliar, please change your location above)",
-    PersonalInfo: "Personal Informaiton",
+    PersonalInfo: "Personal Information",
     FirstName: "First Name",
     LastName: "Last Name",
     PreferredPronouns: "Preferred Pronouns (Optional)",
