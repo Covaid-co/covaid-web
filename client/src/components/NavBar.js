@@ -429,11 +429,7 @@ export default function CovaidNavbar(props) {
 
   return (
     <>
-      {props.isLoggedIn &&
-        !props.orgPortal &&
-        display_banner &&
-        // ? Markk() :
-        BLM()}
+      {BLM()}
       {mode === "volunteer" ? (
         <Navbar
           collapseOnSelect
