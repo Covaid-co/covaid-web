@@ -73,11 +73,11 @@ export default function RequestColumn(props) {
       >
         {title}
       </p>
-      {props.requests.length === 0 ? (
+      {/* {props.requests.length === 0 ? (
         <p id="requestCall" style={{ marginTop: 4, marginBottom: 0 }}></p>
-      ) : (
-        <p style={{ marginBottom: 4 }}></p>
-      )}
+      ) : ( */}
+      <p style={{ marginBottom: 4 }}></p>
+      {/* )} */}
       <div style={{ overflowY: "scroll", height: 350 }}>{requestCards()}</div>
     </>
   );

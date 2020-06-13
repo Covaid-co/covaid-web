@@ -325,7 +325,7 @@ export default function VolunteerPortal(props) {
                     <h1
                       id="home-heading"
                       style={{
-                        marginTop: 72,
+                        marginTop: 44,
                         marginBottom: 14,
                         fontSize: 24,
                         color: "#4F4F4F",
