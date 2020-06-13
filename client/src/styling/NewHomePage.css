@@ -653,7 +653,7 @@ textarea.form-control {
 .logout-dropdown-item:hover {
   color: white;
   background-color: #ae2f2f !important;
-  opacity: 0.85;
+  opacity: 0.95;
 }
 .dropdown-menu.show {
   margin-top: 14px !important;
