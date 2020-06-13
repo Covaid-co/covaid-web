@@ -291,60 +291,60 @@ export default function CovaidNavbar(props) {
             ) : (
               translateButton()
             )}
-            {/* {width > 767 && !props.orgPortal ? ( */}
-            <Dropdown
-              key="volunteer-dropdown"
-              style={{
-                display: "inline",
-                marginLeft: 8,
-                paddingTop: -4,
-              }}
-              // className="mobileDrop"
-              // title={` Drop ${"down"} `}
-            >
-              <Dropdown.Toggle
-                size="md"
-                id="languageButton"
-                style={{ paddingTop: 0, paddingBottom: 2 }}
+            {width > 767 && !props.orgPortal ? (
+              <Dropdown
+                key="volunteer-dropdown"
+                style={{
+                  display: "inline",
+                  marginLeft: 8,
+                  paddingTop: -4,
+                }}
+                // className="mobileDrop"
+                // title={` Drop ${"down"} `}
               >
-                <span id="hello-name" style={{ marginRight: 0 }}>
-                  {" "}
-                  {translatedStrings[props.language].Hello} {props.first_name}
-                  <svg
-                    className="dropdown-svg"
-                    width="17"
-                    height="9"
-                    viewBox="0 0 17 9"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1 1L8.35849 7.5L16 1"
-                      stroke="#2670FF"
-                      strokeWidth="2"
-                    />
-                  </svg>
-                </span>
-              </Dropdown.Toggle>
-              <Dropdown.Menu alignRight={true} style={{ marginTop: 10 }}>
-                {!props.volunteerPortal && (
-                  <Dropdown.Item
-                    active={false}
-                    style={{ transition: "0.1s" }}
-                    onClick={() => {
-                      // if (props.setView) {
-                      //   setTab(0);
-                      //   props.setView("request-dashboard");
-                      //   window.location.href = "#requests";
-                      // } else {
-                      window.open(currURL + "/volunteerPortal", "_self");
-                      // }
-                    }}
-                  >
-                    {"Your Portal"}
-                  </Dropdown.Item>
-                )}
-                {/* {!props.volunteerPortal && (
+                <Dropdown.Toggle
+                  size="md"
+                  id="languageButton"
+                  style={{ paddingTop: 0, paddingBottom: 2 }}
+                >
+                  <span id="hello-name" style={{ marginRight: 0 }}>
+                    {" "}
+                    {translatedStrings[props.language].Hello} {props.first_name}
+                    <svg
+                      className="dropdown-svg"
+                      width="17"
+                      height="9"
+                      viewBox="0 0 17 9"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M1 1L8.35849 7.5L16 1"
+                        stroke="#2670FF"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu alignRight={true} style={{ marginTop: 10 }}>
+                  {!props.volunteerPortal && (
+                    <Dropdown.Item
+                      active={false}
+                      style={{ transition: "0.1s" }}
+                      onClick={() => {
+                        // if (props.setView) {
+                        //   setTab(0);
+                        //   props.setView("request-dashboard");
+                        //   window.location.href = "#requests";
+                        // } else {
+                        window.open(currURL + "/volunteerPortal", "_self");
+                        // }
+                      }}
+                    >
+                      {"Your Portal"}
+                    </Dropdown.Item>
+                  )}
+                  {/* {!props.volunteerPortal && (
                   <Dropdown.Item
                     style={{ transition: "0.1s" }}
                     active={false}
@@ -368,17 +368,17 @@ export default function CovaidNavbar(props) {
                   </Dropdown.Item>
                 )} */}
 
-                <Dropdown.Item
-                  style={{ transition: "0.1s" }}
-                  className="logout-dropdown-item"
-                  active={false}
-                  onClick={logout}
-                >
-                  {"Log out"}
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            {/* ) : (
+                  <Dropdown.Item
+                    style={{ transition: "0.1s" }}
+                    className="logout-dropdown-item"
+                    active={false}
+                    onClick={logout}
+                  >
+                    {"Log out"}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
               <>
                 <Button
                   variant="outline-danger"
@@ -388,7 +388,7 @@ export default function CovaidNavbar(props) {
                   {translatedStrings[props.language].Logout}
                 </Button>
               </>
-            )} */}
+            )}
           </Form>
         );
       }
