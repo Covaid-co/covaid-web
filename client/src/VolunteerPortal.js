@@ -242,10 +242,12 @@ export default function VolunteerPortal(props) {
             style={{ marginTop: 15, marginBottom: 29, marginRight: -16 }}
           ></p>
           <Container
+            className={width > 767 ? `` : `your-offer-small`}
             style={{
               marginLeft: 0,
               paddingLeft: 0,
               paddingRight: 0,
+              marginRight: width > 767 ? "auto" : 0,
             }}
           >
             {foundUser ? (
@@ -270,11 +272,10 @@ export default function VolunteerPortal(props) {
     return (
       <>
         <div className="App" style={{ marginBottom: 30 }}>
-          <div></div>
           <NavBar
             setLanguage={props.setLanguage}
             // setToggle={setToggle}
-            simplified={true}
+            // simplified={true}
             language={"en"}
             isLoggedIn={true}
             mode={"volunteer"}
@@ -285,7 +286,7 @@ export default function VolunteerPortal(props) {
           />
           <p id="requestCall" style={{ marginTop: -8, marginBottom: 0 }}></p>
           <div class="flex-container">
-            <div style={{ width: "75%", float: "left" }}>
+            <div style={{ width: width > 767 ? "75%" : "95%", float: "left" }}>
               <Jumbotron
                 fluid
                 id="jumbo-volunteer"
@@ -303,46 +304,50 @@ export default function VolunteerPortal(props) {
               </Jumbotron>
               {mainContentView()}
             </div>
-            <span
-              style={{
-                height: "95vh",
-                display: "inline",
-              }}
-              id="vertical-line"
-            ></span>
-            <div
-              style={{
-                width: "23%",
-                float: "left",
-                height: "100%",
-              }}
-            >
-              <Container>
-                <h1
-                  id="home-heading"
+            {width > 767 && (
+              <>
+                <span
                   style={{
-                    marginTop: 72,
-                    marginBottom: 14,
-                    fontSize: 24,
-                    color: "#4F4F4F",
+                    height: "95vh",
+                    display: "inline",
+                  }}
+                  id="vertical-line"
+                ></span>
+                <div
+                  style={{
+                    width: "23%",
+                    float: "left",
+                    height: "100%",
                   }}
                 >
-                  Important Information
-                </h1>
-                <p id="regular-text" style={{ fontSize: 16 }}>
-                  Messages from your organization
-                </p>
-                <p
-                  id="requestCall"
-                  style={{ marginTop: 20, marginBottom: 10 }}
-                ></p>
-                <VolunteerBeacons
-                  beacons={beacons}
-                  volunteer={user}
-                  fetchBeacons={fetchBeacons}
-                />
-              </Container>
-            </div>
+                  <Container>
+                    <h1
+                      id="home-heading"
+                      style={{
+                        marginTop: 72,
+                        marginBottom: 14,
+                        fontSize: 24,
+                        color: "#4F4F4F",
+                      }}
+                    >
+                      Important Information
+                    </h1>
+                    <p id="regular-text" style={{ fontSize: 16 }}>
+                      Messages from your organization
+                    </p>
+                    <p
+                      id="requestCall"
+                      style={{ marginTop: 20, marginBottom: 10 }}
+                    ></p>
+                    <VolunteerBeacons
+                      beacons={beacons}
+                      volunteer={user}
+                      fetchBeacons={fetchBeacons}
+                    />
+                  </Container>
+                </div>{" "}
+              </>
+            )}
           </div>
         </div>
         <Footer style={{ marginTop: -4 }} />

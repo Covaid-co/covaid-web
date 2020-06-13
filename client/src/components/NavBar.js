@@ -91,7 +91,7 @@ export default function CovaidNavbar(props) {
           <i
             className="fa fa-globe"
             aria-hidden="true"
-            style={{ marginRight: 7, paddingTop: 7 }}
+            style={{ marginRight: 7, paddingTop: 5 }}
           ></i>
           {props.language === "en" ? "English" : "Español"}
         </Dropdown.Toggle>
@@ -136,9 +136,13 @@ export default function CovaidNavbar(props) {
   };
   const Markk = () => {
     return (
-      <Navbar expand="md" id="banner">
+      <Navbar
+        expand="md"
+        id="banner"
+        style={{ height: width > 767 ? "auto" : 40 }}
+      >
         <span style={{ cursor: "pointer", fontWeight: 600 }}>
-          {width > 767
+          {width > 932
             ? "Exclusive for Volunteers: Join the free Markk app and get gift cards from Postmates, Amazon, Target and more."
             : "Join the Markk app and get free gift cards"}
         </span>
@@ -290,11 +294,19 @@ export default function CovaidNavbar(props) {
             {/* {width > 767 && !props.orgPortal ? ( */}
             <Dropdown
               key="volunteer-dropdown"
-              style={{ display: "inline", marginLeft: 8 }}
+              style={{
+                display: "inline",
+                marginLeft: 8,
+                paddingTop: -4,
+              }}
               // className="mobileDrop"
               // title={` Drop ${"down"} `}
             >
-              <Dropdown.Toggle size="md" id="languageButton">
+              <Dropdown.Toggle
+                size="md"
+                id="languageButton"
+                style={{ paddingTop: 0, paddingBottom: 2 }}
+              >
                 <span id="hello-name" style={{ marginRight: 0 }}>
                   {" "}
                   {translatedStrings[props.language].Hello} {props.first_name}

@@ -267,3 +267,6 @@
   font-weight: 600;
   font-size: 20px;
 }
+.your-offer-small {
+  max-width: none !important;
+}

@@ -13,9 +13,10 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Toast from "react-bootstrap/Toast";
-import Alert from "react-bootstrap/Alert";
 import Details from "../components_homepage/Details";
 import NewCar from "../components_homepage/NewHasCar";
+import Alert from "react-bootstrap/Alert";
+import { useWindowDimensions } from "../../src/libs/hooksLib";
 
 import { generateURL, extractTrueObj } from "../Helpers";
 import { defaultResources, toastTime } from "../constants";
@@ -32,6 +33,8 @@ export default function YourOffer(props) {
   const [isUpdate, setIsUpdate] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [hasCar, setHasCar] = useState(false);
+
+  const { height, width } = useWindowDimensions();
 
   // Helper function to update list state elements
   const setCurrentUserObject = (userList, fullList, setFunction) => {
@@ -162,11 +165,11 @@ export default function YourOffer(props) {
       {isActive ? spinnerComponent : publishText}
     </Button>
   );
-  const inactivateButton = (
+  const deactivateButton = (
     <Button
       id="large-inactivate-button"
       onClick={() => handleUpdate(false, setIsUnPublish)}
-      style={{ marginBottom: 48 }}
+      style={{ marginBottom: width > 836 ? 48 : 36 }}
     >
       {isUnPublish ? spinnerComponent : unpublishText}
     </Button>
@@ -197,7 +200,21 @@ export default function YourOffer(props) {
       {editText}
     </Button>
   );
-
+  const volunteerAlert = (
+    <Alert
+      style={{
+        marginTop: 10,
+        marginBottom: 20,
+        fontSize: 14,
+        color: "#721c24",
+      }}
+      variant={"danger"}
+      id="regular-text"
+    >
+      If you are showing any symptoms or have traveled in the past 2 weeks,
+      please refrain from marking yourself as active.
+    </Alert>
+  );
   if (availability) {
     // Render specific text if user is available
     statusChangeDescription = (
@@ -360,24 +377,19 @@ export default function YourOffer(props) {
   return (
     <Row>
       <Col
-        xs={12}
-        sm={6}
-        md={6}
-        lg={6}
-        style={{ marginLeft: 0, paddingLeft: 16, marginRight: 80 }}
+        md={width > 836 ? 6 : 12}
+        style={{
+          marginLeft: 0,
+          paddingLeft: 16,
+          marginRight: width > 1060 ? 80 : 20,
+        }}
       >
         {visibleText}
         {statusChangeDescription}
-        {availability && inactivateButton}
+        {volunteerAlert}
+
+        {availability && deactivateButton}
         {availability === false && activateButton}
-        {/* <Alert
-          style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
-          variant={"danger"}
-          id="regular-text"
-        >
-          If you are showing any symptoms or have traveled in the past 2 weeks,
-          please refrain from marking yourself as available.
-        </Alert> */}
       </Col>
       <Col style={{ alignContent: "left" }}>
         <Toast
