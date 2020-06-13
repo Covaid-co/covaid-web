@@ -213,7 +213,7 @@ export default function NewRequestPage1(props) {
       {paymentMethod()}
       {paymentAgreement}
       <h5 id="subtitle-light" style={{ marginTop: 15, marginBottom: 5 }}>
-        Preferred languages
+        {props.translations[props.language].PreferredLangs}
       </h5>
       <Select
         closeMenuOnSelect={true}
@@ -239,13 +239,10 @@ export default function NewRequestPage1(props) {
             setPriority(!high_priority);
           }}
         >
-          We aim to prioritize requests from individuals and families that
-          identify as{" "}
+          {props.translations[props.language].Prioritize1}{" "}
           <font style={{ fontWeight: "bold" }}>
-            BIPOC, elderly, immunocompromised, or of veteran status
-          </font>
-          . Please check here if you identify with any of these so we can
-          prioritize your request.
+            {props.translations[props.language].Prioritize2}
+          </font> {props.translations[props.language].Prioritize3}
         </p>
       </div>
       <Button

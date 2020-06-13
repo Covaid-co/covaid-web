@@ -217,12 +217,20 @@ const translations = {
     Step2Text2: "For those who would rather call in a request, please call ",
     OnBehalf: "Request on behalf of someone else",
     BehalfWarning:
-      "Please fill in the fields above with information pertaining to the person in need of support. If you’d like us to contact you, please leave your contact in the details on the next page",
+      "Please fill in the fields below with information pertaining to the person in need of support. If you’d like us to contact you, please leave your contact in the details on the next page.",
     ConfirmRequest: "Confirm request information",
     RequestDetails: "What can we help you with?",
     ChangeLocation: "Change Location",
     LastStep:
       "This is your last step! Please make sure your request information is accurate.",
+    BestWay: "Best way to reach you",
+    YourLocation: "Your Location",
+    AskLocation: "We ask for your location so that we can best match you to volunteers in your area.",
+    AllVolunteer: "This form is being managed by a group of all-volunteer community members involved in local organizing efforts. Thank you for your patience and grace.",
+    PreferredLangs: "Preferred languages",
+    Prioritize1: "We aim to prioritize requests from individuals and families that identify as",
+    Prioritize2: "BIPOC, elderly, immunocompromised, or of veteran status.",
+    Prioritize3: "Please check here if you identify with any of these so we can prioritize your request."
   },
   es: {
     intro:
@@ -449,12 +457,20 @@ const translations = {
       "Para aquellos que prefieren llamar en una solicitud, por favor llame ",
     OnBehalf: "Solicitar en nombre de otra persona",
     BehalfWarning:
-      "Complete los campos anteriores con información relacionada con la persona que necesita ayuda. Si desea que nos comuniquemos con usted, deje su contacto en los detalles de la página siguiente.",
+      "Complete los campos a continuación con información relacionada con la persona que necesita apoyo. Si desea que nos comuniquemos con usted, deje su contacto en los detalles de la página siguiente.",
     ConfirmRequest: "Confirmar información de solicitud",
     RequestDetails: "Pedir Detalles",
     ChangeLocation: "Cambiar locación",
     LastStep:
       "Este es tu último paso! Asegúrese de que la información de su solicitud sea precisa.",
+    BestWay: "La mejor manera de contactarte",
+    YourLocation: "Tu Ubicación",
+    AskLocation: "Le pedimos su ubicación para que podamos relacionarlo mejor con los voluntarios en su área.",
+    AllVolunteer: "Este formulario está siendo administrado por un grupo de miembros de la comunidad totalmente voluntarios involucrados en los esfuerzos de organización local. Gracias por tu paciencia y gracia.",
+    PreferredLangs: "Idiomas preferidos",
+    Prioritize1: "Nuestro objetivo es priorizar las solicitudes de individuos y familias que se identifican como",
+    Prioritize2: "BIPOC, ancianos, inmunocomprometidos o veteranos.",
+    Prioritize3: "Marque aquí si se identifica con alguno de estos para que podamos priorizar su solicitud."
   },
 };
 export { translations };

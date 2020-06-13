@@ -114,8 +114,6 @@ export default function NewRequestPage(props) {
       },
     };
 
-    console.log(form)
-
     fetch("/api/request/create_request", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -205,8 +203,7 @@ export default function NewRequestPage(props) {
           <p id="title">{translatedStrings[props.language].Step} 2 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           <p id="regular-text">
-            This form is being managed by a group of all-volunteer community members 
-            involved in local organizing efforts. Thank you for your patience and grace.
+            {translatedStrings[props.language].AllVolunteer}
           </p>
           {topHeader}
         </>

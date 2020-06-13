@@ -200,7 +200,7 @@ export default function RequestPage1(props) {
         </Col>
       </Row>
       <h5 id="subtitle-light" style={{ marginTop: 15, marginBottom: 5 }}>
-        Best way to reach you
+        {props.translations[props.language].BestWay}
       </h5>
       <Form.Group controlId="tracking">
         <Form.Control
@@ -219,7 +219,7 @@ export default function RequestPage1(props) {
         </Form.Control>
       </Form.Group>
       <h5 id="subtitle-light" style={{ marginTop: 15, marginBottom: 5 }}>
-        Your Location
+        {props.translations[props.language].YourLocation}
       </h5>
       <p
         id="regular-text"
@@ -230,7 +230,7 @@ export default function RequestPage1(props) {
           fontSize: 14,
         }}
       >
-        We ask for your location so that we can best match you to volunteers in your area
+        {props.translations[props.language].AskLocation}
       </p>
       <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
         <InputGroup id="set-location" bssize="large">
@@ -245,7 +245,7 @@ export default function RequestPage1(props) {
               id="location-change-button"
               onClick={handleSubmit}
             >
-              Set Location
+              {props.translations[props.language].SetLocationShort}
             </Button>
           </InputGroup.Append>
         </InputGroup>
