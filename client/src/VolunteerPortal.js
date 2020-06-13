@@ -191,7 +191,7 @@ export default function VolunteerPortal(props) {
               color: "#4F4F4F",
             }}
           >
-            Request Dashboard
+            Requests
           </h1>
           <p
             id="regular-text"
@@ -334,7 +334,8 @@ export default function VolunteerPortal(props) {
                       Important Information
                     </h1>
                     <p id="regular-text" style={{ fontSize: 16 }}>
-                      Messages from your organization
+                      Covaid updates, curated resources, and messages from your
+                      organization.
                     </p>
                     <p
                       id="requestCall"

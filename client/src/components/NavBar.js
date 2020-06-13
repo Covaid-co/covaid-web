@@ -456,7 +456,7 @@ export default function CovaidNavbar(props) {
                   window.location.href = "#requests";
                 }}
               >
-                Request Dashboard
+                Requests
               </p>
               <p
                 id={selectedTab(1)}
