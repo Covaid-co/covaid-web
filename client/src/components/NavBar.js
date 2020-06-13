@@ -305,7 +305,7 @@ export default function CovaidNavbar(props) {
               <Dropdown.Toggle
                 size="md"
                 id="languageButton"
-                style={{ paddingTop: 0, paddingBottom: 4 }}
+                style={{ paddingTop: 0, paddingBottom: 2 }}
               >
                 <span id="hello-name" style={{ marginRight: 0 }}>
                   {" "}
