@@ -2,10 +2,7 @@ require("dotenv").config();
 var sid = process.env.TWILIO_ACCOUNT_SID;
 var token = process.env.TWILIO_AUTH_TOKEN;
 var from = "+12513206732";
-const client = require("twilio")(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+const client = require("twilio");
 const validator = require("validator");
 
 exports.sendVolunteerMatchText = async (data) => {
@@ -54,7 +51,7 @@ exports.sendVolunteerMatchText = async (data) => {
   // (3) send the sms
   if (process.env.PROD) {
     try {
-      const message = await client.messages.create(msg);
+      const message = await client(sid, token).messages.create(msg);
       response.desc =
         "SMS notification sent! Message recap: " +
         message.body +
