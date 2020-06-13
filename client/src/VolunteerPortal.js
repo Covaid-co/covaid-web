@@ -27,8 +27,10 @@ import "./VolunteerPage.css";
 import fetch_a from "./util/fetch_auth";
 import Footer from "./components/Footer";
 import { useWindowDimensions } from "./libs/hooksLib";
+import { currURL } from "../src/constants";
 
 export default function VolunteerPortal(props) {
+  document.title = "Covaid | Volunteer";
   const [tabNum, setTabNum] = useState(1);
   const [user, setUser] = useState({});
   const [foundUser, setFoundUser] = useState(false);
@@ -39,6 +41,7 @@ export default function VolunteerPortal(props) {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [view, setView] = useState("request-dashboard");
+  // const [toggle, setToggle] = useState(false);
   const { height, width } = useWindowDimensions();
   const { addToast } = useToasts();
 
@@ -160,6 +163,11 @@ export default function VolunteerPortal(props) {
   };
 
   useEffect(() => {
+    if (window.location.href.includes("#offer")) {
+      setView("your-offer");
+    } else if (window.location.href.includes("#requests")) {
+      setView("request-dashboard");
+    }
     // Fetch user and all requests/beacons
     fetchUser();
   }, []);
@@ -183,12 +191,18 @@ export default function VolunteerPortal(props) {
               color: "#4F4F4F",
             }}
           >
-            Request Dashboard
+            Requests
           </h1>
-          <p id="regular-text" style={{ fontSize: 16, marginBottom: 20 }}>
+          <p
+            id="regular-text"
+            style={{ marginLeft: 1, fontSize: 16, marginBottom: 20 }}
+          >
             Respond to requests that have been delegated to you
           </p>
-          <p id="requestCall" style={{ marginTop: 15, marginBottom: 34 }}></p>
+          <p
+            id="requestCall"
+            style={{ marginTop: 15, marginBottom: 29, marginRight: -16 }}
+          ></p>
           <RequestDashboard
             pendingRequests={pendingRequests}
             acceptedRequests={acceptedRequests}
@@ -218,16 +232,23 @@ export default function VolunteerPortal(props) {
           >
             Your Offer
           </h1>
-          <p id="regular-text" style={{ fontSize: 16, marginBottom: 20 }}>
+          <p
+            id="regular-text"
+            style={{ marginLeft: 1, fontSize: 16, marginBottom: 20 }}
+          >
             Customize your volunteer experience
           </p>
-          <p id="requestCall" style={{ marginTop: 15, marginBottom: 29 }}></p>
+          <p
+            id="requestCall"
+            style={{ marginTop: 15, marginBottom: 29, marginRight: -16 }}
+          ></p>
           <Container
+            className={width > 767 ? `` : `your-offer-small`}
             style={{
               marginLeft: 0,
               paddingLeft: 0,
-              marginRight: 180,
               paddingRight: 0,
+              marginRight: width > 767 ? "auto" : 0,
             }}
           >
             {foundUser ? (
@@ -252,9 +273,11 @@ export default function VolunteerPortal(props) {
     return (
       <>
         <div className="App" style={{ marginBottom: 30 }}>
-          <div></div>
           <NavBar
             setLanguage={props.setLanguage}
+            // setToggle={setToggle}
+            // simplified={true}
+            volunteerPortal={true}
             language={"en"}
             isLoggedIn={true}
             mode={"volunteer"}
@@ -262,11 +285,20 @@ export default function VolunteerPortal(props) {
             last_name={user.last_name}
             setView={setView}
             pageLoaded={true}
-            isLoggedIn={true}
           />
+          <p id="requestCall" style={{ marginTop: -8, marginBottom: 0 }}></p>
           <div class="flex-container">
-            <div style={{ width: width < 980 ? "100%" : "75%", float: "left" }}>
-              <Jumbotron fluid id="jumbo-volunteer" style={{ paddingTop: 50 }}>
+            <div style={{ width: width > 767 ? "75%" : "95%", float: "left" }}>
+              <Jumbotron
+                fluid
+                id="jumbo-volunteer"
+                style={{
+                  marginLeft: 35,
+                  paddingTop: 32,
+                  paddingBottom: 32,
+                  marginBottom: 16,
+                }}
+              >
                 <ProfileHeader
                   user={user}
                   setShowAccountModal={setShowAccountModal}
@@ -274,44 +306,57 @@ export default function VolunteerPortal(props) {
               </Jumbotron>
               {mainContentView()}
             </div>
-            <span
-              style={{ display: width < 980 ? "none" : "inline" }}
-              id="vertical-line"
-            ></span>
-            <div
-              style={{
-                width: width < 980 ? "100%" : "23%",
-                float: "left",
-                height: "100%",
-              }}
-            >
-              <Container>
-                <h1
-                  id="home-heading"
-                  style={{ marginTop: 0, fontSize: 24, color: "#4F4F4F" }}
+            {width > 767 && (
+              <>
+                <span
+                  style={{
+                    height: "95vh",
+                    display: "inline",
+                  }}
+                  id="vertical-line"
+                ></span>
+                <div
+                  style={{
+                    width: "23%",
+                    float: "left",
+                    height: "100%",
+                  }}
                 >
-                  Important Information
-                </h1>
-                <p id="regular-text" style={{ fontSize: 16 }}>
-                  Messages from your organization, Covaid updates, and
-                  miscellaneous resources
-                </p>
-                <p
-                  id="requestCall"
-                  style={{ marginTop: 30, marginBottom: 10 }}
-                ></p>
-                <VolunteerBeacons
-                  beacons={beacons}
-                  volunteer={user}
-                  fetchBeacons={fetchBeacons}
-                />
-              </Container>
-            </div>
+                  <Container>
+                    <h1
+                      id="home-heading"
+                      style={{
+                        marginTop: 44,
+                        marginBottom: 14,
+                        fontSize: 24,
+                        color: "#4F4F4F",
+                      }}
+                    >
+                      Important Information
+                    </h1>
+                    <p id="regular-text" style={{ fontSize: 16 }}>
+                      Covaid updates, curated resources, and messages from your
+                      organization.
+                    </p>
+                    <p
+                      id="requestCall"
+                      style={{ marginTop: 20, marginBottom: 10 }}
+                    ></p>
+                    <VolunteerBeacons
+                      beacons={beacons}
+                      volunteer={user}
+                      fetchBeacons={fetchBeacons}
+                    />
+                  </Container>
+                </div>{" "}
+              </>
+            )}
           </div>
         </div>
-        <Footer />
+        <Footer style={{ marginTop: -4 }} />
         <AccountInfo
           user={user}
+          language={props.language}
           showAccountModal={showAccountModal}
           setShowAccountModal={setShowAccountModal}
         />

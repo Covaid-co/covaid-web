@@ -115,8 +115,16 @@ export default function AboutUs(props) {
       />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
-          <Col md={1} id="login-container"></Col>
-          <Col md={10} id="login-container" style={{ textAlign: "center" }}>
+          <Col md={1}></Col>
+          <Col
+            md={10}
+            style={{
+              paddingLeft: "5%",
+              paddingRight: "5%",
+              textAlign: "center",
+            }}
+            id="about-us-col"
+          >
             <h1 id="home-heading" style={{ marginBottom: 40, fontSize: 60 }}>
               The People Behind<br></br>Covaid
             </h1>
@@ -154,10 +162,10 @@ export default function AboutUs(props) {
               })}
             </Row>
           </Col>
-          <Col md={1} id="login-container"></Col>
+          <Col md={1}></Col>
         </Row>
       </Container>
-      <Footer key="2" />
+      <Footer key="2" style={{ marginTop: 48 }} />
     </div>
   );
 }

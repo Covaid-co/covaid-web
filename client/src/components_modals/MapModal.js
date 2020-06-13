@@ -68,6 +68,7 @@ export default function MapModal(props) {
       size="lg"
       style={{ marginTop: 10 }}
       onHide={props.hideModal}
+      centered
     >
       <Modal.Header closeButton>
         <Modal.Title>

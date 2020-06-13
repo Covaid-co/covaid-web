@@ -93,6 +93,18 @@
 #resources-button:focus {
   box-shadow: none;
 }
+#small-button {
+  font-family: "Inter";
+  font-size: 14px;
+  background-color: transparent;
+  color: #2670ff;
+  border-color: #2670ff;
+  height: 36px;
+  padding-top: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 8px;
+}
 
 #medium-button-solid {
   font-family: "Inter";
@@ -548,36 +560,6 @@ textarea.form-control {
   border-color: #2670ff;
 }
 
-.dropdown-item {
-  height: 29px;
-  background: transparent;
-  color: #2670ff;
-  font-family: "Inter";
-  font-weight: normal;
-}
-
-.dropdown-item.active {
-  background: #2670ff;
-  background-color: #2670ff;
-  color: white;
-}
-
-.dropdown-item.active,
-.dropdown-item:active {
-  background: #2670ff;
-  background-color: #2670ff;
-  color: white;
-}
-
-.dropdown-menu.show {
-  border-radius: 8px;
-  border: transparent;
-  box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.15);
-  margin-bottom: 20px;
-  left: -50px;
-  margin-top: 10px !important;
-}
-
 #toastError {
   position: absolute;
   bottom: 0;
@@ -654,4 +636,35 @@ textarea.form-control {
 #phoneNumber {
   font-weight: bold;
   color: #2670ff;
+}
+.dropdown-item {
+  background: transparent;
+  color: #2670ff;
+  font-family: "Inter";
+  font-weight: normal;
+}
+.dropdown-item:hover {
+  color: white;
+  transition: 0.05s;
+  background-color: #2670ff;
+}
+
+.logout-dropdown-item {
+  color: #7f7f7f;
+  opacity: 0.9;
+}
+.logout-dropdown-item:hover {
+  color: white;
+  background-color: #ae2f2f !important;
+  opacity: 0.95;
+}
+.dropdown-menu.show {
+  margin-top: 14px !important;
+  margin-bottom: 20px !important;
+  border: 1px solid #2670ff;
+  border-radius: 8px;
+}
+
+.dropdown-svg {
+  margin-left: 12px;
 }

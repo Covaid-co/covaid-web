@@ -4,6 +4,18 @@
   margin-bottom: 8px;
   margin-top: 25px;
 }
+#about-us-col {
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-top: 40px;
+}
+
+@media (max-width: 815px) {
+  #about-us-col {
+    padding-left: 2.5% !important;
+    padding-right: 2.5% !important;
+  }
+}
 
 #footer-link {
   font-family: "Inter";
@@ -15,7 +27,7 @@
 }
 
 #donate-footer {
-  margin-top: -100px;
+  margin-top: -104px;
 }
 
 #feedback {
@@ -167,9 +179,9 @@
   color: #7f7f7f;
   display: inline-block;
   margin-bottom: -20px;
-  margin-right: 40px;
-  padding-bottom: 5px;
-  border-bottom: 4px solid #2670ff;
+  margin-right: 32px;
+  padding-bottom: 16px;
+  border-bottom: 3px solid #2670ff;
   cursor: pointer;
 }
 
@@ -178,8 +190,8 @@
   font-size: 16px;
   font-family: "Inter";
   display: inline-block;
-  margin-bottom: -10px;
-  margin-right: 40px;
+  margin-bottom: -20px;
+  margin-right: 32px;
   padding-bottom: 5px;
   cursor: pointer;
 }

@@ -119,8 +119,9 @@
   border: 1px solid #2670ff;
   color: #2670ff;
   border-radius: 50%;
-  width: 35px;
   height: 35px;
+  width: 35px;
+  text-align: center;
   font-size: 16px;
   padding-left: 9px;
   padding-top: 3px;

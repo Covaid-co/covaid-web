@@ -63,7 +63,7 @@ export default function NewLogin(props) {
         response.json().then((data) => {
           Cookie.set("token", data.user.token);
           props.hideModal();
-          window.location.href = currURL + "/volunteerPortal";
+          window.location.href = currURL + "/volunteerPortal#requests";
         });
       } else {
         if (response.status === 403) {

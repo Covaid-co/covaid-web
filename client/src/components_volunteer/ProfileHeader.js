@@ -63,14 +63,14 @@ export default function ProfileHeader(props) {
 
   return (
     <>
-      <div style={{ marginLeft: 35, maxWidth: 2000 }}>
+      <div style={{ marginLeft: "5%", maxWidth: 2000 }}>
         <Row>
           <Col>
             <Image
               src={imageUrl}
               id="profile-pic"
               style={{
-                marginRight: 30,
+                marginRight: 20,
                 boxShadow:
                   "0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1)",
                 cursor: "pointer",
@@ -82,11 +82,12 @@ export default function ProfileHeader(props) {
               <h1
                 id="home-heading"
                 style={{
-                  marginTop: 20,
+                  marginTop: 12,
                   marginBottom: 0,
                   display: "inline-block",
-                  fontSize: 28,
+                  fontSize: 24,
                   color: "#4F4F4F",
+                  textAlign: "left",
                 }}
               >
                 {props.user.first_name} {props.user.last_name}
@@ -98,8 +99,8 @@ export default function ProfileHeader(props) {
                 style={{
                   marginLeft: 1,
                   marginTop: 4,
-                  fontSize: 16,
-                  marginBottom: 10,
+                  fontSize: 14,
+                  marginBottom: 8,
                 }}
               >
                 {association && association.length > 0
@@ -109,19 +110,13 @@ export default function ProfileHeader(props) {
             </Row>
             <Row>
               <Button
-                id="medium-button"
-                style={{
-                  paddingLeft: 34,
-                  paddingRight: 34,
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                }}
+                id="small-button"
                 onClick={() => {
                   props.setShowAccountModal(true);
                 }}
               >
                 Edit Profile
-              </Button>{" "}
+              </Button>
             </Row>
           </Col>
         </Row>
