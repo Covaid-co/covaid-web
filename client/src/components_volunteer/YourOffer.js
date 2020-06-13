@@ -121,7 +121,6 @@ export default function YourOffer(props) {
       "offer.details": fields.details,
       availability: publish,
     };
-
     fetch_a("token", "/api/users/update", {
       method: "put",
       headers: { "Content-Type": "application/json" },
@@ -234,6 +233,7 @@ export default function YourOffer(props) {
       </h5>
     );
   }
+
   if (isEditing) {
     headerOrBack = (
       <Button

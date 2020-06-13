@@ -66,6 +66,32 @@ export default function EditAccountInfoModal(props) {
   ];
   const timeNames = ["Morning", "Afternoon", "Evening", "Weekdays", "Weekends"];
   const languages = ["English", "Spanish", "Mandarin", "Cantonese", "Other"];
+  const [allowSMS, setAllowSMS] = useState(false);
+
+  const handleChangeSMSPreference = (event) => {
+    event.persist();
+    setAllowSMS(!allowSMS);
+  };
+  const SMSNotificationSwitch = (
+    <Form.Group
+      controlId="preverify"
+      bssize="large"
+      style={{ marginLeft: 12, marginBottom: 8 }}
+    >
+      <Form.Check
+        type="switch"
+        id="custom-switch"
+        style={{ color: "#7F7F7F", fontSize: 14 }}
+        label={
+          allowSMS
+            ? "Covaid will text you when you receive new requests"
+            : "You will NOT be receiving texts from Covaid"
+        }
+        checked={allowSMS}
+        onChange={handleChangeSMSPreference}
+      />
+    </Form.Group>
+  );
 
   const setCurrentUserObject = (userList, fullList, setFunction) => {
     for (var i = 0; i < fullList.length; i++) {
@@ -269,6 +295,7 @@ export default function EditAccountInfoModal(props) {
         coordinates: latlong,
       },
       languages: selectedLanguages,
+      allowSMS: allowSMS,
     };
 
     if (showChangeAssocModal) {
@@ -330,6 +357,7 @@ export default function EditAccountInfoModal(props) {
           setPhone(props.user.phone);
           setLatLong(props.user.latlong);
           getZip(props.user.latlong);
+          setAllowSMS(props.user.allowSMS);
           setAssociation(props.user.association);
           setAssociationName(props.user.association_name);
           setHasCar(props.user.offer.car);
@@ -478,13 +506,19 @@ export default function EditAccountInfoModal(props) {
                   </Form.Group>
                 </Col>
                 <Col xs={12}>
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <Form.Label id="regular-text-bold">
+                      {props.translations[props.language].phone}
+                    </Form.Label>
+                    {SMSNotificationSwitch}
+                  </div>
+
                   <PhoneNumber
                     style={{
                       paddingTop: 10,
                       paddingBottom: 10,
                       marginBottom: 16,
                     }}
-                    label={props.translations[props.language].phone}
                     labelID="regular-text-bold"
                     phoneNumber={phone}
                     setPhoneNumber={setPhone}
@@ -556,7 +590,7 @@ export default function EditAccountInfoModal(props) {
               >
                 Save Changes
               </Button>
-              {/* <div
+              <div
                 style={
                   showChangeAssocModal
                     ? { display: "block" }
@@ -570,7 +604,7 @@ export default function EditAccountInfoModal(props) {
                   Your location has changed, please update your tasks here!
                 </h5>
                 <CheckForm obj={resources} setObj={setResources} />
-              </div> */}
+              </div>
             </Form>
           </Container>
         </Modal.Body>
