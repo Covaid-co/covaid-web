@@ -277,6 +277,7 @@ export default function VolunteerPortal(props) {
             setLanguage={props.setLanguage}
             // setToggle={setToggle}
             // simplified={true}
+            volunteerPortal={true}
             language={"en"}
             isLoggedIn={true}
             mode={"volunteer"}

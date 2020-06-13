@@ -327,40 +327,47 @@ export default function CovaidNavbar(props) {
                 </span>
               </Dropdown.Toggle>
               <Dropdown.Menu alignRight={true} style={{ marginTop: 10 }}>
-                <Dropdown.Item
-                  active={false}
-                  style={{ transition: "0.1s" }}
-                  onClick={() => {
-                    if (props.setView) {
-                      setTab(0);
-                      props.setView("request-dashboard");
-                      window.location.href = "#requests";
-                    } else {
-                      window.open(
-                        currURL + "/volunteerPortal#requests",
-                        "_self"
-                      );
+                {!props.volunteerPortal && (
+                  <Dropdown.Item
+                    active={false}
+                    style={{ transition: "0.1s" }}
+                    onClick={() => {
+                      // if (props.setView) {
+                      //   setTab(0);
+                      //   props.setView("request-dashboard");
+                      //   window.location.href = "#requests";
+                      // } else {
+                      window.open(currURL + "/volunteerPortal", "_self");
+                      // }
+                    }}
+                  >
+                    {"Your Portal"}
+                  </Dropdown.Item>
+                )}
+                {/* {!props.volunteerPortal && (
+                  <Dropdown.Item
+                    style={{ transition: "0.1s" }}
+                    active={false}
+                    onClick={
+                      () => {
+                        if (props.setView) {
+                          setTab(1);
+                          props.setView("your-offer");
+                          window.location.href = "#offer";
+                        } else {
+                        window.open(
+                          currURL + "/volunteerPortal#offer",
+                          "_self"
+                        );
+                        setTab(1);
+                      }
+                      }
                     }
-                  }}
-                >
-                  {"Requests"}
-                </Dropdown.Item>
-                <Dropdown.Item
-                  style={{ transition: "0.1s" }}
-                  active={false}
-                  onClick={() => {
-                    if (props.setView) {
-                      setTab(1);
-                      props.setView("your-offer");
-                      window.location.href = "#offer";
-                    } else {
-                      window.open(currURL + "/volunteerPortal#offer", "_self");
-                      setTab(1);
-                    }
-                  }}
-                >
-                  {"Your Offer"}
-                </Dropdown.Item>
+                  >
+                    {"Your Offer"}
+                  </Dropdown.Item>
+                )} */}
+
                 <Dropdown.Item
                   style={{ transition: "0.1s" }}
                   className="logout-dropdown-item"
