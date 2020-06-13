@@ -5,11 +5,12 @@ import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
+import Select from "react-select";
 
 import NewDetails from "../components_homepage/NewDetails";
 import NewPaymentMethod from "../components_homepage/NewPaymentMethod";
 import CheckForm from "../components/CheckForm";
-import { defaultResources, toastTime, resource_popups } from "../constants";
+import { defaultResources, toastTime, resource_popups, languages } from "../constants";
 import { setFalseObj, extractTrueObj } from "../Helpers";
 
 /**
@@ -24,6 +25,12 @@ export default function NewRequestPage1(props) {
   const [resource_popup, setPopup] = useState({});
   const [time, setTime] = useState("Morning");
   const [high_priority, setPriority] = useState(false);
+  const language_options = languages.map((lang) => {
+    return { value: lang, label: lang };
+  });
+  const [selectedLanguages, setLanguages] = useState({
+    selectedOptions: [{ value: "English", label: "English" }],
+  });
   const [date, setDate] = useState(
     new Date(Date.now()).toLocaleString().split(",")[0]
   );
@@ -57,6 +64,7 @@ export default function NewRequestPage1(props) {
       setPopup(resource_popups);
     }
 
+    var lang_temp = [];
     if (Object.keys(props.first_page).length !== 0) {
       fields.details = props.first_page.details;
       setSelectedIndex(props.first_page.payment);
@@ -66,7 +74,12 @@ export default function NewRequestPage1(props) {
       for (var i = 0; i < props.first_page.resources.length; i++) {
         temp_resources[props.first_page.resources[i]] = true;
       }
+      for (var i = 0; i < props.first_page.languages.length; i++) {
+        const lang = props.first_page.languages[i];
+        lang_temp.push({ value: lang, label: lang });
+      }
     }
+    setLanguages({ selectedOptions: lang_temp });
     setResources(temp_resources);
   }, [props.first_page, props.currentAssoc]);
 
@@ -75,15 +88,23 @@ export default function NewRequestPage1(props) {
     if (valid) {
       setShowToast(false);
       const resource_request = extractTrueObj(resources);
+      const languages = [];
+      for (var i = 0; i < selectedLanguages.selectedOptions.length; i++) {
+        languages.push(selectedLanguages.selectedOptions[i].value);
+      }
+      if (languages.length === 0) {
+        languages.push("English");
+      }
       const result = {
         details: fields.details,
         payment: selectedPayment,
         resources: resource_request,
         time: time,
         date: date,
+        languages: languages,
         high_priority: high_priority,
       };
-      props.setStepNum(3);
+      props.setStepNum(2);
       props.setFirstPage(result);
     } else {
       setShowToast(true);
@@ -100,14 +121,24 @@ export default function NewRequestPage1(props) {
       setToastMessage("Enter details about your request");
       return false;
     }
+    
+    if (Object.values(selectedLanguages).every((v) => v === false)) {
+      setToastMessage("Please select a language");
+      return false;
+    }
+
     return true;
+  };
+
+  const handleChangeLanguage = (selectedOptions) => {
+    setLanguages({ selectedOptions });
   };
 
   const displayResourcePopup = () => {
     const text = Object.keys(resources).map((key) => {
       if (resources[key] && resource_popup[key]) {
         return (
-          <p style={{ marginBottom: 3 }}>
+          <p style={{ marginBottom: 3 }} key={key}>
             <font style={{ fontWeight: "bold" }}>{key + ": "}</font>
             <font style={{ fontStyle: "italic" }}>{resource_popup[key]}</font>
           </p>
@@ -166,16 +197,12 @@ export default function NewRequestPage1(props) {
       <h5 id="title-light" style={{ marginBottom: 5 }}>
         {props.translations[props.language].RequestDetails}
       </h5>
-      {props.currentAssoc === null ? (
-        <></>
-      ) : (
-        <CheckForm
-          obj={resources}
-          setObj={setResources}
-          translations={props.translations}
-          language={props.language}
-        />
-      )}
+      <CheckForm
+        obj={resources}
+        setObj={setResources}
+        translations={props.translations}
+        language={props.language}
+      />
       {displayResourcePopup()}
       <NewDetails
         fields={fields}
@@ -185,6 +212,16 @@ export default function NewRequestPage1(props) {
       />
       {paymentMethod()}
       {paymentAgreement}
+      <h5 id="subtitle-light" style={{ marginTop: 15, marginBottom: 5 }}>
+        Preferred languages
+      </h5>
+      <Select
+        closeMenuOnSelect={true}
+        defaultValue={selectedLanguages.selectedOptions}
+        isMulti
+        options={language_options}
+        onChange={handleChangeLanguage}
+      />
       <div style={{ display: "table", marginBottom: 0, marginTop: 10 }}>
         <Form.Check
           type="checkbox"

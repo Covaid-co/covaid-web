@@ -28,7 +28,7 @@ export default function RequestConfirmation(props) {
           id="subtitle-light"
           style={{ marginTop: 0, marginBottom: 5, display: "inline" }}
         >
-          Best way to Reach:
+          Best way to reach you:
         </h5>
         <p
           id="regular-text"
@@ -48,7 +48,7 @@ export default function RequestConfirmation(props) {
           id="regular-text"
           style={{ marginBottom: 5, display: "inline", marginLeft: 5 }}
         >
-          {props.second_page.languages.join(", ")}
+          {props.first_page.languages.join(", ")}
         </p>
       </div>
       <h5 id="subtitle-light" style={{ marginTop: 10, marginBottom: 5 }}>
@@ -74,7 +74,7 @@ export default function RequestConfirmation(props) {
         style={{ marginTop: 20 }}
         onClick={props.submitRequest}
       >
-        Submit Request
+        Submit request
       </Button>
     </>
   );

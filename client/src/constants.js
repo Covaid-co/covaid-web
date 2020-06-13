@@ -19,7 +19,7 @@ export const resource_popups = {
   "Misc.":
     "If you are requesting something that needs to be donated please, please specify",
 };
-export const contact_option = ["Text", "Phone Call", "Email"];
+export const contact_option = ["Text", "Phone call", "Email"];
 export const languages = [
   "English",
   "Spanish",

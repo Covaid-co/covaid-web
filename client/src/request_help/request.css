@@ -40,7 +40,7 @@
 }
 
 #separator {
-  margin-top: 50px;
+  margin-top: 70px;
 }
 
 #small-margin {
@@ -55,7 +55,7 @@
   display: none;
 }
 
-@media (max-height: 600px) {
+@media (max-height: 580px) {
   #request-container {
     top: 0%;
     transform: none;

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useFormFields } from "../libs/hooksLib";
 import PropTypes from "prop-types";
+import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import Alert from "react-bootstrap/Alert";
-import Select from "react-select";
 
 import PhoneNumber from "../components/PhoneNumber";
-import { toastTime, languages, contact_option } from "../constants";
+import { toastTime, contact_option } from "../constants";
 import { validateEmail } from "../Helpers";
 
 /**
@@ -27,15 +27,8 @@ export default function RequestPage1(props) {
     email: "",
   });
   const [contact, setContact] = useState(0);
-  const language_options = languages.map((lang) => {
-    return { value: lang, label: lang };
-  });
-  const [selectedLanguages, setLanguages] = useState({
-    selectedOptions: [{ value: "English", label: "English" }],
-  });
 
   useEffect(() => {
-    var lang_temp = [];
     if (Object.keys(props.second_page).length !== 0) {
       setPhoneNumber(props.second_page.phone);
       fields.name_request = props.second_page.name;
@@ -43,38 +36,42 @@ export default function RequestPage1(props) {
       setPhoneNumber(props.second_page.phone);
       setOnBehalf(props.second_page.behalf);
       setContact(props.second_page.contact_option);
-      for (var i = 0; i < props.second_page.languages.length; i++) {
-        const lang = props.second_page.languages[i];
-        lang_temp.push({ value: lang, label: lang });
-      }
     }
-    setLanguages({ selectedOptions: lang_temp });
   }, [props.currentAssoc, props.second_page]);
 
   const goToSubmit = () => {
     const valid = checkPage();
     if (valid) {
-      setShowToast(false);
-      const languages = [];
-      for (var i = 0; i < selectedLanguages.selectedOptions.length; i++) {
-        languages.push(selectedLanguages.selectedOptions[i].value);
-      }
-      if (languages.length === 0) {
-        languages.push("English");
-      }
-      const result = {
-        phone: phone_number,
-        name: fields.name_request,
-        email: fields.email,
-        languages: languages,
-        behalf: on_behalf,
-        contact_option: contact,
-      };
-      props.setStepNum(4);
-      props.setSecondPage(result);
+      const e = { preventDefault: () => {}, stopPropagation: () => {} };
+      props.onLocationSubmit(e, props.locationString).then((res) => {
+        if (res === false) {
+          setToastMessage("Invalid Zip Code/City");
+          setShowToast(true);
+        } else {
+          setShowToast(false);
+          const result = {
+            phone: phone_number,
+            name: fields.name_request,
+            email: fields.email,
+            behalf: on_behalf,
+            contact_option: contact,
+          };
+          props.setStepNum(1);
+          props.setSecondPage(result);
+        }
+      });
     } else {
       setShowToast(true);
     }
+  };
+
+  const handleSubmit = (e) => {
+    props.onLocationSubmit(e, props.locationString).then((res) => {
+      if (res === false) {
+        setToastMessage("Invalid Zip Code/City");
+        setShowToast(true);
+      }
+    });
   };
 
   const checkPage = () => {
@@ -93,42 +90,38 @@ export default function RequestPage1(props) {
     ) {
       setToastMessage("Please enter valid contact information");
       valid = false;
-    } else if (Object.values(selectedLanguages).every((v) => v === false)) {
-      setToastMessage("Please select a language");
+    } else if (props.locationString === "") {
+      setToastMessage("Please enter a location");
       valid = false;
-    }
+    } 
     return valid;
   };
 
-  var agreement = <></>;
-  if (
-    props.currentAssoc &&
-    props.currentAssoc.name === "Baltimore Mutual Aid"
-  ) {
-    agreement = (
-      <>
-        <Form.Check
-          type="checkbox"
-          id="regular-text"
-          label="This match program is being organized by private citizens for the 
-                                benefit of those in our community. By completing the sign up form to be 
-                                matched, you agree to accept all risk and responsibility and further 
-                                hold any facilitator associated with Baltimore Mutual Aid Network and/or 
-                                Covaid.co harmless. For any additional questions, please contact bmoremutualaid@gmail.com."
-          style={{ fontSize: 12, marginTop: 2 }}
-        />
-      </>
-    );
-  }
+  // var agreement = <></>;
+  // if (
+  //   props.currentAssoc &&
+  //   props.currentAssoc.name === "Baltimore Mutual Aid"
+  // ) {
+  //   agreement = (
+  //     <>
+  //       <Form.Check
+  //         type="checkbox"
+  //         id="regular-text"
+  //         label="This match program is being organized by private citizens for the 
+  //                               benefit of those in our community. By completing the sign up form to be 
+  //                               matched, you agree to accept all risk and responsibility and further 
+  //                               hold any facilitator associated with Baltimore Mutual Aid Network and/or 
+  //                               Covaid.co harmless. For any additional questions, please contact bmoremutualaid@gmail.com."
+  //         style={{ fontSize: 12, marginTop: 2 }}
+  //       />
+  //     </>
+  //   );
+  // }
 
   const handleChangeContact = (event) => {
     event.persist();
     var result = event.target.value;
-    setContact(result);
-  };
-
-  const handleChangeLanguage = (selectedOptions) => {
-    setLanguages({ selectedOptions });
+    setContact(contact_option.indexOf(result));
   };
 
   return (
@@ -206,52 +199,59 @@ export default function RequestPage1(props) {
           </Form.Group>
         </Col>
       </Row>
-      <h5 id="subtitle-light" style={{ marginTop: 20, marginBottom: 0 }}>
+      <h5 id="subtitle-light" style={{ marginTop: 15, marginBottom: 5 }}>
         Best way to reach you
       </h5>
-      <Form.Group as={Row} controlId="contact">
-        <Col xs={12} style={{ marginTop: 3 }}>
+      <Form.Group controlId="tracking">
+        <Form.Control
+          as="select"
+          style={{ fontSize: 15, height: 38 }}
+          value={contact_option[contact]}
+          onChange={handleChangeContact}
+        >
           {contact_option.map((val, i) => {
             return (
-              <div style={{ display: "table", marginBottom: 2 }} key={i}>
-                <Form.Check
-                  checked={contact == i}
-                  type="radio"
-                  value={i}
-                  style={{ marginRight: 0 }}
-                  onChange={handleChangeContact}
-                  name="formHorizontalRadios"
-                  id={i}
-                />
-                <p
-                  style={{
-                    paddingTop: 2,
-                  }}
-                  id="behalf-text"
-                  onClick={() => {
-                    setContact(i);
-                  }}
-                >
-                  {contact_option[i]}
-                </p>
-              </div>
+              <option key={i} style={{ textIndent: 10 }}>
+                {val}
+              </option>
             );
           })}
-        </Col>
+        </Form.Control>
       </Form.Group>
       <h5 id="subtitle-light" style={{ marginTop: 15, marginBottom: 5 }}>
-        Preferred languages you speak
+        Your Location
       </h5>
-      <Select
-        closeMenuOnSelect={true}
-        defaultValue={selectedLanguages.selectedOptions}
-        isMulti
-        options={language_options}
-        onChange={handleChangeLanguage}
-      />
-      {agreement}
+      <p
+        id="regular-text"
+        style={{
+          fontStyle: "italic",
+          marginTop: 0,
+          marginBottom: 5,
+          fontSize: 14,
+        }}
+      >
+        We ask for your location so that we can best match you to volunteers in your area
+      </p>
+      <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+        <InputGroup id="set-location" bssize="large">
+          <Form.Control
+            placeholder="City/Zipcode"
+            value={props.locationString}
+            onChange={(e) => props.setLocationString(e.target.value)}
+          />
+          <InputGroup.Append>
+            <Button
+              variant="outline-secondary"
+              id="location-change-button"
+              onClick={handleSubmit}
+            >
+              Set Location
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+      </Form>
       <Button id="large-button" style={{ marginTop: 20 }} onClick={goToSubmit}>
-        Review your request
+        {props.translations[props.language].Next}
       </Button>
       <Toast
         show={showToast}
@@ -271,5 +271,8 @@ RequestPage1.propTypes = {
   second_page: PropTypes.object,
   setSecondPage: PropTypes.func,
   setStepNum: PropTypes.func,
+  setLocationString: PropTypes.func,
+  locationString: PropTypes.string,
+  onLocationSubmit: PropTypes.func,
   currentAssoc: PropTypes.object,
 };

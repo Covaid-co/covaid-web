@@ -3,15 +3,12 @@ import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavBar from "../components/NavBar";
 import LocationMap from "./LocationMap";
-import Toast from "react-bootstrap/Toast";
 import Button from "react-bootstrap/Button";
-import { toastTime, currURL } from "../constants";
+import { currURL } from "../constants";
 import NewRequestPage1 from "./NewRequestPage1";
 import NewRequestPage2 from "./NewRequestPage2";
 import RequestConfirmation from "./RequestConfirmation";
@@ -30,11 +27,9 @@ let translatedStrings = new LocalizedStrings({ translations });
 export default function NewRequestPage(props) {
   const history = useHistory();
   const [locationString, setLocationString] = useState("");
-  const [showInvalid, setShowInvalid] = useState(false);
   const [first_page, setFirstPage] = useState({});
   const [second_page, setSecondPage] = useState({});
   const [step_num, setStepNum] = useState(0);
-  const [toast_message, setToastMessage] = useState("");
 
   useEffect(() => {
     if (props.googleApiKey !== "") {
@@ -46,25 +41,6 @@ export default function NewRequestPage(props) {
     }
     document.title = "Request Support";
   }, [props.googleApiKey, props.zipcode]);
-
-  const handleSubmit = (e) => {
-    props.onLocationSubmit(e, locationString).then((res) => {
-      if (res === false) {
-        setShowInvalid(true);
-        setToastMessage("Invalid Zip Code/City");
-      }
-    });
-  };
-
-  const confirmLocation = (step) => {
-    if (locationString === "") {
-      setShowInvalid(true);
-      setToastMessage("Please enter a location");
-    } else {
-      handleSubmit({ preventDefault: () => {}, stopPropagation: () => {} });
-      setStepNum(step);
-    }
-  };
 
   const organizationText = () => {
     if (
@@ -117,7 +93,7 @@ export default function NewRequestPage(props) {
           requester_name: second_page.name,
           requester_phone: second_page.phone,
           requester_email: second_page.email,
-          languages: second_page.languages,
+          languages: first_page.languages,
           contact_option: second_page.contact_option,
         },
         request_info: {
@@ -138,6 +114,8 @@ export default function NewRequestPage(props) {
       },
     };
 
+    console.log(form)
+
     fetch("/api/request/create_request", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -145,7 +123,7 @@ export default function NewRequestPage(props) {
     })
       .then((response) => {
         if (response.ok) {
-          setStepNum(5);
+          setStepNum(3);
         }
       })
       .catch((e) => {
@@ -153,18 +131,10 @@ export default function NewRequestPage(props) {
       });
   };
 
-  const associationLink = () => {
-    return associationExists() ? props.association.homepage : "";
-  };
-
-  const associationName = () => {
-    return associationExists() ? props.association.name : "we";
-  };
-
   const stepText = () => {
     var topHeader = (
       <DefaultHeader
-        translatedStrings={translatedStrings}
+        translations={translatedStrings}
         language={props.language}
       />
     );
@@ -218,108 +188,41 @@ export default function NewRequestPage(props) {
           {langSelection(() => history.push("/"), true)}
           <div id="separator"></div>
           <p id="title">{translatedStrings[props.language].Step} 1 —</p>
-          <p id="subtitle">{translatedStrings[props.language].SetLocation}</p>
-          <p id="info">
-            {translatedStrings[props.language].Step1Text1}{" "}
-            {associationExists() ? (
-              <a href={associationLink()}>{associationName()}</a>
-            ) : (
-              associationName()
-            )}{" "}
-            {translatedStrings[props.language].Step1Text2}
+          <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
+          <p id="regular-text">
+            {translatedStrings[props.language].intro}
           </p>
-          <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
-            <InputGroup id="set-location" bssize="large">
-              <Form.Control
-                placeholder="City/Zipcode"
-                value={locationString}
-                onChange={(e) => setLocationString(e.target.value)}
-              />
-              <InputGroup.Append>
-                <Button
-                  variant="outline-secondary"
-                  id="location-change-button"
-                  onClick={handleSubmit}
-                >
-                  {translatedStrings[props.language].SetLocationShort}
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
-          <Button
-            id="large-button"
-            style={{ marginTop: 15, marginBottom: 30 }}
-            onClick={() => confirmLocation(2)}
-          >
-            {translatedStrings[props.language].Next}
-          </Button>
+          <p id="regular-text">
+            {translatedStrings[props.language].motto}
+          </p>
         </>
       );
     } else if (step_num === 1) {
       return (
         <>
-          {organizationText()}
-          <Form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
-            <InputGroup id="set-location" bssize="large">
-              <Form.Control
-                placeholder="City/Zipcode"
-                value={locationString}
-                onChange={(e) => setLocationString(e.target.value)}
-              />
-              <InputGroup.Append>
-                <Button
-                  variant="outline-secondary"
-                  id="location-change-button"
-                  onClick={handleSubmit}
-                >
-                  {translatedStrings[props.language].ChangeLocation}
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
-          <Button
-            id="large-button"
-            style={{ marginTop: 15, marginBottom: 30 }}
-            onClick={() => {
-              confirmLocation(2);
-            }}
-          >
-            {translatedStrings[props.language].Next}
-          </Button>
+          {langSelection(() => setStepNum(0), true)}
+          <div id="separator"></div>
+          <p id="title">{translatedStrings[props.language].Step} 2 —</p>
+          <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
+          <p id="regular-text">
+            This form is being managed by a group of all-volunteer community members 
+            involved in local organizing efforts. Thank you for your patience and grace.
+          </p>
+          {topHeader}
         </>
       );
     } else if (step_num === 2) {
       return (
         <>
-          {langSelection(() => setStepNum(0), false)}
-          {associationExists() ? <></> : <div id="separator"></div>}
-          <p id="title">{translatedStrings[props.language].Step} 2 —</p>
-          <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
-          {topHeader}
-        </>
-      );
-    } else if (step_num === 3) {
-      return (
-        <>
-          {langSelection(() => setStepNum(2), false)}
-          {associationExists() ? <></> : <div id="separator"></div>}
-          <p id="title">{translatedStrings[props.language].Step} 3 —</p>
-          <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
-          {topHeader}
-        </>
-      );
-    } else if (step_num === 4) {
-      return (
-        <>
-          {langSelection(() => setStepNum(3), true)}
+          {langSelection(() => setStepNum(1), true)}
           <div id="separator"></div>
-          <p id="subtitle" style={{ marginTop: 50 }}>
+          <p id="subtitle" style={{ marginTop: 20 }}>
             {translatedStrings[props.language].ConfirmRequest}
           </p>
           <p id="info">{translatedStrings[props.language].LastStep}</p>
         </>
       );
-    } else if (step_num === 5) {
+    } else if (step_num === 3) {
       return (
         <>
           <p id="title">You're Done!</p>
@@ -340,16 +243,24 @@ export default function NewRequestPage(props) {
   };
 
   const mapRequest = () => {
-    if (step_num < 2) {
+    if (step_num === 0) {
       return (
-        <LocationMap
-          locationInfo={{
-            longitude: props.longitude,
-            latitude: props.latitude,
-          }}
-        />
+        <>
+          <p id="border-top">&nbsp;</p>
+          <NewRequestPage2
+            locationString={locationString}
+            setLocationString={setLocationString}
+            onLocationSubmit={props.onLocationSubmit}
+            currentAssoc={props.association}
+            second_page={second_page}
+            setStepNum={setStepNum}
+            setSecondPage={setSecondPage}
+            translations={translatedStrings}
+            language={props.language}
+          />
+        </>
       );
-    } else if (step_num === 2) {
+    } else if (step_num === 1) {
       return (
         <>
           <p id="border-top">&nbsp;</p>
@@ -363,29 +274,10 @@ export default function NewRequestPage(props) {
           />
         </>
       );
-    } else if (step_num === 3) {
+    } else if (step_num === 2) {
       return (
         <>
           <p id="border-top">&nbsp;</p>
-          <NewRequestPage2
-            currentAssoc={props.association}
-            second_page={second_page}
-            setStepNum={setStepNum}
-            setSecondPage={setSecondPage}
-            translations={translatedStrings}
-            language={props.language}
-          />
-        </>
-      );
-    } else if (step_num === 4) {
-      return (
-        <>
-          <p
-            id="border-top"
-            style={associationExists() ? { marginTop: 70 } : { marginTop: 0 }}
-          >
-            &nbsp;
-          </p>
           <RequestConfirmation
             first_page={first_page}
             setFirstPage={setFirstPage}
@@ -402,21 +294,6 @@ export default function NewRequestPage(props) {
     return <></>;
   };
 
-  const toastObj = () => {
-    return (
-      <Toast
-        show={showInvalid}
-        delay={toastTime}
-        onClose={() => setShowInvalid(false)}
-        autohide
-        id="toastError"
-        style={{ marginBottom: 90, marginRight: 15 }}
-      >
-        <Toast.Body>{toast_message}</Toast.Body>
-      </Toast>
-    );
-  };
-
   return (
     <div className="App" key="1">
       <NavBar
@@ -429,17 +306,16 @@ export default function NewRequestPage(props) {
       />
       <div id="outer">
         <Container
-          id={step_num === 2 ? "request-container-step2" : "request-container"}
+          id={step_num === 1 ? "request-container-step2" : "request-container"}
         >
           <Row>
             <Col lg={6} md={6} sm={12} id="left-container">
               <div id="step-container">
                 {stepText()}
-                {toastObj()}
               </div>
             </Col>
             <Col lg={6} md={6} sm={12} id="right-container">
-              <div id={step_num === 2 ? "step2-container" : "step-container"}>
+              <div id={step_num === 1 ? "step2-container" : "step-container"}>
                 {mapRequest()}
               </div>
             </Col>
