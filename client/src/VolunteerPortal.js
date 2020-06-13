@@ -30,6 +30,7 @@ import { useWindowDimensions } from "./libs/hooksLib";
 import { currURL } from "../src/constants";
 
 export default function VolunteerPortal(props) {
+  document.title = "Covaid | Volunteer";
   const [tabNum, setTabNum] = useState(1);
   const [user, setUser] = useState({});
   const [foundUser, setFoundUser] = useState(false);
