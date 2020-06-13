@@ -205,7 +205,6 @@
   color: white;
   transition: 0.2s;
 }
-#large-activate-button,
 #large-inactivate-button {
   width: 100%;
   margin-left: auto;
@@ -218,9 +217,15 @@
   border-radius: 8px;
 }
 #large-activate-button {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 49px;
+  font-family: "Inter";
   background-color: #2670ff;
   border-color: #2670ff;
   color: white;
+  border-radius: 8px;
 }
 #large-activate-button:hover {
   background-color: #2657f9;

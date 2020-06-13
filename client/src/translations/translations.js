@@ -183,7 +183,7 @@ const translations = {
     RequestPage3_Text2: "Sign up!",
     Details: "Details?",
     Details_Text:
-      "Let us know more about you and how you can help (Please be specific)! For example: If you're offering food, please let us know if you're offering to cook food, donate food, or need to be reimbursed, etc. No pressure, but any information helps us match you more quickly!",
+      "Let us know more about you and how you can help (please be specific)! For example: If you're offering food, please let us know if you're offering to cook food, donate food, or need to be reimbursed, etc. No pressure, but any information helps us match you more quickly!",
     Details_Example:
       "I am a college student, and am happy to deliver food from stores or food banks in St. Louis County!",
     CanYouHelp: "Can you help ",

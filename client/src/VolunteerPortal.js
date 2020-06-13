@@ -27,6 +27,7 @@ import "./VolunteerPage.css";
 import fetch_a from "./util/fetch_auth";
 import Footer from "./components/Footer";
 import { useWindowDimensions } from "./libs/hooksLib";
+import { currURL } from "../src/constants";
 
 export default function VolunteerPortal(props) {
   const [tabNum, setTabNum] = useState(1);
@@ -161,6 +162,11 @@ export default function VolunteerPortal(props) {
   };
 
   useEffect(() => {
+    if (window.location.href.includes("#offer")) {
+      setView("your-offer");
+    } else if (window.location.href.includes("#requests")) {
+      setView("request-dashboard");
+    }
     // Fetch user and all requests/beacons
     fetchUser();
   }, []);
@@ -276,11 +282,10 @@ export default function VolunteerPortal(props) {
             last_name={user.last_name}
             setView={setView}
             pageLoaded={true}
-            isLoggedIn={true}
           />
           <p id="requestCall" style={{ marginTop: -8, marginBottom: 0 }}></p>
           <div class="flex-container">
-            <div style={{ width: width < 980 ? "100%" : "75%", float: "left" }}>
+            <div style={{ width: "75%", float: "left" }}>
               <Jumbotron
                 fluid
                 id="jumbo-volunteer"
@@ -301,13 +306,13 @@ export default function VolunteerPortal(props) {
             <span
               style={{
                 height: "95vh",
-                display: width < 980 ? "none" : "inline",
+                display: "inline",
               }}
               id="vertical-line"
             ></span>
             <div
               style={{
-                width: width < 980 ? "100%" : "23%",
+                width: "23%",
                 float: "left",
                 height: "100%",
               }}
@@ -340,7 +345,7 @@ export default function VolunteerPortal(props) {
             </div>
           </div>
         </div>
-        <Footer />
+        <Footer style={{ marginTop: -4 }} />
         <AccountInfo
           user={user}
           language={props.language}

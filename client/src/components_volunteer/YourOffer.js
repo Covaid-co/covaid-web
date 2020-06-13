@@ -145,7 +145,7 @@ export default function YourOffer(props) {
   };
 
   var visibleText = <></>;
-  var publishButton = <></>;
+
   var headerOrBack = <></>;
   var offerForm = <></>;
   var statusChangeDescription = <></>;
@@ -154,6 +154,24 @@ export default function YourOffer(props) {
   var publishText = "Activate";
   var unpublishText = "Deactivate";
   var spinnerComponent = <Spinner animation="border" />;
+  const activateButton = (
+    <Button
+      id="large-activate-button"
+      onClick={() => handleUpdate(true, setIsActive)}
+      style={{ marginBottom: 48 }}
+    >
+      {isActive ? spinnerComponent : publishText}
+    </Button>
+  );
+  const inactivateButton = (
+    <Button
+      id="large-inactivate-button"
+      onClick={() => handleUpdate(false, setIsUnPublish)}
+      style={{ marginBottom: 48 }}
+    >
+      {isUnPublish ? spinnerComponent : unpublishText}
+    </Button>
+  );
   const saveOfferButton = (
     <Button
       id="offer-save-button"
@@ -198,15 +216,6 @@ export default function YourOffer(props) {
         You are an active volunteer
       </h5>
     );
-    publishButton = (
-      <Button
-        id="large-inactivate-button"
-        onClick={() => handleUpdate(false, setIsUnPublish)}
-        style={{ marginBottom: 48 }}
-      >
-        {isUnPublish ? spinnerComponent : unpublishText}
-      </Button>
-    );
   } else {
     // Render specific test is user is unavailable
     statusChangeDescription = (
@@ -224,22 +233,14 @@ export default function YourOffer(props) {
         You are an inactive volunteer
       </h5>
     );
-    publishButton = (
-      <Button
-        id="large-activate-button"
-        onClick={() => handleUpdate(true, setIsActive)}
-      >
-        {isActive ? spinnerComponent : publishText}
-      </Button>
-    );
   }
   if (isEditing) {
     headerOrBack = (
       <Button
         id="back-button"
         style={{
-          marginTop: 4,
-          marginBottom: 12,
+          marginTop: -4,
+          marginBottom: 8,
         }}
         onClick={() => {
           handleBackButton();
@@ -367,7 +368,8 @@ export default function YourOffer(props) {
       >
         {visibleText}
         {statusChangeDescription}
-        {publishButton}
+        {availability && inactivateButton}
+        {availability === false && activateButton}
         {/* <Alert
           style={{ marginTop: 10, marginBottom: 20, color: "#721c24" }}
           variant={"danger"}

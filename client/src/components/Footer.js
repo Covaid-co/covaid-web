@@ -31,12 +31,16 @@ export default function Footer(props) {
   };
 
   return (
-    <footer className="footer" id={props.id} style={props.style}>
+    <footer
+      className="footer"
+      id={props.id}
+      style={props.style || { marginTop: 20 }}
+    >
       <Container style={{ maxWidth: 2500 }}>
-        <Row style={{ textAlign: "left", paddingBottom: 30 }}>
+        <Row style={{ textAlign: "left" }}>
           <Col
             xs={1}
-            style={{ padding: 20, paddingRight: 0 }}
+            style={{ padding: 20, paddingRight: 0, paddingTop: 0 }}
             id="footer-brand"
           >
             <Navbar style={{ paddingLeft: 0, paddingBottom: 0 }}>
@@ -58,7 +62,7 @@ export default function Footer(props) {
             lg={10}
             md={10}
             sm={12}
-            style={{ textAlign: "left", marginTop: 62, paddingLeft: 50 }}
+            style={{ textAlign: "left", marginTop: 42, paddingLeft: 50 }}
             id="footer-content"
           >
             <Button

@@ -433,7 +433,7 @@ export default function EditAccountInfoModal(props) {
                 <Col xs={6}>
                   <Form.Group controlId="first_name" bssize="large">
                     <Form.Label id="regular-text-bold">
-                      <b>{props.translations[props.language].FirstName}</b>
+                      {props.translations[props.language].FirstName}
                     </Form.Label>
                     <Form.Control
                       style={{
@@ -448,7 +448,7 @@ export default function EditAccountInfoModal(props) {
                 <Col xs={6}>
                   <Form.Group controlId="last_name" bssize="large">
                     <Form.Label id="regular-text-bold">
-                      <b>{props.translations[props.language].LastName}</b>
+                      {props.translations[props.language].LastName}
                     </Form.Label>
                     <Form.Control
                       style={{
@@ -464,7 +464,7 @@ export default function EditAccountInfoModal(props) {
                 <Col xs={12}>
                   <Form.Group controlId="email" bssize="large">
                     <Form.Label id="regular-text-bold">
-                      <b>{props.translations[props.language].email}</b>
+                      {props.translations[props.language].email}
                     </Form.Label>
                     <Form.Control
                       style={{
@@ -482,7 +482,7 @@ export default function EditAccountInfoModal(props) {
                     style={{
                       paddingTop: 10,
                       paddingBottom: 10,
-                      marginBottom: 30,
+                      marginBottom: 16,
                     }}
                     label={props.translations[props.language].phone}
                     labelID="regular-text-bold"
@@ -490,19 +490,58 @@ export default function EditAccountInfoModal(props) {
                     setPhoneNumber={setPhone}
                   />
                 </Col>
-
                 <Col xs={12}>
-                  <h5 id="regular-text-bold" style={{ marginBottom: 8 }}>
+                  <Form.Label id="regular-text-bold">
+                    Current zipcode
+                  </Form.Label>
+                  <InputGroup
+                    style={{
+                      marginBottom: 16,
+                    }}
+                    controlid="locationString"
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      placeholder="Zip code"
+                      onChange={(e) => setZip(e.target.value)}
+                      value={zip}
+                    />
+                    <InputGroup.Append>
+                      <Button
+                        variant="outline-secondary"
+                        style={{ fontSize: 14 }}
+                        onClick={updateLocation}
+                      >
+                        Update Zipcode
+                      </Button>
+                    </InputGroup.Append>
+                  </InputGroup>
+                </Col>
+
+                <Col
+                  xs={12}
+                  style={{
+                    marginLeft: 4,
+                    marginRight: 4,
+                    marginTop: 8,
+                    marginBottom: 8,
+                  }}
+                >
+                  <h5 id="regular-text-bold">
                     {props.translations[props.language].WhatLanguageDoYouSpeak}
                   </h5>
-                </Col>
-                <Col xs={12} style={{ marginBottom: 2 }}>
-                  <h5 id="regular-text">
-                    If not listed, please mention in details section of your
-                    offer
+                  <h5
+                    id="regular-text"
+                    style={{
+                      fontSize: 14,
+                      marginLeft: 1,
+                      lineHeight: "19px",
+                      marginBottom: 8,
+                    }}
+                  >
+                    Please specify other languages in the details section of
+                    your offer
                   </h5>
-                </Col>
-                <Col xs={12}>
                   <CheckForm
                     sort={false}
                     obj={languageChecked}
@@ -513,7 +552,7 @@ export default function EditAccountInfoModal(props) {
               <Button
                 onClick={handleSubmit}
                 id="large-button"
-                style={{ width: "100%", marginTop: 32 }}
+                style={{ width: "100%", marginTop: 20 }}
               >
                 Save Changes
               </Button>

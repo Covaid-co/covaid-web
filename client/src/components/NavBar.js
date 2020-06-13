@@ -34,6 +34,7 @@ export default function CovaidNavbar(props) {
   const [showModal, setShowModal] = useState(false);
   const [display_banner, setDisplayBanner] = useState(true);
   const [tab, setTab] = useState(0);
+  const [dropToggle, setDropToggle] = useState(false);
 
   window.addEventListener("resize", () => {
     setWidth(window.innerWidth);
@@ -45,6 +46,11 @@ export default function CovaidNavbar(props) {
   useEffect(() => {
     if (props.mode === "volunteer") {
       setMode("volunteer");
+      if (window.location.href.includes("#offer")) {
+        setTab(1);
+      } else if (window.location.href.includes("#requests")) {
+        setTab(0);
+      }
       return;
     }
     if (totalVolunteers === 0) {
@@ -85,21 +91,15 @@ export default function CovaidNavbar(props) {
           <i
             className="fa fa-globe"
             aria-hidden="true"
-            style={{ marginRight: 7 }}
+            style={{ marginRight: 7, paddingTop: 7 }}
           ></i>
-          {props.language === "en" ? "EN" : "ES"}
+          {props.language === "en" ? "English" : "Español"}
         </Dropdown.Toggle>
-        <Dropdown.Menu style={{ marginTop: 10 }}>
-          <Dropdown.Item
-            onSelect={() => props.setLanguage("en")}
-            active={props.language === "en"}
-          >
+        <Dropdown.Menu alignRight={true}>
+          <Dropdown.Item onSelect={() => props.setLanguage("en")}>
             {"English"}
           </Dropdown.Item>
-          <Dropdown.Item
-            onSelect={() => props.setLanguage("es")}
-            active={props.language === "es"}
-          >
+          <Dropdown.Item onSelect={() => props.setLanguage("es")}>
             {"Español"}
           </Dropdown.Item>
         </Dropdown.Menu>
@@ -257,8 +257,6 @@ export default function CovaidNavbar(props) {
       }
     } else {
       if (toggled) {
-        console.log("Width: " + width);
-
         return (
           <Form inline id="getStarted" style={{ display: "block" }}>
             {translateButton()}
@@ -273,10 +271,6 @@ export default function CovaidNavbar(props) {
           </Form>
         );
       } else {
-        console.log("Width: " + width);
-        console.log("ORG: " + props.orgPortal);
-        console.log("MODE: " + mode);
-
         return (
           <Form
             inline
@@ -289,36 +283,93 @@ export default function CovaidNavbar(props) {
             }}
           >
             {props.orgPortal || mode === "volunteer" ? (
-              <>
-                <p
-                  id={selectedTab(1)}
-                  onClick={() => {
-                    setTab(1);
-                    props.setView("your-offer");
-                  }}
-                >
-                  Your Offer
-                </p>
-              </>
+              <></>
             ) : (
               translateButton()
             )}
-            {width > 767 && !props.orgPortal ? (
-              <span
-                id="hello-name"
-                onClick={() =>
-                  window.open(currURL + "/volunteerPortal", "_self")
-                }
-              >
-                {" "}
-                {translatedStrings[props.language].Hello} {props.first_name}
-              </span>
-            ) : (
-              <></>
-            )}
-            <Button variant="outline-danger" id="logoutButton" onClick={logout}>
-              {translatedStrings[props.language].Logout}
-            </Button>
+            {/* {width > 767 && !props.orgPortal ? ( */}
+            <Dropdown
+              key="volunteer-dropdown"
+              style={{ display: "inline", marginLeft: 8 }}
+              // className="mobileDrop"
+              // title={` Drop ${"down"} `}
+            >
+              <Dropdown.Toggle size="md" id="languageButton">
+                <span id="hello-name" style={{ marginRight: 0 }}>
+                  {" "}
+                  {translatedStrings[props.language].Hello} {props.first_name}
+                  <svg
+                    className="dropdown-svg"
+                    width="17"
+                    height="9"
+                    viewBox="0 0 17 9"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1 1L8.35849 7.5L16 1"
+                      stroke="#2670FF"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </span>
+              </Dropdown.Toggle>
+              <Dropdown.Menu alignRight={true} style={{ marginTop: 10 }}>
+                <Dropdown.Item
+                  active={false}
+                  style={{ transition: "0.1s" }}
+                  onClick={() => {
+                    if (props.setView) {
+                      setTab(0);
+                      props.setView("request-dashboard");
+                      window.location.href = "#requests";
+                    } else {
+                      window.open(
+                        currURL + "/volunteerPortal#requests",
+                        "_self"
+                      );
+                    }
+                  }}
+                >
+                  {"Requests"}
+                </Dropdown.Item>
+                <Dropdown.Item
+                  style={{ transition: "0.1s" }}
+                  active={false}
+                  onClick={() => {
+                    if (props.setView) {
+                      setTab(1);
+                      props.setView("your-offer");
+                      window.location.href = "#offer";
+                    } else {
+                      window.open(currURL + "/volunteerPortal#offer", "_self");
+                      setTab(1);
+                    }
+                  }}
+                >
+                  {"Your Offer"}
+                </Dropdown.Item>
+                <Dropdown.Item
+                  style={{ transition: "0.1s" }}
+                  className="logout-dropdown-item"
+                  active={false}
+                  onClick={logout}
+                >
+                  {"Log out"}
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            {/* ) : (
+              <>
+                <Button
+                  variant="outline-danger"
+                  id="logoutButton"
+                  onClick={logout}
+                >
+                  {translatedStrings[props.language].Logout}
+                </Button>
+              </>
+            )} */}
           </Form>
         );
       }
@@ -386,6 +437,7 @@ export default function CovaidNavbar(props) {
                 onClick={() => {
                   setTab(0);
                   props.setView("request-dashboard");
+                  window.location.href = "#requests";
                 }}
               >
                 Request Dashboard
@@ -395,6 +447,7 @@ export default function CovaidNavbar(props) {
                 onClick={() => {
                   setTab(1);
                   props.setView("your-offer");
+                  window.location.href = "#offer";
                 }}
               >
                 Your Offer

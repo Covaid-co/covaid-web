@@ -50,8 +50,6 @@ export default function AccountInfo(props) {
         size={"md"}
         show={props.showAccountModal}
         onHide={() => props.setShowAccountModal(false)}
-        style={{ marginTop: 10, paddingBottom: 50 }}
-        centered
       >
         <EditAccountInfoModal
           language={props.language}
