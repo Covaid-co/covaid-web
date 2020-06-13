@@ -4,12 +4,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import { useHistory } from "react-router-dom";
 
 import HowItWorks from "../components_modals/HowItWorks";
 import Feedback from "../components_modals/Feedback";
 import { currURL } from "../constants";
 
 export default function Footer(props) {
+  const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const [modalName, setModalName] = useState("");
 
@@ -45,6 +47,7 @@ export default function Footer(props) {
           >
             <Navbar style={{ paddingLeft: 0, paddingBottom: 0 }}>
               <Navbar.Brand
+                onClick={() => history.push("/")}
                 id="navbar-brand"
                 style={{
                   paddingLeft: 0,
