@@ -377,7 +377,7 @@ export default function YourOffer(props) {
   return (
     <Row>
       <Col
-        md={width > 836 ? 6 : 12}
+        md={width > 902 ? 6 : 12}
         style={{
           marginLeft: 0,
           paddingLeft: 16,
