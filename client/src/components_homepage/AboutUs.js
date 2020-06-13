@@ -19,6 +19,8 @@ import Yoav from "../assets/yoav.jpg";
 import Sofia from "../assets/sofia.jpg";
 import Angela from "../assets/angela.jpg";
 import Ashwin from "../assets/ashwin.jpeg";
+import Jenny from "../assets/jenny.jpg";
+
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 
@@ -88,6 +90,10 @@ export default function AboutUs(props) {
     "Ashwin Saxena": {
       link: "https://www.linkedin.com/in/ashwinsax/",
       image: Ashwin,
+    },
+    "Jenny Zang": {
+      link: "",
+      image: Jenny,
     },
   };
 
