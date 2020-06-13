@@ -569,7 +569,6 @@ export default function CovaidNavbar(props) {
           </Navbar.Collapse>
         </Navbar>
       )}
-
       {getCurrentModal()}
     </>
   );

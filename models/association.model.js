@@ -11,6 +11,7 @@ let AssociationSchema = new Schema({
   name: { type: String, required: true },
   homepage: { type: String, required: false },
   resources: { type: [String], required: true },
+  resources_popup: { type: [String], required: true },
   links: { type: [AssociationResources], required: false },
   city: { type: String, required: true },
   email: { type: String, required: true },
