@@ -30,7 +30,7 @@ export default function RequestDashboard(props) {
       return { display: "none" };
     }
   };
-  if (width < 448) {
+  if (width < 280) {
     return (
       <>
         <Row>
@@ -107,7 +107,7 @@ export default function RequestDashboard(props) {
         </Container>
       </>
     );
-  } else if (width < 980) {
+  } else if (width < 448) {
     return (
       <>
         <p
@@ -115,7 +115,13 @@ export default function RequestDashboard(props) {
           onClick={() => {
             setTab(0);
           }}
-          style={{ paddingBottom: 8 }}
+          style={{
+            marginRight:
+              width > 408 ? 8 : width > 386 ? 6 : width > 368 ? 2 : 0,
+            marginLeft: 8,
+            paddingBottom: 8,
+            width: width > 408 ? 60 : 50,
+          }}
         >
           New
         </p>
@@ -124,7 +130,13 @@ export default function RequestDashboard(props) {
           onClick={() => {
             setTab(1);
           }}
-          style={{ paddingBottom: 8 }}
+          style={{
+            marginRight:
+              width > 408 ? 8 : width > 386 ? 6 : width > 368 ? 2 : 0,
+            marginLeft: 8,
+            paddingBottom: 8,
+            width: width > 408 ? 70 : 50,
+          }}
         >
           Active
         </p>
@@ -133,7 +145,89 @@ export default function RequestDashboard(props) {
           onClick={() => {
             setTab(2);
           }}
-          style={{ paddingBottom: 8 }}
+          style={{
+            paddingBottom: 8,
+            marginLeft: 0,
+          }}
+        >
+          Complete
+        </p>
+        <Container id="requester-tab" style={displayTab(0)}>
+          <RequestColumn
+            requests={props.pendingRequests}
+            notitle={true}
+            requestStatus={volunteer_status.PENDING}
+            user={props.user}
+            moveRequestFromPendingToInProgress={
+              props.moveRequestFromPendingToInProgress
+            }
+            rejectAPendingRequest={props.rejectAPendingRequest}
+            completeAnInProgressRequest={props.completeAnInProgressRequest}
+          />
+        </Container>
+        <Container id="requester-tab" style={displayTab(1)}>
+          <RequestColumn
+            requests={props.acceptedRequests}
+            notitle={true}
+            requestStatus={volunteer_status.IN_PROGRESS}
+            user={props.user}
+            moveRequestFromPendingToInProgress={
+              props.moveRequestFromPendingToInProgress
+            }
+            rejectAPendingRequest={props.rejectAPendingRequest}
+            completeAnInProgressRequest={props.completeAnInProgressRequest}
+          />
+        </Container>
+        <Container id="requester-tab" style={displayTab(2)}>
+          <RequestColumn
+            requests={props.completedRequests}
+            notitle={true}
+            requestStatus={volunteer_status.COMPLETE}
+            user={props.user}
+          />
+        </Container>
+      </>
+    );
+  } else if (width < 980) {
+    return (
+      <>
+        <p
+          id={selectedTab(0)}
+          onClick={() => {
+            setTab(0);
+          }}
+          style={{
+            marginRight:
+              width > 876 ? 96 : width > 576 ? 64 : width > 492 ? 32 : 8,
+            marginLeft: 4,
+            paddingBottom: 8,
+          }}
+        >
+          New
+        </p>
+        <p
+          id={selectedTab(1)}
+          onClick={() => {
+            setTab(1);
+          }}
+          style={{
+            marginRight:
+              width > 876 ? 96 : width > 576 ? 64 : width > 492 ? 32 : 8,
+            marginLeft: width > 876 ? 48 : width > 512 ? 24 : 8,
+            paddingBottom: 8,
+          }}
+        >
+          Active
+        </p>
+        <p
+          id={selectedTab(2)}
+          onClick={() => {
+            setTab(2);
+          }}
+          style={{
+            paddingBottom: 8,
+            marginLeft: width > 876 ? 48 : width > 512 ? 24 : 8,
+          }}
         >
           Complete
         </p>
