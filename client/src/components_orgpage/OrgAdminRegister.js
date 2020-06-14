@@ -11,7 +11,7 @@ import orgImg from "../assets/orgNew.png";
 import NavBar from "../components/NavBar";
 import { validateEmail } from "../Helpers";
 import Cookie from "js-cookie";
-const queryString = require("querystring");
+const queryString = require("query-string");
 
 export default function OrgAdminRegister(props) {
   const [registered, setRegistered] = useState(false);
@@ -27,6 +27,7 @@ export default function OrgAdminRegister(props) {
 
   useEffect(() => {
     const assocID = queryString.parse(props.location.search).associationID;
+    console.log(queryString.parse(props.location.search))
     let params = { associationID: assocID };
     var url = generateURL("/api/association/get_assoc/?", params);
     fetch(url)

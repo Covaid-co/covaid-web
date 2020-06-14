@@ -3,7 +3,7 @@ import { useFormFields } from "./libs/hooksLib";
 import { Button, Form } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 
-const queryString = require("querystring");
+const queryString = require("query-string");
 
 const VERIFICATION_STATUS = {
   LOADING: "loading",
