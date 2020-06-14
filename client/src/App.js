@@ -115,10 +115,17 @@ function App() {
     var url = generateURL("/api/association/get_assoc/?", params);
     fetch(url).then((response) => {
       if (response.ok) {
-        response.json().then((association) => {
-          setResources(association.resources);
-          setCurrentAssoc(association);
-        });
+        console.log(response);
+        response
+          .json()
+          .then((association) => {
+            console.log("hi");
+            setResources(association.resources);
+            setCurrentAssoc(association);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
     });
   };
@@ -186,8 +193,14 @@ function App() {
       setAssocByOrg("5edabb06b60b9b11e5c1be38");
     } else if (org === "berkshire") {
       setAssocByOrg("5edbf9e3211f520d08ee977f");
+    } else if (org === "evanston") {
+      setAssocByOrg("5ec59c04bcb4d4389861d588");
+    } else if (org === "pwc") {
+      setAssocByOrg("5ee3eb1077cfd83429f85fe2");
+    } else if (org === 'hbvla') {
+      setAssocByOrg("5eb70551e676422cdfd0e882");
     }
-  }
+  };
 
   const registerPage = (props, org) => {
     if (stateRef.current === "" && org !== "") {
@@ -309,6 +322,21 @@ function App() {
           />
           <Route
             exact
+            path="/evanston-request"
+            render={(props) => requestPage(props, "evanston")}
+          />
+          <Route
+            exact
+            path="/pwc-request"
+            render={(props) => requestPage(props, "pwc")}
+          />
+          <Route
+            exact
+            path="/hbvla-request"
+            render={(props) => requestPage(props, "hbvla")}
+          />
+          <Route
+            exact
             path="/request"
             render={(props) => requestPage(props, "")}
           />
@@ -336,6 +364,21 @@ function App() {
             exact
             path="/berkshire-volunteer"
             render={(props) => registerPage(props, "berkshire")}
+          />
+          <Route
+            exact
+            path="/evanston-volunteer"
+            render={(props) => registerPage(props, "evanston")}
+          />
+          <Route
+            exact
+            path="/pwc-volunteer"
+            render={(props) => registerPage(props, "pwc")}
+          />
+          <Route
+            exact
+            path="/hbvla-volunteer"
+            render={(props) => registerPage(props, "hbvla")}
           />
           <Route
             exact

@@ -284,7 +284,7 @@ export default function FAQ(props) {
           </Col>
         </Row>
       </Container>
-      <Footer key="2" />
+      <Footer key="2" style={{ marginTop: 48 }} />
     </div>
   );
 }

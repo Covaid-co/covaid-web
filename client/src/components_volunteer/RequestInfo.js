@@ -125,7 +125,9 @@ export default function RequestInfo(props) {
         Contact:
       </h5>
       <p id="regular-text-nomargin">
-        {props.currRequest.personal_info.requester_email}{" "}
+        {props.currRequest.personal_info.requester_email}
+      </p>{" "}
+      <p id="regular-text-nomargin">
         {props.currRequest.personal_info.requester_phone}
       </p>
     </>
@@ -239,6 +241,29 @@ export default function RequestInfo(props) {
       );
     }
   };
+  const completedResponse = () => {
+    const volunteers = props.currRequest.status.volunteers;
+    const found = volunteers.find((vol) => {
+      return vol.current_status === volunteer_status.COMPLETE;
+    });
+    if (
+      props.modalMode === volunteer_status.COMPLETE &&
+      found &&
+      found.volunteer_response &&
+      found.volunteer_response.length > 0
+    ) {
+      return (
+        <>
+          <h5 id="regular-text-bold" style={{ marginBottom: 0, marginTop: 16 }}>
+            Summary of completion:
+          </h5>
+          <p id="regular-text-nomargin">"{found.volunteer_response}"</p>
+        </>
+      );
+    } else {
+      return <></>;
+    }
+  };
 
   return (
     <>
@@ -246,6 +271,7 @@ export default function RequestInfo(props) {
         show={props.modalOpen}
         onHide={props.closeModal}
         style={{ marginTop: 10, paddingBottom: 50 }}
+        centered
       >
         <Modal.Header closeButton>{header}</Modal.Header>
         <Modal.Body>
@@ -279,7 +305,7 @@ export default function RequestInfo(props) {
           ) : (
             <></>
           )}
-
+          {completedResponse()}
           {timeSpecific}
           {buttons}
         </Modal.Body>

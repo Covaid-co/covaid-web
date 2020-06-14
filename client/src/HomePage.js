@@ -123,7 +123,7 @@ export default function HomePage(props) {
       </div>
       <Footer
         id="desktop-footer"
-        style={toggle ? { marginTop: 500 } : {}}
+        style={toggle ? { marginTop: 500 } : { marginTop: -4 }}
       />
     </div>
   );

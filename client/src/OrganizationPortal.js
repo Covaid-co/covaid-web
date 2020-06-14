@@ -177,7 +177,7 @@ export default function OrganiationPortal(props) {
 
   if (beaconView) {
     return (
-      <div className="App" key="1"> 
+      <div className="App" key="1">
         <NavBar
           setLanguage={props.setLanguage}
           language={props.language}
@@ -189,12 +189,12 @@ export default function OrganiationPortal(props) {
           first_name={getName(admin, association)}
           handleShowModal={() => {}}
         />
-      <LiveBeaconView
-        volunteers={volunteers}
-        association={association}
-        setBeaconView={setBeaconView}
-        beacons={beacons}
-      />
+        <LiveBeaconView
+          volunteers={volunteers}
+          association={association}
+          setBeaconView={setBeaconView}
+          beacons={beacons}
+        />
       </div>
     );
   } else if (showLogin === true) {
@@ -211,7 +211,7 @@ export default function OrganiationPortal(props) {
     return <></>;
   }
   return [
-    <div className="App" key="1"> 
+    <div className="App" key="1">
       <NavBar
         setLanguage={props.setLanguage}
         language={props.language}

@@ -8,6 +8,7 @@ let PersonalInfo = new Schema(
     requester_email: String,
     requester_phone: String,
     languages: [String],
+    contact_option: Number,
   },
   { noId: true }
 );
