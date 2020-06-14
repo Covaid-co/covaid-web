@@ -33,43 +33,48 @@ export default function RequestDashboard(props) {
   if (width < 280) {
     return (
       <>
-        <Row>
-          <div style={{ marginLeft: "auto", marginRight: "auto" }}>
-            <div>
-              <p
-                id={selectedTab(0)}
-                onClick={() => {
-                  setTab(0);
-                }}
-                style={{ paddingBottom: 2 }}
-              >
-                New
-              </p>
-            </div>
-            <div>
-              <p
-                id={selectedTab(1)}
-                onClick={() => {
-                  setTab(1);
-                }}
-                style={{ paddingBottom: 2 }}
-              >
-                Active
-              </p>
-            </div>
-            <div>
-              <p
-                id={selectedTab(2)}
-                onClick={() => {
-                  setTab(2);
-                }}
-                style={{ paddingBottom: 2 }}
-              >
-                Complete
-              </p>
-            </div>
+        <div
+          style={{
+            alignContent: "center",
+            textAlign: "center",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <div>
+            <p
+              id={selectedTab(0)}
+              onClick={() => {
+                setTab(0);
+              }}
+              style={{ paddingBottom: 2 }}
+            >
+              New
+            </p>
           </div>
-        </Row>
+          <div>
+            <p
+              id={selectedTab(1)}
+              onClick={() => {
+                setTab(1);
+              }}
+              style={{ paddingBottom: 2 }}
+            >
+              Active
+            </p>
+          </div>
+          <div>
+            <p
+              id={selectedTab(2)}
+              onClick={() => {
+                setTab(2);
+              }}
+              style={{ paddingBottom: 2 }}
+            >
+              Complete
+            </p>
+          </div>
+        </div>
 
         <Container id="requester-tab" style={displayTab(0)}>
           <RequestColumn
@@ -107,51 +112,56 @@ export default function RequestDashboard(props) {
         </Container>
       </>
     );
-  } else if (width < 448) {
+  } else if (width < 412) {
     return (
       <>
-        <p
-          id={selectedTab(0)}
-          onClick={() => {
-            setTab(0);
-          }}
+        <Row
           style={{
-            marginRight:
-              width > 408 ? 8 : width > 386 ? 6 : width > 368 ? 2 : 0,
-            marginLeft: 8,
-            paddingBottom: 8,
-            width: width > 408 ? 60 : 50,
-          }}
-        >
-          New
-        </p>
-        <p
-          id={selectedTab(1)}
-          onClick={() => {
-            setTab(1);
-          }}
-          style={{
-            marginRight:
-              width > 408 ? 8 : width > 386 ? 6 : width > 368 ? 2 : 0,
-            marginLeft: 8,
-            paddingBottom: 8,
-            width: width > 408 ? 70 : 50,
-          }}
-        >
-          Active
-        </p>
-        <p
-          id={selectedTab(2)}
-          onClick={() => {
-            setTab(2);
-          }}
-          style={{
-            paddingBottom: 8,
+            paddingLeft: width > 328 ? 20 : 10,
             marginLeft: 0,
           }}
         >
-          Complete
-        </p>
+          <p
+            id={selectedTab(0)}
+            onClick={() => {
+              setTab(0);
+            }}
+            style={{
+              marginRight: width > 342 ? 4 : 0,
+              paddingBottom: 8,
+              width: 75,
+            }}
+          >
+            New
+          </p>
+          <p
+            id={selectedTab(1)}
+            onClick={() => {
+              setTab(1);
+            }}
+            style={{
+              marginRight: width > 342 ? 4 : 0,
+              marginLeft: width > 342 ? 4 : 0,
+              paddingBottom: 8,
+              width: width < 302 && 75,
+            }}
+          >
+            Active
+          </p>
+          <p
+            id={selectedTab(2)}
+            onClick={() => {
+              setTab(2);
+            }}
+            style={{
+              paddingBottom: 8,
+              marginLeft: width > 342 ? 4 : 0,
+              width: width < 302 && 90,
+            }}
+          >
+            Complete
+          </p>
+        </Row>
         <Container id="requester-tab" style={displayTab(0)}>
           <RequestColumn
             requests={props.pendingRequests}
@@ -191,46 +201,106 @@ export default function RequestDashboard(props) {
   } else if (width < 980) {
     return (
       <>
-        <p
-          id={selectedTab(0)}
-          onClick={() => {
-            setTab(0);
-          }}
+        <Row
           style={{
-            marginRight:
-              width > 876 ? 96 : width > 576 ? 64 : width > 492 ? 32 : 8,
-            marginLeft: 4,
-            paddingBottom: 8,
+            paddingLeft: 20,
           }}
         >
-          New
-        </p>
-        <p
-          id={selectedTab(1)}
-          onClick={() => {
-            setTab(1);
-          }}
-          style={{
-            marginRight:
-              width > 876 ? 96 : width > 576 ? 64 : width > 492 ? 32 : 8,
-            marginLeft: width > 876 ? 48 : width > 512 ? 24 : 8,
-            paddingBottom: 8,
-          }}
-        >
-          Active
-        </p>
-        <p
-          id={selectedTab(2)}
-          onClick={() => {
-            setTab(2);
-          }}
-          style={{
-            paddingBottom: 8,
-            marginLeft: width > 876 ? 48 : width > 512 ? 24 : 8,
-          }}
-        >
-          Complete
-        </p>
+          <p
+            id={selectedTab(0)}
+            onClick={() => {
+              setTab(0);
+            }}
+            style={{
+              marginRight:
+                width > 876
+                  ? 96
+                  : width > 802
+                  ? 88
+                  : width > 767
+                  ? 64
+                  : width > 676
+                  ? 92
+                  : width > 576
+                  ? 48
+                  : width > 492
+                  ? 32
+                  : width > 460
+                  ? 24
+                  : 8,
+              marginLeft: 4,
+              paddingBottom: 8,
+            }}
+          >
+            New
+          </p>
+          <p
+            id={selectedTab(1)}
+            onClick={() => {
+              setTab(1);
+            }}
+            style={{
+              marginRight:
+                width > 876
+                  ? 96
+                  : width > 802
+                  ? 88
+                  : width > 767
+                  ? 64
+                  : width > 676
+                  ? 92
+                  : width > 576
+                  ? 48
+                  : width > 492
+                  ? 32
+                  : width > 460
+                  ? 24
+                  : 8,
+              marginLeft:
+                width > 876
+                  ? 48
+                  : width > 802
+                  ? 36
+                  : width > 767
+                  ? 24
+                  : width > 676
+                  ? 42
+                  : width > 576
+                  ? 16
+                  : width > 460
+                  ? 8
+                  : 0,
+              paddingBottom: 8,
+            }}
+          >
+            Active
+          </p>
+          <p
+            id={selectedTab(2)}
+            onClick={() => {
+              setTab(2);
+            }}
+            style={{
+              paddingBottom: 8,
+              marginLeft:
+                width > 876
+                  ? 48
+                  : width > 802
+                  ? 36
+                  : width > 767
+                  ? 24
+                  : width > 676
+                  ? 42
+                  : width > 576
+                  ? 16
+                  : width > 460
+                  ? 8
+                  : 0,
+            }}
+          >
+            Complete
+          </p>
+        </Row>
         <Container id="requester-tab" style={displayTab(0)}>
           <RequestColumn
             requests={props.pendingRequests}

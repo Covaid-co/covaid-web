@@ -176,7 +176,6 @@ export default function CovaidNavbar(props) {
   const BLM = () => {
     return (
       <Navbar
-        expand="md"
         id="blmbanner"
         onClick={() => window.open("https://blacklivesmatters.carrd.co/")}
       >
@@ -291,7 +290,7 @@ export default function CovaidNavbar(props) {
             ) : (
               translateButton()
             )}
-            {width > 767 && !props.orgPortal ? (
+            {width >= 576 && !props.orgPortal ? (
               <Dropdown
                 key="volunteer-dropdown"
                 style={{
@@ -378,6 +377,8 @@ export default function CovaidNavbar(props) {
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+            ) : width < 576 && !props.orgPortal ? (
+              <></>
             ) : (
               <>
                 <Button
@@ -439,40 +440,64 @@ export default function CovaidNavbar(props) {
             }
           }}
           variant="light"
-          expand="md"
+          expand="sm"
           id="custom-navbar"
         >
           <Navbar.Brand
             onClick={() => history.push("/")}
             id="navbar-brand"
-            style={width < 767 ? { marginTop: 12 } : {}}
+            // style={width < 767 ? { marginTop: 12 } : {}}
           >
             covaid
           </Navbar.Brand>
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Form inline className="volunteer-badge-mobile">
+            <Navbar.Toggle
+              aria-controls="basic-navbar-nav"
+              id={width < 576 ? "toggledNav1" : "nav1"}
+            />
+          </Form>
+          <Navbar.Collapse id="basic-navbar-nav" collapseOnSelect>
             <Nav className="mr-auto">
-              <p
-                id={selectedTab(0)}
+              <Nav.Link
+                className={width < 576 ? "navBorderToggled" : ""}
                 onClick={() => {
                   setTab(0);
                   props.setView("request-dashboard");
                   window.location.href = "#requests";
                 }}
               >
-                Requests
-              </p>
-              <p
-                id={selectedTab(1)}
+                <p id={width < 576 ? "navLinkToggled" : selectedTab(0)}>
+                  Requests
+                </p>
+              </Nav.Link>
+              <Nav.Link
+                className={width < 576 ? "navBorderToggled" : ""}
+                // id={width < 576 ? "navLinkToggled" : selectedTab(1)}
                 onClick={() => {
                   setTab(1);
                   props.setView("your-offer");
                   window.location.href = "#offer";
                 }}
               >
-                Your Offer
-              </p>
+                <p id={width < 576 ? "navLinkToggled" : selectedTab(1)}>
+                  Your Offer
+                </p>
+              </Nav.Link>
             </Nav>
-            {rightNav(mode)}
+            {width < 576 ? (
+              <Form inline id="getStarted" style={{ display: "block" }}>
+                <Button
+                  variant="outline-danger"
+                  id="logoutButton"
+                  onClick={logout}
+                  style={{ width: "100%" }}
+                >
+                  {translatedStrings[props.language].Logout}
+                </Button>
+              </Form>
+            ) : (
+              rightNav(mode)
+            )}
           </Navbar.Collapse>
         </Navbar>
       ) : (
@@ -501,7 +526,7 @@ export default function CovaidNavbar(props) {
               id={toggled ? "toggledNav1" : "nav1"}
             />
           </Form>
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Collapse id="basic-navbar-nav" collapseOnSelect>
             {props.simplified ? (
               <Nav className="mr-auto">
                 <Nav.Link
@@ -559,6 +584,19 @@ export default function CovaidNavbar(props) {
                     {translatedStrings[props.language].VolunteerMap}
                   </p>
                 </Nav.Link>
+                {!props.volunteerPortal &&
+                  props.isLoggedIn &&
+                  !props.orgPortal &&
+                  toggled && (
+                    <Nav.Link
+                      className="navBorderToggled"
+                      onClick={() => {
+                        window.open(currURL + "/volunteerPortal", "_self");
+                      }}
+                    >
+                      <p id="navLinkToggled">Your Portal</p>
+                    </Nav.Link>
+                  )}
               </Nav>
             )}
             {rightNav()}
