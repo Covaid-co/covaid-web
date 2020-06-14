@@ -18,7 +18,6 @@
     "js-cookie": "^2.2.1",
     "moment": "2.18.1",
     "pusher-js": "^5.1.1",
-    "query-string": "^6.13.1",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-dates": "^21.8.0",
