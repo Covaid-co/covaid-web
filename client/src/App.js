@@ -197,6 +197,8 @@ function App() {
       setAssocByOrg("5ec59c04bcb4d4389861d588");
     } else if (org === "pwc") {
       setAssocByOrg("5ee3eb1077cfd83429f85fe2");
+    } else if (org === 'hbvla') {
+      setAssocByOrg("5eb70551e676422cdfd0e882");
     }
   };
 
@@ -330,6 +332,11 @@ function App() {
           />
           <Route
             exact
+            path="/hbvla-request"
+            render={(props) => requestPage(props, "hbvla")}
+          />
+          <Route
+            exact
             path="/request"
             render={(props) => requestPage(props, "")}
           />
@@ -367,6 +374,11 @@ function App() {
             exact
             path="/pwc-volunteer"
             render={(props) => registerPage(props, "pwc")}
+          />
+          <Route
+            exact
+            path="/hbvla-volunteer"
+            render={(props) => registerPage(props, "hbvla")}
           />
           <Route
             exact
