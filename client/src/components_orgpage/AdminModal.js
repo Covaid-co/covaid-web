@@ -14,6 +14,7 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { generateURL } from "../Helpers";
 import GeofenceMap from "./OrganizationGeofenceMap";
+import TaskList from "./TaskList";
 
 /**
  * Manage Organization Modal
@@ -231,6 +232,8 @@ export default function AdminModal(props) {
         </Modal.Body>
           
         <GeofenceMap {...props}/>
+
+        <TaskList {...props} />
         
         <Modal.Header>
           <Modal.Title style={{ marginLeft: 5 }}>

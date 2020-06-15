@@ -5,7 +5,6 @@ import NavigationControl from 'react-map-gl';
 import useSupercluster from "use-supercluster";
 import Pins from "./pins";
 import InfoMarker from "./InfoMarker";
-//import {Editor, EditingMode, DrawPolygonMode,} from 'react-map-gl-draw';
 import Draw from '@urbica/react-map-gl-draw';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
