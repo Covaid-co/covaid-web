@@ -8,7 +8,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import {Pencil , Trash} from "react-bootstrap-icons";
+import {Trash, Plus} from "react-bootstrap-icons";
 
 export default function TaskList(props) {
   const [resources, setResources] = useState(props.association.resources);
@@ -72,13 +72,13 @@ export default function TaskList(props) {
 
   const _addResourceButton = () => {
     return (
-      <Button variant="primary" 
-                size="sm"
-                onClick={addResource}
-               
+      <Button  
+          size="sm"
+          onClick={addResource}
+          style={{marginLeft: 110}}
                 
         >
-          <b>Add</b>
+          <Plus size={18}/>
         </Button>
     );
   };
@@ -90,6 +90,8 @@ export default function TaskList(props) {
                 size="sm"
                 onClick={hasChanged ? updateResources : null}
                 disabled={!hasChanged}
+               
+
                 
         >
           <b>Save</b>
@@ -101,30 +103,30 @@ export default function TaskList(props) {
   return (
 	<>
 	  <Modal.Header>
-        <Modal.Title style={{ marginLeft: 5 }}> 
+         <Modal.Title style={{ marginLeft: 5 }}>
           <Row>
-            <Col xl={8}>
+            <Col >
+            
               Available Resources 
+              {_addResourceButton()}
+              {_saveButton()}
+           
+              
             </Col>
-            <Col lg={2}>
-              {_addResourceButton()} 
-            </Col>
-            <Col lg={1}>
-              {_saveButton()} 
-            </Col>
+            
           </Row> 
-        </Modal.Title>
+         </Modal.Title>
       </Modal.Header>
 
       <Modal.Body style={{ paddingTop: 0 }}>
       	<ListGroup 
           id="resourceList"
       	  variant="flush"
-          style={{ overflowY: "scroll", height: 200}} >
+          style={{ overflowY: "scroll", height: 225}} >
 
 	 	{resources.map((resource, key) => 
 	 	  <ListGroupItem
-	 	  				 style={{padding: 0, margin: 0}}> 
+	 	  				 style={{padding: 0, margin: 0, marginBottom: -15}}> 
 
 	 	  	<InputGroup className="mb-3">
 
