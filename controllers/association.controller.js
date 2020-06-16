@@ -62,17 +62,32 @@ exports.all = function (req, res) {
 
 exports.update_association = function (req, res) {
   const id = req.query.associationID;
-  const {
-    body: { association },
-  } = req;
-  Association.findByIdAndUpdate(id, { $set: association }, function (
-    err,
-    offer
-  ) {
-    if (err) return next(err);
-    res.send("Association updated.");
+  const association = req.body.association;
+  console.log(association);
+  Association.findByIdAndUpdate(
+    id, 
+    { $set: association }, 
+    function (err) {
+      if (err) return next(err);
+      res.send("Association updated.");
   });
 };
+
+// Update association resources
+exports.update_resources = function (req, res) {
+  const id = req.body.associationID;
+  const resources = req.body.resources;
+  Association.findByIdAndUpdate(
+    id,
+    { $set: { resources : resources } },
+    function (err) {
+      if (err) return next(err);
+      res.send("Association resources have been updated.");
+    }
+  );
+};
+
+
 
 // Update association geofences
 exports.update_geofences = function (req, res) {

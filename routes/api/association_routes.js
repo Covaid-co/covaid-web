@@ -13,6 +13,7 @@ router.get("/get_assoc/lat_long", association_controller.assoc_by_lat_long);
 router.put("/update", association_controller.update_association);
 router.put("/update_recruiting", association_controller.update_recruiting);
 router.put("/update_geofences", association_controller.update_geofences);
+router.put("/update_resources", association_controller.update_resources);
 router.put("/admins", association_controller.add_admin);
 
 // Link related
