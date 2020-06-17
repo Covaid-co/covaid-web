@@ -61,70 +61,129 @@ export default function HomePage(props) {
   };
 
   return (
-    <div style={{ overflowX: "hidden", height: "100%" }}>
-      <div className="App" style={{ height: "100%" }}>
-        <NavBar
-          setLanguage={props.setLanguage}
-          language={props.language}
-          pageLoaded={pageLoaded}
-          isLoggedIn={props.isLoggedIn}
-          {...props}
-          first_name={
-            Object.keys(props.currentUser).length !== 0
-              ? props.currentUser.first_name
-              : ""
-          }
-          setToggle={setToggle}
-        />
-        <Jumbotron fluid id="jumbo">
-          <div id="feedback">
-            <div
-              id="feedback-tab"
-              onClick={() => {
-                showModalType("feedback");
-              }}
-            >
-              Feedback
-            </div>
-          </div>
-          <Container id="jumboContainer">
-            <Row>
-              <Col md={6} id="jumbo-text">
-                <h1 id="home-heading" style={{ marginTop: 25 }}>
-                  {translatedStrings[props.language].HomePage_Title}
-                </h1>
-                <p id="home-subheading">
-                  {translatedStrings[props.language].HomePage_Subtitle}
-                </p>
-                <Button
-                  onClick={() => history.push("/request")}
-                  id="request-button"
-                >
-                  <font style={{ float: "left" }}>
-                    {translatedStrings[props.language].INeedHelp}
-                  </font>
-                  <font style={{ float: "right" }}>→</font>
-                </Button>{" "}
-                <br />
-                <Button
-                  id="resources-button"
-                  onClick={() => history.push("/information-hub")}
-                >
-                  COVID-19 Information Hub
-                </Button>
-              </Col>
-              <Col md={6} style={{ marginTop: 0, textAlign: "center" }}>
-                <img id="org-img" alt="" src={home}></img>
-              </Col>
-            </Row>
-          </Container>
-        </Jumbotron>
-        {getCurrentModal()}
-      </div>
-      <Footer
-        id="desktop-footer"
-        style={toggle ? { marginTop: 500 } : { marginTop: -4 }}
+    <div className="App">
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        pageLoaded={pageLoaded}
+        isLoggedIn={props.isLoggedIn}
+        {...props}
+        first_name={
+          Object.keys(props.currentUser).length !== 0
+            ? props.currentUser.first_name
+            : ""
+        }
+        setToggle={setToggle}
       />
+      <div id="feedback">
+        <div
+          id="feedback-tab"
+          onClick={() => {
+            showModalType("feedback");
+          }}
+        >
+          Feedback
+        </div>
+      </div>
+      <Container id="jumboContainer">
+        <Row>
+          <Col md={6} id="jumbo-text">
+            <h1 id="home-heading">
+              {translatedStrings[props.language].HomePage_Title}
+            </h1>
+            <p id="home-subheading">
+              {translatedStrings[props.language].HomePage_Subtitle}
+            </p>
+            <Button
+              onClick={() => history.push("/request")}
+              id="request-button"
+            >
+                {translatedStrings[props.language].INeedHelp} → 
+            </Button>
+            <br />
+            <Button
+              onClick={() => history.push("/volunteer")}
+              id="volunteer-button"
+            >
+              Become a volunteer
+            </Button>
+            <br />
+            <Button
+              id="resources-button"
+              onClick={() => history.push("/information-hub")}
+            >
+              COVID-19 Information Hub
+            </Button>
+          </Col>
+          <Col md={6} style={{ marginTop: 0, textAlign: "center" }}>
+            <img id="org-img" alt="" src={home}></img>
+          </Col>
+        </Row>
+        <Row id="row-steps">
+          <Col md={6} style={{ marginTop: 20, textAlign: "center" }}>
+            <p id="home-heading-1">How to request help</p>
+            <div id="instruction-container">
+              <div id="steps-number-container">
+                <div id="step-number">
+                  1
+                </div>
+                <div id="step-number">
+                  2
+                </div>
+                <div id="step-number">
+                  3
+                </div>
+              </div>
+              <div id="steps-container">
+                <div id="step-text">
+                  <p id="title-steps" style={{paddingTop: 10}}>Create a request</p>
+                  <p id="regular-text">Your request details will be used to find volunteers who can help</p>
+                </div>
+                <div id="step-text">
+                  <p id="title-steps">Match with a volunteer</p>
+                  <p id="regular-text">Our matching team will find a volunteer that best matches your needs</p>
+                </div>
+                <div id="step-text">
+                  <p id="title-steps">Connect with your volunteer</p>
+                  <p id="regular-text">A volunteer will reach out to you to learn more about how they can support you</p>
+                </div>
+              </div>
+            </div>
+          </Col>
+          <Col md={6} style={{ marginTop: 20, textAlign: "center" }}>
+            <p id="home-heading-1">How to volunteer</p>
+            <div id="instruction-container">
+              <div id="steps-number-container">
+                <div id="step-number">
+                  1
+                </div>
+                <div id="step-number">
+                  2
+                </div>
+                <div id="step-number">
+                  3
+                </div>
+              </div>
+              <div id="steps-container">
+                <div id="step-text">
+                  <p id="title-steps" style={{paddingTop: 10}}>Register to volunteer</p>
+                  <p id="regular-text">You may now receive requests of support near you</p>
+                </div>
+                <div id="step-text">
+                  <p id="title-steps">Match with ones in need</p>
+                  <p id="regular-text">Our matching team will pair you with people you can best help</p>
+                </div>
+                <div id="step-text">
+                  <p id="title-steps">Connect with your requester</p>
+                  <p id="regular-text">Learn about how you can offer resources to help someone</p>
+                </div>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+      {getCurrentModal()}
+      <Footer style={{ marginTop: 50 }} />
     </div>
   );
 }

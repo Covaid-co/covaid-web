@@ -226,8 +226,10 @@
 #jumboContainer {
   margin-left: 7%;
   margin-right: 7%;
-  max-width: 2500px;
+  max-width: 3000px;
   height: 290px;
+  display: table;
+  margin-top: 50px;
 }
 
 #location-container {
@@ -497,8 +499,7 @@
   }
 
   .footer {
-    /* margin-bottom: 50px; */
-    /* margin-top: -100px; */
+    padding-bottom: 80px;
   }
 
   #jumbo {

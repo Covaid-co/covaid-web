@@ -193,14 +193,8 @@ export default function CovaidNavbar(props) {
 
   const rightNav = (mode) => {
     if (!props.isLoggedIn) {
-      if (props.simplified) {
-        if (width > 767) {
-          return <div style={{ marginRight: "8%" }}>{translateButton()}</div>;
-        } else {
-          return translateButton();
-        }
-      } else if (props.orgAdmin || props.orgPortal) {
-        return <></>;
+      if (props.simplified || props.orgAdmin || props.orgPortal) {
+        return <></>
       } else {
         if (width > 767) {
           return (
@@ -223,18 +217,19 @@ export default function CovaidNavbar(props) {
               {translateButton()}
               <Button
                 variant="outline-light"
-                id="login-button"
+                id="register-button"
+                style={{marginLeft: 15}}
                 onClick={() => setCurrModal("signin")}
               >
                 {translatedStrings[props.language].Signin}
               </Button>
-              <Button
+              {/* <Button
                 variant="outline-light"
                 id="register-button"
                 onClick={() => window.open(currURL + "/volunteer", "_self")}
               >
                 {translatedStrings[props.language].VolunteerRegistration}
-              </Button>
+              </Button> */}
             </Form>
           );
         } else {
@@ -248,12 +243,12 @@ export default function CovaidNavbar(props) {
               >
                 Volunteer Login
               </Button>
-              <Button
+              {/* <Button
                 id="large-button"
                 onClick={() => window.open(currURL + "/volunteer", "_self")}
               >
                 Volunteer Signup
-              </Button>
+              </Button> */}
             </Form>
           );
         }
@@ -427,6 +422,28 @@ export default function CovaidNavbar(props) {
       return "nav-tab-name-inactive";
     }
   };
+
+  if (props.simplified) {
+    return (
+      <Navbar
+        collapseOnSelect
+        variant="light"
+        expand="sm"
+        id="custom-navbar"
+      >
+        <Navbar.Brand
+          style={{width: '100%', textAlign: 'center', fontSize: 38}}
+          onClick={() => history.push("/")}
+          id="navbar-brand"
+        >
+          covaid
+          <p id="request-brand">
+            requests
+          </p>
+        </Navbar.Brand>
+      </Navbar>
+    )
+  }
 
   return (
     <>

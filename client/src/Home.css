@@ -108,3 +108,81 @@ input {
 .custom-control-label {
   padding-top: 2px;
 }
+
+#home-heading-1 {
+  font-family: 'Montserrat';
+  font-size: 32px;
+  font-weight: bold;
+  color: #2670ff;
+}
+
+#step-number {
+  background-color: white;
+  border: 1px solid #2670ff;
+  color: #2670ff;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+  font-size: 24px;
+  padding-top: 11px;
+  font-weight: bold;
+  margin-bottom: 100px;
+  margin-top: 15px;
+}
+
+#steps-container {
+  width: 100%;
+  text-align: left;
+  padding-right: 70px;
+}
+
+#step-text {
+  height: 165px;
+}
+
+#steps-number-container {
+  /* display: inline; */
+  float:left;
+  width: 100px;
+  margin-left: 30px;
+  height: 500px;
+}
+
+#steps-number-container:after {
+  content:"";
+  position: absolute;
+  z-index: -1;
+  top: 120px;
+  bottom: 200px;
+  left: 74px;
+  height: 300px;
+  border-left: 2px dashed #2670ff;  
+}
+
+#title-steps {
+  font-family: 'Montserrat';
+  font-size: 24px;
+  color: #333333;
+  margin-bottom: 6px;
+  font-weight: 600;
+  line-height: 27px;
+}
+
+#instruction-container {
+  margin-top: 40px;
+}
+
+#row-steps {
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  #instruction-container {
+    margin-top: 20px;
+  }
+
+  #row-steps {
+    margin-top: 80px;
+  }
+}
