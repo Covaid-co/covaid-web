@@ -154,7 +154,18 @@ export default function NewRequestPage(props) {
           <div id="separator"></div>
           <p id="title">{translatedStrings[props.language].Step} 1 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
-          <p id="regular-text">{translatedStrings[props.language].intro}</p>
+          <p id="regular-text">
+            {translatedStrings[props.language].intro1} 
+            <a
+              href={props.association ? props.association.homepage : "https://covaid.co"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {" "}
+              {props.association ? props.association.name : "Covaid"}
+            </a>
+            {translatedStrings[props.language].intro2}
+          </p>
           <p id="regular-text">{translatedStrings[props.language].motto}</p>
         </>
       );

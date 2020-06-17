@@ -199,6 +199,8 @@ function App() {
       setAssocByOrg("5ee3eb1077cfd83429f85fe2");
     } else if (org === 'hbvla') {
       setAssocByOrg("5eb70551e676422cdfd0e882");
+    } else if (org === 'hbvny') {
+      setAssocByOrg("5eea598f58d5df806892f881");
     }
   };
 
@@ -337,6 +339,11 @@ function App() {
           />
           <Route
             exact
+            path="/hbvny-request"
+            render={(props) => requestPage(props, "hbvny")}
+          />
+          <Route
+            exact
             path="/request"
             render={(props) => requestPage(props, "")}
           />
@@ -379,6 +386,11 @@ function App() {
             exact
             path="/hbvla-volunteer"
             render={(props) => registerPage(props, "hbvla")}
+          />
+          <Route
+            exact
+            path="/hbvny-volunteer"
+            render={(props) => registerPage(props, "hbvny")}
           />
           <Route
             exact

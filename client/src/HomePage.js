@@ -120,6 +120,16 @@ export default function HomePage(props) {
           </Col>
         </Row>
         <Row id="row-steps">
+          <p id="home-heading-1" style={{width: '100%', textAlign: 'center'}}>What is Covaid?</p>
+          <p id="regular-text-home">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod 
+            scelerisque commodo. Nullam molestie auctor purus, non imperdiet ex aliquet non. 
+            In hac habitasse platea dictumst. Class aptent taciti sociosqu ad litora 
+            torquent per conubia nostra, per inceptos himenaeos. Donec tincidunt 
+            vitae massa in dignissim.
+          </p>
+        </Row>
+        <Row id="row-steps">
           <Col md={6} style={{ marginTop: 20, textAlign: "center" }}>
             <p id="home-heading-1">How to request help</p>
             <div id="instruction-container">

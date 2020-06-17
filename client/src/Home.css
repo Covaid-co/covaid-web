@@ -125,7 +125,7 @@ input {
   width: 60px;
   text-align: center;
   font-size: 24px;
-  padding-top: 11px;
+  padding-top: 12px;
   font-weight: bold;
   margin-bottom: 100px;
   margin-top: 15px;
@@ -177,7 +177,21 @@ input {
   margin-top: 40px;
 }
 
+#regular-text-home {
+  font-family: "Inter";
+  font-size: 16px;
+  color: #7f7f7f;
+  padding-left: 120px;
+  padding-right: 120px;
+}
+
 @media (max-width: 768px) {
+  #regular-text-home {
+    padding-left: 60px;
+    padding-right: 60px;
+    margin-bottom: -20px;
+  }
+
   #instruction-container {
     margin-top: 20px;
   }
