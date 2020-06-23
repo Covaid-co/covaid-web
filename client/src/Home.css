@@ -110,7 +110,7 @@ input {
 }
 
 #home-heading-1 {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-size: 32px;
   font-weight: bold;
   color: #2670ff;
@@ -143,25 +143,25 @@ input {
 
 #steps-number-container {
   /* display: inline; */
-  float:left;
+  float: left;
   width: 100px;
   margin-left: 30px;
   height: 500px;
 }
 
 #steps-number-container:after {
-  content:"";
+  content: "";
   position: absolute;
   z-index: -1;
   top: 120px;
   bottom: 200px;
   left: 74px;
   height: 300px;
-  border-left: 2px dashed #2670ff;  
+  border-left: 2px dashed #2670ff;
 }
 
 #title-steps {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-size: 24px;
   color: #333333;
   margin-bottom: 6px;

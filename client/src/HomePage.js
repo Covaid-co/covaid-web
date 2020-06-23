@@ -98,11 +98,12 @@ export default function HomePage(props) {
               onClick={() => history.push("/request")}
               id="request-button"
             >
-                {translatedStrings[props.language].INeedHelp} → 
+              {translatedStrings[props.language].INeedHelp} →
             </Button>
             <br />
             <Button
               onClick={() => history.push("/volunteer")}
+              style={{ display: props.isLoggedIn ? "none" : "block" }}
               id="volunteer-button"
             >
               Become a volunteer
@@ -120,42 +121,50 @@ export default function HomePage(props) {
           </Col>
         </Row>
         <Row id="row-steps">
-          <p id="home-heading-1" style={{width: '100%', textAlign: 'center'}}>What is Covaid?</p>
+          <p id="home-heading-1" style={{ width: "100%", textAlign: "center" }}>
+            Welcome to Covaid
+          </p>
           <p id="regular-text-home">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod 
-            scelerisque commodo. Nullam molestie auctor purus, non imperdiet ex aliquet non. 
-            In hac habitasse platea dictumst. Class aptent taciti sociosqu ad litora 
-            torquent per conubia nostra, per inceptos himenaeos. Donec tincidunt 
-            vitae massa in dignissim.
+            Covaid is a mutual aid tool that provides an intuitive request form
+            to allow community members to easily create requests for support.
+            These requests are then processed and matched to nearby volunteers
+            who have signed up to support their community. With this tool, we
+            hope to foster solidarity and remind one another to care for our
+            neighbors during these unprecendented times.
           </p>
         </Row>
         <Row id="row-steps">
           <Col md={6} style={{ marginTop: 20, textAlign: "center" }}>
-            <p id="home-heading-1">How to request help</p>
+            <p id="home-heading-1">How to request support</p>
             <div id="instruction-container">
               <div id="steps-number-container">
-                <div id="step-number">
-                  1
-                </div>
-                <div id="step-number">
-                  2
-                </div>
-                <div id="step-number">
-                  3
-                </div>
+                <div id="step-number">1</div>
+                <div id="step-number">2</div>
+                <div id="step-number">3</div>
               </div>
               <div id="steps-container">
                 <div id="step-text">
-                  <p id="title-steps" style={{paddingTop: 10}}>Create a request</p>
-                  <p id="regular-text">Your request details will be used to find volunteers who can help</p>
+                  <p id="title-steps" style={{ paddingTop: 10 }}>
+                    Create a request
+                  </p>
+                  <p id="regular-text">
+                    Click the 'I need support' button and fill out our request
+                    form in a matter of minutes
+                  </p>
                 </div>
                 <div id="step-text">
                   <p id="title-steps">Match with a volunteer</p>
-                  <p id="regular-text">Our matching team will find a volunteer that best matches your needs</p>
+                  <p id="regular-text">
+                    Our matching team will find a volunteer that best matches
+                    your needs
+                  </p>
                 </div>
                 <div id="step-text">
                   <p id="title-steps">Connect with your volunteer</p>
-                  <p id="regular-text">A volunteer will reach out to you to learn more about how they can support you</p>
+                  <p id="regular-text">
+                    A volunteer will reach out to you to learn more about how
+                    they can support you
+                  </p>
                 </div>
               </div>
             </div>
@@ -164,28 +173,33 @@ export default function HomePage(props) {
             <p id="home-heading-1">How to volunteer</p>
             <div id="instruction-container">
               <div id="steps-number-container">
-                <div id="step-number">
-                  1
-                </div>
-                <div id="step-number">
-                  2
-                </div>
-                <div id="step-number">
-                  3
-                </div>
+                <div id="step-number">1</div>
+                <div id="step-number">2</div>
+                <div id="step-number">3</div>
               </div>
               <div id="steps-container">
                 <div id="step-text">
-                  <p id="title-steps" style={{paddingTop: 10}}>Register to volunteer</p>
-                  <p id="regular-text">You may now receive requests of support near you</p>
+                  <p id="title-steps" style={{ paddingTop: 10 }}>
+                    Register to volunteer
+                  </p>
+                  <p id="regular-text">
+                    Click the 'Become a volunteer' button above and create your
+                    volunteer account
+                  </p>
                 </div>
                 <div id="step-text">
-                  <p id="title-steps">Match with ones in need</p>
-                  <p id="regular-text">Our matching team will pair you with people you can best help</p>
+                  <p id="title-steps">Customize your profile</p>
+                  <p id="regular-text">
+                    Update your virtual offer at any time through your volunteer
+                    portal
+                  </p>
                 </div>
                 <div id="step-text">
-                  <p id="title-steps">Connect with your requester</p>
-                  <p id="regular-text">Learn about how you can offer resources to help someone</p>
+                  <p id="title-steps">Respond to requests</p>
+                  <p id="regular-text">
+                    Connect with requesters and manage request status in your
+                    request dashboard
+                  </p>
                 </div>
               </div>
             </div>

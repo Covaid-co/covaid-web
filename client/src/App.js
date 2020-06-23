@@ -197,9 +197,9 @@ function App() {
       setAssocByOrg("5ec59c04bcb4d4389861d588");
     } else if (org === "pwc") {
       setAssocByOrg("5ee3eb1077cfd83429f85fe2");
-    } else if (org === 'hbvla') {
+    } else if (org === "hbvla") {
       setAssocByOrg("5eb70551e676422cdfd0e882");
-    } else if (org === 'hbvny') {
+    } else if (org === "hbvny") {
       setAssocByOrg("5eea598f58d5df806892f881");
     }
   };

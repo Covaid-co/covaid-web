@@ -194,7 +194,7 @@ export default function CovaidNavbar(props) {
   const rightNav = (mode) => {
     if (!props.isLoggedIn) {
       if (props.simplified || props.orgAdmin || props.orgPortal) {
-        return <></>
+        return <></>;
       } else {
         if (width > 767) {
           return (
@@ -218,7 +218,7 @@ export default function CovaidNavbar(props) {
               <Button
                 variant="outline-light"
                 id="register-button"
-                style={{marginLeft: 15}}
+                style={{ marginLeft: 15 }}
                 onClick={() => setCurrModal("signin")}
               >
                 {translatedStrings[props.language].Signin}
@@ -425,24 +425,17 @@ export default function CovaidNavbar(props) {
 
   if (props.simplified) {
     return (
-      <Navbar
-        collapseOnSelect
-        variant="light"
-        expand="sm"
-        id="custom-navbar"
-      >
+      <Navbar collapseOnSelect variant="light" expand="sm" id="custom-navbar">
         <Navbar.Brand
-          style={{width: '100%', textAlign: 'center', fontSize: 38}}
+          style={{ width: "100%", textAlign: "center", fontSize: 38 }}
           onClick={() => history.push("/")}
           id="navbar-brand"
         >
           covaid
-          <p id="request-brand">
-            requests
-          </p>
+          <p id="request-brand">requests</p>
         </Navbar.Brand>
       </Navbar>
-    )
+    );
   }
 
   return (

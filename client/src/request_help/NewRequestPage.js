@@ -155,9 +155,13 @@ export default function NewRequestPage(props) {
           <p id="title">{translatedStrings[props.language].Step} 1 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
           <p id="regular-text">
-            {translatedStrings[props.language].intro1} 
+            {translatedStrings[props.language].intro1}
             <a
-              href={props.association ? props.association.homepage : "https://covaid.co"}
+              href={
+                props.association
+                  ? props.association.homepage
+                  : "https://covaid.co"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
