@@ -19,7 +19,7 @@ export default function InformationHub(props) {
 
   return (
     <div className="App">
-      <NavBar simplified={true} language={"en"} setLanguage={() => {}} />
+      <NavBar orgPortal={true} language={"en"} setLanguage={() => {}} />
       <div id="bgImageLong"></div>
       <Container
         style={{

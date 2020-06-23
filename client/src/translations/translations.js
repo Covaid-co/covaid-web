@@ -1,7 +1,8 @@
 const translations = {
   en: {
-    intro:
-      "If you need support or have resources to offer as we navigate the COVID-19 crisis as a community, please use this form. Your responses to this form will only be seen by a team of volunteers working to match resources with needs.",
+    intro1:
+      "If you need support or have resources to offer as we navigate the COVID-19 crisis as a community, please use this form. Your responses to this form will only be seen by a team of ",
+    intro2: " volunteers working to match resources with needs.",
     prioritizing:
       "We are prioritizing folks who are sick, disabled, quarantined without pay, elderly, undocumented, queer, Black, Indigenous, and/or people of color -- including those displaced from",
     areas: "to the nearby areas",
@@ -237,8 +238,9 @@ const translations = {
       "Please check here if you identify with any of these so we can prioritize your request.",
   },
   es: {
-    intro:
-      "Si usted necesita ayuda o tiene recursos para ofrecer mientras que navegamos como una comunidad el crisis de COVID-19, por favor rellenar el formulario. Sus respuestas al formulario solo serían vistos por un equipo de voluntarias/os trabajando para juntar recursos con necesidades. Usted puede encontrar más recursos públicos en",
+    intro1:
+      "Si usted necesita ayuda o tiene recursos para ofrecer mientras que navegamos como una comunidad el crisis de COVID-19, por favor rellenar el formulario. Sus respuestas al formulario solo serían vistos por un equipo de ",
+    intro2: "voluntarias/os trabajando para juntar recursos con necesidades.",
     prioritizing:
       "Estamos priorizando personas quienes están enfermos, tiene algún discapacidad, estan en cuarentena sin pago, personas mayores, personas indocumentados, personas queer, Negro, Indigena, y/o personas de color-- incluyendo personas desplazadas de",
     areas: "a lugares cercanos",

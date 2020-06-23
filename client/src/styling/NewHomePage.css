@@ -41,53 +41,70 @@
 
 #home-heading {
   font-family: "Montserrat";
-  font-size: 48px;
+  font-size: 52px;
   margin-bottom: 10px;
-  margin-top: 30px;
+  margin-top: 50px;
   font-weight: bold;
-  color: black;
+  color: #3c3c3c;
 }
 
 #home-subheading {
   font-family: "Inter";
   font-size: 20px;
   margin-top: 0px;
-  margin-bottom: 24px;
+  margin-bottom: 0px;
   padding-right: 50px;
   color: #7f7f7f;
+  letter-spacing: -0.5px;
 }
 
 #request-button {
-  font-family: "Inter";
+  font-family: "Montserrat";
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 8px;
   background-color: #2670ff;
   border: 1px solid #2670ff;
-  font-size: 22px;
-  height: 70px;
-  width: 300px;
-  padding-left: 20px;
-  padding-right: 25px;
+  font-size: 20px;
+  height: 60px;
+  width: 280px;
   margin-bottom: 5px;
   margin-top: 30px;
+}
+
+#volunteer-button {
+  font-family: "Montserrat";
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid #2670ff;
+  color: #2670ff;
+  font-size: 20px;
+  height: 60px;
+  width: 280px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 #resources-button {
   font-family: "Inter";
   font-weight: 600;
-  border-radius: 12px;
   background-color: transparent;
-  color: #2670ff;
-  border: 1px solid #2670ff;
-  font-size: 20px;
+  color: #7f7f7f;
+  font-size: 18px;
   height: 50px;
-  width: 350px;
-  padding-left: 15px;
-  padding-right: 20px;
+  width: 300px;
   margin-top: 5px;
   border: 0px;
-  text-align: left;
+  margin-left: -8px;
+  /* padding-left: 30px; */
+  /* text-align: left; */
+  text-underline-position: under;
   text-decoration: underline;
+  text-decoration-color: #cbcbcb;
+}
+
+#resources-button:hover {
+  text-decoration-color: #7f7f7f;
 }
 
 #resources-button:focus {
@@ -344,11 +361,13 @@
 }
 
 .navbar-toggler .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(25, 75, 211, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(38, 112, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
 .navbar-light .navbar-toggler {
-  border-color: #194bd3;
+  margin-top: 5px;
+  border-color: transparent;
+  padding-right: 0px;
 }
 
 #newOfferContainer {

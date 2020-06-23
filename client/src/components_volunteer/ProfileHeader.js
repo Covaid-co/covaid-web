@@ -77,7 +77,6 @@ export default function ProfileHeader(props) {
               }}
               onClick={() => setShowUploader(true)}
             />
-
             <Row>
               <h1
                 id="home-heading"

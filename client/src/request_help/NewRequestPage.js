@@ -6,7 +6,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavBar from "../components/NavBar";
-import LocationMap from "./LocationMap";
 import Button from "react-bootstrap/Button";
 import { currURL } from "../constants";
 import NewRequestPage1 from "./NewRequestPage1";
@@ -41,38 +40,6 @@ export default function NewRequestPage(props) {
     }
     document.title = "Request Support";
   }, [props.googleApiKey, props.zipcode]);
-
-  const organizationText = () => {
-    if (
-      props.association === null ||
-      Object.keys(props.association).length === 0
-    ) {
-      return (
-        <>
-          <p id="subtitle-small">
-            Covaid is not working with any mutual aid programs in your area.
-          </p>
-          <p id="info" style={{ marginTop: 20 }}>
-            However the Covaid team will still try and match you to any
-            available registered volunteers!
-          </p>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <p id="subtitle-small">Your area's organization:</p>
-          <p id="subtitle" style={{ marginTop: 10 }}>
-            {props.association.name}
-          </p>
-          <p id="info">
-            Any volunteers matched to you will be handled by{" "}
-            {props.association.name}.
-          </p>
-        </>
-      );
-    }
-  };
 
   const associationExists = () => {
     return (
@@ -187,7 +154,22 @@ export default function NewRequestPage(props) {
           <div id="separator"></div>
           <p id="title">{translatedStrings[props.language].Step} 1 —</p>
           <p id="subtitle">{translatedStrings[props.language].CreateRequest}</p>
-          <p id="regular-text">{translatedStrings[props.language].intro}</p>
+          <p id="regular-text">
+            {translatedStrings[props.language].intro1}
+            <a
+              href={
+                props.association
+                  ? props.association.homepage
+                  : "https://covaid.co"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {" "}
+              {props.association ? props.association.name : "Covaid"}
+            </a>
+            {translatedStrings[props.language].intro2}
+          </p>
           <p id="regular-text">{translatedStrings[props.language].motto}</p>
         </>
       );
@@ -293,7 +275,6 @@ export default function NewRequestPage(props) {
         setLanguage={props.setLanguage}
         language={props.language}
         isLoggedIn={false}
-        orgPortal={true}
         simplified={true}
         request_page={true}
       />

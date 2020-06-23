@@ -20,6 +20,8 @@ import Sofia from "../assets/sofia.jpg";
 import Angela from "../assets/angela.jpg";
 import Ashwin from "../assets/ashwin.jpeg";
 import Jenny from "../assets/jenny.jpg";
+import Jospeh from "../assets/joseph.png";
+import Alice from "../assets/alice.png";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -94,6 +96,14 @@ export default function AboutUs(props) {
     "Jenny Zang": {
       link: "",
       image: Jenny,
+    },
+    "Joseph Zhang": {
+      link: "",
+      image: Jospeh,
+    },
+    "Alice Cai": {
+      link: "",
+      image: Alice,
     },
   };
 

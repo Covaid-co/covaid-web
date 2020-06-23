@@ -181,6 +181,8 @@ export default function VolunteerPortal(props) {
             marginTop: 50,
             marginRight: 16,
             marginBottom: width < 980 ? 30 : 0,
+            paddingLeft: width < 386 ? 0 : "auto",
+            paddingRight: width < 386 ? 0 : "auto",
           }}
         >
           <h1
@@ -203,6 +205,7 @@ export default function VolunteerPortal(props) {
             id="requestCall"
             style={{ marginTop: 15, marginBottom: 29, marginRight: -16 }}
           ></p>
+
           <RequestDashboard
             pendingRequests={pendingRequests}
             acceptedRequests={acceptedRequests}
@@ -286,7 +289,9 @@ export default function VolunteerPortal(props) {
             setView={setView}
             pageLoaded={true}
           />
-          <p id="requestCall" style={{ marginTop: -8, marginBottom: 0 }}></p>
+          {width >= 576 && (
+            <p id="requestCall" style={{ marginTop: -8, marginBottom: 0 }}></p>
+          )}
           <div class="flex-container">
             <div style={{ width: width > 767 ? "75%" : "95%", float: "left" }}>
               <Jumbotron
