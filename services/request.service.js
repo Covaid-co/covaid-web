@@ -118,7 +118,25 @@ exports.createRequest = async function (request) {
       last_modified: new Date(),
       assignee: "No one assigned",
     };
-    return await RequestRepository.createRequest(new_request);
+    let createdRequest = await RequestRepository.createRequest(new_request);
+    if (createdRequest && createdRequest.personal_info && createdRequest.personal_info.requester_email) {
+      var assocName = 'Covaid';
+      var assocEmail = 'covaidco@gmail.com';
+      if (createdRequest.association) {
+        let association = (await AssociationService.getAssociation({_id: createdRequest.association}))[0];
+        assocName = association.name;
+        assocEmail = association.email;
+      }
+      var data = {
+        sender: "Covaid@covaid.co",
+        receiver: createdRequest.personal_info.requester_email,
+        name: assocName,
+        assoc: assocEmail,
+        templateName: "requester_notification",
+      };
+      emailer.sendNotificationEmail(data);
+    }
+    return createdRequest;
   } catch (e) {
     console.log(e);
     throw e;
