@@ -119,11 +119,19 @@ exports.createRequest = async function (request) {
       assignee: "No one assigned",
     };
     let createdRequest = await RequestRepository.createRequest(new_request);
-    if (createdRequest && createdRequest.personal_info && createdRequest.personal_info.requester_email) {
-      var assocName = 'Covaid';
-      var assocEmail = 'covaidco@gmail.com';
+    if (
+      createdRequest &&
+      createdRequest.personal_info &&
+      createdRequest.personal_info.requester_email
+    ) {
+      var assocName = "Covaid";
+      var assocEmail = "covaidco@gmail.com";
       if (createdRequest.association) {
-        let association = (await AssociationService.getAssociation({_id: createdRequest.association}))[0];
+        let association = (
+          await AssociationService.getAssociation({
+            _id: createdRequest.association,
+          })
+        )[0];
         assocName = association.name;
         assocEmail = association.email;
       }

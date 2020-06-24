@@ -11,7 +11,7 @@ templates = {
   pending_notification: "d-1a6056febc214315bb3c12e1da3674b9",
   beacon: "d-15d81c1063f2490aa94ba195448d8fac",
   help_match: "d-1cba047db5294fc196a1a9836bdad06e",
-  requester_notification: "d-14331b04733a49d5a6c0b5ee819d3bea"
+  requester_notification: "d-14331b04733a49d5a6c0b5ee819d3bea",
 };
 
 exports.sendHelpMatchEmail = (data) => {
