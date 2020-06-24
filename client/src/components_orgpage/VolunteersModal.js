@@ -114,7 +114,7 @@ export default function VolunteersModal(props) {
       style={{ marginTop: 10, paddingBottom: 40 }}
     >
       <Modal.Header closeButton>
-      <Modal.Title>All Volunteers ({props.volunteers.length})</Modal.Title>
+        <Modal.Title>All Volunteers ({props.volunteers.length})</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row>
