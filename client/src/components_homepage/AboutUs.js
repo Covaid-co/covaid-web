@@ -22,6 +22,7 @@ import Ashwin from "../assets/ashwin.jpeg";
 import Jenny from "../assets/jenny.jpg";
 import Jospeh from "../assets/joseph.png";
 import Alice from "../assets/alice.png";
+import Nikhil from "../assets/nikhil.png";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -62,7 +63,7 @@ export default function AboutUs(props) {
       image: Matt,
     },
     "Neely Lee": {
-      link: "www.linkedin.com/in/neelylee",
+      link: "https://www.linkedin.com/in/neelylee",
       image: Neely,
     },
     "Ellie Sapiro": {
@@ -105,6 +106,10 @@ export default function AboutUs(props) {
       link: "",
       image: Alice,
     },
+    "Nikhil Aggarwal": {
+      link: "",
+      image: Nikhil,
+    }
   };
 
   const names = Object.keys(peoples);
