@@ -227,7 +227,7 @@ export default function NewRequestPage1(props) {
         options={language_options}
         onChange={handleChangeLanguage}
       />
-      <div style={{ display: "table", marginBottom: 0, marginTop: 10 }}>
+      {/* <div style={{ display: "table", marginBottom: 0, marginTop: 10 }}>
         <Form.Check
           type="checkbox"
           style={{ marginTop: 0, marginRight: 5, display: "inline" }}
@@ -250,7 +250,7 @@ export default function NewRequestPage1(props) {
           </font>{" "}
           {props.translations[props.language].Prioritize3}
         </p>
-      </div>
+      </div> */}
       <Button
         id="large-button"
         style={{ marginTop: 20 }}
