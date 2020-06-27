@@ -109,6 +109,19 @@ function App() {
     });
   };
 
+  // Find association by lat long
+  const findAssociationAndReturn = (lat, long) => {
+    return findAssociations(lat, long).then((associations) => {
+      if (associations.length > 0) {
+        return associations[0];
+      } else {
+        return {};
+      }
+    }, () => {
+      return {}
+    });
+  };
+
   // Find association by id
   const setAssocByOrg = (id) => {
     let params = { associationID: id };
@@ -144,6 +157,17 @@ function App() {
       }
     });
   };
+
+  const getLatLong = (e, locationString) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return Geocode.fromAddress(locationString).then(
+      (response) => {
+      return response.results[0].geometry.location;
+    }, () => {
+      return false;
+    });
+  }
 
   // Find location attributes based on string
   const onLocationSubmit = (e, locationString) => {
@@ -201,6 +225,8 @@ function App() {
       setAssocByOrg("5eb70551e676422cdfd0e882");
     } else if (org === "hbvny") {
       setAssocByOrg("5eea598f58d5df806892f881");
+    } else if (org === "athens") {
+      setAssocByOrg("5ef788f93134e983d0f7192e");
     }
   };
 
@@ -344,6 +370,12 @@ function App() {
           />
           <Route
             exact
+            path="/athens-request"
+            render={(props) => requestPage(props, "athens")}
+          />
+          registerPage
+          <Route
+            exact
             path="/request"
             render={(props) => requestPage(props, "")}
           />
@@ -391,6 +423,11 @@ function App() {
             exact
             path="/hbvny-volunteer"
             render={(props) => registerPage(props, "hbvny")}
+          />
+          <Route
+            exact
+            path="/athens-volunteer"
+            render={(props) => registerPage(props, "athens")}
           />
           <Route
             exact
@@ -447,7 +484,19 @@ function App() {
             component={(props) => <ChangeLog {...props} {...languageObj} />}
           />
           <Route exact path="/submit-updates" component={SubmitChangeLog} />
-          <Route exact path="/information-hub" component={InformationHub} />
+          <Route 
+            exact path="/information-hub" 
+            component={(props) => (
+              <InformationHub
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+                getLatLong={getLatLong}
+                findAssociationAndReturn={findAssociationAndReturn}
+              />
+            )}
+          />
           <Route
             exact
             path="/volunteer-signin"
