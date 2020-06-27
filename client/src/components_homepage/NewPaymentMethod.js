@@ -12,7 +12,7 @@ export default function NewPaymentMethod(props) {
 
   return (
     <>
-      <h5 id="regular-text-bold" style={{ marginTop: "26px", marginBottom: 5 }}>
+      <h5 id="regular-text-bold" style={{ marginTop: 20, marginBottom: 5 }}>
         Payment method (if necessary)
       </h5>
       <Row>
@@ -22,6 +22,7 @@ export default function NewPaymentMethod(props) {
               <option>Call ahead to store and pay (Best option)</option>
               <option>Have volunteer pay and reimburse when delivered</option>
               <option>N/A</option>
+              <option>Donation (only if absolutely necessary)</option>
             </Form.Control>
           </Form.Group>
         </Col>

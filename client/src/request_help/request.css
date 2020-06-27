@@ -1,18 +1,50 @@
 #left-container {
   border-right: 1px solid #cecece;
   height: inherit;
-  margin-right: 0px;
   margin-top: 30px;
-}
-
-#text-row {
-  margin-top: 90px;
+  padding-right: 30px;
 }
 
 #right-container {
-  margin-top: 50px;
-  padding-left: 40px;
-  margin-bottom: 25px;
+  margin-top: 40px;
+  padding-bottom: 20px;
+  padding-left: 30px;
+}
+
+#outer {
+  margin-bottom: 50px;
+  height: 100vh;
+  margin-top: -50px;
+}
+
+#step-container {
+  max-width: 500px;
+  margin: auto;
+}
+
+#step2-container {
+  max-width: 450px;
+  margin: auto;
+}
+
+#request-container {
+  max-width: 3000px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#request-container-step2 {
+  max-width: 3000px;
+  margin-top: 40px;
+}
+
+#separator {
+  margin-top: 70px;
+}
+
+#small-margin {
+  margin-top: 20px;
 }
 
 #border-top {
@@ -23,14 +55,50 @@
   display: none;
 }
 
+@media (max-height: 580px) {
+  #request-container {
+    top: 0%;
+    transform: none;
+    position: inherit;
+    margin-top: -15px;
+  }
+}
+
 @media (max-width: 768px) {
-  #left-container {
-    border-right: 0px;
-    /* height: 350px; */
-    /* margin-top: 20px; */
+  #request-container-step2 {
+    margin-top: -15px;
   }
 
-  #text-row {
+  #step2-container {
+    max-width: 500px;
+  }
+
+  #request-container {
+    transform: none;
+    top: 0%;
+    position: inherit;
+    margin-top: -15px;
+  }
+
+  #outer {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  #left-container {
+    border-right: 0px;
+    padding-right: 15px;
+  }
+
+  #right-container {
+    padding-left: 15px;
+  }
+
+  #small-margin {
+    margin-top: 0px;
+  }
+
+  #separator {
     margin-top: 10px;
   }
 
@@ -38,6 +106,7 @@
     margin-top: 0px;
     padding-left: 15px;
     /* padding-top: 30px; */
+    margin-bottom: 70px;
   }
 
   #border-top {
@@ -50,10 +119,11 @@
   border: 1px solid #2670ff;
   color: #2670ff;
   border-radius: 50%;
-  width: 35px;
   height: 35px;
+  width: 35px;
+  text-align: center;
   font-size: 16px;
-  padding-left: 10px;
+  padding-left: 9px;
   padding-top: 4px;
   font-weight: bold;
   margin-bottom: 20px;
@@ -121,3 +191,20 @@
   background-color: #c3cad2;
   color: white;
 }
+
+#behalf-text {
+  font-family: "Inter";
+  color: #7f7f7f;
+  cursor: default;
+  padding-top: 4px;
+  font-size: 15px;
+  vertical-align: middle;
+  display: table-cell;
+  padding-left: 5px;
+}
+/* 
+@media (max-width: 400px) {
+  #outer {
+    margin-top: 80px;
+  }
+} */

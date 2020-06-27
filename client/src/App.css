@@ -4,13 +4,28 @@
   /* padding: 10px; */
 }
 
+#mobile-footer {
+  display: none;
+}
+
+#request-brand {
+  display: inline;
+  color: grey;
+  margin-left: 8px;
+  font-weight: 300;
+  letter-spacing: -1.6px;
+  font-size: 32px;
+}
+
 .footer {
+  overflow-x: hidden;
   flex-shrink: 0;
   text-align: center;
   background-color: transparent;
   color: black;
   margin-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 20px;
+  padding-bottom: 35px;
   border-top: 1px solid #dee2e6;
 }
 

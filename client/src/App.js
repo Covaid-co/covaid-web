@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ToastProvider } from "react-toast-notifications";
 import Geocode from "react-geocode";
+import fetch_a from "./util/fetch_auth";
+import Cookie from "js-cookie";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -50,6 +52,9 @@ function App() {
   const languageObj = { setLanguage: setLanguage, language: language };
   const stateRef = useRef("");
 
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+
   useEffect(() => {
     fetch("/api/apikey/google").then((response) => {
       if (response.ok) {
@@ -59,7 +64,20 @@ function App() {
         });
       }
     });
+    if (Object.keys(currentUser).length === 0 && Cookie.get("token")) {
+      fetchUser();
+    }
   }, []);
+
+  // Get current user based on token
+  const fetchUser = () => {
+    fetch_a("token", "/api/users/current")
+      .then((response) => response.json())
+      .then((user) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+      });
+  };
 
   const setLocationVariables = (neighborObj) => {
     setLocality(neighborObj["locality"]);
@@ -91,22 +109,38 @@ function App() {
     });
   };
 
+  // Find association by lat long
+  const findAssociationAndReturn = (lat, long) => {
+    return findAssociations(lat, long).then((associations) => {
+      if (associations.length > 0) {
+        return associations[0];
+      } else {
+        return {};
+      }
+    }, () => {
+      return {}
+    });
+  };
+
   // Find association by id
   const setAssocByOrg = (id) => {
     let params = { associationID: id };
     var url = generateURL("/api/association/get_assoc/?", params);
-    fetch(url)
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((association) => {
+    fetch(url).then((response) => {
+      if (response.ok) {
+        console.log(response);
+        response
+          .json()
+          .then((association) => {
+            console.log("hi");
             setResources(association.resources);
             setCurrentAssoc(association);
+          })
+          .catch((e) => {
+            console.log(e);
           });
-        }
-      })
-      .catch((e) => {
-        alert(e);
-      });
+      }
+    });
   };
 
   // Find location attributes when page loads
@@ -123,6 +157,17 @@ function App() {
       }
     });
   };
+
+  const getLatLong = (e, locationString) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return Geocode.fromAddress(locationString).then(
+      (response) => {
+      return response.results[0].geometry.location;
+    }, () => {
+      return false;
+    });
+  }
 
   // Find location attributes based on string
   const onLocationSubmit = (e, locationString) => {
@@ -161,16 +206,32 @@ function App() {
     setLocationState(googleApiKey);
   };
 
+  const setOrg = (org) => {
+    if (org === "pitt") {
+      setAssocByOrg("5e843ab29ad8d24834c8edbf");
+    } else if (org === "ccom") {
+      setAssocByOrg("5eac6be7bd9e0369f78a0f28");
+    } else if (org === "charlotte") {
+      setAssocByOrg("5e909963a4141a039a6fc1e5");
+    } else if (org === "austin") {
+      setAssocByOrg("5edabb06b60b9b11e5c1be38");
+    } else if (org === "berkshire") {
+      setAssocByOrg("5edbf9e3211f520d08ee977f");
+    } else if (org === "evanston") {
+      setAssocByOrg("5ec59c04bcb4d4389861d588");
+    } else if (org === "pwc") {
+      setAssocByOrg("5ee3eb1077cfd83429f85fe2");
+    } else if (org === "hbvla") {
+      setAssocByOrg("5eb70551e676422cdfd0e882");
+    } else if (org === "hbvny") {
+      setAssocByOrg("5eea598f58d5df806892f881");
+    }
+  };
+
   const registerPage = (props, org) => {
     if (stateRef.current === "" && org !== "") {
       stateRef.current = org;
-      if (org === "pitt") {
-        setAssocByOrg("5e843ab29ad8d24834c8edbf");
-      } else if (org === "ccom") {
-        setAssocByOrg("5eac6be7bd9e0369f78a0f28");
-      } else if (org === "charlotte") {
-        setAssocByOrg("5e909963a4141a039a6fc1e5");
-      }
+      setOrg(org);
     }
     return (
       <RegisterPage
@@ -196,13 +257,7 @@ function App() {
   const requestPage = (props, org) => {
     if (stateRef.current === "" && org !== "") {
       stateRef.current = org;
-      if (org === "pitt") {
-        setAssocByOrg("5e843ab29ad8d24834c8edbf");
-      } else if (org === "ccom") {
-        setAssocByOrg("5eac6be7bd9e0369f78a0f28");
-      } else if (org === "charlotte") {
-        setAssocByOrg("5e909963a4141a039a6fc1e5");
-      }
+      setOrg(org);
     }
     return (
       <NewRequestPage
@@ -233,6 +288,8 @@ function App() {
         refreshLocation={refreshLocation}
         onLocationSubmit={onLocationSubmit}
         login={login}
+        isLoggedIn={loggedIn}
+        currentUser={currentUser}
       />
     );
   };
@@ -281,6 +338,36 @@ function App() {
           />
           <Route
             exact
+            path="/austin-request"
+            render={(props) => requestPage(props, "austin")}
+          />
+          <Route
+            exact
+            path="/berkshire-request"
+            render={(props) => requestPage(props, "berkshire")}
+          />
+          <Route
+            exact
+            path="/evanston-request"
+            render={(props) => requestPage(props, "evanston")}
+          />
+          <Route
+            exact
+            path="/pwc-request"
+            render={(props) => requestPage(props, "pwc")}
+          />
+          <Route
+            exact
+            path="/hbvla-request"
+            render={(props) => requestPage(props, "hbvla")}
+          />
+          <Route
+            exact
+            path="/hbvny-request"
+            render={(props) => requestPage(props, "hbvny")}
+          />
+          <Route
+            exact
             path="/request"
             render={(props) => requestPage(props, "")}
           />
@@ -301,6 +388,36 @@ function App() {
           />
           <Route
             exact
+            path="/austin-volunteer"
+            render={(props) => registerPage(props, "austin")}
+          />
+          <Route
+            exact
+            path="/berkshire-volunteer"
+            render={(props) => registerPage(props, "berkshire")}
+          />
+          <Route
+            exact
+            path="/evanston-volunteer"
+            render={(props) => registerPage(props, "evanston")}
+          />
+          <Route
+            exact
+            path="/pwc-volunteer"
+            render={(props) => registerPage(props, "pwc")}
+          />
+          <Route
+            exact
+            path="/hbvla-volunteer"
+            render={(props) => registerPage(props, "hbvla")}
+          />
+          <Route
+            exact
+            path="/hbvny-volunteer"
+            render={(props) => registerPage(props, "hbvny")}
+          />
+          <Route
+            exact
             path="/volunteer"
             render={(props) => registerPage(props, "")}
           />
@@ -314,17 +431,38 @@ function App() {
           <Route
             exact
             path="/about"
-            component={(props) => <AboutUs {...props} {...languageObj} />}
+            component={(props) => (
+              <AboutUs
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+              />
+            )}
           />
           <Route
             exact
             path="/faq"
-            component={(props) => <FAQ {...props} {...languageObj} />}
+            component={(props) => (
+              <FAQ
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+              />
+            )}
           />
           <Route
             exact
             path="/donate"
-            component={(props) => <Donate {...props} {...languageObj} />}
+            component={(props) => (
+              <Donate
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+              />
+            )}
           />
           <Route exact path="/orgPasswordReset" component={OrgReset} />
           <Route
@@ -333,12 +471,25 @@ function App() {
             component={(props) => <ChangeLog {...props} {...languageObj} />}
           />
           <Route exact path="/submit-updates" component={SubmitChangeLog} />
-          <Route exact path="/information-hub" component={InformationHub} />
+          <Route 
+            exact path="/information-hub" 
+            component={(props) => (
+              <InformationHub
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+                getLatLong={getLatLong}
+                findAssociationAndReturn={findAssociationAndReturn}
+              />
+            )}
+          />
           <Route
             exact
             path="/volunteer-signin"
             component={(props) => homePageComp(props, true)}
           />
+          {/* <Route path="/:lang" component={homePageComp} /> */}
           <Route path="/" component={homePageComp} />
           <Route path="*" component={homePageComp} />
         </Switch>

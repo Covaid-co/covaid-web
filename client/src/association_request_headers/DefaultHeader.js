@@ -1,15 +1,16 @@
 import React from "react";
 
-export default function DefaultHeader() {
+export default function DefaultHeader(props) {
   return (
     <>
-      <p id="info">
-        Given your request, we will try and match you with a volunteer in your
-        area.
+      <p id="regular-text">
+        {props.translations[props.language].call}:
+        <br />
+        <span id="phoneNumber">(401) 526-8243</span>
       </p>
-      <p id="info">
-        For those who would rather call in a request, please call{" "}
-        <font style={{ color: "#2670FF" }}>(401) 526-8243</font>
+      <p id="regular-text">
+        {props.translations[props.language].questions}:{" "}
+        <strong>covaidco@gmail.com</strong>.
       </p>
     </>
   );

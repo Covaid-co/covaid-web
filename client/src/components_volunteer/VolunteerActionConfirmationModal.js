@@ -9,6 +9,7 @@ import Form from "react-bootstrap/Form";
 import { useFormFields } from "../libs/hooksLib";
 import fetch_a from "../util/fetch_auth";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { currURL } from "../constants";
 
 export default function VolunteerActionConfirmationModal(props) {
   // fields.comment is used if a request is attempting to be completed
@@ -44,6 +45,7 @@ export default function VolunteerActionConfirmationModal(props) {
           props.setShowConfirmationModal(false);
           props.setOriginalModal(false);
           props.complete();
+          window.location.reload(false);
         } else {
           alert("Unable to complete, please email us at covaidco@gmail.com.");
         }

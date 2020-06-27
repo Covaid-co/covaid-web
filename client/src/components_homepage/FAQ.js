@@ -13,6 +13,7 @@ import Footer from "../components/Footer";
 
 export default function FAQ(props) {
   const [tab, setTab] = useState(0);
+  document.title = "Covaid | FAQ";
 
   const displayTab = (currTab) => {
     if (tab === currTab) {
@@ -35,7 +36,12 @@ export default function FAQ(props) {
       <NavBar
         setLanguage={props.setLanguage}
         language={props.language}
-        isLoggedIn={false}
+        isLoggedIn={props.isLoggedIn}
+        first_name={
+          Object.keys(props.currentUser).length !== 0
+            ? props.currentUser.first_name
+            : ""
+        }
       />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
@@ -278,7 +284,7 @@ export default function FAQ(props) {
           </Col>
         </Row>
       </Container>
-      <Footer key="2" />
+      <Footer key="2" style={{ marginTop: 48 }} />
     </div>
   );
 }
@@ -286,4 +292,6 @@ export default function FAQ(props) {
 FAQ.propTypes = {
   setLanguage: PropTypes.func,
   language: PropTypes.string,
+  isLoggedIn: PropTypes.bool,
+  currentUser: PropTypes.object,
 };

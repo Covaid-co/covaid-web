@@ -6,7 +6,31 @@ export const defaultResources = [
   "Academic/Professional",
   "Misc.",
 ];
-export const languages = ["English", "Spanish", "Chinese", "French", "Other"];
+export const resource_popups = {
+  "Food/Groceries":
+    "Please specify if you are able to pay for groceries or are requesting food donations",
+  Medication:
+    "If you are looking for financial assistance in paying for medication, please specify type of medication",
+  "Emotional Support":
+    "Please specify the technological platform that would be best for emotional support (phone call, zoom, text, email, etc.)",
+  Donate: "Please specify what donations you are requesting",
+  "Academic/Professional":
+    "Please specify the technological platform that would be best for academic/processional support (phone call, zoom, text, email, etc.)",
+  "Misc.":
+    "If you are requesting something that needs to be donated please, please specify",
+};
+export const contact_option = ["Text", "Phone call", "Email"];
+export const languages = [
+  "English",
+  "Spanish",
+  "Chinese",
+  "Arabic",
+  "French",
+  "Hindi-Urdu",
+  "Korean",
+  "Russian",
+  "Other",
+];
 export const cookieNames = [
   "latitude",
   "longitude",
@@ -53,6 +77,7 @@ export const paymentOptions = [
   "Call ahead to store and pay (Best option)",
   "Have volunteer pay and reimburse when delivered",
   "N/A",
+  "Donation (Only if absolutely necessary)",
 ];
 export const defaultTerms = [
   "I have not traveled out-of-country in the past 14 days",

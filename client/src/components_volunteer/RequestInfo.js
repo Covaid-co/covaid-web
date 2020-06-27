@@ -12,6 +12,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import VolunteerActionConfirmationModal from "./VolunteerActionConfirmationModal";
 import { request_status, volunteer_status } from "../constants";
+import { calcDistance } from "../Helpers";
 
 export default function RequestInfo(props) {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -45,7 +46,6 @@ export default function RequestInfo(props) {
   useEffect(() => {
     // Generate map url given lat and long
     var tempURL = "https://www.google.com/maps/@";
-    console.log(props.currRequest);
     if (props.currRequest.location_info) {
       tempURL += props.currRequest.location_info.coordinates[1] + ",";
       tempURL += props.currRequest.location_info.coordinates[0] + ",15z";
@@ -96,6 +96,20 @@ export default function RequestInfo(props) {
     props.completeARequest();
   };
 
+  const calculateDistance = () => {
+    if (props.currRequest.location_info && props.currUser.latlong) {
+      var long = props.currRequest.location_info.coordinates[0];
+      var lat = props.currRequest.location_info.coordinates[1];
+      var userLong = props.currUser.latlong[0];
+      var userLat = props.currUser.latlong[1];
+      var meters = calcDistance(lat, long, userLat, userLong);
+      const miles = meters * 0.00062137;
+      const distance = Math.round(miles);
+      return "~" + distance + " miles away";
+    }
+    return "N/A";
+  };
+
   // Render specific elements in modal, depending on view mode (pending, in_progress, complete)
   var header = <></>;
   var contactInfo = (
@@ -111,28 +125,26 @@ export default function RequestInfo(props) {
         Contact:
       </h5>
       <p id="regular-text-nomargin">
-        {props.currRequest.personal_info.requester_email}{" "}
+        {props.currRequest.personal_info.requester_email}
+      </p>{" "}
+      <p id="regular-text-nomargin">
         {props.currRequest.personal_info.requester_phone}
       </p>
     </>
   );
   var timeSpecific = (
     <>
-      <h5 id="regular-text-bold" style={{ marginBottom: 3, marginTop: 16 }}>
+      {/* <h5 id="regular-text-bold" style={{ marginBottom: 3, marginTop: 16 }}>
         Needed by:
       </h5>
       <p id="regular-text-nomargin">
         {props.currRequest.request_info.time} of{" "}
         {props.currRequest.request_info.date}
-      </p>
+      </p> */}
       <h5 id="regular-text-bold" style={{ marginBottom: 3, marginTop: 16 }}>
-        Location:
+        Distance:
       </h5>
-      <p id="regular-text-bold">
-        <a target="_blank" rel="noopener noreferrer" href={mapURL}>
-          Click here
-        </a>
-      </p>
+      <p id="regular-text-nomargin">{calculateDistance()}</p>
     </>
   );
   var buttons = <></>;
@@ -185,7 +197,7 @@ export default function RequestInfo(props) {
         </Col>
       </Row>
     );
-  } else if (props.modalMode === volunteer_status.COMPLETED) {
+  } else if (props.modalMode === volunteer_status.COMPLETE) {
     header = <Modal.Title>Completed request</Modal.Title>;
     timeSpecific = <></>;
   }
@@ -229,15 +241,37 @@ export default function RequestInfo(props) {
       );
     }
   };
+  const completedResponse = () => {
+    const volunteers = props.currRequest.status.volunteers;
+    const found = volunteers.find((vol) => {
+      return vol.current_status === volunteer_status.COMPLETE;
+    });
+    if (
+      props.modalMode === volunteer_status.COMPLETE &&
+      found &&
+      found.volunteer_response &&
+      found.volunteer_response.length > 0
+    ) {
+      return (
+        <>
+          <h5 id="regular-text-bold" style={{ marginBottom: 0, marginTop: 16 }}>
+            Summary of completion:
+          </h5>
+          <p id="regular-text-nomargin">"{found.volunteer_response}"</p>
+        </>
+      );
+    } else {
+      return <></>;
+    }
+  };
 
   return (
     <>
       <Modal
         show={props.modalOpen}
-        onHide={() => {
-          props.setModalOpen(false);
-        }}
+        onHide={props.closeModal}
         style={{ marginTop: 10, paddingBottom: 50 }}
+        centered
       >
         <Modal.Header closeButton>{header}</Modal.Header>
         <Modal.Body>
@@ -271,7 +305,7 @@ export default function RequestInfo(props) {
           ) : (
             <></>
           )}
-
+          {completedResponse()}
           {timeSpecific}
           {buttons}
         </Modal.Body>

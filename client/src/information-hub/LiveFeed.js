@@ -12,7 +12,7 @@ class LiveFeed extends Component {
   };
 
   componentDidMount() {
-    fetch("http://localhost:5000/api/news/live")
+    fetch("/api/news/live")
       .then((response) => response.json())
       .then((articles) => {
         this.setState({

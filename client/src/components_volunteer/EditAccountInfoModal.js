@@ -15,21 +15,19 @@ import { useFormFields } from "../libs/hooksLib";
 import { generateURL, validateEmail, extractTrueObj } from "../Helpers";
 
 import CheckForm from "../components/CheckForm";
-import NewCar from "../components_homepage/NewHasCar";
+import PhoneNumber from "../components/PhoneNumber";
 
 import Geocode from "react-geocode";
 
 export default function EditAccountInfoModal(props) {
   const [showChangeAssocModal, setShowChangeAssocModal] = useState(false);
-
   const [fields, handleFieldChange] = useFormFields({
     first_name: "",
     last_name: "",
     email: "",
-    phone: "",
     zip: "",
   });
-
+  const [phone, setPhone] = useState("");
   const [zip, setZip] = useState("");
   const [initialZip, setInitialZip] = useState("");
 
@@ -67,13 +65,33 @@ export default function EditAccountInfoModal(props) {
     "Misc.",
   ];
   const timeNames = ["Morning", "Afternoon", "Evening", "Weekdays", "Weekends"];
-  const languages = [
-    "English",
-    "Spanish",
-    "Mandarin",
-    "Cantonese",
-    "Other (Specify in details)",
-  ];
+  const languages = ["English", "Spanish", "Mandarin", "Cantonese", "Other"];
+  const [allowSMS, setAllowSMS] = useState(false);
+
+  const handleChangeSMSPreference = (event) => {
+    event.persist();
+    setAllowSMS(!allowSMS);
+  };
+  const SMSNotificationSwitch = (
+    <Form.Group
+      controlId="preverify"
+      bssize="large"
+      style={{ marginLeft: 12, marginBottom: 8 }}
+    >
+      <Form.Check
+        type="switch"
+        id="custom-switch"
+        style={{ color: "#7F7F7F", fontSize: 14 }}
+        label={
+          allowSMS
+            ? "Covaid will text you when you receive new requests"
+            : "You will NOT be receiving texts from Covaid"
+        }
+        checked={allowSMS}
+        onChange={handleChangeSMSPreference}
+      />
+    </Form.Group>
+  );
 
   const setCurrentUserObject = (userList, fullList, setFunction) => {
     for (var i = 0; i < fullList.length; i++) {
@@ -214,6 +232,7 @@ export default function EditAccountInfoModal(props) {
 
   const checkInputs = () => {
     var valid = true;
+
     if (Object.values(languageChecked).every((v) => v === false)) {
       setToastMessage("Need to select a language");
       valid = false;
@@ -229,9 +248,9 @@ export default function EditAccountInfoModal(props) {
       setToastMessage("Enter a last name");
       valid = false;
     } else if (
-      /^\d+$/.test(fields.phone) &&
-      fields.phone.length !== 10 &&
-      fields.phone.length !== 0
+      /^\d+$/.test(phone) &&
+      phone.length !== 10 &&
+      phone.length !== 0
     ) {
       setToastMessage("Enter a valid phone number");
       valid = false;
@@ -266,7 +285,7 @@ export default function EditAccountInfoModal(props) {
       first_name: fields.first_name,
       last_name: fields.last_name,
       email: fields.email,
-      phone: fields.phone,
+      phone,
       "offer.timesAvailable": selectedTimes,
       "offer.car": hasCar,
       "offer.neighborhoods": neighborhoods,
@@ -276,6 +295,7 @@ export default function EditAccountInfoModal(props) {
         coordinates: latlong,
       },
       languages: selectedLanguages,
+      allowSMS: allowSMS,
     };
 
     if (showChangeAssocModal) {
@@ -290,7 +310,7 @@ export default function EditAccountInfoModal(props) {
         first_name: fields.first_name,
         last_name: fields.last_name,
         email: fields.email,
-        phone: fields.phone,
+        phone,
         "offer.timesAvailable": selectedTimes,
         "offer.car": hasCar,
         languages: selectedLanguages,
@@ -334,9 +354,10 @@ export default function EditAccountInfoModal(props) {
           fields.first_name = props.user.first_name;
           fields.last_name = props.user.last_name;
           fields.email = props.user.email;
-          fields.phone = props.user.phone;
+          setPhone(props.user.phone);
           setLatLong(props.user.latlong);
           getZip(props.user.latlong);
+          setAllowSMS(props.user.allowSMS);
           setAssociation(props.user.association);
           setAssociationName(props.user.association_name);
           setHasCar(props.user.offer.car);
@@ -359,6 +380,7 @@ export default function EditAccountInfoModal(props) {
                 defaultResources,
                 setResources
               );
+
               return;
             }
             let params = {
@@ -415,72 +437,104 @@ export default function EditAccountInfoModal(props) {
   if (isLoaded) {
     return (
       <>
-        <Modal.Header closeButton>
-          <Modal.Title>Update your account information</Modal.Title>
+        <Modal.Header
+          style={{
+            paddingTop: 16,
+            paddingBottom: 12,
+            marginLeft: 26,
+            marginRight: 26,
+          }}
+        >
+          <Modal.Title id="small-header">Your Profile</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Container
-            id="volunteer-info"
-            style={{
-              maxWidth: 2000,
-              marginBottom: 10,
-              marginLeft: 0,
-              marginRight: 0,
-              color: "black",
-            }}
-          >
-            <Row>
-              <Col>
-                <Form>
-                  <Form.Group as={Row} controlId="first_name">
-                    <Form.Label column sm={3}>
-                      <b>First name</b>
+        <Modal.Body
+          style={{
+            paddingLeft: 26,
+            paddingRight: 26,
+            paddingTop: 20,
+            paddingBottom: 34,
+          }}
+        >
+          <Container style={{ padding: 0, margin: 0 }}>
+            <Form>
+              <Row>
+                <Col xs={6}>
+                  <Form.Group controlId="first_name" bssize="large">
+                    <Form.Label id="regular-text-bold">
+                      {props.translations[props.language].FirstName}
                     </Form.Label>
-                    <Col sm={8}>
-                      <Form.Control
-                        value={fields.first_name}
-                        onChange={handleFieldChange}
-                      />
-                    </Col>
+                    <Form.Control
+                      style={{
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                      }}
+                      value={fields.first_name}
+                      onChange={handleFieldChange}
+                    />
                   </Form.Group>
+                </Col>
+                <Col xs={6}>
+                  <Form.Group controlId="last_name" bssize="large">
+                    <Form.Label id="regular-text-bold">
+                      {props.translations[props.language].LastName}
+                    </Form.Label>
+                    <Form.Control
+                      style={{
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        marginBottom: 16,
+                      }}
+                      value={fields.last_name}
+                      onChange={handleFieldChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12}>
+                  <Form.Group controlId="email" bssize="large">
+                    <Form.Label id="regular-text-bold">
+                      {props.translations[props.language].email}
+                    </Form.Label>
+                    <Form.Control
+                      style={{
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        marginBottom: 16,
+                      }}
+                      value={fields.email}
+                      onChange={handleFieldChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col xs={12}>
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <Form.Label id="regular-text-bold">
+                      {props.translations[props.language].phone}
+                    </Form.Label>
+                    {SMSNotificationSwitch}
+                  </div>
 
-                  <Form.Group as={Row} controlId="last_name">
-                    <Form.Label column sm={3}>
-                      <b>Last name</b>
-                    </Form.Label>
-                    <Col sm={8}>
-                      <Form.Control
-                        value={fields.last_name}
-                        onChange={handleFieldChange}
-                      />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="email">
-                    <Form.Label column sm={3}>
-                      <b>Email</b>
-                    </Form.Label>
-                    <Col sm={8}>
-                      <Form.Control
-                        value={fields.email}
-                        onChange={handleFieldChange}
-                      />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="phone">
-                    <Form.Label column sm={3}>
-                      <b>Phone</b>
-                    </Form.Label>
-                    <Col sm={8}>
-                      <Form.Control
-                        value={fields.phone}
-                        onChange={handleFieldChange}
-                      />
-                    </Col>
-                  </Form.Group>
-                  <h5 id="regular-text-bold" style={{ marginBottom: 5 }}>
+                  <PhoneNumber
+                    style={{
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      marginBottom: 16,
+                    }}
+                    labelID="regular-text-bold"
+                    phoneNumber={phone}
+                    setPhoneNumber={setPhone}
+                  />
+                </Col>
+                <Col xs={12}>
+                  <Form.Label id="regular-text-bold">
                     Current zipcode
-                  </h5>
-                  <InputGroup controlid="locationString" className="mb-3">
+                  </Form.Label>
+                  <InputGroup
+                    style={{
+                      marginBottom: 16,
+                    }}
+                    controlid="locationString"
+                    className="mb-3"
+                  >
                     <Form.Control
                       placeholder="Zip code"
                       onChange={(e) => setZip(e.target.value)}
@@ -489,67 +543,72 @@ export default function EditAccountInfoModal(props) {
                     <InputGroup.Append>
                       <Button
                         variant="outline-secondary"
+                        style={{ fontSize: 14 }}
                         onClick={updateLocation}
                       >
                         Update Zipcode
                       </Button>
                     </InputGroup.Append>
                   </InputGroup>
+                </Col>
+
+                <Col
+                  xs={12}
+                  style={{
+                    marginLeft: 4,
+                    marginRight: 4,
+                    marginTop: 8,
+                    marginBottom: 8,
+                  }}
+                >
+                  <h5 id="regular-text-bold">
+                    {props.translations[props.language].WhatLanguageDoYouSpeak}
+                  </h5>
                   <h5
-                    id="regular-text-bold"
-                    style={{ marginBottom: 5, marginTop: 20 }}
+                    id="regular-text"
+                    style={{
+                      fontSize: 14,
+                      marginLeft: 1,
+                      lineHeight: "19px",
+                      marginBottom: 8,
+                    }}
                   >
-                    What languages do you speak?
+                    Please specify other languages in the details section of
+                    your offer
                   </h5>
                   <CheckForm
+                    sort={false}
                     obj={languageChecked}
                     setObj={setLanguageChecked}
                   />
-                  <h5
-                    id="regular-text-bold"
-                    style={{ marginBottom: 5, marginTop: 20 }}
-                  >
-                    Can you drive?
-                  </h5>
-                  <NewCar hasCar={hasCar} setHasCar={setHasCar} />
-                  <h5
-                    id="regular-text-bold"
-                    style={{ marginBottom: 5, marginTop: 20 }}
-                  >
-                    What is your general availability?
-                  </h5>
-                  <CheckForm obj={times} setObj={setTimes} />
-
-                  <div
-                    style={
-                      showChangeAssocModal
-                        ? { display: "block" }
-                        : { display: "none" }
-                    }
-                  >
-                    <h5
-                      id="regular-text-bold"
-                      style={{ marginBottom: 5, marginTop: 20 }}
-                    >
-                      Your location has changed, please update your tasks here!
-                    </h5>
-                    <CheckForm obj={resources} setObj={setResources} />
-                  </div>
-                  <Row>
-                    <Button
-                      onClick={handleSubmit}
-                      id="request-button"
-                      style={{ width: "100%", marginTop: 20 }}
-                    >
-                      Update your info
-                    </Button>
-                  </Row>
-                  {/* <Button onClick={handleSubmit} id="request-button">Update your info</Button> */}
-                </Form>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+              <Button
+                onClick={handleSubmit}
+                id="large-button"
+                style={{ width: "100%", marginTop: 20 }}
+              >
+                Save Changes
+              </Button>
+              <div
+                style={
+                  showChangeAssocModal
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+              >
+                <h5
+                  id="regular-text-bold"
+                  style={{ marginBottom: 5, marginTop: 20 }}
+                >
+                  Your location has changed, please update your tasks here!
+                </h5>
+                <CheckForm obj={resources} setObj={setResources} />
+              </div>
+            </Form>
           </Container>
         </Modal.Body>
+
         <Toast
           show={showToast}
           delay={1500}

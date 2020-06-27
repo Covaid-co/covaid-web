@@ -1,7 +1,8 @@
 const translations = {
   en: {
-    intro:
-      "If you need support or have resources to offer as we navigate the COVID-19 crisis as a community, please use this form. Your responses to this form will only be seen by a team of volunteers working to match resources with needs. You can find more public resources at",
+    intro1:
+      "If you need support or have resources to offer as we navigate the COVID-19 crisis as a community, please use this form. Your responses to this form will only be seen by a team of ",
+    intro2: " volunteers working to match resources with needs.",
     prioritizing:
       "We are prioritizing folks who are sick, disabled, quarantined without pay, elderly, undocumented, queer, Black, Indigenous, and/or people of color -- including those displaced from",
     areas: "to the nearby areas",
@@ -35,9 +36,9 @@ const translations = {
     "Shower/Laundry": "Shower/Laundry",
     Storage: "Storage",
     Next: "Next",
-    WhatLanguageDoYouSpeak: "Languages",
+    WhatLanguageDoYouSpeak: "What languages do you speak?",
     LanguageNotListed:
-      "If language not listed, please mention in details section below",
+      "If language not listed, please mention in details section",
     English: "English",
     Spanish: "Spanish",
     French: "French",
@@ -48,16 +49,16 @@ const translations = {
     Afternoon: "Afternoon",
     Evening: "Evening",
     Night: "Night",
-    DetailsAboutRequest: "Details about request",
+    DetailsAboutRequest: "Request Details",
     ComfortableSharingDetails:
       "Use as much detail as you feel comfortable sharing, no judgements here",
     DetailExample:
-      'Example: "I\'m quarantined and need groceries for the week. Can they can be dropped off at 123 Main street?"',
+      'Ex: "I\'m quarantined with my family of 5 and need groceries for the week. Can they can be dropped off at my front door?"',
     ReceivedYourRequest: "We've received your request!",
     VolunteerReachOutSoon:
       "Your request has been saved and you should be contacted soon from a matched volunteer who can support you!",
     RequestSupport: "Request support",
-    INeedHelp: "I need help",
+    INeedHelp: "I need support",
     BecomeVolunteer: "Become a Volunteer",
     "Academic/Professional": "",
     Donate: "Donate",
@@ -183,7 +184,7 @@ const translations = {
     RequestPage3_Text2: "Sign up!",
     Details: "Details?",
     Details_Text:
-      "Let us know more about you and how you can help (Please be specific)! For example: If you're offering food, please let us know if you're offering to cook food, donate food, or need to be reimbursed, etc. No pressure, but any information helps us match you more quickly!",
+      "Let us know more about you and how you can help (please be specific)! For example: If you're offering food, please let us know if you're offering to cook food, donate food, or need to be reimbursed, etc. No pressure, but any information helps us match you more quickly!",
     Details_Example:
       "I am a college student, and am happy to deliver food from stores or food banks in St. Louis County!",
     CanYouHelp: "Can you help ",
@@ -206,10 +207,40 @@ const translations = {
     OnceVerified:
       "Once verified, you will be able to post an offer to support your community directly from your volunteer portal.",
     VolunteerPortal: "Volunteer portal",
+    SetLocation: "Set your location",
+    Step: "Step",
+    Step1Text1: "We ask for your location so that",
+    Step1Text2: "can best match you to volunteers in your area",
+    SetLocationShort: "Set location",
+    CreateRequest: "Create a request",
+    Step2Text1:
+      "Given your request, we will try and match you with a volunteer in your area.",
+    Step2Text2: "For those who would rather call in a request, please call ",
+    OnBehalf: "Request on behalf of someone else",
+    BehalfWarning:
+      "Please fill in the fields below with information pertaining to the person in need of support. If you’d like us to contact you, please leave your contact in the details on the next page.",
+    ConfirmRequest: "Confirm request information",
+    RequestDetails: "What can we help you with?",
+    ChangeLocation: "Change Location",
+    LastStep:
+      "This is your last step! Please make sure your request information is accurate.",
+    BestWay: "Best way to reach you",
+    YourLocation: "Your Location",
+    AskLocation:
+      "We ask for your location so that we can best match you to volunteers in your area.",
+    AllVolunteer:
+      "This form is being managed by a group of all-volunteer community members involved in local organizing efforts. Thank you for your patience and grace.",
+    PreferredLangs: "Preferred languages",
+    Prioritize1:
+      "We aim to prioritize requests from individuals and families that identify as",
+    Prioritize2: "BIPOC, elderly, immunocompromised, or of veteran status.",
+    Prioritize3:
+      "Please check here if you identify with any of these so we can prioritize your request.",
   },
   es: {
-    intro:
-      "Si usted necesita ayuda o tiene recursos para ofrecer mientras que navegamos como una comunidad el crisis de COVID-19, por favor rellenar el formulario. Sus respuestas al formulario solo serían vistos por un equipo de voluntarias/os trabajando para juntar recursos con necesidades. Usted puede encontrar más recursos públicos en",
+    intro1:
+      "Si usted necesita ayuda o tiene recursos para ofrecer mientras que navegamos como una comunidad el crisis de COVID-19, por favor rellenar el formulario. Sus respuestas al formulario solo serían vistos por un equipo de ",
+    intro2: "voluntarias/os trabajando para juntar recursos con necesidades.",
     prioritizing:
       "Estamos priorizando personas quienes están enfermos, tiene algún discapacidad, estan en cuarentena sin pago, personas mayores, personas indocumentados, personas queer, Negro, Indigena, y/o personas de color-- incluyendo personas desplazadas de",
     areas: "a lugares cercanos",
@@ -420,6 +451,36 @@ const translations = {
     OnceVerified:
       "Una vez verificado, podrá publicar una oferta para apoyar a su comunidad directamente desde su portal de voluntarios.",
     VolunteerPortal: "Portal de voluntarios",
+    SetLocation: "Establece tu ubicación",
+    Step: "Paso",
+    Step1Text1: "Le pedimos su ubicación para que",
+    Step1Text2: "puede emparejarlo mejor con voluntarios en su área.",
+    SetLocationShort: "Escoger Localización",
+    CreateRequest: "Crear una solicitud",
+    Step2Text1:
+      "Ante su solicitud, intentaremos emparejarlo con un voluntario en su área.",
+    Step2Text2:
+      "Para aquellos que prefieren llamar en una solicitud, por favor llame ",
+    OnBehalf: "Solicitar en nombre de otra persona",
+    BehalfWarning:
+      "Complete los campos a continuación con información relacionada con la persona que necesita apoyo. Si desea que nos comuniquemos con usted, deje su contacto en los detalles de la página siguiente.",
+    ConfirmRequest: "Confirmar información de solicitud",
+    RequestDetails: "Pedir Detalles",
+    ChangeLocation: "Cambiar locación",
+    LastStep:
+      "Este es tu último paso! Asegúrese de que la información de su solicitud sea precisa.",
+    BestWay: "La mejor manera de contactarte",
+    YourLocation: "Tu Ubicación",
+    AskLocation:
+      "Le pedimos su ubicación para que podamos relacionarlo mejor con los voluntarios en su área.",
+    AllVolunteer:
+      "Este formulario está siendo administrado por un grupo de miembros de la comunidad totalmente voluntarios involucrados en los esfuerzos de organización local. Gracias por tu paciencia y gracia.",
+    PreferredLangs: "Idiomas preferidos",
+    Prioritize1:
+      "Nuestro objetivo es priorizar las solicitudes de individuos y familias que se identifican como",
+    Prioritize2: "BIPOC, ancianos, inmunocomprometidos o veteranos.",
+    Prioritize3:
+      "Marque aquí si se identifica con alguno de estos para que podamos priorizar su solicitud.",
   },
 };
 export { translations };

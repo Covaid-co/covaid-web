@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 
-import NeededBy from "../components_homepage/NeededBy";
 import NewDetails from "../components_homepage/NewDetails";
 import NewPaymentMethod from "../components_homepage/NewPaymentMethod";
 import CheckForm from "../components/CheckForm";
@@ -22,6 +22,7 @@ export default function RequestPage2(props) {
   const [toastMessage, setToastMessage] = useState("");
   const [selectedPayment, setSelectedIndex] = useState(0);
   const [resources, setResources] = useState({});
+  const [resource_popup, setPopup] = useState({});
   const [time, setTime] = useState("Morning");
   const [date, setDate] = useState(
     new Date(Date.now()).toLocaleString().split(",")[0]
@@ -32,10 +33,27 @@ export default function RequestPage2(props) {
 
   useEffect(() => {
     var resourcesFromAssoc = defaultResources;
-    if (props.currentAssoc && Object.keys(props.currentAssoc).length > 0) {
+    if (
+      props.currentAssoc &&
+      Object.keys(props.currentAssoc).length > 0 &&
+      props.currentAssoc.resources
+    ) {
       resourcesFromAssoc = props.currentAssoc.resources;
     }
     var temp_resources = setFalseObj(resourcesFromAssoc);
+
+    if (
+      props.currentAssoc &&
+      Object.keys(props.currentAssoc).length > 0 &&
+      props.currentAssoc.resource_popup
+    ) {
+      var temp = {};
+      for (var i = 0; i < props.currentAssoc.resource_popup.length; i++) {
+        temp[props.currentAssoc.resource_popup[i][0]] =
+          props.currentAssoc.resource_popup[i][1];
+      }
+      setPopup(temp);
+    }
 
     if (Object.keys(props.second_page).length !== 0) {
       fields.details = props.second_page.details;
@@ -47,6 +65,8 @@ export default function RequestPage2(props) {
       }
     }
     setResources(temp_resources);
+    setTime("Morning");
+    setDate(new Date(Date.now()).toLocaleString().split(",")[0]);
   }, [props.second_page]);
 
   const goToSubmit = () => {
@@ -82,6 +102,22 @@ export default function RequestPage2(props) {
     return true;
   };
 
+  const displayResourcePopup = () => {
+    return Object.keys(resources).map((key) => {
+      if (resources[key] && resource_popup[key]) {
+        return (
+          <Alert
+            style={{ marginTop: 10, marginBottom: 0, fontSize: 14 }}
+            key={key}
+            variant={"warning"}
+          >
+            {resource_popup[key]}
+          </Alert>
+        );
+      }
+    });
+  };
+
   const paymentMethod = () => {
     var payment = <NewPaymentMethod setSelectedIndex={setSelectedIndex} />;
     if (
@@ -90,6 +126,7 @@ export default function RequestPage2(props) {
     ) {
       payment = <></>;
     }
+    payment = <></>;
     return payment;
   };
 
@@ -123,7 +160,9 @@ export default function RequestPage2(props) {
 
   return (
     <>
-      <h5 id="title-light">Request Details</h5>
+      <h5 id="title-light">
+        {props.translations[props.language].RequestDetails}
+      </h5>
       {props.currentAssoc === null ? (
         <></>
       ) : (
@@ -134,12 +173,7 @@ export default function RequestPage2(props) {
           language={props.language}
         />
       )}
-      <NeededBy
-        setTime={setTime}
-        setDate={setDate}
-        translations={props.translations}
-        language={props.language}
-      />
+      {displayResourcePopup()}
       {paymentMethod()}
       {paymentAgreement}
       <NewDetails

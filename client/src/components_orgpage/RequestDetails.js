@@ -17,13 +17,16 @@ import {
   current_tab,
   volunteer_status,
 } from "../constants";
-import { generateURL, generateMapsURL } from "../Helpers";
+import { generateURL } from "../Helpers";
 import fetch_a from "../util/fetch_auth";
 import {
   matchVolunteersButton,
   unmatchCompleteButtons,
   viewVolunteersInfo,
 } from "./requestDetailsHelpers";
+
+import EditRequestInfoModal from "./EditRequestInfoModal";
+import RequestDetailMapModal from "./RequestDetailMap";
 
 /**
  * Request Details Modal
@@ -36,7 +39,6 @@ export default function RequestDetails(props) {
   const [unmatchModal, setUnmatchModal] = useState(false);
   const [confirmCompleteModal, setConfirmCompleteModal] = useState(false);
   const [reason, setReason] = useState("Volunteer Completed");
-  const [mapsURL, setMapsURL] = useState("");
   const [adminList, setAdminList] = useState([]);
   const [prevNote, setPrevNote] = useState("");
   const [showToast, setShowToast] = useState(false);
@@ -46,23 +48,30 @@ export default function RequestDetails(props) {
   });
   const [volunteerDetailModal, setVolunteerDetailsModal] = useState(false);
   const [currVolunteer, setCurrVolunteer] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showRequestMapModal, setShowRequestMapModal] = useState(false);
+  const [mapboxAccessToken, setMapboxAccessToken] = useState("");
 
   useEffect(() => {
+    fetch("/api/apikey/mapbox").then((response) => {
+      if (response.ok) {
+        response.json().then((key) => {
+          setMapboxAccessToken(key["mapbox"]);
+        });
+      } else {
+        console.log("Error");
+      }
+    });
     setAssignee("No one assigned");
-    createMapsLink();
     fields.email2 = props.currRequest.admin_info.note;
     setPrevNote(props.currRequest.admin_info.note);
     updateAdminList();
   }, [props.currRequest, props.association, props.mode]);
 
-  // Create link to requesters location
-  const createMapsLink = () => {
-    if (props.currRequest.location_info) {
-      const lat = props.currRequest.location_info.coordinates[1];
-      const long = props.currRequest.location_info.coordinates[0];
-      const tempURL = generateMapsURL(lat, long);
-      setMapsURL(tempURL);
-    }
+  // Close Edit Request Modal
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    props.setRequestDetailsModal(true);
   };
 
   // Update selection menu for list of admins
@@ -483,7 +492,7 @@ export default function RequestDetails(props) {
           </h5>
           {adminTracker()}
           <h5 id="regular-text-bold" style={{ marginTop: 13, marginBottom: 5 }}>
-            Notes:
+            Your Notes:
           </h5>
           <Form>
             <Form.Group controlId="email2" bssize="large">
@@ -504,23 +513,62 @@ export default function RequestDetails(props) {
               &nbsp;
             </p>
           </Col>
-          <p id="name-details">
-            {formatName(props.currRequest.personal_info.requester_name)}
-          </p>
-          <p id="regular-text-nomargin">
-            Location:{" "}
-            <a target="_blank" rel="noopener noreferrer" href={mapsURL}>
-              Click here
-            </a>
+          <div>
+            <p id="name-details" style={{ display: "inline" }}>
+              {formatName(props.currRequest.personal_info.requester_name)}
+            </p>
+            <Button
+              id="regular-text"
+              onClick={() => {
+                setShowEditModal(true);
+                props.setRequestDetailsModal(false);
+              }}
+              style={{
+                color: "#2670FF",
+                padding: 0,
+                marginTop: 3,
+                display: "inline",
+                float: "right",
+              }}
+              variant="link"
+            >
+              Edit Request
+            </Button>
+          </div>
+          <p id="regular-text-nomargin" style={{ marginBottom: -6 }}>
+            <Button
+              id="regular-text"
+              onClick={() => {
+                setShowRequestMapModal(true);
+                props.setRequestDetailsModal(false);
+              }}
+              style={{
+                color: "#2670FF",
+                padding: 0,
+                marginBottom: 3,
+                marginLeft: 0,
+                paddingLeft: 0,
+                textDecoration: "underline",
+              }}
+              variant="link"
+            >
+              Request Location
+            </Button>
           </p>
           {contactInfo()}
           <p id="regular-text-nomargin" style={{ marginTop: 14 }}>
             Languages: {props.currRequest.personal_info.languages.join(", ")}
           </p>
           {paymentText()}
-          <p id="regular-text-nomargin">
-            Needs: {props.currRequest.request_info.resource_request.join(", ")}
-          </p>
+          <div style={{ marginTop: 12 }}>
+            {props.currRequest.request_info.resource_request.map((task, i) => {
+              return (
+                <Badge key={i} id="task-info">
+                  {task}
+                </Badge>
+              );
+            })}
+          </div>
           <h5 id="regular-text-bold" style={{ marginBottom: 0, marginTop: 16 }}>
             Details:
           </h5>
@@ -540,7 +588,7 @@ export default function RequestDetails(props) {
             <p id="regular-text-nomargin">N/A</p>
           )}
           {volunteerComments()}
-          <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p>
+          {/* <p id="requestCall" style={{ marginTop: 15, marginBottom: 10 }}></p> */}
           {matchVolunteersButton(props.mode, topMatch)}
           {viewVolunteersInfo(
             props.mode,
@@ -565,6 +613,42 @@ export default function RequestDetails(props) {
             <Toast.Body>{toastMessage}</Toast.Body>
           </Toast>
         </Modal.Body>
+        {/* <Modal.Footer>
+            <Button id="regular-text" onClick={() => {setShowEditModal(true); props.setRequestDetailsModal(false);}} 
+                style={{margin: "auto", display: "block", color: '#2670FF'}}variant="link">
+                Edit Info
+            </Button>
+        </Modal.Footer> */}
+      </Modal>
+
+      <Modal
+        size={"lg"}
+        show={showEditModal}
+        onHide={handleCloseEditModal}
+        style={{ marginTop: 10, paddingBottom: 50, zoom: "90%" }}
+      >
+        <EditRequestInfoModal
+          updateRequests={updateRequests}
+          currRequest={props.currRequest}
+          mapboxAccessToken={mapboxAccessToken}
+          setShowEditModal={setShowEditModal}
+          association={props.association}
+          setRequestDetailsModal={props.setRequestDetailsModal}
+        />
+      </Modal>
+
+      <Modal
+        show={showRequestMapModal}
+        onHide={() => {
+          setShowRequestMapModal(false);
+          props.setRequestDetailsModal(true);
+        }}
+        style={{ marginTop: 10, paddingBottom: 50 }}
+      >
+        <RequestDetailMapModal
+          currRequest={props.currRequest}
+          mapboxAccessToken={mapboxAccessToken}
+        />
       </Modal>
 
       <Modal
@@ -686,5 +770,5 @@ RequestDetails.propTypes = {
   allRequests: PropTypes.array,
   requestDetailsModal: PropTypes.bool,
   volunteers: PropTypes.array,
-  setVolunteers: PropTypes.func
+  setVolunteers: PropTypes.func,
 };

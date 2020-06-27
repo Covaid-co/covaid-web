@@ -4,19 +4,16 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import { useHistory } from "react-router-dom";
 
 import HowItWorks from "../components_modals/HowItWorks";
 import Feedback from "../components_modals/Feedback";
 import { currURL } from "../constants";
 
 export default function Footer(props) {
+  const history = useHistory();
   const [showModal, setShowModal] = useState(false);
   const [modalName, setModalName] = useState("");
-  const [width, setWidth] = useState(window.innerWidth);
-
-  window.addEventListener("resize", () => {
-    setWidth(window.innerWidth);
-  });
 
   const getCurrentModal = () => {
     var modal = <></>;
@@ -36,16 +33,21 @@ export default function Footer(props) {
   };
 
   return (
-    <footer className="footer">
+    <footer
+      className="footer"
+      id={props.id}
+      style={props.style || { marginTop: 20 }}
+    >
       <Container style={{ maxWidth: 2500 }}>
-        <Row style={{ textAlign: "left", paddingBottom: 30 }}>
+        <Row style={{ textAlign: "left" }}>
           <Col
-            xs={2}
-            style={{ padding: 20, paddingRight: 0 }}
+            xs={1}
+            style={{ padding: 20, paddingRight: 0, paddingTop: 0 }}
             id="footer-brand"
           >
             <Navbar style={{ paddingLeft: 0, paddingBottom: 0 }}>
               <Navbar.Brand
+                onClick={() => history.push("/")}
                 id="navbar-brand"
                 style={{
                   paddingLeft: 0,
@@ -63,7 +65,8 @@ export default function Footer(props) {
             lg={10}
             md={10}
             sm={12}
-            style={{ textAlign: "left", marginTop: 62, paddingLeft: 0 }}
+            style={{ textAlign: "left", marginTop: 42, paddingLeft: 50 }}
+            id="footer-content"
           >
             <Button
               variant="link"

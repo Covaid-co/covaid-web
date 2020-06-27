@@ -27,6 +27,7 @@ export default function OrgAdminRegister(props) {
 
   useEffect(() => {
     const assocID = queryString.parse(props.location.search).associationID;
+    console.log(queryString.parse(props.location.search));
     let params = { associationID: assocID };
     var url = generateURL("/api/association/get_assoc/?", params);
     fetch(url)

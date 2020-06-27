@@ -7,12 +7,22 @@ import Container from "react-bootstrap/Container";
 import Jeff from "../assets/jeff.png";
 import Debanik from "../assets/Debanik.png";
 import Marissa from "../assets/marissa.jpeg";
-import Elle from "../assets/elle.png";
+import Elle from "../assets/elle.jpg";
 import Trisha from "../assets/trisha.jpg";
 import Shresta from "../assets/shresta.jpg";
 import Matt from "../assets/matt.jpeg";
 import Neely from "../assets/neely.jpg";
 import Ellie from "../assets/ellie.jpeg";
+import Eliza from "../assets/eliza.jpeg";
+import Daniella from "../assets/danielle.jpg";
+import Yoav from "../assets/yoav.jpg";
+import Sofia from "../assets/sofia.jpg";
+import Angela from "../assets/angela.jpg";
+import Ashwin from "../assets/ashwin.jpeg";
+import Jenny from "../assets/jenny.jpg";
+import Jospeh from "../assets/joseph.png";
+import Alice from "../assets/alice.png";
+import Nikhil from "../assets/nikhil.png";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -22,46 +32,87 @@ import Footer from "../components/Footer";
  */
 
 export default function AboutUs(props) {
+  document.title = "Covaid | About";
   const peoples = {
     "Jeffrey Li": {
-      "link": "https://www.instagram.com/lijeffrey39/",
-      "image": Jeff
+      link: "https://www.instagram.com/lijeffrey39/",
+      image: Jeff,
     },
     "Debanik Purkayastha": {
-      "link": "https://www.instagram.com/debanik1997/",
-      "image": Debanik
+      link: "https://www.instagram.com/debanik1997/",
+      image: Debanik,
     },
     "Marissa Turkin": {
-      "link": "https://www.instagram.com/marissaturkin/",
-      "image": Marissa
+      link: "https://www.instagram.com/marissaturkin/",
+      image: Marissa,
     },
     "Elle Kolkin": {
-      "link": "https://www.linkedin.com/mwlite/in/ellekolkin",
-      "image": Elle
+      link: "https://www.linkedin.com/mwlite/in/ellekolkin",
+      image: Elle,
     },
     "Trisha Ballakur": {
-      "link": "https://www.linkedin.com/in/trisha-ballakur-070138187/",
-      "image": Trisha
+      link: "https://github.com/trishaBallakur",
+      image: Trisha,
     },
     "Shresta Bangaru": {
-      "link": "https://www.linkedin.com/in/shresta-bangaru-411134190/",
-      "image": Shresta
+      link: "https://www.linkedin.com/in/shresta-bangaru-411134190/",
+      image: Shresta,
     },
     "Matthew McDermut": {
-      "link": "https://www.instagram.com/matthewmcd2/",
-      "image": Matt
+      link: "https://www.instagram.com/matthewmcd2/",
+      image: Matt,
     },
     "Neely Lee": {
-      "link": "www.linkedin.com/in/neelylee",
-      "image": Neely
+      link: "https://www.linkedin.com/in/neelylee",
+      image: Neely,
     },
     "Ellie Sapiro": {
-      "link": "https://www.linkedin.com/in/ellie-sapiro/",
-      "image": Ellie
-    }
-  }
+      link: "https://www.linkedin.com/in/ellie-sapiro/",
+      image: Ellie,
+    },
+    "Eliza Kleban": {
+      link: "https://www.linkedin.com/in/eliza-kleban-429a421a3/",
+      image: Eliza,
+    },
+    "Danielle Serota": {
+      link: "https://www.instagram.com/danielle___eve/",
+      image: Daniella,
+    },
+    "Yoav Kadan": {
+      link: "",
+      image: Yoav,
+    },
+    "Sofia Kling": {
+      link: "",
+      image: Sofia,
+    },
+    "Angela Luo": {
+      link: "https://www.linkedin.com/in/al490/",
+      image: Angela,
+    },
+    "Ashwin Saxena": {
+      link: "https://www.linkedin.com/in/ashwinsax/",
+      image: Ashwin,
+    },
+    "Jenny Zang": {
+      link: "",
+      image: Jenny,
+    },
+    "Joseph Zhang": {
+      link: "",
+      image: Jospeh,
+    },
+    "Alice Cai": {
+      link: "",
+      image: Alice,
+    },
+    "Nikhil Aggarwal": {
+      link: "",
+      image: Nikhil,
+    },
+  };
 
-  const names = Object.keys(peoples)
+  const names = Object.keys(peoples);
   names.sort();
 
   return (
@@ -70,35 +121,32 @@ export default function AboutUs(props) {
         setLanguage={props.setLanguage}
         language={props.language}
         pageLoaded={true}
-        isLoggedIn={false}
+        isLoggedIn={props.isLoggedIn}
+        first_name={
+          Object.keys(props.currentUser).length !== 0
+            ? props.currentUser.first_name
+            : ""
+        }
       />
       <Container style={{ maxWidth: 2500 }}>
         <Row>
-          <Col md={6} id="login-container" style={{ paddingRight: 75 }}>
-            <h1 id="home-heading">The People Behind Covaid</h1>
-            <p id="regular-text">
-              Hi! We're a group of college student/recent grads who want to play
+          <Col md={1}></Col>
+          <Col
+            md={10}
+            style={{
+              paddingLeft: "5%",
+              paddingRight: "5%",
+              textAlign: "center",
+            }}
+            id="about-us-col"
+          >
+            <h1 id="home-heading" style={{ marginBottom: 40, fontSize: 60 }}>
+              The People Behind<br></br>Covaid
+            </h1>
+            <p id="regular-text" style={{ marginBottom: 40, fontSize: 20 }}>
+              We're a group of college students/recent grads who want to play
               our part in the fight against COVID-19.
             </p>
-            <p id="regular-text">
-              Inspired by acts of mutual aid in our community, we created
-              <strong>
-                <font id="home" style={{ fontSize: 18 }}>
-                  {" "}
-                  covaid
-                </font>
-              </strong>
-              , a tool to assist elderly and immunocompromised groups in this
-              time of distress. We are neighbors that are truly concerned about
-              our community as well as those affected around the United States.
-              With this tool, we hope to give those most affected and vulnerable
-              the help they need.
-            </p>
-            {/* <p id="regular-text">
-              <strong>Any questions?</strong> Just email us at covaidco@gmail.com
-            </p> */}
-          </Col>
-          <Col md={6} style={{ marginTop: 30 }}>
             <Row>
               {names.map((name, i) => {
                 return (
@@ -110,11 +158,15 @@ export default function AboutUs(props) {
                     xs={6}
                     style={{ textAlign: "center" }}
                   >
-                    <img id="profile" alt="Avatar" src={peoples[name]['image']}></img>
+                    <img
+                      id="profile"
+                      alt="Avatar"
+                      src={peoples[name]["image"]}
+                    ></img>
                     <br />
                     <a
                       id="profile-name"
-                      href={peoples[name]['link']}
+                      href={peoples[name]["link"]}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -125,9 +177,10 @@ export default function AboutUs(props) {
               })}
             </Row>
           </Col>
+          <Col md={1}></Col>
         </Row>
       </Container>
-      <Footer key="2" />
+      <Footer key="2" style={{ marginTop: 48 }} />
     </div>
   );
 }
@@ -135,4 +188,6 @@ export default function AboutUs(props) {
 AboutUs.propTypes = {
   setLanguage: PropTypes.func,
   language: PropTypes.string,
+  isLoggedIn: PropTypes.bool,
+  currentUser: PropTypes.object,
 };

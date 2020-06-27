@@ -41,60 +41,87 @@
 
 #home-heading {
   font-family: "Montserrat";
-  font-size: 48px;
+  font-size: 52px;
   margin-bottom: 10px;
-  margin-top: 30px;
+  margin-top: 50px;
   font-weight: bold;
-  color: black;
+  color: #3c3c3c;
 }
 
 #home-subheading {
   font-family: "Inter";
   font-size: 20px;
   margin-top: 0px;
-  margin-bottom: 24px;
+  margin-bottom: 0px;
   padding-right: 50px;
   color: #7f7f7f;
+  letter-spacing: -0.5px;
 }
 
 #request-button {
-  font-family: "Inter";
+  font-family: "Montserrat";
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 8px;
   background-color: #2670ff;
   border: 1px solid #2670ff;
   font-size: 20px;
   height: 60px;
-  width: 300px;
-  padding-left: 30px;
-  padding-right: 30px;
+  width: 280px;
   margin-bottom: 5px;
+  margin-top: 30px;
 }
 
-/* #resources-button:hover {
-  background-color: #2670ff;
-  color: white;
-} */
+#volunteer-button {
+  font-family: "Montserrat";
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid #2670ff;
+  color: #2670ff;
+  font-size: 20px;
+  height: 60px;
+  width: 280px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 
 #resources-button {
   font-family: "Inter";
   font-weight: 600;
-  border-radius: 12px;
-  background-color: white;
-  color: #2670ff;
-  border: 1px solid #2670ff;
-  font-size: 20px;
-  height: 60px;
+  background-color: transparent;
+  color: #7f7f7f;
+  font-size: 18px;
+  height: 50px;
   width: 300px;
-  padding-left: 20px;
-  padding-right: 20px;
   margin-top: 5px;
+  border: 0px;
+  margin-left: -8px;
+  /* padding-left: 30px; */
+  /* text-align: left; */
+  text-underline-position: under;
+  text-decoration: underline;
+  text-decoration-color: #cbcbcb;
 }
 
-/* #request-button:hover {
-  background-color: white;
+#resources-button:hover {
+  text-decoration-color: #7f7f7f;
+}
+
+#resources-button:focus {
+  box-shadow: none;
+}
+#small-button {
+  font-family: "Inter";
+  font-size: 14px;
+  background-color: transparent;
   color: #2670ff;
-} */
+  border-color: #2670ff;
+  height: 36px;
+  padding-top: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 8px;
+}
 
 #medium-button-solid {
   font-family: "Inter";
@@ -109,7 +136,6 @@
 
 #medium-button {
   font-family: "Inter";
-  border-radius: 12px;
   background-color: transparent;
   color: #2670ff;
   border-color: #2670ff;
@@ -143,7 +169,7 @@
 #small-header {
   font-family: "Montserrat";
   font-weight: bold;
-  color: black;
+  color: #4f4f4f;
   font-size: 24px;
 }
 
@@ -164,7 +190,7 @@
   font-family: "Inter";
   font-size: 16px;
   font-weight: 600;
-  color: black;
+  color: #4f4f4f;
 }
 
 #volunteer-info {
@@ -223,6 +249,7 @@
   margin-right: 30px;
   padding-top: 0px;
   margin-top: 8px;
+  cursor: pointer;
 }
 
 #home {
@@ -334,11 +361,13 @@
 }
 
 .navbar-toggler .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(25, 75, 211, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(38, 112, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
 .navbar-light .navbar-toggler {
-  border-color: #194bd3;
+  margin-top: 5px;
+  border-color: transparent;
+  padding-right: 0px;
 }
 
 #newOfferContainer {
@@ -351,6 +380,26 @@
   border-radius: 10px;
   border: 1px solid #cecece;
   background-color: white;
+}
+
+#languageButton::after {
+  content: none;
+}
+
+#languageButton:focus {
+  box-shadow: none;
+}
+
+#languageButton {
+  background-color: transparent;
+  color: rgb(109, 109, 109);
+  font-family: "Inter";
+  padding-right: 0px;
+  padding-left: 0px;
+  font-size: 16px;
+  padding-bottom: 7px;
+  height: 36px;
+  border: 0px;
 }
 
 #filterButton {
@@ -433,17 +482,19 @@
 }
 
 #hello-name {
-  color: black;
+  color: #2670ff;
   font-weight: 600;
   font-family: "Inter";
   margin-right: 10px;
-  font-size: 14px;
+  font-size: 16px;
   position: relative;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
 #logoutButton {
   font-family: "Inter";
-  font-size: 14px;
+  font-size: 16px;
   margin-top: -1px;
   color: #dc3545;
 }
@@ -481,7 +532,7 @@
 .form-control {
   font-family: "Inter";
   font-size: 16px;
-  height: 39px;
+  height: 43px;
   color: black;
 }
 
@@ -528,34 +579,6 @@ textarea.form-control {
   border-color: #2670ff;
 }
 
-.dropdown-item {
-  height: 29px;
-  background: transparent;
-  color: #2670ff;
-  font-family: "Inter";
-  font-weight: normal;
-}
-
-.dropdown-item.active {
-  background: #2670ff;
-  background-color: #2670ff;
-  color: white;
-}
-
-.dropdown-item.active,
-.dropdown-item:active {
-  background: #2670ff;
-  background-color: #2670ff;
-  color: white;
-}
-
-.dropdown-menu.show {
-  border-radius: 8px;
-  border: transparent;
-  box-shadow: 0px -4px 10px 3px rgba(0, 0, 0, 0.05);
-  margin-bottom: 20px;
-}
-
 #toastError {
   position: absolute;
   bottom: 0;
@@ -564,6 +587,9 @@ textarea.form-control {
   margin-right: 10px;
   font-family: "Inter";
   color: black;
+  background: white;
+  z-index: 10;
+  box-shadow: 0px -1px 10px -8px rgba(0, 0, 0, 0.7) !important;
 }
 
 #leftCarButton {
@@ -629,4 +655,35 @@ textarea.form-control {
 #phoneNumber {
   font-weight: bold;
   color: #2670ff;
+}
+.dropdown-item {
+  background: transparent;
+  color: #2670ff;
+  font-family: "Inter";
+  font-weight: normal;
+}
+.dropdown-item:hover {
+  color: white;
+  transition: 0.05s;
+  background-color: #2670ff;
+}
+
+.logout-dropdown-item {
+  color: #7f7f7f;
+  opacity: 0.9;
+}
+.logout-dropdown-item:hover {
+  color: white;
+  background-color: #ae2f2f !important;
+  opacity: 0.95;
+}
+.dropdown-menu.show {
+  margin-top: 14px !important;
+  margin-bottom: 20px !important;
+  border: 1px solid #2670ff;
+  border-radius: 8px;
+}
+
+.dropdown-svg {
+  margin-left: 12px;
 }

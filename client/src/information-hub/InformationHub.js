@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
+import InputGroup from "react-bootstrap/InputGroup";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -15,14 +18,43 @@ import InformationSection from "./InformationSection";
  */
 
 export default function InformationHub(props) {
+  const [locationString, setLocationString] = useState('');
+  const [assocID, setAssocID] = useState('');
+  const [assocName, setAssocName] = useState('');
   useEffect(() => {}, []);
+
+  const handleSubmit = (e) => {
+    props.getLatLong(e, locationString).then((res) => {
+      if (res === false) {
+        // TODO add toast and error
+        // setToastMessage("Invalid Zip Code/City");
+        // setShowToast(true);
+      } else {
+        const lat = res.lat;
+        const lng = res.lng;
+        // console.log(props);
+        props.findAssociationAndReturn(lat, lng).then((res) => {
+          if (Object.keys(res).length !== 0) {
+            console.log(res._id);
+            console.log(res.name);
+          }
+        })
+      }
+    });
+  };
 
   return (
     <div className="App">
       <NavBar
-        simplified={true}
-        language={'en'}
-        setLanguage={() => {}}
+        setLanguage={props.setLanguage}
+        language={props.language}
+        pageLoaded={true}
+        isLoggedIn={props.isLoggedIn}
+        first_name={
+          Object.keys(props.currentUser).length !== 0
+            ? props.currentUser.first_name
+            : ""
+        }
       />
       <div id="bgImageLong"></div>
       <Container
@@ -47,7 +79,30 @@ export default function InformationHub(props) {
           </Col>
           <Col md={2}></Col>
         </Row>
-
+        <Row>
+          <Col md={2}></Col>
+          <Col id="login-container">
+            <Form onSubmit={handleSubmit}>
+              <InputGroup id="set-location" bssize="large">
+                <Form.Control
+                  placeholder="City/Zipcode"
+                  value={locationString}
+                  onChange={(e) => setLocationString(e.target.value)}
+                />
+                <InputGroup.Append>
+                  <Button
+                    type="submit"
+                    variant="outline-secondary"
+                    id="location-change-button"
+                  >
+                    Set Location
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Form>
+          </Col>
+          <Col md={6}></Col>
+        </Row>
         <Row>
           <Col md={2}></Col>
           <Col id="login-container">
