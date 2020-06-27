@@ -21,8 +21,9 @@ let ResourceSchema = new Schema({
   url: { type: String, require: true },
   name: { type: String, require: true },
   description: { type: String, require: true },
-  mediaType: { type: Number, required: true },
-  sectionID: { type: Number, required: true },
+  mediaType: { type: Number, required: false },
+  sectionID: { type: Number, required: false },
+  associationID: {type: String, required: false}
 });
 
 module.exports = mongoose.model("Resources", ResourceSchema);

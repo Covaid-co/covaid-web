@@ -14,12 +14,15 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { generateURL } from "../Helpers";
 
+import ResourceModal from "./ResourceModal";
+
 /**
  * Manage Organization Modal
  */
 
 export default function AdminModal(props) {
   const [addAdmin, setAddAdmin] = useState(false);
+  const [resourceModal, setResourceModal] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     name3: "",
     email3: "",
@@ -275,6 +278,24 @@ export default function AdminModal(props) {
             </Col>
           </Row>
         </Modal.Body>
+
+        <Modal.Header>
+          <Modal.Title style={{ marginLeft: 5 }}>Add a resource</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            <Col xs={6}>
+              <Button id="large-button" 
+                      onClick={() => {
+                        setResourceModal(true);
+                        props.setAdminModal(false);
+                      }}>
+                New Resource
+              </Button>
+            </Col>
+          </Row>
+        </Modal.Body>
+
       </Modal>
 
       <Modal
@@ -325,7 +346,20 @@ export default function AdminModal(props) {
           </Row>
         </Modal.Body>
       </Modal>
+
+
+      <ResourceModal
+        resourceModal={resourceModal}
+        setResourceModal={setResourceModal}
+        association={props.association}
+        setAssociation={props.setAssociation}
+        adminModal={props.adminModal}
+        setAdminModal={props.setAdminModal}
+      />
+
     </>
+
+
   );
 }
 
