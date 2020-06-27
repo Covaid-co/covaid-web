@@ -32,11 +32,10 @@ export default function InformationHub(props) {
       } else {
         const lat = res.lat;
         const lng = res.lng;
-        // console.log(props);
         props.findAssociationAndReturn(lat, lng).then((res) => {
           if (Object.keys(res).length !== 0) {
-            console.log(res._id);
-            console.log(res.name);
+            setAssocName(res.name);
+            setAssocID(res._id);
           }
         })
       }
@@ -102,6 +101,17 @@ export default function InformationHub(props) {
             </Form>
           </Col>
           <Col md={6}></Col>
+        </Row>
+        <Row>
+          <Col md={2}></Col>
+          <Col id="login-container">
+            <InformationSection
+              sectionID={assocID}
+              sectionName={"Shared by " + assocName}
+              mode={'assoc'}
+            />
+          </Col>
+          <Col md={2}></Col>
         </Row>
         <Row>
           <Col md={2}></Col>

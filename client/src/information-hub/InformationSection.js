@@ -11,7 +11,7 @@ export default function InformationSection(props) {
 
 	useEffect(() => {
 		async function getResources() {
-	      let params = { sectionID: props.sectionID };
+        let params = props.mode === 'assoc' ? { associationID: props.sectionID } : { sectionID: props.sectionID }
 
 	      var url = generateURL("/api/infohub/?", params);
 
@@ -22,7 +22,11 @@ export default function InformationSection(props) {
           setResources(jsonData);
 	  } 
       getResources();
-	}, [props.sectionID]);
+    }, [props.sectionID]);
+
+    if (resources.length === 0) {
+        return <></>;
+    }
 
     return (
         <>
