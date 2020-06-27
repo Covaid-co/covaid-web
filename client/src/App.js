@@ -109,6 +109,19 @@ function App() {
     });
   };
 
+  // Find association by lat long
+  const findAssociationAndReturn = (lat, long) => {
+    return findAssociations(lat, long).then((associations) => {
+      if (associations.length > 0) {
+        return associations[0];
+      } else {
+        return {};
+      }
+    }, () => {
+      return {}
+    });
+  };
+
   // Find association by id
   const setAssocByOrg = (id) => {
     let params = { associationID: id };
@@ -144,6 +157,17 @@ function App() {
       }
     });
   };
+
+  const getLatLong = (e, locationString) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return Geocode.fromAddress(locationString).then(
+      (response) => {
+      return response.results[0].geometry.location;
+    }, () => {
+      return false;
+    });
+  }
 
   // Find location attributes based on string
   const onLocationSubmit = (e, locationString) => {
@@ -447,7 +471,19 @@ function App() {
             component={(props) => <ChangeLog {...props} {...languageObj} />}
           />
           <Route exact path="/submit-updates" component={SubmitChangeLog} />
-          <Route exact path="/information-hub" component={InformationHub} />
+          <Route 
+            exact path="/information-hub" 
+            component={(props) => (
+              <InformationHub
+                {...props}
+                {...languageObj}
+                isLoggedIn={loggedIn}
+                currentUser={currentUser}
+                getLatLong={getLatLong}
+                findAssociationAndReturn={findAssociationAndReturn}
+              />
+            )}
+          />
           <Route
             exact
             path="/volunteer-signin"

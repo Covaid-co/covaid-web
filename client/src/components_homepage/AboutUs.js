@@ -109,7 +109,7 @@ export default function AboutUs(props) {
     "Nikhil Aggarwal": {
       link: "",
       image: Nikhil,
-    }
+    },
   };
 
   const names = Object.keys(peoples);
