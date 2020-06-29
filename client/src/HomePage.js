@@ -19,7 +19,7 @@ import { translations } from "./translations/translations";
 let translatedStrings = new LocalizedStrings({ translations });
 
 /**
- * Main Homepage Component for Covaid
+ * Main Homepage Component for covaid
  */
 
 export default function HomePage(props) {
