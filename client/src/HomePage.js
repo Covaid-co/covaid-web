@@ -87,7 +87,14 @@ export default function HomePage(props) {
       </div>
       <Container id="jumboContainer">
         <Row>
-          <Col md={6} id="jumbo-text">
+          <Col
+            md={6}
+            id="jumbo-text"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <h1 id="home-heading">
               {translatedStrings[props.language].HomePage_Title}
             </h1>
@@ -100,7 +107,6 @@ export default function HomePage(props) {
             >
               {translatedStrings[props.language].INeedHelp} →
             </Button>
-            <br />
             <Button
               onClick={() => history.push("/volunteer")}
               style={{ display: props.isLoggedIn ? "none" : "block" }}
@@ -108,7 +114,6 @@ export default function HomePage(props) {
             >
               Become a volunteer
             </Button>
-            <br />
             <Button
               id="resources-button"
               onClick={() => history.push("/information-hub")}

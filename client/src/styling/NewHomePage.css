@@ -47,13 +47,19 @@
   font-weight: bold;
   color: #3c3c3c;
 }
+@media (max-width: 1000px) {
+  #home-heading {
+    margin-top: 0px;
+  }
+}
 
 #home-subheading {
   font-family: "Inter";
   font-size: 20px;
-  margin-top: 0px;
+  margin-top: 10px;
   margin-bottom: 0px;
-  padding-right: 50px;
+  padding-left: 2px;
+  padding-right: 25px;
   color: #7f7f7f;
   letter-spacing: -0.5px;
 }
