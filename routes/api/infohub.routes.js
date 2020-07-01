@@ -12,4 +12,7 @@ router.get("/", infohub_controller.handleGetResources);
 // DELETE
 router.delete("/delete", infohub_controller.deleteResource);
 
+//PUT
+router.put("/updateResource", infohub_controller.updateResource);
+
 module.exports = router;

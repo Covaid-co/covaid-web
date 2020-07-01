@@ -6,12 +6,13 @@
 
 #grid-container {
 	display: grid;
-	grid-template-columns: 33.33% 33.33% 33.33%;
+	grid-template-columns: 32% 32% 32%;
 	margin-left: 0px;
 	padding-left: 0px;
 	margin-right: 0px;
 	padding-right: 0px;
-	max-width: 2500px;
+  max-width: 2500px;
+  column-gap: 2%;
 }
 
 #link-container {
@@ -24,7 +25,8 @@
   	border-radius: 10px;
   	border: 1px solid #cecece;
   	background-color: white;
-  	display: inline-block;
+    display: inline-block;
+  min-width: 100%;
 	margin: 10px;
 	height: 155px;
 }

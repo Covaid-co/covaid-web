@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, setValues } from "react";
 import PropTypes from "prop-types";
 
 import Modal from "react-bootstrap/Modal";
@@ -15,17 +15,60 @@ import * as XLSX from "xlsx";
 import { generateURL } from "../Helpers";
 import FormControl from "react-bootstrap/FormControl";
 
-
 export default function ResourceModal(props) {
   const [fields, handleFieldChange] = useFormFields({
     url: "",
     name: "",
     description: "",
   });
+  const [disabledbtn, setDisabledbtn] = useState(false);
 
+  const validateURL = (url) => {
+    var re = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+    var isValid = re.test(url);
+    if (isValid) {
+      if (!(url.match(/^[a-zA-Z]+:\/\//))) {
+        fields.url = 'https://' + url;
+      }
+    }
+    return isValid;
+  };
+
+  const checkInputs = () => {
+    var valid = true;
+
+    if (fields.name.length === 0) {
+      console.log("here1")
+      alert("Enter a title");
+      valid = false;
+    } else if (fields.description.length === 0) {
+      alert("Enter a description");
+      valid = false;
+    } else if (
+      fields.url.length === 0 ||
+      validateURL(fields.url) === false
+    ) {
+      alert("Enter a valid url");
+      valid = false;
+    }
+    return valid;
+  };
   
   async function handleSubmit(event) {
+    
+    if(disabledbtn) {
+      return;
+    }
+    
     event.preventDefault();
+    
+    if (!checkInputs()) {
+      props.setResourceModal(true);
+      return;
+    }
+    
+    setDisabledbtn(true);
+
     let form = {
         resource:{url: fields.url, name:fields.name, description: fields.description, associationID: props.association._id},
     };
@@ -37,10 +80,17 @@ export default function ResourceModal(props) {
     });
 
     if (response.ok) {
-    props.setResourceModal(false);
-    props.setAdminModal(true);
+      alert("Resource successfully submitted!");
+      response.json().then(resourceOuter => props.addResource(resourceOuter.resource));
+      setDisabledbtn(false);
+      fields.url = "";
+      fields.name = "";
+      fields.description = "";
+      props.setResourceModal(false);
+      props.setAdminModal(true);
     } else {
-    alert("Resource did not successfully upload");
+      alert("Resource did not successfully upload!");
+      setDisabledbtn(false);
     }
   }   
 
@@ -49,13 +99,13 @@ export default function ResourceModal(props) {
       <Modal
         size="md"
         show={props.resourceModal}
-        onHide={() => props.setResourceModal(false)}
+        onHide={() => {
+          props.setResourceModal(false);
+          props.setAdminModal(true);
+        }}
         style={{ marginTop: 10, paddingBottom: 40 }}
       >
-        <Modal.Header closeButton
-                    onClick={() => {
-                        props.setAdminModal(true);
-                        }}>
+        <Modal.Header closeButton>
           <Modal.Title style={{ marginLeft: 5 }}>Add a resource</Modal.Title>
 
         </Modal.Header>
@@ -94,13 +144,12 @@ export default function ResourceModal(props) {
                     placeholder="Description"
                 />
             </Form.Group>
-          <Button type="submit" id="large-button" style={{ marginTop: 15 }}>
+          <Button type="submit" id="large-button" style={{ marginTop: 15 }} disabled={disabledbtn}>
             Submit
           </Button>
         </Form>
       </Modal.Body>
       </Modal>
-
     </>
   );
 }
@@ -111,5 +160,6 @@ ResourceModal.propTypes = {
     setResourceModal: PropTypes.func,
     setAssociation: PropTypes.func,
     adminModal: PropTypes.bool,
-    setAdminModal: PropTypes.func
+    setAdminModal: PropTypes.func,
+    addResource: PropTypes.func
 };
