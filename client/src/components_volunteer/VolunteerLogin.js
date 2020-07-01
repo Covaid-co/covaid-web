@@ -71,7 +71,10 @@ export default function OrgLogin(props) {
         <Row>
           <Col md={6} id="login-container">
             <h1 id="home-heading">Covaid for Volunteers</h1>
-            <p id="home-subheading" style={{ fontSize: 16 }}>
+            <p
+              id="home-subheading"
+              style={{ fontSize: 16, marginBottom: 20, marginLeft: 1 }}
+            >
               Manage your offer and handle requests through Covaid
             </p>
             <Form onSubmit={handleSubmit}>
@@ -80,7 +83,7 @@ export default function OrgLogin(props) {
                   <Form.Group
                     controlId="emailOrg"
                     bssize="large"
-                    style={{ marginBottom: 5 }}
+                    style={{ marginBottom: 12 }}
                   >
                     <Form.Control
                       type="email"
