@@ -51,7 +51,7 @@
   overflow-x: hidden;
   border-radius: 0;
   background-color: #4f4f4f;
-  opacity: 0.975;
+  opacity: 0.95;
 }
 .info_expand:hover,
 .info_sidebar:hover {
@@ -62,6 +62,12 @@
 .info_expand {
   width: 60%;
   transition: 0.45s;
+}
+@media (max-width: 767px) {
+  .info_expand,
+  .info_sidebar {
+    opacity: 0.975;
+  }
 }
 
 @media (min-width: 1100px) {
@@ -328,5 +334,8 @@
   font-size: 20px;
 }
 .your-offer-small {
+  max-width: none !important;
+}
+.your-offer-web {
   max-width: none !important;
 }

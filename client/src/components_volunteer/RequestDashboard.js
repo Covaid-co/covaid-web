@@ -198,7 +198,7 @@ export default function RequestDashboard(props) {
         </Container>
       </>
     );
-  } else if (width < 980) {
+  } else if (width < 767) {
     return (
       <>
         <Row
