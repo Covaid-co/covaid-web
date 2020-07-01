@@ -44,6 +44,7 @@ export default function VolunteerPortal(props) {
   // const [toggle, setToggle] = useState(false);
   const { height, width } = useWindowDimensions();
   const { addToast } = useToasts();
+  const [isCollapsed, setCollapsed] = useState(true);
 
   // fetch requests given a status, update frontend state using 'requestStateChanger'
   const fetchRequests = (status, requestStateChanger, reverse) => {
@@ -311,7 +312,7 @@ export default function VolunteerPortal(props) {
               </Jumbotron>
               {mainContentView()}
             </div>
-            {width > 767 && (
+            {width > 767 ? (
               <>
                 <span
                   style={{
@@ -353,7 +354,55 @@ export default function VolunteerPortal(props) {
                       fetchBeacons={fetchBeacons}
                     />
                   </Container>
-                </div>{" "}
+                </div>
+              </>
+            ) : (
+              <>
+                <div
+                  className={isCollapsed ? "triangle" : "triangle_expand"}
+                  style={{ marginRight: width < 448 && !isCollapsed && "90%" }}
+                  onClick={() => {
+                    setCollapsed(!isCollapsed);
+                  }}
+                >
+                  <p className="pullouttext">Notifications</p>
+                </div>
+                <div
+                  className={isCollapsed ? "info_sidebar" : "info_expand"}
+                  style={{ width: width < 448 && !isCollapsed && "90%" }}
+                  onClick={() => {
+                    setCollapsed(!isCollapsed);
+                  }}
+                >
+                  {!isCollapsed && (
+                    <Container>
+                      <h1
+                        id="home-heading"
+                        style={{
+                          marginTop: 80,
+                          marginBottom: 14,
+                          fontSize: 24,
+                          color: "#2670ff",
+                        }}
+                      >
+                        Important Information
+                      </h1>
+                      <p id="regular-text" style={{ fontSize: 16 }}>
+                        Covaid updates, curated resources, and messages from
+                        your organization.
+                      </p>
+                      <p
+                        id="requestCall"
+                        style={{ marginTop: 20, marginBottom: 10 }}
+                      ></p>
+                      <VolunteerBeacons
+                        beacons={beacons}
+                        volunteer={user}
+                        fetchBeacons={fetchBeacons}
+                      />
+                    </Container>
+                  )}
+                </div>
               </>
             )}
           </div>
