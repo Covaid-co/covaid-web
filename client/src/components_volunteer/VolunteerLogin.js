@@ -58,14 +58,16 @@ export default function OrgLogin(props) {
 
   return (
     <>
-      <NavBar
+      {/* <NavBar
         setLanguage={props.setLanguage}
         language={props.language}
         pageLoaded={true}
         isLoggedIn={false}
         simplified={true}
-      />
-      <Container style={{ maxWidth: 1500 }}>
+      /> */}
+      <Container
+        style={{ marginTop: "7.5%", maxWidth: 1500, marginBottom: "5%" }}
+      >
         <Row>
           <Col md={6} id="login-container">
             <h1 id="home-heading">Covaid for Volunteers</h1>
