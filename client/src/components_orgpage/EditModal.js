@@ -45,6 +45,9 @@ export default function EditModal(props) {
     } else if (fields.description.length === 0) {
       alert("Enter a description");
       valid = false;
+    } else if (fields.description.length > 100) {
+      alert("Character limit of 100 exceeded for description. Reduce number of characters in description.")
+      valid = false; 
     } else if (
       fields.url.length === 0 ||
       validateURL(fields.url) === false
@@ -151,7 +154,7 @@ export default function EditModal(props) {
                         onChange={handleFieldChange}
                         as="textarea"
                         rows="3"
-                        placeholder="Description"
+                        placeholder="Description (max 100 characters)"
                     />
                 </Form.Group>
                 <Button type="submit" id="large-button" style={{ marginTop: 15 }} disabled={disabledbtn}>

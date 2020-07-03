@@ -13,6 +13,8 @@ import LiveFeed from "./LiveFeed";
 
 import InformationSection from "./InformationSection";
 
+import "./InformationHub.css";
+
 /**
  * Changelog/updates page for keeping track of covaid updates
  */
@@ -56,16 +58,10 @@ export default function InformationHub(props) {
         }
       />
       <div id="bgImageLong"></div>
-      <Container
-        style={{
-          maxWidth: 2500,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Container id="infohub-container">
         <Row>
-          <Col md={2}></Col>
-          <Col id="login-container">
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
+          <Col id="infohub-card">
             <h1 id="home-heading">COVID-19 Information Hub</h1>
             <p id="regular-text">
               Below are curated resources sampled from national, state, and
@@ -76,17 +72,18 @@ export default function InformationHub(props) {
               covaidco@gmail.com.
             </p>
           </Col>
-          <Col md={2}></Col>
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
         </Row>
         <Row>
-          <Col md={2}></Col>
-          <Col id="login-container">
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
+          <Col id="infohub-card">
             <Form onSubmit={handleSubmit}>
               <InputGroup id="set-location" bssize="large">
                 <Form.Control
                   placeholder="City/Zipcode"
                   value={locationString}
                   onChange={(e) => setLocationString(e.target.value)}
+                  id="location-bar"
                 />
                 <InputGroup.Append>
                   <Button
@@ -100,61 +97,61 @@ export default function InformationHub(props) {
               </InputGroup>
             </Form>
           </Col>
-          <Col md={6}></Col>
+          <Col xs={1} sm={3} md={3} lg={6}></Col> 
         </Row>
         <Row>
-          <Col md={2}></Col>
-          <Col id="login-container">
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
+          <Col id="infohub-card">
             <InformationSection
               sectionID={assocID}
               sectionName={"Shared by " + assocName}
               mode={'assoc'}
             />
           </Col>
-          <Col md={2}></Col>
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
         </Row>
         <Row>
-          <Col md={2}></Col>
-          <Col id="login-container">
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
+          <Col id="infohub-card">
             <InformationSection
               sectionID={0}
               sectionName={"The Basics of Coronavirus"}
             />
           </Col>
-          <Col md={2}></Col>
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
         </Row>
 
         <Row>
-          <Col md={2}></Col>
-          <Col id="login-container">
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
+          <Col id="infohub-card">
             <InformationSection
               sectionID={1}
               sectionName={"Necessities: Food and Jobs"}
             />
           </Col>
-          <Col md={2}></Col>
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
         </Row>
 
         <Row>
-          <Col md={2}></Col>
-          <Col id="login-container">
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
+          <Col id="infohub-card">
             <InformationSection
               sectionID={2}
               sectionName={"Entertaining and Caring for Yourself"}
             />
           </Col>
-          <Col md={2}></Col>
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
         </Row>
 
         <Row>
-          <Col md={2}></Col>
-          <Col id="login-container">
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
+          <Col id="infohub-card">
             <InformationSection
-              sectionID={3}
+              sectionID={2}
               sectionName={"Support and Engage in Your Community"}
             />
           </Col>
-          <Col md={2}></Col>
+          <Col xs={1} sm={1} md={1} lg={2}></Col>
         </Row>
       </Container>
       <Footer key="2" />

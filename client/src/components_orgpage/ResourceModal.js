@@ -22,6 +22,7 @@ export default function ResourceModal(props) {
     description: "",
   });
   const [disabledbtn, setDisabledbtn] = useState(false);
+  const [charsLeft, setCharsLeft] = useState(100);
 
   const validateURL = (url) => {
     var re = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -43,6 +44,9 @@ export default function ResourceModal(props) {
       valid = false;
     } else if (fields.description.length === 0) {
       alert("Enter a description");
+      valid = false;
+    } else if (fields.description.length > 100) {
+      alert("Character limit of 100 exceeded for description. Reduce number of characters in description.")
       valid = false;
     } else if (
       fields.url.length === 0 ||
@@ -79,6 +83,7 @@ export default function ResourceModal(props) {
     body: JSON.stringify(form),
     });
 
+
     if (response.ok) {
       alert("Resource successfully submitted!");
       response.json().then(resourceOuter => props.addResource(resourceOuter.resource));
@@ -93,6 +98,19 @@ export default function ResourceModal(props) {
       setDisabledbtn(false);
     }
   }   
+
+  // const handleWordCount = event => {
+  //   const charCount = event.target.value.length;
+  //   setCharsLeft((100-charCount));
+  //   if (charsLeft < 0) {
+  //     alert("Character limit of 100 exceeded for description. Reduce number of characters in description.")
+  //   }
+  // }
+
+  // const twoCalls = e => {
+  //   handleFieldChange()
+  //   handleWordCount(e)
+  // }
 
   return (
     <>
@@ -138,10 +156,10 @@ export default function ResourceModal(props) {
             <Form.Group controlId="description" bssize="large">
                 <FormControl
                     value={fields.description}
-                    onChange={handleFieldChange}
+                    onChange= {handleFieldChange}
                     as="textarea"
                     rows="3"
-                    placeholder="Description"
+                    placeholder="Description (max 100 characters)"
                 />
             </Form.Group>
           <Button type="submit" id="large-button" style={{ marginTop: 15 }} disabled={disabledbtn}>
