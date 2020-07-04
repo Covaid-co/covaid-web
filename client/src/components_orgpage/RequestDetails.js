@@ -723,6 +723,7 @@ export default function RequestDetails(props) {
                 <option>Recurring request</option>
                 <option>Referred to support</option>
                 <option>Food delivery scheduled</option>
+                <option>No longer needs support</option>
               </Form.Control>
             </Form.Group>
             <Button
