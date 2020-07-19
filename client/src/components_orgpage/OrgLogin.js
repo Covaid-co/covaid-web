@@ -162,9 +162,16 @@ export default function OrgLogin(props) {
         <Row>
           <Col md={6} id="login-container">
             <h1 id="home-heading">Covaid for Organizations</h1>
-            <p id="home-subheading" style={{ fontSize: 16 }}>
+            <p
+              id="home-subheading"
+              style={{
+                fontSize: "20px",
+                paddingTop: "10px",
+                paddingBottom: "30px",
+              }}
+            >
               Manage and delegate your volunteers efficiently through our
-              all-in-one platform.
+              all-in-one web platform.
             </p>
             <Form onSubmit={handleSubmit}>
               <Row>
@@ -194,7 +201,7 @@ export default function OrgLogin(props) {
                 </Col>
               </Row>
               <Button
-                style={{ marginTop: 10, width: 150 }}
+                style={{ margin: "20px 0 10px 0", width: 200 }}
                 id="large-button"
                 disabled={!validateForm()}
                 type="submit"
@@ -246,7 +253,7 @@ export default function OrgLogin(props) {
             <div
               className="inner-partner"
               style={{
-                backgroundImage: `url(${pitt})`,
+                // backgroundImage: `url(${pitt})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -261,7 +268,7 @@ export default function OrgLogin(props) {
             <div
               className="inner-partner"
               style={{
-                backgroundImage: `url(${bmore})`,
+                // backgroundImage: `url(${bmore})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -276,7 +283,7 @@ export default function OrgLogin(props) {
             <div
               className="inner-partner"
               style={{
-                backgroundImage: `url(${char})`,
+                // backgroundImage: `url(${char})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -291,7 +298,7 @@ export default function OrgLogin(props) {
             <div
               className="inner-partner"
               style={{
-                backgroundImage: `url(${del})`,
+                // backgroundImage: `url(${del})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -306,7 +313,7 @@ export default function OrgLogin(props) {
             <div
               className="inner-partner"
               style={{
-                backgroundImage: `url(${ccom})`,
+                // backgroundImage: `url(${ccom})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -359,7 +366,7 @@ export default function OrgLogin(props) {
           </Col>
           <Col md={6} id="feature-container">
             <h1 id="home-sub-heading">Track Requests</h1>
-            <p id="home-subheading" style={{ fontSize: 16 }}>
+            <p id="home-subheading" style={{ fontSize: 20 }}>
               Optimize your workflow with the Covaid Request Tracker, an
               automated system for managing resource requests coming to your
               organization.
@@ -371,7 +378,7 @@ export default function OrgLogin(props) {
             <h1 id="home-sub-heading">Location Tracker</h1>
             <p
               id="home-subheading"
-              style={{ fontSize: 16, paddingRight: 0, marginBottom: 0 }}
+              style={{ fontSize: 20, paddingRight: 0, marginBottom: 0 }}
             >
               Delegate requests by location and better understand your volunteer
               base. The map integration also allows organization leaders to view
@@ -387,7 +394,7 @@ export default function OrgLogin(props) {
             <h1 id="home-sub-heading">Match Volunteers</h1>
             <p
               id="home-subheading"
-              style={{ fontSize: 16, paddingRight: 0, marginBottom: 0 }}
+              style={{ fontSize: 20, paddingRight: 0, marginBottom: 0 }}
             >
               Easily match and notify volunteers in your organization to
               requests based on the recommended volunteers we offer.
@@ -404,7 +411,7 @@ export default function OrgLogin(props) {
             <h1 id="home-sub-heading" style={{ marginTop: 140 }}>
               Match Volunteers
             </h1>
-            <p id="home-subheading" style={{ fontSize: 16 }}>
+            <p id="home-subheading" style={{ fontSize: 20 }}>
               Easily match and notify volunteers in your organization to
               requests based on the recommended volunteers we offer.
             </p>
@@ -415,12 +422,17 @@ export default function OrgLogin(props) {
             <h1 id="home-sub-heading">Take your next step</h1>
             <p
               id="home-subheading"
-              style={{ fontSize: 20, paddingRight: 0, marginBottom: 0 }}
+              style={{
+                fontSize: 20,
+                paddingRight: 0,
+                marginBottom: 0,
+                letterSpacing: "-.01rem",
+              }}
             >
               We’re excited to work with you and help grow your efforts!
             </p>
             <Button
-              style={{ marginTop: 10, width: 250 }}
+              style={{ marginTop: 30, width: 250 }}
               id="large-button"
               onClick={() => handleShowModal("get started")}
             >

@@ -39,6 +39,16 @@
   background: #fac6c6; /* WebKit/Blink Browsers */
 }
 
+#landing {
+  height: 100vh;
+  position: relative;
+}
+
+#landing div {
+  margin: auto 0 auto 0;
+  /* margin-top: 10vh; */
+}
+
 #home-heading {
   font-family: "Montserrat";
   font-size: 52px;
@@ -55,11 +65,11 @@
   margin-bottom: 0px;
   padding-right: 50px;
   color: #7f7f7f;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.01rem;
 }
 
 #request-button {
-  font-family: "Montserrat";
+  font-family: "Inter";
   font-weight: 600;
   border-radius: 8px;
   background-color: #2670ff;
@@ -69,10 +79,16 @@
   width: 280px;
   margin-bottom: 5px;
   margin-top: 30px;
+  transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#request-button:hover {
+  background-color: #2562db;
+  border: 1px solid #2562db;
 }
 
 #volunteer-button {
-  font-family: "Montserrat";
+  font-family: "Inter";
   font-weight: 600;
   border-radius: 8px;
   background-color: white;
@@ -83,6 +99,12 @@
   width: 280px;
   margin-bottom: 5px;
   margin-top: 5px;
+  transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#volunteer-button:hover {
+  border: 1px solid #1d4eaf;
+  color: #1d4eaf;
 }
 
 #resources-button {
@@ -110,6 +132,35 @@
 #resources-button:focus {
   box-shadow: none;
 }
+
+#scroll-down-icon {
+  color: #2670ff;
+  bottom: 10px;
+  position: absolute;
+  left: 50%;
+  font-size: 40px;
+  -webkit-animation: mover 0.5s infinite alternate;
+  animation: mover 0.5s infinite alternate;
+}
+
+@-webkit-keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+    animation-timing-function: ease;
+  }
+}
+
 #small-button {
   font-family: "Inter";
   font-size: 14px;
@@ -182,13 +233,13 @@
 
 #regular-text {
   font-family: "Inter";
-  font-size: 16px;
+  font-size: 18px;
   color: #7f7f7f;
 }
 
 #regular-text-bold {
   font-family: "Inter";
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: #4f4f4f;
 }
@@ -426,12 +477,18 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  height: 49px;
+  height: 60px;
   font-family: "Inter";
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
   background-color: #2670ff;
   border-radius: 8px;
+  transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#large-button:hover {
+  background-color: #2562db;
+  border: 1px solid #2562db;
 }
 
 #large-button-empty {

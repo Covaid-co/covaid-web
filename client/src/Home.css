@@ -179,10 +179,11 @@ input {
 
 #regular-text-home {
   font-family: "Inter";
-  font-size: 16px;
+  font-size: 20px;
   color: #7f7f7f;
-  padding-left: 120px;
-  padding-right: 120px;
+  padding-left: 180px;
+  padding-right: 180px;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
