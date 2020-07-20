@@ -44,6 +44,7 @@ export default function VolunteerPortal(props) {
   // const [toggle, setToggle] = useState(false);
   const { height, width } = useWindowDimensions();
   const { addToast } = useToasts();
+  const [isCollapsed, setCollapsed] = useState(true);
 
   // fetch requests given a status, update frontend state using 'requestStateChanger'
   const fetchRequests = (status, requestStateChanger, reverse) => {
@@ -246,12 +247,15 @@ export default function VolunteerPortal(props) {
             style={{ marginTop: 15, marginBottom: 29, marginRight: -16 }}
           ></p>
           <Container
-            className={width > 767 ? `` : `your-offer-small`}
+            className={width > 767 ? `your-offer-web` : `your-offer-small`}
             style={{
               marginLeft: 0,
               paddingLeft: 0,
               paddingRight: 0,
-              marginRight: width > 767 ? "auto" : 0,
+              marginRight: 0,
+              maxWidth: "none !important",
+              width: "100%",
+              // marginRight: width > 767 ? "auto" : 0,
             }}
           >
             {foundUser ? (
@@ -293,7 +297,7 @@ export default function VolunteerPortal(props) {
             <p id="requestCall" style={{ marginTop: -8, marginBottom: 0 }}></p>
           )}
           <div class="flex-container">
-            <div style={{ width: width > 767 ? "75%" : "95%", float: "left" }}>
+            <div style={{ width: "95%", float: "left" }}>
               <Jumbotron
                 fluid
                 id="jumbo-volunteer"
@@ -311,7 +315,7 @@ export default function VolunteerPortal(props) {
               </Jumbotron>
               {mainContentView()}
             </div>
-            {width > 767 && (
+            {/* {width > 767 ? (
               <>
                 <span
                   style={{
@@ -353,12 +357,67 @@ export default function VolunteerPortal(props) {
                       fetchBeacons={fetchBeacons}
                     />
                   </Container>
-                </div>{" "}
+                </div>
               </>
-            )}
+            ) : (
+              <> */}
+            <div
+              className={isCollapsed ? "triangle" : "triangle_expand"}
+              style={{
+                marginRight:
+                  !isCollapsed &&
+                  (width > 767 ? "30%" : width > 448 ? "60%" : "90%"),
+              }}
+              onClick={() => {
+                setCollapsed(!isCollapsed);
+              }}
+            >
+              <p className="pullouttext">Notifications</p>
+            </div>
+            <div
+              className={isCollapsed ? "info_sidebar" : "info_expand"}
+              style={{
+                width:
+                  !isCollapsed &&
+                  (width > 767 ? "30%" : width > 448 ? "60%" : "90%"),
+              }} // onClick={() => {
+              //   setCollapsed(!isCollapsed);
+              // }}
+            >
+              {!isCollapsed && (
+                <Container>
+                  <h1
+                    id="home-heading"
+                    style={{
+                      marginTop: 80,
+                      marginBottom: 14,
+                      fontSize: 24,
+                      color: "#2670ff",
+                    }}
+                  >
+                    Important Information
+                  </h1>
+                  <p id="regular-text" style={{ fontSize: 16 }}>
+                    Covaid updates, curated resources, and messages from your
+                    organization.
+                  </p>
+                  <p
+                    id="requestCall"
+                    style={{ marginTop: 20, marginBottom: 10 }}
+                  ></p>
+                  <VolunteerBeacons
+                    beacons={beacons}
+                    volunteer={user}
+                    fetchBeacons={fetchBeacons}
+                  />
+                </Container>
+              )}
+            </div>
+            {/* </>
+            )} */}
           </div>
         </div>
-        <Footer style={{ marginTop: -4 }} />
+        <Footer style={{ marginTop: -20, paddingTop: 0, paddingBottom: 0 }} />
         <AccountInfo
           user={user}
           language={props.language}

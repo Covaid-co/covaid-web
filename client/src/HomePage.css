@@ -281,19 +281,28 @@
 #org-img {
   width: 500px;
 }
-
+@media (max-width: 1440px) {
+  #jumboContainer {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  #jumbo-text {
+    padding-right: 0px;
+    padding-left: 70px;
+    padding-bottom: 7.5%;
+    justify-content: center;
+  }
+}
 @media (max-width: 1150px) {
   #jumboContainer {
     margin-left: 5%;
     margin-right: 5%;
   }
-
   #location-container {
     margin-left: 5%;
     margin-right: 5%;
     margin-top: 70px;
   }
-
   #location-container-logged {
     margin-left: 5%;
     margin-right: 5%;
@@ -322,7 +331,10 @@
     margin-left: 4%;
     margin-right: 4%;
   }
-
+  #jumbo-text {
+    padding-bottom: 0%;
+    justify-content: top;
+  }
   #location-container {
     margin-left: 4%;
     margin-right: 4%;
@@ -379,7 +391,9 @@
     margin-left: 3%;
     margin-right: 3%;
   }
-
+  #jumbo-text {
+    margin-top: 0px;
+  }
   #location-container {
     margin-left: 3%;
     margin-right: 3%;

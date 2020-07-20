@@ -2,6 +2,72 @@
   background-color: transparent;
   padding-top: 58px;
   padding-bottom: 30px;
+  right: 0;
+}
+.triangle_expand,
+.triangle {
+  width: 30px;
+  height: 120px;
+  position: fixed;
+  top: 40%;
+  right: 0;
+  background-color: #2670ff;
+  border-radius: 2px;
+  text-align: center;
+  transition: 0.45s;
+}
+.pullouttext {
+  position: relative;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  top: 65%;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.triangle:hover,
+.triangle_expand:hover {
+  background-color: #2661f9;
+  cursor: pointer;
+}
+.triangle_expand {
+  margin-right: 60%;
+  opacity: 0.975;
+  transition: 0.45s;
+}
+.info_expand,
+.info_sidebar {
+  width: 0;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  /* margin-top: 71px; */
+  right: 0;
+  z-index: 1;
+  transition: 0.45s;
+  overflow-x: hidden;
+  border-radius: 0;
+  background-color: #4f4f4f;
+  opacity: 0.95;
+}
+.info_expand:hover,
+.info_sidebar:hover {
+  cursor: pointer;
+  opacity: 0.995;
+  transition: 0.45s;
+}
+.info_expand {
+  width: 60%;
+  transition: 0.45s;
+}
+@media (max-width: 767px) {
+  .info_expand,
+  .info_sidebar {
+    opacity: 0.975;
+  }
 }
 
 @media (min-width: 1100px) {
@@ -268,5 +334,8 @@
   font-size: 20px;
 }
 .your-offer-small {
+  max-width: none !important;
+}
+.your-offer-web {
   max-width: none !important;
 }

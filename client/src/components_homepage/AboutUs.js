@@ -23,6 +23,7 @@ import Jenny from "../assets/jenny.jpg";
 import Jospeh from "../assets/joseph.png";
 import Alice from "../assets/alice.png";
 import Nikhil from "../assets/nikhil.png";
+import Ricky from "../assets/ricky.png";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -110,6 +111,10 @@ export default function AboutUs(props) {
       link: "",
       image: Nikhil,
     },
+    "Ricky Chen": {
+      link: "https://www.linkedin.com/in/ricky-chen-bb8106190/",
+      image: Ricky,
+    }
   };
 
   const names = Object.keys(peoples);

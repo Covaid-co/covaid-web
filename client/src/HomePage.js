@@ -100,7 +100,6 @@ export default function HomePage(props) {
             >
               {translatedStrings[props.language].INeedHelp} <span>→</span>
             </Button>
-            <br />
             <Button
               onClick={() => history.push("/volunteer")}
               style={{ display: props.isLoggedIn ? "none" : "block" }}
@@ -108,7 +107,6 @@ export default function HomePage(props) {
             >
               Become a volunteer
             </Button>
-            <br />
             <Button
               id="resources-button"
               onClick={() => history.push("/information-hub")}
