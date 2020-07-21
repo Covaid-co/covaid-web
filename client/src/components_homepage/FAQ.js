@@ -94,7 +94,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
                   How can I get help?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Our purpose is to help with essential day-to-day tasks such as
                   grocery delivery, medication pick-up, and more. Please consult
                   your local Community Bulletin to see how volunteers in your
@@ -103,7 +111,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Where is Covaid active?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Our platform is active nationwide; however, we are only able
                   best match your request if you are in an area where there are
                   volunteers.
@@ -111,7 +127,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   What if there are no volunteers in my area?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   If your Community Bulletin does not show any volunteers, or if
                   none of the volunteers listed in your area match your needs,
                   we would be happy to suggest local resources instead. If
@@ -122,7 +146,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Is Covaid free to use?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Yes! However, while delivery is free, you must pay for the
                   items the volunteer delivers. If you are in need of donated
                   food/supplies, please contact us at covaidco@gmail.com and we
@@ -132,7 +164,15 @@ export default function FAQ(props) {
                   Can you help cover the cost of food/supplies that are
                   delivered?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Unfortunately, Covaid is currently unable to cover the cost of
                   food or supplies; we are simply built to help with delivery so
                   those at risk for complications from COVID-19 can remain at
@@ -146,7 +186,16 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
                   How do I sign up to volunteer?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0, marginLeft: 14 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                    marginLeft: 14,
+                  }}
+                >
                   1. From the homepage, click Volunteer Registration.
                   <br />
                   2. Complete all three pages of information. Please be as
@@ -163,7 +212,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Where is Covaid active?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.0001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Our platform is active nationwide, but our ability to serve
                   people in a certain area is entirely dependent on the presence
                   of volunteers. If we’re low on volunteers in your area, please
@@ -173,7 +230,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   What tasks can volunteers help with?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Most volunteers choose to help with grocery shopping,
                   medication pick-up, or similar daily chores. However,
                   volunteers are encouraged to list other tasks they may be able
@@ -184,7 +249,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   How does payment work?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Requesters can either call the store ahead of time to pre-pay
                   for the items (recommended), or the volunteer can pay for the
                   items and be reimbursed by the requester at the time of
@@ -196,7 +269,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   I’m a mutual aid organizer. Can I partner with you?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   We’re always looking to partner with other mutual aid groups!
                   Please reach out to us at covaidco@gmail.com.
                 </p>
@@ -206,7 +287,16 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 20 }}>
                   How can Covaid help my organization?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0, marginLeft: 14 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                    marginLeft: 14,
+                  }}
+                >
                   We are proud to offer the Covaid platform to mutual aid
                   organizers around the United States. Whether you have an
                   existing mutual aid group or would like to start one, Covaid’s
@@ -217,7 +307,15 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Why is Covaid better than spreadsheets?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Covaid is built from scratch to facilitate mutual aid work.
                   The platform has the following key features:
                   <ul>
@@ -241,11 +339,29 @@ export default function FAQ(props) {
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Is the Covaid platform free to use?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>Yes!</p>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
+                  Yes!
+                </p>
                 <h5 id="header" style={{ marginBottom: 3, marginTop: 18 }}>
                   Is Covaid secure/how are you protecting people’s information?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   All data is stored securely in our database for only each
                   organization to see. Volunteer personal information is not
                   visible publicly to anyone.
@@ -254,7 +370,15 @@ export default function FAQ(props) {
                   Does Covaid have to replace my organization’s current
                   platform/workflow?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   No. Covaid can be a standalone platform for facilitating
                   mutual aid, but it can also be used to supplement your
                   existing spreadsheets and communication tools. All volunteer
@@ -265,7 +389,15 @@ export default function FAQ(props) {
                   If there’s no mutual aid group in my area, can I use Covaid to
                   start one?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Absolutely! Our platform is open to new or existing
                   organizations. If you’re new to the world of mutual aid, we’re
                   happy to help you get started!
@@ -274,7 +406,15 @@ export default function FAQ(props) {
                   I’m interested in partnering with you. What are the next
                   steps?
                 </h5>
-                <p style={{ fontSize: 14, marginTop: 0 }}>
+                <p
+                  style={{
+                    color: "#7f7f7f",
+                    letterSpacing: "-.001rem",
+                    fontSize: "17px",
+                    marginTop: 0,
+                    marginBottom: "30px",
+                  }}
+                >
                   Email us at covaidco@gmail.com! We’ll set up a meeting to get
                   to know you, show you how the platform works, and answer any
                   questions you may have.

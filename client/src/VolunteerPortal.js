@@ -392,7 +392,7 @@ export default function VolunteerPortal(props) {
                       marginTop: 80,
                       marginBottom: 14,
                       fontSize: 24,
-                      color: "#2670ff",
+                      color: "rgb(79, 79, 79)",
                     }}
                   >
                     Important Information

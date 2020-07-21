@@ -49,8 +49,9 @@
   z-index: 1;
   transition: 0.45s;
   overflow-x: hidden;
-  border-radius: 0;
-  background-color: #4f4f4f;
+  border-radius: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: white;
   opacity: 0.95;
 }
 .info_expand:hover,
@@ -257,6 +258,7 @@
   border-color: #2670ff;
   color: #2670ff;
   border-radius: 8px;
+  transition: 0.2s;
 }
 #offer-save-button {
   background-color: #2670ff;
@@ -269,7 +271,6 @@
 #offer-edit-button:hover:enabled {
   background-color: #2670ff;
   color: white;
-  transition: 0.2s;
 }
 #large-inactivate-button {
   width: 100%;
@@ -281,6 +282,7 @@
   border-color: #ae2f2f;
   color: #ae2f2f;
   border-radius: 8px;
+  transition: 0.2s;
 }
 #large-activate-button {
   width: 100%;
@@ -292,16 +294,15 @@
   border-color: #2670ff;
   color: white;
   border-radius: 8px;
+  transition: 0.45s;
 }
 #large-activate-button:hover {
   background-color: #2657f9;
   border-color: #2657f9;
-  transition: 0.4s;
 }
 #large-inactivate-button:hover {
   background-color: #ae2f2f;
   color: white;
-  transition: 0.25s;
 }
 #volunteer-main-content {
   font-family: "Inter";
