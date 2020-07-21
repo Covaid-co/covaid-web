@@ -202,7 +202,7 @@ export default function OrgLogin(props) {
               </Row>
               <Button
                 style={{ margin: "20px 0 10px 0", width: 200 }}
-                id="large-button"
+                id="request-button"
                 disabled={!validateForm()}
                 type="submit"
               >
@@ -433,7 +433,7 @@ export default function OrgLogin(props) {
             </p>
             <Button
               style={{ marginTop: 30, width: 250 }}
-              id="large-button"
+              id="request-button"
               onClick={() => handleShowModal("get started")}
             >
               Get Started
