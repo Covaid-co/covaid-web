@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import Modal from "react-bootstrap/Modal";
@@ -13,6 +13,13 @@ import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { generateURL } from "../Helpers";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+
+import ResourceModal from "./ResourceModal";
+import EditModal from "./EditModal";
+import DeleteModal from "./DeleteModal.js";
 
 /**
  * Manage Organization Modal
@@ -20,10 +27,16 @@ import { generateURL } from "../Helpers";
 
 export default function AdminModal(props) {
   const [addAdmin, setAddAdmin] = useState(false);
+  const [resourceModal, setResourceModal] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     name3: "",
     email3: "",
   });
+  const [resources, setResources] = useState([]);
+  const [editModal, setEditModal] = useState(false);
+  const [editResource, setEditResource] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deletedResource, setDeletedResource] = useState([]);
 
   const newHandleSubmit = async (e) => {
     e.preventDefault();
@@ -180,6 +193,43 @@ export default function AdminModal(props) {
     return Math.min(adminLength * 72, 300);
   };
 
+  const getResourceHeight = () => {
+    const resourceLength = resources.length
+    return Math.min(resourceLength * 95, 300);
+  };
+
+  const addResource = (resource) => {
+    setResources(resources.concat(resource));
+  };
+
+  const editResourceList = (resource) => {
+    var i = resources.findIndex(r => r._id == resource._id);
+    var currResources = [...resources];
+    currResources[i] = resource;
+    setResources(currResources);
+  };
+
+  const deleteResource = (resource) => {
+    var currResources = [...resources];
+    currResources = currResources.filter((currResource) => currResource._id !== resource._id);
+    setResources(currResources);
+  };
+
+  useEffect(() => {
+    async function getAssociationResources() {
+      let params = { associationID: props.association._id };
+
+      var url = generateURL("/api/infohub/?", params);
+
+      const response = await fetch(url);
+
+      const jsonData = await response.json();
+
+      setResources(jsonData);
+    } 
+    getAssociationResources();
+  }, []);
+
   return (
     <>
       <Modal
@@ -275,6 +325,75 @@ export default function AdminModal(props) {
             </Col>
           </Row>
         </Modal.Body>
+
+        <Modal.Header>
+          <Modal.Title style={{ marginLeft: 5 }}>Add a resource</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            <Col xs={6}>
+              <Button id="large-button" 
+                      onClick={() => {
+                        setResourceModal(true);
+                        props.setAdminModal(false);
+                      }}>
+                New Resource
+              </Button>
+            </Col>
+          </Row>
+        </Modal.Body>
+
+        <Modal.Header>
+          <Modal.Title style={{ marginLeft: 5 }}>Uploaded Resources</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ paddingTop: 0 }}>
+          <Row>
+            <Col xs={12}>
+              <ListGroup
+                  variant="flush"
+                  style={{ overflowY: "scroll", height: getResourceHeight() }}
+                >
+                  {resources ? (
+                  resources.map((resource, i) => {
+                    return (
+                      <ListGroup.Item style={{ height: 95}} key={i}>
+                        <h5 id="volunteer-name" style={{ position: "relative"}}>{resource.name}
+                        <span style={{float: "right"}}>
+                          <IconButton aria-label="edit">
+                            <EditIcon fontSize="small" style={{ position: "absolute", fill: "#7f7f7f"}} 
+                                      onClick={() => {
+                                        setEditResource(resource);
+                                        setEditModal(true);
+                                        props.setAdminModal(false); 
+                                      }}/>
+                          </IconButton>
+                          <IconButton aria-label="delete">
+                            <DeleteIcon fontSize="small" style={{ position: "absolute", fill: "#7f7f7f"}} 
+                                        onClick={() => {
+                                          setDeletedResource(resource);
+                                          setDeleteModal(true);
+                                          props.setAdminModal(false); 
+                                        }}/>
+                          </IconButton>
+                        </span>
+                        </h5>
+                        <p id="regular-text" style={{ marginBottom: 0, color: '#2670FF'}}>
+                          {resource.url}
+                        </p>
+                        <p id="regular-text" style={{ marginBottom: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                          {resource.description}
+                        </p>
+                      </ListGroup.Item>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+                </ListGroup>
+            </Col>
+          </Row>
+        </Modal.Body>
+
       </Modal>
 
       <Modal
@@ -325,7 +444,43 @@ export default function AdminModal(props) {
           </Row>
         </Modal.Body>
       </Modal>
+
+
+      <ResourceModal
+        resourceModal={resourceModal}
+        setResourceModal={setResourceModal}
+        association={props.association}
+        setAssociation={props.setAssociation}
+        adminModal={props.adminModal}
+        setAdminModal={props.setAdminModal}
+        addResource={addResource}
+      />
+
+      <EditModal
+        editModal={editModal}
+        setEditModal={setEditModal}
+        association={props.association}
+        setAssociation={props.setAssociation}
+        adminModal={props.adminModal}
+        setAdminModal={props.setAdminModal}
+        editResourceList={editResourceList}
+        resource={editResource}
+      />
+
+      <DeleteModal
+        deleteModal={deleteModal}
+        setDeleteModal={setDeleteModal}
+        association={props.association}
+        setAssociation={props.setAssociation}
+        adminModal={props.adminModal}
+        setAdminModal={props.setAdminModal}
+        deleteResource={deleteResource}
+        resource={deletedResource}
+      />
+
     </>
+
+
   );
 }
 

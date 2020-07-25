@@ -1,0 +1,43 @@
+#infohub-container {
+    max-width: 2500px;
+    justify-content: "center";
+    align-items: "center";
+}
+
+#infohub-card {
+    padding-left: 10px;
+    padding-top: 40px;
+    padding-right: 10px;
+}
+
+#location-bar {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius:  10px;
+  border: 1px solid #cecece;
+  background-color: white;
+}
+
+#location-change-button {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#location-change-button:hover {
+	background-color: #2670FF;
+    border-color: #2670FF;
+}
+
+@media (max-width: 400px) {
+    #home-heading {
+        font-size: 40px;
+      }
+}
+
+/* @media (max-width: 768px) {
+    #regular-text-home {
+      padding-left: 60px;
+      padding-right: 60px;
+      margin-bottom: -20px;
+    } */
+
+/* Everything regarding not links themselves is here (the layout, etc.)*/
