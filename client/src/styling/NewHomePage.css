@@ -85,7 +85,7 @@
   width: 280px;
   margin-bottom: 5px;
   margin-top: 30px;
-  transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: 0.2s;
 }
 
 #request-button:hover {
@@ -105,7 +105,7 @@
   width: 280px;
   margin-bottom: 5px;
   margin-top: 5px;
-  transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: 0.2s;
 }
 
 #volunteer-button:hover {
@@ -170,7 +170,7 @@
 #small-button {
   font-family: "Inter";
   font-size: 14px;
-  background-color: transparent;
+  background-color: white;
   color: #2670ff;
   border-color: #2670ff;
   height: 36px;
@@ -178,6 +178,13 @@
   padding-left: 20px;
   padding-right: 20px;
   border-radius: 8px;
+  transition: 0.2s;
+}
+
+#small-button:hover {
+  color: white;
+  background-color: #2670ff;
+  border-color: #2670ff;
 }
 
 #medium-button-solid {
@@ -231,8 +238,9 @@
 }
 
 #header {
-  font-family: "Montserrat";
-  font-weight: bold;
+  font-family: "Inter";
+  font-weight: 600;
+  letter-spacing: -0.01rem;
   color: black;
   font-size: 20px;
 }
@@ -483,13 +491,13 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  height: 60px;
+  height: 49px;
   font-family: "Inter";
   font-weight: 600;
   font-size: 18px;
   background-color: #2670ff;
   border-radius: 8px;
-  transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: 0.2s;
 }
 
 #large-button:hover {
@@ -553,6 +561,11 @@
   position: relative;
   cursor: pointer;
   margin-left: 10px;
+  transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#hello-name:hover {
+  opacity: 0.6;
 }
 
 #logoutButton {
