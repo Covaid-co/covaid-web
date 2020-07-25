@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import ListGroup from "react-bootstrap/ListGroup";
 import { useFormFields } from "../libs/hooksLib";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
-import { generateURL } from "../Helpers";
 import FormControl from "react-bootstrap/FormControl";
 
 export default function EditModal(props) {
@@ -100,11 +91,12 @@ export default function EditModal(props) {
   }  
 
   useEffect(() => {
-    fields.url = props.resource.url;
-    fields.name = props.resource.name;
-    fields.description = props.resource.description;
-    
-    setIsLoaded(true);
+    if (props.resource && props.resource.url && props.resource.name && props.resource.description) {
+      setIsLoaded(true);
+      fields.url = props.resource.url;
+      fields.name = props.resource.name;
+      fields.description = props.resource.description;
+    }
   }, [props.resource]);
   
   if(isLoaded) {
@@ -170,14 +162,3 @@ export default function EditModal(props) {
         return <></>;
     }
 }
-
-EditModal.propTypes = {
-    association: PropTypes.object,
-    editModal: PropTypes.bool,
-    setEditModal: PropTypes.func,
-    setAssociation: PropTypes.func,
-    adminModal: PropTypes.bool,
-    setAdminModal: PropTypes.func,
-    editResourceList: PropTypes.func,
-    resource: PropTypes.array
-};
