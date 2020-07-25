@@ -375,45 +375,96 @@ export default function YourOffer(props) {
   }
 
   return (
-    <Row>
-      <Col
-        md={width > 902 ? 5 : 12}
-        style={{
-          marginLeft: 0,
-          paddingLeft: 16,
-          marginRight: width > 1060 ? 80 : width > 956 ? 20 : 10,
-        }}
-      >
-        {visibleText}
-        {statusChangeDescription}
-        {volunteerAlert}
+    <>
+      {width > 767 ? (
+        <Row xs={4}>
+          <Col
+            xs={width > 767 ? 5 : 12}
+            style={{
+              marginLeft: 0,
+              paddingLeft: 16,
+              paddingRight: 40,
+            }}
+          >
+            {visibleText}
+            {statusChangeDescription}
+            {volunteerAlert}
 
-        {availability && deactivateButton}
-        {availability === false && activateButton}
-      </Col>
-      <Col style={{ alignContent: "left" }}>
-        <Toast
-          show={showToast}
-          delay={toastTime}
-          onClose={() => setShowToast(false)}
-          autohide
-          id="toastError"
-        >
-          <Toast.Body>{toastMessage}</Toast.Body>
-        </Toast>
-        {headerOrBack}
-        <p
-          id="requestCall"
-          style={{
-            opacity: availability ? 1 : 0.4,
-            marginTop: -16,
-            marginBottom: 16,
-          }}
-        >
-          &nbsp;
-        </p>
-        {offerForm}
-      </Col>
-    </Row>
+            {availability && deactivateButton}
+            {availability === false && activateButton}
+          </Col>
+          {width > 767 && <Col md={1}></Col>}
+          <Col md={6} style={{ paddingLeft: 40 }}>
+            <Toast
+              show={showToast}
+              delay={toastTime}
+              onClose={() => setShowToast(false)}
+              autohide
+              id="toastError"
+            >
+              <Toast.Body>{toastMessage}</Toast.Body>
+            </Toast>
+            {headerOrBack}
+            <p
+              id="requestCall"
+              style={{
+                opacity: availability ? 1 : 0.4,
+                marginTop: -16,
+                marginBottom: 16,
+              }}
+            >
+              &nbsp;
+            </p>
+            {offerForm}
+          </Col>
+        </Row>
+      ) : (
+        <>
+          <Row
+            style={{
+              paddingLeft: 16,
+            }}
+          >
+            {visibleText}
+            {statusChangeDescription}
+            {volunteerAlert}
+
+            {availability && deactivateButton}
+            {availability === false && activateButton}
+          </Row>
+          <p
+            id="requestCall"
+            style={{ marginTop: 15, marginBottom: 29, marginRight: -16 }}
+          ></p>
+          <Row
+            style={{
+              paddingLeft: 16,
+            }}
+          >
+            <Toast
+              show={showToast}
+              delay={toastTime}
+              onClose={() => setShowToast(false)}
+              autohide
+              id="toastError"
+            >
+              <Toast.Body>{toastMessage}</Toast.Body>
+            </Toast>
+            {headerOrBack}
+            <p
+              id="requestCall"
+              style={{
+                opacity: availability ? 1 : 0.4,
+                marginTop: -16,
+                marginBottom: 16,
+              }}
+            >
+              &nbsp;
+            </p>
+            {offerForm}
+          </Row>
+        </>
+      )}
+    </>
   );
 }

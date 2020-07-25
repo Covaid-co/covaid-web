@@ -225,6 +225,8 @@ function App() {
       setAssocByOrg("5eb70551e676422cdfd0e882");
     } else if (org === "hbvny") {
       setAssocByOrg("5eea598f58d5df806892f881");
+    } else if (org === "athens") {
+      setAssocByOrg("5ef788f93134e983d0f7192e");
     }
   };
 
@@ -368,6 +370,12 @@ function App() {
           />
           <Route
             exact
+            path="/athens-request"
+            render={(props) => requestPage(props, "athens")}
+          />
+          registerPage
+          <Route
+            exact
             path="/request"
             render={(props) => requestPage(props, "")}
           />
@@ -415,6 +423,11 @@ function App() {
             exact
             path="/hbvny-volunteer"
             render={(props) => registerPage(props, "hbvny")}
+          />
+          <Route
+            exact
+            path="/athens-volunteer"
+            render={(props) => registerPage(props, "athens")}
           />
           <Route
             exact

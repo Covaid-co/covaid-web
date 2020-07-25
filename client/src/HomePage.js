@@ -62,6 +62,16 @@ export default function HomePage(props) {
 
   return (
     <div className="App">
+      <div id="feedback">
+        <div
+          id="feedback-tab"
+          onClick={() => {
+            showModalType("feedback");
+          }}
+        >
+          Feedback
+        </div>
+      </div>
       <NavBar
         setLanguage={props.setLanguage}
         language={props.language}
@@ -75,19 +85,9 @@ export default function HomePage(props) {
         }
         setToggle={setToggle}
       />
-      <div id="feedback">
-        <div
-          id="feedback-tab"
-          onClick={() => {
-            showModalType("feedback");
-          }}
-        >
-          Feedback
-        </div>
-      </div>
       <Container id="jumboContainer">
-        <Row>
-          <Col md={6} id="jumbo-text">
+        <Row id="landing">
+          <Col md={5} id="jumbo-text">
             <h1 id="home-heading">
               {translatedStrings[props.language].HomePage_Title}
             </h1>
@@ -98,9 +98,8 @@ export default function HomePage(props) {
               onClick={() => history.push("/request")}
               id="request-button"
             >
-              {translatedStrings[props.language].INeedHelp} →
+              {translatedStrings[props.language].INeedHelp} <span>→</span>
             </Button>
-            <br />
             <Button
               onClick={() => history.push("/volunteer")}
               style={{ display: props.isLoggedIn ? "none" : "block" }}
@@ -108,7 +107,6 @@ export default function HomePage(props) {
             >
               Become a volunteer
             </Button>
-            <br />
             <Button
               id="resources-button"
               onClick={() => history.push("/information-hub")}
@@ -116,9 +114,10 @@ export default function HomePage(props) {
               COVID-19 Information Hub
             </Button>
           </Col>
-          <Col md={6} style={{ marginTop: 0, textAlign: "center" }}>
+          <Col md={7} style={{ textAlign: "center" }}>
             <img id="org-img" alt="" src={home}></img>
           </Col>
+          <span id="scroll-down-icon">↓</span>
         </Row>
         <Row id="row-steps">
           <p id="home-heading-1" style={{ width: "100%", textAlign: "center" }}>

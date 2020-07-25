@@ -23,6 +23,7 @@ import { setFalseObj, extractTrueObj } from "../Helpers";
  */
 
 export default function NewRequestPage1(props) {
+  const [isCovaid, setIsCovaid] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [selectedPayment, setSelectedIndex] = useState(2);
@@ -51,6 +52,8 @@ export default function NewRequestPage1(props) {
       props.currentAssoc.resources
     ) {
       resourcesFromAssoc = props.currentAssoc.resources;
+    } else {
+      setIsCovaid(true);
     }
     var temp_resources = setFalseObj(resourcesFromAssoc);
 
@@ -87,6 +90,19 @@ export default function NewRequestPage1(props) {
     setLanguages({ selectedOptions: lang_temp });
     setResources(temp_resources);
   }, [props.first_page, props.currentAssoc]);
+
+  if (isCovaid) {
+    return (
+      <>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+        We are currently only processing requests in Baltimore, Pittsburgh, Charlotte, Newark, Chicago, Athens, Austin, and Evanston.
+      </h5>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+        If you are located in one of these locations, make sure to set your location correctly on the previous page.
+      </h5>
+      </>
+    );
+  }
 
   const goToSecondPage = () => {
     const valid = checkPage();
@@ -195,7 +211,7 @@ export default function NewRequestPage1(props) {
         time. Any purchases made by volunteers must be reimbursed.
       </p>
     );
-  }
+  } 
 
   return (
     <>
