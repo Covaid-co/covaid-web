@@ -110,7 +110,7 @@ export default class Pins extends PureComponent {
     var requesterMarkers = requests.map((request, index) => {
       const lat = request.location_info.coordinates[1];
       const long = request.location_info.coordinates[0];
-      if (lat && long) {
+      if (lat && lat >= -90 && lat <= 90 && long) {
         return (
           <Marker key={`requester-${index}`} longitude={long} latitude={lat}>
             <svg

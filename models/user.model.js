@@ -38,6 +38,7 @@ let UsersSchema = new Schema({
   association: { type: String },
   association_name: { type: String },
   languages: [String],
+  pushToken: String,
 });
 
 UsersSchema.methods.setPassword = function (password) {
