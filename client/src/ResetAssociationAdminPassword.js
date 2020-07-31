@@ -26,12 +26,13 @@ export default function ResetAssociationAdminPassword(props) {
     setID(ID);
 
     const response = await fetch(
-      "/api/association/verifyresetlink/" + ID + "/" + token
+      "/api/association-admin/verifyresetlink/" + ID + "/" + token
     );
     if (response.ok) {
       setVerified(VERIFICATION_STATUS.VERIFIED);
     } else {
       setVerified(VERIFICATION_STATUS.EXPIRED);
+      console.log("found expired")
     }
   };
 

@@ -126,7 +126,7 @@ exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
 
 exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
   const associationadmin = await AssociationAdmin.findById(req.params.id);
-  var secret = associationadmin.hash;
+  var secret = associationadmin.password.hash;
   try {
     var payload = jwt.decode(req.params.token, secret);
     res.sendStatus(200);
@@ -137,7 +137,6 @@ exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
 });
 
 exports.resetPassword = asyncWrapper(async (req, res) => {
-  console.log("reset Password")
   var newPassword = req.body.newPassword;
   // update password
   const associationadmin = await AssociationAdmin.findById(req.body.id);
@@ -145,6 +144,7 @@ exports.resetPassword = asyncWrapper(async (req, res) => {
   associationadmin.setPassword(newPassword);
   associationadmin.save(function (err, result) {
     if (err) {
+      console.log("errrrrrrrrrrr")
       return res.status(422).send(err);
     }
     res.sendStatus(200);
