@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 import { generateURL } from "../Helpers";
-//import ImageUploader from "react-images-upload";
+import ImageUploader from "react-images-upload";
 import fetch_a from "../util/fetch_auth";
 
 export default function ProfileHeader(props) {
@@ -132,7 +132,7 @@ export default function ProfileHeader(props) {
         <Modal.Header closeButton>
           <Modal.Title>Upload a new profile picture</Modal.Title>
         </Modal.Header>
-        {/* <Modal.Body>
+        <Modal.Body>
           <ImageUploader
             withIcon={true}
             buttonText="Choose an image"
@@ -145,7 +145,7 @@ export default function ProfileHeader(props) {
           <Button disabled={!isUploaded} id="large-button" onClick={upload}>
             Upload
           </Button>
-        </Modal.Body> */}
+        </Modal.Body>
       </Modal>
     </>
   );

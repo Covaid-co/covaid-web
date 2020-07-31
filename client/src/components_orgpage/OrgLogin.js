@@ -23,6 +23,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import GetStarted from "./GetStarted";
 import ResetPassword from "../components_modals/ResetPassword";
+import BulkExports from "twilio/lib/rest/preview/BulkExports";
 
 /**
  * Landing Page for non-logged in organizations
@@ -31,6 +32,7 @@ import ResetPassword from "../components_modals/ResetPassword";
 export default function OrgLogin(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [show_toast, setShowToast] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     emailOrg: "",
     email: "",
@@ -52,6 +54,26 @@ export default function OrgLogin(props) {
     e.preventDefault();
     let form = { email: fields.email };
     fetch("/api/association/emailpasswordresetlink", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("Check your email for password link!");
+        } else {
+          alert("Error sending link!");
+        }
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  };
+
+  const handleAdminSubmitForgot = async (e) => {
+    e.preventDefault();
+    let form = { email: fields.email };
+    fetch("/api/association-admin/emailpasswordresetlink", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -135,8 +157,10 @@ export default function OrgLogin(props) {
         <ResetPassword
           showModal={showModal}
           hideModal={() => setShowModal(false)}
-          handleSubmitForgot={handleSubmitForgot}
+          handleSubmitForgot={handleAdminSubmitForgot}
           fields={fields}
+          show_toast={show_toast}
+          setShowToast={setShowToast}
           handleFieldChange={handleFieldChange}
         />
       );
@@ -208,6 +232,25 @@ export default function OrgLogin(props) {
               >
                 Sign In
               </Button>
+              <Row>
+              <Button
+                  variant="link"
+                  id="regular-text"
+                  onClick={() => handleShowModal("forgot")}
+                  style={{
+                    color: "#2670FF",
+                    padding: 0,
+                    textDecoration: "underline",
+                    marginTop: -2,
+                    marginLeft: 14,
+                  }}
+                >
+                  Forgot your admin password?
+                </Button>
+                </Row>
+                {/* <p id="regular-text" style={{ marginTop: 5, color: "#2670FF", fontSize: 16 }}> 
+                For organization password resets, please contact Covaid tech support
+                </p> */}
               <p id="regular-text" style={{ marginTop: 15, color: "#2670FF" }}>
                 Manage a mutual aid initiative?
                 <Button

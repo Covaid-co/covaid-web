@@ -84,7 +84,7 @@ const validate_email_accessibility = async (email) => {
   return result.length === 0;
 };
 
-const setPassword = (admin, plainTextPassword) => {
+exports.setPassword = (admin, plainTextPassword) => {
   var salty = getSalt();
   admin.password = {
     salt: salty,

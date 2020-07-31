@@ -18,6 +18,7 @@ const UserService = require("./user.service");
 const emailer = require("../util/emailer");
 const messenger = require("../util/send_sms");
 const Pusher = require("pusher");
+let { Expo } = require("expo-server-sdk");
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
@@ -325,6 +326,7 @@ exports.matchVolunteers = async function (requestID, volunteers, adminMessage) {
     new_volunteer_obj_list = await UserService.getUsersByUserIDs(
       volunteers_to_be_notified
     );
+    let pushTokens = [];
     for (var i = 0; i < new_volunteer_obj_list.length; i++) {
       var curr_volunteer = new_volunteer_obj_list[i];
       var firstName = curr_volunteer.first_name;
@@ -348,7 +350,46 @@ exports.matchVolunteers = async function (requestID, volunteers, adminMessage) {
         "direct-match",
         "You have a new pending request!"
       );
+
+      if (curr_volunteer.pushToken && curr_volunteer.pushToken.length > 0) {
+        pushTokens.push(curr_volunteer.pushToken);
+      }
     }
+
+    let expo = new Expo();
+
+    // Create the messages that you want to send to clients
+    let messages = [];
+    for (let pushToken of pushTokens) {
+      // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
+
+      // Check that all your push tokens appear to be valid Expo push tokens
+      if (!Expo.isExpoPushToken(pushToken)) {
+        console.error(`Push token ${pushToken} is not a valid Expo push token`);
+        continue;
+      }
+
+      // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
+      messages.push({
+        to: pushToken,
+        sound: 'default',
+        body: 'You\'ve been matched to a request',
+      })
+    }
+
+    let chunks = expo.chunkPushNotifications(messages);
+    let tickets = [];
+    (async () => {
+      for (let chunk of chunks) {
+        try {
+          let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+          console.log(ticketChunk);
+          tickets.push(...ticketChunk);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    })();
 
     return updatedRequest;
   } catch (e) {
