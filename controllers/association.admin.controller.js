@@ -89,3 +89,59 @@ exports.handleGetCurrentAdmin = function (req, res) {
     return res.json(admin[0]);
   });
 };
+
+exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
+  if (req.body.email !== undefined) {
+    var emailAddress = req.body.email;
+    Users.findOne(
+      { email: { $regex: new RegExp(emailAddress, "i") } },
+      function (err, user) {
+        if (err) {
+          return res.sendStatus(403);
+        }
+        const today = new Date();
+        const expirationDate = new Date(today);
+        expirationDate.setMinutes(today.getMinutes() + 5);
+        if (user) {
+          var payload = {
+            id: user._id, // User ID from database
+            email: emailAddress,
+          };
+          var secret = user.hash;
+          var token = jwt.encode(payload, secret);
+          emailer.sendPasswordLink(emailAddress, payload.id, token);
+          res.sendStatus(200);
+        } else {
+          return res.status(403).send("No accounts with that email");
+        }
+      }
+    );
+  } else {
+    return res.status(422).send("Email address is missing.");
+  }
+});
+
+exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
+  const user = await Users.findById(req.params.id);
+  var secret = user.hash;
+  try {
+    var payload = jwt.decode(req.params.token, secret);
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error.message);
+    res.sendStatus(403);
+  }
+});
+
+exports.resetPassword = asyncWrapper(async (req, res) => {
+  var newPassword = req.body.newPassword;
+  // update password
+  const user = await Users.findById(req.body.id);
+  user.setPassword(newPassword);
+  user.save(function (err, result) {
+    if (err) {
+      return res.status(422).send(err);
+    }
+    res.sendStatus(200);
+  });
+});

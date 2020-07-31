@@ -23,6 +23,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import GetStarted from "./GetStarted";
 import ResetPassword from "../components_modals/ResetPassword";
+import BulkExports from "twilio/lib/rest/preview/BulkExports";
 
 /**
  * Landing Page for non-logged in organizations
@@ -208,6 +209,22 @@ export default function OrgLogin(props) {
               >
                 Sign In
               </Button>
+              <Row>
+              <Button
+                  variant="link"
+                  id="regular-text"
+                  onClick={() => handleShowModal("forgot")}
+                  style={{
+                    color: "#2670FF",
+                    padding: 0,
+                    textDecoration: "underline",
+                    marginTop: -2,
+                    marginLeft: 5,
+                  }}
+                >
+                  Forgot your password?
+                </Button>
+                </Row>
               <p id="regular-text" style={{ marginTop: 15, color: "#2670FF" }}>
                 Manage a mutual aid initiative?
                 <Button
