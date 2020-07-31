@@ -242,12 +242,15 @@ export default function OrgLogin(props) {
                     padding: 0,
                     textDecoration: "underline",
                     marginTop: -2,
-                    marginLeft: 5,
+                    marginLeft: 14,
                   }}
                 >
-                  Forgot your password?
+                  Forgot your admin password?
                 </Button>
                 </Row>
+                <p id="regular-text" style={{ marginTop: 5, color: "#2670FF", fontSize: 16 }}> 
+                For organization password resets, please contact Covaid tech support
+                </p>
               <p id="regular-text" style={{ marginTop: 15, color: "#2670FF" }}>
                 Manage a mutual aid initiative?
                 <Button

@@ -236,8 +236,6 @@ exports.assoc_by_lat_long = asyncWrapper(async (req, res) => {
 
 exports.current = function (req, res) {
   const id = req.token.id;
-  console.log(id);
-
   return Association.findById(id).then((association) => {
     if (!association) {
       return res.sendStatus(400);

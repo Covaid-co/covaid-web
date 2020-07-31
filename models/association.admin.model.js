@@ -20,14 +20,5 @@ let AssociationAdminSchema = new Schema({
   association_id: { type: String, required: true },
 });
 
-AssociationAdminSchema.methods.setPassword = function (password) {
-  console.log(password)
-  adminPass = this.password
-  console.log(adminPass)
-  this.password.salt = crypto.randomBytes(16).toString("hex");
-  this.password.hash = crypto
-    .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
-    .toString("hex");
-};
 
 module.exports = mongoose.model("AssociationAdmin", AssociationAdminSchema);
