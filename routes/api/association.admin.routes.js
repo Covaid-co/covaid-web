@@ -22,6 +22,15 @@ router.get(
   AssociationAdminController.handleGetCurrentAdmin
 );
 
+// Password reset related
+router.post(
+  "/emailpasswordresetlink",
+  AssociationAdminController.emailPasswordResetLink
+);
+router.get(
+  "/verifyresetlink/:id/:token",
+  AssociationAdminController.verifyPasswordResetLink
+);
 router.post("/resetpassword", AssociationAdminController.resetPassword);
 
 module.exports = router;

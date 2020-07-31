@@ -70,6 +70,26 @@ export default function OrgLogin(props) {
       });
   };
 
+  const handleAdminSubmitForgot = async (e) => {
+    e.preventDefault();
+    let form = { email: fields.email };
+    fetch("/api/association-admin/emailpasswordresetlink", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("Check your email for password link!");
+        } else {
+          alert("Error sending link!");
+        }
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  };
+
   const tryLogin = async () => {
     try {
       let form = {
@@ -137,7 +157,7 @@ export default function OrgLogin(props) {
         <ResetPassword
           showModal={showModal}
           hideModal={() => setShowModal(false)}
-          handleSubmitForgot={handleSubmitForgot}
+          handleSubmitForgot={handleAdminSubmitForgot}
           fields={fields}
           show_toast={show_toast}
           setShowToast={setShowToast}

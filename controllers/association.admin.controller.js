@@ -2,6 +2,7 @@ const asyncWrapper = require("../util/asyncWrapper");
 const AssociaitonAdminService = require("../services/association.admin.service");
 const AssociationAdmin = require("../models/association.admin.model");
 const emailer = require("../util/emailer");
+var jwt = require("jwt-simple");
 
 /**
  * Handle requests to register an admin
@@ -109,7 +110,7 @@ exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
             id: associationadmin._id, // User ID from database
             email: emailAddress,
           };
-          var secret = associationadmin.hash;
+          var secret = associationadmin.password.hash;
           var token = jwt.encode(payload, secret);
           emailer.sendAssocAdminPasswordLink(emailAddress, payload.id, token);
           res.sendStatus(200);

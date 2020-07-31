@@ -201,7 +201,7 @@ exports.sendAssocAdminPasswordLink = (email, assocID, token) => {
     service: "gmail",
     auth: {
       user: "covaidco@gmail.com",
-      pass: "covaid_platform_2020!",
+      pass: "covaid_is_cool_123"
     },
   });
 
