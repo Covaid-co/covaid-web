@@ -32,6 +32,7 @@ import BulkExports from "twilio/lib/rest/preview/BulkExports";
 export default function OrgLogin(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [show_toast, setShowToast] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     emailOrg: "",
     email: "",
@@ -138,6 +139,8 @@ export default function OrgLogin(props) {
           hideModal={() => setShowModal(false)}
           handleSubmitForgot={handleSubmitForgot}
           fields={fields}
+          show_toast={show_toast}
+          setShowToast={setShowToast}
           handleFieldChange={handleFieldChange}
         />
       );

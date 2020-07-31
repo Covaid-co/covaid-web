@@ -24,6 +24,7 @@ import Verify from "./components_homepage/Verify";
 import NewRequestPage from "./request_help/NewRequestPage";
 import ResetPassword from "./ResetPassword";
 import ResetAssociationPassword from "./ResetAssociationPassword";
+import ResetAssociationAdminPassword from "./ResetAssociationAdminPassword"
 import OrganizationPortal from "./OrganizationPortal";
 import VolunteerPortal from "./VolunteerPortal";
 import OrgAdminRegister from "./components_orgpage/OrgAdminRegister";
@@ -439,6 +440,11 @@ function App() {
             exact
             path="/resetAssociationPassword"
             component={ResetAssociationPassword}
+          />
+          <Route
+            exact
+            path="/resetOrgAdminPassword"
+            component={ResetAssociationAdminPassword}
           />
           <Route exact path="/orgAdmin" component={OrgAdminRegister} />
           <Route

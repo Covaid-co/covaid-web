@@ -49,7 +49,7 @@ export default function ResetAssociationAdminPassword(props) {
       id: id,
       newPassword: fields.newPassword,
     };
-    const response = await fetch("/api/association/resetpassword", {
+    const response = await fetch("/api/association-admin/resetpassword", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),

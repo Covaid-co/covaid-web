@@ -1,5 +1,7 @@
 const asyncWrapper = require("../util/asyncWrapper");
 const AssociaitonAdminService = require("../services/association.admin.service");
+const AssociationAdmin = require("../models/association.admin.model");
+const emailer = require("../util/emailer");
 
 /**
  * Handle requests to register an admin
@@ -93,23 +95,23 @@ exports.handleGetCurrentAdmin = function (req, res) {
 exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
   if (req.body.email !== undefined) {
     var emailAddress = req.body.email;
-    Users.findOne(
+    AssociationAdmin.findOne(
       { email: { $regex: new RegExp(emailAddress, "i") } },
-      function (err, user) {
+      function (err, associationadmin) {
         if (err) {
           return res.sendStatus(403);
         }
         const today = new Date();
         const expirationDate = new Date(today);
         expirationDate.setMinutes(today.getMinutes() + 5);
-        if (user) {
+        if (associationadmin) {
           var payload = {
-            id: user._id, // User ID from database
+            id: associationadmin._id, // User ID from database
             email: emailAddress,
           };
-          var secret = user.hash;
+          var secret = associationadmin.hash;
           var token = jwt.encode(payload, secret);
-          emailer.sendPasswordLink(emailAddress, payload.id, token);
+          emailer.sendAssocAdminPasswordLink(emailAddress, payload.id, token);
           res.sendStatus(200);
         } else {
           return res.status(403).send("No accounts with that email");
@@ -122,8 +124,8 @@ exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
 });
 
 exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
-  const user = await Users.findById(req.params.id);
-  var secret = user.hash;
+  const associationadmin = await AssociationAdmin.findById(req.params.id);
+  var secret = associationadmin.hash;
   try {
     var payload = jwt.decode(req.params.token, secret);
     res.sendStatus(200);
@@ -134,14 +136,72 @@ exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
 });
 
 exports.resetPassword = asyncWrapper(async (req, res) => {
+  console.log("reset Password")
   var newPassword = req.body.newPassword;
   // update password
-  const user = await Users.findById(req.body.id);
-  user.setPassword(newPassword);
-  user.save(function (err, result) {
+  const associationadmin = await AssociationAdmin.findById(req.body.id);
+  console.log(associationadmin)
+  associationadmin.setPassword(newPassword);
+  associationadmin.save(function (err, result) {
     if (err) {
       return res.status(422).send(err);
     }
     res.sendStatus(200);
   });
 });
+
+// exports.emailPasswordResetLink = asyncWrapper(async (req, res) => {
+//   if (req.body.email !== undefined) {
+//     var emailAddress = req.body.email;
+//     Association.findOne(
+//       { email: { $regex: new RegExp(emailAddress, "i") } },
+//       function (err, association) {
+//         if (err) {
+//           return res.sendStatus(403);
+//         }
+//         const today = new Date();
+//         const expirationDate = new Date(today);
+//         expirationDate.setMinutes(today.getMinutes() + 5);
+//         if (association) {
+//           var payload = {
+//             id: association._id, // User ID from database
+//             email: emailAddress,
+//           };
+//           var secret = association.hash;
+//           var token = jwt.encode(payload, secret);
+//           emailer.sendAssocPasswordLink(emailAddress, payload.id, token);
+//           res.sendStatus(200);
+//         } else {
+//           return res.status(403).send("No accounts with that email");
+//         }
+//       }
+//     );
+//   } else {
+//     return res.status(422).send("Email address is missing.");
+//   }
+// });
+
+// exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
+//   const association = await Association.findById(req.params.id);
+//   var secret = association.hash;
+//   try {
+//     var payload = jwt.decode(req.params.token, secret);
+//     res.sendStatus(200);
+//   } catch (error) {
+//     console.log(error.message);
+//     res.sendStatus(403);
+//   }
+// });
+
+// exports.resetPassword = asyncWrapper(async (req, res) => {
+//   var newPassword = req.body.newPassword;
+//   // update password
+//   const association = await Association.findById(req.body.id);
+//   association.setPassword(newPassword);
+//   association.save(function (err, result) {
+//     if (err) {
+//       return res.status(422).send(err);
+//     }
+//     res.sendStatus(200);
+//   });
+// });
