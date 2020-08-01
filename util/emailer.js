@@ -242,7 +242,7 @@ exports.sendAssocAdminPasswordLink = (email, assocID, token) => {
   };
 
   //send the email
-  if (true) {
+  if (process.env.PROD) {
     sgMail.send(msg, (error, result) => {
       if (error) {
         console.log(error);
