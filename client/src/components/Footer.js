@@ -8,11 +8,13 @@ import { useHistory } from "react-router-dom";
 
 import HowItWorks from "../components_modals/HowItWorks";
 import Feedback from "../components_modals/Feedback";
+import PrivacyPolicy from "../components_modals/PrivacyPolicy";
 import { currURL } from "../constants";
 
 export default function Footer(props) {
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
+  //const [showPolicyModal, setShowPolicyModal] = useState(false); 
   const [modalName, setModalName] = useState("");
 
   const getCurrentModal = () => {
@@ -27,6 +29,13 @@ export default function Footer(props) {
     } else if (modalName === "feedback") {
       modal = (
         <Feedback showModal={showModal} hideModal={() => setShowModal(false)} />
+      );
+    } else if (modalName === "privacy_policy") {
+      modal = (
+        <PrivacyPolicy 
+          showModal={showModal} 
+          hideModal={() => setShowModal(false)} 
+        />
       );
     }
     return modal;
@@ -92,6 +101,17 @@ export default function Footer(props) {
             >
               Feedback
             </Button>
+            <Button
+              variant="link"
+              id="footer-link"
+              onClick={() => {
+                setModalName("privacy_policy");
+                setShowModal(true);
+              }}
+            >
+              Privacy Policy
+            </Button>
+
             <i
               id="social-icon"
               className="fa fa-2x fa-github"
