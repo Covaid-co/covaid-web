@@ -324,15 +324,13 @@ export default function VolunteersModal(props) {
                       )}
                     </div>
                     {volunteer.offer.car && (
-                      <div>
-                        <Badge
-                          key={20}
-                          style={{ backgroundColor: "green" }}
-                          id="task-info"
-                        >
-                          Driver
-                        </Badge>
-                      </div>
+                      <Badge
+                        key={20}
+                        style={{ backgroundColor: "#3ABD24", opacity: 0.9 }}
+                        id="task-info"
+                      >
+                        Driver
+                      </Badge>
                     )}
                   </ListGroup.Item>
                 );

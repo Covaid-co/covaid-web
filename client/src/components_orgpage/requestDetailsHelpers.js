@@ -258,7 +258,7 @@ export const displayResourceMatch = (volunteer, curr_request) => {
   } else {
     var tasks = volunteer.offer.tasks;
     tasks.sort(sortSelectedTask(curr_request));
-    return tasks.map((task, i) => {
+    const finals = tasks.map((task, i) => {
       if (
         curr_request &&
         curr_request.request_info &&
@@ -278,6 +278,26 @@ export const displayResourceMatch = (volunteer, curr_request) => {
         );
       }
     });
+    finals.push(
+      volunteer.offer.car ? (
+        <Badge
+          key={20}
+          style={{ backgroundColor: "#3ABD24", opacity: 0.9 }}
+          id="task-info"
+        >
+          Driver
+        </Badge>
+      ) : (
+        <Badge
+          key={20}
+          style={{ backgroundColor: "#3ABD24", opacity: 0.4 }}
+          id="task-info"
+        >
+          Driver
+        </Badge>
+      )
+    );
+    return finals;
   }
 };
 
@@ -364,23 +384,6 @@ export const volunteerListGroup = (
             </div>
 
             <div>{displayResourceMatch(volunteer, curr_request)}</div>
-            {volunteer.offer.car ? (
-              <Badge
-                key={20}
-                style={{ backgroundColor: "green" }}
-                id="task-info"
-              >
-                Driver
-              </Badge>
-            ) : (
-              <Badge
-                key={20}
-                style={{ backgroundColor: "green", opacity: 0.4 }}
-                id="task-info"
-              >
-                Driver
-              </Badge>
-            )}
           </Col>
         </Row>
       </ListGroup.Item>
