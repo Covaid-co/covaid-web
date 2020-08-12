@@ -91,7 +91,6 @@ export default function NewRequestPage1(props) {
     setResources(temp_resources);
   }, [props.first_page, props.currentAssoc]);
 
-  // UNCOMMENT TO CLOSE REQUEST FORM
   // if (isCovaid) {
   //   return (
   //     <>
