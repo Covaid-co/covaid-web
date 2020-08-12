@@ -59,7 +59,7 @@ export default function VolunteersModal(props) {
             label={
               carSelected
                 ? "Showing volunteers who can drive"
-                : "No driving preference selected"
+                : "Toggle to only show drivers"
             }
             checked={carSelected}
             onChange={handleToggleCar}
