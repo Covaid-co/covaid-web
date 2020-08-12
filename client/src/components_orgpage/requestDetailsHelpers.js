@@ -362,7 +362,17 @@ export const volunteerListGroup = (
                 {distance(volunteer, curr_request)} miles
               </p>
             </div>
-
+            {volunteer.offer.car && (
+              <div>
+                <Badge
+                  key={20}
+                  style={{ backgroundColor: "green" }}
+                  id="task-info"
+                >
+                  Driver
+                </Badge>
+              </div>
+            )}
             <div>{displayResourceMatch(volunteer, curr_request)}</div>
           </Col>
         </Row>
@@ -525,7 +535,7 @@ export const notifiedVolunteers = (curr_request, volunteers) => {
 };
 
 // Volunteers attached to a request that are to be notified
-export const unSelectedVolunteers = (curr_request, volunteers, strict) => {
+export const unSelectedVolunteers = (curr_request, volunteers, strict, car) => {
   const request_volunteers = curr_request.status.volunteers;
   const in_progress = filter_volunteers(
     request_volunteers,
@@ -549,6 +559,11 @@ export const unSelectedVolunteers = (curr_request, volunteers, strict) => {
   if (strict) {
     displayed_volunteers = displayed_volunteers.filter((volunteer) =>
       volunteer.offer.tasks.some((item) => needed_resources.includes(item))
+    );
+  }
+  if (car) {
+    displayed_volunteers = displayed_volunteers.filter(
+      (volunteer) => volunteer.offer.car === true
     );
   }
   displayed_volunteers = displayed_volunteers.filter(
