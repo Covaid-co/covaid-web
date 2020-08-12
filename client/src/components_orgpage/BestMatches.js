@@ -111,7 +111,7 @@ export default function BestMatches(props) {
           type="switch"
           id="custom-switch-2"
           style={{ color: "#2670FF", fontSize: 14 }}
-          label={carSelected ? "Match on driver" : "Match on driver"}
+          label={carSelected ? "Show only drivers" : "Show only drivers"}
           checked={carSelected}
           onChange={handleToggleCar}
         />

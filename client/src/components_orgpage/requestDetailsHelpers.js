@@ -278,25 +278,27 @@ export const displayResourceMatch = (volunteer, curr_request) => {
         );
       }
     });
-    finals.push(
-      volunteer.offer.car ? (
-        <Badge
-          key={20}
-          style={{ backgroundColor: "#3ABD24", opacity: 0.9 }}
-          id="task-info"
-        >
-          Driver
-        </Badge>
-      ) : (
-        <Badge
-          key={20}
-          style={{ backgroundColor: "#3ABD24", opacity: 0.4 }}
-          id="task-info"
-        >
-          Driver
-        </Badge>
-      )
-    );
+    if (volunteer.offer.car) {
+      finals.push(
+        volunteer.offer.car ? (
+          <Badge
+            key={20}
+            style={{ backgroundColor: "#3ABD24", opacity: 0.9 }}
+            id="task-info"
+          >
+            Driver
+          </Badge>
+        ) : (
+          <Badge
+            key={20}
+            style={{ backgroundColor: "#3ABD24", opacity: 0.4 }}
+            id="task-info"
+          >
+            Driver
+          </Badge>
+        )
+      );
+    }
     return finals;
   }
 };
