@@ -17,6 +17,7 @@ export default function VolunteersModal(props) {
   const [displayedVolunteers, setDisplayedVolunteers] = useState([]);
   const [resourcesSelected, setResourcesSelected] = useState([]);
   const [noTasks, setNoTasks] = useState(false);
+  const [carSelected, setCarSelected] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [currQuery, setQuery] = useState("");
   const volunteersPerPage = 5;
@@ -43,6 +44,77 @@ export default function VolunteersModal(props) {
     setDisplayedVolunteers(filteredVolunteers.slice(0, volunteersPerPage));
   };
 
+  const displaySwitch = () => {
+    return (
+      <Form>
+        <Form.Group
+          controlId="preverify"
+          bssize="large"
+          style={{ marginBottom: 0, marginTop: 2 }}
+        >
+          <Form.Check
+            type="switch"
+            id="custom-switch"
+            style={{ color: "#7F7F7F", fontSize: 14 }}
+            label={
+              carSelected
+                ? "Showing volunteers who can drive"
+                : "Toggle to only show drivers"
+            }
+            checked={carSelected}
+            onChange={handleToggleCar}
+          />
+        </Form.Group>
+      </Form>
+    );
+  };
+
+  const handleToggleCar = () => {
+    const selectedResourcees = extractTrueObj(resourcesSelected);
+
+    console.log("HI. car?: " + carSelected);
+    var result = [];
+    // if (carSelected === true) {
+    //   result = filteredVolunteers.filter((user) => user.offer.car === true);
+    // } else {
+    //   result = props.volunteer.filter((user) =>
+    //     resourcesSelected.every((v) => user.offer.tasks.indexOf(v) !== -1)
+    //   );
+    // }
+    if (!carSelected) {
+      if (filteredVolunteers !== undefined && filteredVolunteers.length !== 0) {
+        result = filteredVolunteers.filter((user) => user.offer.car === true);
+      } else {
+        if (noTasks) {
+          result = props.volunteers.filter(
+            (user) => user.offer.tasks.length === 0 && user.offer.car === true
+          );
+        } else {
+          result = props.volunteers.filter((user) =>
+            selectedResourcees.every(
+              (v) =>
+                user.offer.tasks.indexOf(v) !== -1 && user.offer.car === true
+            )
+          );
+        }
+      }
+    } else {
+      if (noTasks) {
+        result = props.volunteers.filter(
+          (user) => user.offer.tasks.length === 0
+        );
+      } else {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
+        );
+      }
+    }
+
+    setFilteredVolunteers(result);
+    setDisplayedVolunteers(result.slice(0, volunteersPerPage));
+    setCarSelected(!carSelected);
+  };
+
   const handleChangeResource = (resource) => {
     const newResource = {
       ...resourcesSelected,
@@ -51,20 +123,39 @@ export default function VolunteersModal(props) {
     setResourcesSelected(newResource);
 
     const selectedResourcees = extractTrueObj(newResource);
-    if (selectedResourcees.length === 0) {
-      setFilteredVolunteers(props.volunteers);
-      setDisplayedVolunteers(props.volunteers.slice(0, volunteersPerPage));
-      return;
-    }
     var result = [];
-    if (currQuery !== "") {
-      result = filteredVolunteers.filter((user) =>
-        selectedResourcees.some((v) => user.offer.tasks.indexOf(v) !== -1)
-      );
+    if (selectedResourcees.length === 0) {
+      if (carSelected) {
+        result = props.volunteers.filter((user) => user.offer.car === true);
+      } else {
+        setFilteredVolunteers(props.volunteers);
+        setDisplayedVolunteers(props.volunteers.slice(0, volunteersPerPage));
+        return;
+      }
+    } else if (currQuery !== "") {
+      if (carSelected) {
+        result = filteredVolunteers.filter((user) =>
+          selectedResourcees.some(
+            (v) => user.offer.tasks.indexOf(v) !== -1 && user.offer.car === true
+          )
+        );
+      } else {
+        result = filteredVolunteers.filter((user) =>
+          selectedResourcees.some((v) => user.offer.tasks.indexOf(v) !== -1)
+        );
+      }
     } else {
-      result = props.volunteers.filter((user) =>
-        selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
-      );
+      if (carSelected) {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every(
+            (v) => user.offer.tasks.indexOf(v) !== -1 && user.offer.car == true
+          )
+        );
+      } else {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
+        );
+      }
     }
     setFilteredVolunteers(result);
     setDisplayedVolunteers(result.slice(0, volunteersPerPage));
@@ -74,11 +165,27 @@ export default function VolunteersModal(props) {
     var result = [];
     const selectedResourcees = extractTrueObj(resourcesSelected);
     if (!noTasks) {
-      result = props.volunteers.filter((user) => user.offer.tasks.length === 0);
+      if (carSelected) {
+        result = props.volunteers.filter(
+          (user) => user.offer.tasks.length === 0 && user.offer.car === true
+        );
+      } else {
+        result = props.volunteers.filter(
+          (user) => user.offer.tasks.length === 0
+        );
+      }
     } else {
-      result = props.volunteers.filter((user) =>
-        selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
-      );
+      if (carSelected) {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every(
+            (v) => user.offer.tasks.indexOf(v) !== -1 && user.offer.car === true
+          )
+        );
+      } else {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
+        );
+      }
     }
     setFilteredVolunteers(result);
     setDisplayedVolunteers(result.slice(0, volunteersPerPage));
@@ -154,6 +261,7 @@ export default function VolunteersModal(props) {
                 >
                   No Tasks
                 </Button>
+                {displaySwitch()}
               </div>
               <Form.Group
                 controlId="zip"
@@ -215,6 +323,15 @@ export default function VolunteersModal(props) {
                         })
                       )}
                     </div>
+                    {volunteer.offer.car && (
+                      <Badge
+                        key={20}
+                        style={{ backgroundColor: "#3ABD24", opacity: 0.9 }}
+                        id="task-info"
+                      >
+                        Driver
+                      </Badge>
+                    )}
                   </ListGroup.Item>
                 );
               })}

@@ -258,7 +258,7 @@ export const displayResourceMatch = (volunteer, curr_request) => {
   } else {
     var tasks = volunteer.offer.tasks;
     tasks.sort(sortSelectedTask(curr_request));
-    return tasks.map((task, i) => {
+    const finals = tasks.map((task, i) => {
       if (
         curr_request &&
         curr_request.request_info &&
@@ -278,6 +278,28 @@ export const displayResourceMatch = (volunteer, curr_request) => {
         );
       }
     });
+    if (volunteer.offer.car) {
+      finals.push(
+        volunteer.offer.car ? (
+          <Badge
+            key={20}
+            style={{ backgroundColor: "#3ABD24", opacity: 0.9 }}
+            id="task-info"
+          >
+            Driver
+          </Badge>
+        ) : (
+          <Badge
+            key={20}
+            style={{ backgroundColor: "#3ABD24", opacity: 0.4 }}
+            id="task-info"
+          >
+            Driver
+          </Badge>
+        )
+      );
+    }
+    return finals;
   }
 };
 
@@ -525,7 +547,7 @@ export const notifiedVolunteers = (curr_request, volunteers) => {
 };
 
 // Volunteers attached to a request that are to be notified
-export const unSelectedVolunteers = (curr_request, volunteers, strict) => {
+export const unSelectedVolunteers = (curr_request, volunteers, strict, car) => {
   const request_volunteers = curr_request.status.volunteers;
   const in_progress = filter_volunteers(
     request_volunteers,
@@ -549,6 +571,11 @@ export const unSelectedVolunteers = (curr_request, volunteers, strict) => {
   if (strict) {
     displayed_volunteers = displayed_volunteers.filter((volunteer) =>
       volunteer.offer.tasks.some((item) => needed_resources.includes(item))
+    );
+  }
+  if (car) {
+    displayed_volunteers = displayed_volunteers.filter(
+      (volunteer) => volunteer.offer.car === true
     );
   }
   displayed_volunteers = displayed_volunteers.filter(
