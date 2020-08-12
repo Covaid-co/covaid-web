@@ -123,20 +123,39 @@ export default function VolunteersModal(props) {
     setResourcesSelected(newResource);
 
     const selectedResourcees = extractTrueObj(newResource);
-    if (selectedResourcees.length === 0) {
-      setFilteredVolunteers(props.volunteers);
-      setDisplayedVolunteers(props.volunteers.slice(0, volunteersPerPage));
-      return;
-    }
     var result = [];
-    if (currQuery !== "") {
-      result = filteredVolunteers.filter((user) =>
-        selectedResourcees.some((v) => user.offer.tasks.indexOf(v) !== -1)
-      );
+    if (selectedResourcees.length === 0) {
+      if (carSelected) {
+        result = props.volunteers.filter((user) => user.offer.car === true);
+      } else {
+        setFilteredVolunteers(props.volunteers);
+        setDisplayedVolunteers(props.volunteers.slice(0, volunteersPerPage));
+        return;
+      }
+    } else if (currQuery !== "") {
+      if (carSelected) {
+        result = filteredVolunteers.filter((user) =>
+          selectedResourcees.some(
+            (v) => user.offer.tasks.indexOf(v) !== -1 && user.offer.car === true
+          )
+        );
+      } else {
+        result = filteredVolunteers.filter((user) =>
+          selectedResourcees.some((v) => user.offer.tasks.indexOf(v) !== -1)
+        );
+      }
     } else {
-      result = props.volunteers.filter((user) =>
-        selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
-      );
+      if (carSelected) {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every(
+            (v) => user.offer.tasks.indexOf(v) !== -1 && user.offer.car == true
+          )
+        );
+      } else {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
+        );
+      }
     }
     setFilteredVolunteers(result);
     setDisplayedVolunteers(result.slice(0, volunteersPerPage));
@@ -146,11 +165,27 @@ export default function VolunteersModal(props) {
     var result = [];
     const selectedResourcees = extractTrueObj(resourcesSelected);
     if (!noTasks) {
-      result = props.volunteers.filter((user) => user.offer.tasks.length === 0);
+      if (carSelected) {
+        result = props.volunteers.filter(
+          (user) => user.offer.tasks.length === 0 && user.offer.car === true
+        );
+      } else {
+        result = props.volunteers.filter(
+          (user) => user.offer.tasks.length === 0
+        );
+      }
     } else {
-      result = props.volunteers.filter((user) =>
-        selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
-      );
+      if (carSelected) {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every(
+            (v) => user.offer.tasks.indexOf(v) !== -1 && user.offer.car === true
+          )
+        );
+      } else {
+        result = props.volunteers.filter((user) =>
+          selectedResourcees.every((v) => user.offer.tasks.indexOf(v) !== -1)
+        );
+      }
     }
     setFilteredVolunteers(result);
     setDisplayedVolunteers(result.slice(0, volunteersPerPage));
@@ -288,9 +323,17 @@ export default function VolunteersModal(props) {
                         })
                       )}
                     </div>
-                    <div>
-                      {volunteer.offer.car ? "Can drive" : "Cannot drive"}
-                    </div>
+                    {volunteer.offer.car && (
+                      <div>
+                        <Badge
+                          key={20}
+                          style={{ backgroundColor: "green" }}
+                          id="task-info"
+                        >
+                          Driver
+                        </Badge>
+                      </div>
+                    )}
                   </ListGroup.Item>
                 );
               })}
