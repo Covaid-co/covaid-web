@@ -362,18 +362,25 @@ export const volunteerListGroup = (
                 {distance(volunteer, curr_request)} miles
               </p>
             </div>
-            {volunteer.offer.car && (
-              <div>
-                <Badge
-                  key={20}
-                  style={{ backgroundColor: "green" }}
-                  id="task-info"
-                >
-                  Driver
-                </Badge>
-              </div>
-            )}
+
             <div>{displayResourceMatch(volunteer, curr_request)}</div>
+            {volunteer.offer.car ? (
+              <Badge
+                key={20}
+                style={{ backgroundColor: "green" }}
+                id="task-info"
+              >
+                Driver
+              </Badge>
+            ) : (
+              <Badge
+                key={20}
+                style={{ backgroundColor: "green", opacity: 0.4 }}
+                id="task-info"
+              >
+                Driver
+              </Badge>
+            )}
           </Col>
         </Row>
       </ListGroup.Item>
