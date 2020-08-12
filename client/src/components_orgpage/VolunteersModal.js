@@ -288,6 +288,9 @@ export default function VolunteersModal(props) {
                         })
                       )}
                     </div>
+                    <div>
+                      {volunteer.offer.car ? "Can drive" : "Cannot drive"}
+                    </div>
                   </ListGroup.Item>
                 );
               })}
