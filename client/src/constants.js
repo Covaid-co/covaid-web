@@ -118,7 +118,7 @@ export const current_tab = {
 
 export const sort_types = [
   "Name",
-  "Needed By",
+  "Date created",
   "Last Updated",
   "Time Posted",
   "Admin",

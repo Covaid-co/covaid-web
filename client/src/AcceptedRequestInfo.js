@@ -52,10 +52,10 @@ export default function AcceptedRequestInfo(props) {
           className="titleHeadings"
           style={{ marginBottom: 3, marginTop: 16 }}
         >
-          Needed by:
+          Date created:
         </h5>
         <p id="request-info">
-          {props.currRequest.time} of {props.currRequest.date}
+          {props.currRequest.date}
         </p>
         <Row style={{ marginTop: 15 }}>
           <Col xs={6} style={{ padding: 0, paddingLeft: 15 }}>

@@ -35,7 +35,7 @@ export const sortFn = (x, y, direction) => {
 const parseByType = (type, request) => {
   if (type === "Name") {
     return request.personal_info.requester_name.toLowerCase();
-  } else if (type === "Needed By") {
+  } else if (type === "Date created") {
     return new Date(request.request_info.date);
   } else if (type === "Last Updated") {
     return new Date(request.admin_info.last_modified);

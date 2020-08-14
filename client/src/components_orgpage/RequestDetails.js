@@ -577,11 +577,10 @@ export default function RequestDetails(props) {
             {props.currRequest.request_info.details}
           </p>
           <h5 id="regular-text-bold" style={{ marginBottom: 0, marginTop: 16 }}>
-            Needed by:
+            Date created:
           </h5>
           {props.currRequest.request_info.date ? (
             <p id="regular-text-nomargin">
-              {props.currRequest.request_info.time} of{" "}
               {props.currRequest.request_info.date}
             </p>
           ) : (
