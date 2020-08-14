@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require("../auth");
 
 const request_controller = require("../../controllers/request.controller");
+const mobile_controller = require("../../controllers/mobile.controller");
 
 // POST
 router.post("/create_request", request_controller.createARequest);
@@ -13,6 +14,11 @@ router.get(
   "/volunteerRequests",
   auth.required,
   request_controller.handleGetVolunteerRequests
+);
+router.get(
+  "/volunteerRequestsMobile",
+  auth.authenticate,
+  mobile_controller.handleGetVolunteerRequestsMobile
 );
 router.get(
   "/volunteerStatistics",

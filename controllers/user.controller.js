@@ -1,13 +1,12 @@
 const Users = require("../models/user.model");
 const Association = require("../models/association.model");
-const ProfilePicture = require("../models/profile-picture.model");
 const passport = require("passport");
 const emailer = require("../util/emailer");
 const spreadsheets = require("../util/spreadsheet_tools");
 const distance_tools = require("../util/distance_tools");
 const asyncWrapper = require("../util/asyncWrapper");
 var jwt = require("jwt-simple");
-
+require("dotenv").config();
 const UserService = require("../services/user.service");
 
 // Helper function to determine whether an email is valid
@@ -207,10 +206,12 @@ exports.login = function (req, res, next) {
   )(req, res, next);
 };
 
-/**
- * Handle requests to get the current logged in user
- */
 exports.current = function (req, res) {
+  console.log(
+    "AUTH TOKEN EXPIRY: ",
+    (req.token.exp * 1000 - Date.now()) / 60000,
+    " minutes"
+  );
   const id = req.token.id;
   return Users.findById(id).then((user) => {
     if (!user) {
@@ -412,9 +413,9 @@ exports.update = function (req, res) {
  */
 exports.delete = function (req, res) {
   const userID = req.token.id;
-  Users.findByIdAndRemove(userID, function (err) {
+  return Users.findByIdAndRemove(userID, function (err) {
     if (err) return next(err);
-    res.send("Successfully opted out!");
+    return res.send("Successfully opted out!");
   });
 };
 

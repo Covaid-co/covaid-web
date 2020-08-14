@@ -20,6 +20,7 @@ exports.getAllRequestsOfAnAssoc = asyncWrapper(async (req, res) => {
  * Handle requests to get all requests tied to a user
  */
 exports.handleGetVolunteerRequests = asyncWrapper(async (req, res) => {
+  console.log("Token for requests: ", req.token);
   try {
     var requests = await RequestService.getVolunteerRequests(
       req.token.id,
