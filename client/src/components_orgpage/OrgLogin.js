@@ -23,7 +23,6 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import GetStarted from "./GetStarted";
 import ResetPassword from "../components_modals/ResetPassword";
-import BulkExports from "twilio/lib/rest/preview/BulkExports";
 
 /**
  * Landing Page for non-logged in organizations
@@ -233,7 +232,7 @@ export default function OrgLogin(props) {
                 Sign In
               </Button>
               <Row>
-              <Button
+                <Button
                   variant="link"
                   id="regular-text"
                   onClick={() => handleShowModal("forgot")}
@@ -247,8 +246,8 @@ export default function OrgLogin(props) {
                 >
                   Forgot your admin password?
                 </Button>
-                </Row>
-                {/* <p id="regular-text" style={{ marginTop: 5, color: "#2670FF", fontSize: 16 }}> 
+              </Row>
+              {/* <p id="regular-text" style={{ marginTop: 5, color: "#2670FF", fontSize: 16 }}> 
                 For organization password resets, please contact Covaid tech support
                 </p> */}
               <p id="regular-text" style={{ marginTop: 15, color: "#2670FF" }}>

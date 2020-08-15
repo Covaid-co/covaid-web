@@ -117,21 +117,16 @@ exports.sendPasswordLink = (email, userID, token) => {
     page = test;
   }
   var body =
-    "http://" +
-    page +
-    "/resetPassword?ID=" +
-    userID +
-    "&Token=" +
-    token;
+    "http://" + page + "/resetPassword?ID=" + userID + "&Token=" + token;
 
   const msg = {
     //extract the email details
     to: email,
-    from: 'Covaid@covaid.co',
-    templateId: templates['reset_password'],
+    from: "Covaid@covaid.co",
+    templateId: templates["reset_password"],
     //extract the custom fields
     dynamic_template_data: {
-      link: body
+      link: body,
     },
   };
 
@@ -233,16 +228,16 @@ exports.sendAssocAdminPasswordLink = (email, assocID, token) => {
   const msg = {
     //extract the email details
     to: email,
-    from: 'Covaid@covaid.co',
-    templateId: templates['reset_password'],
+    from: "Covaid@covaid.co",
+    templateId: templates["reset_password"],
     //extract the custom fields
     dynamic_template_data: {
-      link: body
+      link: body,
     },
   };
 
   //send the email
-  if (true) {
+  if (process.env.PROD) {
     sgMail.send(msg, (error, result) => {
       if (error) {
         console.log(error);

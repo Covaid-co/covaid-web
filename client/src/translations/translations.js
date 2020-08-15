@@ -108,7 +108,7 @@ const translations = {
       "Our purpose is to help with essential day-to-day tasks such as grocery delivery, medication pick-up, and more. Please consult your local Community Bulletin to see how volunteers in your area are able to help.",
     FAQs_Text4: "Where is Covaid active?",
     FAQs_Text5:
-      "Our platform is active nationwide; however, we are only able best match your request if you are in an area where there are volunteers.",
+      "Our platform is active nationwide; however, we are only able to best match your request if you are in an area where there are volunteers.",
     FAQs_Text6: "What if there are no volunteers in my area?",
     FAQs_Text7:
       "If your Community Bulletin does not show any volunteers, or if none of the volunteers listed in your area match your needs, we would be happy to suggest local resources instead. If interested, please email covaidco@gmail.com with your name, zip code, and how we can help (finding financial assistance, donated food, etc.).",

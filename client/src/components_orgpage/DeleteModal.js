@@ -17,9 +17,9 @@ import FormControl from "react-bootstrap/FormControl";
 
 export default function DeleteModal(props) {
   const [disabledbtn, setDisabledbtn] = useState(false);
-  
+
   async function deleteRes() {
-    if(disabledbtn) {
+    if (disabledbtn) {
       return;
     }
     setDisabledbtn(true);
@@ -34,40 +34,44 @@ export default function DeleteModal(props) {
       body: JSON.stringify(params),
     });
 
-    if(response.ok) {
-        alert("Resource successfully deleted!");
-        props.deleteResource(props.resource);
-        setDisabledbtn(false);
-        props.setDeleteModal(false);
-        props.setAdminModal(true);
-      } else {
-        alert("Resource did not delete successfully!");
-        setDisabledbtn(false);
-      }
-  }  
- 
-    return (
+    if (response.ok) {
+      alert("Resource successfully deleted!");
+      props.deleteResource(props.resource);
+      setDisabledbtn(false);
+      props.setDeleteModal(false);
+      props.setAdminModal(true);
+    } else {
+      alert("Resource did not delete successfully!");
+      setDisabledbtn(false);
+    }
+  }
+
+  return (
     <>
-        <Modal
+      <Modal
         size="md"
         show={props.deleteModal}
         onHide={() => {
-            props.setDeleteModal(false);
-            props.setAdminModal(true);
+          props.setDeleteModal(false);
+          props.setAdminModal(true);
         }}
         style={{ marginTop: 10, paddingBottom: 40 }}
-        >
+      >
         <Modal.Header closeButton>
-            <Modal.Title style={{ marginLeft: 5 }}>Are you sure you would like to delete this resource?</Modal.Title>
+          <Modal.Title style={{ marginLeft: 5 }}>
+            Are you sure you would like to delete this resource?
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Row>
+          <Row>
             <Col xs={6}>
-              <Button id="large-button" 
-                      onClick={() => {
-                        props.setDeleteModal(false);
-                        props.setAdminModal(true);
-                      }}>
+              <Button
+                id="large-button"
+                onClick={() => {
+                  props.setDeleteModal(false);
+                  props.setAdminModal(true);
+                }}
+              >
                 Don't delete
               </Button>
             </Col>
@@ -76,25 +80,25 @@ export default function DeleteModal(props) {
                 id="large-button"
                 disabled={disabledbtn}
                 style={{ backgroundColor: "#DB4B4B", borderColor: "#DB4B4B" }}
-                onClick={deleteRes}>
-                Delete 
+                onClick={deleteRes}
+              >
+                Delete
               </Button>
             </Col>
           </Row>
         </Modal.Body>
-        </Modal>
-
+      </Modal>
     </>
-);
+  );
 }
 
 DeleteModal.propTypes = {
-    association: PropTypes.object,
-    deleteModal: PropTypes.bool,
-    setDeleteModal: PropTypes.func,
-    setAssociation: PropTypes.func,
-    adminModal: PropTypes.bool,
-    setAdminModal: PropTypes.func,
-    deleteResource: PropTypes.func,
-    resource: PropTypes.array
+  association: PropTypes.object,
+  deleteModal: PropTypes.bool,
+  setDeleteModal: PropTypes.func,
+  setAssociation: PropTypes.func,
+  adminModal: PropTypes.bool,
+  setAdminModal: PropTypes.func,
+  deleteResource: PropTypes.func,
+  resource: PropTypes.array,
 };
