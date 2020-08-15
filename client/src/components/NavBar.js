@@ -32,7 +32,7 @@ export default function CovaidNavbar(props) {
   const [width, setWidth] = useState(window.innerWidth);
   const [modalName, setModalName] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [display_banner, setDisplayBanner] = useState(true);
+  const [displayBanner, setDisplayBanner] = useState(true);
   const [tab, setTab] = useState(0);
   const [dropToggle, setDropToggle] = useState(false);
 
@@ -186,6 +186,47 @@ export default function CovaidNavbar(props) {
         </span>
         <span id="view-banner" style={{ cursor: "pointer", fontWeight: 600 }}>
           Resources →
+        </span>
+      </Navbar>
+    );
+  };
+
+  const Donate = () => {
+    return (
+      <Navbar
+        id="donationbanner"
+      >
+        <span
+        onClick={() => window.open("https://www.gofundme.com/f/25wj3-covaid/donate?utm_source=widget&utm_medium=referral&utm_campaign=p_cp+share-sheet")}
+        >
+        <span 
+        style={{ cursor: "pointer", fontWeight: 600 }}
+        >
+          {width > 767
+            ? "100% of all donations go to site maintenance + those in need"
+            : "Please donate to keep covaid running!"}
+        </span>
+        <span id="view-banner" style={{ cursor: "pointer", fontWeight: 600 }}
+        >
+          GoFundMe →
+        </span>
+        </span>
+        <span id="close-banner" onClick={() => setDisplayBanner(false)}>
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+            shapeRendering="geometricPrecision"
+            style={{ color: "currentcolor" }}
+          >
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
         </span>
       </Navbar>
     );
@@ -441,6 +482,7 @@ export default function CovaidNavbar(props) {
   return (
     <>
       {/* {BLM()} */}
+      {displayBanner && Donate()}
       {mode === "volunteer" ? (
         <Navbar
           collapseOnSelect

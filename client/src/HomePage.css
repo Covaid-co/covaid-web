@@ -95,6 +95,20 @@
   z-index: 100;
 }
 
+#donationbanner {
+  width: 100%;
+  height: 40px;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  background-color: #2670ff;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-family: "Inter";
+  z-index: 100;
+}
+
 #view-banner:before {
   content: "";
   display: inline-block;
@@ -668,7 +682,7 @@
 }
 
 @media (max-width: 400px) {
-  #blmbanner {
+  #blmbanner, #donationbanner {
     height: 65px;
   }
 
