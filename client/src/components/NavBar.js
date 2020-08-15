@@ -193,23 +193,22 @@ export default function CovaidNavbar(props) {
 
   const Donate = () => {
     return (
-      <Navbar
-        id="donationbanner"
-      >
+      <Navbar id="donationbanner">
         <span
-        onClick={() => window.open("https://www.gofundme.com/f/25wj3-covaid/donate?utm_source=widget&utm_medium=referral&utm_campaign=p_cp+share-sheet")}
+          onClick={() =>
+            window.open(
+              "https://www.gofundme.com/f/25wj3-covaid/donate?utm_source=widget&utm_medium=referral&utm_campaign=p_cp+share-sheet"
+            )
+          }
         >
-        <span 
-        style={{ cursor: "pointer", fontWeight: 600 }}
-        >
-          {width > 767
-            ? "100% of all donations go to site maintenance + those in need"
-            : "Please donate to keep covaid running!"}
-        </span>
-        <span id="view-banner" style={{ cursor: "pointer", fontWeight: 600 }}
-        >
-          GoFundMe →
-        </span>
+          <span style={{ cursor: "pointer", fontWeight: 600 }}>
+            {width > 767
+              ? "100% of all donations go to site maintenance + those in need"
+              : "Please donate to keep covaid running!"}
+          </span>
+          <span id="view-banner" style={{ cursor: "pointer", fontWeight: 600 }}>
+            GoFundMe →
+          </span>
         </span>
         <span id="close-banner" onClick={() => setDisplayBanner(false)}>
           <svg

@@ -682,7 +682,8 @@
 }
 
 @media (max-width: 400px) {
-  #blmbanner, #donationbanner {
+  #blmbanner,
+  #donationbanner {
     height: 65px;
   }
 

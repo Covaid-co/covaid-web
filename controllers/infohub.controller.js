@@ -11,7 +11,6 @@ exports.handleCreateResource = asyncWrapper(async (req, res) => {
   } = req;
 
   try {
-
     const newResource = await InfoHubService.createResource(resource);
     return newResource._id === null
       ? res.sendStatus(500)
@@ -50,11 +49,13 @@ exports.deleteResource = function (req, res) {
  */
 exports.updateResource = function (req, res) {
   const id = req.body.resourceID;
-  Resources.findByIdAndUpdate(id, { $set: req.body.updates }, { new: true }, function (
-    err,
-    resource
-  ) {
-    if (err) return next(err);
-    res.send(resource);
-  });
+  Resources.findByIdAndUpdate(
+    id,
+    { $set: req.body.updates },
+    { new: true },
+    function (err, resource) {
+      if (err) return next(err);
+      res.send(resource);
+    }
+  );
 };
