@@ -20,9 +20,9 @@ import "./InformationHub.css";
  */
 
 export default function InformationHub(props) {
-  const [locationString, setLocationString] = useState('');
-  const [assocID, setAssocID] = useState('');
-  const [assocName, setAssocName] = useState('');
+  const [locationString, setLocationString] = useState("");
+  const [assocID, setAssocID] = useState("");
+  const [assocName, setAssocName] = useState("");
   useEffect(() => {}, []);
 
   const handleSubmit = (e) => {
@@ -39,7 +39,7 @@ export default function InformationHub(props) {
             setAssocName(res.name);
             setAssocID(res._id);
           }
-        })
+        });
       }
     });
   };
@@ -97,7 +97,7 @@ export default function InformationHub(props) {
               </InputGroup>
             </Form>
           </Col>
-          <Col xs={1} sm={3} md={3} lg={6}></Col> 
+          <Col xs={1} sm={3} md={3} lg={6}></Col>
         </Row>
         <Row>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
@@ -105,7 +105,7 @@ export default function InformationHub(props) {
             <InformationSection
               sectionID={assocID}
               sectionName={"Shared by " + assocName}
-              mode={'assoc'}
+              mode={"assoc"}
             />
           </Col>
           <Col xs={1} sm={1} md={1} lg={2}></Col>

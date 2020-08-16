@@ -84,13 +84,13 @@ const validate_email_accessibility = async (email) => {
   return result.length === 0;
 };
 
-const setPassword = exports.setPassword = (admin, plainTextPassword) => {
+const setPassword = (exports.setPassword = (admin, plainTextPassword) => {
   var salty = getSalt();
   admin.password = {
     salt: salty,
     hash: getHash(plainTextPassword, salty),
   };
-};
+});
 
 const getSalt = () => {
   return crypto.randomBytes(16).toString("hex");

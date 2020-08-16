@@ -32,7 +32,7 @@ export default function ResetAssociationAdminPassword(props) {
       setVerified(VERIFICATION_STATUS.VERIFIED);
     } else {
       setVerified(VERIFICATION_STATUS.EXPIRED);
-      console.log("found expired")
+      console.log("found expired");
     }
   };
 

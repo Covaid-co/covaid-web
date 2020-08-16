@@ -13,9 +13,9 @@ import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { generateURL } from "../Helpers";
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 
 import ResourceModal from "./ResourceModal";
 import EditModal from "./EditModal";
@@ -194,7 +194,7 @@ export default function AdminModal(props) {
   };
 
   const getResourceHeight = () => {
-    const resourceLength = resources.length
+    const resourceLength = resources.length;
     return Math.min(resourceLength * 95, 300);
   };
 
@@ -203,7 +203,7 @@ export default function AdminModal(props) {
   };
 
   const editResourceList = (resource) => {
-    var i = resources.findIndex(r => r._id == resource._id);
+    var i = resources.findIndex((r) => r._id == resource._id);
     var currResources = [...resources];
     currResources[i] = resource;
     setResources(currResources);
@@ -211,7 +211,9 @@ export default function AdminModal(props) {
 
   const deleteResource = (resource) => {
     var currResources = [...resources];
-    currResources = currResources.filter((currResource) => currResource._id !== resource._id);
+    currResources = currResources.filter(
+      (currResource) => currResource._id !== resource._id
+    );
     setResources(currResources);
   };
 
@@ -226,7 +228,7 @@ export default function AdminModal(props) {
       const jsonData = await response.json();
 
       setResources(jsonData);
-    } 
+    }
     getAssociationResources();
   }, []);
 
@@ -332,11 +334,13 @@ export default function AdminModal(props) {
         <Modal.Body>
           <Row>
             <Col xs={6}>
-              <Button id="large-button" 
-                      onClick={() => {
-                        setResourceModal(true);
-                        props.setAdminModal(false);
-                      }}>
+              <Button
+                id="large-button"
+                onClick={() => {
+                  setResourceModal(true);
+                  props.setAdminModal(false);
+                }}
+              >
                 New Resource
               </Button>
             </Col>
@@ -344,43 +348,72 @@ export default function AdminModal(props) {
         </Modal.Body>
 
         <Modal.Header>
-          <Modal.Title style={{ marginLeft: 5 }}>Uploaded Resources</Modal.Title>
+          <Modal.Title style={{ marginLeft: 5 }}>
+            Uploaded Resources
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ paddingTop: 0 }}>
           <Row>
             <Col xs={12}>
               <ListGroup
-                  variant="flush"
-                  style={{ overflowY: "scroll", height: getResourceHeight() }}
-                >
-                  {resources ? (
+                variant="flush"
+                style={{ overflowY: "scroll", height: getResourceHeight() }}
+              >
+                {resources ? (
                   resources.map((resource, i) => {
                     return (
-                      <ListGroup.Item style={{ height: 95}} key={i}>
-                        <h5 id="volunteer-name" style={{ position: "relative"}}>{resource.name}
-                        <span style={{float: "right"}}>
-                          <IconButton aria-label="edit">
-                            <EditIcon fontSize="small" style={{ position: "absolute", fill: "#7f7f7f"}} 
-                                      onClick={() => {
-                                        setEditResource(resource);
-                                        setEditModal(true);
-                                        props.setAdminModal(false); 
-                                      }}/>
-                          </IconButton>
-                          <IconButton aria-label="delete">
-                            <DeleteIcon fontSize="small" style={{ position: "absolute", fill: "#7f7f7f"}} 
-                                        onClick={() => {
-                                          setDeletedResource(resource);
-                                          setDeleteModal(true);
-                                          props.setAdminModal(false); 
-                                        }}/>
-                          </IconButton>
-                        </span>
+                      <ListGroup.Item style={{ height: 95 }} key={i}>
+                        <h5
+                          id="volunteer-name"
+                          style={{ position: "relative" }}
+                        >
+                          {resource.name}
+                          <span style={{ float: "right" }}>
+                            <IconButton aria-label="edit">
+                              <EditIcon
+                                fontSize="small"
+                                style={{
+                                  position: "absolute",
+                                  fill: "#7f7f7f",
+                                }}
+                                onClick={() => {
+                                  setEditResource(resource);
+                                  setEditModal(true);
+                                  props.setAdminModal(false);
+                                }}
+                              />
+                            </IconButton>
+                            <IconButton aria-label="delete">
+                              <DeleteIcon
+                                fontSize="small"
+                                style={{
+                                  position: "absolute",
+                                  fill: "#7f7f7f",
+                                }}
+                                onClick={() => {
+                                  setDeletedResource(resource);
+                                  setDeleteModal(true);
+                                  props.setAdminModal(false);
+                                }}
+                              />
+                            </IconButton>
+                          </span>
                         </h5>
-                        <p id="regular-text" style={{ marginBottom: 0, color: '#2670FF'}}>
+                        <p
+                          id="regular-text"
+                          style={{ marginBottom: 0, color: "#2670FF" }}
+                        >
                           {resource.url}
                         </p>
-                        <p id="regular-text" style={{ marginBottom: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                        <p
+                          id="regular-text"
+                          style={{
+                            marginBottom: 0,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
                           {resource.description}
                         </p>
                       </ListGroup.Item>
@@ -389,11 +422,10 @@ export default function AdminModal(props) {
                 ) : (
                   <></>
                 )}
-                </ListGroup>
+              </ListGroup>
             </Col>
           </Row>
         </Modal.Body>
-
       </Modal>
 
       <Modal
@@ -445,7 +477,6 @@ export default function AdminModal(props) {
         </Modal.Body>
       </Modal>
 
-
       <ResourceModal
         resourceModal={resourceModal}
         setResourceModal={setResourceModal}
@@ -477,10 +508,7 @@ export default function AdminModal(props) {
         deleteResource={deleteResource}
         resource={deletedResource}
       />
-
     </>
-
-
   );
 }
 

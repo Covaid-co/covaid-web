@@ -114,7 +114,7 @@ export default function AboutUs(props) {
     "Ricky Chen": {
       link: "https://www.linkedin.com/in/ricky-chen-bb8106190/",
       image: Ricky,
-    }
+    },
   };
 
   const names = Object.keys(peoples);

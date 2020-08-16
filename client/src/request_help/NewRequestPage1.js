@@ -211,7 +211,7 @@ export default function NewRequestPage1(props) {
         time. Any purchases made by volunteers must be reimbursed.
       </p>
     );
-  } 
+  }
 
   return (
     <>
