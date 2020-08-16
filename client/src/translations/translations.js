@@ -236,6 +236,10 @@ const translations = {
     Prioritize2: "BIPOC, elderly, immunocompromised, or of veteran status.",
     Prioritize3:
       "Please check here if you identify with any of these so we can prioritize your request.",
+    SubmitRequestMsg: "Our team will get back to you as soon as we can. Thank you for trusting Covaid with your needs.", 
+    PghMessage1: "Thanks for submitting a request to Pgh Mutual Aid. We're getting a lot of requests right now, so it may take us up to a week to reach back out to you. If you need support more immediately, click ", 
+    PghMessage2: "here", 
+    PghMessage3: " for other local resources that may be able to connect sooner. Take good care.", 
   },
   es: {
     intro1:
@@ -481,6 +485,10 @@ const translations = {
     Prioritize2: "BIPOC, ancianos, inmunocomprometidos o veteranos.",
     Prioritize3:
       "Marque aquí si se identifica con alguno de estos para que podamos priorizar su solicitud.",
+    SubmitRequestMsg: "Nuestro equipo se pondrá en contacto contigo lo antes posible. Gracias por confiar en Covaid para sus necesidades.", 
+    PghMessage1: "Gracias por enviar una solicitud a Pgh Mutual Aid. Estamos recibiendo muchas solicitudes en este momento, por lo que nos puede llevar hasta una semana comunicarnos contigo. Si necesita ayuda de forma más inmediata, haga clic en ", 
+    PghMessage2: "aquí", 
+    PghMessage3: " para otros recursos locales que puedan conectarse antes. Cuídate bien.", 
   },
 };
 export { translations };

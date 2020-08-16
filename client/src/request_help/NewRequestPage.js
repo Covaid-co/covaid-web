@@ -203,16 +203,15 @@ export default function NewRequestPage(props) {
           <p id="title">You're Done!</p>
           { props.org != "pitt" && (
               <p id="info">
-                Our team will get back to you as soon as we can. Thank you for
-                trusting Covaid with your needs.
+                {translatedStrings[props.language].SubmitRequestMsg}
               </p>
             )
           }
           { props.org === "pitt" && (
-              <p id="info">Thanks for submitting a request to Pgh Mutual Aid. We're getting a lot of requests right now, 
-                so it may take us up to a week to reach back out to you. If you need support more immediately, 
-                click <a href="https://www.pittsburghmutualaid.com/resources">here</a> for other local resources that may be able 
-                to connect sooner. Take good care.
+              <p id="info">
+                {translatedStrings[props.language].PghMessage1}
+                <a href="https://www.pittsburghmutualaid.com/resources">{translatedStrings[props.language].PghMessage2}</a>
+                {translatedStrings[props.language].PghMessage3}
               </p>
             )
           }
