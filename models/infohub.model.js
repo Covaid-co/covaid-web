@@ -23,7 +23,7 @@ let ResourceSchema = new Schema({
   description: { type: String, require: true },
   mediaType: { type: Number, required: false },
   sectionID: { type: Number, required: false },
-  associationID: {type: String, required: false}
+  associationID: { type: String, required: false },
 });
 
 module.exports = mongoose.model("Resources", ResourceSchema);

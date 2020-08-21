@@ -127,7 +127,7 @@ export default function CurrentVolunteerRequests(props) {
                 }}
               >
                 <p style={{ float: "left", marginBottom: 0 }} id="regular-text">
-                  Needed by: {request.request_info.date}
+                  Date created: {request.request_info.date}
                 </p>
               </div>
             </ListGroup.Item>
@@ -177,7 +177,7 @@ export default function CurrentVolunteerRequests(props) {
                 }}
               >
                 <p style={{ float: "left", marginBottom: 0 }} id="regular-text">
-                  Needed by: {request.request_info.date}
+                  Date created: {request.request_info.date}
                 </p>
               </div>
             </ListGroup.Item>

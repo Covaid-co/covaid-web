@@ -46,6 +46,7 @@ export default function BestMatches(props) {
   const [selectedVolunteers, setSelectedVolunteers] = useState([]);
   const [volunteer_count, setVolunteerCount] = useState(0);
   const [statistics, setStatistics] = useState();
+  const [carSelected, setCarSelected] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     adminMessage: "",
   });
@@ -97,6 +98,25 @@ export default function BestMatches(props) {
   const closeConfirmPage = () => {
     props.setTopMatchesModal(true);
     setConfirmModal(false);
+  };
+
+  const displaySwitch = () => {
+    return (
+      <Form.Group
+        controlId="preverify"
+        bssize="large"
+        style={{ marginBottom: 0, marginTop: 2 }}
+      >
+        <Form.Check
+          type="switch"
+          id="custom-switch-2"
+          style={{ color: "#2670FF", fontSize: 14 }}
+          label={carSelected ? "Show only drivers" : "Show only drivers"}
+          checked={carSelected}
+          onChange={handleToggleCar}
+        />
+      </Form.Group>
+    );
   };
 
   const handleVolunteerClick = (volunteer) => {
@@ -178,11 +198,33 @@ export default function BestMatches(props) {
       });
   };
 
+  const handleToggleCar = () => {
+    const unselected = unSelectedVolunteers(
+      props.currRequest,
+      props.volunteers,
+      strict,
+      !carSelected
+    );
+    setCarSelected(!carSelected);
+    setUnselectedVolunteers(unselected);
+    setFilteredVolunteers(unselected);
+    setQuery("");
+    var list = [];
+    unselected.forEach((volunteer) => {
+      list.push(volunteer._id);
+    });
+    notified_volunteers.forEach((volunteer) => {
+      list.push(volunteer._id);
+    });
+    fetch_statistics(list);
+  };
+
   const changeStrict = () => {
     const unselected = unSelectedVolunteers(
       props.currRequest,
       props.volunteers,
-      !strict
+      !strict,
+      carSelected
     );
     setUnselectedVolunteers(unselected);
     setFilteredVolunteers(unselected);
@@ -264,6 +306,7 @@ export default function BestMatches(props) {
                       onChange={changeStrict}
                     />
                   </Form.Group>
+                  {displaySwitch()}
                 </Form>
               </Modal.Title>
             </Col>

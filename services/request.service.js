@@ -372,9 +372,9 @@ exports.matchVolunteers = async function (requestID, volunteers, adminMessage) {
       // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
       messages.push({
         to: pushToken,
-        sound: 'default',
-        body: 'You\'ve been matched to a request',
-      })
+        sound: "default",
+        body: "You've been matched to a request",
+      });
     }
 
     let chunks = expo.chunkPushNotifications(messages);
