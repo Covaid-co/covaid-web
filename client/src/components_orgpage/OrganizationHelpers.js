@@ -46,7 +46,7 @@ const parseByType = (type, request) => {
   } else if (type === "Completed Method") {
     return request.status.completed_reason && request.status.current_status == 2
       ? request.status.completed_reason
-      : "NA";
+      : "No reason selected";
   } else {
     return new Date(request.time_posted);
   }
