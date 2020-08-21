@@ -142,7 +142,6 @@ export default function ProfileHeader(props) {
                 id="small-button"
                 onClick={() => {
                   props.setShowAccountModal(true);
-                  alert(assoc);
                 }}
               >
                 Edit Profile

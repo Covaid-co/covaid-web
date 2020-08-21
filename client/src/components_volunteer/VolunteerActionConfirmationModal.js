@@ -120,6 +120,23 @@ export default function VolunteerActionConfirmationModal(props) {
           </Form.Group>
         </>
       );
+    } else if (action === "reject") {
+      return (
+        <>
+          <h5 id="regular-text-bold" style={{ marginTop: 0, marginBottom: 5 }}>
+            Why are you rejecting this request?
+          </h5>
+          <Form.Group controlId="comment" bssize="large">
+            <Form.Control
+              value={fields.comment}
+              onChange={handleFieldChange}
+              as="textarea"
+              rows="2"
+              placeholder="Leaving some details here will allow us to match you with a better fitting request next time."
+            />
+          </Form.Group>
+        </>
+      );
     } else {
       return <></>;
     }
