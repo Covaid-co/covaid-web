@@ -14,7 +14,7 @@ import {
   isInPending,
 } from "./OrganizationHelpers";
 import { convertTime } from "../Helpers";
-import { sort_types, current_tab } from "../constants";
+import { sort_types, sort_types_completed, current_tab } from "../constants";
 
 /*
  * All Requests component
@@ -157,13 +157,23 @@ export default function OrgRequests(props) {
 
   // Possible dropdown names
   const displayDropdownItems = () => {
-    return sort_types.map((type, i) => {
-      return (
-        <Dropdown.Item key={i} onClick={() => sortRequests(type)}>
-          {type}
-        </Dropdown.Item>
-      );
-    });
+    if (props.mode === current_tab.COMPLETED) {
+      return sort_types_completed.map((type, i) => {
+        return (
+          <Dropdown.Item key={i} onClick={() => sortRequests(type)}>
+            {type}
+          </Dropdown.Item>
+        );
+      });
+    } else {
+      return sort_types.map((type, i) => {
+        return (
+          <Dropdown.Item key={i} onClick={() => sortRequests(type)}>
+            {type}
+          </Dropdown.Item>
+        );
+      });
+    }
   };
 
   return (

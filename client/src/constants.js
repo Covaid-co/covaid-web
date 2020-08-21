@@ -123,3 +123,12 @@ export const sort_types = [
   "Time Posted",
   "Admin",
 ];
+
+export const sort_types_completed = [
+  "Name",
+  "Date created",
+  "Last Updated",
+  "Time Posted",
+  "Admin",
+  "Completed Reason",
+];
