@@ -54,9 +54,7 @@ export default function AcceptedRequestInfo(props) {
         >
           Date created:
         </h5>
-        <p id="request-info">
-          {props.currRequest.date}
-        </p>
+        <p id="request-info">{props.currRequest.date}</p>
         <Row style={{ marginTop: 15 }}>
           <Col xs={6} style={{ padding: 0, paddingLeft: 15 }}>
             <Button

@@ -43,6 +43,10 @@ const parseByType = (type, request) => {
     return request.admin_info.assignee && request.admin_info.assignee.length > 0
       ? request.admin_info.assignee
       : "No one assigned";
+  } else if (type === "Completed Method") {
+    return request.status.completed_reason && request.status.current_status == 2
+      ? request.status.completed_reason
+      : "No reason selected";
   } else {
     return new Date(request.time_posted);
   }
