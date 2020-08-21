@@ -159,7 +159,7 @@ export default function OrgRequests(props) {
   const displayDropdownItems = () => {
     if (props.mode === current_tab.COMPLETED) {
       let sort_types_completed = sort_types.slice();
-      sort_types_completed.push("Completed Reason");
+      sort_types_completed.push("Completed Method");
       return sort_types_completed.map((type, i) => {
         return (
           <Dropdown.Item key={i} onClick={() => sortRequests(type)}>
