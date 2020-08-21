@@ -12,6 +12,7 @@ import fetch_a from "../util/fetch_auth";
 
 export default function ProfileHeader(props) {
   const [association, setAssociation] = useState("");
+  const [assoc, setAssoc] = useState(""); 
   const [image, setImage] = useState(
     "https://www.csfences.com/wp-content/uploads/2016/08/profile-placeholder.jpg"
   );
@@ -58,8 +59,37 @@ export default function ProfileHeader(props) {
     if (props.user.association_name && props.user.association_name.length > 0) {
       setAssociation(props.user.association_name);
     }
+
+    // get the mutual aid group info from user location 
+    // alert(props.user.latlong);
+    getAssocObject(); 
+
+    console.log("done")
+
     fetchProfilePic(props.user._id);
   }, [props.user]);
+
+  async function getAssocObject() {
+    let params = { latitude: props.user.latlong[0], longitude: props.user.latlong[1] };
+    const url = generateURL("/api/association/get_assoc/lat_long?", params);
+
+    fetch_a("token", url, { // TODO: figure out why data isn't being obtained
+      method: "get",
+    })
+      .then((response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            setAssoc(data); 
+            console.log(JSON.stringify(data)); 
+          });
+        } else {
+          console.log("Error");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
 
   return (
     <>
@@ -112,6 +142,7 @@ export default function ProfileHeader(props) {
                 id="small-button"
                 onClick={() => {
                   props.setShowAccountModal(true);
+                  alert(assoc);
                 }}
               >
                 Edit Profile
