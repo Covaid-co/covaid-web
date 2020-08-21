@@ -201,10 +201,20 @@ export default function NewRequestPage(props) {
       return (
         <>
           <p id="title">You're Done!</p>
-          <p id="info">
-            Our team will get back to you as soon as we can. Thank you for
-            trusting Covaid with your needs.
-          </p>
+          { props.org != "pitt" && (
+              <p id="info">
+                {translatedStrings[props.language].SubmitRequestMsg}
+              </p>
+            )
+          }
+          { props.org === "pitt" && (
+              <p id="info">
+                {translatedStrings[props.language].PghMessage1}
+                <a href="https://www.pittsburghmutualaid.com/resources">{translatedStrings[props.language].PghMessage2}</a>
+                {translatedStrings[props.language].PghMessage3}
+              </p>
+            )
+          }
           <Button
             id="large-button"
             style={{ marginTop: 20 }}

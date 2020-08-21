@@ -84,7 +84,7 @@ export default function OrgRequests(props) {
     } else if (temp_sortType === "Time Posted") {
       formatted_time = convertTime(request.time_posted);
     } else {
-      temp_sortType = "Needed by";
+      temp_sortType = "Date created";
     }
     return (
       <p
