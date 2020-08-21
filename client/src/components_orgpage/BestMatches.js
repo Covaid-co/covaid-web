@@ -316,7 +316,7 @@ export default function BestMatches(props) {
                   <Form.Control
                     id="filter-requests"
                     value={currQuery}
-                    placeholder="Search by name or neighborhood"
+                    placeholder="Search by name, neighborhood, or details"
                     onChange={filterRequests}
                   />
                 </Form.Group>

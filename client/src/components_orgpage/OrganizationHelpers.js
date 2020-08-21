@@ -64,6 +64,9 @@ export const filterVolunteers = (query, volunteers) => {
   var filtered = volunteers;
   if (!(!query || query === "")) {
     filtered = filtered.filter((volunteer) => {
+      const description = volunteer.offer['details'];
+      console.log(description)
+      console.log(JSON.stringify(volunteer.offer['details'])); 
       var firstNameMatch = String(
         volunteer.first_name.toLowerCase()
       ).startsWith(query);
@@ -74,6 +77,7 @@ export const filterVolunteers = (query, volunteers) => {
       var phoneMatch = volunteer.phone
         ? String(volunteer.phone.toLowerCase()).startsWith(query)
         : false;
+      var descriptionMatch = String(volunteer.offer.details).includes(query); // TODO: figure out why toLowerCase doesn't work here 
       // for (var i = 0; i < volunteer.offer.tasks.length; i++) {
       //     if (String(volunteer.offer.tasks[i]).toLowerCase().startsWith(query)) {
       //         return true;
@@ -88,7 +92,7 @@ export const filterVolunteers = (query, volunteers) => {
           return true;
         }
       }
-      return firstNameMatch || lastNameMatch || emailMatch || phoneMatch;
+      return firstNameMatch || lastNameMatch || emailMatch || descriptionMatch || phoneMatch;
     });
   }
   filtered.sort(function (a, b) {
