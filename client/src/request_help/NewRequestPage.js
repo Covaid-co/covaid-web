@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
-
+import { generateURL } from "../Helpers";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -29,6 +29,7 @@ export default function NewRequestPage(props) {
   const [first_page, setFirstPage] = useState({});
   const [second_page, setSecondPage] = useState({});
   const [step_num, setStepNum] = useState(0);
+  const [resources, setResources] = useState([]);
 
   useEffect(() => {
     if (props.googleApiKey !== "") {
@@ -48,6 +49,17 @@ export default function NewRequestPage(props) {
       props.association._id.length > 0
     );
   };
+  async function getResources() {
+    let params = { isPublic: true };
+
+    var url = generateURL("/api/infohub/?", params);
+
+    const response = await fetch(url);
+
+    const jsonData = await response.json();
+
+    setResources(jsonData);
+  }
 
   const submitRequest = () => {
     var assoc_id = associationExists()
@@ -89,6 +101,7 @@ export default function NewRequestPage(props) {
       .then((response) => {
         if (response.ok) {
           setStepNum(3);
+          getResources();
         }
       })
       .catch((e) => {
@@ -276,7 +289,38 @@ export default function NewRequestPage(props) {
         </>
       );
     }
-    return <></>;
+    return (
+      <Container id="grid-container">
+        {resources.map((resource, i) => {
+          return (
+            <a
+              href={resource.url}
+              target="_blank"
+              style={{ textDecoration: "none" }}
+            >
+              <Container id="link-container">
+                <p id="link-title">{resource.name}</p>
+                {(() => {
+                  if (resource.name.length < 21) {
+                    return (
+                      <div id="link-description-box1">
+                        <p id="link-description">{resource.description}</p>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div id="link-description-box2">
+                        <p id="link-description">{resource.description}</p>
+                      </div>
+                    );
+                  }
+                })()}
+              </Container>
+            </a>
+          );
+        })}
+      </Container>
+    );
   };
 
   return (
