@@ -20,6 +20,7 @@ export default function ResourceModal(props) {
     url: "",
     name: "",
     description: "",
+    isPublic: true, 
   });
   const [disabledbtn, setDisabledbtn] = useState(false);
   const [charsLeft, setCharsLeft] = useState(100);
@@ -141,6 +142,27 @@ export default function ResourceModal(props) {
               whiteSpace: "nowrap",
             }}
           >
+            <Form.Group
+              controlId="isPublic"
+              bssize="large"
+              style={{ marginBottom: 0, marginTop: -5 }}
+            >
+              <Form.Check
+                value = {fields.isPublic}
+                type="switch"
+                id="custom-switch"
+                style={{ color: "#7F7F7F", fontSize: 14 }}
+                label={
+                  fields.isPublic ? "Public" : "Private"
+                }
+                checked={
+                  fields.isPublic
+                    ? true
+                    : false
+                }
+                onChange={handleFieldChange}
+              />
+            </Form.Group>
             <Form.Group controlId="name" bssize="large">
               <FormControl
                 value={fields.name}
