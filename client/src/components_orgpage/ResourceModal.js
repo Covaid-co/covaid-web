@@ -20,8 +20,8 @@ export default function ResourceModal(props) {
     url: "",
     name: "",
     description: "",
-    isPublic: true, 
   });
+  const [isPublic, setIsPublic] = useState(false); 
   const [disabledbtn, setDisabledbtn] = useState(false);
   const [charsLeft, setCharsLeft] = useState(100);
 
@@ -78,7 +78,7 @@ export default function ResourceModal(props) {
         name: fields.name,
         description: fields.description,
         associationID: props.association._id,
-        isPublic: true,
+        isPublic: isPublic,
       },
     };
 
@@ -97,6 +97,7 @@ export default function ResourceModal(props) {
       fields.url = "";
       fields.name = "";
       fields.description = "";
+      isPublic = false;
       props.setResourceModal(false);
       props.setAdminModal(true);
     } else {
@@ -148,19 +149,19 @@ export default function ResourceModal(props) {
               style={{ marginBottom: 0, marginTop: -5 }}
             >
               <Form.Check
-                value = {fields.isPublic}
+                value = {isPublic}
                 type="switch"
                 id="custom-switch"
                 style={{ color: "#7F7F7F", fontSize: 14 }}
                 label={
-                  fields.isPublic ? "Public" : "Private"
+                  isPublic ? "Public" : "Private"
                 }
                 checked={
-                  fields.isPublic
+                  isPublic
                     ? true
                     : false
                 }
-                onChange={handleFieldChange}
+                onChange={() => {setIsPublic(!isPublic)}}
               />
             </Form.Group>
             <Form.Group controlId="name" bssize="large">
