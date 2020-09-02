@@ -77,6 +77,7 @@ export default function ResourceModal(props) {
         name: fields.name,
         description: fields.description,
         associationID: props.association._id,
+        isPublic: true,
       },
     };
 

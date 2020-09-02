@@ -201,20 +201,20 @@ export default function NewRequestPage(props) {
       return (
         <>
           <p id="title">You're Done!</p>
-          { props.org != "pitt" && (
-              <p id="info">
-                {translatedStrings[props.language].SubmitRequestMsg}
-              </p>
-            )
-          }
-          { props.org === "pitt" && (
-              <p id="info">
-                {translatedStrings[props.language].PghMessage1}
-                <a href="https://www.pittsburghmutualaid.com/resources">{translatedStrings[props.language].PghMessage2}</a>
-                {translatedStrings[props.language].PghMessage3}
-              </p>
-            )
-          }
+          {props.org != "pitt" && (
+            <p id="info">
+              {translatedStrings[props.language].SubmitRequestMsg}
+            </p>
+          )}
+          {props.org === "pitt" && (
+            <p id="info">
+              {translatedStrings[props.language].PghMessage1}
+              <a href="https://www.pittsburghmutualaid.com/resources">
+                {translatedStrings[props.language].PghMessage2}
+              </a>
+              {translatedStrings[props.language].PghMessage3}
+            </p>
+          )}
           <Button
             id="large-button"
             style={{ marginTop: 20 }}
