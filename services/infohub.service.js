@@ -21,6 +21,7 @@ exports.createResource = async function (resource) {
       sectionID: resource.sectionID,
       associationID: resource.associationID,
       isPublic: resource.isPublic,
+      categories: resource.categories,
     };
     let savedResource = await InfoHubRepository.createResource(
       constructedResource
