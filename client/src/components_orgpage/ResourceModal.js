@@ -97,7 +97,7 @@ export default function ResourceModal(props) {
       fields.url = "";
       fields.name = "";
       fields.description = "";
-      isPublic = false;
+      setIsPublic(false);
       props.setResourceModal(false);
       props.setAdminModal(true);
     } else {

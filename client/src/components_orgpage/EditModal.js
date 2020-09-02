@@ -12,6 +12,7 @@ export default function EditModal(props) {
     name: props.resource.name,
     description: props.resource.description,
   });
+  const [isPublic, setIsPublic] = useState(false); 
   const [disabledbtn, setDisabledbtn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -68,6 +69,7 @@ export default function EditModal(props) {
         url: fields.url,
         name: fields.name,
         description: fields.description,
+        isPublic: isPublic, 
       },
     };
 
@@ -100,6 +102,7 @@ export default function EditModal(props) {
       fields.url = props.resource.url;
       fields.name = props.resource.name;
       fields.description = props.resource.description;
+      setIsPublic(props.resource.isPublic); 
     }
   }, [props.resource]);
 
@@ -130,6 +133,27 @@ export default function EditModal(props) {
                 whiteSpace: "nowrap",
               }}
             >
+              <Form.Group
+              controlId="isPublic"
+              bssize="large"
+              style={{ marginBottom: 0, marginTop: -5 }}
+            >
+              <Form.Check
+                value = {isPublic}
+                type="switch"
+                id="custom-switch"
+                style={{ color: "#7F7F7F", fontSize: 14 }}
+                label={
+                  isPublic ? "Public" : "Private"
+                }
+                checked={
+                  isPublic
+                    ? true
+                    : false
+                }
+                onChange={() => {setIsPublic(!isPublic)}}
+              />
+            </Form.Group>
               <Form.Group controlId="name" bssize="large">
                 <FormControl
                   value={fields.name}
