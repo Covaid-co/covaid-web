@@ -197,7 +197,7 @@ export default function CovaidNavbar(props) {
         <span
           onClick={() =>
             window.open(
-              "https://www.gofundme.com/f/25wj3-covaid/donate?utm_source=widget&utm_medium=referral&utm_campaign=p_cp+share-sheet"
+              "https://gf.me/u/ywafkq"
             )
           }
         >
