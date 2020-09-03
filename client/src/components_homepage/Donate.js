@@ -56,7 +56,7 @@ export default function Donate(props) {
               <embed
                 height="250px"
                 width="100%"
-                src="https://www.gofundme.com/mvc.php?route=widgets/mediawidget&fund=25wj3-covaid&coinfo=1"
+                src = "https://www.gofundme.com/f/mp4dyh-covaid/widget/medium/"
                 type="text/html"
               ></embed>
             </Col>
