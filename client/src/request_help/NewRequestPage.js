@@ -50,7 +50,10 @@ export default function NewRequestPage(props) {
     );
   };
   async function getResources() {
-    let params = { isPublic: true };
+    var assoc_id = associationExists()
+      ? props.association._id
+      : "5e88cf8a6ea53ef574d1b80c";
+    let params = { isPublic: true, associationID: assoc_id };
 
     var url = generateURL("/api/infohub/?", params);
 
