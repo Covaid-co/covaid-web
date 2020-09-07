@@ -14,7 +14,7 @@ import { currURL } from "../constants";
 export default function Footer(props) {
   const history = useHistory();
   const [showModal, setShowModal] = useState(false);
-  //const [showPolicyModal, setShowPolicyModal] = useState(false); 
+  //const [showPolicyModal, setShowPolicyModal] = useState(false);
   const [modalName, setModalName] = useState("");
 
   const getCurrentModal = () => {
@@ -32,9 +32,9 @@ export default function Footer(props) {
       );
     } else if (modalName === "privacy_policy") {
       modal = (
-        <PrivacyPolicy 
-          showModal={showModal} 
-          hideModal={() => setShowModal(false)} 
+        <PrivacyPolicy
+          showModal={showModal}
+          hideModal={() => setShowModal(false)}
         />
       );
     }

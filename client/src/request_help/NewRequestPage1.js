@@ -24,6 +24,7 @@ import { setFalseObj, extractTrueObj } from "../Helpers";
 
 export default function NewRequestPage1(props) {
   const [isCovaid, setIsCovaid] = useState(false);
+  const [isBaltimore, setIsBaltimore] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [selectedPayment, setSelectedIndex] = useState(2);
@@ -54,6 +55,9 @@ export default function NewRequestPage1(props) {
       resourcesFromAssoc = props.currentAssoc.resources;
     } else {
       setIsCovaid(true);
+    }
+    if (props.currentAssoc.name === "Baltimore Mutual Aid") {
+      setIsBaltimore(true);
     }
     var temp_resources = setFalseObj(resourcesFromAssoc);
 
@@ -103,6 +107,77 @@ export default function NewRequestPage1(props) {
   //     </>
   //   );
   // }
+
+  if (isBaltimore) {
+    return (
+      <>
+        <h5 id="title-light" style={{ marginBottom: 30 }}>
+          We are currently not processing requests in Baltimore. Below are some
+          useful COVID-19 related resources.
+        </h5>
+        <h5 id="title-light" style={{ marginBottom: 10, fontSize: 14 }}>
+          For information about the Coronavirus in Baltimore, testing sites, and
+          resources from the Baltimore City Health Department, click
+          <a href="https://coronavirus.baltimorecity.gov/">
+           &nbsp;here
+          </a>
+          .
+        </h5>
+        <h5 id="title-light" style={{ marginBottom: 10, fontSize: 14 }}>
+          To speak with a Social Worker or get referred to organizations
+          offering a variety of resources, including emergency funds, call 211
+          or click <a href="https://211md.org/">here</a>.
+        </h5>
+        <h5 id="title-light" style={{ marginBottom: 10, fontSize: 14 }}>
+          For a list of food distribution sites, or to sign up for home food
+          delivery, click
+          <a href="https://coronavirus.baltimorecity.gov/food-distribution-sites">
+            &nbsp;here
+          </a>
+          .
+        </h5>
+        <h5 id="title-light" style={{ marginBottom: 10, fontSize: 14 }}>
+          For a list of food distribution sites, or to sign up for home food
+          delivery, click
+          <a href="https://coronavirus.baltimorecity.gov/food-distribution-sites">
+            &nbsp;here
+          </a>
+          .
+        </h5>
+        <h5 id="title-light" style={{ marginBottom: 10, fontSize: 14 }}>
+          To apply for SNAP (food stamps) or Temporary Cash Assistance
+          (welfare), click
+          <a href="https://mydhrbenefits.dhr.state.md.us/dashboardClient/">
+            &nbsp;here
+          </a>
+          .
+        </h5>
+        <h5 id="title-light" style={{ marginBottom: 10, fontSize: 14 }}>
+          To apply for emergency cash assistance to help cover rent, utilities,
+          medical expenses, or other emergency expenses, click
+          <a href="https://dhs.maryland.gov/weathering-tough-times/emergency-assistance/#:~:text=Emergency%20Assistance%20to%20Families%20with,years%20when%20funds%20are%20available">
+            &nbsp;here
+          </a>
+          .
+        </h5>
+        <h5 id="title-light" style={{ marginBottom: 10, fontSize: 14 }}>
+          For a list of neighborhood-based Mutual Aid groups, click
+          <a href="https://docs.google.com/document/d/1G5JcyxmywcTdNeaSGxUNycl9mtCdGkF4MYPVxEBH4SY/mobilebasic?fbclid=IwAR0gh9H5mnPrZ_A24rJE04Uk3Tvzx_DPmyezSmw8URG-h_jpflq90GJpdyU">
+            &nbsp;here
+          </a>
+          .
+        </h5>
+        <h5 id="title-light" style={{ marginBottom: 10, fontSize: 14 }}>
+          Many organizations around Baltimore have an urgent need for
+          volunteers. To see where you can assist, click
+          <a href="https://docs.google.com/document/d/1Y1Tfsk7usCdeS23fat6N5SRKkKH9mQst_5bgOyeS9Jc/edit">
+            &nbsp;here
+          </a>
+          .
+        </h5>
+      </>
+    );
+  }
 
   const goToSecondPage = () => {
     const valid = checkPage();
