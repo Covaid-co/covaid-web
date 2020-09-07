@@ -20,8 +20,10 @@ export default function ResourceModal(props) {
     url: "",
     name: "",
     description: "",
+    type: "", 
   });
   const [isPublic, setIsPublic] = useState(false); 
+  // const [type, setType] = useState(""); 
   const [disabledbtn, setDisabledbtn] = useState(false);
   const [charsLeft, setCharsLeft] = useState(100);
 
@@ -163,6 +165,16 @@ export default function ResourceModal(props) {
                 }
                 onChange={() => {setIsPublic(!isPublic)}}
               />
+            </Form.Group>
+            <br />
+            <Form.Group controlId="type">
+              <Form.Control as="select" onChange={handleFieldChange}>
+              {
+                props.association.resources.map((option, index) => {
+                    return (<option key={index} value={option}>{option}</option>)
+                })
+              }
+              </Form.Control>
             </Form.Group>
             <Form.Group controlId="name" bssize="large">
               <FormControl
