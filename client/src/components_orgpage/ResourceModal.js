@@ -20,7 +20,7 @@ export default function ResourceModal(props) {
     url: "",
     name: "",
     description: "",
-    type: "", 
+    categories: "", // change to array TODO
   });
   const [isPublic, setIsPublic] = useState(false); 
   // const [type, setType] = useState(""); 
@@ -80,6 +80,7 @@ export default function ResourceModal(props) {
         name: fields.name,
         description: fields.description,
         associationID: props.association._id,
+        categories: [fields.categories], // fix later TODO 
         isPublic: isPublic,
       },
     };
@@ -99,6 +100,7 @@ export default function ResourceModal(props) {
       fields.url = "";
       fields.name = "";
       fields.description = "";
+      fields.categories = ""; 
       setIsPublic(false);
       props.setResourceModal(false);
       props.setAdminModal(true);
