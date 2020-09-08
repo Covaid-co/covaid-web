@@ -105,7 +105,7 @@ export default function HomePage(props) {
               style={{ display: props.isLoggedIn ? "none" : "block" }}
               id="volunteer-button"
             >
-              Become a volunteer
+              Become a Volunteer
             </Button>
             <Button
               id="resources-button"
@@ -113,6 +113,9 @@ export default function HomePage(props) {
             >
               COVID-19 Information Hub
             </Button>
+            <br></br>
+            <p id="home-subheading">Text in a support request to: <br></br> +1 (833) 997-0500</p>
+            <p id="home-subheading">Supported by covidsms</p>
           </Col>
           <Col md={7} style={{ textAlign: "center" }}>
             <img id="org-img" alt="" src={home}></img>

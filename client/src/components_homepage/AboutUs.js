@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import CovidSMS_Logo from "../assets/covidsms_logo.png";
+import CovaidSMS_Info from "../assets/covidsms_info.PNG";
+
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -181,6 +184,13 @@ export default function AboutUs(props) {
                 );
               })}
             </Row>
+            <h1 id="home-heading" style={{ marginBottom: 40, fontSize: 55 }}>
+              Our Partners 
+              <br></br> 
+              <div id = "partners-container">
+              <img id = "partners-image" class = "center" src={CovidSMS_Logo}/>
+              </div> 
+            </h1>
           </Col>
           <Col md={1}></Col>
         </Row>
