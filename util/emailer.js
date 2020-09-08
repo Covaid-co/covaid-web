@@ -165,7 +165,7 @@ exports.sendBeaconEmail = (data) => {
 };
 
 exports.sendAssocPasswordLink = (email, assocID, token) => {
-  var test = "localhost:3000";
+  var test = "covaid.co";
   var production = "covaid.co";
   var page = production;
   if (process.env.PORT) {
