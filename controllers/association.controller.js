@@ -194,19 +194,14 @@ exports.verifyPasswordResetLink = asyncWrapper(async (req, res) => {
 });
 
 exports.resetPassword = asyncWrapper(async (req, res) => {
-  console.log("WTFFFF")
   var newPassword = req.body.newPassword;
   // update password
   const association = await Association.findById(req.body.id);
-  console.log("found it")
   association.setPassword(newPassword);
-  console.log("set Password")
   association.save(function (err, result) {
     if (err) {
-      console.log("error")
       return res.status(422).send(err);
     }
-    console.log("WROKSSS")
     res.sendStatus(200);
   });
 });
