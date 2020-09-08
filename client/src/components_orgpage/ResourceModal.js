@@ -14,18 +14,29 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { generateURL } from "../Helpers";
 import FormControl from "react-bootstrap/FormControl";
+import Container from "react-bootstrap/Container";
 
 export default function ResourceModal(props) {
   const [fields, handleFieldChange] = useFormFields({
     url: "",
     name: "",
     description: "",
-    categories: "", // change to array TODO
+    // categories: "", // change to array TODO
   });
   const [isPublic, setIsPublic] = useState(false); 
-  // const [type, setType] = useState(""); 
+  const [categories, setCategories] = useState([]); 
   const [disabledbtn, setDisabledbtn] = useState(false);
   const [charsLeft, setCharsLeft] = useState(100);
+
+  function onSelectedOptionsChange(e) {
+    console.log("Clicked on "+e.target.value); 
+    if (!categories.includes(e.target.value)) {
+      setCategories(categories.concat(e.target.value)); 
+    } else {
+      var i = categories.indexOf(e.target.value); 
+      categories.splice(i, 1); 
+    }
+  }
 
   const validateURL = (url) => {
     var re = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -80,7 +91,7 @@ export default function ResourceModal(props) {
         name: fields.name,
         description: fields.description,
         associationID: props.association._id,
-        categories: [fields.categories], // fix later TODO 
+        categories: categories, // fix later TODO 
         isPublic: isPublic,
       },
     };
@@ -170,7 +181,8 @@ export default function ResourceModal(props) {
             </Form.Group>
             <br />
             <Form.Group controlId="type">
-              <Form.Control as="select" onChange={handleFieldChange}>
+              <Form.Label style={{color: 'grey'}}>Category:</Form.Label>
+              <Form.Control as="select" multiple value={categories} onChange={onSelectedOptionsChange}>
               {
                 props.association.resources.map((option, index) => {
                     return (<option key={index} value={option}>{option}</option>)
@@ -178,6 +190,7 @@ export default function ResourceModal(props) {
               }
               </Form.Control>
             </Form.Group>
+            <br/>
             <Form.Group controlId="name" bssize="large">
               <FormControl
                 value={fields.name}
