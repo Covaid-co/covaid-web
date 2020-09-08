@@ -192,7 +192,7 @@ exports.sendAssocPasswordLink = (email, assocID, token) => {
     },
   };
   //send the email
-  // if (process.env.PROD) {
+  if (process.env.PROD) {
     sgMail.send(msg, (error, result) => {
       if (error) {
         console.log(error);
@@ -200,7 +200,7 @@ exports.sendAssocPasswordLink = (email, assocID, token) => {
         console.log("Email sent!");
       }
     });
-  // }
+  }
 };
 
 exports.sendAssocAdminPasswordLink = (email, assocID, token) => {
