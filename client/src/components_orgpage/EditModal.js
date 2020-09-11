@@ -5,6 +5,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useFormFields } from "../libs/hooksLib";
 import FormControl from "react-bootstrap/FormControl";
+import CheckForm from "../components/CheckForm";
+import { extractTrueObj } from "../Helpers";
 
 export default function EditModal(props) {
   const [fields, handleFieldChange] = useFormFields({
@@ -12,9 +14,21 @@ export default function EditModal(props) {
     name: props.resource.name,
     description: props.resource.description,
   });
-  const [isPublic, setIsPublic] = useState(false); 
+  const [categories, setCategories] = useState({});
+  const [isPublic, setIsPublic] = useState(false);
   const [disabledbtn, setDisabledbtn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const setResourcesObject = (userList, fullList, setFunction) => {
+    for (var i = 0; i < fullList.length; i++) {
+      const curr = fullList[i];
+      const include = userList.includes(curr) ? true : false;
+      setFunction((prev) => ({
+        ...prev,
+        [curr]: include,
+      }));
+    }
+  };
 
   const validateURL = (url) => {
     var re = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -62,14 +76,15 @@ export default function EditModal(props) {
     }
 
     setDisabledbtn(true);
-
+    var categoriesList = extractTrueObj(categories);
     let form = {
       resourceID: props.resource._id,
       updates: {
         url: fields.url,
         name: fields.name,
         description: fields.description,
-        isPublic: isPublic, 
+        isPublic: isPublic,
+        categories: categoriesList,
       },
     };
 
@@ -96,13 +111,19 @@ export default function EditModal(props) {
       props.resource &&
       props.resource.url &&
       props.resource.name &&
-      props.resource.description
+      props.resource.description &&
+      props.resource.categories
     ) {
       setIsLoaded(true);
       fields.url = props.resource.url;
       fields.name = props.resource.name;
       fields.description = props.resource.description;
-      setIsPublic(props.resource.isPublic); 
+      setResourcesObject(
+        props.resource.categories,
+        props.association.resources,
+        setCategories
+      );
+      setIsPublic(props.resource.isPublic);
     }
   }, [props.resource]);
 
@@ -134,26 +155,26 @@ export default function EditModal(props) {
               }}
             >
               <Form.Group
-              controlId="isPublic"
-              bssize="large"
-              style={{ marginBottom: 0, marginTop: -5 }}
-            >
-              <Form.Check
-                value = {isPublic}
-                type="switch"
-                id="custom-switch"
-                style={{ color: "#7F7F7F", fontSize: 14 }}
-                label={
-                  isPublic ? "Public" : "Private"
-                }
-                checked={
-                  isPublic
-                    ? true
-                    : false
-                }
-                onChange={() => {setIsPublic(!isPublic)}}
-              />
-            </Form.Group>
+                controlId="isPublic"
+                bssize="large"
+                style={{ marginBottom: 0, marginTop: -5 }}
+              >
+                <Form.Check
+                  value={isPublic}
+                  type="switch"
+                  id="custom-switch"
+                  style={{ color: "#7F7F7F", fontSize: 14 }}
+                  label={isPublic ? "Public" : "Private"}
+                  checked={isPublic ? true : false}
+                  onChange={() => {
+                    setIsPublic(!isPublic);
+                  }}
+                />
+              </Form.Group>
+              <Form.Group controlId="type">
+                <Form.Label style={{ color: "grey" }}>Category:</Form.Label>
+                <CheckForm obj={categories} setObj={setCategories} />
+              </Form.Group>
               <Form.Group controlId="name" bssize="large">
                 <FormControl
                   value={fields.name}
