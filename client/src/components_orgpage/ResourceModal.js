@@ -193,7 +193,9 @@ export default function ResourceModal(props) {
             <br />
             <Form.Group controlId="type">
               <Form.Label style={{ color: "grey" }}>Category:</Form.Label>
-              <CheckForm obj={categories} setObj={setCategories} />
+              <Row style={{ paddingLeft: "20px" }}>
+                <CheckForm obj={categories} setObj={setCategories} />
+              </Row>
               {/* <Form.Control
                 as="select"
                 multiple

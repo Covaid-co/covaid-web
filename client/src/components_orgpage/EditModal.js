@@ -7,6 +7,7 @@ import { useFormFields } from "../libs/hooksLib";
 import FormControl from "react-bootstrap/FormControl";
 import CheckForm from "../components/CheckForm";
 import { extractTrueObj } from "../Helpers";
+import Row from "react-bootstrap/Row";
 
 export default function EditModal(props) {
   const [fields, handleFieldChange] = useFormFields({
@@ -171,10 +172,14 @@ export default function EditModal(props) {
                   }}
                 />
               </Form.Group>
+              <br />
               <Form.Group controlId="type">
                 <Form.Label style={{ color: "grey" }}>Category:</Form.Label>
-                <CheckForm obj={categories} setObj={setCategories} />
+                <Row style={{ paddingLeft: "20px" }}>
+                  <CheckForm obj={categories} setObj={setCategories} />
+                </Row>
               </Form.Group>
+              <br />
               <Form.Group controlId="name" bssize="large">
                 <FormControl
                   value={fields.name}
