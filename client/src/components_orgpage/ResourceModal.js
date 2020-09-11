@@ -1,4 +1,4 @@
-import React, { useState, setValues } from "react";
+import React, { useState, useEffect, setValues } from "react";
 import PropTypes from "prop-types";
 
 import Modal from "react-bootstrap/Modal";
@@ -15,7 +15,9 @@ import * as XLSX from "xlsx";
 import { generateURL } from "../Helpers";
 import FormControl from "react-bootstrap/FormControl";
 import Container from "react-bootstrap/Container";
-
+import { defaultResources } from "../constants";
+import CheckForm from "../components/CheckForm";
+import { extractTrueObj } from "../Helpers";
 export default function ResourceModal(props) {
   const [fields, handleFieldChange] = useFormFields({
     url: "",
@@ -23,20 +25,33 @@ export default function ResourceModal(props) {
     description: "",
     // categories: "", // change to array TODO
   });
-  const [isPublic, setIsPublic] = useState(false); 
-  const [categories, setCategories] = useState([]); 
+  const [isPublic, setIsPublic] = useState(false);
+  const [categories, setCategories] = useState({});
   const [disabledbtn, setDisabledbtn] = useState(false);
   const [charsLeft, setCharsLeft] = useState(100);
 
-  function onSelectedOptionsChange(e) {
-    console.log("Clicked on "+e.target.value); 
-    if (!categories.includes(e.target.value)) {
-      setCategories(categories.concat(e.target.value)); 
-    } else {
-      var i = categories.indexOf(e.target.value); 
-      categories.splice(i, 1); 
+  const setResourcesObject = (fullList, setFunction) => {
+    for (var i = 0; i < fullList.length; i++) {
+      const curr = fullList[i];
+      setFunction((prev) => ({
+        ...prev,
+        [curr]: false,
+      }));
     }
-  }
+  };
+
+  useEffect(() => {
+    setResourcesObject(props.association.resources, setCategories);
+  }, []);
+  // function onSelectedOptionsChange(e) {
+  //   console.log("Clicked on " + e.target.value);
+  //   if (!categories.includes(e.target.value)) {
+  //     setCategories(categories.concat(e.target.value));
+  //   } else {
+  //     var i = categories.indexOf(e.target.value);
+  //     categories.splice(i, 1);
+  //   }
+  // }
 
   const validateURL = (url) => {
     var re = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -84,14 +99,14 @@ export default function ResourceModal(props) {
     }
 
     setDisabledbtn(true);
-
+    var categoriesList = extractTrueObj(categories);
     let form = {
       resource: {
         url: fields.url,
         name: fields.name,
         description: fields.description,
         associationID: props.association._id,
-        categories: categories, // fix later TODO 
+        categories: categoriesList, // fix later TODO
         isPublic: isPublic,
       },
     };
@@ -111,7 +126,7 @@ export default function ResourceModal(props) {
       fields.url = "";
       fields.name = "";
       fields.description = "";
-      fields.categories = ""; 
+      fields.categories = "";
       setIsPublic(false);
       props.setResourceModal(false);
       props.setAdminModal(true);
@@ -164,33 +179,37 @@ export default function ResourceModal(props) {
               style={{ marginBottom: 0, marginTop: -5 }}
             >
               <Form.Check
-                value = {isPublic}
+                value={isPublic}
                 type="switch"
                 id="custom-switch"
                 style={{ color: "#7F7F7F", fontSize: 14 }}
-                label={
-                  isPublic ? "Public" : "Private"
-                }
-                checked={
-                  isPublic
-                    ? true
-                    : false
-                }
-                onChange={() => {setIsPublic(!isPublic)}}
+                label={isPublic ? "Public" : "Private"}
+                checked={isPublic ? true : false}
+                onChange={() => {
+                  setIsPublic(!isPublic);
+                }}
               />
             </Form.Group>
             <br />
             <Form.Group controlId="type">
-              <Form.Label style={{color: 'grey'}}>Category:</Form.Label>
-              <Form.Control as="select" multiple value={categories} onChange={onSelectedOptionsChange}>
-              {
-                props.association.resources.map((option, index) => {
-                    return (<option key={index} value={option}>{option}</option>)
-                })
-              }
-              </Form.Control>
+              <Form.Label style={{ color: "grey" }}>Category:</Form.Label>
+              <CheckForm obj={categories} setObj={setCategories} />
+              {/* <Form.Control
+                as="select"
+                multiple
+                value={categories}
+                onChange={onSelectedOptionsChange}
+              >
+                {props.association.resources.map((option, index) => {
+                  return (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  );
+                })}
+              </Form.Control> */}
             </Form.Group>
-            <br/>
+            <br />
             <Form.Group controlId="name" bssize="large">
               <FormControl
                 value={fields.name}
