@@ -151,12 +151,24 @@ export default function OrgLogin(props) {
           hideModal={() => setShowModal(false)}
         />
       );
-    } else if (modalType === "forgot") {
+    } else if (modalType === "forgot admin") {
       modal = (
         <ResetPassword
           showModal={showModal}
           hideModal={() => setShowModal(false)}
           handleSubmitForgot={handleAdminSubmitForgot}
+          fields={fields}
+          show_toast={show_toast}
+          setShowToast={setShowToast}
+          handleFieldChange={handleFieldChange}
+        />
+      );
+    } else if (modalType === "forgot org") {
+      modal = (
+        <ResetPassword
+          showModal={showModal}
+          hideModal={() => setShowModal(false)}
+          handleSubmitForgot={handleSubmitForgot}
           fields={fields}
           show_toast={show_toast}
           setShowToast={setShowToast}
@@ -235,7 +247,7 @@ export default function OrgLogin(props) {
                 <Button
                   variant="link"
                   id="regular-text"
-                  onClick={() => handleShowModal("forgot")}
+                  onClick={() => handleShowModal("forgot admin")}
                   style={{
                     color: "#2670FF",
                     padding: 0,
@@ -246,6 +258,22 @@ export default function OrgLogin(props) {
                 >
                   Forgot your admin password?
                 </Button>
+              </Row>
+              <Row>
+                {/* <Button
+                  variant="link"
+                  id="regular-text"
+                  onClick={() => handleShowModal("forgot org")}
+                  style={{
+                    color: "#2670FF",
+                    padding: 0,
+                    textDecoration: "underline",
+                    marginTop: -2,
+                    marginLeft: 14,
+                  }}
+                >
+                  Forgot your organization password?
+                </Button> */}
               </Row>
               {/* <p id="regular-text" style={{ marginTop: 5, color: "#2670FF", fontSize: 16 }}> 
                 For organization password resets, please contact Covaid tech support

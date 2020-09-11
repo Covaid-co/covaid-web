@@ -165,17 +165,7 @@ exports.sendBeaconEmail = (data) => {
 };
 
 exports.sendAssocPasswordLink = (email, assocID, token) => {
-  var nodemailer = require("nodemailer");
-
-  var transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "covaidco@gmail.com",
-      pass: "covaid_platform_2020!",
-    },
-  });
-
-  var test = "localhost:3000";
+  var test = "covaid.co";
   var production = "covaid.co";
   var page = production;
   if (process.env.PORT) {
@@ -184,7 +174,6 @@ exports.sendAssocPasswordLink = (email, assocID, token) => {
     page = test;
   }
   var body =
-    "Click here to reset your password: " +
     "http://" +
     page +
     "/resetAssociationPassword?ID=" +
@@ -192,20 +181,26 @@ exports.sendAssocPasswordLink = (email, assocID, token) => {
     "&Token=" +
     token;
 
-  var mailOptions = {
-    from: "covaidco@gmail.com",
+  const msg = {
+    //extract the email details
     to: email,
-    subject: "Covaid -- Reset your password",
-    text: body,
+    from: "Covaid@covaid.co",
+    templateId: templates["reset_password"],
+    //extract the custom fields
+    dynamic_template_data: {
+      link: body,
+    },
   };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+  //send the email
+  if (process.env.PROD) {
+    sgMail.send(msg, (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent!");
+      }
+    });
+  }
 };
 
 exports.sendAssocAdminPasswordLink = (email, assocID, token) => {
