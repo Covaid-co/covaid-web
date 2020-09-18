@@ -14,18 +14,40 @@
   width: 50%;
   height: 50%;
   text-align: center;
-  display: block;
+  display: inline-block;
   margin-left: auto;
   margin-right: auto;
 }
+
 #partners-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 10%;
+  margin: auto;
   width: 100%;
   height: auto;
   text-align: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  object-fit: fill;
 }
+
+/* #partners-image {
+  width: 75%;
+  height: auto;
+  text-align: center;
+  margin-left: 75%;
+  margin-right: 75%;
+  font-size: 32px;
+  font-family: Montserrat;
+  font-weight: bold;
+  margin: 0.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid #7f7f7f;
+  display: inline-block;
+  border-style: solid;
+  border-radius: 8px;
+} */
 
 @media (max-width: 815px) {
   #about-us-col {
@@ -309,7 +331,9 @@
 }
 
 #org-img {
-  width: 500px;
+  padding-top: 20px;
+  width: 725px;
+  height: 550px; 
 }
 @media (max-width: 1440px) {
   #jumboContainer {

@@ -12,7 +12,7 @@ import Feedback from "./components_modals/Feedback";
 import NewLogin from "./components_modals/NewLogin";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import home from "./assets/home.png";
+import home from "./assets/covidsms_homepg.PNG";
 import "./HomePage.css";
 import { translations } from "./translations/translations";
 
@@ -113,9 +113,6 @@ export default function HomePage(props) {
             >
               COVID-19 Information Hub
             </Button>
-            <br></br>
-            <p id="home-subheading">Text in a support request to: <br></br> +1 (833) 997-0500</p>
-            <p id="home-subheading">Supported by covidsms</p>
           </Col>
           <Col md={7} style={{ textAlign: "center" }}>
             <img id="org-img" alt="" src={home}></img>
