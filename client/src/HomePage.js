@@ -113,6 +113,7 @@ export default function HomePage(props) {
             >
               COVID-19 Information Hub
             </Button>
+            {/* <br></br> */}
           </Col>
           <Col md={7} style={{ textAlign: "center" }}>
             <img id="org-img" alt="" src={home}></img>
