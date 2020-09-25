@@ -12,7 +12,8 @@ import Feedback from "./components_modals/Feedback";
 import NewLogin from "./components_modals/NewLogin";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import home from "./assets/home.png";
+import home from "./assets/covidsms-homepg.PNG";
+import CovidSMS_Logo from "./assets/covidsms_logo.png";
 import "./HomePage.css";
 import { translations } from "./translations/translations";
 
@@ -113,12 +114,22 @@ export default function HomePage(props) {
             >
               COVID-19 Information Hub
             </Button>
-            <br></br>
-            <p id="home-subheading">Text in a support request to: <br></br> +1 (833) 997-0500</p>
-            <p id="home-subheading">Supported by covidsms</p>
           </Col>
-          <Col md={7} style={{ textAlign: "center" }}>
-            <img id="org-img" alt="" src={home}></img>
+          <Col md={7} /*style={{ textAlign: "center" }}*/>
+            <div>
+              <img id = "org-img" alt = "" src={home} align="left" style={{padding:25}}></img>
+            </div>
+            <div>
+              <p id = "home-heading" style={{ marginTop: 75, marginRight: 0, fontSize: 35}} align="left">
+                 Now Supporting
+              </p>
+              <div>
+                <img id = "org-img" alt="" src={CovidSMS_Logo} style={{marginLeft:-25, marginTop:-15, padding:0, width: 250}}></img>
+              </div>
+              <p id = "covidsms-info" style={{marginTop:50}} align ="left"> 
+                Text <b>START</b> to <b>888.414.5539</b> for testing sites, 
+                food resources, employment services, and local COVID-19 statistics!</p>
+            </div>
           </Col>
           <span id="scroll-down-icon">↓</span>
         </Row>
