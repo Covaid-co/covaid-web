@@ -10,6 +10,45 @@
   padding-right: 5%;
   margin-top: 40px;
 }
+#partners-container {
+  width: 50%;
+  height: 50%;
+  text-align: center;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#partners-image {
+  display: block;
+  /* align-items: center;
+  justify-content: center; */
+  /* position: relative; */
+  /* top: 10%; */
+  margin: auto;
+  max-width: 100%;
+  height: 100%;
+  /* text-align: center;
+  object-fit: fill;
+  image-rendering: auto; */
+}
+
+/* #partners-image {
+  width: 75%;
+  height: auto;
+  text-align: center;
+  margin-left: 75%;
+  margin-right: 75%;
+  font-size: 32px;
+  font-family: Montserrat;
+  font-weight: bold;
+  margin: 0.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid #7f7f7f;
+  display: inline-block;
+  border-style: solid;
+  border-radius: 8px;
+} */
 
 @media (max-width: 815px) {
   #about-us-col {
@@ -293,8 +332,16 @@
 }
 
 #org-img {
-  width: 500px;
+  width: 250px;
+  height: auto;
+  margin-left: 100px;
 }
+
+#covidsms-logo {
+  width: 550px;
+  height: auto;
+}
+
 @media (max-width: 1440px) {
   #jumboContainer {
     margin-left: 5%;

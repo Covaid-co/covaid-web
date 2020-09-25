@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import CovidSMS_Logo from "../assets/covidsms_logo.png";
+
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -120,6 +122,8 @@ export default function AboutUs(props) {
   const names = Object.keys(peoples);
   names.sort();
 
+
+
   return (
     <div className="App">
       <NavBar
@@ -181,8 +185,89 @@ export default function AboutUs(props) {
                 );
               })}
             </Row>
+            <h1 id="home-heading" style={{ marginBottom: 40, fontSize: 55 }}>
+              Our Partners 
+              <br></br> 
+            </h1>
+            <p id="regular-text" style={{ marginBottom: 40, fontSize: 20 }}>
+              These are the organizations we are currently working with.
+            </p> 
           </Col>
           <Col md={1}></Col>
+            <Row
+            style={{
+              marginTop: 5,
+              marginBottom: 100,
+              paddingLeft: "10%",
+              paddingRight: "10%",
+            }}
+          >
+             <Col md={4} id="partner">
+              <div
+                className="inner-partner"
+                onClick={() => {
+                  window.open("https://www.covidsms.org/");
+                }}
+              >
+                <img id = "partners-image" src={CovidSMS_Logo} class = "center"/>
+              </div>
+            </Col>
+            <Col md={4} id="partner">
+              <div
+                className="inner-partner"
+                onClick={() => {
+                  window.open("https://www.pittsburghmutualaid.com/");
+                }}
+              >
+                <h1 id="partner-heading">Pittsburgh Mutual Aid</h1>
+              </div>
+            </Col>
+            <Col md={4} id="partner">
+              <div
+                className="inner-partner"
+                onClick={() => {
+                  window.open("https://www.facebook.com/bmoremutualaid/");
+                }}
+              >
+                <h1 id="partner-heading">Baltimore Mutual Aid</h1>
+              </div>
+            </Col>
+            <Col md={4} id="partner">
+              <div
+                className="inner-partner"
+                onClick={() => {
+                  window.open("https://www.covid-gca.org/");
+                }}
+              >
+                <h1 id="partner-heading">Greater Charlotte Area Mutual Aid</h1>
+              </div>
+            </Col>
+            <Col md={4} id="partner">
+              <div
+                className="inner-partner"
+                onClick={() => {
+                  window.open("https://www.facebook.com/groups/200572921276575/");
+                }}
+              >
+                <h1 id="partner-heading">Delaware Mutual Aid</h1>
+              </div>
+            </Col>
+            <Col md={4} id="partner">
+              <div
+                className="inner-partner"
+                onClick={() => {
+                  window.open("https://ccomcovid.wixsite.com/covid");
+                }}
+              >
+                <h1 id="partner-heading">CCOM COVID-19 Task Force</h1>
+              </div>
+            </Col>
+            <Col md={4} id="partner">
+              <div className="inner-partner">
+                <h1 id="partner-heading">Indy Neighbor Response Team</h1>
+              </div>
+            </Col>
+          </Row>
         </Row>
       </Container>
       <Footer key="2" style={{ marginTop: 48 }} />
