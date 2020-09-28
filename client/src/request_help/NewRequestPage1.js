@@ -95,19 +95,20 @@ export default function NewRequestPage1(props) {
     setResources(temp_resources);
   }, [props.first_page, props.currentAssoc]);
 
-  // if (isCovaid) {
-  //   return (
-  //     <>
-  //     <h5 id="title-light" style={{ marginBottom: 5 }}>
-  //       We are currently only processing requests in Baltimore, Pittsburgh, Charlotte, Newark, Chicago, Athens, Austin, and Evanston.
-  //     </h5>
-  //     <h5 id="title-light" style={{ marginBottom: 5 }}>
-  //       If you are located in one of these locations, make sure to set your location correctly on the previous page.
-  //     </h5>
-  //     </>
-  //   );
-  // }
-
+  /**comment out to close request button*/
+  if (isCovaid) {
+    return (
+      <>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+        We are currently only processing requests in Baltimore, Pittsburgh, Charlotte, Newark, Chicago, Athens, Austin, and Evanston.
+      </h5>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+        If you are located in one of these locations, make sure to set your location correctly on the previous page.
+      </h5>
+      </>
+    );
+  }
+  /** */
   if (isBaltimore) {
     return (
       <>
