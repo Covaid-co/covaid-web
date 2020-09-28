@@ -12,7 +12,7 @@ import Feedback from "./components_modals/Feedback";
 import NewLogin from "./components_modals/NewLogin";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import home from "./assets/covidsms_homepg.png";
+import home from "./assets/covidsms_homepg.PNG";
 import CovidSMS_Logo from "./assets/covidsms_logo.png";
 import "./HomePage.css";
 import { translations } from "./translations/translations";
