@@ -132,7 +132,7 @@ export default function InformationHub(props) {
           <Col xs={1} sm={1} md={1} lg={2}></Col>
         </Row>
 
-        <Row>
+        {/*<Row>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
           <Col id="infohub-card">
             <InformationSection
@@ -141,14 +141,14 @@ export default function InformationHub(props) {
             />
           </Col>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
-        </Row>
+        </Row>*/}
 
         <Row>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
           <Col id="infohub-card">
             <InformationSection
               sectionID={2}
-              sectionName={"Support and Engage in Your Community"}
+              sectionName={"Other resources"}
             />
           </Col>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
