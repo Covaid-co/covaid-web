@@ -293,36 +293,44 @@ export default function NewRequestPage(props) {
       );
     }
     return (
-      <Container id="grid-container">
-        {resources.map((resource, i) => {
-          return (
-            <a
-              href={resource.url}
-              target="_blank"
-              style={{ textDecoration: "none" }}
-            >
-              <Container id="link-container">
-                <p id="link-title">{resource.name}</p>
-                {(() => {
-                  if (resource.name.length < 21) {
-                    return (
-                      <div id="link-description-box1">
-                        <p id="link-description">{resource.description}</p>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div id="link-description-box2">
-                        <p id="link-description">{resource.description}</p>
-                      </div>
-                    );
-                  }
-                })()}
-              </Container>
-            </a>
-          );
-        })}
-      </Container>
+      <>
+      <div id="resourcesContainer2">
+        <h3>Resources for your location:</h3>    
+        <h6><a href="/resources-page">See more resources</a></h6>  
+        <div id="resourcesContainer">  
+          <Container id="grid-container">
+            {resources.map((resource, i) => {
+              return (
+                <a
+                  href={resource.url}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Container id="link-container">
+                    <p id="link-title">{resource.name}</p>
+                    {(() => {
+                      if (resource.name.length < 21) {
+                        return (
+                          <div id="link-description-box1">
+                            <p id="link-description">{resource.description}</p>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div id="link-description-box2">
+                            <p id="link-description">{resource.description}</p>
+                          </div>
+                        );
+                      }
+                    })()}
+                  </Container>
+                </a>
+              );
+            })}
+          </Container>
+        </div>
+      </div>        
+      </>
     );
   };
 

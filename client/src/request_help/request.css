@@ -208,3 +208,15 @@
     margin-top: 80px;
   }
 } */
+
+#resourcesContainer2 {
+  position: absolute; 
+  top: -100px; 
+}
+
+#resourcesContainer {
+  position: fixed; 
+  max-height: 175%; 
+  overflow-y: scroll;
+  overflow-x: hidden; 
+}
