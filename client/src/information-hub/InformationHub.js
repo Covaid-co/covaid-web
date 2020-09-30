@@ -62,7 +62,7 @@ export default function InformationHub(props) {
         <Row>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
           <Col id="infohub-card">
-            <h1 id="home-heading">COVID-19 Information Hub</h1>
+            <h1 id="home-heading">COVID-19 Resources Page</h1>
             <p id="regular-text">
               Below are curated resources sampled from national, state, and
               local goverments and health organizations. These links contain
