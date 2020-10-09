@@ -137,6 +137,14 @@
   font-weight: bold;
 }
 
+#title2 {
+  font-family: "Montserrat";
+  font-size: 20px;
+  margin-bottom: 0px;
+  color: #4f4f4f;
+  font-weight: bold;
+}
+
 #title-light {
   font-family: "Inter";
   font-size: 20px;
@@ -180,6 +188,12 @@
   margin-bottom: 20px;
 }
 
+#info2 {
+  font-family: "Inter";
+  font-size: 14px; 
+  color: #7f7f7f;
+}
+
 #location-change-button {
   color: #7f7f7f;
   /* border-color: #7F7F7F; */
@@ -219,4 +233,10 @@
   max-height: 175%; 
   overflow-y: scroll;
   overflow-x: hidden; 
+}
+
+#done_container {
+  min-height: 400%; 
+  border: 0px solid #c3cad2;
+  border-right: 1px;
 }

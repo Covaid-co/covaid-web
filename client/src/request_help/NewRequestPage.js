@@ -61,7 +61,7 @@ export default function NewRequestPage(props) {
 
     const jsonData = await response.json();
 
-    setResources(jsonData);
+    setResources(jsonData.slice(0, 5));
   }
 
   const submitRequest = () => {
@@ -216,6 +216,7 @@ export default function NewRequestPage(props) {
     } else if (step_num === 3) {
       return (
         <>
+        <div id="separator">
           <p id="title">You're Done!</p>
           {props.org != "pitt" && (
             <p id="info">
@@ -238,6 +239,7 @@ export default function NewRequestPage(props) {
           >
             Return to Main Page
           </Button>
+          </div>
         </>
       );
     }
@@ -295,10 +297,10 @@ export default function NewRequestPage(props) {
     return (
       <>
       <div id="resourcesContainer2">
-        <h3>Resources for your location:</h3>    
-        <h6><a href="/resources-page">See more resources</a></h6>  
-        <div id="resourcesContainer">  
-          <Container id="grid-container">
+        <p id="title">Looking for immediate help?</p> 
+        <p id="info">While you wait for us to get back to you, here are some resources near your zipcode for immediate help.</p>     
+        <div id="resourcesContainer" style={{ width: '600px' }}>  
+          <Container id="list-container" maxWidth="sm" style={{ maxHeight: '300px', width: '500px', justifyContent: "center" }}>
             {resources.map((resource, i) => {
               return (
                 <a
@@ -306,19 +308,20 @@ export default function NewRequestPage(props) {
                   target="_blank"
                   style={{ textDecoration: "none" }}
                 >
-                  <Container id="link-container">
-                    <p id="link-title">{resource.name}</p>
+                  <Container id="link-container" maxWidth="sm" style={{ maxHeight: '90px', minWidth: '100%', 
+                      borderLeftColor: '#FFFFFF', borderRightColor: '#FFFFFF', borderRadius: '0px', borderBottomColor: '#FFFFFF' }}>
+                    <p id="title2">{resource.name}</p>
                     {(() => {
                       if (resource.name.length < 21) {
                         return (
-                          <div id="link-description-box1">
-                            <p id="link-description">{resource.description}</p>
+                          <div id="link-description-box1" style={{ height: '60px' }}>
+                            <p id="info2">{resource.description}</p>
                           </div>
                         );
                       } else {
                         return (
-                          <div id="link-description-box2">
-                            <p id="link-description">{resource.description}</p>
+                          <div id="link-description-box2" style={{ height: '60px'}}>
+                            <p id="info2">{resource.description}</p>
                           </div>
                         );
                       }
@@ -328,6 +331,14 @@ export default function NewRequestPage(props) {
               );
             })}
           </Container>
+        </div>
+        <div style={{ paddingTop: '300px' }}>
+          <a href="/resources-page"> 
+          <Button
+              id="large-button"
+            >
+              View More Resources
+          </Button></a>
         </div>
       </div>        
       </>
