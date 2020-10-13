@@ -123,3 +123,6 @@ export const sort_types = [
   "Time Posted",
   "Admin",
 ];
+
+export const covaid_assoc_id = "5e88cf8a6ea53ef574d1b80c";
+export const covaid_assoc_name = "Covaid"; 

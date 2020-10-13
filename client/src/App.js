@@ -497,7 +497,7 @@ function App() {
           <Route exact path="/submit-updates" component={SubmitChangeLog} />
           <Route
             exact
-            path="/information-hub"
+            path="/resources-page"
             component={(props) => (
               <InformationHub
                 {...props}

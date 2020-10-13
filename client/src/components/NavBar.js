@@ -635,6 +635,12 @@ export default function CovaidNavbar(props) {
                     {translatedStrings[props.language].VolunteerMap}
                   </p>
                 </Nav.Link>
+                <Nav.Link
+                  className={toggled ? "navBorderToggled" : "navbar-element"}
+                  onClick={() => history.push("/resources-page")}
+                >
+                  <p id={toggled ? "navLinkToggled" : "navLink"}>Resources</p>
+                </Nav.Link>
                 {!props.volunteerPortal &&
                   props.isLoggedIn &&
                   !props.orgPortal &&

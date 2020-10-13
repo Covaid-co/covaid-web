@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
-
+import { generateURL } from "../Helpers";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -29,6 +29,7 @@ export default function NewRequestPage(props) {
   const [first_page, setFirstPage] = useState({});
   const [second_page, setSecondPage] = useState({});
   const [step_num, setStepNum] = useState(0);
+  const [resources, setResources] = useState([]);
 
   useEffect(() => {
     if (props.googleApiKey !== "") {
@@ -48,6 +49,20 @@ export default function NewRequestPage(props) {
       props.association._id.length > 0
     );
   };
+  async function getResources() {
+    var assoc_id = associationExists()
+      ? props.association._id
+      : "5e88cf8a6ea53ef574d1b80c";
+    let params = { isPublic: true, associationID: assoc_id };
+
+    var url = generateURL("/api/infohub/?", params);
+
+    const response = await fetch(url);
+
+    const jsonData = await response.json();
+
+    setResources(jsonData.slice(0, 5));
+  }
 
   const submitRequest = () => {
     var assoc_id = associationExists()
@@ -89,6 +104,7 @@ export default function NewRequestPage(props) {
       .then((response) => {
         if (response.ok) {
           setStepNum(3);
+          getResources();
         }
       })
       .catch((e) => {
@@ -200,6 +216,7 @@ export default function NewRequestPage(props) {
     } else if (step_num === 3) {
       return (
         <>
+        <div id="separator">
           <p id="title">You're Done!</p>
           {props.org != "pitt" && (
             <p id="info">
@@ -222,6 +239,7 @@ export default function NewRequestPage(props) {
           >
             Return to Main Page
           </Button>
+          </div>
         </>
       );
     }
@@ -276,7 +294,55 @@ export default function NewRequestPage(props) {
         </>
       );
     }
-    return <></>;
+    return (
+      <>
+      <div id="resourcesContainer2">
+        <p id="title">Looking for immediate help?</p> 
+        <p id="info">While you wait for us to get back to you, here are some resources near your zipcode for immediate help.</p>     
+        <div id="resourcesContainer" style={{ width: '600px' }}>  
+          <Container id="list-container" maxWidth="sm" style={{ maxHeight: '300px', width: '500px', justifyContent: "center" }}>
+            {resources.map((resource, i) => {
+              return (
+                <a
+                  href={resource.url}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Container id="link-container" maxWidth="sm" style={{ maxHeight: '90px', minWidth: '100%', 
+                      borderLeftColor: '#FFFFFF', borderRightColor: '#FFFFFF', borderRadius: '0px', borderBottomColor: '#FFFFFF' }}>
+                    <p id="title2">{resource.name}</p>
+                    {(() => {
+                      if (resource.name.length < 21) {
+                        return (
+                          <div id="link-description-box1" style={{ height: '60px' }}>
+                            <p id="info2">{resource.description}</p>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div id="link-description-box2" style={{ height: '60px'}}>
+                            <p id="info2">{resource.description}</p>
+                          </div>
+                        );
+                      }
+                    })()}
+                  </Container>
+                </a>
+              );
+            })}
+          </Container>
+        </div>
+        <div style={{ paddingTop: '300px' }}>
+          <a href="/resources-page"> 
+          <Button
+              id="large-button"
+            >
+              View More Resources
+          </Button></a>
+        </div>
+      </div>        
+      </>
+    );
   };
 
   return (

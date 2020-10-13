@@ -24,6 +24,8 @@ let ResourceSchema = new Schema({
   mediaType: { type: Number, required: false },
   sectionID: { type: Number, required: false },
   associationID: { type: String, required: false },
+  isPublic: { type: Boolean, required: false, default: false },
+  categories: [{ type: String, required: false }],
 });
 
 module.exports = mongoose.model("Resources", ResourceSchema);
