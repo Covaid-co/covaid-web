@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Toast from "react-bootstrap/Toast";
 
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -18,26 +19,35 @@ import "./InformationHub.css";
 /**
  * Changelog/updates page for keeping track of covaid updates
  */
+import { toastTime, contact_option, covaid_assoc_id, covaid_assoc_name } from "../constants";
 
 export default function InformationHub(props) {
   const [locationString, setLocationString] = useState("");
-  const [assocID, setAssocID] = useState("");
-  const [assocName, setAssocName] = useState("");
+  const [assocID, setAssocID] = useState(covaid_assoc_id);
+  const [assocName, setAssocName] = useState(covaid_assoc_name); 
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   useEffect(() => {}, []);
 
   const handleSubmit = (e) => {
     props.getLatLong(e, locationString).then((res) => {
       if (res === false) {
         // TODO add toast and error
-        // setToastMessage("Invalid Zip Code/City");
-        // setShowToast(true);
+        setAssocID(covaid_assoc_id);
+        setAssocName(covaid_assoc_name); 
+        //setToastMessage("Invalid Zip Code/City");
+        //setShowToast(true);
       } else {
         const lat = res.lat;
         const lng = res.lng;
         props.findAssociationAndReturn(lat, lng).then((res) => {
+          //setShowToast(false);
           if (Object.keys(res).length !== 0) {
             setAssocName(res.name);
             setAssocID(res._id);
+          } else {
+            setAssocID(covaid_assoc_id);
+            setAssocName(covaid_assoc_name); 
           }
         });
       }
@@ -62,7 +72,7 @@ export default function InformationHub(props) {
         <Row>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
           <Col id="infohub-card">
-            <h1 id="home-heading">COVID-19 Information Hub</h1>
+            <h1 id="home-heading">COVID-19 Resources Page</h1>
             <p id="regular-text">
               Below are curated resources sampled from national, state, and
               local goverments and health organizations. These links contain
@@ -93,6 +103,16 @@ export default function InformationHub(props) {
                   >
                     Set Location
                   </Button>
+                  <Toast
+                    show={showToast}
+                    delay={toastTime}
+                    onClose={() => setShowToast(false)}
+                    autohide
+                    style={{ marginBottom: 80, marginRight: 15 }}
+                    id="toastError"
+                  >
+                    <Toast.Body>{toastMessage}</Toast.Body>
+                  </Toast>
                 </InputGroup.Append>
               </InputGroup>
             </Form>
@@ -132,7 +152,7 @@ export default function InformationHub(props) {
           <Col xs={1} sm={1} md={1} lg={2}></Col>
         </Row>
 
-        <Row>
+        {/*<Row>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
           <Col id="infohub-card">
             <InformationSection
@@ -141,14 +161,14 @@ export default function InformationHub(props) {
             />
           </Col>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
-        </Row>
-
+        </Row>*/}
+        
         <Row>
           <Col xs={1} sm={1} md={1} lg={2}></Col>
           <Col id="infohub-card">
             <InformationSection
               sectionID={2}
-              sectionName={"Support and Engage in Your Community"}
+              sectionName={"Other resources"}
             />
           </Col>
           <Col xs={1} sm={1} md={1} lg={2}></Col>

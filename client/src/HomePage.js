@@ -108,12 +108,6 @@ export default function HomePage(props) {
             >
               Become a Volunteer
             </Button>
-            <Button
-              id="resources-button"
-              onClick={() => history.push("/information-hub")}
-            >
-              COVID-19 Information Hub
-            </Button>
           </Col>
           <Col md={7} /*style={{ textAlign: "center" }}*/>
             <div>
