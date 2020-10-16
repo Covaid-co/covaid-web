@@ -124,7 +124,7 @@ export default function InformationHub(props) {
           <Col id="infohub-card">
             <InformationSection
               sectionID={assocID}
-              sectionName={"Shared by " + assocName}
+              sectionName={"shared by " + assocName}
               mode={"assoc"}
             />
           </Col>

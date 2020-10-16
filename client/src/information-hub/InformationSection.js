@@ -30,7 +30,7 @@ export default function InformationSection(props) {
   if (resources.length === 0) {
     return <>
        <h5 id="section-headings">{props.sectionName}</h5>
-       <h6>As of now, there have been no resources shared by {props.sectionName}</h6>
+       <h6>As of now, there have been no resources {props.sectionName}</h6>
     </>;
   }
 
