@@ -216,6 +216,7 @@ export default function RequestCard(props) {
       <div
         style={{
           height: "90px",
+          maxWidth: "400px",
           border: "1px solid #CECECE",
           boxSizing: "border-box",
           borderRadius: "0px 0px 6px 6px",
