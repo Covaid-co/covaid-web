@@ -53,20 +53,29 @@ export default function ProfileHeader(props) {
     <Form.Group
       controlId="preverify"
       bssize="large"
-      style={{ marginTop: 8, marginBottom: 8 }}
+      style={{ marginTop: 8, marginBottom: 8}}
     >
+      <Row>
       <Form.Check
         type="switch"
         id="large-switch"
-        style={{ color: "#7F7F7F", fontSize: 17 }}
+        style={{ color: "#7F7F7F", marginLeft: 15, marginTop: 2, fontSize: 16 }}
         label={
           allowSMS
-            ? "Covaid will text you when you receive new requests"
-            : "You will NOT be receiving texts from Covaid"
+            ? ""
+            : ""
         }
         checked={allowSMS}
         onChange={handleChangeSMSPreference}
       />
+      <div style={{ color: "#7F7F7F", marginTop: 1, fontSize: 17 }}>
+      {allowSMS
+            ? "Covaid will text you when you receive new requests"
+            : "You will NOT be receiving texts from Covaid"}
+      </div>
+     
+      </Row>
+      
     </Form.Group>
   );
   const onDrop = (pictureFiles, pictureDataURLs) => {
