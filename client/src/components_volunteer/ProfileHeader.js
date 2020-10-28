@@ -53,7 +53,7 @@ export default function ProfileHeader(props) {
     <Form.Group
       controlId="preverify"
       bssize="large"
-      style={{ marginTop: 8, marginBottom: 8}}
+      style={{ marginTop: 8, marginBottom: -18}}
     >
       <Row>
       <Form.Check
