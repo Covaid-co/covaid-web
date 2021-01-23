@@ -260,7 +260,7 @@ export default function OrgLogin(props) {
                 </Button>
               </Row>
               <Row>
-                {/* <Button
+                <Button
                   variant="link"
                   id="regular-text"
                   onClick={() => handleShowModal("forgot org")}
@@ -273,7 +273,7 @@ export default function OrgLogin(props) {
                   }}
                 >
                   Forgot your organization password?
-                </Button> */}
+                </Button>
               </Row>
               {/* <p id="regular-text" style={{ marginTop: 5, color: "#2670FF", fontSize: 16 }}> 
                 For organization password resets, please contact Covaid tech support
