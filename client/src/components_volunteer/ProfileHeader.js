@@ -9,6 +9,7 @@ import Modal from "react-bootstrap/Modal";
 import { generateURL } from "../Helpers";
 import ImageUploader from "react-images-upload";
 import fetch_a from "../util/fetch_auth";
+import Form from "react-bootstrap/Form";
 
 export default function ProfileHeader(props) {
   const [association, setAssociation] = useState("");
@@ -19,7 +20,64 @@ export default function ProfileHeader(props) {
   const [isUploaded, setIsUploaded] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
   const [imageUrl, setImageUrl] = useState("/api/image/" + props.user._id);
+  const [allowSMS, setAllowSMS] = useState(false);
 
+
+  const handleChangeSMSPreference = (event) => {
+    event.persist();
+    setAllowSMS(!allowSMS);
+
+    let form = {
+      allowSMS: !allowSMS,
+    };
+
+    fetch_a("token", "/api/users/update", {
+      method: "put",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Text preferences successfully changed");
+          window.location.reload(true);
+        } else {
+          console.log("Text preferences not successfully changed");
+        }
+      })
+      .catch((e) => {
+        console.log("Error");
+      });
+  };
+
+  const SMSNotificationSwitch = (
+    <Form.Group
+      controlId="preverify"
+      bssize="large"
+      style={{ marginTop: 8, marginBottom: -18}}
+    >
+      <Row>
+      <Form.Check
+        type="switch"
+        id="large-switch"
+        style={{ color: "#7F7F7F", marginLeft: 15, marginTop: 2, fontSize: 16 }}
+        label={
+          allowSMS
+            ? ""
+            : ""
+        }
+        checked={allowSMS}
+        onChange={handleChangeSMSPreference}
+      />
+      <div style={{ color: "#7F7F7F", marginTop: 1, fontSize: 17 }}>
+      {allowSMS
+            ? "Covaid will text you when you receive new requests"
+            : "You will NOT be receiving texts from Covaid"}
+      </div>
+     
+      </Row>
+      
+    </Form.Group>
+  );
   const onDrop = (pictureFiles, pictureDataURLs) => {
     setUploadingImage(pictureFiles[0]);
     setIsUploaded(true);
@@ -58,6 +116,7 @@ export default function ProfileHeader(props) {
     if (props.user.association_name && props.user.association_name.length > 0) {
       setAssociation(props.user.association_name);
     }
+    setAllowSMS(props.user.allowSMS)
     fetchProfilePic(props.user._id);
   }, [props.user]);
 
@@ -116,6 +175,9 @@ export default function ProfileHeader(props) {
               >
                 Edit Profile
               </Button>
+            </Row>
+            <Row>
+            {SMSNotificationSwitch}
             </Row>
           </Col>
         </Row>
