@@ -75,8 +75,8 @@ require("./models/association.model");
 require("./models/user.model");
 require("./config/passport");
 
-RequestScheduler.request_scheduler();
-BeaconScheduler.BeaconScheduler();
+// RequestScheduler.request_scheduler();
+// BeaconScheduler.BeaconScheduler();
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(
