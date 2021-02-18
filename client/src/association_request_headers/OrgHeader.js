@@ -34,13 +34,16 @@ export default function OrgHeader(props) {
         {props.translations[props.language].formManage} {props.assoc.city}{" "}
         {props.translations[props.language].managedBy}.
       </p> */}
-      <p id="regular-text">
-        {props.translations[props.language].call}:
-        <br />
+      { (props.assoc._id != "5edabb06b60b9b11e5c1be38") && 
+        <p id="regular-text">
+          {props.translations[props.language].call}:
+          <br />
+      
         <span id="phoneNumber">
           {props.assoc.phone ? props.assoc.phone : "(401) 526-8243"}
         </span>
-      </p>
+        </p>
+      }        
       <p id="regular-text">
         {props.translations[props.language].questions}:{" "}
         <strong>{props.assoc.email}</strong>.
