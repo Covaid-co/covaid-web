@@ -160,12 +160,13 @@ export default function AdminModal(props) {
           response.json().then((requests) => {
             var d = new Date();
             const reformattedRequests = requests.map((request) => {
+              console.log(request);
               return {
-                Name: request.requester_first,
-                Email: request.requester_email,
-                Phone: request.requester_phone,
-                "Resource Request": request.resource_request.join(", "),
-                Details: request.details,
+                Name: request.personal_info.requester_name,
+                Email: request.personal_info.requester_email,
+                Phone: request.personal_info.requester_phone,
+                "Resource Request": request.request_info.resource_request.join(", "),
+                Details: request.request_info.details,
                 "Time Created": request.time_posted,
               };
             });
