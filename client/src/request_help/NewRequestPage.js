@@ -345,6 +345,50 @@ export default function NewRequestPage(props) {
     );
   };
 
+  if(props.org == "pitt") {
+    return (
+    <div className="App" key="1">
+      <NavBar
+        setLanguage={props.setLanguage}
+        language={props.language}
+        isLoggedIn={false}
+        simplified={true}
+        request_page={true}
+      />
+      <div id="outer">
+        <Container
+          id={step_num === 1 ? "request-container-step2" : "request-container"}
+        >
+          <Row>
+          <>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+      Pittsburgh Mutual Aid will be pausing all new requests so that we can figure out how to do our work more sustainably and intentionally. We will continue to work with people we’re already supporting and in communication with. Read below for more information.
+      </h5>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+      Pittsburgh Mutual Aid was formed in March 2020 in response to crises of capitalism that already existed but were amplified by COVID-19. Over the course of the past year, we’ve built community and shared resources to support our neighbors through twice-weekly food distributions, financial disbursements, errands, rides, and more. This work has been both messy and beautiful, and we never anticipated it to grow at the rate or in the ways that it did. We want to honor this growth while remaining true to our values and deepening our commitment to this work.
+      </h5>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+      With this in mind, Pittsburgh Mutual Aid has collectively decided to pause on taking requests from new people so that we can figure out how to continue with our work more intentionally, thoughtfully, and sustainably. During this time, we will continue our twice-weekly food distro, supporting folks we’re currently in community with, and working through a backlog of existing requests and cash disbursements. We will continue to put out signal boosts for existing requests on social media.
+      </h5>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+      We are not able to provide direct support to new folks during this pause, but in preparation for pausing the intake of new requests, PMA has created a comprehensive document of resources that could be useful in finding other organizations and resources that are doing work to support the Pittsburgh community. The resource list will be posted on our website. 
+      </h5>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+      In addition to working with other groups in Pgh, we encourage anyone who desires to start their own mutual aid projects to tap in to their community! We also encourage people to continue engaging in mutual aid together on our Facebook group page. PMA is working on creating resources that can help outline some of the logistics and look forward to connecting with you in new ways. 
+      </h5>
+      <h5 id="title-light" style={{ marginBottom: 5 }}>
+      We understand ourselves to be part of a broader constellation of care that will continue to support folks in this city.
+      </h5>
+
+
+      </>
+          </Row>
+        </Container>
+      </div>
+    </div>
+    )
+  }
+
   return (
     <div className="App" key="1">
       <NavBar

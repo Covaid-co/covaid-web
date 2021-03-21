@@ -25,6 +25,7 @@ import { setFalseObj, extractTrueObj } from "../Helpers";
 export default function NewRequestPage1(props) {
   const [isCovaid, setIsCovaid] = useState(false);
   const [isBaltimore, setIsBaltimore] = useState(false);
+  const [isPGH, setIsPGH] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [selectedPayment, setSelectedIndex] = useState(2);
@@ -58,6 +59,9 @@ export default function NewRequestPage1(props) {
     }
     if (props.currentAssoc.name === "Baltimore Mutual Aid") {
       setIsBaltimore(true);
+    }
+    if (props.currentAssoc.name === "Pittsburgh Mutual Aid") {
+      setIsPGH(true);
     }
     var temp_resources = setFalseObj(resourcesFromAssoc);
 
@@ -109,6 +113,18 @@ export default function NewRequestPage1(props) {
 //     );
 //   }
   /** */
+  if (isPGH) {
+    return (
+            <>
+            <h5 id="title-light" style={{ marginBottom: 5 }}>
+            Pittsburgh Mutual Aid will be pausing all new requests so that we can figure out how to do our work more sustainably and intentionally.
+            </h5>
+            <h5 id="title-light" style={{ marginBottom: 5 }}>
+            We will continue to work with people we’re already supporting and in communication with.
+            </h5>
+            </>
+          );
+  }
   if (isBaltimore) {
     return (
       <>
