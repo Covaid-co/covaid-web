@@ -84,13 +84,13 @@ export default function Footer(props) {
             >
               FAQ
             </Button>
-            <Button
+            {/* <Button
               variant="link"
               id="footer-link"
               onClick={() => (window.location.href = currURL + "/updates")}
             >
               Updates
-            </Button>
+            </Button> */}
             <Button
               variant="link"
               id="footer-link"
@@ -124,8 +124,8 @@ export default function Footer(props) {
               id="social-icon"
               className="fa fa-2x fa-instagram"
               onClick={() =>
-                (window.location.href =
-                  "https://www.instagram.com/covaidmutualaid/")
+              (window.location.href =
+                "https://www.instagram.com/covaidmutualaid/")
               }
               aria-hidden="true"
             ></i>
