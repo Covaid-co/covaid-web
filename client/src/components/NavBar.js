@@ -8,6 +8,7 @@ import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
+import RebrandingInfo from "../components_modals/RebrandingInfo";
 
 import NewLogin from "../components_modals/NewLogin";
 import MapModal from "../components_modals/MapModal";
@@ -32,8 +33,10 @@ export default function CovaidNavbar(props) {
   const [width, setWidth] = useState(window.innerWidth);
   const [modalName, setModalName] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [displayBanner, setDisplayBanner] = useState(true);
+  const [donationBanner, setDonationBanner] = useState(true);
+  const [rebrandBanner, setRebrandBanner] = useState(true);
   const [tab, setTab] = useState(0);
+  const [showRebrandModal, setShowRebrandModal] = useState(false);
   const [dropToggle, setDropToggle] = useState(false);
 
   window.addEventListener("resize", () => {
@@ -153,7 +156,7 @@ export default function CovaidNavbar(props) {
         >
           Read More →
         </span>
-        <span id="close-banner" onClick={() => setDisplayBanner(false)}>
+        <span id="close-banner" onClick={() => setDonationBanner(false)}>
           <svg
             viewBox="0 0 24 24"
             width="18"
@@ -210,7 +213,47 @@ export default function CovaidNavbar(props) {
             GoFundMe →
           </span>
         </span>
-        <span id="close-banner" onClick={() => setDisplayBanner(false)}>
+        <span id="close-banner" onClick={() => setDonationBanner(false)}>
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+            shapeRendering="geometricPrecision"
+            style={{ color: "currentcolor" }}
+          >
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
+        </span>
+      </Navbar>
+    );
+  };
+
+  const RebrandWarning = () => {
+    return (
+      <Navbar id="rebrandwarningbanner">
+        <span
+          onClick={() => setShowRebrandModal(!showRebrandModal)}
+        >
+          <span style={{ cursor: "pointer", fontWeight: 600 }}>
+            {width > 767
+              ? "We're rebranding to the name HelpGram."
+              : "n/a"}
+          </span>
+          <span id="view-banner" style={{ cursor: "pointer", fontWeight: 600 }}>
+            Learn more →
+          </span>
+          <RebrandingInfo
+            showModal={showRebrandModal}
+            hideModal={() => setShowRebrandModal(false)}
+          />
+        </span>
+        <span id="close-banner" onClick={() => setRebrandBanner(false)}>
           <svg
             viewBox="0 0 24 24"
             width="18"
@@ -333,8 +376,8 @@ export default function CovaidNavbar(props) {
                   marginLeft: 8,
                   paddingTop: -4,
                 }}
-                // className="mobileDrop"
-                // title={` Drop ${"down"} `}
+              // className="mobileDrop"
+              // title={` Drop ${"down"} `}
               >
                 <Dropdown.Toggle
                   size="md"
@@ -481,7 +524,8 @@ export default function CovaidNavbar(props) {
   return (
     <>
       {/* {BLM()} */}
-      {displayBanner && Donate()}
+      {donationBanner && Donate()}
+      {rebrandBanner && RebrandWarning()}
       {mode === "volunteer" ? (
         <Navbar
           collapseOnSelect
@@ -497,7 +541,7 @@ export default function CovaidNavbar(props) {
           <Navbar.Brand
             onClick={() => history.push("/")}
             id="navbar-brand"
-            // style={width < 767 ? { marginTop: 12 } : {}}
+          // style={width < 767 ? { marginTop: 12 } : {}}
           >
             covaid
           </Navbar.Brand>
