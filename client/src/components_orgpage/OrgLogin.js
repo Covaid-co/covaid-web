@@ -22,6 +22,7 @@ import ccom from "../assets/ccom.png";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import GetStarted from "./GetStarted";
+import OrgBeacon from "./OrgBeacon";
 import ResetPassword from "../components_modals/ResetPassword";
 
 /**
@@ -147,6 +148,13 @@ export default function OrgLogin(props) {
     if (modalType === "get started") {
       modal = (
         <GetStarted
+          showModal={showModal}
+          hideModal={() => setShowModal(false)}
+        />
+      );
+    } else if (modalType === "submit beacon") {
+      modal = (
+        <OrgBeacon
           showModal={showModal}
           hideModal={() => setShowModal(false)}
         />
@@ -293,6 +301,24 @@ export default function OrgLogin(props) {
                   }}
                 >
                   Get Started
+                </Button>
+              </p>
+              <h1 id="home-heading">Beacons!</h1>
+              <p id="regular-text" style={{ marginTop: 15, color: "#2670FF" }}>
+                In need of volunteers? Covaid has a vast network of volunteers across various regions, and we can help you get connected!
+                <Button
+                  variant="link"
+                  id="regular-text"
+                  onClick={() => handleShowModal("submit beacon")}
+                  style={{
+                    color: "#2670FF",
+                    padding: 0,
+                    textDecoration: "underline",
+                    marginTop: -2,
+                    marginLeft: 5,
+                  }}
+                >
+                  Submit a Beacon
                 </Button>
               </p>
             </Form>

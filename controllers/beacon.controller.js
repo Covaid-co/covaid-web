@@ -5,7 +5,7 @@ const BeaconService = require("../services/beacon.service");
  * Handle requests to create a beacon
  */
 exports.handleCreateBeacon = asyncWrapper(async (req, res) => {
-  const {
+  /* const {
     body: { beacon },
   } = req;
   console.log(beacon); //REMOVE
@@ -41,13 +41,14 @@ exports.handleCreateBeacon = asyncWrapper(async (req, res) => {
       : res.status(201).send({ beacon: newBeacon });
   } catch (e) {
     return res.status(422).send(e);
-  }
+  }*/
+
 });
 
 /**
  * Get all beacons given a query
  */
-exports.handleGetBeacons = asyncWrapper(async (req, res) => {
+/* exports.handleGetBeacons = asyncWrapper(async (req, res) => {
   const _id = req.token.id;
   const query = req.query;
   query["association_id"] = _id;
@@ -57,12 +58,12 @@ exports.handleGetBeacons = asyncWrapper(async (req, res) => {
   } catch (e) {
     return res.sendStatus(400);
   }
-});
+}); */
 
 /**
  * Get all beacons assigned to a user
  */
-exports.handleGetBeaconsByUser = asyncWrapper(async (req, res) => {
+/* exports.handleGetBeaconsByUser = asyncWrapper(async (req, res) => {
   const auth_id = req.token.id;
   if (!auth_id) {
     return res.status(404).json({
@@ -77,12 +78,12 @@ exports.handleGetBeaconsByUser = asyncWrapper(async (req, res) => {
   } catch (e) {
     return res.sendStatus(400);
   }
-});
+}); */
 
 /**
  * Update beacon information
  */
-exports.handleUpdateBeacon = asyncWrapper(async (req, res) => {
+/* exports.handleUpdateBeacon = asyncWrapper(async (req, res) => {
   const {
     body: { beacon_id, updates },
   } = req;
@@ -92,12 +93,12 @@ exports.handleUpdateBeacon = asyncWrapper(async (req, res) => {
   } catch (e) {
     return res.sendStatus(400);
   }
-});
+}); */
 
 /**
  * Update beacon information
  */
-exports.handleUserAction = asyncWrapper(async (req, res) => {
+/* exports.handleUserAction = asyncWrapper(async (req, res) => {
   const {
     body: { beacon_id, updates },
   } = req;
@@ -110,4 +111,4 @@ exports.handleUserAction = asyncWrapper(async (req, res) => {
     console.log(e);
     return res.sendStatus(400);
   }
-});
+}); */
