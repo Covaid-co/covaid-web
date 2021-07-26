@@ -43,6 +43,8 @@ export default function BeaconModal(props) {
             return;
         }
 
+        setJustRegistered(true);
+
         let form = {
             name: fields.org_name,
             contact: fields.org_contact,

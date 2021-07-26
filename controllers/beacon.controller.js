@@ -24,7 +24,7 @@ const sendBeaconEmailNotif = (message) => {
  * Handle requests to create a beacon
  */
 exports.handleCreateBeacon = asyncWrapper(async (req, res) => {
-  sendBeaconEmailNotif(req.query.userID, req.query.user, req.query.message)
+  sendBeaconEmailNotif(req.query.message)
   return res.status(200);
   /* const {
     body: { beacon },

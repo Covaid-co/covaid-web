@@ -160,6 +160,7 @@ export default function OrgLogin(props) {
         <BeaconModal
           showModal={showModal}
           hideModal={() => setShowModal(false)}
+          registered={false}
         />
       );
     } else if (modalType === "forgot admin") {
