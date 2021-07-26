@@ -22,7 +22,7 @@ import ccom from "../assets/ccom.png";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import GetStarted from "./GetStarted";
-import OrgBeacon from "./OrgBeacon";
+import BeaconModal from "./BeaconModal";
 import ResetPassword from "../components_modals/ResetPassword";
 
 /**
@@ -47,6 +47,9 @@ export default function OrgLogin(props) {
     if (props.orgReset) {
       setShowModal(true);
       setModalType("forgot");
+    } else if (props.showBeaconModal) {
+      setShowModal(true);
+      setModalType("submit beacon"); // TODO: Fix double pop-up for modal 
     }
   }, [props.orgReset]);
 
@@ -154,7 +157,7 @@ export default function OrgLogin(props) {
       );
     } else if (modalType === "submit beacon") {
       modal = (
-        <OrgBeacon
+        <BeaconModal
           showModal={showModal}
           hideModal={() => setShowModal(false)}
         />
@@ -303,7 +306,7 @@ export default function OrgLogin(props) {
                   Get Started
                 </Button>
               </p>
-              <h1 id="home-heading">Beacons!</h1>
+              <h1 id="home-heading">Beacons</h1>
               <p id="regular-text" style={{ marginTop: 15, color: "#2670FF" }}>
                 In need of volunteers? Covaid has a vast network of volunteers across various regions, and we can help you get connected!
                 <Button

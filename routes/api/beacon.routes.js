@@ -9,7 +9,7 @@ const BeaconController = require("../../controllers/beacon.controller");
 // GET all beacons given a query
 // router.get("/", auth.required, BeaconController.handleGetBeacons);
 // router.get("/user", auth.required, BeaconController.handleGetBeaconsByUser);
-router.get("/create", user_controller.handleCreateBeacon);
+router.get("/create", BeaconController.handleCreateBeacon);
 
 // PUT changes to any beacon (authorized orgs)
 // router.put("/update", auth.required, BeaconController.handleUpdateBeacon);

@@ -17,6 +17,7 @@ export default function BeaconModal(props) {
         org_contact: "",
         org_details: "",
     });
+    // TODO: Add fields regarding # of volunteers, other skills needed, anything else that may be relevant. 
 
     const validateForm = () => {
         var valid = true;
@@ -48,20 +49,17 @@ export default function BeaconModal(props) {
             details: fields.org_details,
         };
 
-        var sampleUser = {
-            email: "Covaidco@gmail.com",
-            association: "5e8439ad9ad8d24834c8edbe"
+        let params = {
+            message: "Organization Name: " + fields.org_name + ", Contact Info: " + fields.org_contact + ", Details: " + fields.org_details
         };
-
-        let params = { user: sampleUser, userID: "userID", message: fields.org_name + " " + fields.org_contact + " " + fields.org_details };
-        var url = generateURL("/api/users/verify2?", params);
+        var url = generateURL("/api/beacon/create?", params);
         fetch(url).then((response) => {
             if (response.ok) {
                 console.log(response);
                 response
                     .json()
-                    .then((association) => {
-                        console.log("hi");
+                    .then(() => {
+                        console.log("created!");
                     })
                     .catch((e) => {
                         console.log(e);

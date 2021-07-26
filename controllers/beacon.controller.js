@@ -1,10 +1,31 @@
 const asyncWrapper = require("../util/asyncWrapper");
 const BeaconService = require("../services/beacon.service");
+const emailer = require("../util/emailer");
+
+const sendBeaconEmailNotif = (message) => {
+  var mode = "localhost:3000";
+  if (process.env.PROD) {
+    mode = "covaid.co";
+  }
+
+  var data = {
+    //sender's and receiver's email
+    sender: "Covaid@covaid.co",
+    receiver: ["Covaidco@gmail.com", "shrestab19@gmail.com"],
+    name: "Covaid Admins",
+    email: "covaidco@gmail.com",
+    details: message,
+    templateName: "help_match",
+  };
+  emailer.sendHelpMatchEmail(data); // TODO: create a template for the beacon. 
+};
 
 /**
  * Handle requests to create a beacon
  */
 exports.handleCreateBeacon = asyncWrapper(async (req, res) => {
+  sendBeaconEmailNotif(req.query.userID, req.query.user, req.query.message)
+  return res.status(200);
   /* const {
     body: { beacon },
   } = req;
