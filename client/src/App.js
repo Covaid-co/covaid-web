@@ -37,6 +37,8 @@ import ChangeLog from "./changelog/ChangeLog";
 import SubmitChangeLog from "./changelog/SubmitChangeLog";
 import InformationHub from "./information-hub/InformationHub";
 import HomePage from "./HomePage";
+import BeaconModal from "./components_orgpage/BeaconModal";
+import OrgLogin from "./components_orgpage/OrgLogin";
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -319,6 +321,13 @@ function App() {
             path="/organizationPortal"
             component={(props) => (
               <OrganizationPortal {...props} {...languageObj} />
+            )}
+          />
+          <Route
+            exact
+            path="/organizationPortal/beacon"
+            component={(props) => (
+              <OrgLogin {...props} {...languageObj} showBeaconModal={true} />
             )}
           />
           <Route
